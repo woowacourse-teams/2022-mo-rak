@@ -3,6 +3,7 @@ package com.morak.back.poll.domain;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +47,20 @@ class PollRepositoryTest {
             () -> assertThat(savedPoll.getTeam()).isNotNull(),
             () -> assertThat(savedPoll.getHost()).isNotNull()
         );
+    }
+
+    @DisplayName("팀ID와 호스트ID로 투표 목록을 조회한다.")
+    @Test
+    void findPollsByTeamIdAndHostId() {
+        // given
+
+        long teamId = 1L;
+        long memberId = 1L;
+        // when
+        List<Poll> polls = pollRepository.findAllByTeamIdAndHostId(teamId, memberId);
+
+        // then
+        assertThat(polls).hasSize(1);
     }
 
 }

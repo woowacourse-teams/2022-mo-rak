@@ -1,6 +1,7 @@
 package com.morak.back.auth.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,4 +28,19 @@ public class Member extends BaseEntity {
 
     private String name;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Member member = (Member)o;
+        return Objects.equals(getId(), member.getId()) && Objects.equals(getEmail(), member.getEmail())
+            && Objects.equals(getName(), member.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getEmail(), getName());
+    }
 }

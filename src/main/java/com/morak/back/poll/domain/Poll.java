@@ -46,4 +46,8 @@ public class Poll extends BaseEntity {
     private LocalDateTime closedAt;
 
     private String code;
+
+    public boolean isHost(Member member) {
+        return host.equals(member);
+    }
 }
