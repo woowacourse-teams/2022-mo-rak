@@ -33,4 +33,19 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
+
+    @DisplayName("투표 목록을 조회한다.")
+    @Test
+    void findPolls() {
+        // given & when
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+            .get("/polls")
+            .then().log().all().extract();
+        // then
+        List<PollResponse> responses = response.body().jsonPath().getList(".", PollResponse.class);
+        Assertions.assertAll(
+            () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+            () -> assertThat(responses).hasSize(1)
+        );
+    }
 }

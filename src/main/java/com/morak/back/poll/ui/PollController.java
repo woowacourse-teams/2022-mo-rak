@@ -1,6 +1,7 @@
 package com.morak.back.poll.ui;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.morak.back.poll.application.PollService;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
+import com.morak.back.poll.ui.dto.PollResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,13 +33,13 @@ public class PollController {
 
     @PostMapping
     public ResponseEntity<Void> createPoll(@Valid @RequestBody PollCreateRequest request) {
-        Long id = pollService.createPoll(tempMemberId, tempTeamId, request);
+        Long id = pollService.createPoll(tempTeamId, tempMemberId, request);
         return ResponseEntity.created(URI.create("/polls/" + id)).build();
     }
 
     @GetMapping
-    public void findPolls() {
-
+    public ResponseEntity<List<PollResponse>> findPolls() {
+        return ResponseEntity.ok(pollService.findPolls(tempTeamId, tempMemberId));
     }
 
     @GetMapping("/{id}")
