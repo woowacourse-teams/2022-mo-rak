@@ -1,6 +1,7 @@
 package com.morak.back.poll.application;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
+import com.morak.back.poll.ui.dto.PollResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +32,7 @@ public class PollService {
 
     private String tempCode = "ABCD";
 
-    public Long createPoll(Long memberId, Long teamId, PollCreateRequest request) {
+    public Long createPoll(Long teamId, Long memberId, PollCreateRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow();
         Team team = teamRepository.findById(teamId).orElseThrow();
 
@@ -39,5 +41,14 @@ public class PollService {
         pollItemRepository.saveAll(items);
 
         return savedPoll.getId();
+    }
+
+    public List<PollResponse> findPolls(Long teamId, Long memberId) {
+        Member member = memberRepository.getById(memberId);
+        List<Poll> polls = pollRepository.findAllByTeamIdAndHostId(teamId, memberId);
+
+        return polls.stream()
+            .map(poll -> PollResponse.from(poll, member))
+            .collect(Collectors.toList());
     }
 }
