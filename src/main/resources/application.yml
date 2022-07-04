@@ -1,9 +1,10 @@
 spring:
   profiles:
-    active: dev
+    active: local
   sql:
     init:
       mode: always
+      platform: local
 
 ---
 
@@ -12,7 +13,20 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:h2:~/dev-shopping-cart;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:~/morak-dev;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+  h2:
+    console:
+      enabled: true
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:h2:~/morak-dev;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
   h2:
     console:
