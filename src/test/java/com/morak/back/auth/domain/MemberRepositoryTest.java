@@ -26,7 +26,7 @@ class MemberRepositoryTest {
         // then
         Assertions.assertAll(
             () -> assertThat(savedMember).isNotNull(),
-            () -> assertThat(savedMember.getId()).isEqualTo(1L),
+            () -> assertThat(savedMember.getId()).isNotNull(),
             () -> assertThat(savedMember.getName()).isEqualTo("test-name")
         );
     }
