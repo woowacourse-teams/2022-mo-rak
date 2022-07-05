@@ -5,7 +5,8 @@ const colors = {
   PURPLE_100: '#6F4DE3',
   YELLOW_100: '#F8C846',
   WHITE_100: '#FFFFFF',
-  BLACK_100: '#000000'
+  BLACK_100: '#000000',
+  TRANSPARENT_BLACK_25: '#00000040'
 } as const;
 
 const theme = { colors };
