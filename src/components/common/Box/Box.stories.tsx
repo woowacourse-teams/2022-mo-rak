@@ -4,12 +4,7 @@ import Box from './Box';
 
 export default {
   title: 'Reusable Components/Box',
-  component: Box,
-  argTypes: {
-    width: { controls: 'text' },
-    height: { controls: 'text' },
-    borderRadius: { controls: 'text' }
-  }
+  component: Box
 };
 
 function Template(args) {
