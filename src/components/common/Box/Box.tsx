@@ -3,9 +3,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { CSSObject } from '@emotion/react';
 
-type Props = {
-  children: React.ReactNode;
-} & Pick<CSSObject, 'width' | 'height' | 'borderRadius'>;
+type Props = React.PropsWithChildren<
+  Pick<CSSObject, 'width' | 'height' | 'borderRadius'>
+>;
 
 function Box({ children, width, height, borderRadius = '15px' }: Props) {
   return (
