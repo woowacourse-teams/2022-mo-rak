@@ -9,13 +9,13 @@ type Props = React.PropsWithChildren<
 
 function Box({ children, width, height, borderRadius = '15px' }: Props) {
   return (
-    <Wrapper width={width} height={height} borderRadius={borderRadius}>
+    <StyledBox width={width} height={height} borderRadius={borderRadius}>
       {children}
-    </Wrapper>
+    </StyledBox>
   );
 }
 
-const Wrapper = styled.div<
+const StyledBox = styled.div<
   Pick<CSSObject, 'width' | 'height' | 'borderRadius'>
 >(
   ({ theme, width, height, borderRadius }) => `
