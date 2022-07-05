@@ -1,5 +1,6 @@
 import React from 'react';
 import { Global, css } from '@emotion/react';
+import theme from './theme';
 
 const style = css`
   html, body, div, span, applet, object, iframe,
@@ -31,6 +32,7 @@ const style = css`
 
   body {
     line-height: 1;
+    background-color: ${theme.colors.GRAY_100};
   }
 
   ol, ul {

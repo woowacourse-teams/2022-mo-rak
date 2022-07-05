@@ -8,5 +8,6 @@
     "jsx": "react",
     "strict": true
   },
-  "files": ["src/index.tsx"]
+  // TODO: d.ts로 끝나는 파일들이 다 포함될 수 있도록 바꿔주자
+  "include": ["./src/*", "emotion.d.ts"]
 }
