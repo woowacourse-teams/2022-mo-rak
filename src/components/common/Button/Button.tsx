@@ -45,7 +45,7 @@ function Button({
   const variantStyle = getVariantStyle({ variant, colorScheme });
 
   return (
-    <Wrapper
+    <StyledButton
       width={width}
       height={height}
       borderRadius={borderRadius}
@@ -54,11 +54,11 @@ function Button({
       variantStyle={variantStyle}
     >
       {children}
-    </Wrapper>
+    </StyledButton>
   );
 }
 
-const Wrapper = styled.button<
+const StyledButton = styled.button<
   Pick<
     CSSObject,
     'borderRadius' | 'color' | 'fontSize' | 'width' | 'height'
