@@ -89,4 +89,21 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
+
+    @DisplayName("투표 단건을 조회한다.")
+    @Test
+    void findPoll() {
+        // given & when
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+            .get("/polls/1")
+            .then().log().all().extract();
+
+        // then
+        PollResponse pollResponse = response.body().jsonPath().getObject(".", PollResponse.class);
+        Assertions.assertAll(
+            () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+            () -> assertThat(pollResponse.getTitle()).isEqualTo("test-poll-title"),
+            () -> assertThat(pollResponse.getIsHost()).isTrue()
+        );
+    }
 }

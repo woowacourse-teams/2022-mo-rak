@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.Team;
@@ -77,7 +76,7 @@ class PollRepositoryTest {
 
     @DisplayName("투표를 저장할 때 선택항목도 저장한다.")
     @Test
-    void temp() {
+    void savePollAndPollItems() {
         // given
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
@@ -96,6 +95,19 @@ class PollRepositoryTest {
         Assertions.assertAll(
             () -> assertThat(findPoll.getPollItems()).hasSize(5),
             () -> assertThat(findPoll.getPollItems().get(3).getSubject()).isEqualTo("test-subject-1")
+        );
+    }
+
+    @DisplayName("투표 단건을 조회한다.")
+    @Test
+    void findById() {
+        // given
+        Poll poll = pollRepository.findById(1L).orElseThrow();
+
+        // when & then
+        Assertions.assertAll(
+            () -> assertThat(poll.getTitle()).isEqualTo("test-poll-title"),
+            () -> assertThat(poll.getHost().getId()).isEqualTo(1L)
         );
     }
 }
