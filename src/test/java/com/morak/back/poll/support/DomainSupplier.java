@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.Team;
 import com.morak.back.poll.domain.Poll;
+import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollStatus;
 
 @Component
@@ -47,6 +48,15 @@ public class DomainSupplier {
                 PollStatus.valueOf(rs.getString("status")),
                 rs.getTimestamp("closed_at").toLocalDateTime(),
                 rs.getString("code")
+            ), id);
+    }
+
+    public PollItem supplyPollItem(Long id) {
+        String sql = "SELECT * FROM poll_item WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
+            new PollItem(rs.getLong("id"),
+                supplyPoll(rs.getLong("poll_id")),
+                rs.getString("subject")
             ), id);
     }
 }

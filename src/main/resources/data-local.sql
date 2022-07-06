@@ -7,3 +7,30 @@ INSERT INTO team (name, code, created_at, updated_at) values('team-name-1', 'tes
 INSERT INTO team_member (team_id, member_id, created_at, updated_at) values(1, 1, now(), now());
 INSERT INTO team_member (team_id, member_id, created_at, updated_at) values(1, 2, now(), now());
 INSERT INTO team_member (team_id, member_id, created_at, updated_at) values(1, 3, now(), now());
+
+INSERT INTO poll (team_id, host_id, title, allowed_poll_count, is_anonymous, status, created_at, updated_at, closed_at,
+                  code)
+values (1, 1, 'test-poll-title', 2, true, 'OPEN', now(), now(), now(), 'test-code');
+
+INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
+values (1, 'test-poll-item-subject-A', now(), now());
+
+INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
+values (1, 'test-poll-item-subject-B', now(), now());
+
+INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
+values (1, 'test-poll-item-subject-C', now(), now());
+
+INSERT INTO poll_result (poll_item_id, member_id, created_at, updated_at)
+values (1, 1, now(), now());
+
+INSERT INTO poll_result (poll_item_id, member_id, created_at, updated_at)
+values (2, 1, now(), now());
+
+INSERT INTO poll_result (poll_item_id, member_id, created_at, updated_at)
+values (2, 2, now(), now());
+
+INSERT INTO poll_result (poll_item_id, member_id, created_at, updated_at)
+values (3, 2, now(), now());
+
+
