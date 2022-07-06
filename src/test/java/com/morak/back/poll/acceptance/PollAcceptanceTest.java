@@ -198,4 +198,24 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0)
         );
     }
+
+    @DisplayName("투표를 삭제한다.")
+    @Test
+    public void deletePoll() {
+        // given
+        // 투표를 생성한다.
+        PollCreateRequest request = new PollCreateRequest("투표 제목", 2, false, LocalDateTime.now(),
+                List.of("항목1", "항목2", "항목3"));
+        String location = RestAssured.given().log().all()
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/polls")
+                .then().log().all().extract().header("Location");
+        // when
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .delete(location)
+                .then().log().all().extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
 }

@@ -67,8 +67,9 @@ public class PollController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletePoll(@PathVariable Long id) {
-
+    public ResponseEntity<Void> deletePoll(@PathVariable Long id) {
+        pollService.deletePoll(tempMemberId, id);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/status")
