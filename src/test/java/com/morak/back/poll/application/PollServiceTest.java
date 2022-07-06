@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.*;
 import static org.mockito.MockitoAnnotations.*;
 
 import com.morak.back.poll.ui.dto.PollItemResponse;
+import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -219,6 +220,84 @@ class PollServiceTest {
         Assertions.assertAll(
                 () -> assertThat(pollItemResponses).hasSize(2),
                 () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1")
+        );
+    }
+
+    @DisplayName("익명 투표 결과를 조회한다.")
+    @Test
+    void findPollResultsWithAnonymous() {
+        // given
+        Member member = new Member(1L, "test-mail@email.com", "test-name");
+
+        PollResult pollResult1 = new PollResult(1L, null, member);
+        PollResult pollResult2 = new PollResult(2L, null, member);
+
+
+        Poll poll = new Poll(
+                1L,
+                null,
+                new Member(1L, "test-mail@email.com", "test-name"),
+                null,
+                null,
+                true,
+                PollStatus.CLOSED,
+                null,
+                null);
+        PollItem pollItem1 = new PollItem(1L, poll, "항목1", new ArrayList<>(List.of(pollResult1)));
+        PollItem pollItem2 = new PollItem(2L, poll, "항목2", new ArrayList<>(List.of(pollResult2)));
+        poll.addItem(pollItem1);
+        poll.addItem(pollItem2);
+        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
+                .willReturn(Optional.of(poll)
+                );
+
+        // when
+        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(1L, 1L);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(pollItemResultResponses).hasSize(2),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers()).hasSize(0),
+                () -> assertThat(pollItemResultResponses.get(0).getCount()).isEqualTo(1)
+        );
+    }
+
+    @DisplayName("무기명 투표 결과를 조회한다.")
+    @Test
+    void findPollResultsWithNotAnonymous() {
+        // given
+        Member member = new Member(1L, "test-mail@email.com", "test-name");
+
+        PollResult pollResult1 = new PollResult(1L, null, member);
+        PollResult pollResult2 = new PollResult(2L, null, member);
+
+
+        Poll poll = new Poll(
+                1L,
+                null,
+                new Member(1L, "test-mail@email.com", "test-name"),
+                null,
+                null,
+                false,
+                PollStatus.CLOSED,
+                null,
+                null);
+        PollItem pollItem1 = new PollItem(1L, poll, "항목1", new ArrayList<>(List.of(pollResult1)));
+        PollItem pollItem2 = new PollItem(2L, poll, "항목2", new ArrayList<>(List.of(pollResult2)));
+        poll.addItem(pollItem1);
+        poll.addItem(pollItem2);
+        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
+                .willReturn(Optional.of(poll)
+                );
+
+        // when
+        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(1L, 1L);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(pollItemResultResponses).hasSize(2),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers()).hasSize(1),
+                () -> assertThat(pollItemResultResponses.get(0).getCount()).isEqualTo(1)
         );
     }
 }

@@ -1,6 +1,9 @@
 package com.morak.back.poll.application;
 
+import com.morak.back.auth.ui.dto.MemberResponse;
+import com.morak.back.poll.domain.PollResult;
 import com.morak.back.poll.ui.dto.PollItemResponse;
+import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,8 +52,8 @@ public class PollService {
         List<Poll> polls = pollRepository.findAllByTeamIdAndHostId(teamId, memberId);
 
         return polls.stream()
-            .map(poll -> PollResponse.from(poll, member))
-            .collect(Collectors.toList());
+                .map(poll -> PollResponse.from(poll, member))
+                .collect(Collectors.toList());
     }
 
     public void doPoll(Long tempMemberId, Long pollId, List<Long> itemIds) {
@@ -73,6 +76,14 @@ public class PollService {
         return poll.getPollItems()
                 .stream()
                 .map(PollItemResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    public List<PollItemResultResponse> findPollItemResults(Long teamId, Long pollId) {
+        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow();
+        return poll.getPollItems()
+                .stream()
+                .map(PollItemResultResponse::of)
                 .collect(Collectors.toList());
     }
 }
