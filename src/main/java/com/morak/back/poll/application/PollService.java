@@ -1,5 +1,6 @@
 package com.morak.back.poll.application;
 
+import com.morak.back.poll.ui.dto.PollItemResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,5 +66,13 @@ public class PollService {
         Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow();
 
         return PollResponse.from(poll, member);
+    }
+
+    public List<PollItemResponse> findPollItems(Long teamId, Long pollId) {
+        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow();
+        return poll.getPollItems()
+                .stream()
+                .map(PollItemResponse::from)
+                .collect(Collectors.toList());
     }
 }
