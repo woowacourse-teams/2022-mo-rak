@@ -164,4 +164,31 @@ class PollServiceTest {
             () -> assertThat(pollItem3.getPollResults()).hasSize(1)
         );
     }
+
+    @DisplayName("투표 단건을 조회한다.")
+    @Test
+    void findPoll() {
+        // given
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(new Member(1L, "test-mail@email.com", "test-name")));
+        given(pollRepository.findById(anyLong()))
+            .willReturn(Optional.of(new Poll(
+                    1L,
+                    null,
+                    new Member(1L, "test-mail@email.com", "test-name"),
+                    "test-poll-title",
+                    null,
+                    null,
+                    PollStatus.CLOSED,
+                    null,
+                    null)
+                )
+            );
+        // when
+        PollResponse poll = pollService.findPoll(1L, 1L, 1L);
+        // then
+        Assertions.assertAll(
+            () -> assertThat(poll.getTitle()).isEqualTo("test-poll-title"),
+            () -> assertThat(poll.getIsHost()).isTrue()
+        );
+    }
 }

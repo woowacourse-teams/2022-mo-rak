@@ -58,4 +58,12 @@ public class PollService {
         List<PollItem> items = pollItemRepository.findAllById(itemIds);
         poll.doPoll(items, member);
     }
+
+    public PollResponse findPoll(Long teamId, Long memberId, Long pollId) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+
+        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow();
+
+        return PollResponse.from(poll, member);
+    }
 }
