@@ -3,6 +3,7 @@ package com.morak.back.poll.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -51,5 +52,14 @@ public class PollItem extends BaseEntity {
 
     public void deleteIfPollMember(Member member) {
         pollResults.removeIf(pollResult -> pollResult.getMember().equals(member));
+    }
+
+    public List<Member> getMembersByAnonymous() {
+        if (poll.getIsAnonymous()) {
+            return new ArrayList<>();
+        }
+        return pollResults.stream()
+                .map(PollResult::getMember)
+                .collect(Collectors.toList());
     }
 }
