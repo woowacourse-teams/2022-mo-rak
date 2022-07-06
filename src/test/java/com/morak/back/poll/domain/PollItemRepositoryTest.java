@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,13 +56,10 @@ class PollItemRepositoryTest {
         assertThat(savedItems).allMatch(item -> item.getId() != null);
     }
 
-    @Autowired
-    private PollResultRepository pollResultRepository;
-
-    @DisplayName("투표 결과를 리스트에서 제거하면 DB에서 삭제된다.")
+    @DisplayName("투표 선택 항목의 투표 결과 리스트에서 투표 결과를 제거하면 DB에서 삭제된다.")
     @Test
     @Transactional
-    void temp() {
+    void removePollResult() {
         // given
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
@@ -72,19 +70,26 @@ class PollItemRepositoryTest {
 
         pollResults.remove(0);
 
-
-        List<PollResult> ttt = entityManager.createQuery("select p from PollResult p",
-                PollResult.class)
-            .getResultList();
-
-        System.out.println("ttt.size() = " + ttt.size());
-
         transaction.commit();
 
         // when
         PollItem findItem = pollItemRepository.getById(2L);
+
         // then
         assertThat(findItem.getPollResults()).hasSize(1);
+    }
+
+    @DisplayName("투표 id로 투표 선택 항목을 조회한다.")
+    @Test
+    public void findAllByPollId() {
+        // given
+        List<PollItem> pollItems = pollItemRepository.findAllByPollId(1L);
+
+        // when & then
+        Assertions.assertAll(
+                () -> assertThat(pollItems).hasSize(3),
+                () -> assertThat(pollItems.get(0).getSubject()).isEqualTo("test-poll-item-subject-A")
+        );
     }
 
 }
