@@ -25,7 +25,8 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void createPoll() {
         // given
-        PollCreateRequest request = new PollCreateRequest("투표 제목", 1, false, LocalDateTime.now(), List.of("항목1", "항목2"));
+        PollCreateRequest request = new PollCreateRequest("투표 제목", 1, false, LocalDateTime.now(),
+            List.of("항목1", "항목2"));
         // when
         ExtractableResponse<Response> response = RestAssured.given().log().all()
             .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/polls")
@@ -47,5 +48,45 @@ class PollAcceptanceTest extends AcceptanceTest {
             () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
             () -> assertThat(responses).hasSize(1)
         );
+    }
+
+    @DisplayName("투표를 진행한다.")
+    @Test
+    void doPoll() {
+        // given
+        PollCreateRequest createRequest = new PollCreateRequest("투표 제목", 1, false, LocalDateTime.now(),
+            List.of("항목1", "항목2"));
+        String location = RestAssured.given().log().all()
+            .body(createRequest).contentType(MediaType.APPLICATION_JSON_VALUE).post("/polls")
+            .then().log().all().extract().header("Location");
+
+        List<Long> request = List.of(4L);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .put(location)
+            .then().log().all().extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @DisplayName("재투표를 진행한다.")
+    @Test
+    void rePoll() {
+        // given
+        List<Long> request = List.of(3L);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .put("/polls/1")
+            .then().log().all().extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }

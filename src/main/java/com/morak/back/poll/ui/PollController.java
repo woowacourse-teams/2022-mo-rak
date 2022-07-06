@@ -37,6 +37,12 @@ public class PollController {
         return ResponseEntity.created(URI.create("/polls/" + id)).build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> doPoll(@PathVariable Long id, @RequestBody List<Long> itemIds) {
+        pollService.doPoll(tempMemberId, id, itemIds);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<PollResponse>> findPolls() {
         return ResponseEntity.ok(pollService.findPolls(tempTeamId, tempMemberId));
@@ -49,11 +55,6 @@ public class PollController {
 
     @GetMapping("/{id}/result")
     public void findPollResult(@PathVariable Long id) {
-
-    }
-
-    @PutMapping("/{id}")
-    public void doPoll(@PathVariable Long id) {
 
     }
 
