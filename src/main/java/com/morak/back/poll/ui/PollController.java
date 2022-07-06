@@ -49,8 +49,8 @@ public class PollController {
     }
 
     @GetMapping("/{id}")
-    public void findPoll(@PathVariable Long id) {
-
+    public ResponseEntity<PollResponse> findPoll(@PathVariable Long id) {
+        return ResponseEntity.ok(pollService.findPoll(tempTeamId, tempMemberId, id));
     }
 
     @GetMapping("/{id}/result")
