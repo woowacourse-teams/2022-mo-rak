@@ -6,6 +6,8 @@ import static org.mockito.BDDMockito.*;
 import static org.mockito.MockitoAnnotations.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +21,10 @@ import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.domain.Team;
 import com.morak.back.auth.domain.TeamRepository;
 import com.morak.back.poll.domain.Poll;
+import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
+import com.morak.back.poll.domain.PollResult;
 import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollResponse;
@@ -91,6 +95,73 @@ class PollServiceTest {
         Assertions.assertAll(
             () -> assertThat(polls).allMatch(response -> response.getStatus().equals("CLOSED")),
             () -> assertThat(polls).allMatch(PollResponse::getIsHost)
+        );
+    }
+
+    @DisplayName("투표를 진행한다.")
+    @Test
+    void doPoll() {
+        // given
+        Member member = new Member(1L, "test-mail@email.com", "test-name");
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        PollItem pollItem1 = new PollItem(1L, null, "sub1");
+        PollItem pollItem2 = new PollItem(2L, null, "sub2");
+        given(pollRepository.findById(anyLong())).willReturn(Optional.of(new Poll(
+                1L,
+                null,
+                new Member(1L, "test-mail@email.com", "test-name"),
+                null,
+                2,
+                null,
+                PollStatus.OPEN,
+                null,
+                null,
+                List.of(pollItem1, pollItem2)
+            )
+        ));
+        given(pollItemRepository.findAllById(any())).willReturn(List.of(pollItem1, pollItem2));
+        // when
+        pollService.doPoll(1L, 1L, List.of(1L, 2L));
+        // then
+        Assertions.assertAll(
+            () -> assertThat(pollItem1.getPollResults()).hasSize(1),
+            () -> assertThat(pollItem2.getPollResults()).hasSize(1)
+        );
+    }
+
+    @DisplayName("재투표를 진행한다.")
+    @Test
+    void rePoll() {
+        // given
+        Member member = new Member(1L, "test-mail@email.com", "test-name");
+        PollResult pollResult1 = new PollResult(1L, null, member);
+        PollResult pollResult2 = new PollResult(2L, null, member);
+        PollItem pollItem1 = new PollItem(1L, null, "sub1", new ArrayList<>(List.of(pollResult1)));
+        PollItem pollItem2 = new PollItem(2L, null, "sub2", new ArrayList<>(List.of(pollResult2)));
+        PollItem pollItem3 = new PollItem(3L, null, "sub3");
+
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        given(pollRepository.findById(anyLong())).willReturn(Optional.of(new Poll(
+                1L,
+                null,
+                new Member(1L, "test-mail@email.com", "test-name"),
+                null,
+                2,
+                null,
+                PollStatus.OPEN,
+                null,
+                null,
+                Arrays.asList(pollItem1, pollItem2, pollItem3)
+            )
+        ));
+        given(pollItemRepository.findAllById(any())).willReturn(Arrays.asList(pollItem2, pollItem3));
+        // when
+        pollService.doPoll(1L, 1L, Arrays.asList(2L, 3L));
+        // then
+        Assertions.assertAll(
+            () -> assertThat(pollItem1.getPollResults()).hasSize(0),
+            () -> assertThat(pollItem2.getPollResults()).hasSize(1),
+            () -> assertThat(pollItem3.getPollResults()).hasSize(1)
         );
     }
 }
