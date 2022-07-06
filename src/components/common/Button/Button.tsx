@@ -35,10 +35,12 @@ function Button({
   colorScheme,
   width = '100%',
   height,
+  type = 'button',
   borderRadius = '10px',
   color,
   fontSize,
-  variant
+  variant,
+  ...props
 }: Props &
   React.PropsWithChildren<
     Pick<CSSObject, 'borderRadius' | 'color' | 'fontSize' | 'width' | 'height'>
@@ -50,9 +52,11 @@ function Button({
       width={width}
       height={height}
       borderRadius={borderRadius}
+      type={type}
       color={color}
       fontSize={fontSize}
       variantStyle={variantStyle}
+      {...props}
     >
       {children}
     </StyledButton>
@@ -73,7 +77,6 @@ const StyledButton = styled.button<
     height: ${height};
     color: ${color};
     font-size: ${fontSize};
-    cursor: pointer;
   `
 );
 

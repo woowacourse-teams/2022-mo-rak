@@ -60,6 +60,12 @@ const style = css`
 
   button {
     border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  input:focus {
+    outline: none;
   }
 `;
 
