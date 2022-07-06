@@ -22,6 +22,13 @@ spring:
 ---
 
 spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
   config:
     activate:
       on-profile: local
