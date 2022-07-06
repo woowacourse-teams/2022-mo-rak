@@ -1,6 +1,7 @@
 package com.morak.back.poll.ui;
 
 import com.morak.back.poll.ui.dto.PollItemResponse;
+import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import java.net.URI;
 import java.util.List;
 
@@ -61,8 +62,8 @@ public class PollController {
 
 
     @GetMapping("/{id}/result")
-    public void findPollResult(@PathVariable Long id) {
-
+    public ResponseEntity<List<PollItemResultResponse>> findPollResult(@PathVariable Long id) {
+        return ResponseEntity.ok(pollService.findPollItemResults(tempTeamId, id));
     }
 
     @DeleteMapping("/{id}")
