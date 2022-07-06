@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// TODO: 자동정렬 설정
 import Box from '../common/Box/Box';
 import Divider from '../common/Divider/Divider';
 import MarginContainer from '../common/MarginContainer/MarginContainer';
@@ -11,7 +12,8 @@ import PollCreateFormTitle from '../PollCreateFormTitle/PollCreateFormTitle';
 
 import { createPoll } from '../../api/poll';
 
-export interface PollCreateFormDataInterface {
+// TODO: interface명 생각해보자!
+export interface PollDataInterface {
   title: string;
   allowedPollCount: number;
   isAnonymous: boolean;
@@ -21,7 +23,7 @@ export interface PollCreateFormDataInterface {
 
 // TODO: 추상화 레벨에 대해서 다시 돌아보기
 function PollCreateForm() {
-  const [pollTitle, setPollTitle] = useState('');
+  const [title, setTitle] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isMultiplePollCountAllowed, setIsMultiplePollCountAllowed] = useState(false);
   const [formInputs, setFormInputs] = useState(['', '']);
@@ -31,9 +33,8 @@ function PollCreateForm() {
 
     const allowedPollCount = isMultiplePollCountAllowed ? formInputs.length : 1;
 
-    // TODO: 변수명 생각해보자!
-    const data: PollCreateFormDataInterface = {
-      title: pollTitle,
+    const pollData: PollDataInterface = {
+      title,
       allowedPollCount,
       isAnonymous,
       closedAt: '9999-12-31T11:59:59',
@@ -42,15 +43,15 @@ function PollCreateForm() {
 
     try {
       // TODO: 쿼리 적용 필요
-      await createPoll(data);
+      createPoll(pollData);
     } catch (err) {
       // TODO: 에러 핸들링 더 잘해줘야해~
       console.log(err);
     }
   };
 
-  const handlePollTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPollTitle(e.target.value);
+  const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
   };
 
   const handleAnonymous = (anonymousStatus: boolean) => () => {
@@ -65,7 +66,7 @@ function PollCreateForm() {
     <Box width="84.4rem" minHeight="65.2rem" padding="6.4rem 4.8rem">
       <form onSubmit={handleSubmit}>
         <MarginContainer margin="0 0 4rem 0">
-          <PollCreateFormTitle pollTitle={pollTitle} handlePollTitle={handlePollTitle} />
+          <PollCreateFormTitle title={title} handleTitle={handleTitle} />
           <Divider />
         </MarginContainer>
         <MarginContainer margin="0 0 1.6rem 0">
