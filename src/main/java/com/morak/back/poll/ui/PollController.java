@@ -1,5 +1,6 @@
 package com.morak.back.poll.ui;
 
+import com.morak.back.poll.ui.dto.PollItemResponse;
 import java.net.URI;
 import java.util.List;
 
@@ -52,6 +53,12 @@ public class PollController {
     public ResponseEntity<PollResponse> findPoll(@PathVariable Long id) {
         return ResponseEntity.ok(pollService.findPoll(tempTeamId, tempMemberId, id));
     }
+
+    @GetMapping("/{id}/items")
+    public ResponseEntity<List<PollItemResponse>> findPollItems(@PathVariable Long id) {
+        return ResponseEntity.ok(pollService.findPollItems(tempTeamId, id));
+    }
+
 
     @GetMapping("/{id}/result")
     public void findPollResult(@PathVariable Long id) {

@@ -2,6 +2,7 @@ package com.morak.back.poll.acceptance;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.morak.back.poll.ui.dto.PollItemResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -104,6 +105,31 @@ class PollAcceptanceTest extends AcceptanceTest {
             () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
             () -> assertThat(pollResponse.getTitle()).isEqualTo("test-poll-title"),
             () -> assertThat(pollResponse.getIsHost()).isTrue()
+        );
+    }
+
+    @DisplayName("투표 선택 항목을 조회한다.")
+    @Test
+    void findPollItems() {
+        // given
+        PollCreateRequest request = new PollCreateRequest("투표 제목", 1, false, LocalDateTime.now(),
+                List.of("항목1", "항목2"));
+        String location = RestAssured.given().log().all()
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/polls")
+                .then().log().all().extract().header("Location");
+
+        // when
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .get(location + "/items")
+                .then().log().all().extract();
+
+        // then
+        List<PollItemResponse> pollItemResponses = response.body().jsonPath().getList(".", PollItemResponse.class);
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(pollItemResponses).hasSize(2),
+                () -> assertThat(pollItemResponses.get(0).getId()).isNotNull(),
+                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1")
         );
     }
 }
