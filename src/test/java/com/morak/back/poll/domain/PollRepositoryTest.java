@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -100,14 +101,24 @@ class PollRepositoryTest {
 
     @DisplayName("투표 단건을 조회한다.")
     @Test
-    void findById() {
+    void findByIdAndTeamId() {
         // given
-        Poll poll = pollRepository.findById(1L).orElseThrow();
+        Poll poll = pollRepository.findByIdAndTeamId(1L, 1L).orElseThrow();
 
         // when & then
         Assertions.assertAll(
             () -> assertThat(poll.getTitle()).isEqualTo("test-poll-title"),
             () -> assertThat(poll.getHost().getId()).isEqualTo(1L)
         );
+    }
+
+    @DisplayName("잘못된 팀 id로 조회할 경우 null을 반환한다.")
+    @Test
+    void validateInvalidTeamId() {
+        // given
+        Optional<Poll> poll = pollRepository.findByIdAndTeamId(1L, 2L);
+
+        // when & then
+        assertThat(poll).isEmpty();
     }
 }
