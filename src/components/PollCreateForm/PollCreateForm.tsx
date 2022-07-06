@@ -9,6 +9,16 @@ import PollCreateFormButtonGroup from '../PollCreateFormButtonGroup/PollCreateFo
 import PollCreateFormSubmitButton from '../PollCreateFormSubmitButton/PollCreateFormSubmitButton';
 import PollCreateFormTitle from '../PollCreateFormTitle/PollCreateFormTitle';
 
+import { createPoll } from '../../api/poll';
+
+export interface PollCreateFormDataInterface {
+  title: string;
+  allowedPollCount: number;
+  isAnonymous: boolean;
+  closedAt: string;
+  subjects: string[];
+}
+
 // TODO: 추상화 레벨에 대해서 다시 돌아보기
 function PollCreateForm() {
   const [pollTitle, setPollTitle] = useState('');
@@ -16,10 +26,27 @@ function PollCreateForm() {
   const [isMultiplePollCountAllowed, setIsMultiplePollCountAllowed] = useState(false);
   const [formInputs, setFormInputs] = useState(['', '']);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(isAnonymous, isMultiplePollCountAllowed, pollTitle, formInputs);
+    const allowedPollCount = isMultiplePollCountAllowed ? formInputs.length : 1;
+
+    // TODO: 변수명 생각해보자!
+    const data: PollCreateFormDataInterface = {
+      title: pollTitle,
+      allowedPollCount,
+      isAnonymous,
+      closedAt: '9999-12-31T11:59:59',
+      subjects: formInputs
+    };
+
+    try {
+      // TODO: 쿼리 적용 필요
+      await createPoll(data);
+    } catch (err) {
+      // TODO: 에러 핸들링 더 잘해줘야해~
+      console.log(err);
+    }
   };
 
   const handlePollTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
