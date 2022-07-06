@@ -1,15 +1,5 @@
 package com.morak.back.poll.application;
 
-import com.morak.back.auth.ui.dto.MemberResponse;
-import com.morak.back.poll.domain.PollResult;
-import com.morak.back.poll.ui.dto.PollItemResponse;
-import com.morak.back.poll.ui.dto.PollItemResultResponse;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.domain.Team;
@@ -20,9 +10,14 @@ import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
+import com.morak.back.poll.ui.dto.PollItemResponse;
+import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
-
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -85,5 +80,14 @@ public class PollService {
                 .stream()
                 .map(PollItemResultResponse::of)
                 .collect(Collectors.toList());
+    }
+
+    public void deletePoll(Long memberId, Long id) {
+        Poll poll = pollRepository.findById(id).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow();
+
+        poll.validateHost(member);
+
+        pollRepository.deleteById(id);
     }
 }

@@ -300,4 +300,58 @@ class PollServiceTest {
                 () -> assertThat(pollItemResultResponses.get(0).getCount()).isEqualTo(1)
         );
     }
+
+    @DisplayName("투표를 삭제한다.")
+    @Test
+    public void deletePoll() {
+        // given
+        Member member = new Member(1L, "test-mail@email.com", "test-name");
+
+        given(memberRepository.findById(anyLong())).willReturn(
+                Optional.of(member));
+        given(pollRepository.findById(anyLong()))
+                .willReturn(Optional.of(new Poll(
+                                1L,
+                                new Team(1L, null, null),
+                                member,
+                                "test-poll-title",
+                                null,
+                                null,
+                                PollStatus.CLOSED,
+                                null,
+                                null)
+                        )
+                );
+
+        // when
+        pollService.deletePoll(1L, 1L);
+
+        // then
+        verify(pollRepository).deleteById(1L);
+    }
+
+    @DisplayName("삭제 시 호스트가 아니면 예외를 던진다.")
+    @Test
+    public void deletePollByNotHost() {
+        // given
+        given(memberRepository.findById(anyLong())).willReturn(
+                Optional.of(new Member(2L, "test-mail@email.com", "test-name")));
+        given(pollRepository.findById(anyLong()))
+                .willReturn(Optional.of(new Poll(
+                                1L,
+                                new Team(1L, null, null),
+                                new Member(1L, "test-mail@email.com", "test-name"),
+                                "test-poll-title",
+                                null,
+                                null,
+                                PollStatus.CLOSED,
+                                null,
+                                null)
+                        )
+                );
+
+        // when & then
+        assertThatThrownBy(() -> pollService.deletePoll(2L, 1L))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
