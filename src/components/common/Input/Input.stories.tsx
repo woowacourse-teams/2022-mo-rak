@@ -15,11 +15,11 @@ export const Outlined = OutlinedTemplate.bind({});
 Outlined.args = {
   color: theme.colors.BLACK_100,
   colorScheme: theme.colors.PURPLE_100,
-  width: '744px',
-  height: '36px',
+  width: '74.4rem',
+  height: '3.6rem',
   borderRadius: '10px',
   variant: 'outlined',
-  fontSize: '10px',
+  fontSize: '1rem',
   placeholder: '선택항목을 입력해주세요!'
 };
 
@@ -30,12 +30,11 @@ function UnstyledTemplate(args) {
 export const Unstyled = UnstyledTemplate.bind({});
 Unstyled.args = {
   colorScheme: theme.colors.PURPLE_100,
-  width: '744px',
-  height: '36px',
-  borderRadius: '10px',
+  width: '74.4rem',
+  height: '3.6rem',
   variant: 'unstyled',
   color: theme.colors.BLACK_100,
-  fontSize: '32px',
+  fontSize: '3.2rem',
   placeholder: '투표 제목을 입력해주세요🧐',
   textAlign: 'left'
 };

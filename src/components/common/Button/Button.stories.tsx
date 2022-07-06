@@ -15,11 +15,11 @@ export const Outlined = OutlinedTemplate.bind({});
 Outlined.args = {
   color: theme.colors.PURPLE_100,
   colorScheme: theme.colors.PURPLE_100,
-  width: '92px',
-  height: '36px',
+  width: '9.2rem',
+  height: '3.6rem',
   borderRadius: '20px',
   variant: 'outlined',
-  fontSize: '5px'
+  fontSize: '0.5rem'
 };
 
 function FilledTemplate(args) {
@@ -29,10 +29,10 @@ function FilledTemplate(args) {
 export const Filled = FilledTemplate.bind({});
 Filled.args = {
   colorScheme: theme.colors.PURPLE_100,
-  width: '460px',
-  height: '64px',
+  width: '46rem',
+  height: '6.4rem',
   borderRadius: '10px',
   variant: 'filled',
   color: theme.colors.WHITE_100,
-  fontSize: '20px'
+  fontSize: '2rem'
 };

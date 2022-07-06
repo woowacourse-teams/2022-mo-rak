@@ -13,7 +13,8 @@ const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
       `;
     case 'outlined':
       return `
-        border: 1px solid ${colorScheme};
+        border: 0.1rem solid ${colorScheme};
+        color: ${colorScheme};
         background-color: ${theme.colors.WHITE_100};
       `;
     default:
@@ -32,7 +33,7 @@ type VariantStyleProps = Pick<Props, 'colorScheme' | 'variant'>;
 function Button({
   children,
   colorScheme,
-  width,
+  width = '100%',
   height,
   borderRadius = '10px',
   color,
@@ -72,6 +73,7 @@ const StyledButton = styled.button<
     height: ${height};
     color: ${color};
     font-size: ${fontSize};
+    cursor: pointer;
   `
 );
 

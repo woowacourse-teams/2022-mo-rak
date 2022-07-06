@@ -16,7 +16,7 @@ const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
   switch (variant) {
     case 'outlined':
       return `
-        border: 1px solid ${colorScheme};
+        border: 0.1rem solid ${colorScheme};
         background-color: ${theme.colors.WHITE_100};
       `;
     case 'unstyled':
@@ -36,7 +36,7 @@ const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
 // TODO: 리팩토링
 function Input({
   colorScheme = null,
-  width,
+  width = '100%',
   height,
   borderRadius,
   color,
@@ -45,6 +45,7 @@ function Input({
   fontSize,
   textAlign = 'center'
 }: Props &
+  // TODO: 깔끔하게 하고싶다!! 근데, 맞는 걸수도~?
   Pick<
     CSSObject,
     | 'width'
@@ -52,7 +53,7 @@ function Input({
     | 'borderRadius'
     | 'color'
     | 'fontSize'
-    | 'placeHolder'
+    | 'placeholder'
     | 'textAlign'
   >) {
   const variantStyle = getVariantStyle({ variant, colorScheme });
@@ -72,6 +73,7 @@ function Input({
 }
 
 const StyledInput = styled.input<
+  // TODO: 이거는 반복되고 있어서 재사용해줄 수 있을듯
   Pick<
     CSSObject,
     'width' | 'height' | 'borderRadius' | 'color' | 'fontSize' | 'textAlign'
@@ -92,7 +94,7 @@ const StyledInput = styled.input<
     border-radius: ${borderRadius};
     color: ${color};
     font-size: ${fontSize};
-    padding: 0 10px;
+    padding: 0 0.4rem;
     text-align: ${textAlign};
   `
 );

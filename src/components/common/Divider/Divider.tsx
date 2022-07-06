@@ -14,7 +14,7 @@ const StyledDivider = styled.hr<Pick<CSSObject, 'borderColor'>>(
   ({ borderColor, theme }) => `
     border-color: ${borderColor || theme.colors.GRAY_200};
     width: 100%;
-    border-width: 0 0 1px;
+    border-width: 0 0 0.1rem;
   `
 );
 

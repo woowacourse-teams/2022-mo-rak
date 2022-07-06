@@ -13,7 +13,7 @@ function Template(args) {
 
 export const Default = Template.bind({});
 Default.args = {
-  width: '844px',
-  height: '652px',
+  width: '84.4rem',
+  height: '65.2rem',
   borderRadius: '15px'
 };
