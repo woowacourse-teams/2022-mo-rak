@@ -97,4 +97,15 @@ class PollTest {
         assertThatExceptionOfType(IllegalArgumentException.class)
             .isThrownBy(() -> poll.doPoll(List.of(itemA, itemD), member));
     }
+
+    @DisplayName("호스트가 아닐 시 예외를 던진다.")
+    @Test
+    public void validateHost() {
+        // given
+        Member member = new Member(3L, "ellie@naver.com", "ellie");
+
+        // when & then
+        assertThatThrownBy(() -> poll.validateHost(member))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }

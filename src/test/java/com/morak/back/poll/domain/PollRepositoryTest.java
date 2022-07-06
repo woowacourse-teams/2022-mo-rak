@@ -121,4 +121,17 @@ class PollRepositoryTest {
         // when & then
         assertThat(poll).isEmpty();
     }
+
+    @DisplayName("id로 투표를 삭제한다.")
+    @Test
+    public void deleteById() {
+        // given
+        pollRepository.deleteById(1L);
+
+        // when
+        Optional<Poll> poll = pollRepository.findById(1L);
+
+        // then
+        assertThat(poll).isEmpty();
+    }
 }

@@ -112,4 +112,10 @@ public class Poll extends BaseEntity {
             }
         }
     }
+
+    public void validateHost(Member member) {
+        if (!this.host.equals(member)) {
+            throw new IllegalArgumentException();
+        }
+    }
 }

@@ -1,15 +1,11 @@
 package com.morak.back.auth.domain;
 
-import java.time.LocalDateTime;
+import com.morak.back.poll.domain.BaseEntity;
 import java.util.Objects;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import com.morak.back.poll.domain.BaseEntity;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +28,7 @@ public class Member extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (o == null || getClass() != o.getClass())
+        if (o == null)
             return false;
         Member member = (Member)o;
         return Objects.equals(getId(), member.getId()) && Objects.equals(getEmail(), member.getEmail())
@@ -44,3 +40,4 @@ public class Member extends BaseEntity {
         return Objects.hash(getId(), getEmail(), getName());
     }
 }
+
