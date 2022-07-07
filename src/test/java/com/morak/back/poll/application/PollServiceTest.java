@@ -1,23 +1,12 @@
 package com.morak.back.poll.application;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.*;
-import static org.mockito.MockitoAnnotations.*;
-
-import com.morak.back.poll.exception.InvalidRequestException;
-import com.morak.back.poll.ui.dto.PollItemResponse;
-import com.morak.back.poll.ui.dto.PollItemResultResponse;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.verify;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
@@ -29,8 +18,21 @@ import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollResult;
 import com.morak.back.poll.domain.PollStatus;
+import com.morak.back.poll.exception.InvalidRequestException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
+import com.morak.back.poll.ui.dto.PollItemRequest;
+import com.morak.back.poll.ui.dto.PollItemResponse;
+import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 class PollServiceTest {
 
@@ -124,7 +126,7 @@ class PollServiceTest {
         ));
         given(pollItemRepository.findAllById(any())).willReturn(List.of(pollItem1, pollItem2));
         // when
-        pollService.doPoll(1L, 1L, List.of(1L, 2L));
+        pollService.doPoll(1L, 1L, new PollItemRequest(List.of(1L, 2L)));
         // then
         Assertions.assertAll(
                 () -> assertThat(pollItem1.getPollResults()).hasSize(1),
@@ -159,7 +161,7 @@ class PollServiceTest {
         ));
         given(pollItemRepository.findAllById(any())).willReturn(Arrays.asList(pollItem2, pollItem3));
         // when
-        pollService.doPoll(1L, 1L, Arrays.asList(2L, 3L));
+        pollService.doPoll(1L, 1L, new PollItemRequest(Arrays.asList(2L, 3L)));
         // then
         Assertions.assertAll(
                 () -> assertThat(pollItem1.getPollResults()).hasSize(0),
@@ -233,7 +235,6 @@ class PollServiceTest {
         PollResult pollResult1 = new PollResult(1L, null, member);
         PollResult pollResult2 = new PollResult(2L, null, member);
 
-
         Poll poll = new Poll(
                 1L,
                 null,
@@ -271,7 +272,6 @@ class PollServiceTest {
 
         PollResult pollResult1 = new PollResult(1L, null, member);
         PollResult pollResult2 = new PollResult(2L, null, member);
-
 
         Poll poll = new Poll(
                 1L,
@@ -361,19 +361,19 @@ class PollServiceTest {
     void closePoll() {
         // given
         Poll poll = new Poll(
-            1L,
-            new Team(1L, null, null),
-            new Member(1L, "test-mail@email.com", "test-name"),
-            "test-poll-title",
-            null,
-            null,
-            PollStatus.OPEN,
-            null,
-            null);
+                1L,
+                new Team(1L, null, null),
+                new Member(1L, "test-mail@email.com", "test-name"),
+                "test-poll-title",
+                null,
+                null,
+                PollStatus.OPEN,
+                null,
+                null);
         given(memberRepository.findById(anyLong()))
-            .willReturn(Optional.of(new Member(1L, "test-mail@email.com", "test-name")));
+                .willReturn(Optional.of(new Member(1L, "test-mail@email.com", "test-name")));
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
-            .willReturn(Optional.of(poll));
+                .willReturn(Optional.of(poll));
         // when
         pollService.closePoll(1L, 1L, 1L);
 

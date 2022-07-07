@@ -1,12 +1,15 @@
 package com.morak.back.poll.ui;
 
+import com.morak.back.poll.application.PollService;
+import com.morak.back.poll.ui.dto.PollCreateRequest;
+import com.morak.back.poll.ui.dto.PollItemRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
+import com.morak.back.poll.ui.dto.PollResponse;
 import java.net.URI;
 import java.util.List;
-
 import javax.validation.Valid;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +20,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.morak.back.poll.application.PollService;
-import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollResponse;
-
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,8 +37,8 @@ public class PollController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> doPoll(@PathVariable Long id, @RequestBody List<Long> itemIds) {
-        pollService.doPoll(tempMemberId, id, itemIds);
+    public ResponseEntity<Void> doPoll(@PathVariable Long id, @Valid @RequestBody PollItemRequest pollItemRequest) {
+        pollService.doPoll(tempMemberId, id, pollItemRequest);
         return ResponseEntity.ok().build();
     }
 

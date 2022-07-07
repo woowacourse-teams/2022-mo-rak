@@ -11,6 +11,7 @@ import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.exception.ResourceNotFoundException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
+import com.morak.back.poll.ui.dto.PollItemRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
@@ -52,10 +53,10 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
-    public void doPoll(Long tempMemberId, Long pollId, List<Long> itemIds) {
+    public void doPoll(Long tempMemberId, Long pollId, PollItemRequest pollItemRequest) {
         Member member = memberRepository.findById(tempMemberId).orElseThrow(ResourceNotFoundException::new);
         Poll poll = pollRepository.findById(pollId).orElseThrow(ResourceNotFoundException::new);
-        List<PollItem> items = pollItemRepository.findAllById(itemIds);
+        List<PollItem> items = pollItemRepository.findAllById(pollItemRequest.getItemIds());
         poll.doPoll(items, member);
     }
 
