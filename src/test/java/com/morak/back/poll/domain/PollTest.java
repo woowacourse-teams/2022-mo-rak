@@ -29,8 +29,7 @@ class PollTest {
         member = new Member(1L, "ellie@naver.com", "ellie");
 
         poll = new Poll(1L, team, member, "title", 2, true, PollStatus.OPEN, LocalDateTime.now().plusDays(1),
-            "ABCE",
-            new ArrayList<>());
+            "ABCE", new ArrayList<>());
         itemA = new PollItem(1L, poll, "sub1", new ArrayList<>());
         itemB = new PollItem(2L, poll, "sub2", new ArrayList<>());
         itemC = new PollItem(3L, poll, "sub3", new ArrayList<>());
@@ -107,5 +106,35 @@ class PollTest {
         // when & then
         assertThatThrownBy(() -> poll.validateHost(member))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("호스트가 투표를 종료한다")
+    @Test
+    void closePoll() {
+        // given & when
+        poll.close(member);
+
+        // then
+        assertThat(poll.getStatus()).isEqualTo(PollStatus.CLOSED);
+    }
+
+    @DisplayName("이미 투표가 종료된 상태에서 다시 종료하는 경우 예외를 던진다.")
+    @Test
+    void throwsExceptionOnClosingPollTwice() {
+        // given & when
+        poll.close(member);
+        // then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+            .isThrownBy(() -> poll.close(member));
+    }
+
+    @DisplayName("호스트가 아닌 멤버가 투표를 종료하는 경우 예외를 던진다.")
+    @Test
+    void validateHostWhenClosingPoll() {
+        // given & when
+        Member member = new Member(100L, "test-email@email.com", "wrong-member");
+        // then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+            .isThrownBy(() -> poll.close(member));
     }
 }

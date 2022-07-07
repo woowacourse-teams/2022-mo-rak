@@ -51,7 +51,6 @@ public class Poll extends BaseEntity {
 
     private String code;
 
-    // @OneToMany(mappedBy = "poll")
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL)
     private List<PollItem> pollItems = new ArrayList<>();
 
@@ -117,5 +116,10 @@ public class Poll extends BaseEntity {
         if (!this.host.equals(member)) {
             throw new IllegalArgumentException();
         }
+    }
+
+    public void close(Member member) {
+        validateHost(member);
+        status = status.close();
     }
 }

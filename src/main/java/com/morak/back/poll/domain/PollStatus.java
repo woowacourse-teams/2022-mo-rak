@@ -6,4 +6,11 @@ public enum PollStatus {
     public boolean isClosed() {
         return this.equals(CLOSED);
     }
+
+    public PollStatus close() {
+        if (this == CLOSED) {
+            throw new IllegalArgumentException();
+        }
+        return CLOSED;
+    }
 }
