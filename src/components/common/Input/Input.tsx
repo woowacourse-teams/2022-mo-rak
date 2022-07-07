@@ -1,14 +1,13 @@
-import React, { InputHTMLAttributes, ButtonHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, MouseEventHandler, CSSProperties } from 'react';
 
 import styled from '@emotion/styled';
-import { CSSObject, useTheme } from '@emotion/react';
+import { useTheme } from '@emotion/react';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  colorScheme?: string | null;
   variant: 'outlined' | 'unstyled';
-  icon?: string | null;
-  // TODO: FUnction에 대한 타이핑 찾아보기
-  onClickIcon?: React.MouseEventHandler<HTMLButtonElement>;
+  colorScheme?: string;
+  icon?: string;
+  onClickIcon?: MouseEventHandler<HTMLButtonElement>;
 }
 
 type VariantStyleProps = Pick<Props, 'colorScheme' | 'variant'>;
@@ -41,42 +40,20 @@ const getPaddingStyle = (icon: Props['icon']) => {
 
 // TODO: 리팩토링
 function Input({
-  colorScheme = null,
-  width = '100%',
-  height,
-  borderRadius,
-  color,
+  colorScheme,
   variant,
-  placeholder,
-  fontSize,
-  textAlign = 'center',
-  icon = null,
+  icon,
   onClickIcon,
-  id,
   ...props
 }: Props &
   // TODO: 깔끔하게 하고싶다!! 근데, 맞는 걸수도~?
-  Pick<
-    CSSObject,
-    'width' | 'height' | 'borderRadius' | 'color' | 'fontSize' | 'placeholder' | 'textAlign'
-  >) {
+  CSSProperties) {
   const variantStyle = getVariantStyle({ variant, colorScheme });
   const paddingStyle = getPaddingStyle(icon);
 
   return (
     <Container>
-      <StyledInput
-        placeholder={placeholder}
-        width={width}
-        height={height}
-        borderRadius={borderRadius}
-        color={color}
-        fontSize={fontSize}
-        textAlign={textAlign}
-        variantStyle={variantStyle}
-        paddingStyle={paddingStyle}
-        {...props}
-      />
+      <StyledInput variantStyle={variantStyle} paddingStyle={paddingStyle} {...props} />
       {icon && (
         <StyledButton type="button" onClick={onClickIcon}>
           <img src={icon} alt={icon} />
@@ -93,8 +70,7 @@ const Container = styled.div`
 `;
 
 const StyledInput = styled.input<
-  // TODO: 이거는 반복되고 있어서 재사용해줄 수 있을듯
-  Pick<CSSObject, 'width' | 'height' | 'borderRadius' | 'color' | 'fontSize' | 'textAlign'> & {
+  CSSProperties & {
     variantStyle: string;
     paddingStyle: string;
   }
@@ -102,16 +78,16 @@ const StyledInput = styled.input<
   ({ width, height, borderRadius, color, fontSize, textAlign, variantStyle, paddingStyle }) => `
     ${variantStyle}
     ${paddingStyle}
-    width: ${width};
+    width: ${width || '100%'};
     height: ${height}; 
     border-radius: ${borderRadius};
     color: ${color};
     font-size: ${fontSize};
-    text-align: ${textAlign};
+    text-align: ${textAlign || 'center'};
   `
 );
 
-const StyledButton = styled.button<ButtonHTMLAttributes<HTMLButtonElement>>`
+const StyledButton = styled.button`
   position: absolute;
   right: 0;
 `;

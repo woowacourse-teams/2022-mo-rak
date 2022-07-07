@@ -1,7 +1,7 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes, PropsWithChildren, CSSProperties } from 'react';
 
 import styled from '@emotion/styled';
-import { CSSObject, useTheme } from '@emotion/react';
+import { useTheme } from '@emotion/react';
 
 const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
   const theme = useTheme();
@@ -22,7 +22,7 @@ const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
   }
 };
 
-interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface Props extends PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>> {
   colorScheme: string;
   variant: 'filled' | 'outlined';
 }
@@ -33,50 +33,33 @@ type VariantStyleProps = Pick<Props, 'colorScheme' | 'variant'>;
 function Button({
   children,
   colorScheme,
-  width = '100%',
-  height,
   type = 'button',
-  borderRadius = '10px',
-  color,
-  fontSize,
   variant,
   ...props
-}: Props &
-  React.PropsWithChildren<
-    Pick<CSSObject, 'borderRadius' | 'color' | 'fontSize' | 'width' | 'height'>
-  >) {
+}: Props & CSSProperties) {
   const variantStyle = getVariantStyle({ variant, colorScheme });
 
   return (
-    <StyledButton
-      width={width}
-      height={height}
-      borderRadius={borderRadius}
-      type={type}
-      color={color}
-      fontSize={fontSize}
-      variantStyle={variantStyle}
-      {...props}
-    >
+    <StyledButton type={type} variantStyle={variantStyle} {...props}>
       {children}
     </StyledButton>
   );
 }
 
 const StyledButton = styled.button<
-  Pick<
-    CSSObject,
-    'borderRadius' | 'color' | 'fontSize' | 'width' | 'height'
-  > & { variantStyle: string }
+  CSSProperties & {
+    variantStyle: string;
+  }
 >(
-  ({ width, height, borderRadius, color, fontSize, variantStyle }) => `
+  ({ width, height, borderRadius, color, fontSize, variantStyle, disabled }) => `
     ${variantStyle}
     text-align: center;
-    border-radius: ${borderRadius};
-    width: ${width};
+    border-radius: ${borderRadius || '15px'};
+    width: ${width || '100%'};
     height: ${height};
     color: ${color};
     font-size: ${fontSize};
+    cursor: ${disabled && 'default'}
   `
 );
 

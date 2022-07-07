@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 import styled from '@emotion/styled';
-import { CSSObject } from '@emotion/react';
 
-interface Props
-  extends React.PropsWithChildren<Pick<CSSObject, 'borderColor'>> {}
+interface Props extends CSSProperties {}
 
 function Divider({ borderColor }: Props) {
   return <StyledDivider borderColor={borderColor} />;
 }
 
-const StyledDivider = styled.hr<Pick<CSSObject, 'borderColor'>>(
+const StyledDivider = styled.hr<Props>(
   ({ borderColor, theme }) => `
     border-color: ${borderColor || theme.colors.GRAY_200};
     width: 100%;

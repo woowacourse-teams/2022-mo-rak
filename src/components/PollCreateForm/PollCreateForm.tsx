@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 
 // TODO: 자동정렬 설정
 import Box from '../common/Box/Box';
@@ -8,11 +8,11 @@ import MarginContainer from '../common/MarginContainer/MarginContainer';
 import PollCreateFormInputGroup from '../PollCreateFormInputGroup/PollCreateFormInputGroup';
 import PollCreateFormButtonGroup from '../PollCreateFormButtonGroup/PollCreateFormButtonGroup';
 import PollCreateFormSubmitButton from '../PollCreateFormSubmitButton/PollCreateFormSubmitButton';
-import PollCreateFormTitle from '../PollCreateFormTitle/PollCreateFormTitle';
+import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateFormTitleInput';
 
 import { createPoll } from '../../api/poll';
 
-// TODO: interface명 생각해보자!
+// TODO: interface명 생각해보자
 export interface PollDataInterface {
   title: string;
   allowedPollCount: number;
@@ -28,7 +28,7 @@ function PollCreateForm() {
   const [isMultiplePollCountAllowed, setIsMultiplePollCountAllowed] = useState(false);
   const [formInputs, setFormInputs] = useState(['', '']);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const allowedPollCount = isMultiplePollCountAllowed ? formInputs.length : 1;
@@ -50,7 +50,7 @@ function PollCreateForm() {
     }
   };
 
-  const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
 
@@ -66,7 +66,7 @@ function PollCreateForm() {
     <Box width="84.4rem" minHeight="65.2rem" padding="6.4rem 4.8rem">
       <form onSubmit={handleSubmit}>
         <MarginContainer margin="0 0 4rem 0">
-          <PollCreateFormTitle title={title} handleTitle={handleTitle} />
+          <PollCreateFormTitleInput title={title} onChange={handleTitle} />
           <Divider />
         </MarginContainer>
         <MarginContainer margin="0 0 1.6rem 0">

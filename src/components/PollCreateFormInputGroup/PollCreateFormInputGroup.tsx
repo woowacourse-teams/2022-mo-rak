@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, MouseEvent, ChangeEvent } from 'react';
 
 import { useTheme } from '@emotion/react';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
@@ -16,7 +16,7 @@ interface Props {
 function PollCreateFormInputGroup({ formInputs, setFormInputs }: Props) {
   const theme = useTheme();
 
-  const handleAddInput = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleAddInput = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (formInputs.length >= 10) {
@@ -34,7 +34,7 @@ function PollCreateFormInputGroup({ formInputs, setFormInputs }: Props) {
     setFormInputs(newFormInputs);
   };
 
-  const handleChange = (targetIdx: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (targetIdx: number) => (e: ChangeEvent<HTMLInputElement>) => {
     const newFormInputs = [...formInputs];
 
     newFormInputs[targetIdx] = e.target.value;

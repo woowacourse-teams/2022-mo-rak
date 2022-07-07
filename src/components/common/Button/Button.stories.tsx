@@ -36,3 +36,33 @@ Filled.args = {
   color: theme.colors.WHITE_100,
   fontSize: '2rem'
 };
+
+function PollButtonTemplate(args) {
+  return <Button {...args}>투표 하기</Button>;
+}
+
+export const PollButton = PollButtonTemplate.bind({});
+PollButton.args = {
+  colorScheme: theme.colors.PURPLE_100,
+  width: '74.4rem',
+  height: '3.6rem',
+  borderRadius: '10px',
+  variant: 'filled',
+  color: theme.colors.WHITE_100,
+  fontSize: '1.6rem'
+};
+
+function PollChoiceButtonTemplate(args) {
+  return <Button {...args}>투표 선택지입니다</Button>;
+}
+
+export const PollChoiceButton = PollChoiceButtonTemplate.bind({});
+PollChoiceButton.args = {
+  colorScheme: theme.colors.PURPLE_100,
+  width: '74.4rem',
+  height: '3.6rem',
+  borderRadius: '10px',
+  variant: 'outlined',
+  color: theme.colors.BLACK_100,
+  fontSize: '1.6rem'
+};

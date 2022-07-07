@@ -1,10 +1,11 @@
 interface Props {
   method: 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'GET';
   path: string;
-  body: object;
+  body?: object;
   token?: string;
 }
 
+// TODO: type명 이게 최선일까?
 type Headers = {
   [key: string]: string;
 };
@@ -12,6 +13,7 @@ type Headers = {
 const fetcher = async ({ method, path, body = {}, token }: Props) => {
   const headers: Headers = { 'Content-Type': 'application/json' };
   if (token) headers.Authorization = `Bearer ${token}`;
+
   const response = await fetch(`${process.env.BASE_API_URL}${path}`, {
     method,
     body: JSON.stringify(body),
