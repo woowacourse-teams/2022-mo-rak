@@ -2,6 +2,7 @@ package com.morak.back.poll.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.morak.back.poll.exception.InvalidRequestException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ class PollTest {
     @Test
     void validateAllowedPollCountsWithOverflow() {
         // then
-        assertThatExceptionOfType(IllegalArgumentException.class)
+        assertThatExceptionOfType(InvalidRequestException.class)
             .isThrownBy(() -> poll.doPoll(List.of(itemA, itemB, itemC), member));
     }
 
@@ -82,7 +83,7 @@ class PollTest {
     @Test
     void validateAllowedPollCountsWithZero() {
         // then
-        assertThatExceptionOfType(IllegalArgumentException.class)
+        assertThatExceptionOfType(InvalidRequestException.class)
             .isThrownBy(() -> poll.doPoll(List.of(), member));
     }
 
@@ -93,7 +94,7 @@ class PollTest {
         // when
         PollItem itemD = new PollItem(4L, poll, "sub4", new ArrayList<>());
         // then
-        assertThatExceptionOfType(IllegalArgumentException.class)
+        assertThatExceptionOfType(InvalidRequestException.class)
             .isThrownBy(() -> poll.doPoll(List.of(itemA, itemD), member));
     }
 
@@ -105,7 +106,7 @@ class PollTest {
 
         // when & then
         assertThatThrownBy(() -> poll.validateHost(member))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(InvalidRequestException.class);
     }
 
     @DisplayName("호스트가 투표를 종료한다")
@@ -124,7 +125,7 @@ class PollTest {
         // given & when
         poll.close(member);
         // then
-        assertThatExceptionOfType(IllegalArgumentException.class)
+        assertThatExceptionOfType(InvalidRequestException.class)
             .isThrownBy(() -> poll.close(member));
     }
 
@@ -134,7 +135,7 @@ class PollTest {
         // given & when
         Member member = new Member(100L, "test-email@email.com", "wrong-member");
         // then
-        assertThatExceptionOfType(IllegalArgumentException.class)
+        assertThatExceptionOfType(InvalidRequestException.class)
             .isThrownBy(() -> poll.close(member));
     }
 }

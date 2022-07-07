@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 import static org.mockito.MockitoAnnotations.*;
 
+import com.morak.back.poll.exception.InvalidRequestException;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import java.time.LocalDateTime;
@@ -352,7 +353,7 @@ class PollServiceTest {
 
         // when & then
         assertThatThrownBy(() -> pollService.deletePoll(1L, 2L, 1L))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(InvalidRequestException.class);
     }
 
     @DisplayName("투표를 종료한다.")

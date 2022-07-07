@@ -9,6 +9,7 @@ import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollStatus;
+import com.morak.back.poll.exception.ResourceNotFoundException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
@@ -32,8 +33,8 @@ public class PollService {
     private String tempCode = "ABCD";
 
     public Long createPoll(Long teamId, Long memberId, PollCreateRequest request) {
-        Member member = memberRepository.findById(memberId).orElseThrow();
-        Team team = teamRepository.findById(teamId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
+        Team team = teamRepository.findById(teamId).orElseThrow(ResourceNotFoundException::new);
 
         Poll savedPoll = pollRepository.save(request.toPoll(member, team, PollStatus.OPEN, tempCode));
         List<PollItem> items = request.toPollItems(savedPoll);
@@ -52,22 +53,22 @@ public class PollService {
     }
 
     public void doPoll(Long tempMemberId, Long pollId, List<Long> itemIds) {
-        Member member = memberRepository.findById(tempMemberId).orElseThrow();
-        Poll poll = pollRepository.findById(pollId).orElseThrow();
+        Member member = memberRepository.findById(tempMemberId).orElseThrow(ResourceNotFoundException::new);
+        Poll poll = pollRepository.findById(pollId).orElseThrow(ResourceNotFoundException::new);
         List<PollItem> items = pollItemRepository.findAllById(itemIds);
         poll.doPoll(items, member);
     }
 
     public PollResponse findPoll(Long teamId, Long memberId, Long pollId) {
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
 
-        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow();
+        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
 
         return PollResponse.from(poll, member);
     }
 
     public List<PollItemResponse> findPollItems(Long teamId, Long pollId) {
-        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow();
+        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
         return poll.getPollItems()
                 .stream()
                 .map(PollItemResponse::from)
@@ -75,7 +76,7 @@ public class PollService {
     }
 
     public List<PollItemResultResponse> findPollItemResults(Long teamId, Long pollId) {
-        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow();
+        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
         return poll.getPollItems()
                 .stream()
                 .map(PollItemResultResponse::of)
@@ -83,8 +84,8 @@ public class PollService {
     }
 
     public void deletePoll(Long teamId, Long memberId, Long id) {
-        Poll poll = pollRepository.findByIdAndTeamId(id, teamId).orElseThrow();
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Poll poll = pollRepository.findByIdAndTeamId(id, teamId).orElseThrow(ResourceNotFoundException::new);
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
 
         poll.validateHost(member);
 
@@ -92,8 +93,8 @@ public class PollService {
     }
 
     public void closePoll(Long teamId, Long memberId, Long id) {
-        Poll poll = pollRepository.findByIdAndTeamId(id, teamId).orElseThrow();
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Poll poll = pollRepository.findByIdAndTeamId(id, teamId).orElseThrow(ResourceNotFoundException::new);
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
 
         poll.close(member);
     }

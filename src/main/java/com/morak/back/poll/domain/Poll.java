@@ -1,9 +1,11 @@
 package com.morak.back.poll.domain;
 
+import com.morak.back.auth.domain.Member;
+import com.morak.back.auth.domain.Team;
+import com.morak.back.poll.exception.InvalidRequestException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,10 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import com.morak.back.auth.domain.Member;
-import com.morak.back.auth.domain.Team;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -78,7 +76,7 @@ public class Poll extends BaseEntity {
 
     public void doPoll(List<PollItem> newItems, Member member) {
         if (status.isClosed()) {
-            throw new IllegalArgumentException();
+            throw new InvalidRequestException();
         }
         validateCounts(newItems.size());
         validateNewItemsBelongsTo(newItems);
@@ -100,21 +98,21 @@ public class Poll extends BaseEntity {
 
     private void validateCounts(int itemSize) {
         if (itemSize > allowedPollCount || itemSize == 0) {
-            throw new IllegalArgumentException();
+            throw new InvalidRequestException();
         }
     }
 
     private void validateNewItemsBelongsTo(List<PollItem> newItems) {
         for (PollItem newItem : newItems) {
             if (!this.pollItems.contains(newItem)) {
-                throw new IllegalArgumentException();
+                throw new InvalidRequestException();
             }
         }
     }
 
     public void validateHost(Member member) {
         if (!this.host.equals(member)) {
-            throw new IllegalArgumentException();
+            throw new InvalidRequestException();
         }
     }
 

@@ -1,19 +1,16 @@
 package com.morak.back.poll.ui;
 
+import com.morak.back.poll.exception.InvalidRequestException;
+import com.morak.back.poll.exception.ResourceNotFoundException;
+import com.morak.back.poll.ui.dto.ExceptionResponse;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import com.morak.back.poll.exception.InvalidRequestException;
-import com.morak.back.poll.exception.ResourceNotFoundException;
-import com.morak.back.poll.ui.dto.ExceptionResponse;
 
 @RestControllerAdvice
 public class PollControllerAdvice {
@@ -30,8 +27,7 @@ public class PollControllerAdvice {
     @ExceptionHandler(InvalidRequestException.class)
     public ResponseEntity<ExceptionResponse> handleInvalidRequest(RuntimeException e) {
         logger.warn(e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body(new ExceptionResponse("잘못된 요청입니다."));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponse("잘못된 요청입니다."));
     }
 
     @ExceptionHandler(RuntimeException.class)

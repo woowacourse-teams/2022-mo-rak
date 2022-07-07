@@ -2,6 +2,7 @@ package com.morak.back.poll.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.morak.back.poll.exception.InvalidRequestException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -38,6 +39,6 @@ class PollStatusTest {
         PollStatus closed = status.close();
         // then
         assertThatThrownBy(closed::close)
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(InvalidRequestException.class);
     }
 }
