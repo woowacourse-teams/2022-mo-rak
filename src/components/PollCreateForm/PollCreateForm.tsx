@@ -1,6 +1,7 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import React, { useState, FormEvent, ChangeEvent, useContext } from 'react';
 
 // TODO: 자동정렬 설정
+import { useNavigate } from 'react-router-dom';
 import Box from '../common/Box/Box';
 import Divider from '../common/Divider/Divider';
 import MarginContainer from '../common/MarginContainer/MarginContainer';
@@ -11,29 +12,27 @@ import PollCreateFormSubmitButton from '../PollCreateFormSubmitButton/PollCreate
 import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateFormTitleInput';
 
 import { createPoll } from '../../api/poll';
-
-// TODO: interface명 생각해보자
-export interface PollDataInterface {
-  title: string;
-  allowedPollCount: number;
-  isAnonymous: boolean;
-  closedAt: string;
-  subjects: string[];
-}
+import { PollContextStore } from '../../contexts/PollContext';
+import { PollCreateType } from '../../types/poll';
 
 // TODO: 추상화 레벨에 대해서 다시 돌아보기
 function PollCreateForm() {
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isMultiplePollCountAllowed, setIsMultiplePollCountAllowed] = useState(false);
   const [formInputs, setFormInputs] = useState(['', '']);
+
+  // TODO: 왜 desturcuring이 안될까?
+  // TODO: naming 생각해보자
+  const pollContext = useContext(PollContextStore);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const allowedPollCount = isMultiplePollCountAllowed ? formInputs.length : 1;
 
-    const pollData: PollDataInterface = {
+    const pollData: PollCreateType = {
       title,
       allowedPollCount,
       isAnonymous,
@@ -42,11 +41,16 @@ function PollCreateForm() {
     };
 
     try {
-      // TODO: 쿼리 적용 필요
-      createPoll(pollData);
+      // TODO: 쿼리 적용
+      const res = await createPoll(pollData);
+      const pollId = res.headers.get('location').split('polls/')[1];
+
+      pollContext?.setPollId(pollId);
+      // TODO: 상수화
+      navigate('/progress');
     } catch (err) {
-      // TODO: 에러 핸들링 더 잘해줘야해~
-      console.log(err);
+      // TODO: 에러 핸들링 고도화
+      alert(err);
     }
   };
 
