@@ -52,12 +52,8 @@ public class Poll extends BaseEntity {
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL)
     private List<PollItem> pollItems = new ArrayList<>();
 
-    public boolean isHost(Member member) {
-        return host.equals(member);
-    }
-
     public Poll(Long id, Team team, Member host, String title, Integer allowedPollCount, Boolean isAnonymous,
-        PollStatus status, LocalDateTime closedAt, String code) {
+                PollStatus status, LocalDateTime closedAt, String code) {
 
         this.id = id;
         this.team = team;
@@ -75,24 +71,16 @@ public class Poll extends BaseEntity {
     }
 
     public void doPoll(List<PollItem> newItems, Member member) {
-        if (status.isClosed()) {
-            throw new InvalidRequestException();
-        }
+        validateStatus();
         validateCounts(newItems.size());
         validateNewItemsBelongsTo(newItems);
         deleteMembersFromPollItems(member);
         addMembersToPollItems(newItems, member);
     }
 
-    private void deleteMembersFromPollItems(Member member) {
-        for (PollItem pollItem : pollItems) {
-            pollItem.deleteIfPollMember(member);
-        }
-    }
-
-    private void addMembersToPollItems(List<PollItem> newItems, Member member) {
-        for (PollItem newItem : newItems) {
-            newItem.addPullResult(member);
+    private void validateStatus() {
+        if (status.isClosed()) {
+            throw new InvalidRequestException();
         }
     }
 
@@ -103,11 +91,25 @@ public class Poll extends BaseEntity {
     }
 
     private void validateNewItemsBelongsTo(List<PollItem> newItems) {
-        for (PollItem newItem : newItems) {
-            if (!this.pollItems.contains(newItem)) {
-                throw new InvalidRequestException();
-            }
+        if (!this.pollItems.containsAll(newItems)) {
+            throw new InvalidRequestException();
         }
+    }
+
+    private void deleteMembersFromPollItems(Member member) {
+        for (PollItem pollItem : pollItems) {
+            pollItem.deleteIfPollMember(member);
+        }
+    }
+
+    private void addMembersToPollItems(List<PollItem> newItems, Member member) {
+        for (PollItem newItem : newItems) {
+            newItem.addPollResult(member);
+        }
+    }
+
+    public boolean isHost(Member member) {
+        return host.equals(member);
     }
 
     public void validateHost(Member member) {

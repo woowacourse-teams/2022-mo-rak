@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PollRepository extends JpaRepository<Poll, Long> {
-    List<Poll> findAllByTeamIdAndHostId(Long teamId, Long memberId);
+    List<Poll> findAllByTeamId(Long teamId);
 
     Optional<Poll> findByIdAndTeamId(Long id, Long teamId);
 }

@@ -79,7 +79,7 @@ class PollServiceTest {
     void findPolls() {
         // given
         given(memberRepository.getById(anyLong())).willReturn(new Member(1L, "test-mail@email.com", "test-name"));
-        given(pollRepository.findAllByTeamIdAndHostId(anyLong(), anyLong()))
+        given(pollRepository.findAllByTeamId(anyLong()))
                 .willReturn(List.of(new Poll(
                                 1L,
                                 null,

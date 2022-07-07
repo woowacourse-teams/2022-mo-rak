@@ -61,7 +61,7 @@ class PollRepositoryTest {
         );
     }
 
-    @DisplayName("팀ID와 호스트ID로 투표 목록을 조회한다.")
+    @DisplayName("팀ID로 투표 목록을 조회한다.")
     @Test
     void findPollsByTeamIdAndHostId() {
         // given
@@ -69,7 +69,7 @@ class PollRepositoryTest {
         long teamId = 1L;
         long memberId = 1L;
         // when
-        List<Poll> polls = pollRepository.findAllByTeamIdAndHostId(teamId, memberId);
+        List<Poll> polls = pollRepository.findAllByTeamId(teamId);
 
         // then
         assertThat(polls).hasSize(1);

@@ -45,7 +45,7 @@ public class PollItem extends BaseEntity {
         this.subject = subject;
     }
 
-    public void addPullResult(Member member) {
+    public void addPollResult(Member member) {
         PollResult pollResult = new PollResult(null, this, member);
         pollResults.add(pollResult);
     }

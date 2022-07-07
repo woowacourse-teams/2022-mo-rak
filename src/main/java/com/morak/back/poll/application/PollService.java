@@ -45,7 +45,7 @@ public class PollService {
 
     public List<PollResponse> findPolls(Long teamId, Long memberId) {
         Member member = memberRepository.getById(memberId);
-        List<Poll> polls = pollRepository.findAllByTeamIdAndHostId(teamId, memberId);
+        List<Poll> polls = pollRepository.findAllByTeamId(teamId);
 
         return polls.stream()
                 .map(poll -> PollResponse.from(poll, member))

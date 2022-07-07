@@ -31,8 +31,4 @@ public class PollResult extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Member member;
-
-    public boolean checkPollItemBelongToPoll(Long pollId) {
-        return pollItem.getPoll().getId().equals(pollId);
-    }
 }
