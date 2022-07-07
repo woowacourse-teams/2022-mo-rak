@@ -1,13 +1,13 @@
 import { useTheme } from '@emotion/react';
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, ChangeEventHandler } from 'react';
 import Input from '../common/Input/Input';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   title: string;
-  handleTitle: React.ChangeEventHandler<HTMLInputElement>;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-function PollCreateFormTitle({ title, handleTitle }: Props) {
+function PollCreateFormTitleInput({ title, onChange }: Props) {
   const theme = useTheme();
 
   return (
@@ -19,10 +19,10 @@ function PollCreateFormTitle({ title, handleTitle }: Props) {
       color={theme.colors.BLACK_100}
       fontSize="3.2rem"
       textAlign="left"
-      onChange={handleTitle}
+      onChange={onChange}
       required
     />
   );
 }
 
-export default PollCreateFormTitle;
+export default PollCreateFormTitleInput;
