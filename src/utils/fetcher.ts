@@ -14,11 +14,20 @@ const fetcher = async ({ method, path, body = {}, token }: Props) => {
   const headers: Headers = { 'Content-Type': 'application/json' };
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  const response = await fetch(`${process.env.BASE_API_URL}${path}`, {
-    method,
-    body: JSON.stringify(body),
-    headers
-  });
+  // TODO: refactoring 필요
+  const config =
+    Object.keys(body).length === 0
+      ? {
+          method,
+          headers
+        }
+      : {
+          method,
+          headers,
+          body: JSON.stringify(body)
+        };
+
+  const response = await fetch(`${process.env.BASE_API_URL}${path}`, config);
 
   if (!response.ok) {
     const errorMessage = await response.json();
