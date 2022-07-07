@@ -309,7 +309,7 @@ class PollServiceTest {
 
         given(memberRepository.findById(anyLong())).willReturn(
                 Optional.of(member));
-        given(pollRepository.findById(anyLong()))
+        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
                 .willReturn(Optional.of(new Poll(
                                 1L,
                                 new Team(1L, null, null),
@@ -324,7 +324,7 @@ class PollServiceTest {
                 );
 
         // when
-        pollService.deletePoll(1L, 1L);
+        pollService.deletePoll(1L, 1L, 1L);
 
         // then
         verify(pollRepository).deleteById(1L);
@@ -336,7 +336,7 @@ class PollServiceTest {
         // given
         given(memberRepository.findById(anyLong())).willReturn(
                 Optional.of(new Member(2L, "test-mail@email.com", "test-name")));
-        given(pollRepository.findById(anyLong()))
+        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
                 .willReturn(Optional.of(new Poll(
                                 1L,
                                 new Team(1L, null, null),
@@ -351,7 +351,32 @@ class PollServiceTest {
                 );
 
         // when & then
-        assertThatThrownBy(() -> pollService.deletePoll(2L, 1L))
+        assertThatThrownBy(() -> pollService.deletePoll(1L, 2L, 1L))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("투표를 종료한다.")
+    @Test
+    void closePoll() {
+        // given
+        Poll poll = new Poll(
+            1L,
+            new Team(1L, null, null),
+            new Member(1L, "test-mail@email.com", "test-name"),
+            "test-poll-title",
+            null,
+            null,
+            PollStatus.OPEN,
+            null,
+            null);
+        given(memberRepository.findById(anyLong()))
+            .willReturn(Optional.of(new Member(1L, "test-mail@email.com", "test-name")));
+        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
+            .willReturn(Optional.of(poll));
+        // when
+        pollService.closePoll(1L, 1L, 1L);
+
+        // then
+        assertThat(poll.getStatus()).isEqualTo(PollStatus.CLOSED);
     }
 }

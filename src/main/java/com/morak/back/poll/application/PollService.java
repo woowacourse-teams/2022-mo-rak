@@ -82,12 +82,19 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
-    public void deletePoll(Long memberId, Long id) {
-        Poll poll = pollRepository.findById(id).orElseThrow();
+    public void deletePoll(Long teamId, Long memberId, Long id) {
+        Poll poll = pollRepository.findByIdAndTeamId(id, teamId).orElseThrow();
         Member member = memberRepository.findById(memberId).orElseThrow();
 
         poll.validateHost(member);
 
         pollRepository.deleteById(id);
+    }
+
+    public void closePoll(Long teamId, Long memberId, Long id) {
+        Poll poll = pollRepository.findByIdAndTeamId(id, teamId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow();
+
+        poll.close(member);
     }
 }
