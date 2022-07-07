@@ -68,12 +68,13 @@ public class PollController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePoll(@PathVariable Long id) {
-        pollService.deletePoll(tempMemberId, id);
+        pollService.deletePoll(tempTeamId, tempMemberId, id);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/status")
-    public void closePoll(@PathVariable Long id) {
-
+    @PatchMapping("/{id}/close")
+    public ResponseEntity<Void> closePoll(@PathVariable Long id) {
+        pollService.closePoll(tempTeamId, tempMemberId, id);
+        return ResponseEntity.ok().build();
     }
 }
