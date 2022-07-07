@@ -7,6 +7,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 dotenv.config();
 
+// TODO: 절대경로 설정
 const config = {
   entry: './src/index.tsx',
   output: {
@@ -15,7 +16,8 @@ const config = {
   devServer: {
     open: true,
     host: 'localhost',
-    port: 3000
+    port: 3000,
+    historyApiFallback: true
   },
   plugins: [
     new HtmlWebpackPlugin({ template: './public/index.html' }),
@@ -51,6 +53,7 @@ const config = {
   }
 };
 
+// TODO: 이것이 어디에 쓰일 것인지 생각해보기
 module.exports = () => {
   if (isProduction) {
     config.mode = 'production';
