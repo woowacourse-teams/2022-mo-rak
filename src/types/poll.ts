@@ -10,6 +10,13 @@ interface PollInterface {
   isHost: boolean;
 }
 
+interface PollResultInterface {
+  id: string;
+  count: number;
+  memebers: [];
+  subject: string;
+}
+
 // TODO: 네이밍
 type PollCreateType = Pick<
   PollInterface,
@@ -18,11 +25,12 @@ type PollCreateType = Pick<
 
 interface PollItemInterface {
   id: string;
+  count: number;
   subject: string;
 }
 
 type PollProgressType = {
-  [key: string]: Array<Pick<PollItemInterface, 'id'>>;
+  [key: string]: Array<PollItemInterface['id']>;
 };
 
-export { PollInterface, PollCreateType, PollItemInterface, PollProgressType };
+export { PollInterface, PollCreateType, PollItemInterface, PollProgressType, PollResultInterface };
