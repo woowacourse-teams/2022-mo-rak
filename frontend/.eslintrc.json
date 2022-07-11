@@ -1,0 +1,35 @@
+// TODO: eslint 설정 다시 하기
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:react/recommended", "airbnb"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".ts", ".tsx"]
+      }
+    }
+  },
+  "plugins": ["react", "@typescript-eslint", "@emotion"],
+  "rules": {
+    "react/jsx-filename-extension": ["off", { "extensions": [".tsx"] }],
+    "import/extensions": ["off", { "extensions": [".ts", ".tsx"] }],
+    "comma-dangle": ["error", "never"],
+    "no-use-before-define": "off",
+    "react/jsx-props-no-spreading": "off",
+    "object-curly-newline": "off",
+    "react/require-default-props": "off",
+    "implicit-arrow-linebreak": "off"
+  }
+}

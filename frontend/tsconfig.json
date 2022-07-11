@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "strict": true
+  },
+  // TODO: d.ts로 끝나는 파일들이 다 포함될 수 있도록 바꿔주자
+  // TODO: 왜 src/*로는 types 폴더를 참조해서 compile 않을까?
+  "include": ["./src/*", "src/types/*"]
+}
