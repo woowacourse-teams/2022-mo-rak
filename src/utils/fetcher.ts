@@ -31,12 +31,15 @@ const fetcher = async ({ method, path, body = {}, token }: Props) => {
 
   if (!response.ok) {
     const errorMessage = await response.json();
+
     throw Error(errorMessage);
   }
 
-  if (response.status === 201) return response;
+  if (response.headers.get('content-type') === 'application/json') {
+    return response.json();
+  }
 
-  return response.json();
+  return response;
 };
 
 export default fetcher;

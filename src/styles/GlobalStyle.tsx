@@ -3,6 +3,9 @@ import { Global, css } from '@emotion/react';
 import theme from './theme';
 
 const style = css`
+  @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -24,10 +27,12 @@ const style = css`
     vertical-align: baseline;
     box-sizing: border-box;
   }
-
+  
   html {
     font-size: 10px;
+    font-family: 'Jua', sans-serif;
   }
+
 
   article, aside, details, figcaption, figure, 
   footer, header, hgroup, menu, nav, section {
@@ -62,6 +67,7 @@ const style = css`
     border: none;
     background: transparent;
     cursor: pointer;
+    font: inherit;
   }
 
   input:focus {

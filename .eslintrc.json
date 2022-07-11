@@ -1,3 +1,4 @@
+// TODO: eslint 설정 다시 하기
 {
   "env": {
     "browser": true,
@@ -24,6 +25,11 @@
   "rules": {
     "react/jsx-filename-extension": ["off", { "extensions": [".tsx"] }],
     "import/extensions": ["off", { "extensions": [".ts", ".tsx"] }],
-    "comma-dangle": ["error", "never"]
+    "comma-dangle": ["error", "never"],
+    "no-use-before-define": "off",
+    "react/jsx-props-no-spreading": "off",
+    "object-curly-newline": "off",
+    "react/require-default-props": "off",
+    "implicit-arrow-linebreak": "off"
   }
 }

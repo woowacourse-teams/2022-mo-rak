@@ -29,9 +29,11 @@ function PollCreateFormInputGroup({ formInputs, setFormInputs }: Props) {
   };
 
   const handleDeleteInput = (targetIdx: number) => () => {
-    const newFormInputs = [...formInputs].filter((_, idx) => idx !== targetIdx);
+    if (window.confirm('해당 항목을 삭제하시겠습니까?')) {
+      const newFormInputs = [...formInputs].filter((_, idx) => idx !== targetIdx);
 
-    setFormInputs(newFormInputs);
+      setFormInputs(newFormInputs);
+    }
   };
 
   const handleChange = (targetIdx: number) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +70,7 @@ function PollCreateFormInputGroup({ formInputs, setFormInputs }: Props) {
         fontSize="2rem"
         height="4rem"
         onClick={handleAddInput}
-        type="submit"
+        type="button"
       >
         +
       </Button>

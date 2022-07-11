@@ -52,14 +52,15 @@ const StyledButton = styled.button<
   }
 >(
   ({ width, height, borderRadius, color, fontSize, variantStyle, disabled }) => `
-    ${variantStyle}
-    text-align: center;
-    border-radius: ${borderRadius || '15px'};
-    width: ${width || '100%'};
-    height: ${height};
-    color: ${color};
-    font-size: ${fontSize};
-    cursor: ${disabled && 'default'}
+  ${variantStyle}
+  position: relative;
+  text-align: center;
+  border-radius: ${borderRadius || '15px'};
+  width: ${width || '100%'};
+  height: ${height};
+  color: ${color};
+  font-size: ${fontSize};
+  cursor: ${disabled && 'default'}
   `
 );
 

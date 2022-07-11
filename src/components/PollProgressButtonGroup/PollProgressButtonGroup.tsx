@@ -22,6 +22,7 @@ function PollProgressButtonGroup({
         fontSize="0.8rem"
         colorScheme={theme.colors.PURPLE_100}
         disabled
+        type="button"
       >
         {isAnonymous ? '익명' : '기명'}
       </Button>
@@ -33,6 +34,7 @@ function PollProgressButtonGroup({
         fontSize="0.8rem"
         colorScheme={theme.colors.PURPLE_100}
         disabled
+        type="button"
       >
         {allowedPollCount === 1 ? '하나만 투표가능' : '여러개 투표가능'}
       </Button>

@@ -1,8 +1,16 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import Logo from '../../../assets/logo.svg';
+import FlexContainer from '../FlexContainer/FlexContainer';
 
 function Sidebar() {
-  return <Container>SIDEBAR🛠</Container>;
+  return (
+    <Container>
+      <FlexContainer alignItems="center" justifyContent="center">
+        <LogoStyled src={Logo} alt={Logo} />
+      </FlexContainer>
+    </Container>
+  );
 }
 
 const Container = styled.div(
@@ -15,5 +23,10 @@ const Container = styled.div(
   background: ${theme.colors.WHITE_100};
 `
 );
+
+const LogoStyled = styled.img`
+  width: 200px;
+  height: 100%;
+`;
 
 export default Sidebar;

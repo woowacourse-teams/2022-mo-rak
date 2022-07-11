@@ -3,6 +3,8 @@ import React, { InputHTMLAttributes, MouseEventHandler, CSSProperties } from 're
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 
+import Bin from '../../assets/bin.svg';
+
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   variant: 'outlined' | 'unstyled';
   colorScheme?: string;
@@ -30,7 +32,6 @@ const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
       return '';
   }
 };
-
 // TODO: padding: 0 3.2rem 자체를 넘겨주는 게 맞을까? 0 3.2rem만 넘겨줘야할까?, 조금 더 생각해보자!
 const getPaddingStyle = (icon: Props['icon']) => {
   if (icon) return 'padding: 0 3.2rem;';

@@ -11,6 +11,7 @@ function FlexContainer({ children, ...props }: Props & CSSProperties) {
 const Container = styled.div<CSSProperties>(
   ({ flexDirection, alignItems, justifyContent, gap }) => `
   display: flex;
+  height: 100%;
   flex-direction: ${flexDirection || 'row'};
   align-items: ${alignItems};
   justify-content: ${justifyContent};
