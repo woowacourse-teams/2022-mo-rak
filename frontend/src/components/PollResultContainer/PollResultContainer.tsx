@@ -1,8 +1,6 @@
-import { useTheme } from '@emotion/react';
 import React, { useEffect, useContext, useState } from 'react';
 
 import Box from '../common/Box/Box';
-import Button from '../common/Button/Button';
 import Divider from '../common/Divider/Divider';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
 import MarginContainer from '../common/MarginContainer/MarginContainer';
@@ -15,14 +13,12 @@ import { PollContextStore } from '../../contexts/PollContext';
 import { getPollInfo, getPollResult } from '../../api/poll';
 import { PollInterface, PollResultInterface } from '../../types/poll';
 import PollResultProgress from '../PollResultProgress/PollResultProgrss';
+import PollResultStatusButton from '../PollResultStatusButton/PollResultStatusButton';
 
 function PollResultContainer() {
-  const theme = useTheme();
   const [pollInfo, setPollInfo] = useState<PollInterface>();
   const [pollResult, setPollResult] = useState<Array<PollResultInterface>>();
   const pollContext = useContext(PollContextStore);
-
-  console.log(pollResult);
 
   useEffect(() => {
     const fetchPollInfo = async (pollId: PollInterface['id']) => {
@@ -59,16 +55,7 @@ function PollResultContainer() {
         <>
           <FlexContainer justifyContent="end">
             <MarginContainer margin="0 0 1.4rem 0">
-              <Button
-                variant="filled"
-                width="6.4rem"
-                height="4.4rem"
-                color={theme.colors.WHITE_100}
-                colorScheme={theme.colors.PURPLE_100}
-                disabled
-              >
-                {pollInfo.status === 'OPEN' ? '진행중' : '완료'}
-              </Button>
+              <PollResultStatusButton status={pollInfo.status} />
             </MarginContainer>
           </FlexContainer>
           <MarginContainer margin="0 0 1.5rem 0">
@@ -79,7 +66,7 @@ function PollResultContainer() {
             <PollResultProgress pollResult={pollResult} />
           </MarginContainer>
           <MarginContainer margin="1.4rem 0 1.5rem 0">
-            {/* TODO: PollProgressButtonGroup과 같음 (여긴 결과 페이지) */}
+            {/* TODO: PollProgressButtonGroup과 같음 (여긴 결과 페이지) -> 컴포넌트 분리 */}
             {/* TODO: PollInterface의 allowedPollCount type string 지우기(임시) */}
             <PollProgressButtonGroup
               isAnonymous={pollInfo.isAnonymous}
