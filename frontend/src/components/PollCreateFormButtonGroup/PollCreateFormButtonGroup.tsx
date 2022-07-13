@@ -5,9 +5,9 @@ import FlexContainer from '../common/FlexContainer/FlexContainer';
 
 interface Props {
   isAnonymous: boolean;
-  // TODO: FUnction에 대한 Type지정
-  handleAnonymous: Function;
-  handleMultiplePollCountAllowed: Function;
+  // TODO: type지정 개선
+  handleAnonymous: (annonymousStatus: boolean) => () => void;
+  handleMultiplePollCountAllowed: (isMultiplePollCountAllowedStatus: boolean) => () => void;
   isMultiplePollCountAllowed: boolean;
 }
 
