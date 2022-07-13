@@ -1,5 +1,7 @@
 package com.morak.back.auth.application;
 
+import com.morak.back.auth.exception.AuthorizationException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -31,5 +33,18 @@ public class JwtTokenProvider implements TokenProvider {
                 .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public String getPayload(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new AuthorizationException("유효하지 않은 토큰입니다.");
+        }
     }
 }
