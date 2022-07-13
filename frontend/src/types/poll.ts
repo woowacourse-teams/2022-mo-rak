@@ -1,5 +1,5 @@
 interface PollInterface {
-  id?: string;
+  id: number;
   title: string;
   allowedPollCount: number | string;
   isAnonymous: boolean;
@@ -11,7 +11,7 @@ interface PollInterface {
 }
 
 interface PollResultInterface {
-  id: string;
+  id: number;
   count: number;
   memebers: [];
   subject: string;
@@ -20,11 +20,11 @@ interface PollResultInterface {
 // TODO: 네이밍
 type PollCreateType = Pick<
   PollInterface,
-  'id' | 'title' | 'allowedPollCount' | 'isAnonymous' | 'closedAt'
+  'title' | 'allowedPollCount' | 'isAnonymous' | 'closedAt'
 > & { subjects: string[] };
 
 interface PollItemInterface {
-  id: string;
+  id: number;
   count: number;
   subject: string;
 }
