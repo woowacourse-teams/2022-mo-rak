@@ -1,5 +1,6 @@
 package com.morak.back.poll.ui;
 
+import com.morak.back.auth.support.Auth;
 import com.morak.back.poll.application.PollService;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemRequest;
@@ -70,8 +71,9 @@ public class PollController {
     }
 
     @PatchMapping("/{id}/close")
-    public ResponseEntity<Void> closePoll(@PathVariable Long id) {
-        pollService.closePoll(tempTeamId, tempMemberId, id);
+    public ResponseEntity<Void> closePoll(@Auth Long memberId,
+                                          @PathVariable Long id) {
+        pollService.closePoll(tempTeamId, memberId, id);
         return ResponseEntity.ok().build();
     }
 }
