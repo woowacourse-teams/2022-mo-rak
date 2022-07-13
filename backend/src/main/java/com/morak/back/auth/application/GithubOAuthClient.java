@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,15 +29,6 @@ public class GithubOAuthClient implements OAuthClient {
 
     @Override
     public OAuthAccessTokenResponse getAccessToken(String code) {
-        // TODO: 2022/07/13 불필요한 header 설정 제거
-//        HttpHeaders headers = new HttpHeaders();
-//        HttpEntity<OAuthAccessTokenRequest> request = new HttpEntity<>(
-//                new OAuthAccessTokenRequest(clientId, clientSecret, code),
-//                headers
-//        );
-//
-//        return restTemplate.postForObject(ACCESS_TOKEN_URL, request, OAuthAccessTokenResponse.class);
-
         return restTemplate.postForObject(
                 ACCESS_TOKEN_URL,
                 new OAuthAccessTokenRequest(clientId, clientSecret, code),
@@ -46,20 +36,17 @@ public class GithubOAuthClient implements OAuthClient {
         );
     }
 
-
     @Override
     public OAuthMemberInfoResponse getMemberInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
         HttpEntity<Void> request = new HttpEntity<>(headers);
 
-        ResponseEntity<OAuthMemberInfoResponse> response = restTemplate.exchange(
+        return restTemplate.exchange(
                 MEMBER_INFO_URL,
                 HttpMethod.GET,
                 request,
                 OAuthMemberInfoResponse.class
-        );
-
-        return response.getBody();
+        ).getBody();
     }
 }

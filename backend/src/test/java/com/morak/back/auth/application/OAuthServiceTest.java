@@ -9,7 +9,6 @@ import com.morak.back.auth.application.dto.OAuthAccessTokenResponse;
 import com.morak.back.auth.application.dto.OAuthMemberInfoResponse;
 import com.morak.back.auth.domain.Member2;
 import com.morak.back.auth.domain.Member2Repository;
-import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -46,7 +45,7 @@ class OAuthServiceTest {
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
 
         // when
-        SigninResponse response = oAuthService.signin(new SigninRequest(CODE));
+        SigninResponse response = oAuthService.signin(CODE);
 
         // then
         assertThat(response.getToken()).isEqualTo(ACCESS_TOKEN);
@@ -61,7 +60,7 @@ class OAuthServiceTest {
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
 
         // when
-        SigninResponse response = oAuthService.signin(new SigninRequest(CODE));
+        SigninResponse response = oAuthService.signin(CODE);
 
         // then
         assertThat(response.getToken()).isEqualTo(ACCESS_TOKEN);
