@@ -4,6 +4,7 @@ DROP TABLE poll IF EXISTS;
 DROP TABLE team_member IF EXISTS;
 DROP TABLE team IF EXISTS;
 DROP TABLE member IF EXISTS;
+DROP TABLE member2 IF EXISTS;
 
 CREATE TABLE member
 (
@@ -12,6 +13,17 @@ CREATE TABLE member
     `name`       varchar(255) NOT NULL,
     `created_at` datetime     NOT NULL,
     `updated_at` datetime     NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE member2
+(
+    `id`          bigint       NOT NULL AUTO_INCREMENT,
+    `oauth_id`    bigint       NOT NULL,
+    `name`        varchar(255) NOT NULL,
+    `profile_url` varchar(255),
+    `created_at`  datetime     NOT NULL,
+    `updated_at`  datetime     NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -41,7 +53,7 @@ CREATE TABLE `poll`
 (
     `id`                 bigint       NOT NULL AUTO_INCREMENT,
     `team_id`            bigint       NOT NULL,
-    `host_id`          bigint       NOT NULL,
+    `host_id`            bigint       NOT NULL,
     `title`              varchar(255) NOT NULL,
     `allowed_poll_count` int          NOT NULL,
     `is_anonymous`       boolean      NOT NULL,
