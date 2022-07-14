@@ -22,8 +22,6 @@ function PollResultContainer() {
   const [pollResult, setPollResult] = useState<Array<PollResultInterface>>();
   const pollContext = useContext(PollContextStore);
 
-  console.log(pollResult);
-
   useEffect(() => {
     const fetchPollInfo = async (pollId: PollInterface['id']) => {
       const res = await getPollInfo(pollId);
@@ -42,10 +40,6 @@ function PollResultContainer() {
         fetchPollInfo(pollId);
         fetchPollResult(pollId);
       }
-
-      // 임시
-      // fetchPollInfo('16');
-      // fetchPollResult('16');
 
       // TODO: pollid가 없을 때 메인 화면으로 보내주기!
     } catch (err) {

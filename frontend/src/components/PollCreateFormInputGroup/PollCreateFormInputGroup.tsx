@@ -1,8 +1,11 @@
 import React, { Dispatch, SetStateAction, MouseEvent, ChangeEvent } from 'react';
 
 import { useTheme } from '@emotion/react';
+
+import styled from '@emotion/styled';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
 import Input from '../common/Input/Input';
+import TextField from '../common/TextField/TextField';
 import Button from '../common/Button/Button';
 
 import Bin from '../../assets/bin.svg';
@@ -29,6 +32,7 @@ function PollCreateFormInputGroup({ formInputs, setFormInputs }: Props) {
   };
 
   const handleDeleteInput = (targetIdx: number) => () => {
+    // TODO: 상수화
     if (window.confirm('해당 항목을 삭제하시겠습니까?')) {
       const newFormInputs = [...formInputs].filter((_, idx) => idx !== targetIdx);
 
@@ -47,21 +51,27 @@ function PollCreateFormInputGroup({ formInputs, setFormInputs }: Props) {
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
       {formInputs.map((formInput, idx) => (
-        <Input
-          value={formInput}
-          color={theme.colors.BLACK_100}
-          colorScheme={theme.colors.PURPLE_100}
+        <TextField
+          variant="outlined"
           height="3.6rem"
           borderRadius="10px"
-          variant="outlined"
-          fontSize="1rem"
-          placeholder="선택항목을 입력해주세요!"
-          icon={Bin}
-          onChange={handleChange(idx)}
-          onClickIcon={handleDeleteInput(idx)}
-          id={formInput}
-          required
-        />
+          padding="0 10rem"
+          position="relative"
+          colorScheme={theme.colors.PURPLE_100}
+        >
+          <FlexContainer alignItems="center">
+            <Input
+              id={formInput}
+              value={formInput}
+              color={theme.colors.BLACK_100}
+              fontSize="1rem"
+              placeholder="선택항목을 입력해주세요!"
+              onChange={handleChange(idx)}
+              required
+            />
+            <DeleteIcon src={Bin} alt="bin" onClick={handleDeleteInput(idx)} />
+          </FlexContainer>
+        </TextField>
       ))}
       <Button
         variant="filled"
@@ -79,3 +89,11 @@ function PollCreateFormInputGroup({ formInputs, setFormInputs }: Props) {
 }
 
 export default PollCreateFormInputGroup;
+
+const DeleteIcon = styled.img`
+  position: absolute;
+  right: 1rem;
+  cursor: pointer;
+`;
+
+// onClickIcon = { handleDeleteInput(idx); };
