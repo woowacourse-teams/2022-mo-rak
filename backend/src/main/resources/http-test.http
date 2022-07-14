@@ -1,0 +1,24 @@
+###
+POST http://localhost:8080/polls
+Content-Type: application/json
+
+{
+  "title" : "투표 제목",
+  "allowedPollCount" : 1,
+  "isAnonymous" : false,
+  "closedAt" : "2022-07-03T01:23:45",
+  "subjects" : ["항목1", "항목2"]
+}
+
+
+###
+GET http://localhost:8080/polls
+
+###
+PUT http://localhost:8080/polls/1
+Content-Type: application/json
+
+[2,3]
+
+###
+GET http://localhost:8080/polls/1

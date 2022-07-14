@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: test
+  sql:
+    init:
+      mode: always
+
+---
+
+spring:
+  jpa:
+    defer-datasource-initialization: true
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:~/morak-test;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+  h2:
+    console:
+      enabled: true
+logging:
+  level:
+    org.hibernate.type: trace
