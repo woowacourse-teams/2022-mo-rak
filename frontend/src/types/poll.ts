@@ -11,10 +11,16 @@ interface PollInterface {
 }
 
 interface PollResultInterface {
-  id: string;
+  id: number;
   count: number;
-  memebers: [];
+  members: [];
   subject: string;
+}
+
+interface PollMembersInterface {
+  id: number;
+  name: string;
+  profileUrl: string;
 }
 
 // TODO: 네이밍
@@ -33,4 +39,11 @@ type PollProgressType = {
   [key: string]: Array<PollItemInterface['id']>;
 };
 
-export { PollInterface, PollCreateType, PollItemInterface, PollProgressType, PollResultInterface };
+export {
+  PollInterface,
+  PollCreateType,
+  PollItemInterface,
+  PollProgressType,
+  PollResultInterface,
+  PollMembersInterface
+};
