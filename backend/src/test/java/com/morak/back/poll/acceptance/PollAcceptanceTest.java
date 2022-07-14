@@ -3,6 +3,7 @@ package com.morak.back.poll.acceptance;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
+import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
@@ -16,10 +17,16 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 class PollAcceptanceTest extends AcceptanceTest {
+
+    private static final String INVALID_ACCESS_TOKEN = "invalid.access.token";
+
+    @Autowired
+    private TokenProvider tokenProvider;
 
     @DisplayName("투표를 생성한다.")
     @Test
@@ -224,17 +231,44 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void closePoll() {
         // given
+        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
+
         PollCreateRequest request = new PollCreateRequest("투표 제목", 2, false, LocalDateTime.now(),
                 List.of("항목1", "항목2", "항목3"));
         String location = RestAssured.given().log().all()
                 .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/polls")
                 .then().log().all().extract().header("Location");
+
         // when
         ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
                 .patch(location + "/close")
                 .then().log().all().extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    void 인증되지않은_사용자가_투표마감시_403을_응답한다() {
+        // given
+        PollCreateRequest request = new PollCreateRequest("투표 제목", 2, false, LocalDateTime.now(),
+                List.of("항목1", "항목2", "항목3"));
+        String location = RestAssured.given().log().all()
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/polls")
+                .then().log().all().extract().header("Location");
+
+        // when
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .header("Authorization", "Bearer " + INVALID_ACCESS_TOKEN)
+                .patch(location + "/close")
+                .then().log().all().extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    private String 로그인을_해_토큰을_발급받는다(Long id) {
+        return tokenProvider.createToken(String.valueOf(id));
     }
 }

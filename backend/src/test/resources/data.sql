@@ -1,3 +1,6 @@
+INSERT INTO member2 (oauth_id, name, profile_url, created_at, updated_at)
+values (45311765, 'RIANAEH', 'https://avatars.githubusercontent.com/u/45311765?v=4',now(), now());
+
 INSERT INTO member (email, name, created_at, updated_at)
 values ('test-mail-1@email.com', 'test-name1', now(), now());
 INSERT INTO member (email, name, created_at, updated_at)
