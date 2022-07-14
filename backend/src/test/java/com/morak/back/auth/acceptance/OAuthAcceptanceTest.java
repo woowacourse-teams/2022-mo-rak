@@ -3,11 +3,13 @@ package com.morak.back.auth.acceptance;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
+import com.morak.back.auth.ui.dto.SigninRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 public class OAuthAcceptanceTest extends AcceptanceTest {
 
@@ -18,8 +20,9 @@ public class OAuthAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .param("code", code)
-                .get("/auth/callback")
+                .body(new SigninRequest(code))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .post("/auth/signin")
                 .then().log().all().extract();
 
         // then

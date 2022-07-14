@@ -5,6 +5,7 @@ import com.morak.back.auth.application.dto.OAuthMemberInfoResponse;
 import com.morak.back.auth.domain.Member2;
 import com.morak.back.auth.domain.Member2Repository;
 import com.morak.back.auth.exception.AuthorizationException;
+import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +27,8 @@ public class OAuthService {
         this.tokenProvider = tokenProvider;
     }
 
-    public SigninResponse signin(String code) {
-        OAuthMemberInfoResponse memberResponse = getOAuthMemberInfo(code);
+    public SigninResponse signin(SigninRequest request) {
+        OAuthMemberInfoResponse memberResponse = getOAuthMemberInfo(request.getCode());
 
         Member2 member = findOrSaveMember(memberResponse);
 

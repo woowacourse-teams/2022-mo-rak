@@ -1,13 +1,13 @@
 package com.morak.back.auth.ui;
 
 import com.morak.back.auth.application.OAuthService;
+import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class OAuthController {
@@ -23,14 +23,8 @@ public class OAuthController {
         this.clientId = clientId;
     }
 
-    @GetMapping("/auth/signin")
-    public String redirectToSignin(RedirectAttributes redirectAttributes) {
-        redirectAttributes.addAttribute("client_id", clientId);
-        return "redirect:" + GITHUB_LOGIN_URL;
-    }
-
-    @GetMapping("/auth/callback")
-    public ResponseEntity<SigninResponse> signin(@RequestParam String code) {
-        return ResponseEntity.ok(oAuthService.signin(code));
+    @PostMapping("/auth/signin")
+    public ResponseEntity<SigninResponse> signin(@RequestBody SigninRequest request) {
+        return ResponseEntity.ok(oAuthService.signin(request));
     }
 }
