@@ -39,10 +39,6 @@ function PollResultContainer() {
         fetchPollResult(pollId);
       }
 
-      // 임시
-      // fetchPollInfo('16');
-      // fetchPollResult('16');
-
       // TODO: pollid가 없을 때 메인 화면으로 보내주기!
     } catch (err) {
       alert(err);

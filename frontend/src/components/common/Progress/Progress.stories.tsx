@@ -1,15 +1,13 @@
 import React from 'react';
-
+import { Meta, Story } from '@storybook/react';
 import Progress from './Progress';
 
 export default {
   title: 'Reusable Components/Progress',
   component: Progress
-};
+} as Meta;
 
-function Template(args) {
-  return <Progress {...args} />;
-}
+const Template: Story = (args) => <Progress {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
