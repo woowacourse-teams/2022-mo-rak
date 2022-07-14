@@ -6,11 +6,14 @@ interface Props extends PropsWithChildren<InputHTMLAttributes<HTMLInputElement>>
   name: string;
 }
 
-function Radio({ id, name, children }: Props) {
+function Radio({ id, name, children, ...props }: Props) {
   return (
     <FlexContainer alignItems="center">
-      <StyledInput type="radio" id={id} name={name} />
-      <StyledLabel htmlFor={id}>{children}</StyledLabel>
+      <label htmlFor={id}>
+        <StyledInput type="radio" id={id} name={name} {...props} />
+        <span />
+        <StyledSpan>{children}</StyledSpan>
+      </label>
     </FlexContainer>
   );
 }
@@ -19,7 +22,7 @@ const StyledInput = styled.input`
   cursor: pointer;
 `;
 
-const StyledLabel = styled.label`
+const StyledSpan = styled.span`
   cursor: pointer;
   width: 100%;
   height: 100%;
