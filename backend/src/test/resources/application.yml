@@ -28,3 +28,15 @@ spring:
 logging:
   level:
     org.hibernate.type: trace
+
+---
+
+security:
+  jwt:
+    token:
+      secret-key: "123456789012345678901234567890123456"
+      expire-length: 3600000
+  oauth:
+    github:
+      client-id: "ellie"
+      client-secret: "goflWkd123"
