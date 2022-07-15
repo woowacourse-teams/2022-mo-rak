@@ -4,6 +4,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.domain.Team;
 import com.morak.back.auth.domain.TeamRepository;
+import com.morak.back.core.util.CodeGenerator;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
@@ -26,18 +27,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PollService {
 
+    private static final int CODE_LENGTH = 8;
+
     private final PollRepository pollRepository;
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
     private final PollItemRepository pollItemRepository;
 
-    private String tempCode = "ABCD";
-
     public Long createPoll(Long teamId, Long memberId, PollCreateRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         Team team = teamRepository.findById(teamId).orElseThrow(ResourceNotFoundException::new);
 
-        Poll savedPoll = pollRepository.save(request.toPoll(member, team, PollStatus.OPEN, tempCode));
+        Poll poll = request.toPoll(member, team, PollStatus.OPEN, CodeGenerator.createRandomCode(CODE_LENGTH));
+        Poll savedPoll = pollRepository.save(poll);
         List<PollItem> items = request.toPollItems(savedPoll);
         pollItemRepository.saveAll(items);
 
