@@ -1,6 +1,6 @@
 package com.morak.back.auth.application;
 
-import com.morak.back.auth.domain.Member2Repository;
+import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.AuthorizationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AuthService {
 
-    private final Member2Repository member2Repository;
+    private final MemberRepository member2Repository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthService(Member2Repository member2Repository,
+    public AuthService(MemberRepository member2Repository,
                        JwtTokenProvider jwtTokenProvider) {
         this.member2Repository = member2Repository;
         this.jwtTokenProvider = jwtTokenProvider;

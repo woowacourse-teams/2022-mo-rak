@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
-import com.morak.back.auth.domain.Member2Repository;
+import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.AuthorizationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +21,7 @@ class AuthServiceTest {
     private JwtTokenProvider jwtTokenProvider;
 
     @Mock
-    private Member2Repository member2Repository;
+    private MemberRepository member2Repository;
 
     @InjectMocks
     private AuthService authService;

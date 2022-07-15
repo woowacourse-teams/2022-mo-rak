@@ -20,24 +20,28 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    private String oauthId;
 
     private String name;
 
+    private String profileUrl;
+
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null)
+        }
+        if (o == null) {
             return false;
-        Member member = (Member)o;
-        return Objects.equals(getId(), member.getId()) && Objects.equals(getEmail(), member.getEmail())
-            && Objects.equals(getName(), member.getName());
+        }
+        Member member = (Member) o;
+        return Objects.equals(id, member.getId()) && Objects.equals(oauthId, member.getOauthId())
+                && Objects.equals(name, member.getName()) && Objects.equals(profileUrl, member.getProfileUrl());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getName());
+        return Objects.hash(id, oauthId, name, profileUrl);
     }
 }
 

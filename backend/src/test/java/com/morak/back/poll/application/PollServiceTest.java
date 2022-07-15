@@ -1,5 +1,7 @@
 package com.morak.back.poll.application;
 
+import static com.morak.back.poll.domain.PollStatus.CLOSED;
+import static com.morak.back.poll.domain.PollStatus.OPEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -17,7 +19,6 @@ import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollResult;
-import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.exception.InvalidRequestException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemRequest;
@@ -30,6 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -51,6 +53,12 @@ class PollServiceTest {
     private final PollService pollService;
     private Long tempMemberId = 1L;
     private Long tempTeamId = 1L;
+    private Member member;
+
+    @BeforeEach
+    void setup() {
+        member = new Member(1L, "12345678", "ellie", "ellie-profile");
+    }
 
     public PollServiceTest() {
         openMocks(this);
@@ -80,25 +88,27 @@ class PollServiceTest {
     @Test
     void findPolls() {
         // given
-        given(memberRepository.getById(anyLong())).willReturn(new Member(1L, "test-mail@email.com", "test-name"));
+        given(memberRepository.getById(anyLong())).willReturn(member);
         given(pollRepository.findAllByTeamId(anyLong()))
                 .willReturn(List.of(new Poll(
                                 1L,
                                 null,
-                                new Member(1L, "test-mail@email.com", "test-name"),
+                                member,
                                 null,
                                 null,
                                 null,
-                                PollStatus.CLOSED,
+                                OPEN,
                                 null,
                                 null)
                         )
                 );
+        
         // when
         List<PollResponse> polls = pollService.findPolls(1L, 1L);
+
         // then
         Assertions.assertAll(
-                () -> assertThat(polls).allMatch(response -> response.getStatus().equals("CLOSED")),
+                () -> assertThat(polls).allMatch(response -> response.getStatus().equals("OPEN")),
                 () -> assertThat(polls).allMatch(PollResponse::getIsHost)
         );
     }
@@ -107,26 +117,27 @@ class PollServiceTest {
     @Test
     void doPoll() {
         // given
-        Member member = new Member(1L, "test-mail@email.com", "test-name");
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         PollItem pollItem1 = new PollItem(1L, null, "sub1");
         PollItem pollItem2 = new PollItem(2L, null, "sub2");
         given(pollRepository.findById(anyLong())).willReturn(Optional.of(new Poll(
                         1L,
                         null,
-                        new Member(1L, "test-mail@email.com", "test-name"),
+                        member,
                         null,
                         2,
                         null,
-                        PollStatus.OPEN,
+                        OPEN,
                         null,
                         null,
                         List.of(pollItem1, pollItem2)
                 )
         ));
         given(pollItemRepository.findAllById(any())).willReturn(List.of(pollItem1, pollItem2));
+        
         // when
         pollService.doPoll(1L, 1L, new PollItemRequest(List.of(1L, 2L)));
+         
         // then
         Assertions.assertAll(
                 () -> assertThat(pollItem1.getPollResults()).hasSize(1),
@@ -138,7 +149,6 @@ class PollServiceTest {
     @Test
     void rePoll() {
         // given
-        Member member = new Member(1L, "test-mail@email.com", "test-name");
         PollResult pollResult1 = new PollResult(1L, null, member);
         PollResult pollResult2 = new PollResult(2L, null, member);
         PollItem pollItem1 = new PollItem(1L, null, "sub1", new ArrayList<>(List.of(pollResult1)));
@@ -149,19 +159,21 @@ class PollServiceTest {
         given(pollRepository.findById(anyLong())).willReturn(Optional.of(new Poll(
                         1L,
                         null,
-                        new Member(1L, "test-mail@email.com", "test-name"),
+                        member,
                         null,
                         2,
                         null,
-                        PollStatus.OPEN,
+                        OPEN,
                         null,
                         null,
                         Arrays.asList(pollItem1, pollItem2, pollItem3)
                 )
         ));
         given(pollItemRepository.findAllById(any())).willReturn(Arrays.asList(pollItem2, pollItem3));
+        
         // when
         pollService.doPoll(1L, 1L, new PollItemRequest(Arrays.asList(2L, 3L)));
+        
         // then
         Assertions.assertAll(
                 () -> assertThat(pollItem1.getPollResults()).hasSize(0),
@@ -174,23 +186,24 @@ class PollServiceTest {
     @Test
     void findPoll() {
         // given
-        given(memberRepository.findById(anyLong())).willReturn(
-                Optional.of(new Member(1L, "test-mail@email.com", "test-name")));
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
                 .willReturn(Optional.of(new Poll(
                                 1L,
                                 new Team(1L, null, null),
-                                new Member(1L, "test-mail@email.com", "test-name"),
+                                member,
                                 "test-poll-title",
                                 null,
                                 null,
-                                PollStatus.CLOSED,
+                                CLOSED,
                                 null,
                                 null)
                         )
                 );
+        
         // when
         PollResponse poll = pollService.findPoll(1L, 1L, 1L);
+        
         // then
         Assertions.assertAll(
                 () -> assertThat(poll.getTitle()).isEqualTo("test-poll-title"),
@@ -206,11 +219,11 @@ class PollServiceTest {
                 .willReturn(Optional.of(new Poll(
                         1L,
                         null,
-                        new Member(1L, "test-mail@email.com", "test-name"),
+                        member,
                         null,
                         null,
                         null,
-                        PollStatus.CLOSED,
+                        CLOSED,
                         null,
                         null,
                         List.of(new PollItem(1L, null, "항목1"), new PollItem(2L, null, "항목2"))))
@@ -230,19 +243,17 @@ class PollServiceTest {
     @Test
     void findPollResultsWithAnonymous() {
         // given
-        Member member = new Member(1L, "test-mail@email.com", "test-name");
-
         PollResult pollResult1 = new PollResult(1L, null, member);
         PollResult pollResult2 = new PollResult(2L, null, member);
 
         Poll poll = new Poll(
                 1L,
                 null,
-                new Member(1L, "test-mail@email.com", "test-name"),
+                member,
                 null,
                 null,
                 true,
-                PollStatus.CLOSED,
+                CLOSED,
                 null,
                 null);
         PollItem pollItem1 = new PollItem(1L, poll, "항목1", new ArrayList<>(List.of(pollResult1)));
@@ -268,19 +279,17 @@ class PollServiceTest {
     @Test
     void findPollResultsWithNotAnonymous() {
         // given
-        Member member = new Member(1L, "test-mail@email.com", "test-name");
-
         PollResult pollResult1 = new PollResult(1L, null, member);
         PollResult pollResult2 = new PollResult(2L, null, member);
 
         Poll poll = new Poll(
                 1L,
                 null,
-                new Member(1L, "test-mail@email.com", "test-name"),
+                member,
                 null,
                 null,
                 false,
-                PollStatus.CLOSED,
+                CLOSED,
                 null,
                 null);
         PollItem pollItem1 = new PollItem(1L, poll, "항목1", new ArrayList<>(List.of(pollResult1)));
@@ -306,8 +315,6 @@ class PollServiceTest {
     @Test
     public void deletePoll() {
         // given
-        Member member = new Member(1L, "test-mail@email.com", "test-name");
-
         given(memberRepository.findById(anyLong())).willReturn(
                 Optional.of(member));
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
@@ -318,7 +325,7 @@ class PollServiceTest {
                                 "test-poll-title",
                                 null,
                                 null,
-                                PollStatus.CLOSED,
+                                CLOSED,
                                 null,
                                 null)
                         )
@@ -335,17 +342,18 @@ class PollServiceTest {
     @Test
     public void deletePollByNotHost() {
         // given
+        Member notHostMember = new Member(2L, "87654321", "eden", "eden-profile.cloudfront.net");
         given(memberRepository.findById(anyLong())).willReturn(
-                Optional.of(new Member(2L, "test-mail@email.com", "test-name")));
+                Optional.of(notHostMember));
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
                 .willReturn(Optional.of(new Poll(
                                 1L,
                                 new Team(1L, null, null),
-                                new Member(1L, "test-mail@email.com", "test-name"),
+                                member,
                                 "test-poll-title",
                                 null,
                                 null,
-                                PollStatus.CLOSED,
+                                CLOSED,
                                 null,
                                 null)
                         )
@@ -363,21 +371,22 @@ class PollServiceTest {
         Poll poll = new Poll(
                 1L,
                 new Team(1L, null, null),
-                new Member(1L, "test-mail@email.com", "test-name"),
+                member,
                 "test-poll-title",
                 null,
                 null,
-                PollStatus.OPEN,
+                OPEN,
                 null,
                 null);
         given(memberRepository.findById(anyLong()))
-                .willReturn(Optional.of(new Member(1L, "test-mail@email.com", "test-name")));
+                .willReturn(Optional.of(member));
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
                 .willReturn(Optional.of(poll));
+
         // when
         pollService.closePoll(1L, 1L, 1L);
 
         // then
-        assertThat(poll.getStatus()).isEqualTo(PollStatus.CLOSED);
+        assertThat(poll.getStatus()).isEqualTo(CLOSED);
     }
 }

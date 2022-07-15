@@ -1,8 +1,11 @@
-INSERT INTO member (email, name, created_at, updated_at) values('test-mail-1@email.com', 'test-name1', now(), now());
-INSERT INTO member (email, name, created_at, updated_at) values('test-mail-2@email.com', 'test-name2', now(), now());
-INSERT INTO member (email, name, created_at, updated_at) values('test-mail-3@email.com', 'test-name3', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345678', 'eden', 'eden-profile.com', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('97533356', 'ellie', 'ellie-profile.com', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345679', 'bkr', 'bkr-profile.com', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345669', 'chalee', 'chalee-profile.com', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345668', 'albur', 'albur-profile.com', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345677', 'winnie', 'winnie-profile.com', now(), now());
 
-INSERT INTO team (name, code, created_at, updated_at) values('team-name-1', 'test-code-1', now(), now());
+INSERT INTO team (name, code, created_at, updated_at) values('morak', 'MoraK123', now(), now());
 
 INSERT INTO team_member (team_id, member_id, created_at, updated_at) values(1, 1, now(), now());
 INSERT INTO team_member (team_id, member_id, created_at, updated_at) values(1, 2, now(), now());
