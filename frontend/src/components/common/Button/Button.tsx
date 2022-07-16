@@ -30,6 +30,7 @@ interface Props extends PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement
 type VariantStyleProps = Pick<Props, 'colorScheme' | 'variant'>;
 
 // TODO: 리팩토링
+// 의미가 있나? 너무 props로 많이 받아오면, 그냥 만드는게 나을지도?
 function Button({
   children,
   colorScheme,
@@ -51,13 +52,13 @@ const StyledButton = styled.button<
     variantStyle: string;
   }
 >(
-  ({ width, height, borderRadius, color, fontSize, variantStyle, disabled }) => `
+  ({ width, padding, borderRadius, color, fontSize, variantStyle, disabled }) => `
   ${variantStyle}
   position: relative;
   text-align: center;
   border-radius: ${borderRadius || '15px'};
   width: ${width || '100%'};
-  height: ${height};
+  padding: ${padding || '1.2rem 0'};
   color: ${color};
   font-size: ${fontSize};
   cursor: ${disabled && 'default'}

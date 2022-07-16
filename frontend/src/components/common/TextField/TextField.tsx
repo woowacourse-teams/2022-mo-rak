@@ -62,13 +62,13 @@ const StyledContainer = styled.div<
     variantStyle: string;
   }
 >(
-  ({ width, height, borderRadius, variantStyle, position }) => `
-    ${variantStyle}
+  ({ width, borderRadius, variantStyle, position, padding }) => `
+    ${variantStyle};
     width: ${width || '100%'};
-    height: ${height}; 
     border-radius: ${borderRadius};
     overflow: hidden;
-    position: ${position}
+    position: ${position};
+    padding: ${padding};
   `
 );
 

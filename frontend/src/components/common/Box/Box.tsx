@@ -10,10 +10,9 @@ function Box({ children, ...props }: Props & CSSProperties) {
 }
 
 const StyledBox = styled.div<CSSProperties>(
-  ({ theme, width, height, borderRadius, padding, minHeight }) => `
+  ({ theme, width, borderRadius, padding, minHeight }) => `
     width: ${width};
-    height: ${height};
-    min-height: ${minHeight};
+    min-height: ${minHeight || '65.2rem'};
     border-radius: ${borderRadius || '15px'};
     box-shadow: 0px 4px 4px ${theme.colors.TRANSPARENT_BLACK_25};
     background-color: ${theme.colors.WHITE_100};
