@@ -9,6 +9,8 @@ import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
+import com.morak.back.poll.domain.PollResult;
+import com.morak.back.poll.domain.PollResultRepository;
 import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.exception.ResourceNotFoundException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
@@ -16,7 +18,10 @@ import com.morak.back.poll.ui.dto.PollItemRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,6 +38,8 @@ public class PollService {
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
     private final PollItemRepository pollItemRepository;
+
+    private final PollResultRepository pollResultRepository;
 
     public Long createPoll(Long teamId, Long memberId, PollCreateRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
@@ -55,11 +62,39 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
-    public void doPoll(Long tempMemberId, Long pollId, PollItemRequest pollItemRequest) {
+    public void doPoll(Long tempMemberId, Long pollId, List<PollItemRequest> requests) {
         Member member = memberRepository.findById(tempMemberId).orElseThrow(ResourceNotFoundException::new);
         Poll poll = pollRepository.findById(pollId).orElseThrow(ResourceNotFoundException::new);
-        List<PollItem> items = pollItemRepository.findAllById(pollItemRequest.getItemIds());
-        poll.doPoll(items, member);
+
+        Map<PollItem, PollResult> map = new HashMap<>();
+
+        for (PollItemRequest request : requests) {
+            PollItem pollItem = pollItemRepository.findById(request.getItemId()).orElseThrow(ResourceNotFoundException::new);
+            map.put(pollItem, new PollResult(null, pollItem, member, request.getDescription()));
+        }
+
+//        List<Long> newItemIds = requests.stream()
+//                .map(PollItemRequest::getItemId)
+//                .collect(Collectors.toList());
+//        List<PollItem> newItems = pollItemRepository.findAllById(newItemIds);
+
+//        Map<PollItem, String> results = new HashMap<>();
+//        for (PollItemRequest request : requests) {
+//            results.put(newItems.stream()
+//                    .anyMatch(item -> item.getId().equals(request.getItemId())), request.getDescription())
+//        }
+
+        poll.validateDoPoll(new ArrayList<>(map.keySet()), member);
+
+        기존의_것_삭제(member, poll);
+
+        pollResultRepository.saveAll(map.values());
+    }
+
+    private void 기존의_것_삭제(Member member, Poll poll) {
+        for (PollItem pollItem : poll.getPollItems()) {
+            pollItem.deletePollResultIfPollMember(member);
+        }
     }
 
     public PollResponse findPoll(Long teamId, Long memberId, Long pollId) {
@@ -71,7 +106,7 @@ public class PollService {
     }
 
     public List<PollItemResponse> findPollItems(Long teamId, Long pollId) {
-        //TODO: 멤버 확인해야돼!!
+        // TODO: 멤버 확인해야돼!!
         Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
         return poll.getPollItems()
                 .stream()

@@ -29,4 +29,10 @@ public class PollResult extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Member member;
+
+    private String description;
+
+    public PollResult fromAnonymous() {
+        return new PollResult(id, pollItem, new Member(), description);
+    }
 }

@@ -38,8 +38,8 @@ public class PollController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> doPoll(@Auth Long memberId, @PathVariable Long id,
-                                       @Valid @RequestBody PollItemRequest pollItemRequest) {
-        pollService.doPoll(memberId, id, pollItemRequest);
+                                       @Valid @RequestBody List<PollItemRequest> requests) {
+        pollService.doPoll(memberId, id, requests);
         return ResponseEntity.ok().build();
     }
 

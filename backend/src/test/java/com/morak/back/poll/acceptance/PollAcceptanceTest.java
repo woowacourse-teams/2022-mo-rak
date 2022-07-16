@@ -75,10 +75,10 @@ class PollAcceptanceTest extends AcceptanceTest {
                 List.of("항목1", "항목2"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, createRequest);
 
-        PollItemRequest pollItemRequest = new PollItemRequest(List.of(4L));
+        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이 나기 때문이에요"));
 
         // when
-        ExtractableResponse<Response> response = 투표를_진행한다(accessToken, location, pollItemRequest);
+        ExtractableResponse<Response> response = 투표를_진행한다(accessToken, location, pollItemRequests);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -94,13 +94,13 @@ class PollAcceptanceTest extends AcceptanceTest {
                 List.of("항목1", "항목2"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, createRequest);
 
-        PollItemRequest pollItemRequest = new PollItemRequest(List.of(4L));
-        투표를_진행한다(accessToken, location, pollItemRequest);
+        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이 나기 때문이에요"));
+        투표를_진행한다(accessToken, location, pollItemRequests);
 
-        PollItemRequest rePollItemRequest = new PollItemRequest(List.of(5L));
+        List<PollItemRequest> rePollItemRequests = List.of(new PollItemRequest(5L, "다시 일어설거에요!"));
 
         // when
-        ExtractableResponse<Response> rePollResponse = 투표를_진행한다(accessToken, location, rePollItemRequest);
+        ExtractableResponse<Response> rePollResponse = 투표를_진행한다(accessToken, location, rePollItemRequests);
 
         // then
         assertThat(rePollResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -167,8 +167,8 @@ class PollAcceptanceTest extends AcceptanceTest {
                 List.of("항목1", "항목2", "항목3"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
 
-        PollItemRequest pollItemRequest = new PollItemRequest(List.of(4L, 5L));
-        투표를_진행한다(accessToken, location, pollItemRequest);
+        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이 나기 때문이에요"));
+        투표를_진행한다(accessToken, location, pollItemRequests);
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
@@ -181,8 +181,12 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(resultResponses).hasSize(3),
-                () -> assertThat(resultResponses.get(0).getMembers()).hasSize(0),
-                () -> assertThat(resultResponses.get(0).getCount()).isEqualTo(1)
+                () -> assertThat(resultResponses.get(0).getCount()).isEqualTo(1),
+                () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
+                () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
+                () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0),
+                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isNull(),
+                () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이 나기 때문이에요")
         );
     }
 
@@ -196,8 +200,8 @@ class PollAcceptanceTest extends AcceptanceTest {
                 List.of("항목1", "항목2", "항목3"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
 
-        PollItemRequest pollItemRequest = new PollItemRequest(List.of(4L, 5L));
-        투표를_진행한다(accessToken, location, pollItemRequest);
+        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이 나기 때문이에요"));
+        투표를_진행한다(accessToken, location, pollItemRequests);
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
@@ -212,7 +216,9 @@ class PollAcceptanceTest extends AcceptanceTest {
         Assertions.assertAll(
                 () -> assertThat(resultResponses).hasSize(3),
                 () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
-                () -> assertThat(resultResponses.get(1).getMembers()).hasSize(1),
+                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo("eden"),
+                () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이 나기 때문이에요"),
+                () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
                 () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0)
         );
     }
@@ -275,7 +281,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 투표를_진행한다(String accessToken, String location,
-                                                   PollItemRequest pollItemRequest) {
+                                                   List<PollItemRequest> pollItemRequest) {
         return RestAssured.given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .body(pollItemRequest)

@@ -69,11 +69,12 @@ CREATE TABLE `poll_item`
 
 CREATE TABLE poll_result
 (
-    `id`           bigint   NOT NULL AUTO_INCREMENT,
-    `poll_item_id` bigint   NOT NULL,
-    `member_id`    bigint   NOT NULL,
-    `created_at`   datetime NOT NULL,
-    `updated_at`   datetime NOT NULL,
+    `id`           bigint       NOT NULL AUTO_INCREMENT,
+    `poll_item_id` bigint       NOT NULL,
+    `member_id`    bigint       NOT NULL,
+    `description`  varchar(255) NOT NULL,
+    `created_at`   datetime     NOT NULL,
+    `updated_at`   datetime     NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (member_id) REFERENCES member (id),
     FOREIGN KEY (poll_item_id) REFERENCES poll_item (id)

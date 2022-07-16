@@ -70,12 +70,20 @@ public class Poll extends BaseEntity {
         pollItems.add(pollItem);
     }
 
+    // TODO: 2022/07/16 현재는 쓰지 않습니다.
     public void doPoll(List<PollItem> newItems, Member member) {
         validateStatus();
         validateCounts(newItems.size());
         validateNewItemsBelongsTo(newItems);
+
         deleteMembersFromPollItems(member);
         addMembersToPollItems(newItems, member);
+    }
+
+    public void validateDoPoll(List<PollItem> newItems, Member member) {
+        validateStatus();
+        validateCounts(newItems.size());
+        validateNewItemsBelongsTo(newItems);
     }
 
     private void validateStatus() {
@@ -98,7 +106,7 @@ public class Poll extends BaseEntity {
 
     private void deleteMembersFromPollItems(Member member) {
         for (PollItem pollItem : pollItems) {
-            pollItem.deleteIfPollMember(member);
+            pollItem.deletePollResultIfPollMember(member);
         }
     }
 

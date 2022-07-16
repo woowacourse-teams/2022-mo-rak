@@ -19,6 +19,7 @@ import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollResult;
+import com.morak.back.poll.domain.PollResultRepository;
 import com.morak.back.poll.exception.InvalidRequestException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemRequest;
@@ -50,6 +51,9 @@ class PollServiceTest {
     @Mock
     private PollItemRepository pollItemRepository;
 
+    @Mock
+    private PollResultRepository pollResultRepository;
+
     private final PollService pollService;
     private Long tempMemberId = 1L;
     private Long tempTeamId = 1L;
@@ -62,7 +66,8 @@ class PollServiceTest {
 
     public PollServiceTest() {
         openMocks(this);
-        this.pollService = new PollService(pollRepository, memberRepository, teamRepository, pollItemRepository);
+        this.pollService = new PollService(pollRepository, memberRepository, teamRepository, pollItemRepository,
+                pollResultRepository);
     }
 
     @DisplayName("투표를 생성한다.")
@@ -102,7 +107,7 @@ class PollServiceTest {
                                 null)
                         )
                 );
-        
+
         // when
         List<PollResponse> polls = pollService.findPolls(1L, 1L);
 
@@ -133,24 +138,31 @@ class PollServiceTest {
                         List.of(pollItem1, pollItem2)
                 )
         ));
-        given(pollItemRepository.findAllById(any())).willReturn(List.of(pollItem1, pollItem2));
-        
+        //
+        given(pollItemRepository.findById(1L)).willReturn(Optional.of(pollItem1));
+        given(pollItemRepository.findById(2L)).willReturn(Optional.of(pollItem2));
+//        given(pollItemRepository.findAllById(any())).willReturn(List.of(pollItem1, pollItem2));
+//        given(pollItemRepository.findAllById(any())).willReturn(new ArrayList<>(List.of(pollItem1, pollItem2)));
+
         // when
-        pollService.doPoll(1L, 1L, new PollItemRequest(List.of(1L, 2L)));
-         
+        pollService.doPoll(1L, 1L, List.of(new PollItemRequest(1L, "그냥뇨"), new PollItemRequest(2L, "")));
+
         // then
-        Assertions.assertAll(
-                () -> assertThat(pollItem1.getPollResults()).hasSize(1),
-                () -> assertThat(pollItem2.getPollResults()).hasSize(1)
-        );
+        verify(pollResultRepository).saveAll(any());
+
+        // TODO: 2022/07/16 외면하지말고 봐주세요. 주석한 이유는 도메인에다가 한 게 아니고 레포지토리로 바로 쏴서 그래요.
+//        Assertions.assertAll(
+//                () -> assertThat(pollItem1.getPollResults()).hasSize(1),
+//                () -> assertThat(pollItem2.getPollResults()).hasSize(1)
+//        );
     }
 
     @DisplayName("재투표를 진행한다.")
     @Test
     void rePoll() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member);
-        PollResult pollResult2 = new PollResult(2L, null, member);
+        PollResult pollResult1 = new PollResult(1L, null, member, "거의 다 한 것 같아요");
+        PollResult pollResult2 = new PollResult(2L, null, member, "집에 가고 싶어요!");
         PollItem pollItem1 = new PollItem(1L, null, "sub1", new ArrayList<>(List.of(pollResult1)));
         PollItem pollItem2 = new PollItem(2L, null, "sub2", new ArrayList<>(List.of(pollResult2)));
         PollItem pollItem3 = new PollItem(3L, null, "sub3");
@@ -169,16 +181,23 @@ class PollServiceTest {
                         Arrays.asList(pollItem1, pollItem2, pollItem3)
                 )
         ));
-        given(pollItemRepository.findAllById(any())).willReturn(Arrays.asList(pollItem2, pollItem3));
-        
+
+        given(pollItemRepository.findById(1L)).willReturn(Optional.of(pollItem1));
+        given(pollItemRepository.findById(2L)).willReturn(Optional.of(pollItem2));
+        given(pollItemRepository.findById(3L)).willReturn(Optional.of(pollItem3));
+//        given(pollItemRepository.findAllById(any())).willReturn(Arrays.asList(pollItem2, pollItem3));
+
         // when
-        pollService.doPoll(1L, 1L, new PollItemRequest(Arrays.asList(2L, 3L)));
-        
+        pollService.doPoll(1L, 1L, List.of(new PollItemRequest(2L, "그냥뇨"), new PollItemRequest(3L, "")));
+
         // then
+        verify(pollResultRepository).saveAll(any());
+
         Assertions.assertAll(
-                () -> assertThat(pollItem1.getPollResults()).hasSize(0),
-                () -> assertThat(pollItem2.getPollResults()).hasSize(1),
-                () -> assertThat(pollItem3.getPollResults()).hasSize(1)
+                () -> assertThat(pollItem1.getPollResults()).hasSize(0)
+                // TODO: 2022/07/16 외면하지말고 봐주세요. 주석한 이유는 도메인에다가 한 게 아니고 레포지토리로 바로 쏴서 그래요.
+//                () -> assertThat(pollItem2.getPollResults()).hasSize(1),
+//                () -> assertThat(pollItem3.getPollResults()).hasSize(1)
         );
     }
 
@@ -200,10 +219,10 @@ class PollServiceTest {
                                 null)
                         )
                 );
-        
+
         // when
         PollResponse poll = pollService.findPoll(1L, 1L, 1L);
-        
+
         // then
         Assertions.assertAll(
                 () -> assertThat(poll.getTitle()).isEqualTo("test-poll-title"),
@@ -243,8 +262,8 @@ class PollServiceTest {
     @Test
     void findPollResultsWithAnonymous() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member);
-        PollResult pollResult2 = new PollResult(2L, null, member);
+        PollResult pollResult1 = new PollResult(1L, null, member, "거의 다 한 것 같아요");
+        PollResult pollResult2 = new PollResult(2L, null, member, "집에 가고 싶어요!");
 
         Poll poll = new Poll(
                 1L,
@@ -261,8 +280,7 @@ class PollServiceTest {
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
-                .willReturn(Optional.of(poll)
-                );
+                .willReturn(Optional.of(poll));
 
         // when
         List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(1L, 1L);
@@ -270,17 +288,20 @@ class PollServiceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(pollItemResultResponses).hasSize(2),
-                () -> assertThat(pollItemResultResponses.get(0).getMembers()).hasSize(0),
-                () -> assertThat(pollItemResultResponses.get(0).getCount()).isEqualTo(1)
+                () -> assertThat(pollItemResultResponses.get(0).getCount()).isEqualTo(1),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers()).hasSize(1),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getName()).isNull(),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo(
+                        "거의 다 한 것 같아요")
         );
     }
 
-    @DisplayName("무기명 투표 결과를 조회한다.")
+    @DisplayName("기명 투표 결과를 조회한다.")
     @Test
     void findPollResultsWithNotAnonymous() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member);
-        PollResult pollResult2 = new PollResult(2L, null, member);
+        PollResult pollResult1 = new PollResult(1L, null, member, "거의 다 한 것 같아요");
+        PollResult pollResult2 = new PollResult(2L, null, member, "집에 가고 싶어요!");
 
         Poll poll = new Poll(
                 1L,

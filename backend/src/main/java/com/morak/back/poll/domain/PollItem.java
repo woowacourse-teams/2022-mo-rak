@@ -42,15 +42,26 @@ public class PollItem extends BaseEntity {
         this.subject = subject;
     }
 
+    // TODO: 2022/07/16 현재는 쓰지 않습니다.
     public void addPollResult(Member member) {
-        PollResult pollResult = new PollResult(null, this, member);
+        PollResult pollResult = new PollResult(null, this, member, "차리의 유산이에요");
         pollResults.add(pollResult);
     }
 
-    public void deleteIfPollMember(Member member) {
+    public void deletePollResultIfPollMember(Member member) {
         pollResults.removeIf(pollResult -> pollResult.getMember().equals(member));
     }
 
+    public List<PollResult> getResultsByAnonymous() {
+        if (poll.getIsAnonymous()) {
+            return pollResults.stream()
+                    .map(PollResult::fromAnonymous)
+                    .collect(Collectors.toList());
+        }
+        return pollResults;
+    }
+
+    // TODO: 2022/07/16 현재는 쓰지 않습니다.
     public List<Member> getMembersByAnonymous() {
         if (poll.getIsAnonymous()) {
             return new ArrayList<>();
