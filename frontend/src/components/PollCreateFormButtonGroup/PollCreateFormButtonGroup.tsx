@@ -2,20 +2,21 @@ import { useTheme } from '@emotion/react';
 import React from 'react';
 import Button from '../common/Button/Button';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
+import { PollInterface } from '../../types/poll';
 
 interface Props {
-  isAnonymous: boolean;
+  isAnonymous: PollInterface['isAnonymous'];
+  isAllowedMultiplePollCount: boolean;
   // TODO: type지정 개선
-  handleAnonymous: (annonymousStatus: boolean) => () => void;
-  handleMultiplePollCountAllowed: (isMultiplePollCountAllowedStatus: boolean) => () => void;
-  isMultiplePollCountAllowed: boolean;
+  handleAnonymous: (anonymousStatus: boolean) => () => void;
+  handleAllowedMultiplePollCount: (isAllowedMultiplePollCountStatus: boolean) => () => void;
 }
 
 function PollCreateFormButtonGroup({
   isAnonymous,
   handleAnonymous,
-  isMultiplePollCountAllowed,
-  handleMultiplePollCountAllowed
+  isAllowedMultiplePollCount,
+  handleAllowedMultiplePollCount
 }: Props) {
   const theme = useTheme();
 
@@ -24,7 +25,6 @@ function PollCreateFormButtonGroup({
       <FlexContainer gap="1.2rem">
         <Button
           width="6.4rem"
-          height="3.6rem"
           borderRadius="20px"
           variant="outlined"
           fontSize="0.8rem"
@@ -35,7 +35,6 @@ function PollCreateFormButtonGroup({
         </Button>
         <Button
           width="6.4rem"
-          height="3.6rem"
           borderRadius="20px"
           variant="outlined"
           fontSize="0.8rem"
@@ -49,23 +48,21 @@ function PollCreateFormButtonGroup({
       <FlexContainer gap="1.2rem">
         <Button
           width="9.2rem"
-          height="3.6rem"
           borderRadius="20px"
           variant="outlined"
           fontSize="0.8rem"
-          colorScheme={isMultiplePollCountAllowed ? theme.colors.GRAY_400 : theme.colors.PURPLE_100}
-          onClick={handleMultiplePollCountAllowed(false)}
+          colorScheme={isAllowedMultiplePollCount ? theme.colors.GRAY_400 : theme.colors.PURPLE_100}
+          onClick={handleAllowedMultiplePollCount(false)}
         >
           하나만 투표 가능
         </Button>
         <Button
           width="9.2rem"
-          height="3.6rem"
           borderRadius="20px"
           variant="outlined"
           fontSize="0.8rem"
-          colorScheme={isMultiplePollCountAllowed ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
-          onClick={handleMultiplePollCountAllowed(true)}
+          colorScheme={isAllowedMultiplePollCount ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
+          onClick={handleAllowedMultiplePollCount(true)}
         >
           여러개 투표 가능
         </Button>
