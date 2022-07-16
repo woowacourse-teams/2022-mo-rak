@@ -25,7 +25,7 @@ class OAuthServiceTest {
     private static final String ACCESS_TOKEN = "test-token";
 
     @Mock
-    private MemberRepository member2Repository;
+    private MemberRepository memberRepository;
 
     @Mock
     private OAuthClient oAuthClient;
@@ -41,8 +41,8 @@ class OAuthServiceTest {
         // given
         given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
         given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
-        given(member2Repository.findByOauthId(any())).willReturn(Optional.empty());
-        given(member2Repository.save(any())).willReturn(new Member(1L, null, null, null));
+        given(memberRepository.findByOauthId(any())).willReturn(Optional.empty());
+        given(memberRepository.save(any())).willReturn(new Member(1L, null, null, null));
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
 
         // when
@@ -57,7 +57,7 @@ class OAuthServiceTest {
         // given
         given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
         given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
-        given(member2Repository.findByOauthId(any())).willReturn(Optional.of(new Member(1L, null, null, null)));
+        given(memberRepository.findByOauthId(any())).willReturn(Optional.of(new Member(1L, null, null, null)));
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
 
         // when

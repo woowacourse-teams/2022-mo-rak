@@ -9,12 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AuthService {
 
-    private final MemberRepository member2Repository;
+    private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthService(MemberRepository member2Repository,
+    public AuthService(MemberRepository memberRepository,
                        JwtTokenProvider jwtTokenProvider) {
-        this.member2Repository = member2Repository;
+        this.memberRepository = memberRepository;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -23,7 +23,7 @@ public class AuthService {
     }
 
     public void validateMemberId(Long memberId) {
-        if (!member2Repository.existsById(memberId)) {
+        if (!memberRepository.existsById(memberId)) {
             throw new AuthorizationException("존재하지않는 멤버입니다.");
         }
     }

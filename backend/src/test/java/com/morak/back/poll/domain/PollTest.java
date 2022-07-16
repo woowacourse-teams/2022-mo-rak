@@ -43,7 +43,7 @@ class PollTest {
     @Test
     void doPoll() {
         // given
-        List<PollItem> pollItems = List.of(this.itemB, itemC);
+        List<PollItem> pollItems = List.of(itemB, itemC);
 
         // when
         poll.doPoll(pollItems, member);
