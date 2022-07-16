@@ -21,7 +21,7 @@ public class AuthConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(authService))
-                .addPathPatterns("/polls/**/close");
+                .addPathPatterns("/polls/**");
     }
 
     @Override
