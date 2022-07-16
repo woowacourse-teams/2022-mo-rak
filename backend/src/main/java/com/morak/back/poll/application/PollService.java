@@ -71,6 +71,7 @@ public class PollService {
     }
 
     public List<PollItemResponse> findPollItems(Long teamId, Long pollId) {
+        //TODO: 멤버 확인해야돼!!
         Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
         return poll.getPollItems()
                 .stream()
