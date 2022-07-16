@@ -1,10 +1,8 @@
 package com.morak.back.poll.ui.dto;
 
-import java.time.LocalDateTime;
-
 import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.domain.Poll;
-
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

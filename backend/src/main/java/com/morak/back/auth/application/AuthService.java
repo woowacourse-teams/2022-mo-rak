@@ -1,6 +1,6 @@
 package com.morak.back.auth.application;
 
-import com.morak.back.auth.domain.Member2Repository;
+import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.AuthorizationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,12 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AuthService {
 
-    private final Member2Repository member2Repository;
+    private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthService(Member2Repository member2Repository,
+    public AuthService(MemberRepository memberRepository,
                        JwtTokenProvider jwtTokenProvider) {
-        this.member2Repository = member2Repository;
+        this.memberRepository = memberRepository;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -23,7 +23,7 @@ public class AuthService {
     }
 
     public void validateMemberId(Long memberId) {
-        if (!member2Repository.existsById(memberId)) {
+        if (!memberRepository.existsById(memberId)) {
             throw new AuthorizationException("존재하지않는 멤버입니다.");
         }
     }

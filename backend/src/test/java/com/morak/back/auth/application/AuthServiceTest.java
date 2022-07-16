@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
-import com.morak.back.auth.domain.Member2Repository;
+import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.AuthorizationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +21,7 @@ class AuthServiceTest {
     private JwtTokenProvider jwtTokenProvider;
 
     @Mock
-    private Member2Repository member2Repository;
+    private MemberRepository memberRepository;
 
     @InjectMocks
     private AuthService authService;
@@ -41,7 +41,7 @@ class AuthServiceTest {
     @Test
     public void 존재하지않는_memberId인_경우_예외를_던진다() {
         // given
-        given(member2Repository.existsById(anyLong())).willReturn(false);
+        given(memberRepository.existsById(anyLong())).willReturn(false);
 
         // when & then
         assertThatThrownBy(() -> authService.validateMemberId(1L))

@@ -7,8 +7,8 @@ import static org.mockito.BDDMockito.given;
 
 import com.morak.back.auth.application.dto.OAuthAccessTokenResponse;
 import com.morak.back.auth.application.dto.OAuthMemberInfoResponse;
-import com.morak.back.auth.domain.Member2;
-import com.morak.back.auth.domain.Member2Repository;
+import com.morak.back.auth.domain.Member;
+import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
 import java.util.Optional;
@@ -25,7 +25,7 @@ class OAuthServiceTest {
     private static final String ACCESS_TOKEN = "test-token";
 
     @Mock
-    private Member2Repository member2Repository;
+    private MemberRepository memberRepository;
 
     @Mock
     private OAuthClient oAuthClient;
@@ -41,8 +41,8 @@ class OAuthServiceTest {
         // given
         given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
         given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
-        given(member2Repository.findByOauthId(any())).willReturn(Optional.empty());
-        given(member2Repository.save(any())).willReturn(new Member2(1L, null, null, null));
+        given(memberRepository.findByOauthId(any())).willReturn(Optional.empty());
+        given(memberRepository.save(any())).willReturn(new Member(1L, null, null, null));
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
 
         // when
@@ -57,7 +57,7 @@ class OAuthServiceTest {
         // given
         given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
         given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
-        given(member2Repository.findByOauthId(any())).willReturn(Optional.of(new Member2(1L, null, null, null)));
+        given(memberRepository.findByOauthId(any())).willReturn(Optional.of(new Member(1L, null, null, null)));
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
 
         // when
