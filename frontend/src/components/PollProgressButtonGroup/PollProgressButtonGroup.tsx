@@ -6,35 +6,33 @@ import FlexContainer from '../common/FlexContainer/FlexContainer';
 
 import { PollInterface } from '../../types/poll';
 
+interface Props extends Pick<PollInterface, 'isAnonymous' | 'allowedPollCount'> {}
+
 function PollProgressButtonGroup({
   isAnonymous,
   allowedPollCount
-}: Pick<PollInterface, 'isAnonymous' | 'allowedPollCount'>) {
+}: Props) {
   const theme = useTheme();
 
   return (
     <FlexContainer gap="1.2rem">
       <Button
         width="6.4rem"
-        height="3.6rem"
         borderRadius="20px"
         variant="outlined"
         fontSize="0.8rem"
         colorScheme={theme.colors.PURPLE_100}
         disabled
-        type="button"
       >
         {isAnonymous ? '익명' : '기명'}
       </Button>
       <Button
         width="9.2rem"
-        height="3.6rem"
         borderRadius="20px"
         variant="outlined"
         fontSize="0.8rem"
         colorScheme={theme.colors.PURPLE_100}
         disabled
-        type="button"
       >
         {allowedPollCount === 1 ? '하나만 투표가능' : '여러개 투표가능'}
       </Button>

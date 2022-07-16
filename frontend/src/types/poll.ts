@@ -10,12 +10,21 @@ interface PollInterface {
   isHost: boolean;
 }
 
-interface PollResultInterface {
+interface PollItemInterface {
   id: number;
   count: number;
-  members: [];
   subject: string;
 }
+
+// TODO: 고민해보자...
+interface SelectedPollItemInterface {
+  itemId: PollItemInterface['id'];
+  description: string;
+}
+
+type PollItemResultType = PollItemInterface & {
+  members: [];
+};
 
 interface PollMembersInterface {
   id: number;
@@ -29,12 +38,6 @@ type PollCreateType = Pick<
   'title' | 'allowedPollCount' | 'isAnonymous' | 'closedAt'
 > & { subjects: string[] };
 
-interface PollItemInterface {
-  id: number;
-  count: number;
-  subject: string;
-}
-
 type PollProgressType = {
   [key: string]: Array<PollItemInterface['id']>;
 };
@@ -44,6 +47,7 @@ export {
   PollCreateType,
   PollItemInterface,
   PollProgressType,
-  PollResultInterface,
-  PollMembersInterface
+  PollItemResultType,
+  PollMembersInterface,
+  SelectedPollItemInterface
 };

@@ -7,28 +7,28 @@ import MarginContainer from '../common/MarginContainer/MarginContainer';
 import PollTitle from '../PollTitle/PollTitle';
 
 import PollProgressSubmitButton from '../PollProgressSubmitButton/PollProgressSubmitButton';
-import { getPollInfo, progressPoll } from '../../api/poll';
+import { getPoll, progressPoll } from '../../api/poll';
 import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGroup';
 import PollProgressButtonGroup from '../PollProgressButtonGroup/PollProgressButtonGroup';
-import { PollInterface, PollItemInterface } from '../../types/poll';
+import { PollInterface, SelectedPollItemInterface } from '../../types/poll';
 
 function PollProgressForm() {
   const navigate = useNavigate();
   // TODO: 기본 객체를 줘야할까? undefined로 놓는 것이 위험한가?
-  const [pollInfo, setPollInfo] = useState<PollInterface>();
-  const [selectedPollItems, setSelectedPollItems] = useState<Array<PollItemInterface['id']>>([]);
+  const [poll, setPoll] = useState<PollInterface>();
+  const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItemInterface>>([]);
 
   // TODO: 객체로 state로 관리하는 것에 단점이 분명히 있다. 리팩토링 필요
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      if (pollInfo) {
-        await progressPoll(pollInfo.id, { itemIds: selectedPollItems });
+      if (poll) {
+        await progressPoll(poll.id, selectedPollItems);
         navigate('/result');
       }
     } catch (err) {
-      console.log(err);
+      alert(err);
     }
   };
 
@@ -36,37 +36,54 @@ function PollProgressForm() {
   const handleSelectPollItem = (mode: string) => (e: ChangeEvent<HTMLInputElement>) => {
     const id = Number(e.target.id);
 
+    // 단일 선택
     if (mode === 'single') {
-      setSelectedPollItems([id]);
+      // 디스크립션창을 추가한다
+      setSelectedPollItems([{ itemId: id, description: '' }]);
 
       return;
     }
 
+    // 다중 선택
     if (e.target.checked) {
-      setSelectedPollItems([...selectedPollItems, id]);
+      setSelectedPollItems([...selectedPollItems, { itemId: id, description: '' }]);
 
       return;
     }
 
+    // 또 한번 눌렀을 때 (선택 취소)
     setSelectedPollItems(
-      [...selectedPollItems].filter((selectedPollItem) => selectedPollItem !== id)
+      [...selectedPollItems].filter((selectedPollItem) => selectedPollItem.itemId !== id)
     );
   };
 
+  const handleDescription = (pollId: PollInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
+    const newSelectedPollItems = [...selectedPollItems];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const newSelectedPollItem of newSelectedPollItems) {
+      if (newSelectedPollItem.itemId === pollId) {
+        newSelectedPollItem.description = e.target.value;
+
+        return;
+      }
+    }
+
+    setSelectedPollItems(newSelectedPollItems);
+  };
+
   useEffect(() => {
-    const fetchPollInfo = async (pollId: PollInterface['id']) => {
-      const res = await getPollInfo(pollId);
-      setPollInfo(res);
+    const fetchPoll = async (pollId: PollInterface['id']) => {
+      const res = await getPoll(pollId);
+      setPoll(res);
     };
 
     try {
       // const pollId = pollContext?.pollId;
 
       // if (pollId) {
-      //   fetchPollInfo(pollId);
+      //   fetchPoll(pollId);
       // }
-
-      fetchPollInfo(10);
+      fetchPoll(2);
 
       // TODO: pollid가 없을 때 메인 화면으로 보내주기!
     } catch (err) {
@@ -76,25 +93,26 @@ function PollProgressForm() {
 
   return (
     // TODO: 화면 작았다 켜지는 것 수정
-    <Box width="84.4rem" minHeight="65.2rem" padding="6.4rem 4.8rem">
-      {pollInfo ? (
+    <Box width="84.4rem" padding="6.4rem 4.8rem 5.4rem 4.8rem">
+      {poll ? (
         <form onSubmit={handleSubmit}>
           <MarginContainer margin="0 0 4rem 0">
-            <PollTitle title={pollInfo.title} />
+            <PollTitle title={poll.title} />
             <Divider />
           </MarginContainer>
           <MarginContainer margin="0 0 1.6rem 0">
             <PollProgressButtonGroup
-              isAnonymous={pollInfo.isAnonymous}
-              allowedPollCount={pollInfo.allowedPollCount}
+              isAnonymous={poll.isAnonymous}
+              allowedPollCount={poll.allowedPollCount}
             />
           </MarginContainer>
-          <MarginContainer margin="0 0 4rem 0">
+          <MarginContainer margin="0 0 8.4rem 0">
             <PollProgressItemGroup
-              pollId={pollInfo.id}
+              pollId={poll.id}
               selectedPollItems={selectedPollItems}
+              allowedPollCount={poll.allowedPollCount}
               handleSelectPollItem={handleSelectPollItem}
-              allowedPollCount={pollInfo.allowedPollCount}
+              handleDescription={handleDescription}
             />
           </MarginContainer>
           <PollProgressSubmitButton />
