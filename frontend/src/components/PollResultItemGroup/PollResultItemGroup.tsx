@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import Button from '../common/Button/Button';
-import { PollInterface, PollResultInterface } from '../../types/poll';
+import { PollInterface, PollItemResultType } from '../../types/poll';
 import { getPollResult } from '../../api/poll';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
 
@@ -18,8 +18,8 @@ interface Props {
 function PollResultItemGroup({ pollId }: Props) {
   const theme = useTheme();
   // [{"id":6,"count":1,"members":[],"subject":"a"},{"id":7,"count":0,"members":[],"subject":"b"}]
-  const [pollItems, setPollItems] = useState<Array<PollResultInterface>>();
-  const [clickedId, setClickedId] = useState(0);
+  const [pollItems, setPollItems] = useState<Array<PollItemResultType>>([]);
+  const [activePollItem, setActivePollItem] = useState(0); // TODO: 변수명 고민
 
   useEffect(() => {
     const fetchPollItems = async (pollId: PollInterface['id']) => {
@@ -37,28 +37,27 @@ function PollResultItemGroup({ pollId }: Props) {
     }
   }, []);
 
-  const handleShowParticipant = (pollId: number) => () => {
-    setClickedId(pollId);
+  const handleShowParticipant = (pollId: PollInterface['id']) => () => {
+    setActivePollItem(pollId);
   };
 
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
-      {pollItems?.map((pollItem) => (
+      {pollItems?.map(({ id, subject, count }) => (
         <Button
           variant="outlined"
-          height="3.6rem"
           fontSize="1.6rem"
           color={theme.colors.BLACK_100}
           colorScheme={theme.colors.PURPLE_100}
           disabled
         >
-          {pollItem.subject}
-          <StyledParticipantCount onClick={handleShowParticipant(pollItem.id)}>
+          {subject}
+          <StyledParticipantCount onClick={handleShowParticipant(id)}>
             <FlexContainer>
-              <StyledIcon src={UserPurple} alt={UserPurple} />
-              <span>{pollItem.count}</span>
+              <StyledUserIcon src={UserPurple} alt={UserPurple} />
+              <span>{count}</span>
             </FlexContainer>
-            {(clickedId === pollItem.id) ? <PollParticipantModal participants={[{ id: 1, name: '우영우', profileUrl: 'https://spnimage.edaily.co.kr/images/Photo/files/NP/S/2022/06/PS22062800115.jpg' }, { id: 2, name: '태연', profileUrl: 'https://cdnweb01.wikitree.co.kr/webdata/editor/202202/03/img_20220203152221_f00e3cfa.webp' }]} /> : ''}
+            {(activePollItem === id) ? <PollParticipantModal participants={[{ id: 1, name: '우영우', profileUrl: 'https://spnimage.edaily.co.kr/images/Photo/files/NP/S/2022/06/PS22062800115.jpg' }, { id: 2, name: '태연', profileUrl: 'https://cdnweb01.wikitree.co.kr/webdata/editor/202202/03/img_20220203152221_f00e3cfa.webp' }]} /> : ''}
           </StyledParticipantCount>
         </Button>
       ))}
@@ -73,8 +72,9 @@ const StyledParticipantCount = styled.div`
   cursor: pointer;
 `;
 
-const StyledIcon = styled.img`
+const StyledUserIcon = styled.img`
   width: 1.6rem;
   height: 1.6rem;
 `;
+
 export default PollResultItemGroup;

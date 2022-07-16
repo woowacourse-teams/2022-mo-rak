@@ -42,7 +42,7 @@ function PollResultButtonGroup({ pollId }: Props) {
         type="button"
         variant="filled"
         width="15.4rem"
-        height="6.4rem"
+        padding="2rem 0"
         fontSize="2rem"
         color={theme.colors.WHITE_100}
         colorScheme={theme.colors.GRAY_400}
@@ -54,7 +54,7 @@ function PollResultButtonGroup({ pollId }: Props) {
         type="button"
         variant="filled"
         width="15.4rem"
-        height="6.4rem"
+        padding="2rem 0"
         fontSize="2rem"
         color={theme.colors.WHITE_100}
         colorScheme={theme.colors.GRAY_400}
@@ -66,7 +66,7 @@ function PollResultButtonGroup({ pollId }: Props) {
         type="button"
         variant="filled"
         width="15.4rem"
-        height="6.4rem"
+        padding="2rem 0"
         fontSize="2rem"
         color={theme.colors.WHITE_100}
         colorScheme={theme.colors.PURPLE_100}

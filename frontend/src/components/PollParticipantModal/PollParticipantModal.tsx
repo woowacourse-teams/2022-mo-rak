@@ -8,25 +8,25 @@ interface Props {
 
 function PollParticipantModal({ participants }: Props) {
   return (
-    <StyledModalContainer>
-      {participants.map((participant) => (
+    <StyledContainer>
+      {participants.map(({ profileUrl, name, id }) => (
         <StyledUserProfile>
-          <StyledUserImage src={participant.profileUrl} />
-          <StyledUserName>{participant.name}</StyledUserName>
-          <div className="description">{participant.id}</div>
+          <StyledUserImage src={profileUrl} />
+          <StyledUserName>{name}</StyledUserName>
+          {/* TODO: 컴포넌트로 변경하기 */}
+          <div className="description">{id}</div>
         </StyledUserProfile>
       ))}
-    </StyledModalContainer>
+    </StyledContainer>
   );
 }
 
-const StyledModalContainer = styled.div(({ theme }) => `  
+const StyledContainer = styled.div(({ theme }) => `  
   display: flex;
-  flex-direction: 'row';
+  flex-direction: row;
   justify-content: center;
   gap: 4rem;
   width: 30rem; 
-  height: 9.2rem; 
   padding: 2rem;
   position: absolute;
   top: -17px;
@@ -38,15 +38,15 @@ const StyledModalContainer = styled.div(({ theme }) => `
 const StyledUserProfile = styled.div`
   width: 4.4rem;
   cursor: pointer;
+  position: relative;
   
   .description {
+    position: absolute;
     display: none;
     width: 10rem;
-    height: 4rem;
     padding: 1rem;
     text-align: center;
     border: 1px solid gray; // TODO: 임시 스타일
-
     background: white;
   }
 
@@ -59,12 +59,11 @@ const StyledUserImage = styled.img`
   width: 100%;
   height: 4.4rem; 
   border-radius: 100%;
-  margin-bottom: 4px;
+  margin-bottom: 0.4rem;
 `;
 
 const StyledUserName = styled.div`
   text-align: center;
-
 `;
 
 export default PollParticipantModal;
