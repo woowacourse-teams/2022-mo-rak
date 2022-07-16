@@ -25,7 +25,6 @@ const StyledInput = styled.input`
 const StyledSpan = styled.span`
   cursor: pointer;
   width: 100%;
-  height: 100%;
   font-size: 1.6rem;
   text-align: center;
 `;

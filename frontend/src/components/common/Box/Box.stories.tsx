@@ -12,6 +12,5 @@ const Template: Story = (args) => <Box {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   width: '84.4rem',
-  height: '65.2rem',
   borderRadius: '15px'
 };

@@ -8,10 +8,10 @@ function Progress({ ...props }: Props & CSSProperties) {
 }
 
 const StyledProgress = styled.progress<CSSProperties>(
-  ({ width, height, theme }) => `
+  ({ width, theme, padding }) => `
   accent-color: ${theme.colors.PURPLE_100};
   width: ${width};
-  height: ${height};
+  padding: ${padding || '0.8rem'};
 `
 );
 
