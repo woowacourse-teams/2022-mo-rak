@@ -1,8 +1,8 @@
 package com.morak.back.poll.domain;
 
+import com.morak.back.auth.domain.Member;
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -13,9 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import com.morak.back.auth.domain.Member;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
