@@ -3,6 +3,11 @@ package com.morak.back.team.application;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import com.morak.back.auth.domain.Member;
+import com.morak.back.auth.domain.MemberRepository;
+import com.morak.back.auth.domain.TeamMemberRepository;
+import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +25,12 @@ class TeamServiceTest {
     @Mock
     private TeamRepository teamRepository;
 
+    @Mock
+    private MemberRepository memberRepository;
+
+    @Mock
+    private TeamMemberRepository teamMemberRepository;
+
     @InjectMocks
     private TeamService teamService;
 
@@ -27,13 +38,22 @@ class TeamServiceTest {
     @Test
     void createTeam() {
         // given
-        given(teamRepository.save(any())).willReturn(new Team(1L, "test-team", "test-code"));
+        Long memberId = 1L;
+        given(teamRepository.save(any())).willReturn(new Team(1L, "test-team", "abCD1234"));
+        given(memberRepository.findById(anyLong()))
+                .willReturn(Optional.of(new Member(
+                        1L,
+                        "test-oauth-id",
+                        "test-name",
+                        "https://image-url.com"
+                )));
         TeamCreateRequest request = new TeamCreateRequest("test-team");
 
+
         // when
-        Long savedId = teamService.createTeam(request);
+        String code = teamService.createTeam(memberId, request);
 
         // then
-        assertThat(savedId).isEqualTo(1L);
+        assertThat(code).isEqualTo("abCD1234");
     }
 }
