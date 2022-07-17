@@ -68,4 +68,9 @@ public class TeamController {
         teamService.exitMemberInTeam(memberId, teamCode);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/default")
+    public ResponseEntity<TeamResponse> findDefaultGroup(@Auth Long memberId) {
+        return ResponseEntity.ok(teamService.findDefaultTeam(memberId));
+    }
 }

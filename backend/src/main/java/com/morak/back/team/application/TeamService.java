@@ -17,6 +17,7 @@ import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -68,6 +69,7 @@ public class TeamService {
         return savedTeamInvitation.getCode();
     }
 
+    @Transactional(readOnly = true)
     public InvitationJoinedResponse isJoined(Long memberId, String invitationCode) {
         TeamInvitation teamInvitation = teamInvitationRepository.findByCode(invitationCode).orElseThrow();
         validateNotExpired(teamInvitation);
@@ -95,14 +97,17 @@ public class TeamService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<TeamResponse> findTeams(Long memberId) {
         List<TeamMember> teamMembers = teamMemberRepository.findAllByMemberId(memberId);
         return teamMembers.stream()
+                .sorted(Comparator.comparingLong(TeamMember::getId))
                 .map(TeamMember::getTeam)
                 .map(TeamResponse::from)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<MemberResponse> findMembersInTeam(Long memberId, String teamCode) {
         Team team = teamRepository.findByCode(teamCode).orElseThrow();
         if (!teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId)) {
@@ -122,4 +127,17 @@ public class TeamService {
                 .orElseThrow(() -> new MismatchedTeamException("팀에 속해있지 않습니다."));
         teamMemberRepository.delete(teamMember);
     }
+
+    @Transactional(readOnly = true)
+    public TeamResponse findDefaultTeam(Long memberId) {
+        List<TeamMember> teamMembers = teamMemberRepository.findAllByMemberId(memberId);
+        return TeamResponse.from(findFirstTeamMember(teamMembers).getTeam());
+    }
+
+    private TeamMember findFirstTeamMember(List<TeamMember> teamMembers) {
+        return teamMembers.stream()
+                .min(Comparator.comparingLong(TeamMember::getId))
+                .orElseThrow(() -> new MismatchedTeamException("속해있는 팀이 없습니다."));
+    }
+
 }

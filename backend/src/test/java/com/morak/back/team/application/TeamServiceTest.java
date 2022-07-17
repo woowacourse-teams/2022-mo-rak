@@ -170,8 +170,8 @@ class TeamServiceTest {
         // given
         given(teamMemberRepository.findAllByMemberId(anyLong()))
                 .willReturn(List.of(
-                        new TeamMember(null, new Team(null, "team-A", "testcode"), null),
-                        new TeamMember(null, new Team(null, "team-B", "testcoed"), null)
+                        new TeamMember(1L, new Team(null, "team-A", "testcode"), null),
+                        new TeamMember(2L, new Team(null, "team-B", "testcoed"), null)
                 ));
 
         // when
@@ -260,6 +260,31 @@ class TeamServiceTest {
 
         // when & then
         assertThatThrownBy(() -> teamService.exitMemberInTeam(1L, "testcode"))
+                .isInstanceOf(MismatchedTeamException.class);
+    }
+
+    @DisplayName("디폴트 그룹을 찾는다.")
+    @Test
+    void findDefaultGroup() {
+        // given
+        given(teamMemberRepository.findAllByMemberId(anyLong()))
+                .willReturn(List.of(
+                        new TeamMember(1L, new Team(null, "team-A", "testcode"), null),
+                        new TeamMember(2L, new Team(null, "team-B", "testcoed"), null)
+                ));
+        // when
+        TeamResponse defaultTeamResponse = teamService.findDefaultTeam(1L);
+        // then
+        assertThat(defaultTeamResponse.getName()).isEqualTo("team-A");
+    }
+
+    @DisplayName("그룹에 속해있지 않은 경우 예외를 던진다")
+    @Test
+    void throwsExceptionWhenNotJoinedTeam() {
+        // given
+        given(teamMemberRepository.findAllByMemberId(anyLong())).willReturn(List.of());
+        // when & then
+        assertThatThrownBy(() -> teamService.findDefaultTeam(1L))
                 .isInstanceOf(MismatchedTeamException.class);
     }
 }
