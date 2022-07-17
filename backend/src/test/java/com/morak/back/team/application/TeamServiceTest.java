@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.anyLong;
 import static org.mockito.BDDMockito.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
@@ -25,6 +26,7 @@ import com.morak.back.team.ui.dto.TeamResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -183,8 +185,8 @@ class TeamServiceTest {
 
         given(teamRepository.findByCode(anyString()))
                 .willReturn(Optional.of(team));
-        given(memberRepository.findById(anyLong()))
-                .willReturn(Optional.of(member1));
+        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong()))
+                .willReturn(true);
         given(teamMemberRepository.findAllByTeamId(anyLong()))
                 .willReturn(List.of(teamMember1, teamMember2));
 
@@ -204,20 +206,46 @@ class TeamServiceTest {
     public void throwExceptionWhenNotJoinedTeam() {
         // given
         Team team = new Team(1L, "name", "testcode");
-        Member member1 = new Member(1L, null, "1", "123");
         Member member2 = new Member(2L, null, "2", "234");
-        TeamMember teamMember1 = new TeamMember(null, team, member1);
 
         given(teamRepository.findByCode(anyString()))
                 .willReturn(Optional.of(team));
-        given(memberRepository.findById(anyLong()))
-                .willReturn(Optional.of(member2));
-        given(teamMemberRepository.findAllByTeamId(anyLong()))
-                .willReturn(List.of(teamMember1));
+        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong()))
+                .willReturn(false);
 
         // when & then
         assertThatThrownBy(() -> teamService.findMembersInTeam(member2.getId(), "testcode"))
                 .isInstanceOf(MismatchedTeamException.class);
+    }
 
+    @DisplayName("멤버가 그룹에서 탈퇴한다.")
+    @Test
+    void exitMemberInTeam() {
+        // given
+        Team team = new Team(1L, "test-team", "testcode");
+        given(teamRepository.findByCode(anyString()))
+                .willReturn(Optional.of(team));
+        given(teamMemberRepository.findByTeamIdAndMemberId(anyLong(), anyLong()))
+                .willReturn(Optional.of(new TeamMember(1L, team, new Member(1L, "test-oauth", "test-member", "test-url"))));
+        // when
+        teamService.exitMemberInTeam(1L, "testcode");
+
+        // then
+        verify(teamMemberRepository).delete(any());
+    }
+
+    @DisplayName("속해있지 않은 그룹에서 탈퇴할시 예외를 던진다.")
+    @Test
+    void throwsExceptionWhenNotJoined() {
+        // given
+        Team team = new Team(1L, "test-team", "testcode");
+        given(teamRepository.findByCode(anyString()))
+                .willReturn(Optional.of(team));
+        given(teamMemberRepository.findByTeamIdAndMemberId(anyLong(), anyLong()))
+                .willThrow(MismatchedTeamException.class);
+
+        // when & then
+        assertThatThrownBy(() -> teamService.exitMemberInTeam(1L, "testcode"))
+                .isInstanceOf(MismatchedTeamException.class);
     }
 }

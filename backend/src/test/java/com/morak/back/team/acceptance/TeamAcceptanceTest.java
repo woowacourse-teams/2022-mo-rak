@@ -13,7 +13,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -244,5 +243,27 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                         tuple("eden", "eden-profile.com"),
                         tuple("ellie", "ellie-profile.com")
                 );
+    }
+
+    @DisplayName("그룹을 탈퇴한다.")
+    @Test
+    void exitTeam() {
+        // given
+        String memberToken = tokenProvider.createToken(String.valueOf(1L));
+        String teamLocation = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + memberToken)
+                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .then().log().all().extract().header("Location");
+        String teamCode = teamLocation.split("/")[2];
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + memberToken)
+                .delete("/groups/out/" + teamCode)
+                .then().log().all().extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }

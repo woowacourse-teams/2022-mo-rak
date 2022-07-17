@@ -17,7 +17,6 @@ import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -99,16 +98,21 @@ public class TeamService {
 
     public List<MemberResponse> findMembersInTeam(Long memberId, String teamCode) {
         Team team = teamRepository.findByCode(teamCode).orElseThrow();
-        Member member = memberRepository.findById(memberId).orElseThrow();
-        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(team.getId());
-        List<Member> members = teamMembers.stream()
-                .map(TeamMember::getMember)
-                .collect(Collectors.toList());
-        if (!members.contains(member)) {
+        if (!teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId)) {
             throw new MismatchedTeamException("팀에 속해있지 않습니다.");
         }
-        return members.stream()
+
+        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(team.getId());
+        return teamMembers.stream()
+                .map(TeamMember::getMember)
                 .map(MemberResponse::from)
                 .collect(Collectors.toList());
+    }
+
+    public void exitMemberInTeam(Long memberId, String teamCode) {
+        Team team = teamRepository.findByCode(teamCode).orElseThrow();
+        TeamMember teamMember = teamMemberRepository.findByTeamIdAndMemberId(team.getId(), memberId)
+                .orElseThrow(() -> new MismatchedTeamException("팀에 속해있지 않습니다."));
+        teamMemberRepository.delete(teamMember);
     }
 }
