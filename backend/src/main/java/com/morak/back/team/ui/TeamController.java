@@ -4,7 +4,9 @@ import com.morak.back.auth.support.Auth;
 import com.morak.back.team.application.TeamService;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
+import com.morak.back.team.ui.dto.TeamResponse;
 import java.net.URI;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -45,5 +47,11 @@ public class TeamController {
     public ResponseEntity<Void> joinTeam(@Auth Long memberId, @PathVariable String invitationCode) {
         String teamCode = teamService.join(memberId, invitationCode);
         return ResponseEntity.created(URI.create("/groups/" + teamCode)).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TeamResponse>> findTeams(@Auth Long memberId) {
+        List<TeamResponse> teamResponses = teamService.findTeams(memberId);
+        return ResponseEntity.ok(teamResponses);
     }
 }

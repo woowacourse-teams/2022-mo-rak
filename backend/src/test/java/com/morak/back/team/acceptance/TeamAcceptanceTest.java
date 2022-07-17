@@ -6,9 +6,11 @@ import com.morak.back.AcceptanceTest;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
+import com.morak.back.team.ui.dto.TeamResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -68,7 +70,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.header("Location")).startsWith("/groups/in")
         );
     }
-    
+
     @DisplayName("그룹에 참가한 멤버의 그룹 참가 여부를 확인한다.")
     @Test
     void isJoinedWithAlreadyJoined() {
@@ -163,5 +165,38 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 .header("Location");
 
         assertThat(location).startsWith("/groups/");
+    }
+
+    @DisplayName("그룹 목록을 조회한다.")
+    @Test
+    void findTeams() {
+        // given
+        String token = tokenProvider.createToken(String.valueOf(1L));
+        String teamALocation = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + token)
+                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .then().log().all().extract().header("Location");
+
+        String teamBLocation = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + token)
+                .body(new TeamCreateRequest("group-B")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .then().log().all().extract().header("Location");
+        // when
+
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + token)
+                .get("/groups")
+                .then().log().all().extract();
+        List<TeamResponse> teamResponses = response.jsonPath().getList(".", TeamResponse.class);
+        // then
+        Assertions.assertAll(
+                () -> assertThat(teamResponses).hasSize(3),
+                () -> assertThat(teamResponses.get(0).getName()).isEqualTo("morak"),
+                () -> assertThat(teamResponses.get(1).getName()).isEqualTo("group-A"),
+                () -> assertThat(teamResponses.get(2).getName()).isEqualTo("group-B")
+        );
     }
 }

@@ -13,7 +13,10 @@ import com.morak.back.team.exception.AlreadyJoinedTeamException;
 import com.morak.back.team.exception.MismatchedTeamException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
+import com.morak.back.team.ui.dto.TeamResponse;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,5 +85,13 @@ public class TeamService {
         teamMemberRepository.save(new TeamMember(null, team, member));
 
         return team.getCode();
+    }
+
+    public List<TeamResponse> findTeams(Long memberId) {
+        List<TeamMember> teamMembers = teamMemberRepository.findAllByMemberId(memberId);
+        return teamMembers.stream()
+                .map(TeamMember::getTeam)
+                .map(TeamResponse::from)
+                .collect(Collectors.toList());
     }
 }

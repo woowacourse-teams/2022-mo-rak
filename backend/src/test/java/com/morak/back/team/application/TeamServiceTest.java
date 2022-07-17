@@ -2,6 +2,7 @@ package com.morak.back.team.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.anyLong;
 import static org.mockito.BDDMockito.anyString;
@@ -10,6 +11,7 @@ import static org.mockito.BDDMockito.given;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.domain.Team;
+import com.morak.back.auth.domain.TeamMember;
 import com.morak.back.auth.domain.TeamMemberRepository;
 import com.morak.back.auth.domain.TeamRepository;
 import com.morak.back.team.domain.TeamInvitation;
@@ -17,7 +19,9 @@ import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.exception.AlreadyJoinedTeamException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
+import com.morak.back.team.ui.dto.TeamResponse;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -140,5 +144,29 @@ class TeamServiceTest {
         // when & then
         assertThatThrownBy(() -> teamService.join(1L, "invitecode"))
                 .isInstanceOf(AlreadyJoinedTeamException.class);
+    }
+
+    @DisplayName("그룹 목록을 조회한다")
+    @Test
+    void findTeams() {
+        // given
+        given(teamMemberRepository.findAllByMemberId(anyLong()))
+                .willReturn(List.of(
+                        new TeamMember(null, new Team(null, "team-A", "testcode"), null),
+                        new TeamMember(null, new Team(null, "team-B", "testcoed"), null)
+                ));
+
+        // when
+        List<TeamResponse> teamResponses = teamService.findTeams(1L);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(teamResponses).hasSize(2),
+                () -> assertThat(teamResponses).extracting("name", "code").containsExactly(
+                        tuple("team-A", "testcode"),
+                        tuple("team-B", "testcoed")
+                )
+        );
+
     }
 }
