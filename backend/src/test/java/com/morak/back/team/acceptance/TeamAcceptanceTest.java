@@ -1,9 +1,11 @@
 package com.morak.back.team.acceptance;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.auth.application.TokenProvider;
+import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
@@ -11,6 +13,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -198,5 +201,48 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(teamResponses.get(1).getName()).isEqualTo("group-A"),
                 () -> assertThat(teamResponses.get(2).getName()).isEqualTo("group-B")
         );
+    }
+
+    @DisplayName("그룹의 멤버들을 조회한다.")
+    @Test
+    void findMembers() {
+        // given
+        String member1Token = tokenProvider.createToken(String.valueOf(1L));
+        String member2Token = tokenProvider.createToken(String.valueOf(2L));
+
+        String teamLocation = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + member1Token)
+                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .then().log().all().extract().header("Location");
+
+        String invitationLocation = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + member1Token)
+                .post(teamLocation + "/invitation")
+                .then().log().all()
+                .extract().header("Location");
+
+        RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + member2Token)
+                .post(invitationLocation)
+                .then().log().all();
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + member1Token)
+                .get(teamLocation + "/members")
+                .then().log().all().extract();
+
+        List<MemberResponse> teamResponses = response.jsonPath().getList(".", MemberResponse.class);
+
+        // then
+        assertThat(teamResponses).extracting("name", "profileUrl")
+                .containsExactly(
+                        tuple("eden", "eden-profile.com"),
+                        tuple("ellie", "ellie-profile.com")
+                );
     }
 }

@@ -6,6 +6,7 @@ import com.morak.back.auth.domain.Team;
 import com.morak.back.auth.domain.TeamMember;
 import com.morak.back.auth.domain.TeamMemberRepository;
 import com.morak.back.auth.domain.TeamRepository;
+import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.core.util.CodeGenerator;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
@@ -16,6 +17,7 @@ import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -92,6 +94,21 @@ public class TeamService {
         return teamMembers.stream()
                 .map(TeamMember::getTeam)
                 .map(TeamResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    public List<MemberResponse> findMembersInTeam(Long memberId, String teamCode) {
+        Team team = teamRepository.findByCode(teamCode).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(team.getId());
+        List<Member> members = teamMembers.stream()
+                .map(TeamMember::getMember)
+                .collect(Collectors.toList());
+        if (!members.contains(member)) {
+            throw new MismatchedTeamException("팀에 속해있지 않습니다.");
+        }
+        return members.stream()
+                .map(MemberResponse::from)
                 .collect(Collectors.toList());
     }
 }

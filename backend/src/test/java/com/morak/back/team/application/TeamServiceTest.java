@@ -14,9 +14,11 @@ import com.morak.back.auth.domain.Team;
 import com.morak.back.auth.domain.TeamMember;
 import com.morak.back.auth.domain.TeamMemberRepository;
 import com.morak.back.auth.domain.TeamRepository;
+import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.exception.AlreadyJoinedTeamException;
+import com.morak.back.team.exception.MismatchedTeamException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
@@ -167,6 +169,55 @@ class TeamServiceTest {
                         tuple("team-B", "testcoed")
                 )
         );
+    }
+
+    @DisplayName("그룹에 속한 멤버 목록을 조회한다.")
+    @Test
+    public void findMembersInTeam() {
+        // given
+        Team team = new Team(1L, "name", "testcode");
+        Member member1 = new Member(1L, null, "1", "123");
+        Member member2 = new Member(2L, null, "2", "234");
+        TeamMember teamMember1 = new TeamMember(null, team, member1);
+        TeamMember teamMember2 = new TeamMember(null, team, member2);
+
+        given(teamRepository.findByCode(anyString()))
+                .willReturn(Optional.of(team));
+        given(memberRepository.findById(anyLong()))
+                .willReturn(Optional.of(member1));
+        given(teamMemberRepository.findAllByTeamId(anyLong()))
+                .willReturn(List.of(teamMember1, teamMember2));
+
+        // when
+        List<MemberResponse> memberResponses = teamService.findMembersInTeam(member1.getId(), "testcode");
+
+        // then
+        assertThat(memberResponses).extracting("id", "name", "profileUrl")
+                .containsExactly(
+                        tuple(member1.getId(), member1.getName(), member1.getProfileUrl()),
+                        tuple(member2.getId(), member2.getName(), member2.getProfileUrl())
+                );
+    }
+
+    @DisplayName("그룹의 멤버 목록 조회 시 참가한 그룹이 아니라면 예외를 던진다.")
+    @Test
+    public void throwExceptionWhenNotJoinedTeam() {
+        // given
+        Team team = new Team(1L, "name", "testcode");
+        Member member1 = new Member(1L, null, "1", "123");
+        Member member2 = new Member(2L, null, "2", "234");
+        TeamMember teamMember1 = new TeamMember(null, team, member1);
+
+        given(teamRepository.findByCode(anyString()))
+                .willReturn(Optional.of(team));
+        given(memberRepository.findById(anyLong()))
+                .willReturn(Optional.of(member2));
+        given(teamMemberRepository.findAllByTeamId(anyLong()))
+                .willReturn(List.of(teamMember1));
+
+        // when & then
+        assertThatThrownBy(() -> teamService.findMembersInTeam(member2.getId(), "testcode"))
+                .isInstanceOf(MismatchedTeamException.class);
 
     }
 }

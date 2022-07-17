@@ -1,6 +1,7 @@
 package com.morak.back.team.ui;
 
 import com.morak.back.auth.support.Auth;
+import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.team.application.TeamService;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
@@ -53,5 +54,11 @@ public class TeamController {
     public ResponseEntity<List<TeamResponse>> findTeams(@Auth Long memberId) {
         List<TeamResponse> teamResponses = teamService.findTeams(memberId);
         return ResponseEntity.ok(teamResponses);
+    }
+
+    @GetMapping("/{teamCode}/members")
+    public ResponseEntity<List<MemberResponse>> findMembersInTeam(@Auth Long memberId, @PathVariable String teamCode) {
+        List<MemberResponse> memberResponses = teamService.findMembersInTeam(memberId, teamCode);
+        return ResponseEntity.ok(memberResponses);
     }
 }
