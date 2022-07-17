@@ -49,8 +49,7 @@ function PollProgressItemGroup({
   }, []);
 
   const getIsSelectedPollItem = (pollId: number) => {
-    // eslint-disable-next-line no-restricted-syntax
-    // TODO: 배열의 내장메서드로 가능할듯? some, every 메서드
+    // TODO: 리팩터링 (메서드 찾아보기)
     for (const selectedPollItem of selectedPollItems) {
       if (selectedPollItem.itemId === pollId) {
         return true;

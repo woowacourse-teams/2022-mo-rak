@@ -35,8 +35,8 @@ function PollProgressForm() {
   // TODO: 두 가지 역할을 하는 걸까?
   const handleSelectPollItem = (mode: string) => (e: ChangeEvent<HTMLInputElement>) => {
     const id = Number(e.target.id);
+    const newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
 
-    // 단일 선택
     if (mode === 'single') {
       // 디스크립션창을 추가한다
       setSelectedPollItems([{ itemId: id, description: '' }]);
@@ -44,31 +44,31 @@ function PollProgressForm() {
       return;
     }
 
-    // 다중 선택
-    if (e.target.checked) {
-      setSelectedPollItems([...selectedPollItems, { itemId: id, description: '' }]);
+    if (mode === 'multiple' && e.target.checked) {
+      let newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
+
+      newSelectedPollItems = [...newSelectedPollItems, { itemId: id, description: '' }];
+      setSelectedPollItems(newSelectedPollItems);
 
       return;
     }
 
-    // 또 한번 눌렀을 때 (선택 취소)
     setSelectedPollItems(
-      [...selectedPollItems].filter((selectedPollItem) => selectedPollItem.itemId !== id)
+      [...newSelectedPollItems].filter((selectedPollItem) => selectedPollItem.itemId !== id)
     );
   };
 
   const handleDescription = (pollId: PollInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
-    const newSelectedPollItems = [...selectedPollItems];
-    // eslint-disable-next-line no-restricted-syntax
+    const newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
+
     for (const newSelectedPollItem of newSelectedPollItems) {
       if (newSelectedPollItem.itemId === pollId) {
         newSelectedPollItem.description = e.target.value;
+        setSelectedPollItems(newSelectedPollItems);
 
         return;
       }
     }
-
-    setSelectedPollItems(newSelectedPollItems);
   };
 
   useEffect(() => {
