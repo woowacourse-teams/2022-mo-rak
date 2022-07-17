@@ -29,4 +29,8 @@ public class TeamInvitation extends BaseEntity {
     private String code;
 
     private LocalDateTime expiredAt;
+
+    public boolean isExpired() {
+        return this.expiredAt.isBefore(LocalDateTime.now());
+    }
 }

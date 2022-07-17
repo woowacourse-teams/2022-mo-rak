@@ -19,6 +19,7 @@ import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.exception.AlreadyJoinedTeamException;
+import com.morak.back.team.exception.ExpiredInvitationException;
 import com.morak.back.team.exception.MismatchedTeamException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
@@ -103,7 +104,7 @@ class TeamServiceTest {
     void isJoined() {
         // given
         Team team = new Team(1L, "test-name", "testcode");
-        TeamInvitation teamInvitation = new TeamInvitation(1L, team, "inviteCode", LocalDateTime.now());
+        TeamInvitation teamInvitation = new TeamInvitation(1L, team, "inviteCode", LocalDateTime.now().plusMinutes(5));
         given(teamInvitationRepository.findByCode(anyString())).willReturn(Optional.of(teamInvitation));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
 
@@ -124,7 +125,7 @@ class TeamServiceTest {
         // given
         Team team = new Team(1L, "test-team", "testcode");
         given(teamInvitationRepository.findByCode(anyString())).willReturn(
-                Optional.of(new TeamInvitation(null, team, "invitecode", LocalDateTime.now())));
+                Optional.of(new TeamInvitation(null, team, "invitecode", LocalDateTime.now().plusSeconds(5))));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(false);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(new Member()));
         given(teamMemberRepository.save(any())).willReturn(any());
@@ -142,12 +143,25 @@ class TeamServiceTest {
         // given
         Team team = new Team(1L, "test-team", "testcode");
         given(teamInvitationRepository.findByCode(anyString())).willReturn(
-                Optional.of(new TeamInvitation(null, team, "invitecode", LocalDateTime.now())));
+                Optional.of(new TeamInvitation(null, team, "invitecode", LocalDateTime.now().plusMinutes(3))));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
 
         // when & then
         assertThatThrownBy(() -> teamService.join(1L, "invitecode"))
                 .isInstanceOf(AlreadyJoinedTeamException.class);
+    }
+
+    @DisplayName("초대코드가 만료된 경우 예외를 던진다.")
+    @Test
+    void throwsExceptionWithExpiredInvitationCode() {
+        // given
+        Team team = new Team(1L, "test-team", "testcode");
+        given(teamInvitationRepository.findByCode(anyString())).willReturn(
+                Optional.of(new TeamInvitation(null, team, "invitecode", LocalDateTime.now().minusMinutes(5))));
+
+        // when & then
+        assertThatThrownBy(() -> teamService.join(1L, "invitecode"))
+                .isInstanceOf(ExpiredInvitationException.class);
     }
 
     @DisplayName("그룹 목록을 조회한다")

@@ -11,6 +11,7 @@ import com.morak.back.core.util.CodeGenerator;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.exception.AlreadyJoinedTeamException;
+import com.morak.back.team.exception.ExpiredInvitationException;
 import com.morak.back.team.exception.MismatchedTeamException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
@@ -69,6 +70,7 @@ public class TeamService {
 
     public InvitationJoinedResponse isJoined(Long memberId, String invitationCode) {
         TeamInvitation teamInvitation = teamInvitationRepository.findByCode(invitationCode).orElseThrow();
+        validateNotExpired(teamInvitation);
         Team team = teamInvitation.getTeam();
         boolean isJoined = teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId);
         return new InvitationJoinedResponse(team.getCode(), team.getName(), isJoined);
@@ -76,16 +78,21 @@ public class TeamService {
 
     public String join(Long memberId, String invitationCode) {
         TeamInvitation teamInvitation = teamInvitationRepository.findByCode(invitationCode).orElseThrow();
+        validateNotExpired(teamInvitation);
         Team team = teamInvitation.getTeam();
         boolean isJoined = teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId);
         if (isJoined) {
             throw new AlreadyJoinedTeamException("팀에 이미 속해있습니다.");
         }
         Member member = memberRepository.findById(memberId).orElseThrow();
-
         teamMemberRepository.save(new TeamMember(null, team, member));
-
         return team.getCode();
+    }
+
+    private void validateNotExpired(TeamInvitation teamInvitation) {
+        if (teamInvitation.isExpired()) {
+            throw new ExpiredInvitationException("이미 만료된 초대 코드입니다.");
+        }
     }
 
     public List<TeamResponse> findTeams(Long memberId) {
