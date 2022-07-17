@@ -49,7 +49,7 @@ CREATE TABLE team_invitation
     `updated_at` datetime    NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (team_id) REFERENCES team (id)
-)
+);
 
 CREATE TABLE `poll`
 (

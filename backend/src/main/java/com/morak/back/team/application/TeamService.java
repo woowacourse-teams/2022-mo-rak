@@ -10,6 +10,7 @@ import com.morak.back.core.util.CodeGenerator;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.exception.TeamMismatchException;
+import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -59,5 +60,12 @@ public class TeamService {
         TeamInvitation savedTeamInvitation = teamInvitationRepository.save(teamInvitation);
 
         return savedTeamInvitation.getCode();
+    }
+
+    public InvitationJoinedResponse isJoined(Long memberId, String invitationCode) {
+        TeamInvitation teamInvitation = teamInvitationRepository.findByCode(invitationCode).orElseThrow();
+        Team team = teamInvitation.getTeam();
+        boolean isJoined = teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId);
+        return new InvitationJoinedResponse(team.getCode(), team.getName(), isJoined);
     }
 }

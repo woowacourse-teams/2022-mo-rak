@@ -13,9 +13,11 @@ import com.morak.back.auth.domain.TeamMemberRepository;
 import com.morak.back.auth.domain.TeamRepository;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
+import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -69,24 +71,41 @@ class TeamServiceTest {
     public void createInvitationCode() {
         // given
         Team team = new Team(1L, "test-name", "testcode");
-        given(teamRepository.findByCode(anyString()))
-                .willReturn(Optional.of(team));
-
-        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
-
         TeamInvitation teamInvitation = new TeamInvitation(
                 null,
                 team,
                 "ABCDE12345",
                 LocalDateTime.now()
         );
-
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
+        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(teamInvitationRepository.save(any())).willReturn(teamInvitation);
-        // when
 
+        // when
         String code = teamService.createInvitationCode(1L, team.getCode());
 
         // then
         assertThat(code).isEqualTo("ABCDE12345");
+    }
+
+    @DisplayName("그룹 참가 여부를 확인한다.")
+    @Test
+    void isJoined() {
+        // given
+        Team team = new Team(1L, "test-name", "testcode");
+        TeamInvitation teamInvitation = new TeamInvitation(1L, team, "inviteCode", LocalDateTime.now());
+        given(teamInvitationRepository.findByCode(anyString())).willReturn(Optional.of(teamInvitation));
+        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
+
+        // when
+        InvitationJoinedResponse invitationJoinedResponse = teamService.isJoined(1L, "inviteCode");
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(invitationJoinedResponse.getIsJoined()).isTrue(),
+                () -> assertThat(invitationJoinedResponse.getName()).isEqualTo("test-name"),
+                () -> assertThat(invitationJoinedResponse.getGroupCode()).isEqualTo("testcode")
+        );
+
     }
 }
