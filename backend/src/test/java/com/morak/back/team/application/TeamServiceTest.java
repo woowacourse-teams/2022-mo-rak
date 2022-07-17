@@ -1,23 +1,27 @@
 package com.morak.back.team.application;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.anyLong;
+import static org.mockito.BDDMockito.anyString;
+import static org.mockito.BDDMockito.given;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
+import com.morak.back.auth.domain.Team;
 import com.morak.back.auth.domain.TeamMemberRepository;
+import com.morak.back.auth.domain.TeamRepository;
+import com.morak.back.team.domain.TeamInvitation;
+import com.morak.back.team.domain.TeamInvitationRepository;
+import com.morak.back.team.ui.dto.TeamCreateRequest;
+import java.time.LocalDateTime;
 import java.util.Optional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import com.morak.back.auth.domain.Team;
-import com.morak.back.auth.domain.TeamRepository;
-import com.morak.back.team.ui.dto.TeamCreateRequest;
 
 @ExtendWith(MockitoExtension.class)
 class TeamServiceTest {
@@ -30,6 +34,10 @@ class TeamServiceTest {
 
     @Mock
     private TeamMemberRepository teamMemberRepository;
+
+    @Mock
+    private TeamInvitationRepository teamInvitationRepository;
+
 
     @InjectMocks
     private TeamService teamService;
@@ -49,11 +57,36 @@ class TeamServiceTest {
                 )));
         TeamCreateRequest request = new TeamCreateRequest("test-team");
 
-
         // when
         String code = teamService.createTeam(memberId, request);
 
         // then
         assertThat(code).isEqualTo("abCD1234");
+    }
+
+    @DisplayName("그룹 초대코드를 생성한다.")
+    @Test
+    public void createInvitationCode() {
+        // given
+        Team team = new Team(1L, "test-name", "testcode");
+        given(teamRepository.findByCode(anyString()))
+                .willReturn(Optional.of(team));
+
+        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
+
+        TeamInvitation teamInvitation = new TeamInvitation(
+                null,
+                team,
+                "ABCDE12345",
+                LocalDateTime.now()
+        );
+
+        given(teamInvitationRepository.save(any())).willReturn(teamInvitation);
+        // when
+
+        String code = teamService.createInvitationCode(1L, team.getCode());
+
+        // then
+        assertThat(code).isEqualTo("ABCDE12345");
     }
 }

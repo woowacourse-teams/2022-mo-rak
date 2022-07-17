@@ -2,6 +2,7 @@ DROP TABLE poll_result IF EXISTS;
 DROP TABLE poll_item IF EXISTS;
 DROP TABLE poll IF EXISTS;
 DROP TABLE team_member IF EXISTS;
+DROP TABLE team_invitation IF EXISTS;
 DROP TABLE team IF EXISTS;
 DROP TABLE member IF EXISTS;
 
@@ -37,6 +38,18 @@ CREATE TABLE team_member
     FOREIGN KEY (team_id) REFERENCES team (id),
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
+
+CREATE TABLE team_invitation
+(
+    `id`         bigint      NOT NULL AUTO_INCREMENT,
+    `team_id`    bigint      NOT NULL,
+    `code`       varchar(10) NOT NULL,
+    `expired_at` datetime    NOT NULL,
+    `created_at` datetime    NOT NULL,
+    `updated_at` datetime    NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (team_id) REFERENCES team (id)
+)
 
 CREATE TABLE `poll`
 (

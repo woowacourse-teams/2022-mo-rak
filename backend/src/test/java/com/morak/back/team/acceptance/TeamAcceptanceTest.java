@@ -8,6 +8,7 @@ import com.morak.back.team.ui.dto.TeamCreateRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,33 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.header("Location")).startsWith("/groups");
+    }
+
+    @DisplayName("그룹 초대 코드를 생성한다.")
+    @Test
+    void createInvitationCode() {
+        // given
+        String token = tokenProvider.createToken(String.valueOf(1L));
+
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String location = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + token)
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .then().log().all().extract().header("Location");
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + token)
+                .post(location + "/invitation")
+                .then().log().all()
+                .extract();
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
+                () -> assertThat(response.header("Location")).startsWith("/groups/in")
+        );
     }
 }
