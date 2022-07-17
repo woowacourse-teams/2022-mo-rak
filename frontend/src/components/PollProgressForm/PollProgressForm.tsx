@@ -9,8 +9,8 @@ import PollTitle from '../PollTitle/PollTitle';
 import PollProgressSubmitButton from '../PollProgressSubmitButton/PollProgressSubmitButton';
 import { getPoll, progressPoll } from '../../api/poll';
 import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGroup';
-import PollProgressButtonGroup from '../PollProgressButtonGroup/PollProgressButtonGroup';
 import { PollInterface, SelectedPollItemInterface } from '../../types/poll';
+import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 
 function PollProgressForm() {
   const navigate = useNavigate();
@@ -101,7 +101,7 @@ function PollProgressForm() {
             <Divider />
           </MarginContainer>
           <MarginContainer margin="0 0 1.6rem 0">
-            <PollProgressButtonGroup
+            <PollProgressDetail
               isAnonymous={poll.isAnonymous}
               allowedPollCount={poll.allowedPollCount}
             />

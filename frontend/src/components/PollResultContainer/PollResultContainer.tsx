@@ -6,8 +6,8 @@ import FlexContainer from '../common/FlexContainer/FlexContainer';
 import MarginContainer from '../common/MarginContainer/MarginContainer';
 
 import PollTitle from '../PollTitle/PollTitle';
-import PollProgressButtonGroup from '../PollProgressButtonGroup/PollProgressButtonGroup';
 import PollResultItemGroup from '../PollResultItemGroup/PollResultItemGroup';
+import PollResultDetail from '../PollResultDetail/PollResultDetail';
 import PollResultButtonGroup from '../PollResultButtonGroup/PollResultButtonGroup';
 import { PollContextStore } from '../../contexts/PollContext';
 import { getPoll, getPollResult } from '../../api/poll';
@@ -64,9 +64,8 @@ function PollResultContainer() {
             <PollResultProgress pollResult={pollResult} />
           </MarginContainer>
           <MarginContainer margin="1.4rem 0">
-            {/* TODO: PollProgressButtonGroup과 같음 (여긴 결과 페이지) -> 컴포넌트 분리 */}
             {/* TODO: PollInterface의 allowedPollCount type string 지우기(임시) */}
-            <PollProgressButtonGroup
+            <PollResultDetail
               isAnonymous={poll.isAnonymous}
               allowedPollCount={poll.allowedPollCount}
             />

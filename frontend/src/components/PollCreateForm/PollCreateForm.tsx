@@ -7,7 +7,7 @@ import Divider from '../common/Divider/Divider';
 import MarginContainer from '../common/MarginContainer/MarginContainer';
 
 import PollCreateFormInputGroup from '../PollCreateFormInputGroup/PollCreateFormInputGroup';
-import PollCreateFormButtonGroup from '../PollCreateFormButtonGroup/PollCreateFormButtonGroup';
+import PollCreateDetail from '../PollCreateDetail/PollCreateDetail';
 import PollCreateFormSubmitButton from '../PollCreateFormSubmitButton/PollCreateFormSubmitButton';
 import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateFormTitleInput';
 
@@ -76,7 +76,7 @@ function PollCreateForm() {
           <Divider />
         </MarginContainer>
         <MarginContainer margin="0 0 1.6rem 0">
-          <PollCreateFormButtonGroup
+          <PollCreateDetail
             isAnonymous={isAnonymous}
             handleAnonymous={handleAnonymous}
             isAllowedMultiplePollCount={isAllowedMultiplePollCount}

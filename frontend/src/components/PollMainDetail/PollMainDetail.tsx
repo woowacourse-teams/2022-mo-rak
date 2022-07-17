@@ -8,7 +8,8 @@ import { PollInterface } from '../../types/poll';
 
 interface Props extends Pick<PollInterface, 'isAnonymous' | 'allowedPollCount'> {}
 
-function PollProgressButtonGroup({
+// TODO: 의미상 button이 아닌데, button disabled로 만드는 것이 맞을까?
+function PollMainDetail({
   isAnonymous,
   allowedPollCount
 }: Props) {
@@ -17,20 +18,22 @@ function PollProgressButtonGroup({
   return (
     <FlexContainer gap="1.2rem">
       <Button
-        width="6.4rem"
+        width="3.6rem"
         borderRadius="20px"
         variant="outlined"
         fontSize="0.8rem"
+        padding="0.4rem 0"
         colorScheme={theme.colors.PURPLE_100}
         disabled
       >
         {isAnonymous ? '익명' : '기명'}
       </Button>
       <Button
-        width="9.2rem"
+        width="7.6rem"
         borderRadius="20px"
         variant="outlined"
         fontSize="0.8rem"
+        padding="0.4rem 0"
         colorScheme={theme.colors.PURPLE_100}
         disabled
       >
@@ -40,4 +43,4 @@ function PollProgressButtonGroup({
   );
 }
 
-export default PollProgressButtonGroup;
+export default PollMainDetail;

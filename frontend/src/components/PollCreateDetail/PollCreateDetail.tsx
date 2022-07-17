@@ -12,7 +12,7 @@ interface Props {
   handleAllowedMultiplePollCount: (isAllowedMultiplePollCountStatus: boolean) => () => void;
 }
 
-function PollCreateFormButtonGroup({
+function PollCreateDetail({
   isAnonymous,
   handleAnonymous,
   isAllowedMultiplePollCount,
@@ -71,4 +71,4 @@ function PollCreateFormButtonGroup({
   );
 }
 
-export default PollCreateFormButtonGroup;
+export default PollCreateDetail;
