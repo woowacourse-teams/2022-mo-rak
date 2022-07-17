@@ -9,7 +9,8 @@ import com.morak.back.auth.domain.TeamRepository;
 import com.morak.back.core.util.CodeGenerator;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
-import com.morak.back.team.exception.TeamMismatchException;
+import com.morak.back.team.exception.AlreadyJoinedTeamException;
+import com.morak.back.team.exception.MismatchedTeamException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import java.time.LocalDateTime;
@@ -47,7 +48,7 @@ public class TeamService {
         boolean isExist = teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId);
 
         if (!isExist) {
-            throw new TeamMismatchException("팀에 속해있지 않습니다.");
+            throw new MismatchedTeamException("팀에 속해있지 않습니다.");
         }
 
         TeamInvitation teamInvitation = new TeamInvitation(
@@ -67,5 +68,19 @@ public class TeamService {
         Team team = teamInvitation.getTeam();
         boolean isJoined = teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId);
         return new InvitationJoinedResponse(team.getCode(), team.getName(), isJoined);
+    }
+
+    public String join(Long memberId, String invitationCode) {
+        TeamInvitation teamInvitation = teamInvitationRepository.findByCode(invitationCode).orElseThrow();
+        Team team = teamInvitation.getTeam();
+        boolean isJoined = teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId);
+        if (isJoined) {
+            throw new AlreadyJoinedTeamException("팀에 이미 속해있습니다.");
+        }
+        Member member = memberRepository.findById(memberId).orElseThrow();
+
+        teamMemberRepository.save(new TeamMember(null, team, member));
+
+        return team.getCode();
     }
 }

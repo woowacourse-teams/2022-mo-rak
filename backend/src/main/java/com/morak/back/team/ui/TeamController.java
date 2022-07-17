@@ -40,4 +40,10 @@ public class TeamController {
         // 기존까지는 redirection이 모두 Location header를 기반으로 했어서 ..
         return ResponseEntity.ok(teamService.isJoined(memberId, invitationCode));
     }
+
+    @PostMapping("/in/{invitationCode}")
+    public ResponseEntity<Void> joinTeam(@Auth Long memberId, @PathVariable String invitationCode) {
+        String teamCode = teamService.join(memberId, invitationCode);
+        return ResponseEntity.created(URI.create("/groups/" + teamCode)).build();
+    }
 }

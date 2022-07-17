@@ -135,4 +135,33 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.getIsJoined()).isFalse()
         );
     }
+
+    @DisplayName("그룹에 참가한다.")
+    @Test
+    void joinTeam() {
+        // given
+        String token = tokenProvider.createToken(String.valueOf(1L));
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String teamLocation = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + token)
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .then().log().all().extract().header("Location");
+        String teamInvitationLocation = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + token)
+                .post(teamLocation + "/invitation")
+                .then().log().all()
+                .extract().header("Location");
+        // when
+        String otherToken = tokenProvider.createToken(String.valueOf(2L));
+        String location = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + otherToken)
+                .post(teamInvitationLocation)
+                .then().log().all().extract()
+                .header("Location");
+
+        assertThat(location).startsWith("/groups/");
+    }
 }
