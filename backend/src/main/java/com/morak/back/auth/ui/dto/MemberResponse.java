@@ -3,8 +3,10 @@ package com.morak.back.auth.ui.dto;
 import com.morak.back.auth.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class MemberResponse {
 
