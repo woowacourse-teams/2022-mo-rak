@@ -16,8 +16,8 @@ function App() {
         <Routes>
           <Route path="/" element={<PollMainPage />} />
           <Route path="/create" element={<PollCreatePage />} />
-          <Route path="/progress" element={<PollProgressPage />} />
-          <Route path="/result" element={<PollResultPage />} />
+          <Route path="/poll/:id/progress" element={<PollProgressPage />} />
+          <Route path="/poll/:id/result" element={<PollResultPage />} />
         </Routes>
       </PollContext>
     </FlexContainer>

@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent, useContext } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 
 // TODO: 자동정렬 설정
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,6 @@ import PollCreateFormSubmitButton from '../PollCreateFormSubmitButton/PollCreate
 import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateFormTitleInput';
 
 import { createPoll } from '../../api/poll';
-import { PollContextStore } from '../../contexts/PollContext';
 import { PollCreateType, PollInterface } from '../../types/poll';
 
 // TODO: 추상화 레벨에 대해서 다시 돌아보기
@@ -22,10 +21,6 @@ function PollCreateForm() {
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isAllowedMultiplePollCount, setIsAllowedMultiplePollCount] = useState(false);
   const [pollItems, setPollItems] = useState(['', '']);
-
-  // TODO: 왜 desturcuring이 안될까?
-  // TODO: naming 생각해보자
-  const pollContext = useContext(PollContextStore);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,10 +40,8 @@ function PollCreateForm() {
       const res = await createPoll(pollData);
       const pollId = res.headers.get('location').split('polls/')[1];
 
-      pollContext?.setPollId(pollId);
-
       // TODO: 상수화
-      navigate('/progress');
+      navigate(`/poll/${pollId}/progress`);
     } catch (err) {
       // TODO: 에러 핸들링 고도화
       alert(err);

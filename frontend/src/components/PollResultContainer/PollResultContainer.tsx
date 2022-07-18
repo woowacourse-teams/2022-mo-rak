@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Box from '../common/Box/Box';
 import Divider from '../common/Divider/Divider';
@@ -9,16 +9,17 @@ import PollTitle from '../PollTitle/PollTitle';
 import PollResultItemGroup from '../PollResultItemGroup/PollResultItemGroup';
 import PollResultDetail from '../PollResultDetail/PollResultDetail';
 import PollResultButtonGroup from '../PollResultButtonGroup/PollResultButtonGroup';
-import { PollContextStore } from '../../contexts/PollContext';
 import { getPoll, getPollResult } from '../../api/poll';
 import { PollInterface, PollItemResultType } from '../../types/poll';
-import PollResultProgress from '../PollResultProgress/PollResultProgrss';
+import PollResultProgress from '../PollResultProgress/PollResultProgress';
 import PollResultStatus from '../PollResultStatus/PollResultStatus';
 
-function PollResultContainer() {
+interface Props {
+  pollId: PollInterface['id'];
+}
+function PollResultContainer({ pollId }: Props) {
   const [poll, setPoll] = useState<PollInterface>();
   const [pollResult, setPollResult] = useState<Array<PollItemResultType>>([]);
-  const pollContext = useContext(PollContextStore);
 
   useEffect(() => {
     const fetchPoll = async (pollId: PollInterface['id']) => {
@@ -32,14 +33,8 @@ function PollResultContainer() {
     };
 
     try {
-      // const pollId = pollContext?.pollId;
-
-      // if (pollId) {
-      //   fetchPoll(pollId);
-      //   fetchPollResult(pollId);
-      // }
-      fetchPoll(1);
-      fetchPollResult(1);
+      fetchPoll(pollId);
+      fetchPollResult(pollId);
 
       // TODO: pollid가 없을 때 메인 화면으로 보내주기!
     } catch (err) {

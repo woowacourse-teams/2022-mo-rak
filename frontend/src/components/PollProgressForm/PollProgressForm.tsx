@@ -12,7 +12,11 @@ import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGrou
 import { PollInterface, SelectedPollItemInterface } from '../../types/poll';
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 
-function PollProgressForm() {
+interface Props {
+  pollId: PollInterface['id'];
+}
+
+function PollProgressForm({ pollId }: Props) {
   const navigate = useNavigate();
   // TODO: 기본 객체를 줘야할까? undefined로 놓는 것이 위험한가?
   const [poll, setPoll] = useState<PollInterface>();
@@ -25,7 +29,7 @@ function PollProgressForm() {
     try {
       if (poll) {
         await progressPoll(poll.id, selectedPollItems);
-        navigate('/result');
+        navigate(`/poll/${pollId}/result`);
       }
     } catch (err) {
       alert(err);
@@ -45,10 +49,7 @@ function PollProgressForm() {
     }
 
     if (mode === 'multiple' && e.target.checked) {
-      let newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
-
-      newSelectedPollItems = [...newSelectedPollItems, { itemId: id, description: '' }];
-      setSelectedPollItems(newSelectedPollItems);
+      setSelectedPollItems([...newSelectedPollItems, { itemId: id, description: '' }]);
 
       return;
     }
@@ -78,12 +79,7 @@ function PollProgressForm() {
     };
 
     try {
-      // const pollId = pollContext?.pollId;
-
-      // if (pollId) {
-      //   fetchPoll(pollId);
-      // }
-      fetchPoll(2);
+      fetchPoll(pollId);
 
       // TODO: pollid가 없을 때 메인 화면으로 보내주기!
     } catch (err) {

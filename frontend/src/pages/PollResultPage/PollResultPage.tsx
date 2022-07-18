@@ -1,12 +1,15 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import PollResultContainer from '../../components/PollResultContainer/PollResultContainer';
 
 function PollResultPage() {
+  const { id } = useParams();
+
   return (
     <StyledContainer>
-      <PollResultContainer />
+      <PollResultContainer pollId={Number(id)} />
     </StyledContainer>
   );
 }

@@ -70,7 +70,7 @@ function PollResultButtonGroup({ pollId }: Props) {
         fontSize="2rem"
         color={theme.colors.WHITE_100}
         colorScheme={theme.colors.PURPLE_100}
-        onClick={() => navigate('/progress')}
+        onClick={() => navigate(`/poll/${pollId}/progress`)}
       >
         재투표하기
       </Button>
