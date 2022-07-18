@@ -13,7 +13,7 @@ class TeamInvitationTest {
     void isExpired() {
         // given
         TeamInvitation teamInvitation =
-                new TeamInvitation(null, null, null, LocalDateTime.now().plusMinutes(30));
+                new TeamInvitation(null, null, InvitationCode.generate((length) -> "invitecode"), ExpiredTime.withMinute(30L));
         // when
         boolean isExpired = teamInvitation.isExpired();
         // then
@@ -25,7 +25,7 @@ class TeamInvitationTest {
     void isNotExpired() {
         // given
         TeamInvitation teamInvitation =
-                new TeamInvitation(null, null, null, LocalDateTime.now().minusMinutes(30));
+                new TeamInvitation(null, null, InvitationCode.generate((length) -> "invitecode"), ExpiredTime.withMinute(-30L));
         // when
         boolean isExpired = teamInvitation.isExpired();
         // then

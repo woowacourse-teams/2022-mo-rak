@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TeamMemberRepository extends JpaRepository<TeamMember, Long> {
+
     boolean existsByTeamIdAndMemberId(Long teamId, Long memberId);
 
     List<TeamMember> findAllByMemberId(Long memberId);
@@ -12,5 +13,4 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, Long> {
     List<TeamMember> findAllByTeamId(Long teamId);
 
     Optional<TeamMember> findByTeamIdAndMemberId(Long teamId, Long memberId);
-
 }

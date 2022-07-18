@@ -8,6 +8,7 @@ import com.morak.back.auth.domain.TeamMemberRepository;
 import com.morak.back.auth.domain.TeamRepository;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.core.util.CodeGenerator;
+import com.morak.back.poll.exception.ResourceNotFoundException;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.exception.AlreadyJoinedTeamException;
@@ -16,7 +17,6 @@ import com.morak.back.team.exception.MismatchedTeamException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,8 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class TeamService {
 
     private static final int TEAM_CODE_LENGTH = 8;
-    private static final int INVITATION_CODE_LENGTH = 10;
-    private static final long EXPIRED_MINUTES = 30L;
 
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
@@ -40,7 +38,7 @@ public class TeamService {
 
     public String createTeam(Long memberId, TeamCreateRequest request) {
         Team team = new Team(null, request.getName(), CodeGenerator.createRandomCode(TEAM_CODE_LENGTH));
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         Team savedTeam = teamRepository.save(team);
 
         TeamMember teamMember = new TeamMember(null, savedTeam, member);
@@ -50,43 +48,43 @@ public class TeamService {
     }
 
     public String createInvitationCode(Long memberId, String teamCode) {
-        Team team = teamRepository.findByCode(teamCode).orElseThrow();
-        boolean isExist = teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId);
+        Team team = teamRepository.findByCode(teamCode).orElseThrow(ResourceNotFoundException::new);
+        validateJoined(team.getId(), memberId);
 
-        if (!isExist) {
+        TeamInvitation savedTeamInvitation = teamInvitationRepository.save(
+                TeamInvitation.issue(team, CodeGenerator::createRandomCode)
+        );
+        return savedTeamInvitation.getCode();
+    }
+
+    private void validateJoined(Long teamId, Long memberId) {
+        if (!teamMemberRepository.existsByTeamIdAndMemberId(teamId, memberId)) {
             throw new MismatchedTeamException("팀에 속해있지 않습니다.");
         }
-
-        TeamInvitation teamInvitation = new TeamInvitation(
-                null,
-                team,
-                CodeGenerator.createRandomCode(INVITATION_CODE_LENGTH),
-                LocalDateTime.now().plusMinutes(EXPIRED_MINUTES)
-        );
-
-        TeamInvitation savedTeamInvitation = teamInvitationRepository.save(teamInvitation);
-
-        return savedTeamInvitation.getCode();
     }
 
     @Transactional(readOnly = true)
     public InvitationJoinedResponse isJoined(Long memberId, String invitationCode) {
-        TeamInvitation teamInvitation = teamInvitationRepository.findByCode(invitationCode).orElseThrow();
+        TeamInvitation teamInvitation = teamInvitationRepository
+                .findByCode(invitationCode)
+                .orElseThrow(ResourceNotFoundException::new);
         validateNotExpired(teamInvitation);
+
         Team team = teamInvitation.getTeam();
         boolean isJoined = teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId);
         return new InvitationJoinedResponse(team.getCode(), team.getName(), isJoined);
     }
 
     public String join(Long memberId, String invitationCode) {
-        TeamInvitation teamInvitation = teamInvitationRepository.findByCode(invitationCode).orElseThrow();
+        TeamInvitation teamInvitation = teamInvitationRepository
+                .findByCode(invitationCode)
+                .orElseThrow(ResourceNotFoundException::new);
         validateNotExpired(teamInvitation);
+
         Team team = teamInvitation.getTeam();
-        boolean isJoined = teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId);
-        if (isJoined) {
-            throw new AlreadyJoinedTeamException("팀에 이미 속해있습니다.");
-        }
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        validateNotJoined(team.getId(), memberId);
+
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         teamMemberRepository.save(new TeamMember(null, team, member));
         return team.getCode();
     }
@@ -94,6 +92,12 @@ public class TeamService {
     private void validateNotExpired(TeamInvitation teamInvitation) {
         if (teamInvitation.isExpired()) {
             throw new ExpiredInvitationException("이미 만료된 초대 코드입니다.");
+        }
+    }
+
+    private void validateNotJoined(Long teamId, Long memberId) {
+        if (teamMemberRepository.existsByTeamIdAndMemberId(teamId, memberId)) {
+            throw new AlreadyJoinedTeamException("팀에 이미 속해있습니다.");
         }
     }
 
@@ -109,10 +113,8 @@ public class TeamService {
 
     @Transactional(readOnly = true)
     public List<MemberResponse> findMembersInTeam(Long memberId, String teamCode) {
-        Team team = teamRepository.findByCode(teamCode).orElseThrow();
-        if (!teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId)) {
-            throw new MismatchedTeamException("팀에 속해있지 않습니다.");
-        }
+        Team team = teamRepository.findByCode(teamCode).orElseThrow(ResourceNotFoundException::new);
+        validateJoined(team.getId(), memberId);
 
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(team.getId());
         return teamMembers.stream()
@@ -121,10 +123,13 @@ public class TeamService {
                 .collect(Collectors.toList());
     }
 
-    public void exitMemberInTeam(Long memberId, String teamCode) {
-        Team team = teamRepository.findByCode(teamCode).orElseThrow();
-        TeamMember teamMember = teamMemberRepository.findByTeamIdAndMemberId(team.getId(), memberId)
+    public void exitMemberFromTeam(Long memberId, String teamCode) {
+        Team team = teamRepository.findByCode(teamCode).orElseThrow(ResourceNotFoundException::new);
+
+        TeamMember teamMember = teamMemberRepository
+                .findByTeamIdAndMemberId(team.getId(), memberId)
                 .orElseThrow(() -> new MismatchedTeamException("팀에 속해있지 않습니다."));
+
         teamMemberRepository.delete(teamMember);
     }
 
@@ -137,7 +142,6 @@ public class TeamService {
     private TeamMember findFirstTeamMember(List<TeamMember> teamMembers) {
         return teamMembers.stream()
                 .min(Comparator.comparingLong(TeamMember::getId))
-                .orElseThrow(() -> new MismatchedTeamException("속해있는 팀이 없습니다."));
+                .orElseThrow(() -> new ResourceNotFoundException("속해있는 팀이 없습니다."));
     }
-
 }

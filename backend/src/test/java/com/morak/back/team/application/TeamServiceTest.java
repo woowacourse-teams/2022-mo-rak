@@ -16,6 +16,8 @@ import com.morak.back.auth.domain.TeamMember;
 import com.morak.back.auth.domain.TeamMemberRepository;
 import com.morak.back.auth.domain.TeamRepository;
 import com.morak.back.auth.ui.dto.MemberResponse;
+import com.morak.back.team.domain.ExpiredTime;
+import com.morak.back.team.domain.InvitationCode;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.exception.AlreadyJoinedTeamException;
@@ -24,10 +26,8 @@ import com.morak.back.team.exception.MismatchedTeamException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -85,8 +85,8 @@ class TeamServiceTest {
         TeamInvitation teamInvitation = new TeamInvitation(
                 null,
                 team,
-                "ABCDE12345",
-                LocalDateTime.now()
+                InvitationCode.generate((length) -> "ABCDE12345"),
+                ExpiredTime.withMinute(30L)
         );
         given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
@@ -104,7 +104,8 @@ class TeamServiceTest {
     void isJoined() {
         // given
         Team team = new Team(1L, "test-name", "testcode");
-        TeamInvitation teamInvitation = new TeamInvitation(1L, team, "inviteCode", LocalDateTime.now().plusMinutes(5));
+        TeamInvitation teamInvitation = new TeamInvitation(1L, team, InvitationCode.generate((length) -> "inviteCode"),
+                ExpiredTime.withMinute(30L));
         given(teamInvitationRepository.findByCode(anyString())).willReturn(Optional.of(teamInvitation));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
 
@@ -125,7 +126,7 @@ class TeamServiceTest {
         // given
         Team team = new Team(1L, "test-team", "testcode");
         given(teamInvitationRepository.findByCode(anyString())).willReturn(
-                Optional.of(new TeamInvitation(null, team, "invitecode", LocalDateTime.now().plusSeconds(5))));
+                Optional.of(new TeamInvitation(null, team, InvitationCode.generate((length) -> "invitecode"), ExpiredTime.withMinute(30L))));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(false);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(new Member()));
         given(teamMemberRepository.save(any())).willReturn(any());
@@ -143,7 +144,7 @@ class TeamServiceTest {
         // given
         Team team = new Team(1L, "test-team", "testcode");
         given(teamInvitationRepository.findByCode(anyString())).willReturn(
-                Optional.of(new TeamInvitation(null, team, "invitecode", LocalDateTime.now().plusMinutes(3))));
+                Optional.of(new TeamInvitation(null, team, InvitationCode.generate((length) -> "invitecode"), ExpiredTime.withMinute(30L))));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
 
         // when & then
@@ -157,7 +158,7 @@ class TeamServiceTest {
         // given
         Team team = new Team(1L, "test-team", "testcode");
         given(teamInvitationRepository.findByCode(anyString())).willReturn(
-                Optional.of(new TeamInvitation(null, team, "invitecode", LocalDateTime.now().minusMinutes(5))));
+                Optional.of(new TeamInvitation(null, team, InvitationCode.generate((length) -> "invitecode"), ExpiredTime.withMinute(0L))));
 
         // when & then
         assertThatThrownBy(() -> teamService.join(1L, "invitecode"))
@@ -240,9 +241,10 @@ class TeamServiceTest {
         given(teamRepository.findByCode(anyString()))
                 .willReturn(Optional.of(team));
         given(teamMemberRepository.findByTeamIdAndMemberId(anyLong(), anyLong()))
-                .willReturn(Optional.of(new TeamMember(1L, team, new Member(1L, "test-oauth", "test-member", "test-url"))));
+                .willReturn(
+                        Optional.of(new TeamMember(1L, team, new Member(1L, "test-oauth", "test-member", "test-url"))));
         // when
-        teamService.exitMemberInTeam(1L, "testcode");
+        teamService.exitMemberFromTeam(1L, "testcode");
 
         // then
         verify(teamMemberRepository).delete(any());
@@ -259,7 +261,7 @@ class TeamServiceTest {
                 .willThrow(MismatchedTeamException.class);
 
         // when & then
-        assertThatThrownBy(() -> teamService.exitMemberInTeam(1L, "testcode"))
+        assertThatThrownBy(() -> teamService.exitMemberFromTeam(1L, "testcode"))
                 .isInstanceOf(MismatchedTeamException.class);
     }
 

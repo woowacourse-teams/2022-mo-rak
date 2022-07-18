@@ -40,8 +40,6 @@ public class TeamController {
 
     @GetMapping("/in/{invitationCode}")
     public ResponseEntity<InvitationJoinedResponse> isJoined(@Auth Long memberId, @PathVariable String invitationCode) {
-        // TODO : group code는 header에 넣어줘야할까, body에 넣어줘야할까 ?
-        // 기존까지는 redirection이 모두 Location header를 기반으로 했어서 ..
         return ResponseEntity.ok(teamService.isJoined(memberId, invitationCode));
     }
 
@@ -65,7 +63,7 @@ public class TeamController {
 
     @DeleteMapping("/out/{teamCode}")
     public ResponseEntity<Void> exitMemberInTeam(@Auth Long memberId, @PathVariable String teamCode) {
-        teamService.exitMemberInTeam(memberId, teamCode);
+        teamService.exitMemberFromTeam(memberId, teamCode);
         return ResponseEntity.noContent().build();
     }
 
