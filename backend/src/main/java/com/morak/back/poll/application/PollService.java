@@ -49,7 +49,7 @@ public class PollService {
 
     @Transactional(readOnly = true)
     public List<PollResponse> findPolls(Long teamId, Long memberId) {
-        Member member = memberRepository.getById(memberId);
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         List<Poll> polls = pollRepository.findAllByTeamId(teamId);
 
         return polls.stream()

@@ -15,7 +15,7 @@ public class PollItemResultResponse {
 
     private Long id;
     private Integer count;
-    private List<MemberResponse> members;
+    private List<MemberResultResponse> members;
     private String subject;
 
     public static PollItemResultResponse of(PollItem pollItem) {
@@ -27,9 +27,9 @@ public class PollItemResultResponse {
         );
     }
 
-    private static List<MemberResponse> toMemberResponses(List<PollResult> results) {
+    private static List<MemberResultResponse> toMemberResponses(List<PollResult> results) {
         return results.stream()
-                .map(result -> MemberResponse.of(result.getMember(), result.getDescription()))
+                .map(result -> MemberResultResponse.of(result.getMember(), result.getDescription()))
                 .collect(Collectors.toList());
     }
 }

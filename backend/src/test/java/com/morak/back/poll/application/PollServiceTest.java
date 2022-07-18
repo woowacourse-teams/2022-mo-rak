@@ -88,7 +88,7 @@ class PollServiceTest {
     @Test
     void findPolls() {
         // given
-        given(memberRepository.getById(anyLong())).willReturn(member);
+        given(memberRepository.findById(tempMemberId)).willReturn(Optional.of(member));
         given(pollRepository.findAllByTeamId(anyLong()))
                 .willReturn(List.of(new Poll(
                                 1L,

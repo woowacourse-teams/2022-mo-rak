@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -106,8 +107,8 @@ public class Poll extends BaseEntity {
     }
 
     private void addMembersToPollItems(Member member, Map<PollItem, String> mappedItemAndDescription) {
-        for (PollItem newItem : mappedItemAndDescription.keySet()) {
-            newItem.addPollResult(member, mappedItemAndDescription.get(newItem));
+        for (Entry<PollItem, String> entry : mappedItemAndDescription.entrySet()) {
+            entry.getKey().addPollResult(member, entry.getValue());
         }
     }
 

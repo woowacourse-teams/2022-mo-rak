@@ -48,7 +48,7 @@ public class PollItem extends BaseEntity {
     }
 
     public void deletePollResultIfPollMember(Member member) {
-        pollResults.removeIf(pollResult -> pollResult.getMember().equals(member));
+        pollResults.removeIf(pollResult -> pollResult.isSameMember(member));
     }
 
     public List<PollResult> getResultsByAnonymous() {
