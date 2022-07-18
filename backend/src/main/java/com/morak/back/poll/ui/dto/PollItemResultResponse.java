@@ -33,11 +33,4 @@ public class PollItemResultResponse {
                 .map(result -> MemberResponse.of(result.getMember(), result.getDescription()))
                 .collect(Collectors.toList());
     }
-
-    // TODO: 2022/07/16 현재는 쓰지 않습니다.
-//    private static List<MemberResponse> toMemberResponses(List<Member> members) {
-//        return members.stream()
-//                .map(MemberResponse::of)
-//                .collect(Collectors.toList());
-//    }
 }

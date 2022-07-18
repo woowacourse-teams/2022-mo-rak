@@ -19,7 +19,6 @@ import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollResult;
-import com.morak.back.poll.domain.PollResultRepository;
 import com.morak.back.poll.exception.InvalidRequestException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemRequest;
@@ -51,9 +50,6 @@ class PollServiceTest {
     @Mock
     private PollItemRepository pollItemRepository;
 
-    @Mock
-    private PollResultRepository pollResultRepository;
-
     private final PollService pollService;
     private Long tempMemberId = 1L;
     private Long tempTeamId = 1L;
@@ -66,8 +62,7 @@ class PollServiceTest {
 
     public PollServiceTest() {
         openMocks(this);
-        this.pollService = new PollService(pollRepository, memberRepository, teamRepository, pollItemRepository,
-                pollResultRepository);
+        this.pollService = new PollService(pollRepository, memberRepository, teamRepository, pollItemRepository);
     }
 
     @DisplayName("투표를 생성한다.")
@@ -122,9 +117,10 @@ class PollServiceTest {
     @Test
     void doPoll() {
         // given
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         PollItem pollItem1 = new PollItem(1L, null, "sub1");
         PollItem pollItem2 = new PollItem(2L, null, "sub2");
+
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(pollRepository.findById(anyLong())).willReturn(Optional.of(new Poll(
                         1L,
                         null,
@@ -138,23 +134,17 @@ class PollServiceTest {
                         List.of(pollItem1, pollItem2)
                 )
         ));
-        //
         given(pollItemRepository.findById(1L)).willReturn(Optional.of(pollItem1));
         given(pollItemRepository.findById(2L)).willReturn(Optional.of(pollItem2));
-//        given(pollItemRepository.findAllById(any())).willReturn(List.of(pollItem1, pollItem2));
-//        given(pollItemRepository.findAllById(any())).willReturn(new ArrayList<>(List.of(pollItem1, pollItem2)));
 
         // when
         pollService.doPoll(1L, 1L, List.of(new PollItemRequest(1L, "그냥뇨"), new PollItemRequest(2L, "")));
 
         // then
-        verify(pollResultRepository).saveAll(any());
-
-        // TODO: 2022/07/16 외면하지말고 봐주세요. 주석한 이유는 도메인에다가 한 게 아니고 레포지토리로 바로 쏴서 그래요.
-//        Assertions.assertAll(
-//                () -> assertThat(pollItem1.getPollResults()).hasSize(1),
-//                () -> assertThat(pollItem2.getPollResults()).hasSize(1)
-//        );
+        Assertions.assertAll(
+                () -> assertThat(pollItem1.getPollResults()).hasSize(1),
+                () -> assertThat(pollItem2.getPollResults()).hasSize(1)
+        );
     }
 
     @DisplayName("재투표를 진행한다.")
@@ -185,19 +175,15 @@ class PollServiceTest {
         given(pollItemRepository.findById(1L)).willReturn(Optional.of(pollItem1));
         given(pollItemRepository.findById(2L)).willReturn(Optional.of(pollItem2));
         given(pollItemRepository.findById(3L)).willReturn(Optional.of(pollItem3));
-//        given(pollItemRepository.findAllById(any())).willReturn(Arrays.asList(pollItem2, pollItem3));
 
         // when
         pollService.doPoll(1L, 1L, List.of(new PollItemRequest(2L, "그냥뇨"), new PollItemRequest(3L, "")));
 
         // then
-        verify(pollResultRepository).saveAll(any());
-
         Assertions.assertAll(
-                () -> assertThat(pollItem1.getPollResults()).hasSize(0)
-                // TODO: 2022/07/16 외면하지말고 봐주세요. 주석한 이유는 도메인에다가 한 게 아니고 레포지토리로 바로 쏴서 그래요.
-//                () -> assertThat(pollItem2.getPollResults()).hasSize(1),
-//                () -> assertThat(pollItem3.getPollResults()).hasSize(1)
+                () -> assertThat(pollItem1.getPollResults()).hasSize(0),
+                () -> assertThat(pollItem2.getPollResults()).hasSize(1),
+                () -> assertThat(pollItem3.getPollResults()).hasSize(1)
         );
     }
 
