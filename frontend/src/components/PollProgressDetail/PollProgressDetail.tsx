@@ -23,6 +23,7 @@ function PollProgressDetail({
         variant="outlined"
         fontSize="0.8rem"
         colorScheme={theme.colors.PURPLE_100}
+        color={theme.colors.PURPLE_100}
       >
         {isAnonymous ? '익명' : '기명'}
       </TextField>
@@ -33,6 +34,7 @@ function PollProgressDetail({
         variant="outlined"
         fontSize="0.8rem"
         colorScheme={theme.colors.PURPLE_100}
+        color={theme.colors.PURPLE_100}
       >
         {allowedPollCount === 1 ? '하나만 투표가능' : '여러개 투표가능'}
       </TextField>
