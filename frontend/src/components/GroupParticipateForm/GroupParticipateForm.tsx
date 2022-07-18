@@ -1,37 +1,57 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { participateGroup } from '../../api/group';
 import theme from '../../styles/theme';
-import Box from '../common/Box/Box';
+
 import Button from '../common/Button/Button';
 import Input from '../common/Input/Input';
 import TextField from '../common/TextField/TextField';
 
 function GroupParticipateForm() {
+  const [invitationCode, setInvitationCode] = useState('');
+
+  const handleInvitationCode = (e: ChangeEvent<HTMLInputElement>) => {
+    setInvitationCode(e.target.value);
+    console.log(invitationCode);
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const res = await participateGroup(invitationCode);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <Box width="60rem" height="21.6rem">
-      <StyledForm>
-        <StyledTitle>그룹참가</StyledTitle>
-        <TextField
-          variant="outlined"
-          width="52rem"
-          height="3.6rem"
-          colorScheme={theme.colors.PURPLE_100}
-          borderRadius="10px"
-        >
-          {/* TODO: Input 내부 레이아웃 수정 */}
-          <Input placeholder="코드를 입력해주세요!" />
-        </TextField>
-        <Button
-          variant="filled"
-          width="52rem"
-          colorScheme={theme.colors.PURPLE_100}
-          color={theme.colors.WHITE_100}
-          fontSize="1.6rem"
-        >
-          참가하기
-        </Button>
-      </StyledForm>
-    </Box>
+    <StyledForm onSubmit={handleSubmit}>
+      <StyledTitle>그룹참가</StyledTitle>
+      <TextField
+        variant="outlined"
+        colorScheme={theme.colors.PURPLE_100}
+        borderRadius="10px"
+        padding="1.2rem 0"
+      >
+        {/* TODO: Input 내부 레이아웃 수정 */}
+        <Input
+          placeholder="코드를 입력해주세요!"
+          value={invitationCode}
+          onChange={handleInvitationCode}
+        />
+      </TextField>
+      <Button
+        variant="filled"
+        colorScheme={theme.colors.PURPLE_100}
+        color={theme.colors.WHITE_100}
+        fontSize="1.6rem"
+        type="submit"
+      >
+        참가하기
+      </Button>
+    </StyledForm>
   );
 }
 
@@ -41,7 +61,6 @@ const StyledForm = styled.form`
   justify-content: center;
   align-items: center;
   gap: 1.2rem;
-  height: 100%;
 `;
 
 const StyledTitle = styled.span`
