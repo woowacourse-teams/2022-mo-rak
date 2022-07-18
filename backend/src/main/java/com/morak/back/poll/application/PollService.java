@@ -47,6 +47,7 @@ public class PollService {
         return savedPoll.getId();
     }
 
+    @Transactional(readOnly = true)
     public List<PollResponse> findPolls(Long teamId, Long memberId) {
         Member member = memberRepository.getById(memberId);
         List<Poll> polls = pollRepository.findAllByTeamId(teamId);
@@ -73,6 +74,7 @@ public class PollService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
+    @Transactional(readOnly = true)
     public PollResponse findPoll(Long teamId, Long memberId, Long pollId) {
         Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
 
@@ -81,6 +83,7 @@ public class PollService {
         return PollResponse.from(poll, member);
     }
 
+    @Transactional(readOnly = true)
     public List<PollItemResponse> findPollItems(Long teamId, Long pollId) {
         // TODO: 멤버 확인해야돼!!
         Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
@@ -90,6 +93,7 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<PollItemResultResponse> findPollItemResults(Long teamId, Long pollId) {
         Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
         return poll.getPollItems()
