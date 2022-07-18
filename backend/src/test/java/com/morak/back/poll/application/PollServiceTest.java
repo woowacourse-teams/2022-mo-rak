@@ -300,11 +300,13 @@ class PollServiceTest {
         PollItem pollItem2 = new PollItem(2L, poll, "항목2", new ArrayList<>(List.of(pollResult2)));
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
+
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
                 .willReturn(Optional.of(poll));
 
         // when
-        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(1L, 1L);
+        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(1L, 1L, 1L);
 
         // then
         Assertions.assertAll(
@@ -338,12 +340,14 @@ class PollServiceTest {
         PollItem pollItem2 = new PollItem(2L, poll, "항목2", new ArrayList<>(List.of(pollResult2)));
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
+
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
                 .willReturn(Optional.of(poll)
                 );
 
         // when
-        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(1L, 1L);
+        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(1L, 1L, 1L);
 
         // then
         Assertions.assertAll(

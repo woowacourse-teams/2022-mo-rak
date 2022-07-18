@@ -57,8 +57,8 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
-    public void doPoll(Long tempMemberId, Long pollId, List<PollItemRequest> requests) {
-        Member member = memberRepository.findById(tempMemberId).orElseThrow(ResourceNotFoundException::new);
+    public void doPoll(Long memberId, Long pollId, List<PollItemRequest> requests) {
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         Poll poll = pollRepository.findById(pollId).orElseThrow(ResourceNotFoundException::new);
 
         poll.doPoll(member, mapPollItemAndDescription(requests));
@@ -95,8 +95,10 @@ public class PollService {
     }
 
     @Transactional(readOnly = true)
-    public List<PollItemResultResponse> findPollItemResults(Long teamId, Long pollId) {
+    public List<PollItemResultResponse> findPollItemResults(Long teamId, Long memberId, Long pollId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
+
         return poll.getPollItems()
                 .stream()
                 .map(PollItemResultResponse::of)
