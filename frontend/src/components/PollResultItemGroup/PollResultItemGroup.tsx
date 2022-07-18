@@ -9,6 +9,7 @@ import FlexContainer from '../common/FlexContainer/FlexContainer';
 // import UserWhite from '../../assets/user_white.svg';
 import UserPurple from '../../assets/user_purple.svg';
 import PollParticipantModal from '../PollParticipantModal/PollParticipantModal';
+import TextField from '../common/TextField/TextField';
 
 interface Props {
   pollId: PollInterface['id'];
@@ -17,7 +18,6 @@ interface Props {
 // TODO: Props로 interface를 설정해줘서 type vs 직접 인자에 type 설정
 function PollResultItemGroup({ pollId }: Props) {
   const theme = useTheme();
-  // [{"id":6,"count":1,"members":[],"subject":"a"},{"id":7,"count":0,"members":[],"subject":"b"}]
   const [pollItems, setPollItems] = useState<Array<PollItemResultType>>([]);
   const [activePollItem, setActivePollItem] = useState(0); // TODO: 변수명 고민
 
@@ -44,12 +44,13 @@ function PollResultItemGroup({ pollId }: Props) {
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
       {pollItems?.map(({ id, subject, count }) => (
-        <Button
+        <TextField
           variant="outlined"
           fontSize="1.6rem"
+          padding="1.2rem 0"
+          borderRadius="15px"
           color={theme.colors.BLACK_100}
           colorScheme={theme.colors.PURPLE_100}
-          disabled
         >
           {subject}
           <StyledParticipantCount onClick={handleShowParticipant(id)}>
@@ -59,7 +60,7 @@ function PollResultItemGroup({ pollId }: Props) {
             </FlexContainer>
             {(activePollItem === id) ? <PollParticipantModal participants={[{ id: 1, name: '우영우', profileUrl: 'https://spnimage.edaily.co.kr/images/Photo/files/NP/S/2022/06/PS22062800115.jpg' }, { id: 2, name: '태연', profileUrl: 'https://cdnweb01.wikitree.co.kr/webdata/editor/202202/03/img_20220203152221_f00e3cfa.webp' }]} /> : ''}
           </StyledParticipantCount>
-        </Button>
+        </TextField>
       ))}
     </FlexContainer>
   );
