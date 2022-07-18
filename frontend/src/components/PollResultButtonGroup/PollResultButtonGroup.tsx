@@ -19,11 +19,12 @@ function PollResultButtonGroup({ pollId }: Props) {
     if (window.confirm('투표를 삭제하시겠습니까?')) {
       try {
         await deletePoll(pollId);
-        navigate('/create');
+        navigate('/poll/create');
       } catch (err) {
         alert(err);
       }
     }
+    navigate('/poll');
   };
 
   const handleClosePoll = async () => {
@@ -34,6 +35,7 @@ function PollResultButtonGroup({ pollId }: Props) {
         alert(err);
       }
     }
+    navigate('/poll');
   };
 
   return (

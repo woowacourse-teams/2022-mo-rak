@@ -14,8 +14,8 @@ function App() {
       <Sidebar />
       <PollContext>
         <Routes>
-          <Route path="/" element={<PollMainPage />} />
-          <Route path="/create" element={<PollCreatePage />} />
+          <Route path="/poll" element={<PollMainPage />} />
+          <Route path="/poll/create" element={<PollCreatePage />} />
           <Route path="/poll/:id/progress" element={<PollProgressPage />} />
           <Route path="/poll/:id/result" element={<PollResultPage />} />
         </Routes>
