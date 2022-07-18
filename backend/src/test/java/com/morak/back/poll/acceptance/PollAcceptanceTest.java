@@ -153,7 +153,41 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(pollItemResponses).hasSize(2),
                 () -> assertThat(pollItemResponses.get(0).getId()).isNotNull(),
-                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("삼십만")
+                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("삼십만"),
+                () -> assertThat(pollItemResponses.get(0).getSelected()).isFalse(),
+                () -> assertThat(pollItemResponses.get(0).getDescription()).isNull()
+        );
+    }
+
+    @Test
+    void 투표를_진행한_상태에서_투표_선택_항목을_조회한다() {
+        // given
+        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
+
+        PollCreateRequest request = new PollCreateRequest("에덴의 속마음은?", 1, false, LocalDateTime.now(),
+                List.of("에덴은 칼퇴하고 싶다.", "에덴은 11시에 퇴근하고 싶다."));
+        String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
+
+        투표를_진행한다(accessToken, location, List.of(new PollItemRequest(4L, "월요일이기때문!!")));
+
+        // when
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .get(location + "/items")
+                .then().log().all().extract();
+
+        // then
+        List<PollItemResponse> pollItemResponses = response.body().jsonPath().getList(".", PollItemResponse.class);
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(pollItemResponses).hasSize(2),
+                () -> assertThat(pollItemResponses.get(0).getId()).isNotNull(),
+                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("에덴은 칼퇴하고 싶다."),
+                () -> assertThat(pollItemResponses.get(0).getSelected()).isTrue(),
+                () -> assertThat(pollItemResponses.get(0).getDescription()).isEqualTo("월요일이기때문!!"),
+                () -> assertThat(pollItemResponses.get(1).getSubject()).isEqualTo("에덴은 11시에 퇴근하고 싶다."),
+                () -> assertThat(pollItemResponses.get(1).getSelected()).isFalse(),
+                () -> assertThat(pollItemResponses.get(1).getDescription()).isNull()
         );
     }
 

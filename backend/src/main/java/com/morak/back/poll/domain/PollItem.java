@@ -59,4 +59,17 @@ public class PollItem extends BaseEntity {
         }
         return pollResults;
     }
+
+    public Boolean isSelectedBy(Member member) {
+        return pollResults.stream()
+                .anyMatch(result -> result.isSameMember(member));
+    }
+
+    public String getDescriptionFrom(Member member) {
+        return pollResults.stream()
+                .filter(result -> result.isSameMember(member))
+                .findFirst()
+                .orElseGet(PollResult::new)
+                .getDescription();
+    }
 }

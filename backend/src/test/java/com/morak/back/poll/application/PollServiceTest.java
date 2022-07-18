@@ -220,6 +220,7 @@ class PollServiceTest {
     @Test
     void findPollItems() {
         // given
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
                 .willReturn(Optional.of(new Poll(
                         1L,
@@ -235,12 +236,46 @@ class PollServiceTest {
                 );
 
         // when
-        List<PollItemResponse> pollItemResponses = pollService.findPollItems(1L, 1L);
+        List<PollItemResponse> pollItemResponses = pollService.findPollItems(1L, 1L, 1L);
 
         // then
         Assertions.assertAll(
                 () -> assertThat(pollItemResponses).hasSize(2),
-                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1")
+                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1"),
+                () -> assertThat(pollItemResponses.get(0).getSelected()).isFalse(),
+                () -> assertThat(pollItemResponses.get(0).getDescription()).isNull()
+        );
+    }
+
+    @Test
+    void 투표를_진행한_상태에서_투표_선택_항목을_조회한다() {
+        // given
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
+                .willReturn(Optional.of(new Poll(
+                        1L,
+                        null,
+                        member,
+                        null,
+                        null,
+                        null,
+                        CLOSED,
+                        null,
+                        null,
+                        List.of(new PollItem(1L, null, "항목1",
+                                        List.of(new PollResult(null, null, member, "그냥뇨~"))),
+                                new PollItem(2L, null, "항목2"))))
+                );
+
+        // when
+        List<PollItemResponse> pollItemResponses = pollService.findPollItems(1L, 1L, 1L);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(pollItemResponses).hasSize(2),
+                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1"),
+                () -> assertThat(pollItemResponses.get(0).getSelected()).isTrue(),
+                () -> assertThat(pollItemResponses.get(0).getDescription()).isEqualTo("그냥뇨~")
         );
     }
 

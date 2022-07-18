@@ -84,12 +84,13 @@ public class PollService {
     }
 
     @Transactional(readOnly = true)
-    public List<PollItemResponse> findPollItems(Long teamId, Long pollId) {
-        // TODO: 멤버 확인해야돼!!
+    public List<PollItemResponse> findPollItems(Long teamId, Long memberId, Long pollId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
+
         return poll.getPollItems()
                 .stream()
-                .map(PollItemResponse::from)
+                .map(item -> PollItemResponse.of(item, member))
                 .collect(Collectors.toList());
     }
 

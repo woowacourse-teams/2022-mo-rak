@@ -35,4 +35,8 @@ public class PollResult extends BaseEntity {
     public PollResult fromAnonymous() {
         return new PollResult(id, pollItem, new Member(), description);
     }
+
+    public Boolean isSameMember(Member member) {
+        return this.member.equals(member);
+    }
 }
