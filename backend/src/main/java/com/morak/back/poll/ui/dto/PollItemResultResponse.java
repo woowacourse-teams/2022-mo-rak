@@ -1,6 +1,5 @@
 package com.morak.back.poll.ui.dto;
 
-import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollResult;
 import java.util.List;

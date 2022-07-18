@@ -1,4 +1,4 @@
-package com.morak.back.auth.ui.dto;
+package com.morak.back.poll.ui.dto;
 
 import com.morak.back.auth.domain.Member;
 import lombok.AllArgsConstructor;
@@ -11,12 +11,14 @@ public class MemberResponse {
     private Long id;
     private String name;
     private String profileUrl;
+    private String description;
 
-    public static MemberResponse from(Member member) {
+    public static MemberResponse of(Member member, String description) {
         return new MemberResponse(
                 member.getId(),
                 member.getName(),
-                member.getProfileUrl()
+                member.getProfileUrl(),
+                description
         );
     }
 }
