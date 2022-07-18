@@ -45,22 +45,23 @@ function PollMainContainer() {
       </Button>
       {/* TODO: Wrapper가 아닌듯? 컴포넌트 나누고 고쳐도 될듯 */}
       <StyledWrapper>
-        {polls ? polls.map((poll) => (
+        {polls ? polls.map(({ status, title, id, isAnonymous, allowedPollCount }) => (
           <Box width="26.4rem" padding="2rem" minHeight="16.8rem">
             <FlexContainer justifyContent="end">
-              <PollMainStatus status={poll.status} />
+              <PollMainStatus status={status} />
             </FlexContainer>
             {/* TODO: title prop으로 줄지? children으로 줄지? */}
-            <PollMainTitle title={poll.title} />
-            <PollMainProgress pollId={poll.id} />
+            <PollMainTitle status={status} title={title} />
+            <PollMainProgress status={status} pollId={id} />
             <MarginContainer margin="0 0 10px">
               {/* 'detail' 컴포넌트명 변경(전체 페이지 수정 필요) */}
               <PollMainDetail
-                isAnonymous={poll.isAnonymous}
-                allowedPollCount={poll.allowedPollCount}
+                isAnonymous={isAnonymous}
+                allowedPollCount={allowedPollCount}
+                status={status}
               />
             </MarginContainer>
-            <PollMainButtonGroup handleNavigate={handleNavigate} />
+            <PollMainButtonGroup pollId={id} handleNavigate={handleNavigate} status={status} />
           </Box>
         )) : (<div>없습니다</div>)}
       </StyledWrapper>
