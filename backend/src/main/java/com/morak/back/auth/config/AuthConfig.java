@@ -1,6 +1,6 @@
 package com.morak.back.auth.config;
 
-import com.morak.back.auth.application.AuthService;
+import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.ui.AuthInterceptor;
 import com.morak.back.auth.ui.AuthResolver;
 import java.util.List;
@@ -12,21 +12,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class AuthConfig implements WebMvcConfigurer {
 
-    private final AuthService authService;
+    private final TokenProvider tokenProvider;
 
-    public AuthConfig(AuthService authService) {
-        this.authService = authService;
+    public AuthConfig(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor(authService))
+        registry.addInterceptor(new AuthInterceptor(tokenProvider))
                 .addPathPatterns("/polls/**")
                 .addPathPatterns("/groups/**");
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new AuthResolver());
+        resolvers.add(new AuthResolver(tokenProvider));
     }
 }

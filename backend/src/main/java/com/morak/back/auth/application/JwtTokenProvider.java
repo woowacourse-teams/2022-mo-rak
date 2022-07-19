@@ -1,6 +1,7 @@
 package com.morak.back.auth.application;
 
 import com.morak.back.auth.exception.AuthorizationException;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,6 +24,7 @@ public class JwtTokenProvider implements TokenProvider {
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
+    @Override
     public String createToken(String payload) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
@@ -35,6 +37,7 @@ public class JwtTokenProvider implements TokenProvider {
                 .compact();
     }
 
+    @Override
     public String getPayload(String token) {
         try {
             return Jwts.parserBuilder()
@@ -43,6 +46,20 @@ public class JwtTokenProvider implements TokenProvider {
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject();
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new AuthorizationException("유효하지 않은 토큰입니다.");
+        }
+    }
+
+    @Override
+    public void validateToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+        } catch (ExpiredJwtException e) {
+            throw new AuthorizationException("만료된 토큰입니다.");
         } catch (JwtException | IllegalArgumentException e) {
             throw new AuthorizationException("유효하지 않은 토큰입니다.");
         }

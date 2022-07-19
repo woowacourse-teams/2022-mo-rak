@@ -27,23 +27,25 @@ class JwtTokenProviderTest {
 
     @Test
     public void 유효하지않은_토큰인경우_예외를_던진다() {
-        // given
+        // give된
         jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 3600000L);
         String token = "test-token";
 
         // when & then
-        assertThatThrownBy(() -> jwtTokenProvider.getPayload(token))
-                .isInstanceOf(AuthorizationException.class);
+        assertThatThrownBy(() -> jwtTokenProvider.validateToken(token))
+                .isInstanceOf(AuthorizationException.class)
+                .hasMessage("유효하지 않은 토큰입니다.");
     }
 
     @Test
-    public void 만료되지_않은_토큰인경우_예외를_던진다() {
+    public void 만료된_토큰인경우_예외를_던진다() {
         // given
         jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 0L);
         String token = jwtTokenProvider.createToken("엘리");
 
         // when & then
-        assertThatThrownBy(() -> jwtTokenProvider.getPayload(token))
-                .isInstanceOf(AuthorizationException.class);
+        assertThatThrownBy(() -> jwtTokenProvider.validateToken(token))
+                .isInstanceOf(AuthorizationException.class)
+                .hasMessage("만료된 토큰입니다.");
     }
 }
