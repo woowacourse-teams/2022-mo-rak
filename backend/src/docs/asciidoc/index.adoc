@@ -1,0 +1,12 @@
+= test 명세
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+== Morak
+
+operation::poll-create[snippets='http-request,http-response']
+operation::group-create[snippets='http-request,http-response']
