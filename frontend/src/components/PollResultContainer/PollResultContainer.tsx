@@ -13,6 +13,7 @@ import { getPoll, getPollResult } from '../../api/poll';
 import { PollInterface, PollItemResultType } from '../../types/poll';
 import PollResultProgress from '../PollResultProgress/PollResultProgress';
 import PollResultStatus from '../PollResultStatus/PollResultStatus';
+import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
 
 interface Props {
   pollId: PollInterface['id'];
@@ -48,7 +49,10 @@ function PollResultContainer({ pollId }: Props) {
         <>
           <FlexContainer justifyContent="end">
             <MarginContainer margin="0 0 1.4rem 0">
-              <PollResultStatus status={poll.status} />
+              <FlexContainer gap="1.2rem" alignItems="center">
+                <PollResultShareLink pollId={pollId} />
+                <PollResultStatus status={poll.status} />
+              </FlexContainer>
             </MarginContainer>
           </FlexContainer>
           <MarginContainer margin="0 0 1.4rem 0">
