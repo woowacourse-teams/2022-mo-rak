@@ -27,4 +27,13 @@ const participateGroup = (invitationCode: string) =>
       'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
   });
 
-export { createGroup, createInvitationCode, participateGroup };
+// 그룹 가입 여부 확인
+const getIsJoinedGroup = (invitationCode: string) =>
+  fetcher({
+    method: 'GET',
+    path: `groups/in/${invitationCode}`,
+    token:
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
+  });
+
+export { createGroup, createInvitationCode, participateGroup, getIsJoinedGroup };

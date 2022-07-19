@@ -7,6 +7,8 @@ import GroupInitPage from './pages/GroupInitPage/GroupInitPage';
 import FlexContainer from './components/common/FlexContainer/FlexContainer';
 import PollContext from './contexts/PollContext';
 import SidebarLayout from './components/SidebarLayout/SidebarLayout';
+import MainPage from './pages/MainPage/MainPage';
+import InvitationPage from './pages/InvitationPage/InvitationPage';
 
 function App() {
   return (
@@ -17,8 +19,13 @@ function App() {
             <Route path="/create" element={<PollCreatePage />} />
             <Route path="/progress" element={<PollProgressPage />} />
             <Route path="/result" element={<PollResultPage />} />
+            <Route path="/groups" element={<MainPage />}>
+              <Route path=":groupCode" element={<MainPage />} />
+            </Route>
           </Route>
-          <Route path="/groupInit" element={<GroupInitPage />} />
+          <Route path="/init" element={<GroupInitPage />} />
+          <Route path="/invite/:invitationCode" element={<InvitationPage />} />
+          <Route path="*" element={<div>error</div>} />
         </Routes>
       </PollContext>
     </FlexContainer>
