@@ -62,7 +62,7 @@ function InvitationPage() {
 
   return (
     <StyledContainer>
-      <Box width="72rem" minHeight="65.2rem" padding="9.2rem 0">
+      <Box width="60rem" minHeight="65.2rem" padding="9.2rem 0">
         <FlexContainer
           justifyContent="center"
           flexDirection="column"
