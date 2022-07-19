@@ -33,7 +33,7 @@ public class PollResult extends BaseEntity {
     private String description;
 
     public PollResult fromAnonymous() {
-        return new PollResult(id, pollItem, new Member(), description);
+        return new PollResult(id, pollItem, Member.getAnonymous(), description);
     }
 
     public Boolean isSameMember(Member member) {

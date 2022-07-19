@@ -243,7 +243,7 @@ class PollServiceTest {
                 () -> assertThat(pollItemResponses).hasSize(2),
                 () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1"),
                 () -> assertThat(pollItemResponses.get(0).getSelected()).isFalse(),
-                () -> assertThat(pollItemResponses.get(0).getDescription()).isNull()
+                () -> assertThat(pollItemResponses.get(0).getDescription()).isBlank()
         );
     }
 
@@ -313,7 +313,8 @@ class PollServiceTest {
                 () -> assertThat(pollItemResultResponses).hasSize(2),
                 () -> assertThat(pollItemResultResponses.get(0).getCount()).isEqualTo(1),
                 () -> assertThat(pollItemResultResponses.get(0).getMembers()).hasSize(1),
-                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getName()).isNull(),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getId()).isEqualTo(0L),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getName()).isBlank(),
                 () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo(
                         "거의 다 한 것 같아요")
         );

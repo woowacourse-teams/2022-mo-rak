@@ -68,8 +68,8 @@ public class PollItem extends BaseEntity {
     public String getDescriptionFrom(Member member) {
         return pollResults.stream()
                 .filter(result -> result.isSameMember(member))
+                .map(PollResult::getDescription)
                 .findFirst()
-                .orElseGet(PollResult::new)
-                .getDescription();
+                .orElseGet(() -> "");
     }
 }

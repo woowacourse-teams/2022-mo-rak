@@ -155,7 +155,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(pollItemResponses.get(0).getId()).isNotNull(),
                 () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("삼십만"),
                 () -> assertThat(pollItemResponses.get(0).getSelected()).isFalse(),
-                () -> assertThat(pollItemResponses.get(0).getDescription()).isNull()
+                () -> assertThat(pollItemResponses.get(0).getDescription()).isBlank()
         );
     }
 
@@ -187,7 +187,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(pollItemResponses.get(0).getDescription()).isEqualTo("월요일이기때문!!"),
                 () -> assertThat(pollItemResponses.get(1).getSubject()).isEqualTo("에덴은 11시에 퇴근하고 싶다."),
                 () -> assertThat(pollItemResponses.get(1).getSelected()).isFalse(),
-                () -> assertThat(pollItemResponses.get(1).getDescription()).isNull()
+                () -> assertThat(pollItemResponses.get(1).getDescription()).isBlank()
         );
     }
 
@@ -219,7 +219,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
                 () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
                 () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0),
-                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isNull(),
+                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isBlank(),
                 () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이 나기 때문이에요")
         );
     }
