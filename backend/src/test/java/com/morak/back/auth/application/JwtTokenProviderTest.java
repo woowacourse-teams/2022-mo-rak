@@ -22,19 +22,18 @@ class JwtTokenProviderTest {
         String token = jwtTokenProvider.createToken(payload);
 
         // then
-        assertThat(jwtTokenProvider.getPayload(token)).isEqualTo(payload);
+        assertThat(jwtTokenProvider.parsePayload(token)).isEqualTo(payload);
     }
 
     @Test
     public void 유효하지않은_토큰인경우_예외를_던진다() {
-        // give된
+        // given
         jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 3600000L);
         String token = "test-token";
 
         // when & then
         assertThatThrownBy(() -> jwtTokenProvider.validateToken(token))
-                .isInstanceOf(AuthorizationException.class)
-                .hasMessage("유효하지 않은 토큰입니다.");
+                .isInstanceOf(AuthorizationException.class);
     }
 
     @Test
@@ -45,7 +44,6 @@ class JwtTokenProviderTest {
 
         // when & then
         assertThatThrownBy(() -> jwtTokenProvider.validateToken(token))
-                .isInstanceOf(AuthorizationException.class)
-                .hasMessage("만료된 토큰입니다.");
+                .isInstanceOf(AuthorizationException.class);
     }
 }

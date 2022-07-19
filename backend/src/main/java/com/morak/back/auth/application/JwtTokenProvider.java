@@ -38,7 +38,7 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public String getPayload(String token) {
+    public String parsePayload(String token) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(key)

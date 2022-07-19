@@ -6,11 +6,13 @@ import com.morak.back.auth.support.Auth;
 import com.morak.back.auth.support.AuthorizationExtractor;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+@Component
 public class AuthResolver implements HandlerMethodArgumentResolver {
 
     private final TokenProvider tokenProvider;
@@ -31,12 +33,12 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
                                   WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
 
-        String token = getToken(request);
-        String payload = tokenProvider.getPayload(token);
+        String token = extractToken(request);
+        String payload = tokenProvider.parsePayload(token);
         return Long.parseLong(payload);
     }
 
-    private String getToken(HttpServletRequest request) {
+    private String extractToken(HttpServletRequest request) {
         try {
             return AuthorizationExtractor.extractOrThrow(request);
         } catch (IllegalArgumentException e) {

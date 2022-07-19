@@ -6,8 +6,10 @@ import com.morak.back.auth.support.AuthorizationExtractor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+@Component
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final TokenProvider tokenProvider;
@@ -22,7 +24,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String token = getToken(request);
+        String token = extractToken(request);
         tokenProvider.validateToken(token);
 
         return true;
@@ -32,7 +34,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         return request.getMethod().equals(HttpMethod.OPTIONS.toString());
     }
 
-    private String getToken(HttpServletRequest request) {
+    private String extractToken(HttpServletRequest request) {
         try {
             return AuthorizationExtractor.extractOrThrow(request);
         } catch (IllegalArgumentException e) {
