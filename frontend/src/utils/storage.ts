@@ -4,7 +4,7 @@ const getLocalStorageItem = (key: string) => {
   return value ? JSON.parse(value) : null;
 };
 
-const getSessionStorage = (key: string) => {
+const getSessionStorageItem = (key: string) => {
   const value = sessionStorage.getItem(key);
 
   return value ? JSON.parse(value) : null;
@@ -16,4 +16,4 @@ const saveLocalStorageItem = <T>(key: string, value: T | Array<T>) =>
 const saveSessionStorageItem = <T>(key: string, value: T | Array<T>) =>
   sessionStorage.setItem(key, JSON.stringify(value));
 
-export { getLocalStorageItem, saveLocalStorageItem, getSessionStorage, saveSessionStorageItem };
+export { getLocalStorageItem, saveLocalStorageItem, getSessionStorageItem, saveSessionStorageItem };
