@@ -17,7 +17,11 @@ function Sidebar() {
     try {
       const res = await createInvitationCode(groupCode);
       const invitationCode = res.headers.get('location').split('/groups/in/')[1];
-      const invitationLink = `http://localhost:3000/invite/${invitationCode}`;
+      const invitationLink = `
+      링크를 클릭하거나, 참가 코드를 입력해주세요😀
+      url: http://localhost:3000/invite/${invitationCode}
+      코드: ${invitationCode}
+      `;
 
       writeClipboard(invitationLink);
       alert('초대링크가 클립보드에 복사되었습니다💌');
