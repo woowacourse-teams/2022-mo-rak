@@ -48,6 +48,7 @@ public class OAuthService {
 
     private Member findOrSaveMember(OAuthMemberInfoResponse memberResponse) {
         return memberRepository.findByOauthId(memberResponse.getOauthId())
-                .orElse(memberRepository.save(memberResponse.toMember()));
+                .orElseGet(() -> memberRepository.save(memberResponse.toMember()));
     }
 }
+
