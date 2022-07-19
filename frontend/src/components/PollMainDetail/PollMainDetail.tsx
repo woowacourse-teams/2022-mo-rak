@@ -7,13 +7,11 @@ import { PollInterface } from '../../types/poll';
 import TextField from '../common/TextField/TextField';
 
 interface Props extends Pick<PollInterface, 'isAnonymous' | 'allowedPollCount'> {
-  status: PollInterface['status']
 }
 
 function PollMainDetail({
   isAnonymous,
-  allowedPollCount,
-  status
+  allowedPollCount
 }: Props) {
   const theme = useTheme();
 
@@ -25,8 +23,8 @@ function PollMainDetail({
         variant="outlined"
         fontSize="0.8rem"
         padding="0.4rem 0"
-        colorScheme={status === 'OPEN' ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
-        color={status === 'OPEN' ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
+        colorScheme={theme.colors.PURPLE_100}
+        color={theme.colors.PURPLE_100}
       >
         {isAnonymous ? '익명' : '기명'}
       </TextField>
@@ -36,8 +34,8 @@ function PollMainDetail({
         variant="outlined"
         fontSize="0.8rem"
         padding="0.4rem 0"
-        colorScheme={status === 'OPEN' ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
-        color={status === 'OPEN' ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
+        colorScheme={theme.colors.PURPLE_100}
+        color={theme.colors.PURPLE_100}
       >
         {allowedPollCount === 1 ? '하나만 투표가능' : '여러개 투표가능'}
       </TextField>

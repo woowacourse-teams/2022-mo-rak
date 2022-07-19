@@ -8,10 +8,9 @@ import theme from '../../styles/theme';
 
 interface Props {
   pollId: PollInterface['id'];
-  status: PollInterface['status'];
 }
 
-function PollMainProgress({ pollId, status }: Props) {
+function PollMainProgress({ pollId }: Props) {
   const [pollResult, setPollResult] = useState<Array<PollItemResultType>>([]);
   const totalParticipants = pollResult.length; // TODO: 그룹 기능 추가되면, 업데이트할 것
   const currentParticipants = pollResult.reduce(
@@ -38,10 +37,9 @@ function PollMainProgress({ pollId, status }: Props) {
         max={totalParticipants}
         value={currentParticipants}
         width="100%"
-        accentColor={status === 'OPEN' ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
       />
       {/* //TODO: prettier 설정 보기 */}
-      <StyledParticipantsStatus status={status}>
+      <StyledParticipantsStatus>
         {currentParticipants}
         명/
         {totalParticipants}
@@ -51,13 +49,8 @@ function PollMainProgress({ pollId, status }: Props) {
   );
 }
 
-const StyledParticipantsStatus = styled.p<{
-  status: string;
-}>(
-  ({ status }) => `
+const StyledParticipantsStatus = styled.p`
   font-size: 0.8rem;
-  color: ${status === 'OPEN' ? theme.colors.BLACK_100 : theme.colors.GRAY_400}
-`
-);
+`;
 
 export default PollMainProgress;

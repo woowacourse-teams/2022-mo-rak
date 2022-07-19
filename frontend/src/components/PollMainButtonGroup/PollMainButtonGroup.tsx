@@ -27,7 +27,7 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
             fontSize="1rem"
             borderRadius="5px"
             color={theme.colors.WHITE_100}
-            colorScheme={status === 'OPEN' ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
+            colorScheme={theme.colors.PURPLE_100}
             onClick={handleNavigate(`/poll/${pollId}/progress`)}
           >
             투표하기
@@ -40,8 +40,8 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
         padding="0.4rem 0"
         fontSize="1rem"
         borderRadius="5px"
-        color={status === 'OPEN' ? theme.colors.BLACK_100 : theme.colors.GRAY_400}
-        colorScheme={status === 'OPEN' ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
+        color={theme.colors.PURPLE_100}
+        colorScheme={theme.colors.PURPLE_100}
         onClick={handleNavigate(`/poll/${pollId}/result`)}
       >
         결과보기
