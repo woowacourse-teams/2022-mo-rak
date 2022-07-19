@@ -32,6 +32,7 @@ const StyledContainer = styled.div(({ theme }) => `
   top: -17px;
   left: 100px;
   background: ${theme.colors.WHITE_100};
+  color: ${theme.colors.BLACK_100};
 `);
 
 // TODO: StyledDescription 사용해서 하기 (child component를 선택할 수 있는 방법을 생각해보기)

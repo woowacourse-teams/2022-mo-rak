@@ -67,10 +67,10 @@ function PollResultContainer({ pollId }: Props) {
           </MarginContainer>
           <MarginContainer margin="0 0 4rem 0">
             <FlexContainer flexDirection="column" gap="1.2rem">
-              <PollResultItemGroup pollId={poll.id} />
+              <PollResultItemGroup status={poll.status} pollId={poll.id} />
             </FlexContainer>
           </MarginContainer>
-          <PollResultButtonGroup pollId={poll.id} />
+          <PollResultButtonGroup status={poll.status} pollId={poll.id} />
         </>
       ) : (
         <div>로딩중</div>
