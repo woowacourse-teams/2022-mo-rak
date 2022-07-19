@@ -111,7 +111,7 @@ function PollProgressForm({ pollId }: Props) {
               handleDescription={handleDescription}
             />
           </MarginContainer>
-          <PollProgressSubmitButton />
+          <PollProgressSubmitButton pollId={pollId} isHost={poll.isHost} />
         </form>
       ) : (
         <div>로딩중</div>

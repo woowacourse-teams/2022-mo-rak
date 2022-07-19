@@ -74,7 +74,7 @@ function PollResultContainer({ pollId }: Props) {
               <PollResultItemGroup status={poll.status} pollId={poll.id} />
             </FlexContainer>
           </MarginContainer>
-          <PollResultButtonGroup status={poll.status} pollId={poll.id} />
+          <PollResultButtonGroup isHost={poll.isHost} status={poll.status} pollId={poll.id} />
         </>
       ) : (
         <div>로딩중</div>
