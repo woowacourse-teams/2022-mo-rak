@@ -1,6 +1,22 @@
 import fetcher from '../utils/fetcher';
 import { GroupInterface } from '../types/group';
 
+const getGroups = () =>
+  fetcher({
+    method: 'GET',
+    path: 'groups',
+    token:
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
+  });
+
+const getGroupMembers = (groupCode: GroupInterface['code']) =>
+  fetcher({
+    method: 'GET',
+    path: `groups/${groupCode}/members`,
+    token:
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
+  });
+
 const createGroup = (name: GroupInterface['name']) =>
   fetcher({
     method: 'POST',
@@ -36,4 +52,20 @@ const getIsJoinedGroup = (invitationCode: string) =>
       'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
   });
 
-export { createGroup, createInvitationCode, participateGroup, getIsJoinedGroup };
+const getDefaultGroup = () =>
+  fetcher({
+    method: 'GET',
+    path: 'groups/default',
+    token:
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
+  });
+
+export {
+  getGroups,
+  createGroup,
+  getGroupMembers,
+  createInvitationCode,
+  participateGroup,
+  getIsJoinedGroup,
+  getDefaultGroup
+};
