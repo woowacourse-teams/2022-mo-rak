@@ -36,13 +36,13 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + token)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
                 .then().log().all()
                 .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(response.header("Location")).startsWith("/groups");
+        assertThat(response.header("Location")).startsWith("/api/groups");
     }
 
     @DisplayName("그룹 초대 코드를 생성한다.")
@@ -55,7 +55,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String location = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + token)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
                 .then().log().all().extract().header("Location");
 
         // when
@@ -69,7 +69,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
-                () -> assertThat(response.header("Location")).startsWith("/groups/in")
+                () -> assertThat(response.header("Location")).startsWith("/api/groups/in")
         );
     }
 
@@ -82,7 +82,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String teamLocation = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + token)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
                 .then().log().all().extract().header("Location");
         String teamInvitationLocation = RestAssured
                 .given().log().all()
@@ -115,7 +115,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String teamLocation = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + token)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
                 .then().log().all().extract().header("Location");
         String teamInvitationLocation = RestAssured
                 .given().log().all()
@@ -149,7 +149,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String teamLocation = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + token)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
                 .then().log().all().extract().header("Location");
         String teamInvitationLocation = RestAssured
                 .given().log().all()
@@ -166,7 +166,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 .then().log().all().extract()
                 .header("Location");
 
-        assertThat(location).startsWith("/groups/");
+        assertThat(location).startsWith("/api/groups/");
     }
 
     @DisplayName("그룹 목록을 조회한다.")
@@ -177,20 +177,20 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String teamALocation = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + token)
-                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
                 .then().log().all().extract().header("Location");
 
         String teamBLocation = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + token)
-                .body(new TeamCreateRequest("group-B")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .body(new TeamCreateRequest("group-B")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
                 .then().log().all().extract().header("Location");
         // when
 
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + token)
-                .get("/groups")
+                .get("/api/groups")
                 .then().log().all().extract();
         List<TeamResponse> teamResponses = response.jsonPath().getList(".", TeamResponse.class);
         // then
@@ -212,7 +212,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String teamLocation = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + member1Token)
-                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
                 .then().log().all().extract().header("Location");
 
         String invitationLocation = RestAssured
@@ -253,14 +253,14 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String teamLocation = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + memberToken)
-                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/groups")
+                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
                 .then().log().all().extract().header("Location");
-        String teamCode = teamLocation.split("/")[2];
+        String teamCode = teamLocation.split("/")[3];
         // when
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + memberToken)
-                .delete("/groups/out/" + teamCode)
+                .delete("/api/groups/out/" + teamCode)
                 .then().log().all().extract();
 
         // then
