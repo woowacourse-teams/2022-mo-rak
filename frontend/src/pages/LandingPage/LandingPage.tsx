@@ -1,19 +1,32 @@
 import styled from '@emotion/styled';
 import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { saveLocalStorageItem, getLocalStorageItem } from '../../utils/localStorage';
+import { getSessionStorage, saveSessionStorageItem } from '../../utils/storage';
 import Logo from '../../assets/logo.svg';
 import GithubLogo from '../../assets/githubLogo.svg';
 import { signin } from '../../api/auth';
+import { getDefaultGroup } from '../../api/group';
 
-function HomePage() {
+function LandingPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const token = getLocalStorageItem('token');
+  const token = getSessionStorage('token');
 
   useEffect(() => {
+    const fetchGetDefaultGroup = async () => {
+      try {
+        const { code: groupCode } = await getDefaultGroup();
+
+        navigate(`/groups/${groupCode}`);
+      } catch (err) {
+        navigate('/init');
+        console.log('랜딩페이지에서 로그인을 했지만, 속해있는 그룹이 없습니다.');
+      }
+    };
+
     if (token) {
-      navigate('/init');
+      console.log(token);
+      fetchGetDefaultGroup();
     }
   }, []);
 
@@ -24,7 +37,7 @@ function HomePage() {
       try {
         const { token } = await signin(code);
 
-        saveLocalStorageItem<string>('token', token);
+        saveSessionStorageItem<string>('token', token);
         navigate('/groups');
       } catch (err) {
         alert('로그인에 실패하였습니다. 다시 시도해주세요');
@@ -91,4 +104,4 @@ const StyledLoginContainer = styled.div(
 `
 );
 
-export default HomePage;
+export default LandingPage;
