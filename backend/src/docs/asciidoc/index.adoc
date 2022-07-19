@@ -6,7 +6,16 @@
 :toclevels: 4
 :sectlinks:
 
-== Morak
+= Morak
 
-operation::poll-create[snippets='http-request,http-response']
-operation::group-create[snippets='http-request,http-response']
+== 투표
+
+=== 투표 생성
+include::{snippets}/poll/poll-create/path-parameters.adoc[]
+include::{snippets}/poll/poll-create/http-request.adoc[]
+include::{snippets}/poll/poll-create/http-response.adoc[]
+
+=== 투표 진행
+include::{snippets}/poll/do-poll/http-request.adoc[]
+include::{snippets}/poll/do-poll/http-response.adoc[]
+
