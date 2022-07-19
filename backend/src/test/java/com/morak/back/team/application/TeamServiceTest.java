@@ -16,6 +16,7 @@ import com.morak.back.auth.domain.TeamMember;
 import com.morak.back.auth.domain.TeamMemberRepository;
 import com.morak.back.auth.domain.TeamRepository;
 import com.morak.back.auth.ui.dto.MemberResponse;
+import com.morak.back.poll.exception.ResourceNotFoundException;
 import com.morak.back.team.domain.ExpiredTime;
 import com.morak.back.team.domain.InvitationCode;
 import com.morak.back.team.domain.TeamInvitation;
@@ -287,6 +288,6 @@ class TeamServiceTest {
         given(teamMemberRepository.findAllByMemberId(anyLong())).willReturn(List.of());
         // when & then
         assertThatThrownBy(() -> teamService.findDefaultTeam(1L))
-                .isInstanceOf(MismatchedTeamException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 }

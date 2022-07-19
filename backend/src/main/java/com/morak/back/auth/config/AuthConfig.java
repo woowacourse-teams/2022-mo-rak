@@ -22,7 +22,7 @@ public class AuthConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(authService))
                 .addPathPatterns("/polls/**")
-                .addPathPatterns("/groups/**");
+                .addPathPatterns("/api/groups/**");
     }
 
     @Override
