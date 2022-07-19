@@ -39,7 +39,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // when
         ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/polls")
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups/MoraK123/polls")
                 .then().log().all().extract();
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -54,7 +54,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // when
         ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
-                .get("/polls")
+                .get("/api/groups/MoraK123/polls")
                 .then().log().all().extract();
 
         // then
@@ -327,7 +327,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     private String 투표를_생성한_뒤_투표_URL을_받는다(String accessToken, PollCreateRequest request) {
         return RestAssured.given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/polls")
+                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups/MoraK123/polls")
                 .then().log().all().extract().header("Location");
     }
 
