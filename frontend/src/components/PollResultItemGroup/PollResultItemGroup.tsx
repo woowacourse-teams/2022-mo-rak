@@ -5,6 +5,7 @@ import { PollInterface, PollItemResultType } from '../../types/poll';
 import { getPollResult } from '../../api/poll';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
 import Crown from '../../assets/crown.svg';
+import Check from '../../assets/check.svg';
 
 // import UserWhite from '../../assets/user_white.svg';
 import UserPurple from '../../assets/user_purple.svg';
@@ -71,6 +72,7 @@ function PollResultItemGroup({ pollId, status }: Props) {
           color={status === 'CLOSED' && winningPollItem === id ? theme.colors.WHITE_100 : theme.colors.BLACK_100}
           colorScheme={theme.colors.PURPLE_100}
         >
+          <StyledCheckIcon isOpen={status === 'OPEN'} isWinningPollItem={winningPollItem === id} src={Check} alt="check" />
           <StyledCrownIcon isClosed={status === 'CLOSED'} isWinningPollItem={winningPollItem === id} src={Crown} alt="crown" />
           {subject}
           <StyledParticipantCount onClick={handleShowParticipant(id)}>
@@ -107,6 +109,18 @@ const StyledCrownIcon = styled.img<CSSProperties & {
   isWinningPollItem: boolean;
 }>(({ isClosed, isWinningPollItem }) => `
   display: ${isClosed && isWinningPollItem ? 'inline' : 'none'};
+  position: absolute;
+  top: 1rem;
+  left: 2rem;
+  width: 2rem;
+  height: 2rem;
+`);
+
+const StyledCheckIcon = styled.img<CSSProperties & {
+  isOpen: boolean;
+  isWinningPollItem: boolean;
+}>(({ isOpen, isWinningPollItem }) => `
+  display: ${isOpen && isWinningPollItem ? 'inline' : 'none'};
   position: absolute;
   top: 0.8rem;
   left: 2rem;
