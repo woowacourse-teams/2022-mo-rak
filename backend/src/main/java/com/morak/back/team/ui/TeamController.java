@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/groups")
+@RequestMapping("/api/groups")
 public class TeamController {
 
     private final TeamService teamService;
@@ -29,13 +29,13 @@ public class TeamController {
     @PostMapping
     public ResponseEntity<Void> createTeam(@Auth Long memberId, @Valid @RequestBody TeamCreateRequest request) {
         String code = teamService.createTeam(memberId, request);
-        return ResponseEntity.created(URI.create("/groups/" + code)).build();
+        return ResponseEntity.created(URI.create("/api/groups/" + code)).build();
     }
 
     @PostMapping("/{teamCode}/invitation")
     public ResponseEntity<Void> createInvitationCode(@Auth Long memberId, @PathVariable String teamCode) {
         String code = teamService.createInvitationCode(memberId, teamCode);
-        return ResponseEntity.created(URI.create("/groups/in/" + code)).build();
+        return ResponseEntity.created(URI.create("/api/groups/in/" + code)).build();
     }
 
     @GetMapping("/in/{invitationCode}")
@@ -46,7 +46,7 @@ public class TeamController {
     @PostMapping("/in/{invitationCode}")
     public ResponseEntity<Void> joinTeam(@Auth Long memberId, @PathVariable String invitationCode) {
         String teamCode = teamService.join(memberId, invitationCode);
-        return ResponseEntity.created(URI.create("/groups/" + teamCode)).build();
+        return ResponseEntity.created(URI.create("/api/groups/" + teamCode)).build();
     }
 
     @GetMapping
