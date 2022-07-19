@@ -24,55 +24,69 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/polls")
+@RequestMapping("/api/groups/{groupCode}/polls")
 public class PollController {
 
     private final PollService pollService;
-    private Long tempTeamId = 1L;
 
     @PostMapping
-    public ResponseEntity<Void> createPoll(@Auth Long memberId, @Valid @RequestBody PollCreateRequest request) {
-        Long id = pollService.createPoll(tempTeamId, memberId, request);
-        return ResponseEntity.created(URI.create("/polls/" + id)).build();
+    public ResponseEntity<Void> createPoll(@PathVariable String groupCode,
+                                           @Auth Long memberId,
+                                           @Valid @RequestBody PollCreateRequest request) {
+        Long id = pollService.createPoll(groupCode, memberId, request);
+        return ResponseEntity.created(URI.create("/api/groups/" + groupCode +"/polls/" + id)).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> doPoll(@Auth Long memberId, @PathVariable Long id,
+    public ResponseEntity<Void> doPoll(@PathVariable String groupCode,
+                                       @Auth Long memberId,
+                                       @PathVariable Long id,
                                        @Valid @RequestBody List<PollItemRequest> requests) {
-        pollService.doPoll(memberId, id, requests);
+        pollService.doPoll(groupCode, memberId, id, requests);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<PollResponse>> findPolls(@Auth Long memberId) {
-        return ResponseEntity.ok(pollService.findPolls(tempTeamId, memberId));
+    public ResponseEntity<List<PollResponse>> findPolls(@PathVariable String groupCode,
+                                                        @Auth Long memberId) {
+        return ResponseEntity.ok(pollService.findPolls(groupCode, memberId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PollResponse> findPoll(@Auth Long memberId, @PathVariable Long id) {
-        return ResponseEntity.ok(pollService.findPoll(tempTeamId, memberId, id));
+    public ResponseEntity<PollResponse> findPoll(@PathVariable String groupCode,
+                                                 @Auth Long memberId,
+                                                 @PathVariable Long id) {
+        return ResponseEntity.ok(pollService.findPoll(groupCode, memberId, id));
     }
 
     @GetMapping("/{id}/items")
-    public ResponseEntity<List<PollItemResponse>> findPollItems(@Auth Long memberId, @PathVariable Long id) {
-        return ResponseEntity.ok(pollService.findPollItems(tempTeamId, memberId, id));
+    public ResponseEntity<List<PollItemResponse>> findPollItems(@PathVariable String groupCode,
+                                                                @Auth Long memberId,
+                                                                @PathVariable Long id) {
+        return ResponseEntity.ok(pollService.findPollItems(groupCode, memberId, id));
     }
 
 
     @GetMapping("/{id}/result")
-    public ResponseEntity<List<PollItemResultResponse>> findPollResult(@Auth Long memberId, @PathVariable Long id) {
-        return ResponseEntity.ok(pollService.findPollItemResults(tempTeamId, memberId, id));
+    public ResponseEntity<List<PollItemResultResponse>> findPollResult(@PathVariable String groupCode,
+                                                                       @Auth Long memberId,
+                                                                       @PathVariable Long id) {
+        return ResponseEntity.ok(pollService.findPollItemResults(groupCode, memberId, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePoll(@Auth Long memberId, @PathVariable Long id) {
-        pollService.deletePoll(tempTeamId, memberId, id);
+    public ResponseEntity<Void> deletePoll(@PathVariable String groupCode,
+                                           @Auth Long memberId,
+                                           @PathVariable Long id) {
+        pollService.deletePoll(groupCode, memberId, id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/close")
-    public ResponseEntity<Void> closePoll(@Auth Long memberId, @PathVariable Long id) {
-        pollService.closePoll(tempTeamId, memberId, id);
+    public ResponseEntity<Void> closePoll(@PathVariable String groupCode,
+                                          @Auth Long memberId,
+                                          @PathVariable Long id) {
+        pollService.closePoll(groupCode, memberId, id);
         return ResponseEntity.ok().build();
     }
 }
