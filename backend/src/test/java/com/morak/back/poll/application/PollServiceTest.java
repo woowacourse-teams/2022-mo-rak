@@ -88,7 +88,7 @@ class PollServiceTest {
     @Test
     void findPolls() {
         // given
-        given(memberRepository.getById(anyLong())).willReturn(member);
+        given(memberRepository.findById(tempMemberId)).willReturn(Optional.of(member));
         given(pollRepository.findAllByTeamId(anyLong()))
                 .willReturn(List.of(new Poll(
                                 1L,
@@ -102,7 +102,7 @@ class PollServiceTest {
                                 null)
                         )
                 );
-        
+
         // when
         List<PollResponse> polls = pollService.findPolls(1L, 1L);
 
@@ -117,9 +117,10 @@ class PollServiceTest {
     @Test
     void doPoll() {
         // given
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         PollItem pollItem1 = new PollItem(1L, null, "sub1");
         PollItem pollItem2 = new PollItem(2L, null, "sub2");
+
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(pollRepository.findById(anyLong())).willReturn(Optional.of(new Poll(
                         1L,
                         null,
@@ -133,11 +134,12 @@ class PollServiceTest {
                         List.of(pollItem1, pollItem2)
                 )
         ));
-        given(pollItemRepository.findAllById(any())).willReturn(List.of(pollItem1, pollItem2));
-        
+        given(pollItemRepository.findById(1L)).willReturn(Optional.of(pollItem1));
+        given(pollItemRepository.findById(2L)).willReturn(Optional.of(pollItem2));
+
         // when
-        pollService.doPoll(1L, 1L, new PollItemRequest(List.of(1L, 2L)));
-         
+        pollService.doPoll(1L, 1L, List.of(new PollItemRequest(1L, "그냥뇨"), new PollItemRequest(2L, "")));
+
         // then
         Assertions.assertAll(
                 () -> assertThat(pollItem1.getPollResults()).hasSize(1),
@@ -149,8 +151,8 @@ class PollServiceTest {
     @Test
     void rePoll() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member);
-        PollResult pollResult2 = new PollResult(2L, null, member);
+        PollResult pollResult1 = new PollResult(1L, null, member, "거의 다 한 것 같아요");
+        PollResult pollResult2 = new PollResult(2L, null, member, "집에 가고 싶어요!");
         PollItem pollItem1 = new PollItem(1L, null, "sub1", new ArrayList<>(List.of(pollResult1)));
         PollItem pollItem2 = new PollItem(2L, null, "sub2", new ArrayList<>(List.of(pollResult2)));
         PollItem pollItem3 = new PollItem(3L, null, "sub3");
@@ -169,11 +171,14 @@ class PollServiceTest {
                         Arrays.asList(pollItem1, pollItem2, pollItem3)
                 )
         ));
-        given(pollItemRepository.findAllById(any())).willReturn(Arrays.asList(pollItem2, pollItem3));
-        
+
+        given(pollItemRepository.findById(1L)).willReturn(Optional.of(pollItem1));
+        given(pollItemRepository.findById(2L)).willReturn(Optional.of(pollItem2));
+        given(pollItemRepository.findById(3L)).willReturn(Optional.of(pollItem3));
+
         // when
-        pollService.doPoll(1L, 1L, new PollItemRequest(Arrays.asList(2L, 3L)));
-        
+        pollService.doPoll(1L, 1L, List.of(new PollItemRequest(2L, "그냥뇨"), new PollItemRequest(3L, "")));
+
         // then
         Assertions.assertAll(
                 () -> assertThat(pollItem1.getPollResults()).hasSize(0),
@@ -200,10 +205,10 @@ class PollServiceTest {
                                 null)
                         )
                 );
-        
+
         // when
         PollResponse poll = pollService.findPoll(1L, 1L, 1L);
-        
+
         // then
         Assertions.assertAll(
                 () -> assertThat(poll.getTitle()).isEqualTo("test-poll-title"),
@@ -215,6 +220,7 @@ class PollServiceTest {
     @Test
     void findPollItems() {
         // given
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
                 .willReturn(Optional.of(new Poll(
                         1L,
@@ -230,12 +236,46 @@ class PollServiceTest {
                 );
 
         // when
-        List<PollItemResponse> pollItemResponses = pollService.findPollItems(1L, 1L);
+        List<PollItemResponse> pollItemResponses = pollService.findPollItems(1L, 1L, 1L);
 
         // then
         Assertions.assertAll(
                 () -> assertThat(pollItemResponses).hasSize(2),
-                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1")
+                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1"),
+                () -> assertThat(pollItemResponses.get(0).getSelected()).isFalse(),
+                () -> assertThat(pollItemResponses.get(0).getDescription()).isBlank()
+        );
+    }
+
+    @Test
+    void 투표를_진행한_상태에서_투표_선택_항목을_조회한다() {
+        // given
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
+                .willReturn(Optional.of(new Poll(
+                        1L,
+                        null,
+                        member,
+                        null,
+                        null,
+                        null,
+                        CLOSED,
+                        null,
+                        null,
+                        List.of(new PollItem(1L, null, "항목1",
+                                        List.of(new PollResult(null, null, member, "그냥뇨~"))),
+                                new PollItem(2L, null, "항목2"))))
+                );
+
+        // when
+        List<PollItemResponse> pollItemResponses = pollService.findPollItems(1L, 1L, 1L);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(pollItemResponses).hasSize(2),
+                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1"),
+                () -> assertThat(pollItemResponses.get(0).getSelected()).isTrue(),
+                () -> assertThat(pollItemResponses.get(0).getDescription()).isEqualTo("그냥뇨~")
         );
     }
 
@@ -243,8 +283,8 @@ class PollServiceTest {
     @Test
     void findPollResultsWithAnonymous() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member);
-        PollResult pollResult2 = new PollResult(2L, null, member);
+        PollResult pollResult1 = new PollResult(1L, null, member, "거의 다 한 것 같아요");
+        PollResult pollResult2 = new PollResult(2L, null, member, "집에 가고 싶어요!");
 
         Poll poll = new Poll(
                 1L,
@@ -260,27 +300,32 @@ class PollServiceTest {
         PollItem pollItem2 = new PollItem(2L, poll, "항목2", new ArrayList<>(List.of(pollResult2)));
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
+
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
-                .willReturn(Optional.of(poll)
-                );
+                .willReturn(Optional.of(poll));
 
         // when
-        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(1L, 1L);
+        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(1L, 1L, 1L);
 
         // then
         Assertions.assertAll(
                 () -> assertThat(pollItemResultResponses).hasSize(2),
-                () -> assertThat(pollItemResultResponses.get(0).getMembers()).hasSize(0),
-                () -> assertThat(pollItemResultResponses.get(0).getCount()).isEqualTo(1)
+                () -> assertThat(pollItemResultResponses.get(0).getCount()).isEqualTo(1),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers()).hasSize(1),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getId()).isEqualTo(0L),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getName()).isBlank(),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo(
+                        "거의 다 한 것 같아요")
         );
     }
 
-    @DisplayName("무기명 투표 결과를 조회한다.")
+    @DisplayName("기명 투표 결과를 조회한다.")
     @Test
     void findPollResultsWithNotAnonymous() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member);
-        PollResult pollResult2 = new PollResult(2L, null, member);
+        PollResult pollResult1 = new PollResult(1L, null, member, "거의 다 한 것 같아요");
+        PollResult pollResult2 = new PollResult(2L, null, member, "집에 가고 싶어요!");
 
         Poll poll = new Poll(
                 1L,
@@ -296,12 +341,14 @@ class PollServiceTest {
         PollItem pollItem2 = new PollItem(2L, poll, "항목2", new ArrayList<>(List.of(pollResult2)));
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
+
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong()))
                 .willReturn(Optional.of(poll)
                 );
 
         // when
-        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(1L, 1L);
+        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(1L, 1L, 1L);
 
         // then
         Assertions.assertAll(

@@ -38,8 +38,8 @@ public class PollController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> doPoll(@Auth Long memberId, @PathVariable Long id,
-                                       @Valid @RequestBody PollItemRequest pollItemRequest) {
-        pollService.doPoll(memberId, id, pollItemRequest);
+                                       @Valid @RequestBody List<PollItemRequest> requests) {
+        pollService.doPoll(memberId, id, requests);
         return ResponseEntity.ok().build();
     }
 
@@ -54,14 +54,14 @@ public class PollController {
     }
 
     @GetMapping("/{id}/items")
-    public ResponseEntity<List<PollItemResponse>> findPollItems(@PathVariable Long id) {
-        return ResponseEntity.ok(pollService.findPollItems(tempTeamId, id));
+    public ResponseEntity<List<PollItemResponse>> findPollItems(@Auth Long memberId, @PathVariable Long id) {
+        return ResponseEntity.ok(pollService.findPollItems(tempTeamId, memberId, id));
     }
 
 
     @GetMapping("/{id}/result")
-    public ResponseEntity<List<PollItemResultResponse>> findPollResult(@PathVariable Long id) {
-        return ResponseEntity.ok(pollService.findPollItemResults(tempTeamId, id));
+    public ResponseEntity<List<PollItemResultResponse>> findPollResult(@Auth Long memberId, @PathVariable Long id) {
+        return ResponseEntity.ok(pollService.findPollItemResults(tempTeamId, memberId, id));
     }
 
     @DeleteMapping("/{id}")

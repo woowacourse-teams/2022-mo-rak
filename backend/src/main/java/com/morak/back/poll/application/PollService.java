@@ -17,6 +17,7 @@ import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,8 +47,9 @@ public class PollService {
         return savedPoll.getId();
     }
 
+    @Transactional(readOnly = true)
     public List<PollResponse> findPolls(Long teamId, Long memberId) {
-        Member member = memberRepository.getById(memberId);
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         List<Poll> polls = pollRepository.findAllByTeamId(teamId);
 
         return polls.stream()
@@ -55,13 +57,24 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
-    public void doPoll(Long tempMemberId, Long pollId, PollItemRequest pollItemRequest) {
-        Member member = memberRepository.findById(tempMemberId).orElseThrow(ResourceNotFoundException::new);
+    public void doPoll(Long memberId, Long pollId, List<PollItemRequest> requests) {
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         Poll poll = pollRepository.findById(pollId).orElseThrow(ResourceNotFoundException::new);
-        List<PollItem> items = pollItemRepository.findAllById(pollItemRequest.getItemIds());
-        poll.doPoll(items, member);
+
+        poll.doPoll(member, mapPollItemAndDescription(requests));
     }
 
+    private Map<PollItem, String> mapPollItemAndDescription(List<PollItemRequest> requests) {
+        return requests.stream()
+                .collect(Collectors.toMap(this::getPollItem, PollItemRequest::getDescription));
+    }
+
+    private PollItem getPollItem(PollItemRequest request) {
+        return pollItemRepository.findById(request.getItemId())
+                .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    @Transactional(readOnly = true)
     public PollResponse findPoll(Long teamId, Long memberId, Long pollId) {
         Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
 
@@ -70,17 +83,22 @@ public class PollService {
         return PollResponse.from(poll, member);
     }
 
-    public List<PollItemResponse> findPollItems(Long teamId, Long pollId) {
-        //TODO: 멤버 확인해야돼!!
+    @Transactional(readOnly = true)
+    public List<PollItemResponse> findPollItems(Long teamId, Long memberId, Long pollId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
+
         return poll.getPollItems()
                 .stream()
-                .map(PollItemResponse::from)
+                .map(item -> PollItemResponse.of(item, member))
                 .collect(Collectors.toList());
     }
 
-    public List<PollItemResultResponse> findPollItemResults(Long teamId, Long pollId) {
+    @Transactional(readOnly = true)
+    public List<PollItemResultResponse> findPollItemResults(Long teamId, Long memberId, Long pollId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
+
         return poll.getPollItems()
                 .stream()
                 .map(PollItemResultResponse::of)

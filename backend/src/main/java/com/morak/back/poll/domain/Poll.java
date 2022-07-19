@@ -6,6 +6,9 @@ import com.morak.back.poll.exception.InvalidRequestException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -70,12 +73,13 @@ public class Poll extends BaseEntity {
         pollItems.add(pollItem);
     }
 
-    public void doPoll(List<PollItem> newItems, Member member) {
+    public void doPoll(Member member, Map<PollItem, String> mappedItemAndDescription) {
         validateStatus();
-        validateCounts(newItems.size());
-        validateNewItemsBelongsTo(newItems);
+        validateCounts(mappedItemAndDescription.size());
+        validateNewItemsBelongsTo(mappedItemAndDescription.keySet());
+
         deleteMembersFromPollItems(member);
-        addMembersToPollItems(newItems, member);
+        addMembersToPollItems(member, mappedItemAndDescription);
     }
 
     private void validateStatus() {
@@ -90,7 +94,7 @@ public class Poll extends BaseEntity {
         }
     }
 
-    private void validateNewItemsBelongsTo(List<PollItem> newItems) {
+    private void validateNewItemsBelongsTo(Set<PollItem> newItems) {
         if (!this.pollItems.containsAll(newItems)) {
             throw new InvalidRequestException();
         }
@@ -98,13 +102,13 @@ public class Poll extends BaseEntity {
 
     private void deleteMembersFromPollItems(Member member) {
         for (PollItem pollItem : pollItems) {
-            pollItem.deleteIfPollMember(member);
+            pollItem.deletePollResultIfPollMember(member);
         }
     }
 
-    private void addMembersToPollItems(List<PollItem> newItems, Member member) {
-        for (PollItem newItem : newItems) {
-            newItem.addPollResult(member);
+    private void addMembersToPollItems(Member member, Map<PollItem, String> mappedItemAndDescription) {
+        for (Entry<PollItem, String> entry : mappedItemAndDescription.entrySet()) {
+            entry.getKey().addPollResult(member, entry.getValue());
         }
     }
 

@@ -24,16 +24,14 @@ values (1, 'test-poll-item-subject-B', now(), now());
 INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
 values (1, 'test-poll-item-subject-C', now(), now());
 
-INSERT INTO poll_result (poll_item_id, member_id, created_at, updated_at)
-values (1, 1, now(), now());
+INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
+values (1, 1, '까라는 매일 자니깐..', now(), now());
 
-INSERT INTO poll_result (poll_item_id, member_id, created_at, updated_at)
-values (2, 1, now(), now());
+INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
+values (2, 1, '그냥뇨', now(), now());
 
-INSERT INTO poll_result (poll_item_id, member_id, created_at, updated_at)
-values (2, 2, now(), now());
+INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
+values (2, 2, '', now(), now());
 
-INSERT INTO poll_result (poll_item_id, member_id, created_at, updated_at)
-values (3, 2, now(), now());
-
-
+INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
+values (3, 2, '에덴이 시켰어요', now(), now());

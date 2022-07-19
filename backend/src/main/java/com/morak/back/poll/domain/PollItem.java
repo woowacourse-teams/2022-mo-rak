@@ -42,21 +42,34 @@ public class PollItem extends BaseEntity {
         this.subject = subject;
     }
 
-    public void addPollResult(Member member) {
-        PollResult pollResult = new PollResult(null, this, member);
+    public void addPollResult(Member member, String description) {
+        PollResult pollResult = new PollResult(null, this, member, description);
         pollResults.add(pollResult);
     }
 
-    public void deleteIfPollMember(Member member) {
-        pollResults.removeIf(pollResult -> pollResult.getMember().equals(member));
+    public void deletePollResultIfPollMember(Member member) {
+        pollResults.removeIf(pollResult -> pollResult.isSameMember(member));
     }
 
-    public List<Member> getMembersByAnonymous() {
+    public List<PollResult> getResultsByAnonymous() {
         if (poll.getIsAnonymous()) {
-            return new ArrayList<>();
+            return pollResults.stream()
+                    .map(PollResult::fromAnonymous)
+                    .collect(Collectors.toList());
         }
+        return pollResults;
+    }
+
+    public Boolean isSelectedBy(Member member) {
         return pollResults.stream()
-                .map(PollResult::getMember)
-                .collect(Collectors.toList());
+                .anyMatch(result -> result.isSameMember(member));
+    }
+
+    public String getDescriptionFrom(Member member) {
+        return pollResults.stream()
+                .filter(result -> result.isSameMember(member))
+                .map(PollResult::getDescription)
+                .findFirst()
+                .orElseGet(() -> "");
     }
 }
