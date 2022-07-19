@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { saveLocalStorageItem } from '../../utils/localStorage';
+import { saveLocalStorageItem, getLocalStorageItem } from '../../utils/localStorage';
 import Logo from '../../assets/logo.svg';
 import GithubLogo from '../../assets/githubLogo.svg';
 import { signin } from '../../api/auth';
@@ -9,9 +9,17 @@ import { signin } from '../../api/auth';
 function HomePage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const token = getLocalStorageItem('token');
+
+  useEffect(() => {
+    if (token) {
+      navigate('/init');
+    }
+  }, []);
 
   useEffect(() => {
     // TODO: fetch하는 함수이지만 navigate도 해주고있다..근데 try..catch...사용하려면 이렇게밖에 못함
+    // TODO: strict mode라서 로그인이 된 이후에도 요청을 다시 보내서 에러가 나온다.
     const fetchSignin = async (code: string) => {
       try {
         const { token } = await signin(code);
