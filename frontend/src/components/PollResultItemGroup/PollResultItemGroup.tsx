@@ -34,6 +34,7 @@ const getWinningPollItem = (pollItems: PollItemResultType[]) => {
 };
 
 // TODO: Props로 interface를 설정해줘서 type vs 직접 인자에 type 설정
+// TODO: status에 따라 보여주는 컴포넌트가 달라지도록 분기처리를 해주는 것이 좋을까?
 function PollResultItemGroup({ pollId, status }: Props) {
   const theme = useTheme();
   const [pollItems, setPollItems] = useState<Array<PollItemResultType>>([]);
@@ -63,7 +64,7 @@ function PollResultItemGroup({ pollId, status }: Props) {
 
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
-      { pollItems?.map(({ id, subject, count }) => (
+      { pollItems?.map(({ id, subject, count, members }) => (
         <TextField
           variant={status === 'CLOSED' && winningPollItem === id ? 'filled' : 'outlined'}
           fontSize="1.6rem"
@@ -84,7 +85,8 @@ function PollResultItemGroup({ pollId, status }: Props) {
                 {count}
               </StyledUserCount>
             </FlexContainer>
-            {(activePollItem === id) ? <PollParticipantModal participants={[{ id: 1, name: '우영우', profileUrl: 'https://spnimage.edaily.co.kr/images/Photo/files/NP/S/2022/06/PS22062800115.jpg' }, { id: 2, name: '태연', profileUrl: 'https://cdnweb01.wikitree.co.kr/webdata/editor/202202/03/img_20220203152221_f00e3cfa.webp' }]} /> : ''}
+            {/* {[{ id: 1, name: '우영우', profileUrl: 'https://spnimage.edaily.co.kr/images/Photo/files/NP/S/2022/06/PS22062800115.jpg' }, { id: 2, name: '태연', profileUrl: 'https://cdnweb01.wikitree.co.kr/webdata/editor/202202/03/img_20220203152221_f00e3cfa.webp' }]} */}
+            {(activePollItem === id) ? <PollParticipantModal participants={members} /> : ''}
           </StyledParticipantCount>
         </TextField>
       ))}

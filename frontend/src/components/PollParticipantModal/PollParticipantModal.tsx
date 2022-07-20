@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import styled from '@emotion/styled';
 import { PollMembersInterface } from '../../types/poll';
@@ -8,16 +9,21 @@ interface Props {
 
 function PollParticipantModal({ participants }: Props) {
   return (
-    <StyledContainer>
-      {participants.map(({ profileUrl, name, id }) => (
-        <StyledUserProfile>
-          <StyledUserImage src={profileUrl} />
-          <StyledUserName>{name}</StyledUserName>
-          {/* TODO: 컴포넌트로 변경하기 */}
-          <div className="description">{id}</div>
-        </StyledUserProfile>
-      ))}
-    </StyledContainer>
+    <>
+      {participants.length ? (
+        <StyledContainer>
+          {participants.map(({ profileUrl, name, description }) => (
+            <StyledUserProfile>
+              <StyledUserImage src={profileUrl} />
+              {/* TODO: 이후 api 바뀐 명세에 따라, name === ''으로 변경해야함 */}
+              <StyledUserName>{name === null ? '익명' : name}</StyledUserName>
+              {/* TODO: 컴포넌트로 변경하기 */}
+              <div className="description">{description}</div>
+            </StyledUserProfile>
+          ))}
+        </StyledContainer>
+      ) : ''}
+    </>
   );
 }
 
