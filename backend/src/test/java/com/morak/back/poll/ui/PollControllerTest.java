@@ -6,19 +6,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.morak.back.poll.application.PollService;
@@ -33,13 +29,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(PollController.class)
-@MockBean(JpaMetamodelMappingContext.class)
 class PollControllerTest extends ControllerTest {
 
     @MockBean
@@ -49,54 +42,44 @@ class PollControllerTest extends ControllerTest {
 
     @Test
     void 투표를_생성한다() throws Exception {
-        //given
+        // given
         PollCreateRequest pollCreateRequest = new PollCreateRequest("회식 메뉴", 2, false, LocalDateTime.now().plusDays(1),
                 List.of("회", "삼겹살", "꿔바로우"));
 
-        given(pollService.createPoll(any(), any(), any())).willReturn(1L);
+        given(pollService.createPoll(anyString(), anyLong(), any(PollCreateRequest.class))).willReturn(1L);
 
         // when
         ResultActions response = mockMvc.perform(post("/api/groups/{groupCode}/polls", groupCode)
-                        .header("Authorization", "bearer access.token")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(pollCreateRequest)))
-                .andExpectAll();
+                .header("Authorization", "bearer access.token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pollCreateRequest)));
 
         // then
         response
                 .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/api/groups/" + groupCode + "/polls/1"))
                 .andDo(document("poll/poll-create",
                         getDocumentRequest(),
                         getDocumentResponse(),
-                        pathParameters(parameterWithName("groupCode").description("그룹 코드")),
-                        requestHeaders(headerWithName("Authorization").description("access token")),
-                        requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("투표 제목"),
-                                fieldWithPath("allowedPollCount").type(JsonFieldType.NUMBER)
-                                        .description("투표 선택 가능 개수"),
-                                fieldWithPath("isAnonymous").type(JsonFieldType.BOOLEAN).description("익명 여부"),
-                                fieldWithPath("closedAt").type(JsonFieldType.STRING).description("마감 시간"),
-                                fieldWithPath("subjects").type(JsonFieldType.ARRAY).description("투표 선택 항목")
-                        ),
-                        responseHeaders(headerWithName("Location").description("생성된 투표 URL"))
-                ));
+                        pathParameters(parameterWithName("groupCode").description("그룹 코드"))
+                        ));
     }
 
     @Test
     void 투표를_진행한다() throws Exception {
-        //given
+        // given
         List<PollItemRequest> pollItemRequests = List.of(
                 new PollItemRequest(1L, "회는 싱싱하니까요~"),
-                new PollItemRequest(2L, "삼겹살은 언제나 좋아요!!"));
+                new PollItemRequest(2L, "삼겹살은 언제나 좋아요!!")
+        );
 
-        //when
+        // when
         ResultActions response = mockMvc.perform(put("/api/groups/{groupCode}/polls/{id}", groupCode, 1L)
                         .header("Authorization", "bearer access.token")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(pollItemRequests)))
-                .andExpectAll();
+                        .content(objectMapper.writeValueAsString(pollItemRequests)));
 
-        //then
+        // then
         response
                 .andExpect(status().isOk())
                 .andDo(document("poll/do-poll",
@@ -111,7 +94,7 @@ class PollControllerTest extends ControllerTest {
 
     @Test
     void 투표_목록을_조회한다() throws Exception {
-        //given
+        // given
         given(pollService.findPolls(anyString(), anyLong()))
                 .willReturn(List.of(
                         new PollResponse(1L, "회식 메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
@@ -120,12 +103,11 @@ class PollControllerTest extends ControllerTest {
                                 LocalDateTime.now().plusDays(3), "SZ72Yofx", false)
                 ));
 
-        //when
+        // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls", groupCode)
-                        .header("Authorization", "bearer access.token"))
-                .andExpectAll();
+                        .header("Authorization", "bearer access.token"));
 
-        //then
+        // then
         response
                 .andExpect(status().isOk())
                 .andDo(document("poll/get-polls",
@@ -139,17 +121,16 @@ class PollControllerTest extends ControllerTest {
 
     @Test
     void 투표를_조회한다() throws Exception {
-        //given
+        // given
         given(pollService.findPoll(anyString(), anyLong(), anyLong()))
                 .willReturn(new PollResponse(1L, "회식 메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
                         LocalDateTime.now().plusDays(3), groupCode, true));
 
-        //when
+        // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"))
-                .andExpectAll();
+                        .header("Authorization", "bearer access.token"));
 
-        //then
+        // then
         response
                 .andExpect(status().isOk())
                 .andDo(document("poll/get-poll",
@@ -163,7 +144,7 @@ class PollControllerTest extends ControllerTest {
 
     @Test
     void 투표_선택_항목들을_조회한다() throws Exception {
-        //given
+        // given
         given(pollService.findPollItems(anyString(), anyLong(), anyLong()))
                 .willReturn(List.of(
                         new PollItemResponse(1L, "회", true, "위니가 회를 참 좋아해요."),
@@ -171,12 +152,11 @@ class PollControllerTest extends ControllerTest {
                         new PollItemResponse(3L, "꿔바로우", false, "")
                 ));
 
-        //when
+        // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}/items", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"))
-                .andExpectAll();
+                        .header("Authorization", "bearer access.token"));
 
-        //then
+        // then
         response
                 .andExpect(status().isOk())
                 .andDo(document("poll/get-poll-items",
@@ -190,7 +170,7 @@ class PollControllerTest extends ControllerTest {
 
     @Test
     void 익명_투표_결과를_조회한다() throws Exception {
-        //given
+        // given
         MemberResultResponse memberResultResponse1 = new MemberResultResponse(0L, "", "", "위니가 회를 참 좋아해요.");
         MemberResultResponse memberResultResponse2 = new MemberResultResponse(0L, "", "", "해리가 삼겹살을 정말 좋아해요.");
 
@@ -201,12 +181,11 @@ class PollControllerTest extends ControllerTest {
                         new PollItemResultResponse(3L, 0, List.of(), "꿔바로우")
                 ));
 
-        //when
+        // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}/result", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"))
-                .andExpectAll();
+                        .header("Authorization", "bearer access.token"));
 
-        //then
+        // then
         response
                 .andExpect(status().isOk())
                 .andDo(document("poll/get-poll-results-anonymous",
@@ -221,9 +200,11 @@ class PollControllerTest extends ControllerTest {
 
     @Test
     void 기명_투표_결과를_조회한다() throws Exception {
-        //given
-        MemberResultResponse memberResultResponse1 = new MemberResultResponse(1L, "송상민씨", "albur-profile-image-url", "위니가 회를 참 좋아해요.");
-        MemberResultResponse memberResultResponse2 = new MemberResultResponse(2L, "리엘", "ellie-profile-image-url", "해리가 삼겹살을 정말 좋아해요.");
+        // given
+        MemberResultResponse memberResultResponse1 = new MemberResultResponse(1L, "송상민씨", "albur-profile-image-url",
+                "위니가 회를 참 좋아해요.");
+        MemberResultResponse memberResultResponse2 = new MemberResultResponse(2L, "리엘", "ellie-profile-image-url",
+                "해리가 삼겹살을 정말 좋아해요.");
 
         given(pollService.findPollItemResults(anyString(), anyLong(), anyLong()))
                 .willReturn(List.of(
@@ -231,12 +212,12 @@ class PollControllerTest extends ControllerTest {
                         new PollItemResultResponse(2L, 1, List.of(memberResultResponse2), "삼겹살"),
                         new PollItemResultResponse(3L, 0, List.of(), "꿔바로우")
                 ));
-        //when
-        ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}/result", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"))
-                .andExpectAll();
 
-        //then
+        // when
+        ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}/result", groupCode, 1L)
+                        .header("Authorization", "bearer access.token"));
+
+        // then
         response
                 .andExpect(status().isOk())
                 .andDo(document("poll/get-poll-results",
@@ -251,14 +232,11 @@ class PollControllerTest extends ControllerTest {
 
     @Test
     void 투표를_삭제한다() throws Exception {
-        //given
-
-        //when
+        // when
         ResultActions response = mockMvc.perform(delete("/api/groups/{groupCode}/polls/{id}", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"))
-                .andExpectAll();
+                        .header("Authorization", "bearer access.token"));
 
-        //then
+        // then
         response
                 .andExpect(status().isNoContent())
                 .andDo(document("poll/delete-poll",
@@ -272,14 +250,11 @@ class PollControllerTest extends ControllerTest {
 
     @Test
     void 투표를_마감한다() throws Exception {
-        //given
-
-        //when
+        // when
         ResultActions response = mockMvc.perform(patch("/api/groups/{groupCode}/polls/{id}/close", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"))
-                .andExpectAll();
+                        .header("Authorization", "bearer access.token"));
 
-        //then
+        // then
         response
                 .andExpect(status().isOk())
                 .andDo(document("poll/close-poll",
