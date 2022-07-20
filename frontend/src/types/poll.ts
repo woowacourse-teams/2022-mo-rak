@@ -3,7 +3,7 @@ interface PollInterface {
   title: string;
   allowedPollCount: number | string;
   isAnonymous: boolean;
-  status: 'OPEN' | 'CLOSE';
+  status: 'OPEN' | 'CLOSED';
   createdAt: string;
   closedAt: string;
   code: string;
@@ -30,6 +30,7 @@ interface PollMembersInterface {
   id: number;
   name: string;
   profileUrl: string;
+  description: string;
 }
 
 // TODO: 네이밍
