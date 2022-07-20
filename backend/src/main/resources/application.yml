@@ -13,8 +13,8 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:h2:~/morak-dev;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
+    url: jdbc:h2:~/${DATABASE_NAME};MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: ${USER_NAME}
   h2:
     console:
       enabled: true
@@ -33,8 +33,20 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:h2:~/morak-dev;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
+    url: jdbc:h2:~/${DATABASE_NAME};MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: ${USER_NAME}
   h2:
     console:
       enabled: true
+
+---
+
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET_KEY}
+      expire-length: ${EXPIRED_TIME}
+  oauth:
+    github:
+      client-id: ${GITHUB_CLIENT_ID}
+      client-secret: ${GITHUB_CLIENT_SECRET}

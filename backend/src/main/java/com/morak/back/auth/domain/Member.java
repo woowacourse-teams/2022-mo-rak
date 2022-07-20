@@ -16,28 +16,43 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Member extends BaseEntity {
 
+    private static final Member ANONYMOUS_MEMBER = new Member(
+            0L,
+            null,
+            "",
+            "https://user-images.githubusercontent.com/45311765/179645488-2d8c29c8-f8ed-43e9-9951-b30e82ead5ed.png"
+    );
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    private String oauthId;
 
     private String name;
 
+    private String profileUrl;
+
+    public static Member getAnonymous() {
+        return ANONYMOUS_MEMBER;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null)
+        }
+        if (o == null) {
             return false;
-        Member member = (Member)o;
-        return Objects.equals(getId(), member.getId()) && Objects.equals(getEmail(), member.getEmail())
-            && Objects.equals(getName(), member.getName());
+        }
+        Member member = (Member) o;
+        return Objects.equals(id, member.getId()) && Objects.equals(oauthId, member.getOauthId())
+                && Objects.equals(name, member.getName()) && Objects.equals(profileUrl, member.getProfileUrl());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getName());
+        return Objects.hash(id, oauthId, name, profileUrl);
     }
 }
 

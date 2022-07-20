@@ -1,13 +1,12 @@
 package com.morak.back.poll.support;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.Team;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 @Component
 public class DomainSupplier {
@@ -22,8 +21,9 @@ public class DomainSupplier {
         String sql = "SELECT * FROM member WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
             new Member(rs.getLong("id"),
-                rs.getString("email"),
-                rs.getString("name")
+                rs.getString("oauth_id"),
+                rs.getString("name"),
+                    rs.getString("profile_url")
             ), id);
     }
 

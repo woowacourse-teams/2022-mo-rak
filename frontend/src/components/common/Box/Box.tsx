@@ -17,7 +17,7 @@ const StyledBox = styled.div<CSSProperties>(
     border-radius: ${borderRadius || '15px'};
     box-shadow: 0px 4px 4px ${theme.colors.TRANSPARENT_BLACK_25};
     background-color: ${theme.colors.WHITE_100};
-    padding: ${padding}
+    padding: ${padding};
   `
 );
 
