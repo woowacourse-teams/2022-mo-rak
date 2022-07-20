@@ -22,7 +22,7 @@ public class OAuthAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .body(new SigninRequest(code))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .post("/auth/signin")
+                .post("/api/auth/signin")
                 .then().log().all().extract();
 
         // then

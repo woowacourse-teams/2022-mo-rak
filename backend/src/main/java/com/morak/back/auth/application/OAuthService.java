@@ -2,8 +2,8 @@ package com.morak.back.auth.application;
 
 import com.morak.back.auth.application.dto.OAuthAccessTokenResponse;
 import com.morak.back.auth.application.dto.OAuthMemberInfoResponse;
-import com.morak.back.auth.domain.Member2;
-import com.morak.back.auth.domain.Member2Repository;
+import com.morak.back.auth.domain.Member;
+import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.AuthorizationException;
 import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
@@ -15,11 +15,11 @@ import org.springframework.web.client.HttpClientErrorException;
 @Transactional
 public class OAuthService {
 
-    private final Member2Repository memberRepository;
+    private final MemberRepository memberRepository;
     private final OAuthClient oAuthClient;
     private final TokenProvider tokenProvider;
 
-    public OAuthService(Member2Repository memberRepository,
+    public OAuthService(MemberRepository memberRepository,
                         OAuthClient oAuthClient,
                         TokenProvider tokenProvider) {
         this.memberRepository = memberRepository;
@@ -30,7 +30,7 @@ public class OAuthService {
     public SigninResponse signin(SigninRequest request) {
         OAuthMemberInfoResponse memberResponse = getOAuthMemberInfo(request.getCode());
 
-        Member2 member = findOrSaveMember(memberResponse);
+        Member member = findOrSaveMember(memberResponse);
 
         String token = tokenProvider.createToken(String.valueOf(member.getId()));
 
@@ -46,8 +46,9 @@ public class OAuthService {
         }
     }
 
-    private Member2 findOrSaveMember(OAuthMemberInfoResponse memberResponse) {
+    private Member findOrSaveMember(OAuthMemberInfoResponse memberResponse) {
         return memberRepository.findByOauthId(memberResponse.getOauthId())
-                .orElse(memberRepository.save(memberResponse.toMember2()));
+                .orElseGet(() -> memberRepository.save(memberResponse.toMember()));
     }
 }
+

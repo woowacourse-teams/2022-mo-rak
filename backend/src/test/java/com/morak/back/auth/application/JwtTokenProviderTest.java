@@ -22,7 +22,7 @@ class JwtTokenProviderTest {
         String token = jwtTokenProvider.createToken(payload);
 
         // then
-        assertThat(jwtTokenProvider.getPayload(token)).isEqualTo(payload);
+        assertThat(jwtTokenProvider.parsePayload(token)).isEqualTo(payload);
     }
 
     @Test
@@ -32,18 +32,18 @@ class JwtTokenProviderTest {
         String token = "test-token";
 
         // when & then
-        assertThatThrownBy(() -> jwtTokenProvider.getPayload(token))
+        assertThatThrownBy(() -> jwtTokenProvider.validateToken(token))
                 .isInstanceOf(AuthorizationException.class);
     }
 
     @Test
-    public void 만료되지_않은_토큰인경우_예외를_던진다() {
+    public void 만료된_토큰인경우_예외를_던진다() {
         // given
         jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 0L);
         String token = jwtTokenProvider.createToken("엘리");
 
         // when & then
-        assertThatThrownBy(() -> jwtTokenProvider.getPayload(token))
+        assertThatThrownBy(() -> jwtTokenProvider.validateToken(token))
                 .isInstanceOf(AuthorizationException.class);
     }
 }
