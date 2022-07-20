@@ -40,7 +40,7 @@ function PollResultButtonGroup({ pollId, status, isHost }: Props) {
     }
   };
 
-  if (!isHost) {
+  if (isHost) {
     return (
       <>
         {status === 'OPEN'
