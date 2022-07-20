@@ -98,6 +98,8 @@ public class Poll extends BaseEntity {
         if (!this.pollItems.containsAll(newItems)) {
             throw new InvalidRequestException();
         }
+        System.out.println("hello world");
+
     }
 
     private void deleteMembersFromPollItems(Member member) {
