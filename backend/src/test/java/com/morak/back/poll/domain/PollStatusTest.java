@@ -19,6 +19,17 @@ class PollStatusTest {
         assertThat(isClosed).isFalse();
     }
 
+    @DisplayName("투표가 종료되었는지 확인한다")
+    @Test
+    void test() {
+        // given
+        PollStatus status = PollStatus.OPEN;
+        // when
+        boolean isClosed = status.isClosed();
+        // then
+        assertThat(isClosed).isTrue();
+    }
+
     @DisplayName("투표를 종료한다.")
     @Test
     void close() {
