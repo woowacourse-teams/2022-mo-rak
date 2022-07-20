@@ -209,7 +209,7 @@ class PollControllerTest extends ControllerTest {
         //then
         response
                 .andExpect(status().isOk())
-                .andDo(document("poll/get-poll-results",
+                .andDo(document("poll/get-poll-results-anonymous",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
