@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Progress from '../common/Progress/Progress';
-import { PollResultInterface } from '../../types/poll';
+import { PollItemResultType } from '../../types/poll';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
 
 interface Props {
-  pollResult: Array<PollResultInterface>;
+  pollResult: Array<PollItemResultType>;
 }
 
 function PollResultProgress({ pollResult }: Props) {
-  const totalParticipants = pollResult.length;
+  const totalParticipants = pollResult.length; // TODO: 그룹 멤버수?
   const currentParticipants = pollResult.reduce(
-    (prev: number, cur: PollResultInterface) => prev + cur.count,
+    (prev: number, cur: PollItemResultType) => prev + cur.count,
     0
   );
 
@@ -20,14 +20,15 @@ function PollResultProgress({ pollResult }: Props) {
       <Progress
         max={totalParticipants}
         value={currentParticipants}
-        width="73.6rem"
-        height="1.6rem"
+        width="100%"
+        padding="1.2rem 0"
       />
       {/* //TODO: prettier 설정 보기 */}
       <StyledParticipantsStatus>
         {currentParticipants}
         명/
-        {totalParticipants}명
+        {totalParticipants}
+        명
       </StyledParticipantsStatus>
     </FlexContainer>
   );

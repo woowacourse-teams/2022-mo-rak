@@ -76,6 +76,7 @@ function Sidebar() {
 
 const StyledContainer = styled.div(
   ({ theme }) => `
+  z-index: 1; 
   width: 36.4rem;
   height: 100vh;
   position: sticky;

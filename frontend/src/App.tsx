@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import PollMainPage from './pages/PollMainPage/PollMainPage';
 import PollCreatePage from './pages/PollCreatePage/PollCreatePage';
 import PollProgressPage from './pages/PollProgressPage/PollProgressPage';
 import LandingPage from './pages/LandingPage/LandingPage';
@@ -21,9 +22,10 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route element={<PrivateRoute />}>
             <Route element={<SidebarLayout />}>
-              <Route path="/create" element={<PollCreatePage />} />
-              <Route path="/progress" element={<PollProgressPage />} />
-              <Route path="/result" element={<PollResultPage />} />
+              <Route path="/poll" element={<PollMainPage />} />
+              <Route path="/poll/create" element={<PollCreatePage />} />
+              <Route path="/poll/:id/progress" element={<PollProgressPage />} />
+              <Route path="/poll/:id/result" element={<PollResultPage />} />
               <Route path="/groups" element={<MainPage />}>
                 <Route path=":groupCode" element={<MainPage />} />
               </Route>

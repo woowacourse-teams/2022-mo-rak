@@ -11,65 +11,65 @@ import Button from '../common/Button/Button';
 import Bin from '../../assets/bin.svg';
 
 interface Props {
-  formInputs: Array<string>;
-  setFormInputs: Dispatch<SetStateAction<Array<string>>>;
+  // TODO: 타입을 재사용 할 수는 없을까?
+  pollItems: Array<string>;
+  setPollItems: Dispatch<SetStateAction<Array<string>>>;
 }
 
-// TODO: 왜 비제어 컴포넌트일때는 안됐을까? 이거 비제어로 해야되긴한다...
-function PollCreateFormInputGroup({ formInputs, setFormInputs }: Props) {
+function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
   const theme = useTheme();
 
-  const handleAddInput = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleAddPollItem = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (formInputs.length >= 10) {
+    if (pollItems.length >= 10) {
       alert('최대 10개의 선택항목만 가능합니다');
 
       return;
     }
 
-    setFormInputs([...formInputs, '']);
+    setPollItems([...pollItems, '']);
   };
 
-  const handleDeleteInput = (targetIdx: number) => () => {
+  const handleDeletePollItem = (targetIdx: number) => () => {
     // TODO: 상수화
+    // TODO: 2개이하면 삭제되지 않도록 해줘야함
     if (window.confirm('해당 항목을 삭제하시겠습니까?')) {
-      const newFormInputs = [...formInputs].filter((_, idx) => idx !== targetIdx);
+      const newPollItems = [...pollItems].filter((_, idx) => idx !== targetIdx);
 
-      setFormInputs(newFormInputs);
+      setPollItems(newPollItems);
     }
   };
 
   const handleChange = (targetIdx: number) => (e: ChangeEvent<HTMLInputElement>) => {
-    const newFormInputs = [...formInputs];
+    const newPollItems = [...pollItems];
 
-    newFormInputs[targetIdx] = e.target.value;
+    newPollItems[targetIdx] = e.target.value;
 
-    setFormInputs(newFormInputs);
+    setPollItems(newPollItems);
   };
 
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
-      {formInputs.map((formInput, idx) => (
+      {pollItems.map((pollItem, idx) => (
         <TextField
           variant="outlined"
-          height="3.6rem"
           borderRadius="10px"
-          padding="0 10rem"
+          padding="1.2rem 10rem"
           position="relative"
           colorScheme={theme.colors.PURPLE_100}
         >
           <FlexContainer alignItems="center">
             <Input
-              id={formInput}
-              value={formInput}
+              id={pollItem}
+              value={pollItem}
               color={theme.colors.BLACK_100}
-              fontSize="1rem"
+              fontSize="1.2rem"
               placeholder="선택항목을 입력해주세요!"
               onChange={handleChange(idx)}
               required
             />
-            <DeleteIcon src={Bin} alt="bin" onClick={handleDeleteInput(idx)} />
+            <DeleteIcon src={Bin} alt="bin" onClick={handleDeletePollItem(idx)} />
           </FlexContainer>
         </TextField>
       ))}
@@ -78,8 +78,7 @@ function PollCreateFormInputGroup({ formInputs, setFormInputs }: Props) {
         colorScheme={theme.colors.PURPLE_100}
         color={theme.colors.WHITE_100}
         fontSize="2rem"
-        height="4rem"
-        onClick={handleAddInput}
+        onClick={handleAddPollItem}
         type="button"
       >
         +
@@ -88,12 +87,10 @@ function PollCreateFormInputGroup({ formInputs, setFormInputs }: Props) {
   );
 }
 
-export default PollCreateFormInputGroup;
-
 const DeleteIcon = styled.img`
   position: absolute;
   right: 1rem;
   cursor: pointer;
 `;
 
-// onClickIcon = { handleDeleteInput(idx); };
+export default PollCreateFormInputGroup;

@@ -23,16 +23,12 @@ const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
       `;
     case 'unstyled':
       return `
-        input {
-          border: none;
-          background-color: transparent;
-        }
+        border: none;
+        background-color: transparent;
       `;
     case 'filled':
       return `
-        input {
-          background-color: ${colorScheme};
-        }
+        background-color: ${colorScheme};
       `;
     default:
       return '';
@@ -57,30 +53,22 @@ function TextField({
   );
 }
 
+// TODO: color, fontsize 빼기
 const StyledContainer = styled.div<
   CSSProperties & {
     variantStyle: string;
   }
 >(
-  ({ width, borderRadius, variantStyle, position, padding }) => `
+  ({ width, borderRadius, variantStyle, position, padding, color, fontSize }) => `
     ${variantStyle};
+    position: ${position};
     width: ${width || '100%'};
     border-radius: ${borderRadius};
-    overflow: hidden;
-    position: ${position};
     padding: ${padding};
+    color: ${color};
+    font-size: ${fontSize};
+    text-align: center;
   `
 );
 
 export default TextField;
-
-/* {icon && (
-        <StyledButton type="button" onClick={onClickIcon}>
-          <img src={icon} alt={icon} />
-        </StyledButton>
-      )} */
-
-// icon?: string;
-// onClickIcon?: MouseEventHandler<HTMLButtonElement>;
-// icon,
-// onClickIcon,
