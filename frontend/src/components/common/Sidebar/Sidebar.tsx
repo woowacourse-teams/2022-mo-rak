@@ -5,16 +5,17 @@ import FlexContainer from '../FlexContainer/FlexContainer';
 
 function Sidebar() {
   return (
-    <Container>
+    <StyledContainer>
       <FlexContainer alignItems="center" justifyContent="center">
         <LogoStyled src={Logo} alt={Logo} />
       </FlexContainer>
-    </Container>
+    </StyledContainer>
   );
 }
 
-const Container = styled.div(
+const StyledContainer = styled.div(
   ({ theme }) => `
+  z-index: 1; 
   width: 36.4rem;
   height: 100vh;
   position: sticky;

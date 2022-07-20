@@ -25,7 +25,7 @@ public class OAuthController {
         this.clientId = clientId;
     }
 
-    @PostMapping("/auth/signin")
+    @PostMapping("/api/auth/signin")
     public ResponseEntity<SigninResponse> signin(@RequestBody SigninRequest request) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(oAuthService.signin(request));

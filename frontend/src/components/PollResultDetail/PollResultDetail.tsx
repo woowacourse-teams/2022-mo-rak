@@ -1,45 +1,46 @@
 import { useTheme } from '@emotion/react';
 import React from 'react';
 
-import Button from '../common/Button/Button';
+import TextField from '../common/TextField/TextField';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
 
 import { PollInterface } from '../../types/poll';
 
-function PollProgressButtonGroup({
+interface Props extends Pick<PollInterface, 'isAnonymous' | 'allowedPollCount'> {}
+
+function PollResultDetail({
   isAnonymous,
   allowedPollCount
-}: Pick<PollInterface, 'isAnonymous' | 'allowedPollCount'>) {
+}: Props) {
   const theme = useTheme();
 
   return (
     <FlexContainer gap="1.2rem">
-      <Button
+      <TextField
         width="6.4rem"
-        height="3.6rem"
         borderRadius="20px"
+        padding="1.2rem 0"
         variant="outlined"
         fontSize="0.8rem"
         colorScheme={theme.colors.PURPLE_100}
-        disabled
-        type="button"
+        color={theme.colors.PURPLE_100}
+
       >
         {isAnonymous ? '익명' : '기명'}
-      </Button>
-      <Button
+      </TextField>
+      <TextField
         width="9.2rem"
-        height="3.6rem"
         borderRadius="20px"
+        padding="1.2rem 0"
         variant="outlined"
         fontSize="0.8rem"
         colorScheme={theme.colors.PURPLE_100}
-        disabled
-        type="button"
+        color={theme.colors.PURPLE_100}
       >
         {allowedPollCount === 1 ? '하나만 투표가능' : '여러개 투표가능'}
-      </Button>
+      </TextField>
     </FlexContainer>
   );
 }
 
-export default PollProgressButtonGroup;
+export default PollResultDetail;

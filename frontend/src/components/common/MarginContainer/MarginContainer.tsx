@@ -5,10 +5,10 @@ import styled from '@emotion/styled';
 interface Props extends PropsWithChildren<HTMLAttributes<HTMLDivElement>> {}
 
 function MarginContainer({ children, ...props }: Props & CSSProperties) {
-  return <Container {...props}>{children}</Container>;
+  return <StyledContainer {...props}>{children}</StyledContainer>;
 }
 
-const Container = styled.div<CSSProperties>(
+const StyledContainer = styled.div<CSSProperties>(
   ({ margin }) => `
   margin: ${margin};
 `

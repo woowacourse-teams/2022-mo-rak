@@ -9,7 +9,7 @@ DROP TABLE member IF EXISTS;
 CREATE TABLE member
 (
     `id`          bigint       NOT NULL AUTO_INCREMENT,
-    `oauth_id`    varchar(255) NOT NULL,
+    `oauth_id`    varchar(255) NOT NULL UNIQUE,
     `name`        varchar(255) NOT NULL,
     `profile_url` varchar(255),
     `created_at`  datetime     NOT NULL,

@@ -3,24 +3,34 @@ interface PollInterface {
   title: string;
   allowedPollCount: number | string;
   isAnonymous: boolean;
-  status: 'OPEN' | 'CLOSE';
+  status: 'OPEN' | 'CLOSED';
   createdAt: string;
   closedAt: string;
   code: string;
   isHost: boolean;
 }
 
-interface PollResultInterface {
+interface PollItemInterface {
   id: number;
   count: number;
-  members: [];
   subject: string;
 }
+
+// TODO: 고민해보자...
+interface SelectedPollItemInterface {
+  itemId: PollItemInterface['id'];
+  description: string;
+}
+
+type PollItemResultType = PollItemInterface & {
+  members: [];
+};
 
 interface PollMembersInterface {
   id: number;
   name: string;
   profileUrl: string;
+  description: string;
 }
 
 // TODO: 네이밍
@@ -28,12 +38,6 @@ type PollCreateType = Pick<
   PollInterface,
   'title' | 'allowedPollCount' | 'isAnonymous' | 'closedAt'
 > & { subjects: string[] };
-
-interface PollItemInterface {
-  id: number;
-  count: number;
-  subject: string;
-}
 
 type PollProgressType = {
   [key: string]: Array<PollItemInterface['id']>;
@@ -44,6 +48,7 @@ export {
   PollCreateType,
   PollItemInterface,
   PollProgressType,
-  PollResultInterface,
-  PollMembersInterface
+  PollItemResultType,
+  PollMembersInterface,
+  SelectedPollItemInterface
 };
