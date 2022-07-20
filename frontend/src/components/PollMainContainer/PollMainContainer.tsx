@@ -40,9 +40,11 @@ function PollMainContainer() {
 
   return (
     <>
-      <Button width="8rem" color={theme.colors.WHITE_100} colorScheme={theme.colors.PURPLE_100} variant="filled" onClick={handleNavigate('/poll/create')}>
-        투표 생성하기
-      </Button>
+      <FlexContainer justifyContent="end">
+        <Button width="8rem" color={theme.colors.WHITE_100} colorScheme={theme.colors.PURPLE_100} variant="filled" onClick={handleNavigate('/poll/create')}>
+          투표 생성하기
+        </Button>
+      </FlexContainer>
       {/* TODO: Wrapper가 아닌듯? 컴포넌트 나누고 고쳐도 될듯 */}
       <StyledContainer>
         {/* status에따라, filter: grayscale(1) 주기 */}
