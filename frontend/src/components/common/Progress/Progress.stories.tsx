@@ -13,6 +13,5 @@ export const Default = Template.bind({});
 Default.args = {
   value: '0',
   max: '100',
-  width: '200px',
-  height: '50px'
+  width: '200px'
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 import styled from '@emotion/styled';
 import { PollInterface } from '../../types/poll';
@@ -8,15 +8,15 @@ interface Props {
   title: PollInterface['title'];
 }
 
-function PollTitle({ title }: Props) {
+// TODO: 재사용 되는데, common에 넣어야하나?...
+
+function PollMainTitle({ title }: Props) {
   return <StyledTitle>{title}</StyledTitle>;
 }
 
-const StyledTitle = styled.h1(
-  ({ theme }) => `
-  color: ${theme.colors.BLACK_100};
-  font-size: 3.2rem;
-`
-);
+const StyledTitle = styled.h1`
+  font-size: 1.6rem;
+  text-align: center;
+`;
 
-export default PollTitle;
+export default PollMainTitle;
