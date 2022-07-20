@@ -37,7 +37,6 @@ function PollProgressSubmitButton({ pollId, isHost }: Props) {
           colorScheme={theme.colors.GRAY_400}
           color={theme.colors.WHITE_100}
           fontSize="2rem"
-          type="submit"
           onClick={handleDeletePoll}
         >
           투표 삭제하기

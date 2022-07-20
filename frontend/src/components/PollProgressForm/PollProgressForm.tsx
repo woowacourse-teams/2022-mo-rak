@@ -74,17 +74,21 @@ function PollProgressForm({ pollId }: Props) {
 
   useEffect(() => {
     const fetchPoll = async (pollId: PollInterface['id']) => {
-      const res = await getPoll(pollId);
-      setPoll(res);
+      // res가 있는지?
+      try {
+        const res = await getPoll(pollId);
+        if (res.status === 'CLOSED') {
+          navigate('/poll');
+        }
+
+        setPoll(res);
+        // TODO: pollid가 없을 때 메인 화면으로 보내주기!
+      } catch (err) {
+        alert('poll 없어~~');
+        navigate('/poll');
+      }
     };
-
-    try {
-      fetchPoll(pollId);
-
-      // TODO: pollid가 없을 때 메인 화면으로 보내주기!
-    } catch (err) {
-      alert(err);
-    }
+    fetchPoll(pollId);
   }, []);
 
   return (
