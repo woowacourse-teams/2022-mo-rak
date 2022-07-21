@@ -15,7 +15,6 @@ import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 function PollProgressForm() {
   const navigate = useNavigate();
   const { groupCode, pollId } = useParams();
-
   // TODO: 기본 객체를 줘야할까? undefined로 놓는 것이 위험한가?
   const [poll, setPoll] = useState<PollInterface>();
   const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItemInterface>>([]);
@@ -37,7 +36,7 @@ function PollProgressForm() {
   };
 
   // TODO: 두 가지 역할을 하는 걸까?
-  const handleSelectPollItem = (mode: string) => (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSelectPollItems = (mode: string) => (e: ChangeEvent<HTMLInputElement>) => {
     const id = Number(e.target.id);
     const newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
 
@@ -100,7 +99,7 @@ function PollProgressForm() {
   return (
     // TODO: 화면 작았다 켜지는 것 수정
     <Box width="84.4rem" padding="6.4rem 4.8rem 5.4rem 4.8rem">
-      {poll && pollId ? (
+      {poll && pollId && groupCode ? (
         <form onSubmit={handleSubmit}>
           <MarginContainer margin="0 0 4rem 0">
             <PollTitle title={poll.title} />
@@ -117,7 +116,7 @@ function PollProgressForm() {
               pollId={poll.id}
               selectedPollItems={selectedPollItems}
               allowedPollCount={poll.allowedPollCount}
-              handleSelectPollItem={handleSelectPollItem}
+              handleSelectPollItems={handleSelectPollItems}
               handleDescription={handleDescription}
               groupCode={groupCode}
             />
