@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { Link, useParams } from 'react-router-dom';
-import Logo from '../../../assets/logo.svg';
-import LinkIcon from '../../../assets/linkIcon.svg';
-import { createInvitationCode, getGroups } from '../../../api/group';
-import { writeClipboard } from '../../../utils/clipboard';
-import { GroupInterface } from '../../../types/group';
+import Logo from '../../assets/logo.svg';
+import LinkIcon from '../../assets/linkIcon.svg';
+import { createInvitationCode, getGroups } from '../../api/group';
+import { writeClipboard } from '../../utils/clipboard';
+import { GroupInterface } from '../../types/group';
 
 function Sidebar() {
   // TODO: groupCode가 무조건 존재하나?
-  const { groupCode } = useParams() as { groupCode: string };
+  const { groupCode } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
+  // const navigate = useNavigate();
 
   const handleCopyInviationCode = async () => {
     try {
-      const res = await createInvitationCode(groupCode);
-      const invitationCode = res.headers.get('location').split('/groups/in/')[1];
-      const invitationLink = `
-      링크를 클릭하거나, 참가 코드를 입력해주세요😀
-      url: http://localhost:3000/invite/${invitationCode}
-      코드: ${invitationCode}
-      `;
+      if (groupCode) {
+        const res = await createInvitationCode(groupCode);
+        const invitationCode = res.headers.get('location').split('/groups/in/')[1];
+        const invitationLink = `
+        링크를 클릭하거나, 참가 코드를 입력해주세요😀
+        url: http://localhost:3000/invite/${invitationCode}
+        코드: ${invitationCode}
+        `;
 
-      writeClipboard(invitationLink);
-      alert('초대링크가 클립보드에 복사되었습니다💌');
+        writeClipboard(invitationLink);
+        alert('초대링크가 클립보드에 복사되었습니다💌');
+      }
     } catch (err) {
       alert(err);
     }
@@ -44,6 +47,15 @@ function Sidebar() {
 
     fetchGroups();
   }, []);
+
+  // useEffect(() => {
+  //   const isJoinedGroup = groups.some((group) => group.code === groupCode);
+
+  //   if (!isJoinedGroup) {
+  //     console.log('권한이 없습니다.', groups);
+  //     navigate('/404');
+  //   }
+  // }, [groupCode, groups]);
 
   if (isLoading) return <div>로딩중</div>;
 
