@@ -4,60 +4,45 @@ import { GroupInterface } from '../types/group';
 const getGroups = () =>
   fetcher({
     method: 'GET',
-    path: 'groups',
-    token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
+    path: 'groups'
   });
 
 const getGroupMembers = (groupCode: GroupInterface['code']) =>
   fetcher({
     method: 'GET',
-    path: `groups/${groupCode}/members`,
-    token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
+    path: `groups/${groupCode}/members`
   });
 
 const createGroup = (name: GroupInterface['name']) =>
   fetcher({
     method: 'POST',
     path: 'groups',
-    body: { name },
-    // TODO: 임시 제거
-    token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
+    body: { name }
   });
 
 const createInvitationCode = (groupCode: GroupInterface['code']) =>
   fetcher({
     method: 'POST',
-    path: `groups/${groupCode}/invitation`,
-    token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
+    path: `groups/${groupCode}/invitation`
   });
 
 const participateGroup = (invitationCode: string) =>
   fetcher({
     method: 'POST',
-    path: `groups/in/${invitationCode}`,
-    token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
+    path: `groups/in/${invitationCode}`
   });
 
 // 그룹 가입 여부 확인
 const getIsJoinedGroup = (invitationCode: string) =>
   fetcher({
     method: 'GET',
-    path: `groups/in/${invitationCode}`,
-    token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
+    path: `groups/in/${invitationCode}`
   });
 
 const getDefaultGroup = () =>
   fetcher({
     method: 'GET',
-    path: 'groups/default',
-    token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
+    path: 'groups/default'
   });
 
 export {

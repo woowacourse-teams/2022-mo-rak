@@ -1,19 +1,27 @@
 import { PollInterface, PollCreateType, SelectedPollItemInterface } from '../types/poll';
 import fetcher from '../utils/fetcher';
+import { GroupInterface } from '../types/group';
 
-const getPolls = () => fetcher({ method: 'GET', path: 'polls/' });
-const getPoll = (id: PollInterface['id']) => fetcher({ method: 'GET', path: `polls/${id}` });
-const getPollItems = (id: PollInterface['id']) =>
-  fetcher({ method: 'GET', path: `polls/${id}/items` });
-const getPollResult = (id: PollInterface['id']) =>
-  fetcher({ method: 'GET', path: `polls/${id}/result` });
-const createPoll = (poll: PollCreateType) => fetcher({ method: 'POST', path: 'polls', body: poll });
+const getPolls = (groupCode: GroupInterface['code'] = 'zvHB6c8Z') =>
+  fetcher({ method: 'GET', path: `groups/${groupCode}/polls/` });
+const getPoll = (id: PollInterface['id'], groupCode: GroupInterface['code'] = 'zvHB6c8Z') =>
+  fetcher({ method: 'GET', path: `groups/${groupCode}/polls/${id}` });
+const getPollItems = (id: PollInterface['id'], groupCode: GroupInterface['code'] = 'zvHB6c8Z') =>
+  fetcher({ method: 'GET', path: `groups/${groupCode}/polls/${id}/items` });
+const getPollResult = (id: PollInterface['id'], groupCode: GroupInterface['code'] = 'zvHB6c8Z') =>
+  fetcher({ method: 'GET', path: `groups/${groupCode}/polls/${id}/result` });
+const createPoll = (poll: PollCreateType, groupCode: GroupInterface['code'] = 'zvHB6c8Z') =>
+  fetcher({ method: 'POST', path: `groups/${groupCode}/polls`, body: poll });
 // TODO: 백엔드 API 이상으로 인해 itemIds 임시 타입 적용
-const progressPoll = (id: PollInterface['id'], items: SelectedPollItemInterface[]) =>
-  fetcher({ method: 'PUT', path: `polls/${id}`, body: items });
-const deletePoll = (id: PollInterface['id']) => fetcher({ method: 'DELETE', path: `polls/${id}` });
-const closePoll = (id: PollInterface['id']) =>
-  fetcher({ method: 'PATCH', path: `polls/${id}/close` });
+const progressPoll = (
+  id: PollInterface['id'],
+  items: SelectedPollItemInterface[],
+  groupCode: GroupInterface['code'] = 'zvHB6c8Z'
+) => fetcher({ method: 'PUT', path: `groups/${groupCode}/polls/${id}`, body: items });
+const deletePoll = (id: PollInterface['id'], groupCode: GroupInterface['code'] = 'zvHB6c8Z') =>
+  fetcher({ method: 'DELETE', path: `groups/${groupCode}/polls/${id}` });
+const closePoll = (id: PollInterface['id'], groupCode: GroupInterface['code'] = 'zvHB6c8Z') =>
+  fetcher({ method: 'PATCH', path: `groups/${groupCode}/polls/${id}/close` });
 
 export {
   getPolls,
