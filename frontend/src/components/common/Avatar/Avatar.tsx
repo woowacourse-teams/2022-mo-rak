@@ -18,21 +18,23 @@ function Avatar({ profileUrl, name, width, fontSize }: Props) {
 
 const StyledUserProfile = styled.div<CSSProperties>(
   ({ width }) => `
-  width: ${width || '4.4rem'};
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: ${width || '8rem'};
   cursor: pointer;
 `
 );
 
 const StyledUserImage = styled.img`
   width: 100%;
-  height: 4.4rem;
   border-radius: 100%;
 `;
 
-const StyledUserName = styled.div<CSSProperties>(
+const StyledUserName = styled.p<CSSProperties>(
   ({ fontSize }) => `
   text-align: center;
-  font-size: ${fontSize || '1.2rem'};
+  font-size: ${fontSize || '1.6rem'};
 `
 );
 
