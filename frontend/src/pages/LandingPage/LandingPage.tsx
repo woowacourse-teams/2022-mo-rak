@@ -1,17 +1,23 @@
 import styled from '@emotion/styled';
 import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { getSessionStorage, saveSessionStorageItem } from '../../utils/storage';
+import {
+  getLocalStorageItem,
+  saveLocalStorageItem,
+  removeLocalStorageItem
+} from '../../utils/storage';
 import Logo from '../../assets/logo.svg';
 import GithubLogo from '../../assets/githubLogo.svg';
 import { signin } from '../../api/auth';
 import { getDefaultGroup } from '../../api/group';
 
+// TODO: 페이지 추상화
 function LandingPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const token = getSessionStorage('token');
-
+  // TODO: 중복 로직해결
+  // TODO: 다시 한 번 token을 가져오는
+  const token = getLocalStorageItem('token');
   useEffect(() => {
     const fetchGetDefaultGroup = async () => {
       try {
@@ -19,13 +25,24 @@ function LandingPage() {
 
         navigate(`/groups/${groupCode}`);
       } catch (err) {
-        navigate('/init');
-        console.log('랜딩페이지에서 로그인을 했지만, 속해있는 그룹이 없습니다.');
+        if (err instanceof Error) {
+          const statusCode = err.message;
+          if (statusCode === '401') {
+            removeLocalStorageItem('token');
+            navigate('/');
+
+            return;
+          }
+
+          if (statusCode === '404') {
+            navigate('/init');
+            console.log('랜딩페이지에서 로그인을 했지만, 속해있는 그룹이 없습니다.');
+          }
+        }
       }
     };
 
     if (token) {
-      console.log(token);
       fetchGetDefaultGroup();
     }
   }, []);
@@ -37,8 +54,8 @@ function LandingPage() {
       try {
         const { token } = await signin(code);
 
-        saveSessionStorageItem<string>('token', token);
-        navigate('/groups');
+        saveLocalStorageItem<string>('token', token);
+        navigate('/init');
       } catch (err) {
         alert('로그인에 실패하였습니다. 다시 시도해주세요');
         navigate('/');
