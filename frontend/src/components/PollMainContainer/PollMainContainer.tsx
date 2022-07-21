@@ -10,6 +10,7 @@ import PollMainDetail from '../PollMainDetail/PollMainDetail';
 import PollMainProgress from '../PollMainProgress/PollMainProgress';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
 import MarginContainer from '../common/MarginContainer/MarginContainer';
+import MembersProfile from '../MembersProfile/MembersProfile';
 import Button from '../common/Button/Button';
 import { getPolls } from '../../api/poll';
 import { PollInterface } from '../../types/poll';
@@ -43,6 +44,7 @@ function PollMainContainer() {
 
   return (
     <>
+      {groupCode && <MembersProfile groupCode={groupCode} />}
       {/* TODO: refactor */}
       {polls && (
         <FlexContainer justifyContent="end">
@@ -72,7 +74,7 @@ function PollMainContainer() {
               </FlexContainer>
               {/* TODO: title prop으로 줄지? children으로 줄지? */}
               <PollMainTitle title={title} />
-              <PollMainProgress pollId={id} groupCode={groupCode} />
+              {groupCode && <PollMainProgress pollId={id} groupCode={groupCode} />}
               <MarginContainer margin="0 0 10px">
                 {/* 'detail' 컴포넌트명 변경(전체 페이지 수정 필요) */}
                 <PollMainDetail isAnonymous={isAnonymous} allowedPollCount={allowedPollCount} />

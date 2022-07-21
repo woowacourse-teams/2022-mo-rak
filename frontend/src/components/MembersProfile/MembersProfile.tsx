@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getGroupMembers } from '../../api/group';
 import { GroupInterface, MemberInterface } from '../../types/group';
+import Avatar from '../common/Avatar/Avatar';
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -39,10 +40,7 @@ function MembersProfile({ groupCode }: Props) {
   return (
     <StyledContainer>
       {groupMembers.map(({ profileUrl, name }) => (
-        <StyledUserProfile>
-          <StyledUserImage src={profileUrl} />
-          <StyledUserName>{name}</StyledUserName>
-        </StyledUserProfile>
+        <Avatar profileUrl={profileUrl} name={name} />
       ))}
     </StyledContainer>
   );
@@ -52,23 +50,6 @@ const StyledContainer = styled.div`
   display: flex;
   gap: 1.2rem;
   margin: 2rem 0;
-`;
-
-const StyledUserProfile = styled.div`
-  width: 4.4rem;
-  cursor: pointer;
-  position: relative;
-`;
-
-const StyledUserImage = styled.img`
-  width: 100%;
-  height: 4.4rem;
-  border-radius: 100%;
-  margin-bottom: 0.4rem;
-`;
-
-const StyledUserName = styled.div`
-  text-align: center;
 `;
 
 export default MembersProfile;
