@@ -83,14 +83,14 @@ function LandingPage() {
   return (
     <StyledContainer>
       <StyledLogo src={Logo} alt="logo" />
-      <a href="https://github.com/login/oauth/authorize?client_id=f67a30d27afefe8b241f">
+      <StyledLink href="https://github.com/login/oauth/authorize?client_id=f67a30d27afefe8b241f">
         {/* TODO: 네이밍 고민  */}
         {/* TODO: button 컴포넌트와 레이아웃이 같지만, div 태그를 사용해야하기 때문에, 스타일 컴포넌트로 새로 만들어줌 이야기해봐야할듯  */}
         <StyledLoginContainer>
           <StyledGithubLogo src={GithubLogo} alt="github-logo" />
           <StyledTitle>Github으로 로그인</StyledTitle>
         </StyledLoginContainer>
-      </a>
+      </StyledLink>
     </StyledContainer>
   );
 }
@@ -104,6 +104,10 @@ const StyledContainer = styled.div`
   /* TODO: padding으로 주는 게 맞을까? height로 줘도 될 것 같은데... */
   padding: 26.4rem 0;
   gap: 5.4rem;
+`;
+
+const StyledLink = styled.a`
+  text-decoration: none;
 `;
 
 const StyledLogo = styled.img`
