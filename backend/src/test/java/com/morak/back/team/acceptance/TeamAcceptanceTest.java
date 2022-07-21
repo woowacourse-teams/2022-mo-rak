@@ -1,9 +1,14 @@
 package com.morak.back.team.acceptance;
 
+import static com.morak.back.AuthSupporter.toHeader;
+import static com.morak.back.SimpleRestAssured.get;
+import static com.morak.back.SimpleRestAssured.post;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
 import com.morak.back.AcceptanceTest;
+import com.morak.back.AuthSupporter;
+import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
@@ -13,6 +18,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,16 +39,13 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String token = tokenProvider.createToken(String.valueOf(1L));
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = 그룹을_생성한다(token, request);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(response.header("Location")).startsWith("/api/groups");
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
+                () -> assertThat(response.header("Location")).startsWith("/api/groups")
+        );
     }
 
     @DisplayName("그룹 초대 코드를 생성한다.")
@@ -52,19 +55,10 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String token = tokenProvider.createToken(String.valueOf(1L));
 
         TeamCreateRequest request = new TeamCreateRequest("albur");
-        String location = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
-                .then().log().all().extract().header("Location");
+        String location = 그룹을_생성한다(token, request).header("Location");
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .post(location + "/invitation")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = 그룹의_초대코드를_생성한다(token, location);
 
         // then
         Assertions.assertAll(
@@ -79,30 +73,21 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // given
         String token = tokenProvider.createToken(String.valueOf(1L));
         TeamCreateRequest request = new TeamCreateRequest("albur");
-        String teamLocation = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
-                .then().log().all().extract().header("Location");
-        String teamInvitationLocation = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .post(teamLocation + "/invitation")
-                .then().log().all()
-                .extract().header("Location");
+
+        String teamLocation = 그룹을_생성한다(token, request).header("Location");
+
+        String teamInvitationLocation = 그룹의_초대코드를_생성한다(token, teamLocation).header("Location");
+
         // when
-        ExtractableResponse<Response> isJoinedResponse = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .get(teamInvitationLocation)
-                .then().log().all()
-                .extract();
-        InvitationJoinedResponse response = isJoinedResponse.jsonPath().getObject(".", InvitationJoinedResponse.class);
+        ExtractableResponse<Response> response = 그룹_참가_여부를_확인한다(teamInvitationLocation, token);
+
+        InvitationJoinedResponse isJoinedResponse = response.as(InvitationJoinedResponse.class);
+
         // then
         Assertions.assertAll(
-                () -> assertThat(response.getGroupCode()).hasSize(8),
-                () -> assertThat(response.getName()).isEqualTo("albur"),
-                () -> assertThat(response.getIsJoined()).isTrue()
+                () -> assertThat(isJoinedResponse.getGroupCode()).hasSize(8),
+                () -> assertThat(isJoinedResponse.getName()).isEqualTo("albur"),
+                () -> assertThat(isJoinedResponse.getIsJoined()).isTrue()
         );
     }
 
@@ -112,31 +97,21 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // given
         String token = tokenProvider.createToken(String.valueOf(1L));
         TeamCreateRequest request = new TeamCreateRequest("albur");
-        String teamLocation = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
-                .then().log().all().extract().header("Location");
-        String teamInvitationLocation = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .post(teamLocation + "/invitation")
-                .then().log().all()
-                .extract().header("Location");
+        String teamLocation = 그룹을_생성한다(token, request).header("Location");
+
+        String teamInvitationLocation = 그룹의_초대코드를_생성한다(token, teamLocation).header("Location");
+
         // when
         String otherToken = tokenProvider.createToken(String.valueOf(2L));
-        ExtractableResponse<Response> isJoinedResponse = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + otherToken)
-                .get(teamInvitationLocation)
-                .then().log().all()
-                .extract();
-        InvitationJoinedResponse response = isJoinedResponse.jsonPath().getObject(".", InvitationJoinedResponse.class);
+        ExtractableResponse<Response> response = 그룹_참가_여부를_확인한다(teamInvitationLocation, otherToken);
+
+        InvitationJoinedResponse isJoinedResponse = response.as(InvitationJoinedResponse.class);
+
         // then
         Assertions.assertAll(
-                () -> assertThat(response.getGroupCode()).hasSize(8),
-                () -> assertThat(response.getName()).isEqualTo("albur"),
-                () -> assertThat(response.getIsJoined()).isFalse()
+                () -> assertThat(isJoinedResponse.getGroupCode()).hasSize(8),
+                () -> assertThat(isJoinedResponse.getName()).isEqualTo("albur"),
+                () -> assertThat(isJoinedResponse.getIsJoined()).isFalse()
         );
     }
 
@@ -146,25 +121,13 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // given
         String token = tokenProvider.createToken(String.valueOf(1L));
         TeamCreateRequest request = new TeamCreateRequest("albur");
-        String teamLocation = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
-                .then().log().all().extract().header("Location");
-        String teamInvitationLocation = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .post(teamLocation + "/invitation")
-                .then().log().all()
-                .extract().header("Location");
+        String teamLocation = 그룹을_생성한다(token, request).header("Location");
+
+        String teamInvitationLocation = 그룹의_초대코드를_생성한다(token, teamLocation).header("Location");
+
         // when
         String otherToken = tokenProvider.createToken(String.valueOf(2L));
-        String location = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + otherToken)
-                .post(teamInvitationLocation)
-                .then().log().all().extract()
-                .header("Location");
+        String location = 그룹에_참가한다(teamInvitationLocation, otherToken).header("Location");
 
         assertThat(location).startsWith("/api/groups/");
     }
@@ -174,24 +137,14 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     void findTeams() {
         // given
         String token = tokenProvider.createToken(String.valueOf(1L));
-        String teamALocation = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
-                .then().log().all().extract().header("Location");
+        TeamCreateRequest requestA = new TeamCreateRequest("group-A");
+        TeamCreateRequest requestB = new TeamCreateRequest("group-B");
+        그룹을_생성한다(token, requestA).header("Location");
+        그룹을_생성한다(token, requestB).header("Location");
 
-        String teamBLocation = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .body(new TeamCreateRequest("group-B")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
-                .then().log().all().extract().header("Location");
         // when
+        ExtractableResponse<Response> response = 그룹_목록을_조회한다(token);
 
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + token)
-                .get("/api/groups")
-                .then().log().all().extract();
         List<TeamResponse> teamResponses = response.jsonPath().getList(".", TeamResponse.class);
         // then
         Assertions.assertAll(
@@ -209,31 +162,15 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String member1Token = tokenProvider.createToken(String.valueOf(1L));
         String member2Token = tokenProvider.createToken(String.valueOf(2L));
 
-        String teamLocation = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + member1Token)
-                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
-                .then().log().all().extract().header("Location");
+        TeamCreateRequest request = new TeamCreateRequest("group-A");
+        String teamLocation = 그룹을_생성한다(member1Token, request).header("Location");
 
-        String invitationLocation = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + member1Token)
-                .post(teamLocation + "/invitation")
-                .then().log().all()
-                .extract().header("Location");
+        String teamInvitationLocation = 그룹의_초대코드를_생성한다(member1Token, teamLocation).header("Location");
 
-        RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + member2Token)
-                .post(invitationLocation)
-                .then().log().all();
+        그룹에_참가한다(teamInvitationLocation, member2Token);
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + member1Token)
-                .get(teamLocation + "/members")
-                .then().log().all().extract();
+        ExtractableResponse<Response> response = 그룹의_멤버_목록을_조회한다(member1Token, teamLocation);
 
         List<MemberResponse> teamResponses = response.jsonPath().getList(".", MemberResponse.class);
 
@@ -245,25 +182,45 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 );
     }
 
+
     @DisplayName("그룹을 탈퇴한다.")
     @Test
     void exitTeam() {
         // given
-        String memberToken = tokenProvider.createToken(String.valueOf(1L));
-        String teamLocation = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + memberToken)
-                .body(new TeamCreateRequest("group-A")).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups")
-                .then().log().all().extract().header("Location");
+        String token = tokenProvider.createToken(String.valueOf(1L));
+        TeamCreateRequest request = new TeamCreateRequest("group-A");
+
+        String teamLocation = 그룹을_생성한다(token, request).header("Location");
         String teamCode = teamLocation.split("/")[3];
+
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .header("Authorization", "Bearer " + memberToken)
-                .delete("/api/groups/out/" + teamCode)
-                .then().log().all().extract();
+        ExtractableResponse<Response> response = SimpleRestAssured.delete("/api/groups/out/" + teamCode, toHeader(token));
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    private ExtractableResponse<Response> 그룹을_생성한다(String token, TeamCreateRequest request) {
+        return post("/api/groups", request, toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 그룹의_초대코드를_생성한다(String token, String location) {
+        return post(location + "/invitation", "", toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 그룹_참가_여부를_확인한다(String teamInvitationLocation, String token) {
+        return get(teamInvitationLocation, toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 그룹에_참가한다(String teamInvitationLocation, String otherToken) {
+        return post(teamInvitationLocation, "", AuthSupporter.toHeader(otherToken));
+    }
+
+    private ExtractableResponse<Response> 그룹_목록을_조회한다(String token) {
+        return SimpleRestAssured.get("/api/groups", AuthSupporter.toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 그룹의_멤버_목록을_조회한다(String token, String teamLocation) {
+        return SimpleRestAssured.get(teamLocation + "/members", AuthSupporter.toHeader(token));
     }
 }
