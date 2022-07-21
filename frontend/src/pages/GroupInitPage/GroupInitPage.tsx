@@ -1,15 +1,50 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
+
 import Logo from '../../assets/logo.svg';
 
 import GroupCreateForm from '../../components/GroupCreateForm/GroupCreateForm';
 import GroupParticipateForm from '../../components/GroupParticipateForm/GroupParticipateForm';
 import Box from '../../components/common/Box/Box';
 import FlexContainer from '../../components/common/FlexContainer/FlexContainer';
+import { getDefaultGroup } from '../../api/group';
+import { getLocalStorageItem, removeLocalStorageItem } from '../../utils/storage';
 
 function GroupInitPage() {
+  const navigate = useNavigate();
+  // TODO: 중복로직 해결 필요
+  // TODO: 다시 한 번 token을 가져오는 로직 개선필요
+  const token = getLocalStorageItem('token');
+  useEffect(() => {
+    const fetchGetDefaultGroup = async () => {
+      try {
+        const { code: groupCode } = await getDefaultGroup();
+
+        navigate(`/groups/${groupCode}`);
+      } catch (err) {
+        if (err instanceof Error) {
+          const statusCode = err.message;
+          if (statusCode === '401') {
+            removeLocalStorageItem('token');
+            navigate('/');
+
+            return;
+          }
+        }
+        console.log(
+          '그룹 생성 및 참가 페이지에서 로그인을 했지만, 속해있는 그룹이 없는 것을 확인했습니다.'
+        );
+      }
+    };
+
+    if (token) {
+      fetchGetDefaultGroup();
+    }
+  }, []);
+
   return (
-    <Container>
+    <StyledContainer>
       <StyledLogo src={Logo} alt="logo" />
       <Box width="60rem" minHeight="51.6rem" padding="8.4rem 3.2rem">
         <FlexContainer flexDirection="column" gap="6.8rem">
@@ -17,11 +52,11 @@ function GroupInitPage() {
           <GroupParticipateForm />
         </FlexContainer>
       </Box>
-    </Container>
+    </StyledContainer>
   );
 }
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6.4rem;
