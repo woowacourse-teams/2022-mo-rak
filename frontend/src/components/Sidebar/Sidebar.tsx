@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/logo.svg';
 import LinkIcon from '../../assets/linkIcon.svg';
 import { createInvitationCode, getGroups } from '../../api/group';
@@ -12,7 +12,11 @@ function Sidebar() {
   const { groupCode } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const handleNavigate = (location: string) => () => {
+    navigate(location);
+  };
 
   const handleCopyInviationCode = async () => {
     try {
@@ -48,20 +52,11 @@ function Sidebar() {
     fetchGroups();
   }, []);
 
-  // useEffect(() => {
-  //   const isJoinedGroup = groups.some((group) => group.code === groupCode);
-
-  //   if (!isJoinedGroup) {
-  //     console.log('권한이 없습니다.', groups);
-  //     navigate('/404');
-  //   }
-  // }, [groupCode, groups]);
-
   if (isLoading) return <div>로딩중</div>;
 
   return (
     <StyledContainer>
-      <StyledLogo src={Logo} alt={Logo} />
+      <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
       <StyledGroupContainer>
         <StyledHeader>
           <StyledGroupHeaderButton type="button">Groups</StyledGroupHeaderButton>
@@ -77,7 +72,6 @@ function Sidebar() {
           ))}
         </StyledContent>
       </StyledGroupContainer>
-
       <StyledInvitationLink onClick={handleCopyInviationCode}>
         <img src={LinkIcon} alt="inivation-link" />
         <p>초대 링크 복사</p>
@@ -102,6 +96,7 @@ const StyledContainer = styled.div(
 
 const StyledLogo = styled.img`
   width: 12rem;
+  cursor: pointer;
 `;
 
 const StyledInvitationLink = styled.button`
