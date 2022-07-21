@@ -30,6 +30,17 @@ class PollStatusTest {
         assertThat(closed).isSameAs(PollStatus.CLOSED);
     }
 
+    @DisplayName("투표를 종료한다.")
+    @Test
+    void test() {
+        // given
+        PollStatus status = PollStatus.OPEN;
+        // when
+        PollStatus closed = status.close();
+        // then
+        assertThat(closed).isSameAs(PollStatus.OPEN);
+    }
+
     @DisplayName("투표를 두 번 종료하면 예외를 던진다.")
     @Test
     void throwsExceptionOnClosingTwice() {
