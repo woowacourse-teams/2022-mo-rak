@@ -4,7 +4,9 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   getLocalStorageItem,
   saveLocalStorageItem,
-  removeLocalStorageItem
+  removeLocalStorageItem,
+  getSessionStorageItem,
+  removeSessionStorageItem
 } from '../../utils/storage';
 import Logo from '../../assets/logo.svg';
 import GithubLogo from '../../assets/githubLogo.svg';
@@ -15,6 +17,7 @@ import { getDefaultGroup } from '../../api/group';
 function LandingPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const redirectUrl = getSessionStorageItem('redirectUrl');
   // TODO: 중복 로직해결
   // TODO: 다시 한 번 token을 가져오는
   const token = getLocalStorageItem('token');
@@ -55,6 +58,14 @@ function LandingPage() {
         const { token } = await signin(code);
 
         saveLocalStorageItem<string>('token', token);
+
+        if (redirectUrl) {
+          navigate(redirectUrl);
+          removeSessionStorageItem('redirectUrl');
+
+          return;
+        }
+
         navigate('/init');
       } catch (err) {
         alert('로그인에 실패하였습니다. 다시 시도해주세요');

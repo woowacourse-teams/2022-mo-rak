@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Box from '../../components/common/Box/Box';
 import Logo from '../../assets/logo.svg';
 import FlexContainer from '../../components/common/FlexContainer/FlexContainer';
@@ -8,9 +8,12 @@ import Button from '../../components/common/Button/Button';
 import theme from '../../styles/theme';
 import { getIsJoinedGroup, participateGroup } from '../../api/group';
 import { GroupInterface } from '../../types/group';
+import { saveSessionStorageItem } from '../../utils/storage';
 
+// TODO: 페이지 추상화
 function InvitationPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [name, setName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [groupCode, setGroupCode] = useState<GroupInterface['code']>('');
@@ -23,7 +26,9 @@ function InvitationPage() {
       await participateGroup(invitationCode);
       navigate(`/groups/${groupCode}`);
     } catch (err) {
-      console.log(err);
+      if (err instanceof Error) {
+        console.log(JSON.stringify(err));
+      }
     }
   };
 
@@ -44,7 +49,17 @@ function InvitationPage() {
         setIsJoined(isJoined);
         setIsLoading(false);
       } catch (err) {
-        alert(err);
+        if (err instanceof Error) {
+          const statusCode = err.message;
+
+          if (statusCode === '401') {
+            // navigate('/', { state: { redirectUrl: location.pathname } });
+            saveSessionStorageItem('redirectUrl', location.pathname);
+            navigate('/');
+            alert('로그인이 필요한 서비스입니다!');
+          }
+        }
+
         setIsLoading(true);
       }
     };
@@ -52,11 +67,13 @@ function InvitationPage() {
     fetchGetIsJoinedGroup();
   }, []);
 
-  // useEffect(() => {
-  //   if (isJoined) {
-  //     navigate(`/groups/${groupCode}`);
-  //   }
-  // }, [isJoined]);
+  useEffect(() => {
+    if (isJoined) {
+      navigate(`/groups/${groupCode}`);
+      // TODO: rendering blocking하는 것을 개선해주기
+      alert('이미 속해있는 그룹의 초대장입니다~');
+    }
+  }, [isJoined]);
 
   if (isLoading) return <div>로딩중</div>;
 

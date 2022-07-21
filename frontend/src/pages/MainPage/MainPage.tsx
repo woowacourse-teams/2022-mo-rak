@@ -91,6 +91,7 @@ const StyledMenu = styled.div(
   }
   `
 );
+
 const StyledImage = styled.img`
   width: 32rem;
 `;
