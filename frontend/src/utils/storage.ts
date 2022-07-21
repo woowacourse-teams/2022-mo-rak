@@ -18,11 +18,13 @@ const saveSessionStorageItem = <T>(key: string, value: T | Array<T>) =>
   sessionStorage.setItem(key, JSON.stringify(value));
 
 const removeLocalStorageItem = (key: string) => localStorage.removeItem(key);
+const removeSessionStorageItem = (key: string) => sessionStorage.removeItem(key);
 
 export {
   getLocalStorageItem,
   saveLocalStorageItem,
   getSessionStorageItem,
   saveSessionStorageItem,
-  removeLocalStorageItem
+  removeLocalStorageItem,
+  removeSessionStorageItem
 };
