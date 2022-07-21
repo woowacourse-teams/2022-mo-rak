@@ -34,7 +34,7 @@ class OAuthControllerTest extends ControllerTest {
         given(oAuthService.signin(any(SigninRequest.class))).willReturn(signinResponse);
 
         // when
-        ResultActions response = mockMvc.perform(post("/auth/signin")
+        ResultActions response = mockMvc.perform(post("/api/auth/signin")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
