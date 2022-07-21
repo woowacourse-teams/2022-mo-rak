@@ -1,19 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Progress from '../common/Progress/Progress';
 import { PollItemResultType } from '../../types/poll';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
+import { GroupInterface, MemberInterface } from '../../types/group';
+import { getGroupMembers } from '../../api/group';
 
 interface Props {
   pollResult: Array<PollItemResultType>;
+  groupCode: GroupInterface['code'];
 }
 
-function PollResultProgress({ pollResult }: Props) {
-  const totalParticipants = pollResult.length; // TODO: 그룹 멤버수?
-  const currentParticipants = pollResult.reduce(
-    (prev: number, cur: PollItemResultType) => prev + cur.count,
-    0
-  );
+const getCurrentParticipants = (pollResult: Array<PollItemResultType>) => {
+  const allParticipants = pollResult.map((pollItemResult) => pollItemResult.members).flat();
+  const currentParticipants = allParticipants.map((participant) => participant.name);
+
+  return new Set(currentParticipants).size;
+};
+
+function PollResultProgress({ pollResult, groupCode }: Props) {
+  const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
+  const totalParticipants = groupMembers.length;
+  const currentParticipants = getCurrentParticipants(pollResult);
+
+  useEffect(() => {
+    const fetchGroupMembers = async () => {
+      try {
+        if (groupCode) {
+          const res = await getGroupMembers(groupCode);
+
+          setGroupMembers(res);
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          console.log(err);
+        }
+      }
+    };
+
+    fetchGroupMembers();
+  }, []);
 
   return (
     <FlexContainer flexDirection="column" alignItems="end">
@@ -27,8 +53,7 @@ function PollResultProgress({ pollResult }: Props) {
       <StyledParticipantsStatus>
         {currentParticipants}
         명/
-        {totalParticipants}
-        명
+        {totalParticipants}명
       </StyledParticipantsStatus>
     </FlexContainer>
   );
