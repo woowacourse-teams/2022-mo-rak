@@ -59,9 +59,9 @@ const StyledContainer = styled.div<
     variantStyle: string;
   }
 >(
-  ({ width, borderRadius, variantStyle, position, padding, color, fontSize }) => `
+  ({ width, borderRadius, variantStyle, padding, color, fontSize }) => `
     ${variantStyle};
-    position: ${position};
+    position: relative;
     width: ${width || '100%'};
     border-radius: ${borderRadius};
     padding: ${padding};
