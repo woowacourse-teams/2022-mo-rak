@@ -65,17 +65,6 @@ function PollProgressItemGroup({
     }
   }, []);
 
-  const getIsSelectedPollItem = (pollId: number) => {
-    // TODO: 리팩터링 (메서드 찾아보기)
-    for (const selectedPollItem of selectedPollItems) {
-      if (selectedPollItem.itemId === pollId) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
       {pollItems.map(({ id, subject }: PollItemInterface) => (

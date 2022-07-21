@@ -12,11 +12,7 @@ import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGrou
 import { PollInterface, SelectedPollItemInterface } from '../../types/poll';
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 
-interface Props {
-  pollId: PollInterface['id'];
-}
-
-function PollProgressForm({ pollId }: Props) {
+function PollProgressForm() {
   const navigate = useNavigate();
   const { groupCode, pollId } = useParams();
   // TODO: 기본 객체를 줘야할까? undefined로 놓는 것이 위험한가?
@@ -98,25 +94,6 @@ function PollProgressForm({ pollId }: Props) {
     if (pollId) {
       fetchPoll(Number(pollId));
     }
-  };
-
-  useEffect(() => {
-    const fetchPoll = async (pollId: PollInterface['id']) => {
-      // res가 있는지?
-      try {
-        const res = await getPoll(pollId);
-        if (res.status === 'CLOSED') {
-          navigate('/poll');
-        }
-
-        setPoll(res);
-        // TODO: pollid가 없을 때 메인 화면으로 보내주기!
-      } catch (err) {
-        alert('poll 없어~~');
-        navigate('/poll');
-      }
-    };
-    fetchPoll(pollId);
   }, []);
 
   return (
