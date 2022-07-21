@@ -1,12 +1,44 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getGroupMembers } from '../../api/group';
+import { GroupInterface, MemberInterface } from '../../types/group';
 
-// TODO: 그룹 멤버조회 api 연결
-function PollMainProfile() {
-  const members = [{ id: 1, name: '우영우', profileUrl: 'https://spnimage.edaily.co.kr/images/Photo/files/NP/S/2022/06/PS22062800115.jpg' }, { id: 2, name: '태연', profileUrl: 'https://cdnweb01.wikitree.co.kr/webdata/editor/202202/03/img_20220203152221_f00e3cfa.webp' }];
+interface Props {
+  groupCode: GroupInterface['code'];
+}
+
+// TODO: 컴포넌트 이름 생각해보자 profile은 단수
+function PollMainProfile({ groupCode }: Props) {
+  const navigate = useNavigate();
+  const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
+
+  useEffect(() => {
+    const fetchGroupMembers = async () => {
+      try {
+        if (groupCode) {
+          const res = await getGroupMembers(groupCode);
+
+          setGroupMembers(res);
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          const statusCode = err.message;
+
+          if (statusCode === '401') {
+            navigate('/');
+          }
+        }
+        console.log(err);
+      }
+    };
+
+    fetchGroupMembers();
+  }, [groupCode]);
+
   return (
     <StyledContainer>
-      {members.map(({ profileUrl, name }) => (
+      {groupMembers.map(({ profileUrl, name }) => (
         <StyledUserProfile>
           <StyledUserImage src={profileUrl} />
           <StyledUserName>{name}</StyledUserName>
@@ -19,7 +51,7 @@ function PollMainProfile() {
 const StyledContainer = styled.div`
   display: flex;
   gap: 1.2rem;
-  margin: 2rem 0; 
+  margin: 2rem 0;
 `;
 
 const StyledUserProfile = styled.div`
@@ -30,7 +62,7 @@ const StyledUserProfile = styled.div`
 
 const StyledUserImage = styled.img`
   width: 100%;
-  height: 4.4rem; 
+  height: 4.4rem;
   border-radius: 100%;
   margin-bottom: 0.4rem;
 `;
