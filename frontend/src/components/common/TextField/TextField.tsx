@@ -53,14 +53,15 @@ function TextField({
   );
 }
 
+// TODO: color, fontsize 빼기
 const StyledContainer = styled.div<
   CSSProperties & {
     variantStyle: string;
   }
 >(
-  ({ width, borderRadius, variantStyle, position, padding, color, fontSize }) => `
+  ({ width, borderRadius, variantStyle, padding, color, fontSize }) => `
     ${variantStyle};
-    position: ${position || 'relative'};
+    position: relative;
     width: ${width || '100%'};
     border-radius: ${borderRadius};
     padding: ${padding};
@@ -71,14 +72,3 @@ const StyledContainer = styled.div<
 );
 
 export default TextField;
-
-/* {icon && (
-        <StyledButton type="button" onClick={onClickIcon}>
-          <img src={icon} alt={icon} />
-        </StyledButton>
-      )} */
-
-// icon?: string;
-// onClickIcon?: MouseEventHandler<HTMLButtonElement>;
-// icon,
-// onClickIcon,

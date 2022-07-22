@@ -1,7 +1,7 @@
 interface PollInterface {
   id: number;
   title: string;
-  allowedPollCount: number | string;
+  allowedPollCount: number;
   isAnonymous: boolean;
   status: 'OPEN' | 'CLOSED';
   createdAt: string;
@@ -11,19 +11,20 @@ interface PollInterface {
 }
 
 interface PollItemInterface {
+  // TODO: 다음주 월요일에 이야기해보고 바꾸자
   id: number;
-  count: number;
   subject: string;
 }
 
-// TODO: 고민해보자...
+// TODO: 고민해보자...PollItem에 대한 선택 항목..
 interface SelectedPollItemInterface {
   itemId: PollItemInterface['id'];
   description: string;
 }
 
 type PollItemResultType = PollItemInterface & {
-  members: [];
+  members: Array<PollMembersInterface>;
+  count: number;
 };
 
 interface PollMembersInterface {

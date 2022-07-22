@@ -8,7 +8,6 @@ interface Props {
   pollId: number;
   handleNavigate: (location: string) => () => void;
   status: PollInterface['status'];
-
 }
 
 function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
@@ -17,22 +16,23 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
   return (
     <FlexContainer gap="1.2rem" justifyContent="end">
       {/* TODO: 컴포넌트 만들기 */}
-      {status === 'OPEN'
-        ? (
-          <Button
-            type="button"
-            variant="filled"
-            width="6rem"
-            padding="0.4rem 0"
-            fontSize="1rem"
-            borderRadius="5px"
-            color={theme.colors.WHITE_100}
-            colorScheme={theme.colors.PURPLE_100}
-            onClick={handleNavigate(`/poll/${pollId}/progress`)}
-          >
-            투표하기
-          </Button>
-        ) : ''}
+      {status === 'OPEN' ? (
+        <Button
+          type="button"
+          variant="filled"
+          width="6rem"
+          padding="0.4rem 0"
+          fontSize="1rem"
+          borderRadius="5px"
+          color={theme.colors.WHITE_100}
+          colorScheme={theme.colors.PURPLE_100}
+          onClick={handleNavigate(`${pollId}/progress`)}
+        >
+          투표하기
+        </Button>
+      ) : (
+        ''
+      )}
       <Button
         type="button"
         variant="outlined"
@@ -42,7 +42,7 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
         borderRadius="5px"
         color={theme.colors.PURPLE_100}
         colorScheme={theme.colors.PURPLE_100}
-        onClick={handleNavigate(`/poll/${pollId}/result`)}
+        onClick={handleNavigate(`${pollId}/result`)}
       >
         결과보기
       </Button>
