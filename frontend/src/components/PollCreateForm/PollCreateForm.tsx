@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent, useContext } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 
 // TODO: 자동정렬 설정
 import { useNavigate } from 'react-router-dom';
@@ -7,37 +7,32 @@ import Divider from '../common/Divider/Divider';
 import MarginContainer from '../common/MarginContainer/MarginContainer';
 
 import PollCreateFormInputGroup from '../PollCreateFormInputGroup/PollCreateFormInputGroup';
-import PollCreateFormButtonGroup from '../PollCreateFormButtonGroup/PollCreateFormButtonGroup';
+import PollCreateDetail from '../PollCreateDetail/PollCreateDetail';
 import PollCreateFormSubmitButton from '../PollCreateFormSubmitButton/PollCreateFormSubmitButton';
 import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateFormTitleInput';
 
 import { createPoll } from '../../api/poll';
-import { PollContextStore } from '../../contexts/PollContext';
-import { PollCreateType } from '../../types/poll';
+import { PollCreateType, PollInterface } from '../../types/poll';
 
 // TODO: 추상화 레벨에 대해서 다시 돌아보기
 function PollCreateForm() {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
-  const [isMultiplePollCountAllowed, setIsMultiplePollCountAllowed] = useState(false);
-  const [formInputs, setFormInputs] = useState(['', '']);
-
-  // TODO: 왜 desturcuring이 안될까?
-  // TODO: naming 생각해보자
-  const pollContext = useContext(PollContextStore);
+  const [isAllowedMultiplePollCount, setIsAllowedMultiplePollCount] = useState(false);
+  const [pollItems, setPollItems] = useState(['', '']);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const allowedPollCount = isMultiplePollCountAllowed ? formInputs.length : 1;
+    const allowedPollCount = isAllowedMultiplePollCount ? pollItems.length : 1;
 
     const pollData: PollCreateType = {
       title,
       allowedPollCount,
       isAnonymous,
       closedAt: '9999-12-31T11:59:59',
-      subjects: formInputs
+      subjects: pollItems
     };
 
     try {
@@ -45,9 +40,8 @@ function PollCreateForm() {
       const res = await createPoll(pollData);
       const pollId = res.headers.get('location').split('polls/')[1];
 
-      pollContext?.setPollId(pollId);
       // TODO: 상수화
-      navigate('/progress');
+      navigate(`/poll/${pollId}/progress`);
     } catch (err) {
       // TODO: 에러 핸들링 고도화
       alert(err);
@@ -58,31 +52,32 @@ function PollCreateForm() {
     setTitle(e.target.value);
   };
 
-  const handleAnonymous = (anonymousStatus: boolean) => () => {
+  const handleAnonymous = (anonymousStatus: PollInterface['isAnonymous']) => () => {
     setIsAnonymous(anonymousStatus);
   };
 
-  const handleMultiplePollCountAllowed = (isMultiplePollCountAllowedStatus: boolean) => () => {
-    setIsMultiplePollCountAllowed(isMultiplePollCountAllowedStatus);
+  // TODO: interface를 활용해보자
+  const handleAllowedMultiplePollCount = (isAllowedMultiplePollCountStatus: boolean) => () => {
+    setIsAllowedMultiplePollCount(isAllowedMultiplePollCountStatus);
   };
 
   return (
-    <Box width="84.4rem" minHeight="65.2rem" padding="6.4rem 4.8rem">
+    <Box width="84.4rem" padding="6.4rem 4.8rem 14rem">
       <form onSubmit={handleSubmit}>
         <MarginContainer margin="0 0 4rem 0">
           <PollCreateFormTitleInput title={title} onChange={handleTitle} />
           <Divider />
         </MarginContainer>
         <MarginContainer margin="0 0 1.6rem 0">
-          <PollCreateFormButtonGroup
+          <PollCreateDetail
             isAnonymous={isAnonymous}
             handleAnonymous={handleAnonymous}
-            isMultiplePollCountAllowed={isMultiplePollCountAllowed}
-            handleMultiplePollCountAllowed={handleMultiplePollCountAllowed}
+            isAllowedMultiplePollCount={isAllowedMultiplePollCount}
+            handleAllowedMultiplePollCount={handleAllowedMultiplePollCount}
           />
         </MarginContainer>
         <MarginContainer margin="0 0 4rem 0">
-          <PollCreateFormInputGroup formInputs={formInputs} setFormInputs={setFormInputs} />
+          <PollCreateFormInputGroup pollItems={pollItems} setPollItems={setPollItems} />
         </MarginContainer>
         <PollCreateFormSubmitButton />
       </form>

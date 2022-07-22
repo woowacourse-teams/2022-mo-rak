@@ -18,7 +18,6 @@ export const Outlined = OutlinedTemplate.bind({});
 Outlined.args = {
   color: theme.colors.PURPLE_100,
   width: '9.2rem',
-  height: '3.6rem',
   borderRadius: '20px',
   fontSize: '0.5rem'
 };
@@ -32,7 +31,6 @@ const FilledTemplate: Story = (args) => (
 export const Filled = FilledTemplate.bind({});
 Filled.args = {
   width: '46rem',
-  height: '6.4rem',
   borderRadius: '10px',
   color: theme.colors.WHITE_100,
   fontSize: '2rem'
@@ -47,7 +45,6 @@ const PollButtonTemplate: Story = (args) => (
 export const PollButton = PollButtonTemplate.bind({});
 PollButton.args = {
   width: '74.4rem',
-  height: '3.6rem',
   borderRadius: '10px',
   color: theme.colors.WHITE_100,
   fontSize: '1.6rem'
@@ -62,7 +59,6 @@ const PollChoiceButtonTemplate: Story = (args) => (
 export const PollChoiceButton = PollChoiceButtonTemplate.bind({});
 PollChoiceButton.args = {
   width: '74.4rem',
-  height: '3.6rem',
   borderRadius: '10px',
   color: theme.colors.BLACK_100,
   fontSize: '1.6rem'

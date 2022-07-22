@@ -23,16 +23,12 @@ const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
       `;
     case 'unstyled':
       return `
-        input {
-          border: none;
-          background-color: transparent;
-        }
+        border: none;
+        background-color: transparent;
       `;
     case 'filled':
       return `
-        input {
-          background-color: ${colorScheme};
-        }
+        background-color: ${colorScheme};
       `;
     default:
       return '';
@@ -62,13 +58,15 @@ const StyledContainer = styled.div<
     variantStyle: string;
   }
 >(
-  ({ width, height, borderRadius, variantStyle, position }) => `
-    ${variantStyle}
+  ({ width, borderRadius, variantStyle, position, padding, color, fontSize }) => `
+    ${variantStyle};
+    position: ${position || 'relative'};
     width: ${width || '100%'};
-    height: ${height}; 
     border-radius: ${borderRadius};
-    overflow: hidden;
-    position: ${position}
+    padding: ${padding};
+    color: ${color};
+    font-size: ${fontSize};
+    text-align: center;
   `
 );
 

@@ -104,7 +104,7 @@ public class PollService {
     public List<PollItemResponse> findPollItems(String teamCode, Long memberId, Long pollId) {
         Member member = memberRepository.findById(memberId).orElseThrow(ResourceNotFoundException::new);
         Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(ResourceNotFoundException::new);
-        validateMemberInTeam(memberId, teamId);
+        validateMemberInTeam(teamId, memberId);
 
         Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId).orElseThrow(ResourceNotFoundException::new);
 

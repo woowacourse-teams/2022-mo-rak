@@ -12,7 +12,7 @@ function PollCreateFormSubmitButton() {
       <Button
         variant="filled"
         width="46rem"
-        height="6.4rem"
+        padding="2rem 0"
         colorScheme={theme.colors.PURPLE_100}
         color={theme.colors.WHITE_100}
         fontSize="2rem"
