@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 
 // TODO: 자동정렬 설정
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Box from '../common/Box/Box';
 import Divider from '../common/Divider/Divider';
 import MarginContainer from '../common/MarginContainer/MarginContainer';
@@ -17,6 +17,8 @@ import { PollCreateType, PollInterface } from '../../types/poll';
 // TODO: 추상화 레벨에 대해서 다시 돌아보기
 function PollCreateForm() {
   const navigate = useNavigate();
+  const { groupCode } = useParams();
+
   const [title, setTitle] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isAllowedMultiplePollCount, setIsAllowedMultiplePollCount] = useState(false);
@@ -37,11 +39,13 @@ function PollCreateForm() {
 
     try {
       // TODO: 쿼리 적용
-      const res = await createPoll(pollData);
-      const pollId = res.headers.get('location').split('polls/')[1];
+      if (groupCode) {
+        const res = await createPoll(pollData, groupCode);
+        const pollId = res.headers.get('location').split('polls/')[1];
 
-      // TODO: 상수화
-      navigate(`/poll/${pollId}/progress`);
+        // TODO: 상수화
+        navigate(`/groups/${groupCode}/poll/${pollId}/progress`);
+      }
     } catch (err) {
       // TODO: 에러 핸들링 고도화
       alert(err);

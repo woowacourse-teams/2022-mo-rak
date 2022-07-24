@@ -9,9 +9,11 @@ function Progress({ accentColor, ...props }: Props & CSSProperties) {
   return <StyledProgress accentColor={accentColor} {...props} />;
 }
 
-const StyledProgress = styled.progress<CSSProperties &{
-  accentColor: string | undefined;
-}>(
+const StyledProgress = styled.progress<
+  CSSProperties & {
+    accentColor: string | undefined;
+  }
+>(
   ({ width, theme, padding, accentColor }) => `
   accent-color: ${accentColor || theme.colors.PURPLE_100};
   width: ${width};
