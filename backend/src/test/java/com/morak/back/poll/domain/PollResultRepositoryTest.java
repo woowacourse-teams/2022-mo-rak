@@ -26,8 +26,8 @@ class PollResultRepositoryTest {
         PollItem pollItemB = supplier.supplyPollItem(2L);
 
         // when
-        List<PollResult> pollResults = List.of(new PollResult(null, pollItemA, member, "에덴이 시킴"),
-                new PollResult(null, pollItemB, member, "엘리가 시킴"));
+        List<PollResult> pollResults = List.of(new PollResult(null, pollItemA, member, "에덴이_시킴"),
+                new PollResult(null, pollItemB, member, "엘리가_시킴"));
         List<PollResult> savedPollResults = pollResultRepository.saveAll(pollResults);
 
         // then

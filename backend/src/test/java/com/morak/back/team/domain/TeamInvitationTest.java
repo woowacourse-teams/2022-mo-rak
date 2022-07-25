@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 
 class TeamInvitationTest {
 
-    @DisplayName("만료되지 않은 시간인지 확인한다.")
     @Test
-    void isExpired() {
+    void 만료되지_않은_시간인지_확인한다() {
         // given
         TeamInvitation teamInvitation =
                 new TeamInvitation(null, null, InvitationCode.generate((length) -> "invitecode"), ExpiredTime.withMinute(30L));
@@ -20,9 +19,8 @@ class TeamInvitationTest {
         assertThat(isExpired).isFalse();
     }
 
-    @DisplayName("만료된 시간인지 확인한다.")
     @Test
-    void isNotExpired() {
+    void 만료된_시간인지_확인한다() {
         // given
         TeamInvitation teamInvitation =
                 new TeamInvitation(null, null, InvitationCode.generate((length) -> "invitecode"), ExpiredTime.withMinute(-30L));

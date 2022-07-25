@@ -56,9 +56,8 @@ class TeamServiceTest {
     @InjectMocks
     private TeamService teamService;
 
-    @DisplayName("팀을 생성한다.")
     @Test
-    void createTeam() {
+    void 팀을_생성한다() {
         // given
         Long memberId = 1L;
         given(teamRepository.save(any())).willReturn(new Team(1L, "test-team", "abCD1234"));
@@ -78,9 +77,8 @@ class TeamServiceTest {
         assertThat(code).isEqualTo("abCD1234");
     }
 
-    @DisplayName("그룹 초대코드를 생성한다.")
     @Test
-    public void createInvitationCode() {
+    void 그룹_초대코드를_생성한다() {
         // given
         Team team = new Team(1L, "test-name", "testcode");
         TeamInvitation teamInvitation = new TeamInvitation(
@@ -100,9 +98,8 @@ class TeamServiceTest {
         assertThat(code).isEqualTo("ABCDE12345");
     }
 
-    @DisplayName("그룹 참가 여부를 확인한다.")
     @Test
-    void isJoined() {
+    void 그룹_참가_여부를_확인한다() {
         // given
         Team team = new Team(1L, "test-name", "testcode");
         TeamInvitation teamInvitation = new TeamInvitation(1L, team, InvitationCode.generate((length) -> "inviteCode"),
@@ -121,9 +118,8 @@ class TeamServiceTest {
         );
     }
 
-    @DisplayName("그룹에 참가한다.")
     @Test
-    public void joinTeam() {
+    void 그룹에_참가한다() {
         // given
         Team team = new Team(1L, "test-team", "testcode");
         given(teamInvitationRepository.findByCode(anyString())).willReturn(
@@ -139,9 +135,8 @@ class TeamServiceTest {
         assertThat(teamCode).isEqualTo(team.getCode());
     }
 
-    @DisplayName("그룹에 이미 참가한 경우 예외를 던진다..")
     @Test
-    public void throwExceptionWhenAlreadyJoined() {
+    void 그룹에_이미_참가한_경우_예외를_던진다() {
         // given
         Team team = new Team(1L, "test-team", "testcode");
         given(teamInvitationRepository.findByCode(anyString())).willReturn(
@@ -153,9 +148,8 @@ class TeamServiceTest {
                 .isInstanceOf(AlreadyJoinedTeamException.class);
     }
 
-    @DisplayName("초대코드가 만료된 경우 예외를 던진다.")
     @Test
-    void throwsExceptionWithExpiredInvitationCode() {
+    void 초대코드가_만료된_경우_예외를_던진다() {
         // given
         Team team = new Team(1L, "test-team", "testcode");
         given(teamInvitationRepository.findByCode(anyString())).willReturn(
@@ -166,9 +160,8 @@ class TeamServiceTest {
                 .isInstanceOf(ExpiredInvitationException.class);
     }
 
-    @DisplayName("그룹 목록을 조회한다")
     @Test
-    void findTeams() {
+    void 그룹_목록을_조회한다() {
         // given
         given(teamMemberRepository.findAllByMemberId(anyLong()))
                 .willReturn(List.of(
@@ -189,9 +182,8 @@ class TeamServiceTest {
         );
     }
 
-    @DisplayName("그룹에 속한 멤버 목록을 조회한다.")
     @Test
-    public void findMembersInTeam() {
+    void 그룹에_속한_멤버_목록을_조회한다() {
         // given
         Team team = new Team(1L, "name", "testcode");
         Member member1 = new Member(1L, null, "1", "123");
@@ -217,9 +209,8 @@ class TeamServiceTest {
                 );
     }
 
-    @DisplayName("그룹의 멤버 목록 조회 시 참가한 그룹이 아니라면 예외를 던진다.")
     @Test
-    public void throwExceptionWhenNotJoinedTeam() {
+    void 그룹의_멤버_목록_조회_시_참가한_그룹이_아니라면_예외를_던진다() {
         // given
         Team team = new Team(1L, "name", "testcode");
         Member member2 = new Member(2L, null, "2", "234");
@@ -234,9 +225,8 @@ class TeamServiceTest {
                 .isInstanceOf(MismatchedTeamException.class);
     }
 
-    @DisplayName("멤버가 그룹에서 탈퇴한다.")
     @Test
-    void exitMemberInTeam() {
+    void 멤버가_그룹에서_탈퇴한다() {
         // given
         Team team = new Team(1L, "test-team", "testcode");
         given(teamRepository.findByCode(anyString()))
@@ -251,9 +241,8 @@ class TeamServiceTest {
         verify(teamMemberRepository).delete(any());
     }
 
-    @DisplayName("속해있지 않은 그룹에서 탈퇴할시 예외를 던진다.")
     @Test
-    void throwsExceptionWhenNotJoined() {
+    void 속해있지_않은_그룹에서_탈퇴할시_예외를_던진다() {
         // given
         Team team = new Team(1L, "test-team", "testcode");
         given(teamRepository.findByCode(anyString()))
@@ -266,9 +255,8 @@ class TeamServiceTest {
                 .isInstanceOf(MismatchedTeamException.class);
     }
 
-    @DisplayName("디폴트 그룹을 찾는다.")
     @Test
-    void findDefaultGroup() {
+    void 디폴트_그룹을_찾는다() {
         // given
         given(teamMemberRepository.findAllByMemberId(anyLong()))
                 .willReturn(List.of(
@@ -281,9 +269,8 @@ class TeamServiceTest {
         assertThat(defaultTeamResponse.getName()).isEqualTo("team-A");
     }
 
-    @DisplayName("그룹에 속해있지 않은 경우 예외를 던진다")
     @Test
-    void throwsExceptionWhenNotJoinedTeam() {
+    void 그룹에_속해있지_않은_경우_예외를_던진다() {
         // given
         given(teamMemberRepository.findAllByMemberId(anyLong())).willReturn(List.of());
         // when & then

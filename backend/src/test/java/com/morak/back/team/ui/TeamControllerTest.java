@@ -99,7 +99,7 @@ class TeamControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("group-code").description("그룹 코드")
+                                parameterWithName("group-code").description("그룹_코드")
                         )
                 )
         );
@@ -124,7 +124,7 @@ class TeamControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("invitation-code").description("그룹 초대 코드")
+                                parameterWithName("invitation-code").description("그룹_초대_코드")
                         )
                 )
         );
@@ -174,7 +174,7 @@ class TeamControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("group-code").description("그룹 코드")
+                                parameterWithName("group-code").description("그룹_코드")
                         )
 
                 )
@@ -196,7 +196,7 @@ class TeamControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("group-code").description("그룹 코드")
+                                parameterWithName("group-code").description("그룹_코드")
                         )
                 )
         );
