@@ -40,12 +40,11 @@ class PollTest {
         poll.addItem(itemC);
     }
 
-    @DisplayName("투표를 진행한다.")
     @Test
-    void doPoll() {
+    void 투표를_진행한다() {
         // given
         Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
-        mappedItemAndDescription.put(itemB, "거의 다 왔어요!");
+        mappedItemAndDescription.put(itemB, "거의_다_왔어요!");
         mappedItemAndDescription.put(itemC, "힘내!");
 
         // when
@@ -56,22 +55,21 @@ class PollTest {
         Assertions.assertAll(
                 () -> assertThat(pollResults).hasSize(1),
                 () -> assertThat(pollResults.get(0).getMember()).isSameAs(member),
-                () -> assertThat(pollResults.get(0).getDescription()).isEqualTo("거의 다 왔어요!")
+                () -> assertThat(pollResults.get(0).getDescription()).isEqualTo("거의_다_왔어요!")
         );
     }
 
-    @DisplayName("재투표를 진행한다.")
     @Test
-    void rePoll() {
+    void 재투표를_진행한다() {
         // given
         Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
-        mappedItemAndDescription.put(itemB, "거의 다왔어요!");
+        mappedItemAndDescription.put(itemB, "거의_다왔어요!");
         mappedItemAndDescription.put(itemC, "힘내!");
         poll.doPoll(member, mappedItemAndDescription);
 
         Map<PollItem, String> reMappedItemAndDescription = new HashMap<>();
-        reMappedItemAndDescription.put(itemA, "화장실 다녀오세요.");
-        reMappedItemAndDescription.put(itemB, "거의 다왔어요!");
+        reMappedItemAndDescription.put(itemA, "화장실_다녀오세요.");
+        reMappedItemAndDescription.put(itemB, "거의_다왔어요!");
 
         // when
         poll.doPoll(member, reMappedItemAndDescription);
@@ -82,19 +80,18 @@ class PollTest {
         List<PollResult> pollResults3 = poll.getPollItems().get(2).getPollResults();
         Assertions.assertAll(
                 () -> assertThat(pollResults1.get(0).getMember()).isSameAs(member),
-                () -> assertThat(pollResults1.get(0).getDescription()).isEqualTo("화장실 다녀오세요."),
+                () -> assertThat(pollResults1.get(0).getDescription()).isEqualTo("화장실_다녀오세요."),
                 () -> assertThat(pollResults2.get(0).getMember()).isSameAs(member),
                 () -> assertThat(pollResults3).hasSize(0)
         );
     }
 
-    @DisplayName("가능한 복수 응답 개수를 초과하는 경우 예외를 던진다.")
     @Test
-    void validateAllowedPollCountsWithOverflow() {
+    void 가능한_복수_응답_개수를_초과하는_경우_예외를_던진다() {
         // given
         Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
-        mappedItemAndDescription.put(itemA, "화장실 다녀오세요.");
-        mappedItemAndDescription.put(itemB, "거의 다왔어요!");
+        mappedItemAndDescription.put(itemA, "화장실_다녀오세요.");
+        mappedItemAndDescription.put(itemB, "거의_다왔어요!");
         mappedItemAndDescription.put(itemC, "힘내!!");
 
         // when & then
@@ -102,31 +99,28 @@ class PollTest {
                 .isInstanceOf(InvalidRequestException.class);
     }
 
-    @DisplayName("응답 개수가 0 인 경우 예외를 던진다.")
     @Test
-    void validateAllowedPollCountsWithZero() {
+    void 응답_개수가_0인_경우_예외를_던진다() {
         // when & then
         assertThatThrownBy(() -> poll.doPoll(member, new HashMap<>()))
                 .isInstanceOf(InvalidRequestException.class);
     }
 
-    @DisplayName("투표에 속하지 않은 선택항목을 투표하는 경우 예외를 던진다.")
     @Test
-    void validatePollItemBelongsTo() {
+    void 투표에_속하지_않은_선택항목을_투표하는_경우_예외를_던진다() {
         // given
         PollItem itemD = new PollItem(4L, poll, "sub4", new ArrayList<>());
         Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
-        mappedItemAndDescription.put(itemA, "빨강 프링글스는 별로야");
-        mappedItemAndDescription.put(itemD, "프링글스는 초록 프링글스지");
+        mappedItemAndDescription.put(itemA, "빨강_프링글스는_별로야");
+        mappedItemAndDescription.put(itemD, "프링글스는_초록_프링글스지");
 
         // when & then
         assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
                 .isInstanceOf(InvalidRequestException.class);
     }
 
-    @DisplayName("호스트가 아닐 시 예외를 던진다.")
     @Test
-    public void validateHost() {
+    void 호스트가_아닐_시_예외를_던진다() {
         // given
         Member member = new Member(3L, "13579246", "bkr", "bkr-profile.com");
 
@@ -135,9 +129,8 @@ class PollTest {
                 .isInstanceOf(InvalidRequestException.class);
     }
 
-    @DisplayName("호스트가 투표를 종료한다")
     @Test
-    void closePoll() {
+    void 호스트가_투표를_종료한다() {
         // when
         poll.close(member);
 
@@ -145,9 +138,8 @@ class PollTest {
         assertThat(poll.getStatus()).isEqualTo(PollStatus.CLOSED);
     }
 
-    @DisplayName("이미 투표가 종료된 상태에서 다시 종료하는 경우 예외를 던진다.")
     @Test
-    void throwsExceptionOnClosingPollTwice() {
+    void 이미_투표가_종료된_상태에서_다시_종료하는_경우_예외를_던진다() {
         // given
         poll.close(member);
 
@@ -156,9 +148,8 @@ class PollTest {
                 .isInstanceOf(InvalidRequestException.class);
     }
 
-    @DisplayName("호스트가 아닌 멤버가 투표를 종료하는 경우 예외를 던진다.")
     @Test
-    void validateHostWhenClosingPoll() {
+    void 호스트가_아닌_멤버가_투표를_종료하는_경우_예외를_던진다() {
         // given
         Member member = new Member(100L, "174837283", "ohzzi", "wrong-member");
 

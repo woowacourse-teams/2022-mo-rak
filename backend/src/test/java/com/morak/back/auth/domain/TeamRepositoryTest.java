@@ -17,9 +17,8 @@ class TeamRepositoryTest {
     @Autowired
     private TeamRepository teamRepository;
 
-    @DisplayName("팀을 생성한다")
     @Test
-    void saveTeam() {
+    void 팀을_생성한다() {
         // given
         Team team = new Team(null, "test-team", "test-code");
 

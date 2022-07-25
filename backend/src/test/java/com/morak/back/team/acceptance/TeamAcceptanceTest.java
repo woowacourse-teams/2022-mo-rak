@@ -18,7 +18,6 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,9 +27,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Autowired
     private TokenProvider tokenProvider;
 
-    @DisplayName("그룹을 생성한다.")
     @Test
-    void createTeam() {
+    void 그룹을_생성한다() {
         // given
         TeamCreateRequest request = new TeamCreateRequest("albur");
         String token = tokenProvider.createToken(String.valueOf(1L));
@@ -45,9 +43,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    @DisplayName("그룹 초대 코드를 생성한다.")
     @Test
-    void createInvitationCode() {
+    void 그룹_초대_코드를_생성한다() {
         // given
         String token = tokenProvider.createToken(String.valueOf(1L));
 
@@ -64,9 +61,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    @DisplayName("그룹에 참가한 멤버의 그룹 참가 여부를 확인한다.")
     @Test
-    void isJoinedWithAlreadyJoined() {
+    void 그룹에_참가한_멤버의_그룹_참가_여부를_확인한다() {
         // given
         String token = tokenProvider.createToken(String.valueOf(1L));
         TeamCreateRequest request = new TeamCreateRequest("albur");
@@ -88,9 +84,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    @DisplayName("그룹에 참가하지 않은 멤버의 그룹 참가 여부를 확인한다.")
     @Test
-    void isJoinedWithNotJoined() {
+    void 그룹에_참가하지_않은_멤버의_그룹_참가_여부를_확인한다() {
         // given
         String token = tokenProvider.createToken(String.valueOf(1L));
         TeamCreateRequest request = new TeamCreateRequest("albur");
@@ -112,9 +107,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    @DisplayName("그룹에 참가한다.")
     @Test
-    void joinTeam() {
+    void 그룹에_참가한다() {
         // given
         String token = tokenProvider.createToken(String.valueOf(1L));
         TeamCreateRequest request = new TeamCreateRequest("albur");
@@ -129,9 +123,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         assertThat(location).startsWith("/api/groups/");
     }
 
-    @DisplayName("그룹 목록을 조회한다.")
     @Test
-    void findTeams() {
+    void 그룹_목록을_조회한다() {
         // given
         String token = tokenProvider.createToken(String.valueOf(1L));
         TeamCreateRequest requestA = new TeamCreateRequest("group-A");
@@ -152,9 +145,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    @DisplayName("그룹의 멤버들을 조회한다.")
     @Test
-    void findMembers() {
+    void 그룹의_멤버들을_조회한다() {
         // given
         String member1Token = tokenProvider.createToken(String.valueOf(1L));
         String member2Token = tokenProvider.createToken(String.valueOf(2L));
@@ -180,9 +172,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     }
 
 
-    @DisplayName("그룹을 탈퇴한다.")
     @Test
-    void exitTeam() {
+    void 그룹을_탈퇴한다() {
         // given
         String token = tokenProvider.createToken(String.valueOf(1L));
         TeamCreateRequest request = new TeamCreateRequest("group-A");
@@ -191,7 +182,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String teamCode = teamLocation.split("/")[3];
 
         // when
-        ExtractableResponse<Response> response = SimpleRestAssured.delete("/api/groups/out/" + teamCode, toHeader(token));
+        ExtractableResponse<Response> response = SimpleRestAssured.delete("/api/groups/out/" + teamCode,
+                toHeader(token));
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());

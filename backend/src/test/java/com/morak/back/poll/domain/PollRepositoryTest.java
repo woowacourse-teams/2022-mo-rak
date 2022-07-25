@@ -36,9 +36,8 @@ class PollRepositoryTest {
         entityManager = factory.createEntityManager();
     }
 
-    @DisplayName("투표를 저장한다.")
     @Test
-    void savePoll() {
+    void 투표를_저장한다() {
         // given
         Team team = supplier.supplyTeam(1L);
         Member member = supplier.supplyMember(1L);
@@ -58,9 +57,8 @@ class PollRepositoryTest {
         );
     }
 
-    @DisplayName("팀ID로 투표 목록을 조회한다.")
     @Test
-    void findPollsByTeamIdAndHostId() {
+    void 팀ID로_투표_목록을_조회한다() {
         // given
 
         long teamId = 1L;
@@ -72,9 +70,8 @@ class PollRepositoryTest {
         assertThat(polls).hasSize(1);
     }
 
-    @DisplayName("투표를 저장할 때 선택항목도 저장한다.")
     @Test
-    void savePollAndPollItems() {
+    void 투표를_저장할_때_선택항목도_저장한다() {
         // given
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
@@ -96,9 +93,8 @@ class PollRepositoryTest {
         );
     }
 
-    @DisplayName("투표 단건을 조회한다.")
     @Test
-    void findByIdAndTeamId() {
+    void 투표_단건을_조회한다() {
         // given
         Poll poll = pollRepository.findByIdAndTeamId(1L, 1L).orElseThrow();
 
@@ -109,9 +105,8 @@ class PollRepositoryTest {
         );
     }
 
-    @DisplayName("잘못된 팀 id로 조회할 경우 null을 반환한다.")
     @Test
-    void validateInvalidTeamId() {
+    void 잘못된_팀_id로_조회할_경우_null을_반환한다() {
         // given
         Optional<Poll> poll = pollRepository.findByIdAndTeamId(1L, 2L);
 
@@ -119,9 +114,8 @@ class PollRepositoryTest {
         assertThat(poll).isEmpty();
     }
 
-    @DisplayName("id로 투표를 삭제한다.")
     @Test
-    public void deleteById() {
+    void id로_투표를_삭제한다() {
         // given
         pollRepository.deleteById(1L);
 

@@ -78,9 +78,8 @@ class PollServiceTest {
         );
     }
 
-    @DisplayName("투표를 생성한다.")
     @Test
-    void createPoll() {
+    void 투표를_생성한다() {
         // given
         PollCreateRequest pollCreateRequest = new PollCreateRequest("title", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("item1", "item2"));
@@ -97,9 +96,8 @@ class PollServiceTest {
         assertThat(pollId).isEqualTo(1L);
     }
 
-    @DisplayName("투표 목록을 조회한다.")
     @Test
-    void findPolls() {
+    void 투표_목록을_조회한다() {
         // given
         given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(teamCode)).willReturn(Optional.of(1L));
@@ -128,9 +126,8 @@ class PollServiceTest {
         );
     }
 
-    @DisplayName("투표를 진행한다.")
     @Test
-    void doPoll() {
+    void 투표를_진행한다() {
         // given
         PollItem pollItem1 = new PollItem(1L, null, "sub1");
         PollItem pollItem2 = new PollItem(2L, null, "sub2");
@@ -164,12 +161,11 @@ class PollServiceTest {
         );
     }
 
-    @DisplayName("재투표를 진행한다.")
     @Test
-    void rePoll() {
+    void 재투표를_진행한다() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member, "거의 다 한 것 같아요");
-        PollResult pollResult2 = new PollResult(2L, null, member, "집에 가고 싶어요!");
+        PollResult pollResult1 = new PollResult(1L, null, member, "거의_다_한_것_같아요");
+        PollResult pollResult2 = new PollResult(2L, null, member, "집에_가고_싶어요!");
         PollItem pollItem1 = new PollItem(1L, null, "sub1", new ArrayList<>(List.of(pollResult1)));
         PollItem pollItem2 = new PollItem(2L, null, "sub2", new ArrayList<>(List.of(pollResult2)));
         PollItem pollItem3 = new PollItem(3L, null, "sub3");
@@ -206,9 +202,8 @@ class PollServiceTest {
         );
     }
 
-    @DisplayName("투표 단건을 조회한다.")
     @Test
-    void findPoll() {
+    void 투표_단건을_조회한다() {
         // given
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(teamCode)).willReturn(Optional.of(1L));
@@ -237,9 +232,8 @@ class PollServiceTest {
         );
     }
 
-    @DisplayName("투표 선택 항목을 조회한다.")
     @Test
-    void findPollItems() {
+    void 투표_선택_항목을_조회한다() {
         // given
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(teamCode)).willReturn(Optional.of(1L));
@@ -304,12 +298,11 @@ class PollServiceTest {
         );
     }
 
-    @DisplayName("익명 투표 결과를 조회한다.")
     @Test
-    void findPollResultsWithAnonymous() {
+    void 익명_투표_결과를_조회한다() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member, "거의 다 한 것 같아요");
-        PollResult pollResult2 = new PollResult(2L, null, member, "집에 가고 싶어요!");
+        PollResult pollResult1 = new PollResult(1L, null, member, "거의_다_한_것_같아요");
+        PollResult pollResult2 = new PollResult(2L, null, member, "집에_가고_싶어요!");
 
         Poll poll = new Poll(
                 1L,
@@ -343,16 +336,15 @@ class PollServiceTest {
                 () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getId()).isEqualTo(0L),
                 () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getName()).isBlank(),
                 () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo(
-                        "거의 다 한 것 같아요")
+                        "거의_다_한_것_같아요")
         );
     }
 
-    @DisplayName("기명 투표 결과를 조회한다.")
     @Test
-    void findPollResultsWithNotAnonymous() {
+    void 기명_투표_결과를_조회한다() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member, "거의 다 한 것 같아요");
-        PollResult pollResult2 = new PollResult(2L, null, member, "집에 가고 싶어요!");
+        PollResult pollResult1 = new PollResult(1L, null, member, "거의_다_한_것_같아요");
+        PollResult pollResult2 = new PollResult(2L, null, member, "집에_가고_싶어요!");
 
         Poll poll = new Poll(
                 1L,
@@ -387,9 +379,8 @@ class PollServiceTest {
         );
     }
 
-    @DisplayName("투표를 삭제한다.")
     @Test
-    public void deletePoll() {
+    void 투표를_삭제한다() {
         // given
         given(memberRepository.findById(anyLong())).willReturn(
                 Optional.of(member));
@@ -415,9 +406,8 @@ class PollServiceTest {
         verify(pollRepository).deleteById(1L);
     }
 
-    @DisplayName("삭제 시 호스트가 아니면 예외를 던진다.")
     @Test
-    public void deletePollByNotHost() {
+    void 삭제_시_호스트가_아니면_예외를_던진다() {
         // given
         Member notHostMember = new Member(2L, "87654321", "eden", "eden-profile.cloudfront.net");
         given(memberRepository.findById(anyLong())).willReturn(
@@ -443,9 +433,8 @@ class PollServiceTest {
                 .isInstanceOf(InvalidRequestException.class);
     }
 
-    @DisplayName("투표를 종료한다.")
     @Test
-    void closePoll() {
+    void 투표를_종료한다() {
         // given
         Poll poll = new Poll(
                 1L,

@@ -28,13 +28,12 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Autowired
     private TokenProvider tokenProvider;
 
-    @DisplayName("투표를 생성한다.")
     @Test
-    void createPoll() {
+    void 투표를_생성한다() {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
-        PollCreateRequest request = new PollCreateRequest("투표 제목", 1, false, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now(),
                 List.of("항목1", "항목2"));
         // when
         ExtractableResponse<Response> response = RestAssured.given().log().all()
@@ -45,9 +44,8 @@ class PollAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
-    @DisplayName("투표 목록을 조회한다.")
     @Test
-    void findPolls() {
+    void 투표_목록을_조회한다() {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
@@ -65,17 +63,16 @@ class PollAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    @DisplayName("투표를 진행한다.")
     @Test
-    void doPoll() {
+    void 투표를_진행한다() {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
-        PollCreateRequest createRequest = new PollCreateRequest("투표 제목", 1, false, LocalDateTime.now(),
+        PollCreateRequest createRequest = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now(),
                 List.of("항목1", "항목2"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, createRequest);
 
-        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이 나기 때문이에요"));
+        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이_나기_때문이에요"));
 
         // when
         ExtractableResponse<Response> response = 투표를_진행한다(accessToken, location, pollItemRequests);
@@ -84,20 +81,19 @@ class PollAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    @DisplayName("재투표를 진행한다.")
     @Test
-    void rePoll() {
+    void 재투표를_진행한다() {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
-        PollCreateRequest createRequest = new PollCreateRequest("투표 제목", 1, false, LocalDateTime.now(),
+        PollCreateRequest createRequest = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now(),
                 List.of("항목1", "항목2"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, createRequest);
 
-        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이 나기 때문이에요"));
+        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이_나기_때문이에요"));
         투표를_진행한다(accessToken, location, pollItemRequests);
 
-        List<PollItemRequest> rePollItemRequests = List.of(new PollItemRequest(5L, "다시 일어설거에요!"));
+        List<PollItemRequest> rePollItemRequests = List.of(new PollItemRequest(5L, "다시_일어설거에요!"));
 
         // when
         ExtractableResponse<Response> rePollResponse = 투표를_진행한다(accessToken, location, rePollItemRequests);
@@ -106,14 +102,13 @@ class PollAcceptanceTest extends AcceptanceTest {
         assertThat(rePollResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    @DisplayName("투표 단건을 조회한다.")
     @Test
-    void findPoll() {
+    void 투표_단건을_조회한다() {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
-        PollCreateRequest createRequest = new PollCreateRequest("앨버의 현재 위치", 1, false, LocalDateTime.now(),
-                List.of("트랙룸", "1번 회의실"));
+        PollCreateRequest createRequest = new PollCreateRequest("앨버의_현재_위치", 1, false, LocalDateTime.now(),
+                List.of("트랙룸", "1번_회의실"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, createRequest);
 
         // when
@@ -126,18 +121,17 @@ class PollAcceptanceTest extends AcceptanceTest {
         PollResponse pollResponse = response.body().jsonPath().getObject(".", PollResponse.class);
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(pollResponse.getTitle()).isEqualTo("앨버의 현재 위치"),
+                () -> assertThat(pollResponse.getTitle()).isEqualTo("앨버의_현재_위치"),
                 () -> assertThat(pollResponse.getIsHost()).isTrue()
         );
     }
 
-    @DisplayName("투표 선택 항목을 조회한다.")
     @Test
-    void findPollItems() {
+    void 투표_선택_항목을_조회한다() {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
-        PollCreateRequest request = new PollCreateRequest("위니의 영어 단어 사용 횟수", 1, false, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("위니의_영어_단어_사용_횟수", 1, false, LocalDateTime.now(),
                 List.of("삼십만", "300000"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
 
@@ -164,8 +158,8 @@ class PollAcceptanceTest extends AcceptanceTest {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
-        PollCreateRequest request = new PollCreateRequest("에덴의 속마음은?", 1, false, LocalDateTime.now(),
-                List.of("에덴은 칼퇴하고 싶다.", "에덴은 11시에 퇴근하고 싶다."));
+        PollCreateRequest request = new PollCreateRequest("에덴의_속마음은?", 1, false, LocalDateTime.now(),
+                List.of("에덴은_칼퇴하고_싶다.", "에덴은_11시에_퇴근하고_싶다."));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
 
         투표를_진행한다(accessToken, location, List.of(new PollItemRequest(4L, "월요일이기때문!!")));
@@ -182,26 +176,25 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(pollItemResponses).hasSize(2),
                 () -> assertThat(pollItemResponses.get(0).getId()).isNotNull(),
-                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("에덴은 칼퇴하고 싶다."),
+                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("에덴은_칼퇴하고_싶다."),
                 () -> assertThat(pollItemResponses.get(0).getSelected()).isTrue(),
                 () -> assertThat(pollItemResponses.get(0).getDescription()).isEqualTo("월요일이기때문!!"),
-                () -> assertThat(pollItemResponses.get(1).getSubject()).isEqualTo("에덴은 11시에 퇴근하고 싶다."),
+                () -> assertThat(pollItemResponses.get(1).getSubject()).isEqualTo("에덴은_11시에_퇴근하고_싶다."),
                 () -> assertThat(pollItemResponses.get(1).getSelected()).isFalse(),
                 () -> assertThat(pollItemResponses.get(1).getDescription()).isBlank()
         );
     }
 
-    @DisplayName("무기명 투표 결과를 조회한다.")
     @Test
-    public void findPollResultsWithAnonymous() {
+    void 무기명_투표_결과를_조회한다() {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
-        PollCreateRequest request = new PollCreateRequest("투표 제목", 2, true, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, true, LocalDateTime.now(),
                 List.of("항목1", "항목2", "항목3"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
 
-        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이 나기 때문이에요"));
+        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이_나기_때문이에요"));
         투표를_진행한다(accessToken, location, pollItemRequests);
 
         // when
@@ -220,21 +213,20 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
                 () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0),
                 () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isBlank(),
-                () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이 나기 때문이에요")
+                () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요")
         );
     }
 
-    @DisplayName("기명 투표 결과를 조회한다.")
     @Test
-    public void findPollResults() {
+    void 기명_투표_결과를_조회한다() {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
-        PollCreateRequest request = new PollCreateRequest("투표 제목", 2, false, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, false, LocalDateTime.now(),
                 List.of("항목1", "항목2", "항목3"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
 
-        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이 나기 때문이에요"));
+        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이_나기_때문이에요"));
         투표를_진행한다(accessToken, location, pollItemRequests);
 
         // when
@@ -251,19 +243,18 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(resultResponses).hasSize(3),
                 () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
                 () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo("eden"),
-                () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이 나기 때문이에요"),
+                () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요"),
                 () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
                 () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0)
         );
     }
 
-    @DisplayName("투표를 삭제한다.")
     @Test
-    public void deletePoll() {
+    void 투표를_삭제한다() {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
-        PollCreateRequest request = new PollCreateRequest("투표 제목", 2, false, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, false, LocalDateTime.now(),
                 List.of("항목1", "항목2", "항목3"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
 
@@ -277,13 +268,12 @@ class PollAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
-    @DisplayName("투표를 마감한다")
     @Test
-    void closePoll() {
+    void 투표를_마감한다() {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
-        PollCreateRequest request = new PollCreateRequest("투표 제목", 2, false, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, false, LocalDateTime.now(),
                 List.of("항목1", "항목2", "항목3"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
 
@@ -299,7 +289,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // given
         String accessToken = 로그인을_해_토큰을_발급받는다(1L);
 
-        PollCreateRequest request = new PollCreateRequest("투표 제목", 2, false, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, false, LocalDateTime.now(),
                 List.of("항목1", "항목2", "항목3"));
         String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
 
