@@ -59,15 +59,14 @@ const StyledContainer = styled.div<
     variantStyle: string;
   }
 >(
-  ({ width, borderRadius, variantStyle, padding, color, fontSize }) => `
+  ({ width, borderRadius, variantStyle, padding, fontSize }) => `
     ${variantStyle};
     position: relative;
-    width: ${width || '100%'};
     border-radius: ${borderRadius};
     padding: ${padding};
-    color: ${color};
     font-size: ${fontSize};
     text-align: center;
+    ${width && `width: ${width}`};
   `
 );
 

@@ -1,5 +1,6 @@
 import { useTheme } from '@emotion/react';
 import React from 'react';
+import styled from '@emotion/styled';
 
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 
@@ -20,9 +21,8 @@ function PollMainDetail({ isAnonymous, allowedPollCount }: Props) {
         fontSize="0.8rem"
         padding="0.4rem 0"
         colorScheme={theme.colors.PURPLE_100}
-        color={theme.colors.PURPLE_100}
       >
-        {isAnonymous ? '익명' : '기명'}
+        <StyledDetail>{isAnonymous ? '익명' : '기명'}</StyledDetail>
       </TextField>
       <TextField
         width="7.6rem"
@@ -31,12 +31,19 @@ function PollMainDetail({ isAnonymous, allowedPollCount }: Props) {
         fontSize="0.8rem"
         padding="0.4rem 0"
         colorScheme={theme.colors.PURPLE_100}
-        color={theme.colors.PURPLE_100}
       >
-        {allowedPollCount === 1 ? '하나만 투표가능' : '여러개 투표가능'}
+        <StyledDetail>
+          {allowedPollCount === 1 ? '하나만 투표가능' : '여러개 투표가능'}
+        </StyledDetail>
       </TextField>
     </FlexContainer>
   );
 }
+
+const StyledDetail = styled.span(
+  ({ theme }) => `
+  color: ${theme.colors.PURPLE_100};
+`
+);
 
 export default PollMainDetail;
