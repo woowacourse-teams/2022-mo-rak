@@ -18,7 +18,6 @@ function PollMainDetail({ isAnonymous, allowedPollCount }: Props) {
         width="3.6rem"
         borderRadius="20px"
         variant="outlined"
-        fontSize="0.8rem"
         padding="0.4rem 0"
         colorScheme={theme.colors.PURPLE_100}
       >
@@ -28,7 +27,6 @@ function PollMainDetail({ isAnonymous, allowedPollCount }: Props) {
         width="7.6rem"
         borderRadius="20px"
         variant="outlined"
-        fontSize="0.8rem"
         padding="0.4rem 0"
         colorScheme={theme.colors.PURPLE_100}
       >
@@ -43,6 +41,7 @@ function PollMainDetail({ isAnonymous, allowedPollCount }: Props) {
 const StyledDetail = styled.span(
   ({ theme }) => `
   color: ${theme.colors.PURPLE_100};
+  fontSize: 0.8rem;
 `
 );
 

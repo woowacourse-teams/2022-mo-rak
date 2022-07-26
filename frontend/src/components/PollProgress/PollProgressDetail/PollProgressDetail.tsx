@@ -19,7 +19,6 @@ function PollProgressDetail({ isAnonymous, allowedPollCount }: Props) {
         borderRadius="20px"
         padding="1.2rem 0"
         variant="outlined"
-        fontSize="0.8rem"
         colorScheme={theme.colors.PURPLE_100}
       >
         <StyledDetail>{isAnonymous ? '익명' : '기명'}</StyledDetail>
@@ -29,7 +28,6 @@ function PollProgressDetail({ isAnonymous, allowedPollCount }: Props) {
         borderRadius="20px"
         padding="1.2rem 0"
         variant="outlined"
-        fontSize="0.8rem"
         colorScheme={theme.colors.PURPLE_100}
       >
         <StyledDetail>
@@ -43,6 +41,7 @@ function PollProgressDetail({ isAnonymous, allowedPollCount }: Props) {
 const StyledDetail = styled.span(
   ({ theme }) => `
   color: ${theme.colors.PURPLE_100};
+  fontSize: 0.8rem;
 `
 );
 

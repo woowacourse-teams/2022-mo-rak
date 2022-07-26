@@ -16,7 +16,6 @@ function PollResultStatus({ status }: Props) {
       variant="filled"
       width="6.4rem"
       padding="1.6rem 0"
-      fontSize="1.2rem"
       borderRadius="1.2rem"
       colorScheme={status === 'OPEN' ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
     >
@@ -28,6 +27,7 @@ function PollResultStatus({ status }: Props) {
 const StyledStatus = styled.span(
   ({ theme }) => `
   color: ${theme.colors.WHITE_100};
+  fontSize:1.2rem;
 `
 );
 
