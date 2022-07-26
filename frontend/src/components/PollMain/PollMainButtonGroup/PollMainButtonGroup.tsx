@@ -15,14 +15,13 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
 
   return (
     <FlexContainer gap="1.2rem" justifyContent="end">
-      {/* TODO: 컴포넌트 만들기 */}
-      {status === 'OPEN' ? (
+      {status === 'OPEN' && (
         <Button
           type="button"
           variant="filled"
           width="6rem"
           padding="0.4rem 0"
-          fontSize="1rem"
+          fontSize="1.2rem"
           borderRadius="5px"
           color={theme.colors.WHITE_100}
           colorScheme={theme.colors.PURPLE_100}
@@ -30,15 +29,13 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
         >
           투표하기
         </Button>
-      ) : (
-        ''
       )}
       <Button
         type="button"
         variant="outlined"
         width="6rem"
         padding="0.4rem 0"
-        fontSize="1rem"
+        fontSize="1.2rem"
         borderRadius="5px"
         color={theme.colors.PURPLE_100}
         colorScheme={theme.colors.PURPLE_100}
