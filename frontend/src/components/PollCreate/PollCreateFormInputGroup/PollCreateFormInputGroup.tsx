@@ -9,11 +9,12 @@ import TextField from '../../common/TextField/TextField';
 import Button from '../../common/Button/Button';
 
 import Bin from '../../../assets/bin.svg';
+import { PollItemInterface } from '../../../types/poll';
 
 interface Props {
-  // TODO: 타입을 재사용 할 수는 없을까?
-  pollItems: Array<string>;
-  setPollItems: Dispatch<SetStateAction<Array<string>>>;
+  // TODO: pollItems 괜찮을까? subjects가 아닐까?
+  pollItems: Array<PollItemInterface['subject']>;
+  setPollItems: Dispatch<SetStateAction<Array<PollItemInterface['subject']>>>;
 }
 
 function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
@@ -33,8 +34,12 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
 
   const handleDeletePollItem = (targetIdx: number) => () => {
     // TODO: 상수화
-    // TODO: 2개이하면 삭제되지 않도록 해줘야함
     if (window.confirm('해당 항목을 삭제하시겠습니까?')) {
+      if (pollItems.length === 2) {
+        alert('선택항목은 최소 2개이상이여야합니다.');
+        return;
+      }
+
       const newPollItems = [...pollItems].filter((_, idx) => idx !== targetIdx);
 
       setPollItems(newPollItems);
