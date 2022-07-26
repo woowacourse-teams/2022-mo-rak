@@ -43,7 +43,7 @@ class PollControllerTest extends ControllerTest {
     @Test
     void 투표를_생성한다() throws Exception {
         // given
-        PollCreateRequest pollCreateRequest = new PollCreateRequest("회식 메뉴", 2, false, LocalDateTime.now().plusDays(1),
+        PollCreateRequest pollCreateRequest = new PollCreateRequest("회식_메뉴", 2, false, LocalDateTime.now().plusDays(1),
                 List.of("회", "삼겹살", "꿔바로우"));
 
         given(pollService.createPoll(anyString(), anyLong(), any(PollCreateRequest.class))).willReturn(1L);
@@ -61,7 +61,7 @@ class PollControllerTest extends ControllerTest {
                 .andDo(document("poll/poll-create",
                         getDocumentRequest(),
                         getDocumentResponse(),
-                        pathParameters(parameterWithName("groupCode").description("그룹 코드"))
+                        pathParameters(parameterWithName("groupCode").description("그룹_코드"))
                         ));
     }
 
@@ -69,8 +69,8 @@ class PollControllerTest extends ControllerTest {
     void 투표를_진행한다() throws Exception {
         // given
         List<PollItemRequest> pollItemRequests = List.of(
-                new PollItemRequest(1L, "회는 싱싱하니까요~"),
-                new PollItemRequest(2L, "삼겹살은 언제나 좋아요!!")
+                new PollItemRequest(1L, "회는_싱싱하니까요~"),
+                new PollItemRequest(2L, "삼겹살은_언제나_좋아요!!")
         );
 
         // when
@@ -86,8 +86,8 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("id").description("투표_아이디")
                         )
                 ));
     }
@@ -97,9 +97,9 @@ class PollControllerTest extends ControllerTest {
         // given
         given(pollService.findPolls(anyString(), anyLong()))
                 .willReturn(List.of(
-                        new PollResponse(1L, "회식 메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
+                        new PollResponse(1L, "회식_메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
                                 LocalDateTime.now().plusDays(3), groupCode, true),
-                        new PollResponse(2L, "좋아하는 색상", 1, true, "OPEN", LocalDateTime.now().minusDays(1),
+                        new PollResponse(2L, "좋아하는_색상", 1, true, "OPEN", LocalDateTime.now().minusDays(1),
                                 LocalDateTime.now().plusDays(3), "SZ72Yofx", false)
                 ));
 
@@ -114,7 +114,7 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드")
+                                parameterWithName("groupCode").description("그룹_코드")
                         )
                 ));
     }
@@ -123,7 +123,7 @@ class PollControllerTest extends ControllerTest {
     void 투표를_조회한다() throws Exception {
         // given
         given(pollService.findPoll(anyString(), anyLong(), anyLong()))
-                .willReturn(new PollResponse(1L, "회식 메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
+                .willReturn(new PollResponse(1L, "회식_메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
                         LocalDateTime.now().plusDays(3), groupCode, true));
 
         // when
@@ -137,8 +137,8 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("id").description("투표_아이디")
                         )));
     }
 
@@ -147,8 +147,8 @@ class PollControllerTest extends ControllerTest {
         // given
         given(pollService.findPollItems(anyString(), anyLong(), anyLong()))
                 .willReturn(List.of(
-                        new PollItemResponse(1L, "회", true, "위니가 회를 참 좋아해요."),
-                        new PollItemResponse(2L, "삼겹살", true, "해리가 정말 좋아해요."),
+                        new PollItemResponse(1L, "회", true, "위니가_회를_참_좋아해요."),
+                        new PollItemResponse(2L, "삼겹살", true, "해리가_정말_좋아해요."),
                         new PollItemResponse(3L, "꿔바로우", false, "")
                 ));
 
@@ -163,16 +163,16 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("id").description("투표_아이디")
                         )));
     }
 
     @Test
     void 익명_투표_결과를_조회한다() throws Exception {
         // given
-        MemberResultResponse memberResultResponse1 = new MemberResultResponse(0L, "", "", "위니가 회를 참 좋아해요.");
-        MemberResultResponse memberResultResponse2 = new MemberResultResponse(0L, "", "", "해리가 삼겹살을 정말 좋아해요.");
+        MemberResultResponse memberResultResponse1 = new MemberResultResponse(0L, "", "", "위니가_회를_참_좋아해요.");
+        MemberResultResponse memberResultResponse2 = new MemberResultResponse(0L, "", "", "해리가_삼겹살을_정말_좋아해요.");
 
         given(pollService.findPollItemResults(anyString(), anyLong(), anyLong()))
                 .willReturn(List.of(
@@ -192,8 +192,8 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("id").description("투표_아이디")
                         )
                 ));
     }
@@ -202,9 +202,9 @@ class PollControllerTest extends ControllerTest {
     void 기명_투표_결과를_조회한다() throws Exception {
         // given
         MemberResultResponse memberResultResponse1 = new MemberResultResponse(1L, "송상민씨", "albur-profile-image-url",
-                "위니가 회를 참 좋아해요.");
+                "위니가_회를_참_좋아해요.");
         MemberResultResponse memberResultResponse2 = new MemberResultResponse(2L, "리엘", "ellie-profile-image-url",
-                "해리가 삼겹살을 정말 좋아해요.");
+                "해리가_삼겹살을_정말_좋아해요.");
 
         given(pollService.findPollItemResults(anyString(), anyLong(), anyLong()))
                 .willReturn(List.of(
@@ -224,8 +224,8 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("id").description("투표_아이디")
                         )
                 ));
     }
@@ -243,8 +243,8 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("id").description("투표_아이디")
                         )));
     }
 
@@ -261,8 +261,8 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("id").description("투표_아이디")
                         )));
     }
 }

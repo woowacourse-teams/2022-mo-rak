@@ -1,6 +1,6 @@
 package com.morak.back.poll.domain;
 
-import com.morak.back.poll.exception.InvalidRequestException;
+import com.morak.back.core.exception.InvalidRequestException;
 
 public enum PollStatus {
     OPEN, CLOSED;
@@ -11,7 +11,7 @@ public enum PollStatus {
 
     public PollStatus close() {
         if (this == CLOSED) {
-            throw new InvalidRequestException();
+            throw new InvalidRequestException("이미 close 상태의 투표입니다.");
         }
         return CLOSED;
     }

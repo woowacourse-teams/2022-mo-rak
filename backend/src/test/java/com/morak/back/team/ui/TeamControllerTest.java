@@ -7,9 +7,10 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -99,7 +100,7 @@ class TeamControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("group-code").description("그룹 코드")
+                                parameterWithName("group-code").description("그룹_코드")
                         )
                 )
         );
@@ -124,7 +125,7 @@ class TeamControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("invitation-code").description("그룹 초대 코드")
+                                parameterWithName("invitation-code").description("그룹_초대_코드")
                         )
                 )
         );
@@ -174,7 +175,7 @@ class TeamControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("group-code").description("그룹 코드")
+                                parameterWithName("group-code").description("그룹_코드")
                         )
 
                 )
@@ -196,7 +197,7 @@ class TeamControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("group-code").description("그룹 코드")
+                                parameterWithName("group-code").description("그룹_코드")
                         )
                 )
         );

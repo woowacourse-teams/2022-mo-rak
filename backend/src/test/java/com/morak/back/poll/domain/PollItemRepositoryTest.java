@@ -1,27 +1,20 @@
 package com.morak.back.poll.domain;
 
-import static org.assertj.core.api.Assertions.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.poll.support.DomainSupplier;
 import com.morak.back.support.RepositoryTest;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@SpringBootTest
+@RepositoryTest
 class PollItemRepositoryTest {
 
     @Autowired
@@ -39,16 +32,15 @@ class PollItemRepositoryTest {
         entityManager = factory.createEntityManager();
     }
 
-    @DisplayName("투표 선택 항목을 저장한다.")
     @Test
-    void savePollItems() {
+    void 투표_선택_항목을_저장한다() {
         // given
         Poll poll = supplier.supplyPoll(1L);
 
         List<PollItem> items = List.of(
-            new PollItem(null, poll, "subject-1", new ArrayList<>()),
-            new PollItem(null, poll, "subject-2", new ArrayList<>()),
-            new PollItem(null, poll, "subject-3", new ArrayList<>())
+                new PollItem(null, poll, "subject-1", new ArrayList<>()),
+                new PollItem(null, poll, "subject-2", new ArrayList<>()),
+                new PollItem(null, poll, "subject-3", new ArrayList<>())
         );
         // when
         List<PollItem> savedItems = pollItemRepository.saveAll(items);
@@ -56,10 +48,8 @@ class PollItemRepositoryTest {
         assertThat(savedItems).allMatch(item -> item.getId() != null);
     }
 
-    @DisplayName("투표 선택 항목의 투표 결과 리스트에서 투표 결과를 제거하면 DB에서 삭제된다.")
     @Test
-    @Transactional
-    void removePollResult() {
+    void 투표_선택_항목의_투표_결과_리스트에서_투표_결과를_제거하면_DB에서_삭제된다() {
         // given
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
@@ -79,9 +69,8 @@ class PollItemRepositoryTest {
         assertThat(findItem.getPollResults()).hasSize(1);
     }
 
-    @DisplayName("투표 id로 투표 선택 항목을 조회한다.")
     @Test
-    public void findAllByPollId() {
+    void 투표_id로_투표_선택_항목을_조회한다() {
         // given
         List<PollItem> pollItems = pollItemRepository.findAllByPollId(1L);
 

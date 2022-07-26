@@ -1,7 +1,7 @@
 package com.morak.back.team.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.morak.back.auth.domain.Team;
+import com.morak.back.team.domain.Team;
 import lombok.Getter;
 
 @Getter

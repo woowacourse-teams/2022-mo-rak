@@ -1,4 +1,4 @@
-package com.morak.back.auth.domain;
+package com.morak.back.team.domain;
 
 import java.util.List;
 import java.util.Optional;

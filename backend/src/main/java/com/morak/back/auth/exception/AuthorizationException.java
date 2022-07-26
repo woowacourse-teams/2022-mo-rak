@@ -1,6 +1,8 @@
 package com.morak.back.auth.exception;
 
-public class AuthorizationException extends RuntimeException {
+import com.morak.back.core.exception.MorakException;
+
+public class AuthorizationException extends MorakException {
 
     public AuthorizationException(String message) {
         super(message);

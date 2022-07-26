@@ -1,16 +1,15 @@
 package com.morak.back.poll.domain;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.poll.exception.InvalidRequestException;
-import org.junit.jupiter.api.DisplayName;
+import com.morak.back.core.exception.InvalidRequestException;
 import org.junit.jupiter.api.Test;
 
 class PollStatusTest {
 
-    @DisplayName("투표가 종료되었는지 확인한다")
     @Test
-    void isClosed() {
+    void 투표가_종료되었는지_확인한다() {
         // given
         PollStatus status = PollStatus.OPEN;
         // when
@@ -19,9 +18,8 @@ class PollStatusTest {
         assertThat(isClosed).isFalse();
     }
 
-    @DisplayName("투표를 종료한다.")
     @Test
-    void close() {
+    void 투표를_종료한다() {
         // given
         PollStatus status = PollStatus.OPEN;
         // when
@@ -30,9 +28,8 @@ class PollStatusTest {
         assertThat(closed).isSameAs(PollStatus.CLOSED);
     }
 
-    @DisplayName("투표를 두 번 종료하면 예외를 던진다.")
     @Test
-    void throwsExceptionOnClosingTwice() {
+    void 투표를_두_번_종료하면_예외를_던진다() {
         // given
         PollStatus status = PollStatus.OPEN;
         // when

@@ -3,7 +3,6 @@ package com.morak.back.auth.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.poll.exception.PollException;
 import com.morak.back.support.RepositoryTest;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
