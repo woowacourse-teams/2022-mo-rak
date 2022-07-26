@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import PollMainContainer from '../../components/PollMainContainer/PollMainContainer';
+import PollMainContainer from '../../components/PollMain/PollMainContainer/PollMainContainer';
 
 // TODO: 다른 페이지와 똑같이 추상화
 function PollMainPage() {
