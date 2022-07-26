@@ -23,7 +23,6 @@ interface Props {
   groupCode: GroupInterface['code'];
   handleSelectPollItems: (mode: string) => (e: ChangeEvent<HTMLInputElement>) => void;
   handleDescription: (pollId: number) => (e: ChangeEvent<HTMLInputElement>) => void;
-  // TODO: groupCode undefined 없애기
 }
 
 function PollProgressItemGroup({
@@ -36,17 +35,8 @@ function PollProgressItemGroup({
 }: Props) {
   const theme = useTheme();
   const [pollItems, setPollItems] = useState<Array<PollItemInterface>>([]);
-
-  const getIsSelectedPollItem = (pollId: number) => {
-    // TODO: 리팩터링 (메서드 찾아보기)
-    for (const selectedPollItem of selectedPollItems) {
-      if (selectedPollItem.itemId === pollId) {
-        return true;
-      }
-    }
-
-    return false;
-  };
+  const getIsSelectedPollItem = (pollId: PollInterface['id']) =>
+    selectedPollItems.some((selectedPollItem) => selectedPollItem.itemId === pollId);
 
   useEffect(() => {
     const fetchPollItems = async (pollId: PollInterface['id']) => {
@@ -76,7 +66,6 @@ function PollProgressItemGroup({
             variant="outlined"
             borderRadius="10px"
           >
-            {/* TODO: 상수화 */}
             {allowedPollCount >= 2 ? (
               <Checkbox
                 id={String(id)}
