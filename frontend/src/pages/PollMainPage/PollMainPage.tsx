@@ -1,13 +1,14 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import PollMainContainer from '../../components/PollMain/PollMainContainer/PollMainContainer';
+import PollMainHeader from '../../components/PollMain/PollMainHeader/PollMainHeader';
 
-// TODO: 다른 페이지와 똑같이 추상화
 function PollMainPage() {
-  console.log('폴 메인 페이지');
   // TODO: 완료, 진행중에 따라 다르게 렌더링
   return (
     <StyledContainer>
+      <PollMainHeader />
+      {/* TODO: 네이밍 */}
       <PollMainContainer />
     </StyledContainer>
   );
