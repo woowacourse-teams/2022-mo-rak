@@ -16,6 +16,9 @@ function PollMainPage() {
 
 // TODO: width 수정, 계속해서 여기에 들어가야하는가? app에서 감싸주면 안될까?
 const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
   width: calc(100% - 36.4rem);
   padding: 6.4rem 20rem;
 `;
