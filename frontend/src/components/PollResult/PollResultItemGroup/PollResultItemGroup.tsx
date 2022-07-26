@@ -71,44 +71,27 @@ function PollResultItemGroup({ pollId, status, groupCode, pollResult }: Props) {
 
         return (
           <TextField
-            // TODO: winningPollItemIds.includes(id) 하나의 변수로
             variant={status === 'CLOSED' && isWinningPollItem ? 'filled' : 'outlined'}
             fontSize="1.6rem"
             padding="1.2rem 0"
             borderRadius="15px"
-            color={
-              status === 'CLOSED' && isWinningPollItem
-                ? theme.colors.WHITE_100
-                : theme.colors.BLACK_100
-            }
             colorScheme={theme.colors.PURPLE_100}
           >
-            <StyledCheckIcon
-              isOpen={status === 'OPEN'}
-              checked={selectedPollItemIds.includes(id)}
-              src={Check}
-              alt="check"
-            />
-            <StyledCrownIcon
-              isClosed={status === 'CLOSED'}
-              isWinningPollItem={isWinningPollItem}
-              src={Crown}
-              alt="crown"
-            />
-            {subject}
+            {status === 'OPEN' ? (
+              <StyledCheckIcon checked={selectedPollItemIds.includes(id)} src={Check} alt="check" />
+            ) : (
+              <StyledCrownIcon isWinningPollItem={isWinningPollItem} src={Crown} alt="crown" />
+            )}
+            <StyledSubject status={status} isWinningPollItem={isWinningPollItem}>
+              {subject}
+            </StyledSubject>
             <StyledParticipantCount onClick={handleShowParticipant(id)}>
               <FlexContainer>
                 <StyledUserIcon
                   src={status === 'CLOSED' && isWinningPollItem ? UserWhite : UserPurple}
                   alt="user"
                 />
-                <StyledUserCount
-                  color={
-                    status === 'CLOSED' && isWinningPollItem
-                      ? theme.colors.WHITE_100
-                      : theme.colors.BLACK_100
-                  }
-                >
+                <StyledUserCount status={status} isWinningPollItem={isWinningPollItem}>
                   {count}
                 </StyledUserCount>
               </FlexContainer>
@@ -135,12 +118,11 @@ const StyledUserIcon = styled.img`
 
 const StyledCrownIcon = styled.img<
   CSSProperties & {
-    isClosed: boolean;
     isWinningPollItem: boolean;
   }
 >(
-  ({ isClosed, isWinningPollItem }) => `
-  display: ${isClosed && isWinningPollItem ? 'inline' : 'none'};
+  ({ isWinningPollItem }) => `
+  display: ${isWinningPollItem ? 'block' : 'none'};
   position: absolute;
   top: 1rem;
   left: 2rem;
@@ -151,12 +133,11 @@ const StyledCrownIcon = styled.img<
 
 const StyledCheckIcon = styled.img<
   CSSProperties & {
-    isOpen: boolean;
     checked: boolean;
   }
 >(
-  ({ isOpen, checked }) => `
-  display: ${isOpen && checked ? 'inline' : 'none'};
+  ({ checked }) => `
+  display: ${checked ? 'block' : 'none'};
   position: absolute;
   top: 0.8rem;
   left: 2rem;
@@ -165,9 +146,22 @@ const StyledCheckIcon = styled.img<
 `
 );
 
-const StyledUserCount = styled.span<CSSProperties>(
-  (color) => `
-  color: ${color};
+const StyledUserCount = styled.span<{
+  isWinningPollItem: boolean;
+  status: PollInterface['status'];
+}>(
+  ({ theme, status, isWinningPollItem }) => `
+  color: ${
+    status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
+  };
+`
+);
+
+const StyledSubject = styled.span<{ isWinningPollItem: boolean; status: PollInterface['status'] }>(
+  ({ theme, isWinningPollItem, status }) => `
+  color: ${
+    status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
+  };
 `
 );
 
