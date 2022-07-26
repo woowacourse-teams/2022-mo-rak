@@ -230,7 +230,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 인증되지않은_사용자가_투표마감시_BAD_REQUEST를_응답한다() {
+    void 호스트가_아닌_사용자가_투표마감시_BAD_REQUEST를_응답한다() {
         // given
         String otherToken = tokenProvider.createToken(2L + "");
         String location = 기본_투표_생성을_요청한다().header("Location");
