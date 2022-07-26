@@ -15,7 +15,6 @@ function PollParticipantModal({ participants }: Props) {
           {participants.map(({ profileUrl, name, description }) => (
             <StyledUserProfile>
               <StyledUserImage src={profileUrl} />
-              {/* TODO: 이후 api 바뀐 명세에 따라, name === ''으로 변경해야함 */}
               <StyledUserName>{name === '' ? '익명' : name}</StyledUserName>
               {/* TODO: 컴포넌트로 변경하기 */}
               {description && <div className="description">{description}</div>}
@@ -54,7 +53,7 @@ const StyledUserProfile = styled.div`
     width: 10rem;
     padding: 1rem;
     text-align: center;
-    border: 1px solid gray; // TODO: 임시 스타일
+    border: 1px solid gray;
     background: white;
   }
 

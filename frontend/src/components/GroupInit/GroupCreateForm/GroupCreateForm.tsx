@@ -38,7 +38,6 @@ function GroupCreateForm() {
         borderRadius="10px"
         padding="1.2rem 0"
       >
-        {/* TODO: Input 내부 레이아웃 수정 */}
         <Input
           placeholder="그룹이름을 입력해주세요!"
           value={groupName}

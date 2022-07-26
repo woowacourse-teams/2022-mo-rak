@@ -86,7 +86,6 @@ function PollProgressItemGroup({
             )}
           </TextField>
 
-          {/* description */}
           <StyledDescription isSelected={getIsSelectedPollItem(id)}>
             <TextField
               colorScheme={theme.colors.PURPLE_100}

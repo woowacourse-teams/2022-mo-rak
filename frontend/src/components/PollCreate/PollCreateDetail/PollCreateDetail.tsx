@@ -7,15 +7,14 @@ import { PollInterface } from '../../../types/poll';
 interface Props {
   isAnonymous: PollInterface['isAnonymous'];
   isAllowedMultiplePollCount: boolean;
-  // TODO: type지정 개선
   handleAnonymous: (anonymousStatus: boolean) => () => void;
   handleAllowedMultiplePollCount: (isAllowedMultiplePollCountStatus: boolean) => () => void;
 }
 
 function PollCreateDetail({
   isAnonymous,
-  handleAnonymous,
   isAllowedMultiplePollCount,
+  handleAnonymous,
   handleAllowedMultiplePollCount
 }: Props) {
   const theme = useTheme();
@@ -38,7 +37,6 @@ function PollCreateDetail({
           borderRadius="20px"
           variant="outlined"
           fontSize="0.8rem"
-          // TODO:
           colorScheme={isAnonymous ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
           onClick={handleAnonymous(true)}
         >

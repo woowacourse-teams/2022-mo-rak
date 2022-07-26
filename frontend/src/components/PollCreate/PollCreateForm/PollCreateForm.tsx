@@ -14,7 +14,6 @@ import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateForm
 import { createPoll } from '../../../api/poll';
 import { PollCreateType, PollInterface } from '../../../types/poll';
 
-// TODO: 추상화 레벨에 대해서 다시 돌아보기
 function PollCreateForm() {
   const navigate = useNavigate();
   const { groupCode } = useParams() as { groupCode: string };
@@ -29,6 +28,7 @@ function PollCreateForm() {
 
     const allowedPollCount = isAllowedMultiplePollCount ? pollItems.length : 1;
 
+    // TODO: PollCreateRequest?
     const pollData: PollCreateType = {
       title,
       allowedPollCount,
@@ -59,7 +59,6 @@ function PollCreateForm() {
     setIsAnonymous(anonymousStatus);
   };
 
-  // TODO: interface를 활용해보자
   const handleAllowedMultiplePollCount = (isAllowedMultiplePollCountStatus: boolean) => () => {
     setIsAllowedMultiplePollCount(isAllowedMultiplePollCountStatus);
   };

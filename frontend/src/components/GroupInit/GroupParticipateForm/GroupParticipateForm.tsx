@@ -35,7 +35,6 @@ function GroupParticipateForm() {
         borderRadius="10px"
         padding="1.2rem 0"
       >
-        {/* TODO: Input 내부 레이아웃 수정 */}
         <Input
           placeholder="코드를 입력해주세요!"
           value={invitationCode}

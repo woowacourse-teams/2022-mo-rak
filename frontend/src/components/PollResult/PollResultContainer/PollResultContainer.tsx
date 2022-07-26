@@ -33,11 +33,8 @@ function PollResultContainer() {
     };
 
     try {
-      // TODO: useParams를 받을 때, pollId를 number로 애초에 바꿀 수는 없을까?
       fetchPoll(Number(pollId));
       fetchPollResult(Number(pollId));
-
-      // TODO: pollid가 없을 때 메인 화면으로 보내주기!
     } catch (err) {
       alert(err);
     }
@@ -45,8 +42,7 @@ function PollResultContainer() {
 
   return (
     <Box width="84.4rem" padding="2rem 4.8rem 5.6rem">
-      {/* TODO: typescript에 의한 undefined 에러를 해결하기 위한 임시 방편, 안전해서 좋지만, 좀 더 깔끔하게 코드를 작성할 수는 없을까? */}
-      {poll && pollResult ? (
+      {poll ? (
         <>
           <FlexContainer justifyContent="end">
             <MarginContainer margin="0 0 1.4rem 0">
@@ -64,7 +60,6 @@ function PollResultContainer() {
             <PollResultProgress pollResult={pollResult} groupCode={groupCode} />
           </MarginContainer>
           <MarginContainer margin="1.4rem 0">
-            {/* TODO: PollInterface의 allowedPollCount type string 지우기(임시) */}
             <PollResultDetail
               isAnonymous={poll.isAnonymous}
               allowedPollCount={poll.allowedPollCount}

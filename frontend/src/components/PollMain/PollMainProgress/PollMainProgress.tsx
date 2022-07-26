@@ -12,7 +12,7 @@ interface Props {
   groupCode: GroupInterface['code'];
 }
 
-// TODO: 비효율적이다...리팩토링
+// TODO: 재미로 리팩토링 해봐~ 심심할때
 const getCurrentParticipants = (pollResult: Array<PollItemResultType>) => {
   const allParticipants = pollResult.map((pollItemResult) => pollItemResult.members).flat();
   const currentParticipants = allParticipants.map((participant) => participant.name);
