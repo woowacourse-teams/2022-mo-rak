@@ -9,7 +9,7 @@ import {
   removeSessionStorageItem
 } from '../../utils/storage';
 import Logo from '../../assets/logo.svg';
-import GithubLogo from '../../assets/githubLogo.svg';
+import GithubLogo from '../../assets/github-logo.svg';
 import { signin } from '../../api/auth';
 import { getDefaultGroup } from '../../api/group';
 

@@ -7,8 +7,8 @@ import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import Crown from '../../../assets/crown.svg';
 import Check from '../../../assets/check.svg';
 
-import UserPurple from '../../../assets/user_purple.svg';
-import UserWhite from '../../../assets/user_white.svg';
+import UserPurple from '../../../assets/user-purple.svg';
+import UserWhite from '../../../assets/user-white.svg';
 import PollParticipantModal from '../PollParticipantModal/PollParticipantModal';
 import TextField from '../../common/TextField/TextField';
 import { GroupInterface } from '../../../types/group';

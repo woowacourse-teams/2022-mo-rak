@@ -67,8 +67,7 @@ function PollMainProgress({ pollId, groupCode }: Props) {
       <StyledParticipantsStatus>
         {currentParticipants}
         명/
-        {totalParticipants}
-        명
+        {totalParticipants}명
       </StyledParticipantsStatus>
     </FlexContainer>
   );

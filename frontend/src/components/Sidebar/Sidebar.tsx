@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/logo.svg';
-import LinkIcon from '../../assets/linkIcon.svg';
+import LinkIcon from '../../assets/link.svg';
 import { createInvitationCode, getGroups } from '../../api/group';
 import { writeClipboard } from '../../utils/clipboard';
 import { GroupInterface } from '../../types/group';
