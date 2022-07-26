@@ -14,7 +14,10 @@ import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 
 function PollProgressForm() {
   const navigate = useNavigate();
-  const { groupCode, pollId } = useParams();
+  const { groupCode, pollId } = useParams() as {
+    groupCode: string;
+    pollId: string;
+  };
   // TODO: 기본 객체를 줘야할까? undefined로 놓는 것이 위험한가?
   const [poll, setPoll] = useState<PollInterface>();
   const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItemInterface>>([]);

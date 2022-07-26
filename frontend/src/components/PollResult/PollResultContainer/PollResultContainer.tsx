@@ -17,31 +17,25 @@ import PollResultStatus from '../PollResultStatus/PollResultStatus';
 import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
 
 function PollResultContainer() {
-  const { groupCode, pollId } = useParams();
+  const { groupCode, pollId } = useParams() as { groupCode: string; pollId: string };
   const [poll, setPoll] = useState<PollInterface>();
   const [pollResult, setPollResult] = useState<Array<PollItemResultType>>([]);
 
   useEffect(() => {
     const fetchPoll = async (pollId: PollInterface['id']) => {
-      if (groupCode) {
-        const res = await getPoll(pollId, groupCode);
-        setPoll(res);
-      }
+      const res = await getPoll(pollId, groupCode);
+      setPoll(res);
     };
 
     const fetchPollResult = async (pollId: PollInterface['id']) => {
-      if (groupCode) {
-        const res = await getPollResult(pollId, groupCode);
-        setPollResult(res);
-      }
+      const res = await getPollResult(pollId, groupCode);
+      setPollResult(res);
     };
 
     try {
-      if (pollId) {
-        // TODO: useParams를 받을 때, pollId를 number로 애초에 바꿀 수는 없을까?
-        fetchPoll(Number(pollId));
-        fetchPollResult(Number(pollId));
-      }
+      // TODO: useParams를 받을 때, pollId를 number로 애초에 바꿀 수는 없을까?
+      fetchPoll(Number(pollId));
+      fetchPollResult(Number(pollId));
 
       // TODO: pollid가 없을 때 메인 화면으로 보내주기!
     } catch (err) {
@@ -52,7 +46,7 @@ function PollResultContainer() {
   return (
     <Box width="84.4rem" padding="2rem 4.8rem 5.6rem">
       {/* TODO: typescript에 의한 undefined 에러를 해결하기 위한 임시 방편, 안전해서 좋지만, 좀 더 깔끔하게 코드를 작성할 수는 없을까? */}
-      {poll && pollResult && pollId && groupCode ? (
+      {poll && pollResult ? (
         <>
           <FlexContainer justifyContent="end">
             <MarginContainer margin="0 0 1.4rem 0">

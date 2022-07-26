@@ -17,7 +17,7 @@ import { PollCreateType, PollInterface } from '../../../types/poll';
 // TODO: 추상화 레벨에 대해서 다시 돌아보기
 function PollCreateForm() {
   const navigate = useNavigate();
-  const { groupCode } = useParams();
+  const { groupCode } = useParams() as { groupCode: string };
 
   const [title, setTitle] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
@@ -39,13 +39,12 @@ function PollCreateForm() {
 
     try {
       // TODO: 쿼리 적용
-      if (groupCode) {
-        const res = await createPoll(pollData, groupCode);
-        const pollId = res.headers.get('location').split('polls/')[1];
 
-        // TODO: 상수화
-        navigate(`/groups/${groupCode}/poll/${pollId}/progress`);
-      }
+      const res = await createPoll(pollData, groupCode);
+      const pollId = res.headers.get('location').split('polls/')[1];
+
+      // TODO: 상수화
+      navigate(`/groups/${groupCode}/poll/${pollId}/progress`);
     } catch (err) {
       // TODO: 에러 핸들링 고도화
       alert(err);

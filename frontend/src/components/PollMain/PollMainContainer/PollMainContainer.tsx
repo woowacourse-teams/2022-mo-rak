@@ -18,16 +18,14 @@ import PollMainButtonGroup from '../PollMainButtonGroup/PollMainButtonGroup';
 
 function PollMainContainer() {
   const navigate = useNavigate();
-  const { groupCode } = useParams();
+  const { groupCode } = useParams() as { groupCode: string };
   const theme = useTheme();
   const [polls, setPolls] = useState<Array<PollInterface>>([]);
 
   useEffect(() => {
     const fetchPolls = async () => {
-      if (groupCode) {
-        const res = await getPolls(groupCode);
-        setPolls(res);
-      }
+      const res = await getPolls(groupCode);
+      setPolls(res);
     };
 
     try {

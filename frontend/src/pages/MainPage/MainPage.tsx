@@ -10,29 +10,12 @@ import MembersProfile from '../../components/MembersProfile/MembersProfile';
 // TODO: 페이지 추상화
 function MainPage() {
   const navigate = useNavigate();
-  // TODO: 100% 들어올까??
   const { groupCode } = useParams() as { groupCode: string };
 
   // TODO: util로 빼기
   const handleNavigate = (location: string) => () => {
     navigate(location);
   };
-
-  useEffect(() => {
-    const fetchDefaultGroup = async () => {
-      try {
-        const { code } = await getDefaultGroup();
-        navigate(`/groups/${code}`);
-      } catch (err) {
-        alert('속해있는 그룹이 없습니다. 오류입니다 삐빅');
-        navigate('/init');
-      }
-    };
-
-    if (!groupCode) {
-      fetchDefaultGroup();
-    }
-  }, []);
 
   return (
     <StyledContainer>
