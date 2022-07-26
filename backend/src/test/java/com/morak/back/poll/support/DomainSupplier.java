@@ -1,10 +1,10 @@
 package com.morak.back.poll.support;
 
 import com.morak.back.auth.domain.Member;
-import com.morak.back.auth.domain.Team;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollStatus;
+import com.morak.back.team.domain.Team;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 

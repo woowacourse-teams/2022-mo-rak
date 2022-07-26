@@ -1,7 +1,6 @@
 package com.morak.back;
 
 import io.restassured.RestAssured;
-import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;

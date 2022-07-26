@@ -2,10 +2,10 @@ package com.morak.back.poll.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.morak.back.auth.domain.Member;
-import com.morak.back.auth.domain.Team;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollStatus;
+import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

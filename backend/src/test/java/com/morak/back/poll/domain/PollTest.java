@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
-import com.morak.back.auth.domain.Team;
 import com.morak.back.core.exception.InvalidRequestException;
+import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;

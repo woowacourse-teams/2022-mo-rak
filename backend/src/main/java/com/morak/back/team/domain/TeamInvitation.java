@@ -1,6 +1,5 @@
 package com.morak.back.team.domain;
 
-import com.morak.back.auth.domain.Team;
 import com.morak.back.poll.domain.BaseEntity;
 import java.time.LocalDateTime;
 import java.util.function.Function;

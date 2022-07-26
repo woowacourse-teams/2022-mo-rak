@@ -1,4 +1,4 @@
-package com.morak.back.auth.domain;
+package com.morak.back.team.domain;
 
 import com.morak.back.poll.domain.BaseEntity;
 import javax.persistence.Entity;

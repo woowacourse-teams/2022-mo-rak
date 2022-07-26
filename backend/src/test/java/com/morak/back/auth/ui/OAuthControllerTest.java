@@ -2,7 +2,6 @@ package com.morak.back.auth.ui;
 
 import static com.morak.back.ApiDocumentUtils.getDocumentRequest;
 import static com.morak.back.ApiDocumentUtils.getDocumentResponse;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
