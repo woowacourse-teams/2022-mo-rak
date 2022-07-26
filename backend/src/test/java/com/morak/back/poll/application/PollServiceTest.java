@@ -20,7 +20,7 @@ import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollResult;
-import com.morak.back.poll.exception.InvalidRequestException;
+import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
