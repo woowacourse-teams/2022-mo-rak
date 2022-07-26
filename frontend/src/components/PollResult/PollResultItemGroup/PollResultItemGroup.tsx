@@ -16,7 +16,7 @@ import { GroupInterface } from '../../../types/group';
 interface Props {
   pollId: PollInterface['id'];
   status: PollInterface['status'];
-  groupCode?: GroupInterface['code'];
+  groupCode: GroupInterface['code'];
   pollResult: Array<PollItemResultType>;
 }
 
@@ -29,15 +29,13 @@ const getWinningPollItemIds = (pollResult: PollItemResultType[]) => {
     .map((pollItem) => pollItem.id);
 };
 
-// TODO: 타이핑 리팩토링
+// TODO: 타이핑 리팩토링, poll에 관한 원형 타입들 한 번 손봐야할듯
 const getSelectedPollItemIds = (pollItems: Array<{ id: number; isSelected: boolean }>) =>
   pollItems.filter((pollItem) => pollItem.isSelected).map((pollItem) => pollItem.id);
 
-// TODO: Props로 interface를 설정해줘서 type vs 직접 인자에 type 설정
-// TODO: status에 따라 보여주는 컴포넌트가 달라지도록 분기처리를 해주는 것이 좋을까?
 function PollResultItemGroup({ pollId, status, groupCode, pollResult }: Props) {
   const theme = useTheme();
-  const [activePollItem, setActivePollItem] = useState(0); // TODO: 변수명 고민
+  const [activePollItem, setActivePollItem] = useState(0);
   const [selectedPollItemIds, setSelectedPollItemIds] = useState<Array<PollItemInterface['id']>>(
     []
   );
@@ -72,7 +70,6 @@ function PollResultItemGroup({ pollId, status, groupCode, pollResult }: Props) {
         return (
           <TextField
             variant={status === 'CLOSED' && isWinningPollItem ? 'filled' : 'outlined'}
-            fontSize="1.6rem"
             padding="1.2rem 0"
             borderRadius="15px"
             colorScheme={theme.colors.PURPLE_100}
@@ -106,8 +103,8 @@ function PollResultItemGroup({ pollId, status, groupCode, pollResult }: Props) {
 
 const StyledParticipantCount = styled.div`
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 1.2rem;
+  top: 1.2rem;
   cursor: pointer;
 `;
 
@@ -124,7 +121,7 @@ const StyledCrownIcon = styled.img<
   ({ isWinningPollItem }) => `
   display: ${isWinningPollItem ? 'block' : 'none'};
   position: absolute;
-  top: 1rem;
+  top: 1.2rem;
   left: 2rem;
   width: 2rem;
   height: 2rem;
@@ -154,6 +151,7 @@ const StyledUserCount = styled.span<{
   color: ${
     status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
   };
+  font-size: 1.6rem;
 `
 );
 
@@ -162,6 +160,7 @@ const StyledSubject = styled.span<{ isWinningPollItem: boolean; status: PollInte
   color: ${
     status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
   };
+  font-size: 1.6rem;
 `
 );
 

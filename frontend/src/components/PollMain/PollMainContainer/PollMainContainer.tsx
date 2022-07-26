@@ -39,23 +39,21 @@ function PollMainContainer() {
 
   return (
     <StyledContainer>
-      {/* status에따라, filter: grayscale(1) 주기 */}
       {polls ? (
         polls.map(({ status, title, id, isAnonymous, allowedPollCount }) => (
           <Box
             width="26.4rem"
             padding="2rem"
             minHeight="16.8rem"
-            filter={status === 'CLOSED' ? 'grayscale(1)' : ''}
+            filter={status === 'CLOSED' ? 'grayscale(1)' : 'none'}
           >
             <FlexContainer justifyContent="end">
               <PollMainStatus status={status} />
             </FlexContainer>
-            {/* TODO: title prop으로 줄지? children으로 줄지? */}
-            <PollMainTitle title={title} />
-            {groupCode && <PollMainProgress pollId={id} groupCode={groupCode} />}
-            <MarginContainer margin="0 0 10px">
-              {/* 'detail' 컴포넌트명 변경(전체 페이지 수정 필요) */}
+            <PollMainTitle>{title}</PollMainTitle>
+            <PollMainProgress pollId={id} groupCode={groupCode} />
+            <MarginContainer margin="0 0 1.2rem">
+              {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
               <PollMainDetail isAnonymous={isAnonymous} allowedPollCount={allowedPollCount} />
             </MarginContainer>
             <PollMainButtonGroup pollId={id} handleNavigate={handleNavigate} status={status} />
@@ -71,9 +69,8 @@ function PollMainContainer() {
 const StyledContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  column-gap: 30px;
-  row-gap: 30px;
-  margin-top: 1.6rem;
+  column-gap: 3.2rem;
+  row-gap: 3.2rem;
 `;
 
 export default PollMainContainer;

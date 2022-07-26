@@ -13,8 +13,7 @@ interface Props {
   pollId: PollInterface['id'];
   status: PollInterface['status'];
   isHost: PollInterface['isHost'];
-  // TODO: ? 없애는 게 맞지 않을까? groupCode가 없으면 아무것도 못함...
-  groupCode?: GroupInterface['code'];
+  groupCode: GroupInterface['code'];
 }
 
 function PollResultButtonGroup({ pollId, status, isHost, groupCode }: Props) {
@@ -24,10 +23,8 @@ function PollResultButtonGroup({ pollId, status, isHost, groupCode }: Props) {
   const handleDeletePoll = async () => {
     if (window.confirm('투표를 삭제하시겠습니까?')) {
       try {
-        if (groupCode) {
-          await deletePoll(pollId, groupCode);
-          navigate(`/groups/${groupCode}/poll`);
-        }
+        await deletePoll(pollId, groupCode);
+        navigate(`/groups/${groupCode}/poll`);
       } catch (err) {
         alert(err);
       }
@@ -38,9 +35,7 @@ function PollResultButtonGroup({ pollId, status, isHost, groupCode }: Props) {
   const handleClosePoll = async () => {
     if (window.confirm('투표를 마감하시겠습니까?')) {
       try {
-        if (groupCode) {
-          await closePoll(pollId, groupCode);
-        }
+        await closePoll(pollId, groupCode);
       } catch (err) {
         alert(err);
       }

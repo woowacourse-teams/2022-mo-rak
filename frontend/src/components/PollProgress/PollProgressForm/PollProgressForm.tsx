@@ -22,29 +22,27 @@ function PollProgressForm() {
   const [poll, setPoll] = useState<PollInterface>();
   const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItemInterface>>([]);
 
-  // TODO: 객체로 state로 관리하는 것에 단점이 분명히 있다. 리팩토링 필요
+  // TODO: 객체로 state를 관리하는 것에 단점이 분명히 있다. 리팩토링 필요 usereducer 찾아보자
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       if (poll) {
-        if (groupCode) {
-          await progressPoll(poll.id, selectedPollItems, groupCode);
-          navigate(`/groups/${groupCode}/poll/${pollId}/result`);
-        }
+        await progressPoll(poll.id, selectedPollItems, groupCode);
+        navigate(`/groups/${groupCode}/poll/${pollId}/result`);
       }
     } catch (err) {
       alert(err);
     }
   };
 
-  // TODO: 두 가지 역할을 하는 걸까?
+  // TODO: 두 가지 역할을 하는 걸까? 나중에 시간 있을 때 하기~
   const handleSelectPollItems = (mode: string) => (e: ChangeEvent<HTMLInputElement>) => {
     const id = Number(e.target.id);
+    // TODO: 깊은 복사 함수 만들어보기!
     const newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
 
     if (mode === 'single') {
-      // 디스크립션창을 추가한다
       setSelectedPollItems([{ itemId: id, description: '' }]);
 
       return;
@@ -76,33 +74,28 @@ function PollProgressForm() {
 
   useEffect(() => {
     const fetchPoll = async (pollId: PollInterface['id']) => {
-      // res가 있는지?
       try {
-        if (groupCode) {
-          const res = await getPoll(pollId, groupCode);
+        const res = await getPoll(pollId, groupCode);
 
-          if (res.status === 'CLOSED') {
-            navigate(`/groups/${groupCode}/poll`);
-          }
+        if (res.status === 'CLOSED') {
+          navigate(`/groups/${groupCode}/poll`);
 
-          setPoll(res);
+          return;
         }
-        // TODO: pollid가 없을 때 메인 화면으로 보내주기!
+
+        setPoll(res);
       } catch (err) {
         alert('poll 없어~~');
         navigate(`/groups/${groupCode}/poll`);
       }
     };
 
-    if (pollId) {
-      fetchPoll(Number(pollId));
-    }
+    fetchPoll(Number(pollId));
   }, []);
 
   return (
-    // TODO: 화면 작았다 켜지는 것 수정
     <Box width="84.4rem" padding="6.4rem 4.8rem 5.4rem 4.8rem">
-      {poll && pollId && groupCode ? (
+      {poll ? (
         <form onSubmit={handleSubmit}>
           <MarginContainer margin="0 0 4rem 0">
             <StyledTitle>{poll.title}</StyledTitle>
