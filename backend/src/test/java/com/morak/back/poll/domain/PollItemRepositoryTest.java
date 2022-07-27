@@ -62,7 +62,7 @@ class PollItemRepositoryTest {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
 
-        PollItem item = pollItemRepository.getById(2L);
+        PollItem item = pollItemRepository.findById(2L).orElseThrow();
 
         List<PollResult> pollResults = item.getPollResults();
 
@@ -71,7 +71,7 @@ class PollItemRepositoryTest {
         transaction.commit();
 
         // when
-        PollItem findItem = pollItemRepository.getById(2L);
+        PollItem findItem = pollItemRepository.findById(2L).orElseThrow();
 
         // then
         assertThat(findItem.getPollResults()).hasSize(1);
