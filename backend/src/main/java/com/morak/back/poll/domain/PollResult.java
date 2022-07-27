@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +35,7 @@ public class PollResult extends BaseEntity {
     @JoinColumn
     private Member member;
 
+    @NotNull
     @Size(max = 255, message = "description은 최대 255자여야 합니다.")
     private String description;
 

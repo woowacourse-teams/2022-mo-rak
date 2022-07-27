@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -46,6 +47,7 @@ public class Poll extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member host;
 
+    @NotEmpty(message = "title 은 null 일 수 없습니다.")
     @Size(min = 1, max = 255, message = "제목의 길이는 1 ~ 255자여야합니다.")
     private String title;
 
