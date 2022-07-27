@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import Box from '../../common/Box/Box';
 import PollMainStatus from '../PollMainStatus/PollMainStatus';
-import PollMainTitle from '../PollMainTitle/PollMainTitle';
 import PollMainDetail from '../PollMainDetail/PollMainDetail';
 import PollMainProgress from '../PollMainProgress/PollMainProgress';
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
@@ -50,7 +49,7 @@ function PollMainContainer() {
             <FlexContainer justifyContent="end">
               <PollMainStatus status={status} />
             </FlexContainer>
-            <PollMainTitle>{title}</PollMainTitle>
+            <StyledTitle>{title}</StyledTitle>
             <PollMainProgress pollId={id} groupCode={groupCode} />
             <MarginContainer margin="0 0 1.2rem">
               {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
@@ -71,6 +70,11 @@ const StyledContainer = styled.div`
   grid-template-columns: repeat(4, 1fr);
   column-gap: 3.2rem;
   row-gap: 3.2rem;
+`;
+
+const StyledTitle = styled.h1`
+  font-size: 1.6rem;
+  text-align: center;
 `;
 
 export default PollMainContainer;
