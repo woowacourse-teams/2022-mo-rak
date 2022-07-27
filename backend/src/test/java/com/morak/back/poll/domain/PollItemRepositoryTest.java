@@ -38,9 +38,9 @@ class PollItemRepositoryTest {
         Poll poll = supplier.supplyPoll(1L);
 
         List<PollItem> items = List.of(
-                new PollItem(null, poll, "subject-1", new ArrayList<>()),
-                new PollItem(null, poll, "subject-2", new ArrayList<>()),
-                new PollItem(null, poll, "subject-3", new ArrayList<>())
+                new PollItem(null, poll, "subject-1"),
+                new PollItem(null, poll, "subject-2"),
+                new PollItem(null, poll, "subject-3")
         );
         // when
         List<PollItem> savedItems = pollItemRepository.saveAll(items);

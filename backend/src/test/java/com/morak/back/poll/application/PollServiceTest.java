@@ -160,10 +160,10 @@ class PollServiceTest {
     @Test
     void 재투표를_진행한다() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member, "거의_다_한_것_같아요");
-        PollResult pollResult2 = new PollResult(2L, null, member, "집에_가고_싶어요!");
-        PollItem pollItem1 = new PollItem(1L, null, "sub1", new ArrayList<>(List.of(pollResult1)));
-        PollItem pollItem2 = new PollItem(2L, null, "sub2", new ArrayList<>(List.of(pollResult2)));
+        PollItem pollItem1 = new PollItem(1L, null, "sub1");
+        pollItem1.addPollResult(member, "거의_다_한_것_같아요");
+        PollItem pollItem2 = new PollItem(2L, null, "sub2");
+        pollItem1.addPollResult(member, "집에_가고_싶어요");
         PollItem pollItem3 = new PollItem(3L, null, "sub3");
 
         poll.addItem(pollItem1);
@@ -237,8 +237,8 @@ class PollServiceTest {
     @Test
     void 투표를_진행한_상태에서_투표_선택_항목을_조회한다() {
         // given
-        PollItem pollItem1 = new PollItem(1L, null, "항목1",
-                List.of(new PollResult(null, null, member, "그냥뇨~")));
+        PollItem pollItem1 = new PollItem(1L, null, "항목1");
+        pollItem1.addPollResult(member, "그냥뇨~");
         PollItem pollItem2 = new PollItem(2L, null, "항목2");
 
         poll.addItem(pollItem1);
@@ -264,10 +264,10 @@ class PollServiceTest {
     @Test
     void 익명_투표_결과를_조회한다() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member, "거의_다_한_것_같아요");
-        PollResult pollResult2 = new PollResult(2L, null, member, "집에_가고_싶어요!");
-        PollItem pollItem1 = new PollItem(1L, poll, "항목1", new ArrayList<>(List.of(pollResult1)));
-        PollItem pollItem2 = new PollItem(2L, poll, "항목2", new ArrayList<>(List.of(pollResult2)));
+        PollItem pollItem1 = new PollItem(1L, poll, "항목1");
+        pollItem1.addPollResult(member, "거의_다_한_것_같아요");
+        PollItem pollItem2 = new PollItem(2L, poll, "항목2");
+        pollItem2.addPollResult(member, "집에_가고_싶어요!");
 
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
@@ -310,8 +310,12 @@ class PollServiceTest {
                 CLOSED,
                 null,
                 null);
-        PollItem pollItem1 = new PollItem(1L, poll, "항목1", new ArrayList<>(List.of(pollResult1)));
-        PollItem pollItem2 = new PollItem(2L, poll, "항목2", new ArrayList<>(List.of(pollResult2)));
+        PollItem pollItem1 = new PollItem(1L, poll, "항목1");
+        pollItem1.addPollResult(member, "거의_다_한_것_같아요");
+
+        PollItem pollItem2 = new PollItem(2L, poll, "항목2");
+        pollItem2.addPollResult(member, "집에_가고_싶어요!");
+
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
 

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,7 +15,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,7 +35,9 @@ public class PollItem extends BaseEntity {
     @JoinColumn
     private Poll poll;
 
-    private String subject;
+    @Embedded
+    @Valid
+    private Subject subject;
 
     @OneToMany(mappedBy = "pollItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PollResult> pollResults = new ArrayList<>();
@@ -39,7 +45,7 @@ public class PollItem extends BaseEntity {
     public PollItem(Long id, Poll poll, String subject) {
         this.id = id;
         this.poll = poll;
-        this.subject = subject;
+        this.subject = new Subject(subject);
     }
 
     public void addPollResult(Member member, String description) {
@@ -71,5 +77,9 @@ public class PollItem extends BaseEntity {
                 .map(PollResult::getDescription)
                 .findFirst()
                 .orElseGet(() -> "");
+    }
+
+    public String getSubject() {
+        return subject.getSubject();
     }
 }

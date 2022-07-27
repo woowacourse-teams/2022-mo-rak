@@ -36,9 +36,9 @@ class PollTest {
 
         poll = new Poll(1L, team, member, "title", 2, true, PollStatus.OPEN, LocalDateTime.now().plusDays(1),
                 "ABCE");
-        itemA = new PollItem(1L, poll, "sub1", new ArrayList<>());
-        itemB = new PollItem(2L, poll, "sub2", new ArrayList<>());
-        itemC = new PollItem(3L, poll, "sub3", new ArrayList<>());
+        itemA = new PollItem(1L, poll, "sub1");
+        itemB = new PollItem(2L, poll, "sub2");
+        itemC = new PollItem(3L, poll, "sub3");
         poll.addItem(itemA);
         poll.addItem(itemB);
         poll.addItem(itemC);
@@ -113,7 +113,7 @@ class PollTest {
     @Test
     void 투표에_속하지_않은_선택항목을_투표하는_경우_예외를_던진다() {
         // given
-        PollItem itemD = new PollItem(4L, poll, "sub4", new ArrayList<>());
+        PollItem itemD = new PollItem(4L, poll, "sub4");
         Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
         mappedItemAndDescription.put(itemA, "빨강_프링글스는_별로야");
         mappedItemAndDescription.put(itemD, "프링글스는_초록_프링글스지");
