@@ -60,7 +60,12 @@ public class PollCreateRequest {
 
     public List<PollItem> toPollItems(Poll poll) {
         return subjects.stream()
-                .map(subject -> new PollItem(null, poll, subject))
+                .map(
+                        subject -> PollItem.builder()
+                                .poll(poll)
+                                .subject(subject)
+                                .build()
+                )
                 .collect(Collectors.toList());
     }
 }

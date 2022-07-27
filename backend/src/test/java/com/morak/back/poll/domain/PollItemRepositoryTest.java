@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.poll.support.DomainSupplier;
 import com.morak.back.support.RepositoryTest;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,9 +37,18 @@ class PollItemRepositoryTest {
         Poll poll = supplier.supplyPoll(1L);
 
         List<PollItem> items = List.of(
-                new PollItem(null, poll, "subject-1"),
-                new PollItem(null, poll, "subject-2"),
-                new PollItem(null, poll, "subject-3")
+                PollItem.builder()
+                        .poll(poll)
+                        .subject("subject-1")
+                        .build(),
+                PollItem.builder()
+                        .poll(poll)
+                        .subject("subject-2")
+                        .build(),
+                PollItem.builder()
+                        .poll(poll)
+                        .subject("subject-3")
+                        .build()
         );
         // when
         List<PollItem> savedItems = pollItemRepository.saveAll(items);

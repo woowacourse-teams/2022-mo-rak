@@ -83,8 +83,14 @@ class PollRepositoryTest {
         transaction.begin();
 
         Poll poll = pollRepository.getById(1L);
-        poll.addItem(new PollItem(null, poll, "test-subject-1"));
-        poll.addItem(new PollItem(null, poll, "test-subject-2"));
+        poll.addItem(PollItem.builder()
+                .poll(poll)
+                .subject("test-subject-1")
+                .build());
+        poll.addItem(PollItem.builder()
+                .poll(poll)
+                .subject("test-subject-2")
+                .build());
         // when
         entityManager.flush();
         entityManager.clear();

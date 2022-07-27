@@ -14,11 +14,9 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.poll.domain.Poll;
-import com.morak.back.poll.domain.Poll.PollBuilder;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
-import com.morak.back.poll.domain.PollResult;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
@@ -28,7 +26,6 @@ import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -135,8 +132,16 @@ class PollServiceTest {
     @Test
     void 투표를_진행한다() {
         // given
-        PollItem pollItem1 = new PollItem(1L, poll, "sub1");
-        PollItem pollItem2 = new PollItem(2L, poll, "sub2");
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .poll(poll)
+                .subject("sub1")
+                .build();
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .poll(poll)
+                .subject("sub2")
+                .build();
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
 
@@ -161,11 +166,20 @@ class PollServiceTest {
     @Test
     void 재투표를_진행한다() {
         // given
-        PollItem pollItem1 = new PollItem(1L, null, "sub1");
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .subject("sub1")
+                .build();
         pollItem1.addPollResult(member, "거의_다_한_것_같아요");
-        PollItem pollItem2 = new PollItem(2L, null, "sub2");
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .subject("sub2")
+                .build();
         pollItem1.addPollResult(member, "집에_가고_싶어요");
-        PollItem pollItem3 = new PollItem(3L, null, "sub3");
+        PollItem pollItem3 = PollItem.builder()
+                .id(3L)
+                .subject("sub3")
+                .build();
 
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
@@ -213,8 +227,16 @@ class PollServiceTest {
     @Test
     void 투표_선택_항목을_조회한다() {
         // given
-        PollItem pollItem1 = new PollItem(1L, poll, "sub1");
-        PollItem pollItem2 = new PollItem(2L, poll, "sub2");
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .poll(poll)
+                .subject("sub1")
+                .build();
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .poll(poll)
+                .subject("sub2")
+                .build();
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
 
@@ -238,9 +260,15 @@ class PollServiceTest {
     @Test
     void 투표를_진행한_상태에서_투표_선택_항목을_조회한다() {
         // given
-        PollItem pollItem1 = new PollItem(1L, null, "항목1");
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .subject("항목1")
+                .build();
         pollItem1.addPollResult(member, "그냥뇨~");
-        PollItem pollItem2 = new PollItem(2L, null, "항목2");
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .subject("항목2")
+                .build();
 
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
@@ -265,9 +293,17 @@ class PollServiceTest {
     @Test
     void 익명_투표_결과를_조회한다() {
         // given
-        PollItem pollItem1 = new PollItem(1L, poll, "항목1");
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .poll(poll)
+                .subject("항목1")
+                .build();
         pollItem1.addPollResult(member, "거의_다_한_것_같아요");
-        PollItem pollItem2 = new PollItem(2L, poll, "항목2");
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .poll(poll)
+                .subject("항목2")
+                .build();
         pollItem2.addPollResult(member, "집에_가고_싶어요!");
 
         poll.addItem(pollItem1);
@@ -305,10 +341,18 @@ class PollServiceTest {
                 .isAnonymous(false)
                 .status(CLOSED)
                 .build();
-        PollItem pollItem1 = new PollItem(1L, poll, "항목1");
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .poll(poll)
+                .subject("항목1")
+                .build();
         pollItem1.addPollResult(member, "거의_다_한_것_같아요");
 
-        PollItem pollItem2 = new PollItem(2L, poll, "항목2");
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .poll(poll)
+                .subject("항목2")
+                .build();
         pollItem2.addPollResult(member, "집에_가고_싶어요!");
 
         poll.addItem(pollItem1);

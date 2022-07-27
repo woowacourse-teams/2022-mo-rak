@@ -56,9 +56,10 @@ public class DomainSupplier {
     public PollItem supplyPollItem(Long id) {
         String sql = "SELECT * FROM poll_item WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-                new PollItem(rs.getLong("id"),
-                        supplyPoll(rs.getLong("poll_id")),
-                        rs.getString("subject")
-                ), id);
+                PollItem.builder()
+                        .id(rs.getLong("id"))
+                        .poll(supplyPoll(rs.getLong("poll_id")))
+                        .subject(rs.getString("subject"))
+                        .build(), id);
     }
 }
