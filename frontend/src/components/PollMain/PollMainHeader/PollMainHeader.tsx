@@ -20,7 +20,6 @@ function PollMainHeader() {
       <FlexContainer justifyContent="end">
         <Button
           width="8rem"
-          color={theme.colors.WHITE_100}
           colorScheme={theme.colors.PURPLE_100}
           variant="filled"
           onClick={handleNavigate('create')}

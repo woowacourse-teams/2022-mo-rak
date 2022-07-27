@@ -95,7 +95,6 @@ function InvitationPage() {
             <Button
               variant="filled"
               colorScheme={theme.colors.PURPLE_100}
-              color={theme.colors.WHITE_100}
               width="18.4rem"
               fontSize="2.4rem"
               padding="2rem 0"
@@ -106,7 +105,6 @@ function InvitationPage() {
             <Button
               variant="filled"
               colorScheme={theme.colors.GRAY_400}
-              color={theme.colors.WHITE_100}
               width="18.4rem"
               fontSize="2.4rem"
               padding="2rem 0"

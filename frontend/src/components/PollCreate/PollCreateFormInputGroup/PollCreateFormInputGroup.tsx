@@ -81,7 +81,6 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
       <Button
         variant="filled"
         colorScheme={theme.colors.PURPLE_100}
-        color={theme.colors.WHITE_100}
         fontSize="2rem"
         onClick={handleAddPollItem}
         type="button"

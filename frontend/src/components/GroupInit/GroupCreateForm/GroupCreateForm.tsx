@@ -48,7 +48,6 @@ function GroupCreateForm() {
         type="submit"
         variant="filled"
         colorScheme={theme.colors.PURPLE_100}
-        color={theme.colors.WHITE_100}
         fontSize="1.6rem"
       >
         생성하기

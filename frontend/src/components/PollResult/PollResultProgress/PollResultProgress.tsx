@@ -49,7 +49,6 @@ function PollResultProgress({ pollResult, groupCode }: Props) {
         width="100%"
         padding="1.2rem 0"
       />
-      {/* //TODO: prettier 설정 보기 */}
       <StyledParticipantsStatus>
         {currentParticipants}
         명/

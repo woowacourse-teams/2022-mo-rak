@@ -57,7 +57,6 @@ function PollResultButtonGroup({ pollId, status, isHost, groupCode }: Props) {
               width="15.4rem"
               padding="2rem 0"
               fontSize="2rem"
-              color={theme.colors.WHITE_100}
               colorScheme={theme.colors.GRAY_400}
               onClick={handleClosePoll}
             >
@@ -69,7 +68,6 @@ function PollResultButtonGroup({ pollId, status, isHost, groupCode }: Props) {
               width="15.4rem"
               padding="2rem 0"
               fontSize="2rem"
-              color={theme.colors.WHITE_100}
               colorScheme={theme.colors.GRAY_400}
               onClick={handleDeletePoll}
             >
@@ -81,7 +79,6 @@ function PollResultButtonGroup({ pollId, status, isHost, groupCode }: Props) {
               width="15.4rem"
               padding="2rem 0"
               fontSize="2rem"
-              color={theme.colors.WHITE_100}
               colorScheme={theme.colors.PURPLE_100}
               onClick={handleNavigate(`/groups/${groupCode}/poll/${pollId}/progress`)}
             >
@@ -96,7 +93,6 @@ function PollResultButtonGroup({ pollId, status, isHost, groupCode }: Props) {
               width="32.4rem"
               padding="2rem 0"
               fontSize="2rem"
-              color={theme.colors.WHITE_100}
               colorScheme={theme.colors.GRAY_400}
               onClick={handleDeletePoll}
             >
@@ -118,7 +114,6 @@ function PollResultButtonGroup({ pollId, status, isHost, groupCode }: Props) {
             width="15.4rem"
             padding="2rem 0"
             fontSize="2rem"
-            color={theme.colors.WHITE_100}
             colorScheme={theme.colors.PURPLE_100}
             onClick={handleNavigate(`/groups/${groupCode}/poll/${pollId}/progress`)}
           >

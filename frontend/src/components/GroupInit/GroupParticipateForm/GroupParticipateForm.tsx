@@ -44,7 +44,6 @@ function GroupParticipateForm() {
       <Button
         variant="filled"
         colorScheme={theme.colors.PURPLE_100}
-        color={theme.colors.WHITE_100}
         fontSize="1.6rem"
         type="submit"
       >

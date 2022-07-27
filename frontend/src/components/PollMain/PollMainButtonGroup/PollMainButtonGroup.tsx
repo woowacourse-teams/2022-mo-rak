@@ -23,7 +23,6 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
           padding="0.4rem 0"
           fontSize="1.2rem"
           borderRadius="5px"
-          color={theme.colors.WHITE_100}
           colorScheme={theme.colors.PURPLE_100}
           onClick={handleNavigate(`${pollId}/progress`)}
         >
@@ -37,7 +36,6 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
         padding="0.4rem 0"
         fontSize="1.2rem"
         borderRadius="5px"
-        color={theme.colors.PURPLE_100}
         colorScheme={theme.colors.PURPLE_100}
         onClick={handleNavigate(`${pollId}/result`)}
       >

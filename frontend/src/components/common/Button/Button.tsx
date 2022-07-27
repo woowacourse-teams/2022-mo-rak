@@ -10,6 +10,7 @@ const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
     case 'filled':
       return `
         background-color: ${colorScheme};
+        color: ${theme.colors.WHITE_100};
       `;
     case 'outlined':
       return `
@@ -50,16 +51,15 @@ const StyledButton = styled.button<
     variantStyle: string;
   }
 >(
-  ({ width, padding, borderRadius, color, fontSize, variantStyle, disabled, theme }) => `
-  ${variantStyle}
+  ({ width, padding, borderRadius, fontSize, variantStyle, disabled }) => `
   position: relative;
   text-align: center;
   border-radius: ${borderRadius || '15px'};
   width: ${width || '100%'};
   padding: ${padding || '1.2rem 0'};
-  color: ${color || theme.colors.BLACK_100};
   ${disabled && 'cursor: default'};
   ${fontSize && `font-size: ${fontSize}`};
+  ${variantStyle}
   `
 );
 

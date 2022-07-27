@@ -39,7 +39,6 @@ function PollProgressSubmitButton({ pollId, isHost, groupCode }: Props) {
           width="46rem"
           padding="2rem 0"
           colorScheme={theme.colors.GRAY_400}
-          color={theme.colors.WHITE_100}
           fontSize="2rem"
           onClick={handleDeletePoll}
         >
@@ -53,7 +52,6 @@ function PollProgressSubmitButton({ pollId, isHost, groupCode }: Props) {
         width="46rem"
         padding="2rem 0"
         colorScheme={theme.colors.PURPLE_100}
-        color={theme.colors.WHITE_100}
         fontSize="2rem"
         type="submit"
       >
