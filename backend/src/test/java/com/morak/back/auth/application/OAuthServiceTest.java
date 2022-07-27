@@ -23,6 +23,7 @@ class OAuthServiceTest {
 
     private static final String CODE = "test-code";
     private static final String ACCESS_TOKEN = "test-token";
+    private static final Member MEMBER = new Member(1L, "oauthId", "박성우", "https://avatars.githubusercontent.com/u/79205414?v=4");
 
     @Mock
     private MemberRepository memberRepository;
@@ -42,7 +43,7 @@ class OAuthServiceTest {
         given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
         given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
         given(memberRepository.findByOauthId(any())).willReturn(Optional.empty());
-        given(memberRepository.save(any())).willReturn(new Member(1L, null, null, null));
+        given(memberRepository.save(any())).willReturn(MEMBER);
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
 
         // when
@@ -57,7 +58,7 @@ class OAuthServiceTest {
         // given
         given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
         given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
-        given(memberRepository.findByOauthId(any())).willReturn(Optional.of(new Member(1L, null, null, null)));
+        given(memberRepository.findByOauthId(any())).willReturn(Optional.of(MEMBER));
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
 
         // when
