@@ -207,6 +207,32 @@ class PollAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    void null인_값으로_투표요청시_400을_반환한다() {
+        // given
+        PollCreateRequest request = new PollCreateRequest(null, 1, false, LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2"));
+
+        // when
+        ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 도메인_정책에_위반한_값으로_투표요청시_400을_반환한다() {
+        // given
+        PollCreateRequest request = new PollCreateRequest("하이", 0, false, LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2"));
+
+        // when
+        ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     void 투표를_삭제한다() {
         // given
         String location = 기본_투표_생성을_요청한다().header("Location");

@@ -7,6 +7,7 @@ import com.morak.back.core.exception.ResourceNotFoundException;
 import com.morak.back.poll.ui.dto.ExceptionResponse;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import javax.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,12 @@ public class GlobalControllerAdvice {
     public ResponseEntity<ExceptionResponse> handleNotFound(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ExceptionResponse("요청한 리소스를 찾을 수 없습니다."));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ExceptionResponse> handleValidation(ConstraintViolationException e) {
+        logger.warn(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponse("잘못된 값이 입력되었습니다."));
     }
 
     @ExceptionHandler(MorakException.class)

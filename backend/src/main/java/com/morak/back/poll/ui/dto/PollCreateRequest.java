@@ -21,7 +21,6 @@ public class PollCreateRequest {
     @NotBlank
     private final String title;
 
-    @Min(1)
     @NotNull
     private final Integer allowedPollCount;
 
@@ -32,7 +31,6 @@ public class PollCreateRequest {
     private final LocalDateTime closedAt;
 
     @NotNull
-    @Size(min = 2)
     private final List<String> subjects;
 
     @JsonCreator
