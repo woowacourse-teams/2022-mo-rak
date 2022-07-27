@@ -45,7 +45,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 투표를_생성한다() {
         // given & when
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
         ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
         // then
@@ -161,7 +161,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 무기명_투표_결과를_조회한다() {
         // given
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, true, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, true, LocalDateTime.now().plusDays(1L),
                 List.of("항목1", "항목2", "항목3"));
         String location = 투표_생성을_요청한다(request, accessToken).header("Location");
 
@@ -260,7 +260,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 기본_투표_생성을_요청한다() {
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
         return 투표_생성을_요청한다(request, accessToken);
     }

@@ -40,8 +40,8 @@ class PollRepositoryTest {
         // given
         Team team = supplier.supplyTeam(1L);
         Member member = supplier.supplyMember(1L);
-        Poll poll = new Poll(null, team, member, "test-title", 1, false, PollStatus.OPEN, LocalDateTime.now(),
-                "test-code");
+        Poll poll = new Poll(null, team, member, "test-title", 1, false, PollStatus.OPEN, LocalDateTime.now().plusDays(1L),
+                "testcode");
 
         // when
         Poll savedPoll = pollRepository.save(poll);

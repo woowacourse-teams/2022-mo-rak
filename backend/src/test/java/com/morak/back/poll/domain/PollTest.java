@@ -35,7 +35,7 @@ class PollTest {
                 .build();
 
         poll = new Poll(1L, team, member, "title", 2, true, PollStatus.OPEN, LocalDateTime.now().plusDays(1),
-                "ABCE", new ArrayList<>());
+                "ABCE");
         itemA = new PollItem(1L, poll, "sub1", new ArrayList<>());
         itemB = new PollItem(2L, poll, "sub2", new ArrayList<>());
         itemC = new PollItem(3L, poll, "sub3", new ArrayList<>());

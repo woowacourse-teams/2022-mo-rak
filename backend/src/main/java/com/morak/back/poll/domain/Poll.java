@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,7 +21,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,18 +43,26 @@ public class Poll extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member host;
 
-    private String title;
+    @Embedded
+    @Valid
+    private Title title;
 
-    private Integer allowedPollCount;
+    @Embedded
+    @Valid
+    private AllowedPollCount allowedPollCount;
 
     private Boolean isAnonymous;
 
     @Enumerated(value = EnumType.STRING)
     private PollStatus status;
 
-    private LocalDateTime closedAt;
+    @Embedded
+    @Valid
+    private ClosedAt closedAt;
 
-    private String code;
+    @Embedded
+    @Valid
+    private Code code;
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL)
     private List<PollItem> pollItems = new ArrayList<>();
@@ -62,12 +73,12 @@ public class Poll extends BaseEntity {
         this.id = id;
         this.team = team;
         this.host = host;
-        this.title = title;
-        this.allowedPollCount = allowedPollCount;
+        this.title = new Title(title);
+        this.allowedPollCount = new AllowedPollCount(allowedPollCount);
         this.isAnonymous = isAnonymous;
         this.status = status;
-        this.closedAt = closedAt;
-        this.code = code;
+        this.closedAt = new ClosedAt(closedAt);
+        this.code = new Code(code);
     }
 
     public void addItem(PollItem pollItem) {
@@ -89,9 +100,9 @@ public class Poll extends BaseEntity {
         }
     }
 
-    private void validateCounts(int itemSize) {
-        if (itemSize > allowedPollCount || itemSize == 0) {
-            throw new InvalidRequestException(id + "번 투표에 " + itemSize + "개의 투표 항목을 선택할 수 없습니다.");
+    private void validateCounts(int pollItemCount) {
+        if (!allowedPollCount.isAllowed(pollItemCount)) {
+            throw new InvalidRequestException(id + "번 투표에 " + pollItemCount + "개의 투표 항목을 선택할 수 없습니다.");
         }
     }
 
@@ -130,5 +141,21 @@ public class Poll extends BaseEntity {
         if (!this.host.equals(member)) {
             throw new InvalidRequestException(member.getId() + "번 멤버는 " + id + "번 투표의 호스트가 아닙니다.");
         }
+    }
+
+    public String getTitle() {
+        return title.getTitle();
+    }
+
+    public Integer getAllowedPollCount() {
+        return allowedPollCount.getAllowedPollCount();
+    }
+
+    public LocalDateTime getClosedAt() {
+        return closedAt.getClosedAt();
+    }
+
+    public String getCode() {
+        return code.getCode();
     }
 }
