@@ -13,8 +13,6 @@ type VariantStyleProps = Pick<Props, 'colorScheme' | 'variant'>;
 const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
   const theme = useTheme();
 
-  // TODO: input 선택자에 color를 InputField에서 정의하는 게 과연 맞을까?
-  // TODO: input을 감싸는 div에 background-color를 줘도 input에게 가려져서 style을 적용할 수가 없다.
   switch (variant) {
     case 'outlined':
       return `
@@ -35,15 +33,7 @@ const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
   }
 };
 
-// TODO: 리팩토링
-function TextField({
-  colorScheme,
-  variant,
-  children,
-  ...props
-}: Props &
-  // TODO: 깔끔하게 하고싶다!! 근데, 맞는 걸수도~?
-  CSSProperties) {
+function TextField({ colorScheme, variant, children, ...props }: Props & CSSProperties) {
   const variantStyle = getVariantStyle({ variant, colorScheme });
 
   return (
@@ -53,21 +43,19 @@ function TextField({
   );
 }
 
-// TODO: color, fontsize 빼기
 const StyledContainer = styled.div<
   CSSProperties & {
     variantStyle: string;
   }
 >(
-  ({ width, borderRadius, variantStyle, padding, color, fontSize }) => `
+  ({ width, borderRadius, variantStyle, padding }) => `
     ${variantStyle};
     position: relative;
-    width: ${width || '100%'};
-    border-radius: ${borderRadius};
-    padding: ${padding};
-    color: ${color};
-    font-size: ${fontSize};
     text-align: center;
+    ${width && `width: ${width}`};
+    ${borderRadius && `border-radius: ${borderRadius}`};
+    ${padding && `padding: ${padding}`};
+
   `
 );
 

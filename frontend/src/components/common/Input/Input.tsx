@@ -4,21 +4,16 @@ import styled from '@emotion/styled';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {}
 
-// TODO: 리팩토링
-function Input({
-  ...props
-}: Props &
-  // TODO: 깔끔하게 하고싶다!! 근데, 맞는 걸수도~?
-  CSSProperties) {
+function Input({ ...props }: Props & CSSProperties) {
   return <StyledInput {...props} />;
 }
 
 const StyledInput = styled.input<CSSProperties>(
-  ({ color, fontSize, textAlign }) => `
+  ({ color, fontSize, textAlign, theme }) => `
     width: 100%;
-    color: ${color};
-    font-size: ${fontSize};
+    color: ${color || theme.colors.BLACK_100};
     text-align: ${textAlign || 'center'};
+    ${fontSize && `font-size: ${fontSize}`};
   `
 );
 

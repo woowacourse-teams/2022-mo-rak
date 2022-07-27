@@ -16,8 +16,8 @@ const StyledProgress = styled.progress<
 >(
   ({ width, theme, padding, accentColor }) => `
   accent-color: ${accentColor || theme.colors.PURPLE_100};
-  width: ${width};
   padding: ${padding || '0.8rem'};
+  ${width && `width: ${width}`};
 `
 );
 

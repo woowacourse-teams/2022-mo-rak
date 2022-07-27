@@ -9,7 +9,6 @@ interface Props {
   groupCode: GroupInterface['code'];
 }
 
-// TODO: 컴포넌트 이름 생각해보자 profile은 단수
 function MembersProfile({ groupCode }: Props) {
   const navigate = useNavigate();
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);

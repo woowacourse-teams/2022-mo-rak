@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
 
-import PollResultContainer from '../../components/PollResultContainer/PollResultContainer';
+import PollResultContainer from '../../components/PollResult/PollResultContainer/PollResultContainer';
 
 function PollResultPage() {
   return (

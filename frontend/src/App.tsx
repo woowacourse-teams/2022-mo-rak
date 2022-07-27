@@ -14,7 +14,7 @@ import { PrivateRoute } from './routes/PrivateRoute';
 
 function App() {
   return (
-    // TODO: default 그룹을 찾는 요청을 해서 그룹이 있는 지 없는 지 확인하는 Route 생성?
+    // TODO: default 그룹을 찾는 요청을 해서 그룹이 있는 지 없는 지 확인하는 Route 생성? (PASS)
     <FlexContainer>
       <Routes>
         <Route path="/">
@@ -22,7 +22,6 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route element={<SidebarLayout />}>
               <Route path="groups/:groupCode">
-                {/* TODO: 100% groupCode가 들어오니 단언을 해줘도 좋지 않을까? */}
                 <Route index element={<MainPage />} />
                 <Route path="poll">
                   <Route index element={<PollMainPage />} />
