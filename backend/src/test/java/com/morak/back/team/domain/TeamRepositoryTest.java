@@ -1,9 +1,7 @@
-package com.morak.back.auth.domain;
+package com.morak.back.team.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.morak.back.team.domain.Team;
-import com.morak.back.team.domain.TeamRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +23,9 @@ class TeamRepositoryTest {
 
         // then
         Assertions.assertAll(
-            () -> assertThat(savedTeam).isNotNull(),
-            () -> assertThat(savedTeam.getId()).isNotNull(),
-            () -> assertThat(savedTeam.getName()).isEqualTo("test-team")
+                () -> assertThat(savedTeam).isNotNull(),
+                () -> assertThat(savedTeam.getId()).isNotNull(),
+                () -> assertThat(savedTeam.getName()).isEqualTo("test-team")
         );
 
     }

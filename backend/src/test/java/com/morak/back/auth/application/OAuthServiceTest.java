@@ -24,7 +24,12 @@ class OAuthServiceTest {
 
     private static final String CODE = "test-code";
     private static final String ACCESS_TOKEN = "test-token";
-    private static final Member MEMBER = new Member(1L, "oauthId", "박성우", "https://avatars.githubusercontent.com/u/79205414?v=4");
+    private static final Member MEMBER = Member.builder()
+            .id(1L)
+            .oauthId("oauthId")
+            .name("박성우")
+            .profileUrl("https://avatars.githubusercontent.com/u/79205414?v=4")
+            .build();
 
     @Mock
     private MemberRepository memberRepository;

@@ -10,7 +10,8 @@ class TeamInvitationTest {
     void 만료되지_않은_시간인지_확인한다() {
         // given
         TeamInvitation teamInvitation =
-                new TeamInvitation(null, null, InvitationCode.generate((length) -> "invitecode"), ExpiredTime.withMinute(30L));
+                new TeamInvitation(null, null, InvitationCode.generate((length) -> "invitecode"),
+                        ExpiredTime.withMinute(30L));
         // when
         boolean isExpired = teamInvitation.isExpired();
         // then
@@ -21,7 +22,8 @@ class TeamInvitationTest {
     void 만료된_시간인지_확인한다() {
         // given
         TeamInvitation teamInvitation =
-                new TeamInvitation(null, null, InvitationCode.generate((length) -> "invitecode"), ExpiredTime.withMinute(-30L));
+                new TeamInvitation(null, null, InvitationCode.generate((length) -> "invitecode"),
+                        ExpiredTime.withMinute(-30L));
         // when
         boolean isExpired = teamInvitation.isExpired();
         // then

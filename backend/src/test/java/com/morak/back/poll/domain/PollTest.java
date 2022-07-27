@@ -27,7 +27,12 @@ class PollTest {
     @BeforeEach
     void setUp() {
         team = new Team(1L, "team1", "TEAM");
-        member = new Member(1L, "12345678", "ellie", "http://ellie-profile.com");
+        member = Member.builder()
+                .id(1L)
+                .oauthId("12345678")
+                .name("ellie")
+                .profileUrl("http://ellie-profile.com")
+                .build();
 
         poll = new Poll(1L, team, member, "title", 2, true, PollStatus.OPEN, LocalDateTime.now().plusDays(1),
                 "ABCE", new ArrayList<>());
@@ -121,7 +126,8 @@ class PollTest {
     @Test
     void 호스트가_아닐_시_예외를_던진다() {
         // given
-        Member member = new Member(3L, "13579246", "bkr", "http://bkr-profile.com");
+        Member member = Member.builder().id(3L).oauthId("13579246").name("bkr").profileUrl("http://bkr-profile.com")
+                .build();
 
         // when & then
         assertThatThrownBy(() -> poll.validateHost(member))
@@ -150,7 +156,12 @@ class PollTest {
     @Test
     void 호스트가_아닌_멤버가_투표를_종료하는_경우_예외를_던진다() {
         // given
-        Member member = new Member(100L, "174837283", "ohzzi", "http://wrong-member");
+        Member member = Member.builder()
+                .id(100L)
+                .oauthId("174837283")
+                .name("ohzzi")
+                .profileUrl("http://wrong-member")
+                .build();
 
         // when & then
         assertThatThrownBy(() -> poll.close(member))

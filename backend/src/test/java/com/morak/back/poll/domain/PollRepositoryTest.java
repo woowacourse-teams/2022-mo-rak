@@ -41,18 +41,18 @@ class PollRepositoryTest {
         Team team = supplier.supplyTeam(1L);
         Member member = supplier.supplyMember(1L);
         Poll poll = new Poll(null, team, member, "test-title", 1, false, PollStatus.OPEN, LocalDateTime.now(),
-            "test-code");
+                "test-code");
 
         // when
         Poll savedPoll = pollRepository.save(poll);
 
         // then
         Assertions.assertAll(
-            () -> assertThat(savedPoll).isNotNull(),
-            () -> assertThat(savedPoll.getId()).isNotNull(),
-            () -> assertThat(savedPoll.getTitle()).isEqualTo("test-title"),
-            () -> assertThat(savedPoll.getTeam()).isNotNull(),
-            () -> assertThat(savedPoll.getHost()).isNotNull()
+                () -> assertThat(savedPoll).isNotNull(),
+                () -> assertThat(savedPoll.getId()).isNotNull(),
+                () -> assertThat(savedPoll.getTitle()).isEqualTo("test-title"),
+                () -> assertThat(savedPoll.getTeam()).isNotNull(),
+                () -> assertThat(savedPoll.getHost()).isNotNull()
         );
     }
 
@@ -87,8 +87,8 @@ class PollRepositoryTest {
         // then
         Poll findPoll = pollRepository.getById(1L);
         Assertions.assertAll(
-            () -> assertThat(findPoll.getPollItems()).hasSize(5),
-            () -> assertThat(findPoll.getPollItems().get(3).getSubject()).isEqualTo("test-subject-1")
+                () -> assertThat(findPoll.getPollItems()).hasSize(5),
+                () -> assertThat(findPoll.getPollItems().get(3).getSubject()).isEqualTo("test-subject-1")
         );
     }
 
@@ -99,8 +99,8 @@ class PollRepositoryTest {
 
         // when & then
         Assertions.assertAll(
-            () -> assertThat(poll.getTitle()).isEqualTo("test-poll-title"),
-            () -> assertThat(poll.getHost().getId()).isEqualTo(1L)
+                () -> assertThat(poll.getTitle()).isEqualTo("test-poll-title"),
+                () -> assertThat(poll.getHost().getId()).isEqualTo(1L)
         );
     }
 

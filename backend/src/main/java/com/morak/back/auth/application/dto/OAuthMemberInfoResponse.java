@@ -21,6 +21,10 @@ public class OAuthMemberInfoResponse {
     private String profileUrl;
 
     public Member toMember() {
-        return new Member(null, oauthId, name, profileUrl);
+        return Member.builder()
+                .oauthId(oauthId)
+                .name(name)
+                .profileUrl(profileUrl)
+                .build();
     }
 }

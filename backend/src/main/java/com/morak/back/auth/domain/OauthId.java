@@ -1,28 +1,21 @@
 package com.morak.back.auth.domain;
 
-import com.morak.back.core.exception.InappropriateLengthException;
 import java.util.Objects;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.util.ObjectUtils;
 
 @Embeddable
 @NoArgsConstructor
 @Getter
 public class OauthId {
 
+    @Size(min = 1, max = 255, message = "oauthId의 길이는 1 ~ 255 사이여야합니다.")
     private String oauthId;
 
     public OauthId(String oauthId) {
-        validate(oauthId);
         this.oauthId = oauthId;
-    }
-
-    private void validate(String oauthId) {
-        if (ObjectUtils.isEmpty(oauthId)) {
-            throw InappropriateLengthException.of("OauthId", oauthId);
-        }
     }
 
     @Override

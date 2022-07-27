@@ -36,7 +36,8 @@ public class TeamInvitation extends BaseEntity {
     private ExpiredTime expiredAt;
 
     public static TeamInvitation issue(Team team, Function<Integer, String> codeGenerator) {
-        return new TeamInvitation(null, team, InvitationCode.generate(codeGenerator), ExpiredTime.withMinute(EXPIRED_MINUTES));
+        return new TeamInvitation(null, team, InvitationCode.generate(codeGenerator),
+                ExpiredTime.withMinute(EXPIRED_MINUTES));
     }
 
     public boolean isExpired() {

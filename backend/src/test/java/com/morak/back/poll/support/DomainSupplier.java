@@ -20,43 +20,43 @@ public class DomainSupplier {
     public Member supplyMember(Long id) {
         String sql = "SELECT * FROM member WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-            new Member(rs.getLong("id"),
-                rs.getString("oauth_id"),
-                rs.getString("name"),
-                    rs.getString("profile_url")
-            ), id);
+                Member.builder()
+                        .id(rs.getLong("id"))
+                        .oauthId(rs.getString("oauth_id"))
+                        .name(rs.getString("name"))
+                        .profileUrl(rs.getString("profile_url")).build(), id);
     }
 
     public Team supplyTeam(Long id) {
         String sql = "SELECT * FROM team WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-            new Team(rs.getLong("id"),
-                rs.getString("name"),
-                rs.getString("code")
-            ), id);
+                new Team(rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getString("code")
+                ), id);
     }
 
     public Poll supplyPoll(Long id) {
         String sql = "SELECT * FROM poll WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-            new Poll(rs.getLong("id"),
-                supplyTeam(rs.getLong("team_id")),
-                supplyMember(rs.getLong("host_id")),
-                rs.getString("title"),
-                rs.getInt("allowed_poll_count"),
-                rs.getBoolean("is_anonymous"),
-                PollStatus.valueOf(rs.getString("status")),
-                rs.getTimestamp("closed_at").toLocalDateTime(),
-                rs.getString("code")
-            ), id);
+                new Poll(rs.getLong("id"),
+                        supplyTeam(rs.getLong("team_id")),
+                        supplyMember(rs.getLong("host_id")),
+                        rs.getString("title"),
+                        rs.getInt("allowed_poll_count"),
+                        rs.getBoolean("is_anonymous"),
+                        PollStatus.valueOf(rs.getString("status")),
+                        rs.getTimestamp("closed_at").toLocalDateTime(),
+                        rs.getString("code")
+                ), id);
     }
 
     public PollItem supplyPollItem(Long id) {
         String sql = "SELECT * FROM poll_item WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-            new PollItem(rs.getLong("id"),
-                supplyPoll(rs.getLong("poll_id")),
-                rs.getString("subject")
-            ), id);
+                new PollItem(rs.getLong("id"),
+                        supplyPoll(rs.getLong("poll_id")),
+                        rs.getString("subject")
+                ), id);
     }
 }

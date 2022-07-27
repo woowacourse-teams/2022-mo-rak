@@ -1,28 +1,21 @@
 package com.morak.back.auth.domain;
 
-import com.morak.back.core.exception.InappropriateLengthException;
 import java.util.Objects;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.util.ObjectUtils;
 
 @Embeddable
 @NoArgsConstructor
 @Getter
 public class Name {
 
+    @Size(min = 1, max = 255, message = "name의 길이는 1 ~ 255 사이여야합니다.")
     private String name;
 
     public Name(String name) {
-        validate(name);
         this.name = name;
-    }
-
-    private void validate(String name) {
-        if (ObjectUtils.isEmpty(name)) {
-            throw InappropriateLengthException.of("name", name);
-        }
     }
 
     @Override

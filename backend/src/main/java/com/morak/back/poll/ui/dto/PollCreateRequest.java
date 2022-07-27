@@ -37,7 +37,7 @@ public class PollCreateRequest {
 
     @JsonCreator
     public PollCreateRequest(String title, Integer allowedPollCount, Boolean isAnonymous, LocalDateTime closedAt,
-        List<String> subjects) {
+                             List<String> subjects) {
         this.title = title;
         this.allowedPollCount = allowedPollCount;
         this.isAnonymous = isAnonymous;
@@ -52,7 +52,7 @@ public class PollCreateRequest {
 
     public List<PollItem> toPollItems(Poll poll) {
         return subjects.stream()
-            .map(subject -> new PollItem(null, poll, subject))
-            .collect(Collectors.toList());
+                .map(subject -> new PollItem(null, poll, subject))
+                .collect(Collectors.toList());
     }
 }

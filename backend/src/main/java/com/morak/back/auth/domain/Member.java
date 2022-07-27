@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,12 +31,15 @@ public class Member extends BaseEntity {
     private Long id;
 
     @Embedded
+    @Valid
     private OauthId oauthId;
 
     @Embedded
+    @Valid
     private Name name;
 
     @Embedded
+    @Valid
     private ProfileUrl profileUrl;
 
     @Builder

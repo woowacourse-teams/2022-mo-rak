@@ -62,7 +62,12 @@ class TeamServiceTest {
 
     @BeforeEach
     void setup() {
-        member = new Member(1L, "12345678", "ellie", "http://ellie-profile");
+        member = Member.builder()
+                .id(1L)
+                .oauthId("12345678")
+                .name("ellie")
+                .profileUrl("http://ellie-profile")
+                .build();
         team = new Team(1L, "team", "ABCD1234");
         teamInvitation = new TeamInvitation(1L, team, InvitationCode.generate((length) -> "inviteCode"),
                 ExpiredTime.withMinute(30L));
@@ -183,8 +188,18 @@ class TeamServiceTest {
     @Test
     void 그룹에_속한_멤버_목록을_조회한다() {
         // given
-        Member member1 = new Member(1L, "oauthId1", "name1", "http://123-profile.com");
-        Member member2 = new Member(2L, "oauthId2", "name2", "http://234-profile.com");
+        Member member1 = Member.builder()
+                .id(1L)
+                .oauthId("oauthId1")
+                .name("name1")
+                .profileUrl("http://123-profile.com")
+                .build();
+        Member member2 = Member.builder()
+                .id(2L)
+                .oauthId("oauthId2")
+                .name("name2")
+                .profileUrl("http://234-profile.com")
+                .build();
         TeamMember teamMember1 = new TeamMember(1L, team, member1);
         TeamMember teamMember2 = new TeamMember(2L, team, member2);
 

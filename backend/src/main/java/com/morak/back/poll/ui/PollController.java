@@ -34,7 +34,7 @@ public class PollController {
                                            @Auth Long memberId,
                                            @Valid @RequestBody PollCreateRequest request) {
         Long id = pollService.createPoll(groupCode, memberId, request);
-        return ResponseEntity.created(URI.create("/api/groups/" + groupCode +"/polls/" + id)).build();
+        return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/polls/" + id)).build();
     }
 
     @PutMapping("/{id}")
