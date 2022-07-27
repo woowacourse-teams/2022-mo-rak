@@ -14,6 +14,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.poll.domain.Poll;
+import com.morak.back.poll.domain.Poll.PollBuilder;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
@@ -67,17 +68,17 @@ class PollServiceTest {
                 .profileUrl("http://ellie-profile.com")
                 .build();
         team = new Team(1L, "team", "ABCD1234");
-        poll = new Poll(
-                1L,
-                team,
-                member,
-                "test-title",
-                3,
-                true,
-                OPEN,
-                LocalDateTime.now().plusDays(1L),
-                "ABCD1234"
-        );
+        poll = Poll.builder()
+                .id(1L)
+                .team(team)
+                .host(member)
+                .title("test-tile")
+                .allowedPollCount(3)
+                .isAnonymous(true)
+                .status(OPEN)
+                .closedAt(LocalDateTime.now().plusDays(1L))
+                .code("ABCD1234")
+                .build();
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
     }
 
@@ -297,19 +298,13 @@ class PollServiceTest {
     @Test
     void 기명_투표_결과를_조회한다() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member, "거의_다_한_것_같아요");
-        PollResult pollResult2 = new PollResult(2L, null, member, "집에_가고_싶어요!");
-
-        Poll poll = new Poll(
-                1L,
-                team,
-                member,
-                null,
-                null,
-                false,
-                CLOSED,
-                null,
-                null);
+        Poll poll = Poll.builder()
+                .id(1L)
+                .team(team)
+                .host(member)
+                .isAnonymous(false)
+                .status(CLOSED)
+                .build();
         PollItem pollItem1 = new PollItem(1L, poll, "항목1");
         pollItem1.addPollResult(member, "거의_다_한_것_같아요");
 

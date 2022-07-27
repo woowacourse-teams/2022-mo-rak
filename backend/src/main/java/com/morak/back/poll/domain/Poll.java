@@ -26,6 +26,7 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -68,6 +69,7 @@ public class Poll extends BaseEntity {
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL)
     private List<PollItem> pollItems = new ArrayList<>();
 
+    @Builder
     public Poll(Long id, Team team, Member host, String title, Integer allowedPollCount, Boolean isAnonymous,
                 PollStatus status, LocalDateTime closedAt, String code) {
 

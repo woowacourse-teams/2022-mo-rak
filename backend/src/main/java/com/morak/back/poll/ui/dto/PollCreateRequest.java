@@ -46,8 +46,16 @@ public class PollCreateRequest {
     }
 
     public Poll toPoll(Member member, Team team, PollStatus status, String code) {
-
-        return new Poll(null, team, member, title, allowedPollCount, isAnonymous, status, closedAt, code);
+        return Poll.builder()
+                .team(team)
+                .host(member)
+                .title(title)
+                .allowedPollCount(allowedPollCount)
+                .isAnonymous(isAnonymous)
+                .status(status)
+                .closedAt(closedAt)
+                .code(code)
+                .build();
     }
 
     public List<PollItem> toPollItems(Poll poll) {

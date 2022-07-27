@@ -7,7 +7,6 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,7 +125,11 @@ class PollTest {
     @Test
     void 호스트가_아닐_시_예외를_던진다() {
         // given
-        Member member = Member.builder().id(3L).oauthId("13579246").name("bkr").profileUrl("http://bkr-profile.com")
+        Member member = Member.builder()
+                .id(3L)
+                .oauthId("13579246")
+                .name("bkr")
+                .profileUrl("http://bkr-profile.com")
                 .build();
 
         // when & then

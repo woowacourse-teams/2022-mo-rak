@@ -39,16 +39,18 @@ public class DomainSupplier {
     public Poll supplyPoll(Long id) {
         String sql = "SELECT * FROM poll WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-                new Poll(rs.getLong("id"),
-                        supplyTeam(rs.getLong("team_id")),
-                        supplyMember(rs.getLong("host_id")),
-                        rs.getString("title"),
-                        rs.getInt("allowed_poll_count"),
-                        rs.getBoolean("is_anonymous"),
-                        PollStatus.valueOf(rs.getString("status")),
-                        rs.getTimestamp("closed_at").toLocalDateTime(),
-                        rs.getString("code")
-                ), id);
+                        Poll.builder()
+                                .id(rs.getLong("id"))
+                                .team(supplyTeam(rs.getLong("team_id")))
+                                .host(supplyMember(rs.getLong("host_id")))
+                                .title(rs.getString("title"))
+                                .allowedPollCount(rs.getInt("allowed_poll_count"))
+                                .isAnonymous(rs.getBoolean("is_anonymous"))
+                                .status(PollStatus.valueOf(rs.getString("status")))
+                                .closedAt(rs.getTimestamp("closed_at").toLocalDateTime())
+                                .code(rs.getString("code"))
+                                .build()
+                , id);
     }
 
     public PollItem supplyPollItem(Long id) {

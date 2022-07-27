@@ -40,8 +40,16 @@ class PollRepositoryTest {
         // given
         Team team = supplier.supplyTeam(1L);
         Member member = supplier.supplyMember(1L);
-        Poll poll = new Poll(null, team, member, "test-title", 1, false, PollStatus.OPEN, LocalDateTime.now().plusDays(1L),
-                "testcode");
+        Poll poll = Poll.builder()
+                .team(team)
+                .host(member)
+                .title("test-title")
+                .isAnonymous(false)
+                .allowedPollCount(1)
+                .status(PollStatus.OPEN)
+                .closedAt(LocalDateTime.now().plusDays(1L))
+                .code("testcode")
+                .build();
 
         // when
         Poll savedPoll = pollRepository.save(poll);
@@ -59,9 +67,8 @@ class PollRepositoryTest {
     @Test
     void 팀ID로_투표_목록을_조회한다() {
         // given
-
         long teamId = 1L;
-        long memberId = 1L;
+
         // when
         List<Poll> polls = pollRepository.findAllByTeamId(teamId);
 
