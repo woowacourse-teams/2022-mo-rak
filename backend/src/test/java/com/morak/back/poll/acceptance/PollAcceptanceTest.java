@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.auth.application.TokenProvider;
+import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
@@ -178,7 +179,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
                 () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
                 () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0),
-                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isBlank(),
+                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo(Member.getAnonymous().getName()),
                 () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요")
         );
     }

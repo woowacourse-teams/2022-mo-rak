@@ -60,7 +60,7 @@ class PollServiceTest {
 
     @BeforeEach
     void setup() {
-        member = new Member(1L, "12345678", "ellie", "ellie-profile");
+        member = new Member(1L, "12345678", "ellie", "http://ellie-profile.com");
         team = new Team(1L, "team", "ABCD1234");
         poll = new Poll(
                 1L,
@@ -282,7 +282,7 @@ class PollServiceTest {
                 () -> assertThat(pollItemResultResponses.get(0).getCount()).isEqualTo(1),
                 () -> assertThat(pollItemResultResponses.get(0).getMembers()).hasSize(1),
                 () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getId()).isEqualTo(0L),
-                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getName()).isBlank(),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getName()).isEqualTo(Member.getAnonymous().getName()),
                 () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("거의_다_한_것_같아요")
         );
     }
@@ -341,7 +341,7 @@ class PollServiceTest {
     @Test
     void 삭제_시_호스트가_아니면_예외를_던진다() {
         // given
-        Member notHostMember = new Member(2L, "87654321", "eden", "eden-profile.cloudfront.net");
+        Member notHostMember = new Member(2L, "87654321", "eden", "http://eden-profile.cloudfront.net");
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(notHostMember));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
 

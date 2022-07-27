@@ -19,7 +19,7 @@ class MemberRepositoryTest {
     @Test
     void 멤버를_저장한다() {
         // given
-        Member member = new Member(null, "87654321", "ellie", "ellie-profile.com");
+        Member member = new Member(null, "87654321", "ellie", "http://ellie-profile.com");
 
         // when
         Member savedMember = memberRepository.save(member);
@@ -29,6 +29,22 @@ class MemberRepositoryTest {
                 () -> assertThat(savedMember).isNotNull(),
                 () -> assertThat(savedMember.getId()).isNotNull(),
                 () -> assertThat(savedMember.getName()).isEqualTo("ellie")
+        );
+    }
+
+    @Test
+    void 저장한_멤버를_ID로_조회한다() {
+        // given
+        Member savedMember = memberRepository.save(
+                new Member(null, "87654321", "ellie", "http://ellie-profile.com")
+        );
+
+        // when
+        Optional<Member> findMember = memberRepository.findById(savedMember.getId());
+
+        Assertions.assertAll(
+                () -> assertThat(findMember).isPresent(),
+                () -> assertThat(findMember.get()).isEqualTo(savedMember)
         );
     }
 

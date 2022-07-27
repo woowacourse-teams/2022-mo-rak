@@ -27,7 +27,7 @@ class PollTest {
     @BeforeEach
     void setUp() {
         team = new Team(1L, "team1", "TEAM");
-        member = new Member(1L, "12345678", "ellie", "ellie-profile.com");
+        member = new Member(1L, "12345678", "ellie", "http://ellie-profile.com");
 
         poll = new Poll(1L, team, member, "title", 2, true, PollStatus.OPEN, LocalDateTime.now().plusDays(1),
                 "ABCE", new ArrayList<>());
@@ -121,7 +121,7 @@ class PollTest {
     @Test
     void 호스트가_아닐_시_예외를_던진다() {
         // given
-        Member member = new Member(3L, "13579246", "bkr", "bkr-profile.com");
+        Member member = new Member(3L, "13579246", "bkr", "http://bkr-profile.com");
 
         // when & then
         assertThatThrownBy(() -> poll.validateHost(member))
@@ -150,7 +150,7 @@ class PollTest {
     @Test
     void 호스트가_아닌_멤버가_투표를_종료하는_경우_예외를_던진다() {
         // given
-        Member member = new Member(100L, "174837283", "ohzzi", "wrong-member");
+        Member member = new Member(100L, "174837283", "ohzzi", "http://wrong-member");
 
         // when & then
         assertThatThrownBy(() -> poll.close(member))

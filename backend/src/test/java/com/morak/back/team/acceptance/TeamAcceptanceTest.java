@@ -156,8 +156,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(memberResponses).extracting("name", "profileUrl")
                 .containsExactly(
-                        tuple("eden", "eden-profile.com"),
-                        tuple("ellie", "ellie-profile.com")
+                        tuple("eden", "http://eden-profile.com"),
+                        tuple("ellie", "http://ellie-profile.com")
                 );
     }
 

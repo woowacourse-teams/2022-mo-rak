@@ -12,6 +12,7 @@ import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,11 +38,17 @@ class OAuthServiceTest {
     @InjectMocks
     private OAuthService oAuthService;
 
+    @BeforeEach
+    void setUp() {
+        given(oAuthClient.getAccessToken(anyString()))
+                .willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
+        given(oAuthClient.getMemberInfo(anyString()))
+                .willReturn(new OAuthMemberInfoResponse(MEMBER.getOauthId(), MEMBER.getName(), MEMBER.getProfileUrl()));
+    }
+
     @Test
     public void OAuth_첫_로그인시_회원으로_등록하고_토큰을_발급한다() {
         // given
-        given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
-        given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
         given(memberRepository.findByOauthId(any())).willReturn(Optional.empty());
         given(memberRepository.save(any())).willReturn(MEMBER);
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
@@ -56,8 +63,6 @@ class OAuthServiceTest {
     @Test
     public void OAuth_로그인시_토큰을_발급한다() {
         // given
-        given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
-        given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
         given(memberRepository.findByOauthId(any())).willReturn(Optional.of(MEMBER));
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
 
