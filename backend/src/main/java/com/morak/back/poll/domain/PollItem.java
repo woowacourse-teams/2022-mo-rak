@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,14 +15,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
-import lombok.AllArgsConstructor;
+import javax.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class PollItem extends BaseEntity {
 
@@ -35,17 +33,17 @@ public class PollItem extends BaseEntity {
     @JoinColumn
     private Poll poll;
 
-    @Embedded
-    @Valid
-    private Subject subject;
+    @Size(min = 1, max = 255, message = "투표 항목 주제의 길이는 1~255자여아 합니다.")
+    private String subject;
 
     @OneToMany(mappedBy = "pollItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PollResult> pollResults = new ArrayList<>();
 
+    @Builder
     public PollItem(Long id, Poll poll, String subject) {
         this.id = id;
         this.poll = poll;
-        this.subject = new Subject(subject);
+        this.subject = subject;
     }
 
     public void addPollResult(Member member, String description) {
@@ -77,9 +75,5 @@ public class PollItem extends BaseEntity {
                 .map(PollResult::getDescription)
                 .findFirst()
                 .orElseGet(() -> "");
-    }
-
-    public String getSubject() {
-        return subject.getSubject();
     }
 }

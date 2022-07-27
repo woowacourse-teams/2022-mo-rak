@@ -2,21 +2,22 @@ package com.morak.back.auth.domain;
 
 import com.morak.back.poll.domain.BaseEntity;
 import java.util.Objects;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 public class Member extends BaseEntity {
 
     private static final Member ANONYMOUS_MEMBER = new Member(
@@ -30,25 +31,15 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
-    @Valid
-    private OauthId oauthId;
+    @Size(min = 1, max = 255, message = "oauthId의 길이는 1 ~ 255 사이여야합니다.")
+    private String oauthId;
 
-    @Embedded
-    @Valid
-    private Name name;
+    @Size(min = 1, max = 255, message = "name의 길이는 1 ~ 255 사이여야합니다.")
+    private String name;
 
-    @Embedded
-    @Valid
-    private ProfileUrl profileUrl;
-
-    @Builder
-    public Member(Long id, String oauthId, String name, String profileUrl) {
-        this.id = id;
-        this.oauthId = new OauthId(oauthId);
-        this.name = new Name(name);
-        this.profileUrl = new ProfileUrl(profileUrl);
-    }
+    @Size(min = 1, max = 255, message = "profileUrl의 길이는 1 ~ 255 사이여야합니다.")
+    @URL(regexp = "^(http).*", message = "profileUrl은 http로 시작해야 합니다.")
+    private String profileUrl;
 
     public static Member getAnonymous() {
         return ANONYMOUS_MEMBER;
@@ -70,18 +61,6 @@ public class Member extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, oauthId, name, profileUrl);
-    }
-
-    public String getOauthId() {
-        return oauthId.getOauthId();
-    }
-
-    public String getName() {
-        return name.getName();
-    }
-
-    public String getProfileUrl() {
-        return profileUrl.getProfileUrl();
     }
 }
 

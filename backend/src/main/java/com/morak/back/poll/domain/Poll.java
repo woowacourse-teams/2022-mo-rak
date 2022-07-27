@@ -22,8 +22,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,22 +45,21 @@ public class Poll extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member host;
 
-    @Embedded
-    @Valid
-    private Title title;
+    @Size(min = 1, max = 255, message = "제목의 길이는 1 ~ 255자여야합니다.")
+    private String title;
 
     @Embedded
     @Valid
     private AllowedPollCount allowedPollCount;
 
+    @NotNull(message = "익명여부는 null이 아니어야합니다.")
     private Boolean isAnonymous;
 
     @Enumerated(value = EnumType.STRING)
     private PollStatus status;
 
-    @Embedded
-    @Valid
-    private ClosedAt closedAt;
+    @Future(message = "마감 시각은 미래여야 합니다.")
+    private LocalDateTime closedAt;
 
     @Embedded
     @Valid
@@ -73,11 +74,11 @@ public class Poll extends BaseEntity {
         this.id = id;
         this.team = team;
         this.host = host;
-        this.title = new Title(title);
+        this.title = title;
         this.allowedPollCount = new AllowedPollCount(allowedPollCount);
         this.isAnonymous = isAnonymous;
         this.status = status;
-        this.closedAt = new ClosedAt(closedAt);
+        this.closedAt = closedAt;
         this.code = new Code(code);
     }
 
@@ -143,16 +144,8 @@ public class Poll extends BaseEntity {
         }
     }
 
-    public String getTitle() {
-        return title.getTitle();
-    }
-
     public Integer getAllowedPollCount() {
         return allowedPollCount.getAllowedPollCount();
-    }
-
-    public LocalDateTime getClosedAt() {
-        return closedAt.getClosedAt();
     }
 
     public String getCode() {

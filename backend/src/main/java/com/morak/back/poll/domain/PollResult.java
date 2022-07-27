@@ -10,12 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@AllArgsConstructor
+@Builder
 public class PollResult extends BaseEntity {
 
     @Id
@@ -30,26 +35,14 @@ public class PollResult extends BaseEntity {
     @JoinColumn
     private Member member;
 
-    @Embedded
-    @Valid
-    private Description description;
-
-    public PollResult(Long id, PollItem pollItem, Member member, String description) {
-        this.id = id;
-        this.pollItem = pollItem;
-        this.member = member;
-        this.description = new Description(description);
-    }
+    @Size(max = 255, message = "description은 최대 255자여야 합니다.")
+    private String description;
 
     public PollResult fromAnonymous() {
-        return new PollResult(id, pollItem, Member.getAnonymous(), description.getDescription());
+        return new PollResult(id, pollItem, Member.getAnonymous(), description);
     }
 
     public Boolean isSameMember(Member member) {
         return this.member.equals(member);
-    }
-
-    public String getDescription() {
-        return description.getDescription();
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface MemberRepository extends Repository<Member, Long> {
 
-    @Query("select m from Member m where m.oauthId.oauthId = :oauthId")
+    @Query("select m from Member m where m.oauthId = :oauthId")
     Optional<Member> findByOauthId(@Param("oauthId") String oauthId);
 
     Member save(Member member);
