@@ -1,7 +1,6 @@
 package com.morak.back.poll.domain;
 
 import com.morak.back.auth.domain.Member;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,7 +37,12 @@ public class PollResult extends BaseEntity {
     private String description;
 
     public PollResult fromAnonymous() {
-        return new PollResult(id, pollItem, Member.getAnonymous(), description);
+        return PollResult.builder()
+                .id(id)
+                .pollItem(pollItem)
+                .member(Member.getAnonymous())
+                .description(description)
+                .build();
     }
 
     public Boolean isSameMember(Member member) {
