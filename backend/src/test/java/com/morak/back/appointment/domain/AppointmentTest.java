@@ -14,7 +14,7 @@ class AppointmentTest {
             "60, 1, 0",
             "150, 2, 30"
     })
-    public void 분에서_시간과_분을_추출한다(int durationMinutes, int hours, int minutes) {
+    void 분에서_시간과_분을_추출한다(int durationMinutes, int hours, int minutes) {
         // given
         Appointment appointment = Appointment.builder()
                 .durationMinutes(durationMinutes)
@@ -28,7 +28,7 @@ class AppointmentTest {
     }
 
     @Test
-    public void 약속잡기가_종료된_경우_true를_반환한다() {
+    void 약속잡기가_종료된_경우_true를_반환한다() {
         // given
         Appointment appointment = Appointment.builder()
                 .status(AppointmentStatus.CLOSED)
@@ -39,7 +39,7 @@ class AppointmentTest {
     }
 
     @Test
-    public void 약속잡기가_종료되지_않은_경우_false를_반환한다() {
+    void 약속잡기가_종료되지_않은_경우_false를_반환한다() {
         // given
         Appointment appointment = Appointment.builder()
                 .status(AppointmentStatus.OPEN)

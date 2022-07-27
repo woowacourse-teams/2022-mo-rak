@@ -28,7 +28,7 @@ class AppointmentControllerTest extends ControllerTest {
     private static final String APPOINTMENT_CODE = "FJn3ND26";
 
     @Test
-    public void 약속잡기를_생성한다() throws Exception {
+    void 약속잡기를_생성한다() throws Exception {
         // given
         String path = "/api/groups/{groupCode}/appointments";
         AppointmentCreateRequest request = new AppointmentCreateRequest(
@@ -57,7 +57,7 @@ class AppointmentControllerTest extends ControllerTest {
     }
 
     @Test
-    public void 약속잡기_목록을_조회한다() throws Exception {
+    void 약속잡기_목록을_조회한다() throws Exception {
         // given
         String path = "/api/groups/{groupCode}/appointments";
 
@@ -77,7 +77,7 @@ class AppointmentControllerTest extends ControllerTest {
     }
 
     @Test
-    public void 약속잡기_단건을_조회한다() throws Exception {
+    void 약속잡기_단건을_조회한다() throws Exception {
         // given
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}";
 
@@ -97,7 +97,7 @@ class AppointmentControllerTest extends ControllerTest {
     }
 
     @Test
-    public void 약속잡기_선택을_진행한다() throws Exception {
+    void 약속잡기_선택을_진행한다() throws Exception {
         // given
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}";
         List<AvailableTimeRequest> requests = List.of(
@@ -128,7 +128,7 @@ class AppointmentControllerTest extends ControllerTest {
     }
 
     @Test
-    public void 약속잡기_추천_결과를_조회한다() throws Exception {
+    void 약속잡기_추천_결과를_조회한다() throws Exception {
         // given
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}/recommendation";
 
@@ -148,7 +148,7 @@ class AppointmentControllerTest extends ControllerTest {
     }
 
     @Test
-    public void 약속잡기가_마감되었는지_확인한다() throws Exception {
+    void 약속잡기가_마감되었는지_확인한다() throws Exception {
         // given
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}/close";
 
@@ -169,7 +169,7 @@ class AppointmentControllerTest extends ControllerTest {
     }
 
     @Test
-    public void 약속잡기를_삭제한다() throws Exception {
+    void 약속잡기를_삭제한다() throws Exception {
         // given
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}";
 
