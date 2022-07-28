@@ -9,6 +9,7 @@ import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -27,7 +28,7 @@ public class PollCreateRequest {
     @NotNull
     private final Boolean isAnonymous;
 
-    @NotNull
+    @Future
     private final LocalDateTime closedAt;
 
     @NotNull

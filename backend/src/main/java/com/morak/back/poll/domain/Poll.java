@@ -1,6 +1,7 @@
 package com.morak.back.poll.domain;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.Future;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -47,7 +48,7 @@ public class Poll extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member host;
 
-    @NotEmpty(message = "title 은 null 일 수 없습니다.")
+    @NotBlank(message = "title 은 blank 일 수 없습니다.")
     @Size(min = 1, max = 255, message = "제목의 길이는 1 ~ 255자여야합니다.")
     private String title;
 
@@ -61,7 +62,6 @@ public class Poll extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private PollStatus status;
 
-    @Future(message = "마감 시각은 미래여야 합니다.")
     private LocalDateTime closedAt;
 
     @Embedded

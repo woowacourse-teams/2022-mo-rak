@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import lombok.Builder;
@@ -34,7 +35,7 @@ public class PollItem extends BaseEntity {
     @JoinColumn
     private Poll poll;
 
-    @NotEmpty(message = "subject 는 null 일 수 없습니다.")
+    @NotBlank(message = "subject 는 blank 일 수 없습니다.")
     @Size(min = 1, max = 255, message = "투표 항목 주제의 길이는 1~255자여아 합니다.")
     private String subject;
 

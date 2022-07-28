@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,15 +32,15 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "oauthId 는 null 일 수 없습니다.")
+    @NotBlank(message = "oauthId 는 blank 일 수 없습니다.")
     @Size(min = 1, max = 255, message = "oauthId의 길이는 1 ~ 255 사이여야합니다.")
     private String oauthId;
 
-    @NotEmpty(message = "name 은 null 일 수 없습니다.")
+    @NotBlank(message = "name 은 blank 일 수 없습니다.")
     @Size(min = 1, max = 255, message = "name의 길이는 1 ~ 255 사이여야합니다.")
     private String name;
 
-    @NotEmpty(message = "profileUrl은 null 일 수 없습니다.")
+    @NotBlank(message = "profileUrl은 blank 일 수 없습니다.")
     @Size(min = 1, max = 255, message = "profileUrl의 길이는 1 ~ 255 사이여야합니다.")
     @URL(regexp = "^(http).*", message = "profileUrl은 http로 시작해야 합니다.")
     private String profileUrl;
