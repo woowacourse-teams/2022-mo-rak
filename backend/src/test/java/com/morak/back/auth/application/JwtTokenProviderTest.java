@@ -13,7 +13,7 @@ class JwtTokenProviderTest {
     private JwtTokenProvider jwtTokenProvider;
 
     @Test
-    public void 토큰에서_payload를_가져온다() {
+    void 토큰에서_payload를_가져온다() {
         // given
         jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 3600000L);
         String payload = "엘리";
@@ -26,7 +26,7 @@ class JwtTokenProviderTest {
     }
 
     @Test
-    public void 유효하지않은_토큰인경우_예외를_던진다() {
+    void 유효하지않은_토큰인경우_예외를_던진다() {
         // given
         jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 3600000L);
         String token = "test-token";
@@ -37,7 +37,7 @@ class JwtTokenProviderTest {
     }
 
     @Test
-    public void 만료된_토큰인경우_예외를_던진다() {
+    void 만료된_토큰인경우_예외를_던진다() {
         // given
         jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 0L);
         String token = jwtTokenProvider.createToken("엘리");
