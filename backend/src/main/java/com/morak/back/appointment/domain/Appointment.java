@@ -2,6 +2,7 @@ package com.morak.back.appointment.domain;
 
 import static com.morak.back.appointment.domain.AppointmentStatus.OPEN;
 
+import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
@@ -104,8 +105,8 @@ public class Appointment extends BaseEntity {
     private void validateLastDatetime(LocalDateTime lastDateTime) {
         if (lastDateTime.isBefore(LocalDateTime.now())) {
             throw new AppointmentDomainLogicException(
-                CustomErrorCode.APPOINTMENT_PAST_CREATE_ERROR,
-                "약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다."
+                    CustomErrorCode.APPOINTMENT_PAST_CREATE_ERROR,
+                    "약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다."
             );
         }
     }
@@ -113,8 +114,8 @@ public class Appointment extends BaseEntity {
     private void validateDurationMinutesLessThanTimePeriod(DurationMinutes durationMinutes, TimePeriod timePeriod) {
         if (timePeriod.isLessThanDurationMinutes(durationMinutes.getDurationMinutes())) {
             throw new AppointmentDomainLogicException(
-                CustomErrorCode.APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR,
-                "진행 시간은 약속잡기 시간보다 짧을 수 없습니다."
+                    CustomErrorCode.APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR,
+                    "진행 시간은 약속잡기 시간보다 짧을 수 없습니다."
             );
         }
     }
@@ -140,13 +141,17 @@ public class Appointment extends BaseEntity {
         status = status.close();
     }
 
-    public void validateHost(Member member) {
-        if (!host.equals(member)) {
-            throw new AppointmentDomainLogicException(
-                CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR,
-                member.getId() + "번 멤버는 " + id + "번 약속잡기의 호스트가 아닙니다."
+    private void validateHost(Member member) {
+        if (!isHost(member)) {
+            throw new AppointmentAuthorizationException(
+                    CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR,
+                    member.getId() + "번 멤버는 " + getCode() + "코드의 약속잡기의 호스트가 아닙니다."
             );
         }
+    }
+
+    public boolean isHost(Member member) {
+        return this.host.equals(member);
     }
 
     public Boolean isClosed() {
@@ -186,5 +191,9 @@ public class Appointment extends BaseEntity {
 
     public LocalDateTime getLastEndDateTime() {
         return LocalDateTime.of(datePeriod.getEndDate(), timePeriod.getEndTime());
+    }
+
+    public boolean isBelongedTo(Team otherTeam) {
+        return team.equals(otherTeam);
     }
 }

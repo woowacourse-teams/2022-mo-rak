@@ -1,11 +1,10 @@
-package com.morak.back.poll.ui.dto;
+package com.morak.back.core.ui.dto;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor
 public class ExceptionResponse {
 
     private final String codeNumber;

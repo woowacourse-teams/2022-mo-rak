@@ -3,6 +3,7 @@ package com.morak.back.poll.application;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
+import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.team.exception.TeamNotFoundException;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
@@ -88,8 +89,8 @@ public class PollService {
 
         Poll poll = pollRepository.findByCode(pollCode)
             .orElseThrow(() -> PollNotFoundException.ofPoll(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
-
-        poll.doPoll(member, team, mapPollItemAndDescription(requests));
+        validateTeam(team, poll);
+        poll.doPoll(member, mapPollItemAndDescription(requests));
     }
 
     private Map<PollItem, String> mapPollItemAndDescription(List<PollResultRequest> requests) {
@@ -98,9 +99,17 @@ public class PollService {
     }
 
     private PollItem getPollItem(PollResultRequest request) {
-        Long pollItemId = request.getItemId();
+        Long pollItemId = request.getId();
         return pollItemRepository.findById(pollItemId)
             .orElseThrow(() -> PollNotFoundException.ofPollItem(CustomErrorCode.POLL_ITEM_NOT_FOUND_ERROR, pollItemId));
+    }
+
+    public void validateTeam(Team findTeam, Poll poll) {
+        if (!poll.isBelongedTo(findTeam)) {
+            throw new PollAuthorizationException(CustomErrorCode.POLL_TEAM_MISMATCHED_ERROR,
+                    poll.getCode() + " 코드의 투표는 " + findTeam.getCode() + " 코드의 팀에 속해있지 않습니다."
+            );
+        }
     }
 
     @Transactional(readOnly = true)
@@ -113,7 +122,7 @@ public class PollService {
 
         Poll poll = pollRepository.findByCode(pollCode)
                 .orElseThrow(() -> PollNotFoundException.ofPoll(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
-        poll.validateTeam(team);
+        validateTeam(team, poll);
         return PollResponse.from(poll, member);
     }
 
@@ -127,7 +136,7 @@ public class PollService {
 
         Poll poll = pollRepository.findByCode(pollCode)
             .orElseThrow(() -> PollNotFoundException.ofPoll(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
-        poll.validateTeam(team);
+        validateTeam(team, poll);
 
         return poll.getPollItems()
                 .stream()
@@ -143,7 +152,7 @@ public class PollService {
 
         Poll poll = pollRepository.findByCode(pollCode)
             .orElseThrow(() -> PollNotFoundException.ofPoll(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
-        poll.validateTeam(team);
+        validateTeam(team, poll);
 
         return poll.getPollItems()
                 .stream()
@@ -160,10 +169,18 @@ public class PollService {
 
         Poll poll = pollRepository.findByCode(pollCode)
             .orElseThrow(() -> PollNotFoundException.ofPoll(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
-        poll.validateHost(member);
-        poll.validateTeam(team);
-
+        validateHost(member, poll);
+        validateTeam(team, poll);
         pollRepository.deleteById(poll.getId());
+    }
+
+    private void validateHost(Member member, Poll poll) {
+        if (!poll.isHost(member)) {
+            throw new PollAuthorizationException(
+                    CustomErrorCode.POLL_MEMBER_MISMATCHED_ERROR,
+                    member.getId() + "번 멤버는 " + poll.getCode() + " 코드 투표의 호스트가 아닙니다."
+            );
+        }
     }
 
     public void closePoll(String teamCode, Long memberId, String pollCode) {
@@ -174,7 +191,7 @@ public class PollService {
 
         Poll poll = pollRepository.findByCode(pollCode)
             .orElseThrow(() -> PollNotFoundException.ofPoll(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
-        poll.validateTeam(team);
+        validateTeam(team, poll);
 
         poll.close(member);
     }

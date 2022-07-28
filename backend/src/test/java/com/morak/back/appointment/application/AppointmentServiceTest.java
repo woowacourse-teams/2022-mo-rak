@@ -159,7 +159,7 @@ class AppointmentServiceTest {
     @Test
     void 약속잡기_단건을_조회한다() {
         // given
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
 
@@ -175,7 +175,7 @@ class AppointmentServiceTest {
     void 약속잡기_가능시간을_선택한다() {
         // given
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
 
@@ -198,7 +198,7 @@ class AppointmentServiceTest {
     void 약속잡기_가능시간을_중복으로_선택하면_예외를_던진다() {
         // given
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
 
@@ -228,7 +228,7 @@ class AppointmentServiceTest {
         // given
         회식_날짜_약속잡기.close(에덴);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
         // when
@@ -249,7 +249,7 @@ class AppointmentServiceTest {
     @Test
     void 약속잡기_가능시간_추천_결과를_조회한다() {
         // given
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
         given(teamMemberRepository.findAllByTeamId(anyLong())).willReturn(List.of(new TeamMember(1L, 모락, 에덴)));
@@ -270,7 +270,7 @@ class AppointmentServiceTest {
     void 약속잡기를_마감한다() {
         //given
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
 
@@ -285,7 +285,7 @@ class AppointmentServiceTest {
     void 약속잡기를_삭제한다() {
         //given
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
 

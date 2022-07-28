@@ -8,7 +8,7 @@ import com.morak.back.core.exception.DomainLogicException;
 import com.morak.back.core.exception.MorakException;
 import com.morak.back.core.exception.ResourceNotFoundException;
 import com.morak.back.core.support.LogFormatter;
-import com.morak.back.poll.ui.dto.ExceptionResponse;
+import com.morak.back.core.ui.dto.ExceptionResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;

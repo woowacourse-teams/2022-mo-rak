@@ -47,6 +47,7 @@ public enum CustomErrorCode {
     AVAILABLETIME_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR("3115", "약속잡기 선택 시각은 30분 단위여야 합니다."),
     AVAILABLETIME_DURATION_NOT_MINUTES_UNIT_ERROR("3116", "약속잡기 선택 진행 시간은 30분 단위여야 합니다."),
     APPOINTMENT_MEMBER_MISMATCHED_ERROR("3200", "멤버가 약속잡기의 호스트가 아닙니다."),
+    APPOINTMENT_TEAM_MISMATCHED_ERROR("3201", "약속잡기가 그룹에 속해있지 않습니다."),
     APPOINTMENT_NOT_FOUND_ERROR("3300", "요청한 약속잡기를 찾을 수 없습니다."),
 
     INVALID_PROPERTY_ERROR("4000", "잘못된 값이 입력되었습니다."),

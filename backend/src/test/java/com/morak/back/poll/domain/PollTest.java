@@ -76,7 +76,7 @@ class PollTest {
         mappedItemAndDescription.put(itemC, "힘내!");
 
         // when
-        poll.doPoll(member, team, mappedItemAndDescription);
+        poll.doPoll(member, mappedItemAndDescription);
 
         // then
         List<PollResult> pollResults = poll.getPollItems().get(1).getPollResults();
@@ -93,14 +93,14 @@ class PollTest {
         Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
         mappedItemAndDescription.put(itemB, "거의_다왔어요!");
         mappedItemAndDescription.put(itemC, "힘내!");
-        poll.doPoll(member, team, mappedItemAndDescription);
+        poll.doPoll(member, mappedItemAndDescription);
 
         Map<PollItem, String> reMappedItemAndDescription = new HashMap<>();
         reMappedItemAndDescription.put(itemA, "화장실_다녀오세요.");
         reMappedItemAndDescription.put(itemB, "거의_다왔어요!");
 
         // when
-        poll.doPoll(member, team, reMappedItemAndDescription);
+        poll.doPoll(member, reMappedItemAndDescription);
 
         // then
         List<PollResult> pollResults1 = poll.getPollItems().get(0).getPollResults();
@@ -123,14 +123,14 @@ class PollTest {
         mappedItemAndDescription.put(itemC, "힘내!!");
 
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, team, mappedItemAndDescription))
+        assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
                 .isInstanceOf(PollDomainLogicException.class);
     }
 
     @Test
     void 응답_개수가_0인_경우_예외를_던진다() {
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, team, new HashMap<>()))
+        assertThatThrownBy(() -> poll.doPoll(member, new HashMap<>()))
                 .isInstanceOf(PollDomainLogicException.class);
     }
 
@@ -147,12 +147,12 @@ class PollTest {
         mappedItemAndDescription.put(itemD, "프링글스는_초록_프링글스지");
 
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, team, mappedItemAndDescription))
+        assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
                 .isInstanceOf(PollAuthorizationException.class);
     }
 
     @Test
-    void 호스트가_아닐_시_예외를_던진다() {
+    void 멤버가_호스트인지_확인한다() {
         // given
         Member member = Member.builder()
                 .id(3L)
@@ -161,9 +161,11 @@ class PollTest {
                 .profileUrl("http://bkr-profile.com")
                 .build();
 
-        // when & then
-        assertThatThrownBy(() -> poll.validateHost(member))
-                .isInstanceOf(PollAuthorizationException.class);
+        // when
+        boolean isHost = poll.isHost(member);
+
+        // then
+        assertThat(isHost).isFalse();
     }
 
     @Test

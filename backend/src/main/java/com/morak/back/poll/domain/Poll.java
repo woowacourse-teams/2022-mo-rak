@@ -95,22 +95,13 @@ public class Poll extends BaseEntity {
         pollItems.add(pollItem);
     }
 
-    public void doPoll(Member member, Team team, Map<PollItem, String> mappedItemAndDescription) {
-        validateTeam(team);
+    public void doPoll(Member member, Map<PollItem, String> mappedItemAndDescription) {
         validateStatus();
         validateCounts(mappedItemAndDescription.size());
         validateNewItemsBelongsTo(mappedItemAndDescription.keySet());
 
         deleteMembersFromPollItems(member);
         addMembersToPollItems(member, mappedItemAndDescription);
-    }
-
-    public void validateTeam(Team team) {
-        if (!this.team.equals(team)) {
-            throw new PollAuthorizationException(CustomErrorCode.POLL_TEAM_MISMATCHED_ERROR,
-                getCode() + " 코드의 투표는 " + team.getCode() + " 코드의 팀에 속해있지 않습니다."
-            );
-        }
     }
 
     private void validateStatus() {
@@ -163,8 +154,8 @@ public class Poll extends BaseEntity {
         status = status.close();
     }
 
-    public void validateHost(Member member) {
-        if (!this.host.equals(member)) {
+    private void validateHost(Member member) {
+        if (!isHost(member)) {
             throw new PollAuthorizationException(
                 CustomErrorCode.POLL_MEMBER_MISMATCHED_ERROR,
                 member.getId() + "번 멤버는 " + getCode() + " 코드 투표의 호스트가 아닙니다."
@@ -178,5 +169,9 @@ public class Poll extends BaseEntity {
 
     public String getCode() {
         return code.getCode();
+    }
+
+    public boolean isBelongedTo(Team otherTeam) {
+        return this.team.equals(otherTeam);
     }
 }

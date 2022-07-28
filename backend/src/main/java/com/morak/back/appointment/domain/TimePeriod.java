@@ -21,7 +21,7 @@ public class TimePeriod {
     /*
         startTime이 00:00일 경우 당일의 자정을 의미한다.
      */
-    @NotNull(message = "$약속잡기 시작 시간은 null일 수 없습니다.")
+    @NotNull(message = "약속잡기 시작 시간은 null일 수 없습니다.")
     private LocalTime startTime;
 
     /*
@@ -36,7 +36,6 @@ public class TimePeriod {
     }
 
     public static TimePeriod of(LocalTime startTime, LocalTime endTime, int minutesUnit) {
-
         if (!isMidnight(endTime)) {
             validateChronology(startTime, endTime);
         }
