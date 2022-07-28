@@ -2,13 +2,21 @@ package com.morak.back.appointment.ui;
 
 import static com.morak.back.ApiDocumentUtils.getDocumentRequest;
 import static com.morak.back.ApiDocumentUtils.getDocumentResponse;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.morak.back.appointment.application.AppointmentService;
+import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
+import com.morak.back.appointment.ui.dto.AppointmentResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.poll.ui.ControllerTest;
 import java.time.LocalDate;
@@ -17,6 +25,7 @@ import java.time.LocalTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.ResultActions;
@@ -26,6 +35,9 @@ class AppointmentControllerTest extends ControllerTest {
 
     private static final String GROUP_CODE = "MoraK123";
     private static final String APPOINTMENT_CODE = "FJn3ND26";
+
+    @MockBean
+    private AppointmentService appointmentService;
 
     @Test
     void 약속잡기를_생성한다() throws Exception {
@@ -42,13 +54,15 @@ class AppointmentControllerTest extends ControllerTest {
                 30
         );
 
+        given(appointmentService.createAppointment(anyString(), anyLong(), any())).willReturn("KDIs23K3");
+
         // when
         ResultActions response = post(path, GROUP_CODE, request);
 
         // then
         response
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/api/groups/MoraK123/appointments/1"))
+                .andExpect(header().string("Location", "/api/groups/MoraK123/appointments/KDIs23K3"))
                 .andDo(document("appointment/create-appointment",
                         getDocumentRequest(),
                         getDocumentResponse(),
@@ -60,6 +74,36 @@ class AppointmentControllerTest extends ControllerTest {
     void 약속잡기_목록을_조회한다() throws Exception {
         // given
         String path = "/api/groups/{groupCode}/appointments";
+
+        AppointmentAllResponse response1 = AppointmentAllResponse.from(
+                Appointment.builder()
+                .code("FJn3ND26")
+                .title("모락 회식 날짜 및 시간")
+                .description("필참입니다.")
+                .startDate(LocalDate.of(2022, 8, 5))
+                .endDate(LocalDate.of(2022, 8, 20))
+                .startTime(LocalTime.of(16, 0))
+                .endTime(LocalTime.of(20, 0))
+                .durationHours(2)
+                .durationMinutes(30)
+                .build()
+        );
+
+        AppointmentAllResponse response2 = AppointmentAllResponse.from(
+                Appointment.builder()
+                .code("j3KDcd2h")
+                .title("스터디 회의 시간")
+                .description("스터디 진행과 관련된 회의입니다.")
+                .startDate(LocalDate.of(2022, 8, 5))
+                .endDate(LocalDate.of(2022, 8, 20))
+                .startTime(LocalTime.of(16, 0))
+                .endTime(LocalTime.of(20, 0))
+                .durationHours(2)
+                .durationMinutes(0)
+                .build()
+        );
+
+        given(appointmentService.findAppointments(anyString(), anyLong())).willReturn(List.of(response1, response2));
 
         // when
         ResultActions response = get(path, GROUP_CODE);
@@ -80,6 +124,22 @@ class AppointmentControllerTest extends ControllerTest {
     void 약속잡기_단건을_조회한다() throws Exception {
         // given
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}";
+        AppointmentResponse findResponse = AppointmentResponse.from(
+                Appointment.builder()
+                .code("FJn3ND26")
+                .title("모락 회식 날짜 및 시간")
+                .description("필참입니다.")
+                .startDate(LocalDate.of(2022, 8, 5))
+                .endDate(LocalDate.of(2022, 8, 20))
+                .startTime(LocalTime.of(16, 0))
+                .endTime(LocalTime.of(20, 0))
+                .durationHours(2)
+                .durationMinutes(30)
+                .build()
+        );
+
+        given(appointmentService.findAppointment(anyString(), anyLong(), anyString())).willReturn(findResponse);
+
 
         // when
         ResultActions response = get(path, GROUP_CODE, APPOINTMENT_CODE);

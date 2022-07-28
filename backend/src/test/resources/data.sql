@@ -37,13 +37,13 @@ INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updat
 values (3, 2, '에덴이 시켰어요', now(), now());
 
 INSERT INTO appointment (team_id, host_id, title, description, start_date, end_date, start_time, end_time, duration_minutes, status, code, closed_at, created_at, updated_at)
-VALUES (1, 2, '발표 준비 날짜 정하기', '데모 데이 발표 준비를 위한..', '2022-08-01', '2022-08-04', '13:00:00', '22:00:00', 60, 'OPEN', 'FEsd23C1', '2022-07-31T23:59:00', now(), now());
+VALUES (1, 2, '발표 준비 날짜 정하기', '데모 데이 발표 준비를 위한..', '2122-08-01', '2122-08-04', '13:00:00', '22:00:00', 60, 'OPEN', 'FEsd23C1', '2022-07-31T23:59:00', now(), now());
 
 INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, end_date_time, created_at, updated_at)
-VALUES (1, 2, '2022-08-03T16:00:00', '2022-08-03T17:00:00', now(), now());
+VALUES (1, 2, '2122-08-03T16:00:00', '2122-08-03T17:00:00', now(), now());
 
 INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, end_date_time, created_at, updated_at)
-VALUES (1, 2, '2022-08-02T16:00:00', '2022-08-02T17:00:00', now(), now());
+VALUES (1, 2, '2122-08-02T16:00:00', '2122-08-02T17:00:00', now(), now());
 
 INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, end_date_time, created_at, updated_at)
-VALUES (1, 1, '2022-08-03T13:00:00', '2022-08-03T17:00:00', now(), now());
+VALUES (1, 1, '2122-08-03T13:00:00', '2122-08-03T17:00:00', now(), now());

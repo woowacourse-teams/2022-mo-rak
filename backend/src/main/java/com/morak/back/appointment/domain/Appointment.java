@@ -3,6 +3,7 @@ package com.morak.back.appointment.domain;
 import static com.morak.back.appointment.domain.AppointmentStatus.OPEN;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.core.util.CodeGenerator;
 import com.morak.back.poll.domain.BaseEntity;
 import com.morak.back.team.domain.Team;
@@ -127,5 +128,21 @@ public class Appointment extends BaseEntity {
             return NO_ONE_SELECTED;
         }
         return this.count;
+    }
+
+    public void validateAvailableTimeRange(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        this.datePeriod.validateAvailableDateRange(startDateTime.toLocalDate(), endDateTime.toLocalDate());
+        this.timePeriod.validateAvailableTimeRange(startDateTime.toLocalTime(), endDateTime.toLocalTime());
+    }
+
+    public void close(Member member) {
+        validateHost(member);
+        status = status.close();
+    }
+
+    public void validateHost(Member member) {
+        if (!host.equals(member)) {
+            throw new InvalidRequestException(member.getId() + "번 멤버는 " + id + "번 약속잡기의 호스트가 아닙니다.");
+        }
     }
 }

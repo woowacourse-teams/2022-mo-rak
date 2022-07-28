@@ -1,7 +1,9 @@
 package com.morak.back.appointment.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.core.exception.InvalidRequestException;
 import org.junit.jupiter.api.Test;
 
 class AppointmentStatusTest {
@@ -22,5 +24,27 @@ class AppointmentStatusTest {
 
         // when & then
         assertThat(open.isClosed()).isFalse();
+    }
+
+    @Test
+    void 상태를_close로_만든다() {
+        //given
+        AppointmentStatus open = AppointmentStatus.OPEN;
+
+        //when
+        AppointmentStatus status = open.close();
+
+        //then
+        assertThat(status).isEqualTo(AppointmentStatus.CLOSED);
+    }
+
+    @Test
+    void 상태가_close일떄_close_하는_경우_예외를_던진다() {
+        //given
+        AppointmentStatus status = AppointmentStatus.CLOSED;
+
+        //when & then
+        assertThatThrownBy(() -> status.close())
+                .isInstanceOf(InvalidRequestException.class);
     }
 }

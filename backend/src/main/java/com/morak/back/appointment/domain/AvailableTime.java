@@ -39,6 +39,7 @@ public class AvailableTime extends BaseEntity {
     @Builder
     public AvailableTime(Long id, Appointment appointment, Member member,
                          LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        appointment.validateAvailableTimeRange(startDateTime, endDateTime);
         this.id = id;
         this.appointment = appointment;
         this.member = member;

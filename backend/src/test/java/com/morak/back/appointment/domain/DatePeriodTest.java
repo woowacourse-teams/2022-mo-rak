@@ -10,6 +10,13 @@ import org.junit.jupiter.api.Test;
 class DatePeriodTest {
 
     @Test
+    void 시작_날짜가_현재보다_과거일_경우_예외를_던진다() {
+        // when & then
+        assertThatThrownBy(() -> new DatePeriod(LocalDate.now().minusDays(2), LocalDate.now().minusDays(1)))
+                .isInstanceOf(InvalidRequestException.class);
+    }
+
+    @Test
     void 마지막_날짜가_시작_날짜보다_과거일_경우_예외를_던진다() {
         // when & then
         assertThatThrownBy(() -> new DatePeriod(LocalDate.now().plusDays(2), LocalDate.now().plusDays(1)))

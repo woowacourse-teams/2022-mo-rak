@@ -2,6 +2,9 @@ package com.morak.back.appointment.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.auth.domain.Member;
+import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import javax.validation.constraints.FutureOrPresent;
@@ -63,5 +66,20 @@ public class AppointmentCreateRequest {
         this.endTime = endTime;
         this.durationHour = durationHour;
         this.durationMinute = durationMinute;
+    }
+
+    public Appointment toAppointment(Team team, Member member) {
+        return Appointment.builder()
+                .team(team)
+                .host(member)
+                .title(this.title)
+                .description(this.description)
+                .startDate(this.startDate)
+                .endDate(this.endDate)
+                .startTime(this.startTime)
+                .endTime(this.endTime)
+                .durationHours(durationHour)
+                .durationMinutes(durationMinute)
+                .build();
     }
 }
