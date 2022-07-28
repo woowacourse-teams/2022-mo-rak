@@ -20,7 +20,7 @@ public class OAuthAcceptanceTest extends AcceptanceTest {
         SigninRequest request = new SigninRequest(code);
 
         // when
-        ExtractableResponse<Response> response = 로그인을_요청한다(path, request);
+        ExtractableResponse<Response> response = post(path, request);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());

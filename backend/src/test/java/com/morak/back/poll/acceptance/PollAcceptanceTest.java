@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.auth.application.TokenProvider;
+import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
@@ -44,7 +45,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 투표를_생성한다() {
         // given & when
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
         ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
         // then
@@ -160,7 +161,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 무기명_투표_결과를_조회한다() {
         // given
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, true, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, true, LocalDateTime.now().plusDays(1L),
                 List.of("항목1", "항목2", "항목3"));
         String location = 투표_생성을_요청한다(request, accessToken).header("Location");
 
@@ -178,7 +179,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
                 () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
                 () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0),
-                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isBlank(),
+                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo(Member.getAnonymous().getName()),
                 () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요")
         );
     }
@@ -203,6 +204,32 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요"),
                 () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0)
         );
+    }
+
+    @Test
+    void null인_값으로_투표요청시_400을_반환한다() {
+        // given
+        PollCreateRequest request = new PollCreateRequest(null, 1, false, LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2"));
+
+        // when
+        ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 도메인_정책에_위반한_값으로_투표요청시_400을_반환한다() {
+        // given
+        PollCreateRequest request = new PollCreateRequest("하이", 0, false, LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2"));
+
+        // when
+        ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
@@ -259,7 +286,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 기본_투표_생성을_요청한다() {
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
         return 투표_생성을_요청한다(request, accessToken);
     }

@@ -4,7 +4,8 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.auth.exception.TeamNotFoundException;
-import com.morak.back.core.util.CodeGenerator;
+import com.morak.back.core.domain.CodeGenerator;
+import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
@@ -33,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PollService {
 
-    private static final int CODE_LENGTH = 8;
+    private static final CodeGenerator GENERATOR = new RandomCodeGenerator();
 
     private final PollRepository pollRepository;
     private final MemberRepository memberRepository;
@@ -46,7 +47,7 @@ public class PollService {
         Team team = teamRepository.findByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(team.getId(), memberId);
 
-        Poll poll = request.toPoll(member, team, PollStatus.OPEN, CodeGenerator.createRandomCode(CODE_LENGTH));
+        Poll poll = request.toPoll(member, team, PollStatus.OPEN, GENERATOR.generate(8));
         Poll savedPoll = pollRepository.save(poll);
         List<PollItem> items = request.toPollItems(savedPoll);
         pollItemRepository.saveAll(items);

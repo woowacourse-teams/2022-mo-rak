@@ -12,12 +12,12 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
+import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
-import com.morak.back.poll.domain.PollResult;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
@@ -27,7 +27,6 @@ import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -60,19 +59,28 @@ class PollServiceTest {
 
     @BeforeEach
     void setup() {
-        member = new Member(1L, "12345678", "ellie", "ellie-profile");
-        team = new Team(1L, "team", "ABCD1234");
-        poll = new Poll(
-                1L,
-                team,
-                member,
-                "test-title",
-                3,
-                true,
-                OPEN,
-                LocalDateTime.now().plusDays(1L),
-                "ABCD1234"
-        );
+        member = Member.builder()
+                .id(1L)
+                .oauthId("12345678")
+                .name("ellie")
+                .profileUrl("http://ellie-profile.com")
+                .build();
+        team = Team.builder()
+                .id(1L)
+                .name("team")
+                .code(new Code("abcd1234"))
+                .build();
+        poll = Poll.builder()
+                .id(1L)
+                .team(team)
+                .host(member)
+                .title("test-tile")
+                .allowedPollCount(3)
+                .isAnonymous(true)
+                .status(OPEN)
+                .closedAt(LocalDateTime.now().plusDays(1L))
+                .code("ABCD1234")
+                .build();
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
     }
 
@@ -129,8 +137,16 @@ class PollServiceTest {
     @Test
     void 투표를_진행한다() {
         // given
-        PollItem pollItem1 = new PollItem(1L, poll, "sub1");
-        PollItem pollItem2 = new PollItem(2L, poll, "sub2");
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .poll(poll)
+                .subject("sub1")
+                .build();
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .poll(poll)
+                .subject("sub2")
+                .build();
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
 
@@ -155,11 +171,20 @@ class PollServiceTest {
     @Test
     void 재투표를_진행한다() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member, "거의_다_한_것_같아요");
-        PollResult pollResult2 = new PollResult(2L, null, member, "집에_가고_싶어요!");
-        PollItem pollItem1 = new PollItem(1L, null, "sub1", new ArrayList<>(List.of(pollResult1)));
-        PollItem pollItem2 = new PollItem(2L, null, "sub2", new ArrayList<>(List.of(pollResult2)));
-        PollItem pollItem3 = new PollItem(3L, null, "sub3");
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .subject("sub1")
+                .build();
+        pollItem1.addPollResult(member, "거의_다_한_것_같아요");
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .subject("sub2")
+                .build();
+        pollItem1.addPollResult(member, "집에_가고_싶어요");
+        PollItem pollItem3 = PollItem.builder()
+                .id(3L)
+                .subject("sub3")
+                .build();
 
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
@@ -207,8 +232,16 @@ class PollServiceTest {
     @Test
     void 투표_선택_항목을_조회한다() {
         // given
-        PollItem pollItem1 = new PollItem(1L, poll, "sub1");
-        PollItem pollItem2 = new PollItem(2L, poll, "sub2");
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .poll(poll)
+                .subject("sub1")
+                .build();
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .poll(poll)
+                .subject("sub2")
+                .build();
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
 
@@ -232,9 +265,15 @@ class PollServiceTest {
     @Test
     void 투표를_진행한_상태에서_투표_선택_항목을_조회한다() {
         // given
-        PollItem pollItem1 = new PollItem(1L, null, "항목1",
-                List.of(new PollResult(null, null, member, "그냥뇨~")));
-        PollItem pollItem2 = new PollItem(2L, null, "항목2");
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .subject("항목1")
+                .build();
+        pollItem1.addPollResult(member, "그냥뇨~");
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .subject("항목2")
+                .build();
 
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
@@ -259,10 +298,18 @@ class PollServiceTest {
     @Test
     void 익명_투표_결과를_조회한다() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member, "거의_다_한_것_같아요");
-        PollResult pollResult2 = new PollResult(2L, null, member, "집에_가고_싶어요!");
-        PollItem pollItem1 = new PollItem(1L, poll, "항목1", new ArrayList<>(List.of(pollResult1)));
-        PollItem pollItem2 = new PollItem(2L, poll, "항목2", new ArrayList<>(List.of(pollResult2)));
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .poll(poll)
+                .subject("항목1")
+                .build();
+        pollItem1.addPollResult(member, "거의_다_한_것_같아요");
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .poll(poll)
+                .subject("항목2")
+                .build();
+        pollItem2.addPollResult(member, "집에_가고_싶어요!");
 
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
@@ -282,29 +329,37 @@ class PollServiceTest {
                 () -> assertThat(pollItemResultResponses.get(0).getCount()).isEqualTo(1),
                 () -> assertThat(pollItemResultResponses.get(0).getMembers()).hasSize(1),
                 () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getId()).isEqualTo(0L),
-                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getName()).isBlank(),
-                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("거의_다_한_것_같아요")
+                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getName()).isEqualTo(
+                        Member.getAnonymous().getName()),
+                () -> assertThat(pollItemResultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo(
+                        "거의_다_한_것_같아요")
         );
     }
 
     @Test
     void 기명_투표_결과를_조회한다() {
         // given
-        PollResult pollResult1 = new PollResult(1L, null, member, "거의_다_한_것_같아요");
-        PollResult pollResult2 = new PollResult(2L, null, member, "집에_가고_싶어요!");
+        Poll poll = Poll.builder()
+                .id(1L)
+                .team(team)
+                .host(member)
+                .isAnonymous(false)
+                .status(CLOSED)
+                .build();
+        PollItem pollItem1 = PollItem.builder()
+                .id(1L)
+                .poll(poll)
+                .subject("항목1")
+                .build();
+        pollItem1.addPollResult(member, "거의_다_한_것_같아요");
 
-        Poll poll = new Poll(
-                1L,
-                team,
-                member,
-                null,
-                null,
-                false,
-                CLOSED,
-                null,
-                null);
-        PollItem pollItem1 = new PollItem(1L, poll, "항목1", new ArrayList<>(List.of(pollResult1)));
-        PollItem pollItem2 = new PollItem(2L, poll, "항목2", new ArrayList<>(List.of(pollResult2)));
+        PollItem pollItem2 = PollItem.builder()
+                .id(2L)
+                .poll(poll)
+                .subject("항목2")
+                .build();
+        pollItem2.addPollResult(member, "집에_가고_싶어요!");
+
         poll.addItem(pollItem1);
         poll.addItem(pollItem2);
 
@@ -314,7 +369,8 @@ class PollServiceTest {
         given(pollRepository.findByIdAndTeamId(anyLong(), anyLong())).willReturn(Optional.of(poll));
 
         // when
-        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(team.getCode(), member.getId(), poll.getId());
+        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(team.getCode(),
+                member.getId(), poll.getId());
 
         // then
         Assertions.assertAll(
@@ -341,7 +397,12 @@ class PollServiceTest {
     @Test
     void 삭제_시_호스트가_아니면_예외를_던진다() {
         // given
-        Member notHostMember = new Member(2L, "87654321", "eden", "eden-profile.cloudfront.net");
+        Member notHostMember = Member.builder()
+                .id(2L)
+                .oauthId("87654321")
+                .name("eden")
+                .profileUrl("http://eden-profile.cloudfront.net")
+                .build();
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(notHostMember));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
 

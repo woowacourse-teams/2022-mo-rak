@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,14 +26,34 @@ class PollTest {
 
     @BeforeEach
     void setUp() {
-        team = new Team(1L, "team1", "TEAM");
-        member = new Member(1L, "12345678", "ellie", "ellie-profile.com");
+        team = Team.builder()
+                .id(1L)
+                .name("team1")
+                .code(new Code("abcd1234")).build();
+        member = Member.builder()
+                .id(1L)
+                .oauthId("12345678")
+                .name("ellie")
+                .profileUrl("http://ellie-profile.com")
+                .build();
 
         poll = new Poll(1L, team, member, "title", 2, true, PollStatus.OPEN, LocalDateTime.now().plusDays(1),
-                "ABCE", new ArrayList<>());
-        itemA = new PollItem(1L, poll, "sub1", new ArrayList<>());
-        itemB = new PollItem(2L, poll, "sub2", new ArrayList<>());
-        itemC = new PollItem(3L, poll, "sub3", new ArrayList<>());
+                "ABCE");
+        itemA = PollItem.builder()
+                .id(1L)
+                .poll(poll)
+                .subject("sub1")
+                .build();
+        itemB = PollItem.builder()
+                .id(2L)
+                .poll(poll)
+                .subject("sub2")
+                .build();
+        itemC = PollItem.builder()
+                .id(3L)
+                .poll(poll)
+                .subject("sub3")
+                .build();
         poll.addItem(itemA);
         poll.addItem(itemB);
         poll.addItem(itemC);
@@ -108,7 +128,11 @@ class PollTest {
     @Test
     void 투표에_속하지_않은_선택항목을_투표하는_경우_예외를_던진다() {
         // given
-        PollItem itemD = new PollItem(4L, poll, "sub4", new ArrayList<>());
+        PollItem itemD = PollItem.builder()
+                .id(4L)
+                .poll(poll)
+                .subject("sub4")
+                .build();
         Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
         mappedItemAndDescription.put(itemA, "빨강_프링글스는_별로야");
         mappedItemAndDescription.put(itemD, "프링글스는_초록_프링글스지");
@@ -121,7 +145,12 @@ class PollTest {
     @Test
     void 호스트가_아닐_시_예외를_던진다() {
         // given
-        Member member = new Member(3L, "13579246", "bkr", "bkr-profile.com");
+        Member member = Member.builder()
+                .id(3L)
+                .oauthId("13579246")
+                .name("bkr")
+                .profileUrl("http://bkr-profile.com")
+                .build();
 
         // when & then
         assertThatThrownBy(() -> poll.validateHost(member))
@@ -150,7 +179,12 @@ class PollTest {
     @Test
     void 호스트가_아닌_멤버가_투표를_종료하는_경우_예외를_던진다() {
         // given
-        Member member = new Member(100L, "174837283", "ohzzi", "wrong-member");
+        Member member = Member.builder()
+                .id(100L)
+                .oauthId("174837283")
+                .name("ohzzi")
+                .profileUrl("http://wrong-member")
+                .build();
 
         // when & then
         assertThatThrownBy(() -> poll.close(member))

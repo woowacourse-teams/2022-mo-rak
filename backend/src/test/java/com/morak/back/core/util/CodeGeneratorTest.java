@@ -2,6 +2,7 @@ package com.morak.back.core.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.morak.back.core.domain.RandomCodeGenerator;
 import org.junit.jupiter.api.Test;
 
 class CodeGeneratorTest {
@@ -12,7 +13,7 @@ class CodeGeneratorTest {
         int length = 8;
 
         // when
-        String code = CodeGenerator.createRandomCode(length);
+        String code = new RandomCodeGenerator().generate(length);
 
         // then
         assertThat(code).hasSize(length);
