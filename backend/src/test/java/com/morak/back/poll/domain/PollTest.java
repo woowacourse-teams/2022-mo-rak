@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
@@ -25,7 +26,10 @@ class PollTest {
 
     @BeforeEach
     void setUp() {
-        team = new Team(1L, "team1", "TEAM");
+        team = Team.builder()
+                .id(1L)
+                .name("team1")
+                .code(new Code("abcd1234")).build();
         member = Member.builder()
                 .id(1L)
                 .oauthId("12345678")

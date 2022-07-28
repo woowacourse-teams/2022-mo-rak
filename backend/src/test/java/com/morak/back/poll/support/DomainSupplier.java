@@ -1,6 +1,7 @@
 package com.morak.back.poll.support;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollStatus;
@@ -30,10 +31,12 @@ public class DomainSupplier {
     public Team supplyTeam(Long id) {
         String sql = "SELECT * FROM team WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-                new Team(rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getString("code")
-                ), id);
+                        Team.builder()
+                                .id(rs.getLong("id"))
+                                .name(rs.getString("name"))
+                                .code(new Code(rs.getString("code")))
+                                .build(),
+                id);
     }
 
     public Poll supplyPoll(Long id) {

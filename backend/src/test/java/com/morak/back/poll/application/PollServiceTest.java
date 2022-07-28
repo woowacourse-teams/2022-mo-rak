@@ -12,6 +12,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
+import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
@@ -64,7 +65,11 @@ class PollServiceTest {
                 .name("ellie")
                 .profileUrl("http://ellie-profile.com")
                 .build();
-        team = new Team(1L, "team", "ABCD1234");
+        team = Team.builder()
+                .id(1L)
+                .name("team")
+                .code(new Code("abcd1234"))
+                .build();
         poll = Poll.builder()
                 .id(1L)
                 .team(team)
