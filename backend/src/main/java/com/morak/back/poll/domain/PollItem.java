@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,13 +14,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import lombok.AllArgsConstructor;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class PollItem extends BaseEntity {
 
@@ -31,11 +35,14 @@ public class PollItem extends BaseEntity {
     @JoinColumn
     private Poll poll;
 
+    @NotBlank(message = "subject 는 blank 일 수 없습니다.")
+    @Size(min = 1, max = 255, message = "투표 항목 주제의 길이는 1~255자여아 합니다.")
     private String subject;
 
     @OneToMany(mappedBy = "pollItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PollResult> pollResults = new ArrayList<>();
 
+    @Builder
     public PollItem(Long id, Poll poll, String subject) {
         this.id = id;
         this.poll = poll;
@@ -43,7 +50,11 @@ public class PollItem extends BaseEntity {
     }
 
     public void addPollResult(Member member, String description) {
-        PollResult pollResult = new PollResult(null, this, member, description);
+        PollResult pollResult = PollResult.builder()
+                .pollItem(this)
+                .member(member)
+                .description(description)
+                .build();
         pollResults.add(pollResult);
     }
 

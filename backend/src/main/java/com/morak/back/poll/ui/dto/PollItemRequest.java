@@ -1,5 +1,6 @@
 package com.morak.back.poll.ui.dto;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,6 @@ public class PollItemRequest {
     @NotNull
     private Long itemId;
 
-    @NotNull
+    @NotBlank
     private String description;
 }

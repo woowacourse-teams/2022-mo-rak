@@ -1,44 +1,53 @@
 package com.morak.back.poll.acceptance;
 
+import static com.morak.back.AuthSupporter.toHeader;
+import static com.morak.back.SimpleRestAssured.delete;
+import static com.morak.back.SimpleRestAssured.get;
+import static com.morak.back.SimpleRestAssured.patch;
+import static com.morak.back.SimpleRestAssured.post;
+import static com.morak.back.SimpleRestAssured.put;
+import static com.morak.back.SimpleRestAssured.toObjectList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.auth.application.TokenProvider;
+import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 class PollAcceptanceTest extends AcceptanceTest {
 
     private static final String INVALID_ACCESS_TOKEN = "invalid.access.token";
 
+    private String accessToken;
+
     @Autowired
     private TokenProvider tokenProvider;
 
+    @BeforeEach
+    public void setUp() {
+        super.setUp();
+        accessToken = tokenProvider.createToken(String.valueOf(1L));
+    }
+
     @Test
     void 투표를_생성한다() {
-        // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
-
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now(),
+        // given & when
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
-        // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups/MoraK123/polls")
-                .then().log().all().extract();
+        ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
@@ -46,35 +55,27 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 투표_목록을_조회한다() {
         // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
+        String path = "/api/groups/MoraK123/polls";
 
         // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
-                .get("/api/groups/MoraK123/polls")
-                .then().log().all().extract();
+        ExtractableResponse<Response> response = 투표_목록_조회를_요청한다(path);
+        List<PollResponse> pollResponses = toObjectList(response, PollResponse.class);
 
         // then
-        List<PollResponse> responses = response.body().jsonPath().getList(".", PollResponse.class);
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(responses).hasSize(1)
+                () -> assertThat(pollResponses).hasSize(1)
         );
     }
 
     @Test
     void 투표를_진행한다() {
         // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
-
-        PollCreateRequest createRequest = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now(),
-                List.of("항목1", "항목2"));
-        String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, createRequest);
-
-        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이_나기_때문이에요"));
+        String location = 기본_투표_생성을_요청한다().header("Location");
+        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이 나기 때문이에요"));
 
         // when
-        ExtractableResponse<Response> response = 투표를_진행한다(accessToken, location, pollItemRequests);
+        ExtractableResponse<Response> response = 투표_진행을_요청한다(location, pollItemRequests);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -83,19 +84,14 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 재투표를_진행한다() {
         // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
-
-        PollCreateRequest createRequest = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now(),
-                List.of("항목1", "항목2"));
-        String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, createRequest);
+        String location = 기본_투표_생성을_요청한다().header("Location");
 
         List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이_나기_때문이에요"));
-        투표를_진행한다(accessToken, location, pollItemRequests);
-
-        List<PollItemRequest> rePollItemRequests = List.of(new PollItemRequest(5L, "다시_일어설거에요!"));
+        투표_진행을_요청한다(location, pollItemRequests);
 
         // when
-        ExtractableResponse<Response> rePollResponse = 투표를_진행한다(accessToken, location, rePollItemRequests);
+        List<PollItemRequest> rePollItemRequests = List.of(new PollItemRequest(5L, "다시_일어설거에요!"));
+        ExtractableResponse<Response> rePollResponse = 투표_진행을_요청한다(location, rePollItemRequests);
 
         // then
         assertThat(rePollResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -104,23 +100,16 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 투표_단건을_조회한다() {
         // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
-
-        PollCreateRequest createRequest = new PollCreateRequest("앨버의_현재_위치", 1, false, LocalDateTime.now(),
-                List.of("트랙룸", "1번_회의실"));
-        String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, createRequest);
+        String location = 기본_투표_생성을_요청한다().header("Location");
 
         // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
-                .get(location)
-                .then().log().all().extract();
+        ExtractableResponse<Response> response = 투표_단건_조회를_요청한다(location);
+        PollResponse pollResponse = response.as(PollResponse.class);
 
         // then
-        PollResponse pollResponse = response.body().jsonPath().getObject(".", PollResponse.class);
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(pollResponse.getTitle()).isEqualTo("앨버의_현재_위치"),
+                () -> assertThat(pollResponse.getTitle()).isEqualTo("투표_제목"),
                 () -> assertThat(pollResponse.getIsHost()).isTrue()
         );
     }
@@ -128,25 +117,18 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 투표_선택_항목을_조회한다() {
         // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
-
-        PollCreateRequest request = new PollCreateRequest("위니의_영어_단어_사용_횟수", 1, false, LocalDateTime.now(),
-                List.of("삼십만", "300000"));
-        String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
+        String location = 기본_투표_생성을_요청한다().header("Location");
 
         // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
-                .get(location + "/items")
-                .then().log().all().extract();
+        ExtractableResponse<Response> response = 투표_선택항목_조회를_요청한다(location);
+        List<PollItemResponse> pollItemResponses = toObjectList(response, PollItemResponse.class);
 
         // then
-        List<PollItemResponse> pollItemResponses = response.body().jsonPath().getList(".", PollItemResponse.class);
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(pollItemResponses).hasSize(2),
                 () -> assertThat(pollItemResponses.get(0).getId()).isNotNull(),
-                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("삼십만"),
+                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1"),
                 () -> assertThat(pollItemResponses.get(0).getSelected()).isFalse(),
                 () -> assertThat(pollItemResponses.get(0).getDescription()).isBlank()
         );
@@ -155,30 +137,22 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 투표를_진행한_상태에서_투표_선택_항목을_조회한다() {
         // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
-
-        PollCreateRequest request = new PollCreateRequest("에덴의_속마음은?", 1, false, LocalDateTime.now(),
-                List.of("에덴은_칼퇴하고_싶다.", "에덴은_11시에_퇴근하고_싶다."));
-        String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
-
-        투표를_진행한다(accessToken, location, List.of(new PollItemRequest(4L, "월요일이기때문!!")));
+        String location = 기본_투표_생성을_요청한다().header("Location");
+        투표_진행을_요청한다(location, List.of(new PollItemRequest(4L, "월요일이기때문!!")));
 
         // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
-                .get(location + "/items")
-                .then().log().all().extract();
+        ExtractableResponse<Response> response = 투표_선택항목_조회를_요청한다(location);
+        List<PollItemResponse> pollItemResponses = toObjectList(response, PollItemResponse.class);
 
         // then
-        List<PollItemResponse> pollItemResponses = response.body().jsonPath().getList(".", PollItemResponse.class);
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(pollItemResponses).hasSize(2),
                 () -> assertThat(pollItemResponses.get(0).getId()).isNotNull(),
-                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("에덴은_칼퇴하고_싶다."),
+                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1"),
                 () -> assertThat(pollItemResponses.get(0).getSelected()).isTrue(),
                 () -> assertThat(pollItemResponses.get(0).getDescription()).isEqualTo("월요일이기때문!!"),
-                () -> assertThat(pollItemResponses.get(1).getSubject()).isEqualTo("에덴은_11시에_퇴근하고_싶다."),
+                () -> assertThat(pollItemResponses.get(1).getSubject()).isEqualTo("항목2"),
                 () -> assertThat(pollItemResponses.get(1).getSelected()).isFalse(),
                 () -> assertThat(pollItemResponses.get(1).getDescription()).isBlank()
         );
@@ -187,23 +161,17 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 무기명_투표_결과를_조회한다() {
         // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
-
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, true, LocalDateTime.now(),
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, true, LocalDateTime.now().plusDays(1L),
                 List.of("항목1", "항목2", "항목3"));
-        String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
+        String location = 투표_생성을_요청한다(request, accessToken).header("Location");
 
         List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이_나기_때문이에요"));
-        투표를_진행한다(accessToken, location, pollItemRequests);
+        투표_진행을_요청한다(location, pollItemRequests);
 
         // when
-        final ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
-                .get(location + "/result")
-                .then().log().all().extract();
+        ExtractableResponse<Response> response = 투표_결과_조회를_요청한다(location);
+        List<PollItemResultResponse> resultResponses = toObjectList(response, PollItemResultResponse.class);
 
-        final List<PollItemResultResponse> resultResponses
-                = response.body().jsonPath().getList(".", PollItemResultResponse.class);
         // then
         Assertions.assertAll(
                 () -> assertThat(resultResponses).hasSize(3),
@@ -211,7 +179,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
                 () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
                 () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0),
-                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isBlank(),
+                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo(Member.getAnonymous().getName()),
                 () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요")
         );
     }
@@ -219,49 +187,58 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 기명_투표_결과를_조회한다() {
         // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
-
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, false, LocalDateTime.now(),
-                List.of("항목1", "항목2", "항목3"));
-        String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
+        String location = 기본_투표_생성을_요청한다().header("Location");
 
         List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이_나기_때문이에요"));
-        투표를_진행한다(accessToken, location, pollItemRequests);
+        투표_진행을_요청한다(location, pollItemRequests);
 
         // when
-        final ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
-                .get(location + "/result")
-                .then().log().all().extract();
-
-        final List<PollItemResultResponse> resultResponses = response.body().jsonPath()
-                .getList(".", PollItemResultResponse.class);
+        ExtractableResponse<Response> response = 투표_결과_조회를_요청한다(location);
+        List<PollItemResultResponse> resultResponses = toObjectList(response, PollItemResultResponse.class);
 
         // then
         Assertions.assertAll(
-                () -> assertThat(resultResponses).hasSize(3),
+                () -> assertThat(resultResponses).hasSize(2),
                 () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
                 () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo("eden"),
                 () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요"),
-                () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
-                () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0)
+                () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0)
         );
+    }
+
+    @Test
+    void null인_값으로_투표요청시_400을_반환한다() {
+        // given
+        PollCreateRequest request = new PollCreateRequest(null, 1, false, LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2"));
+
+        // when
+        ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 도메인_정책에_위반한_값으로_투표요청시_400을_반환한다() {
+        // given
+        PollCreateRequest request = new PollCreateRequest("하이", 0, false, LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2"));
+
+        // when
+        ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
     void 투표를_삭제한다() {
         // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
-
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, false, LocalDateTime.now(),
-                List.of("항목1", "항목2", "항목3"));
-        String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
+        String location = 기본_투표_생성을_요청한다().header("Location");
 
         // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
-                .delete(location)
-                .then().log().all().extract();
+        ExtractableResponse<Response> response = 투표_삭제를_요청한다(location);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -270,60 +247,67 @@ class PollAcceptanceTest extends AcceptanceTest {
     @Test
     void 투표를_마감한다() {
         // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
-
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, false, LocalDateTime.now(),
-                List.of("항목1", "항목2", "항목3"));
-        String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
+        String location = 기본_투표_생성을_요청한다().header("Location");
 
         // when
-        ExtractableResponse<Response> response = 투표를_마감한다(accessToken, location);
+        ExtractableResponse<Response> response = 투표_마감을_요청한다(location);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Test
-    void 인증되지않은_사용자가_투표마감시_403을_응답한다() {
+    void 호스트가_아닌_사용자가_투표마감시_BAD_REQUEST를_응답한다() {
         // given
-        String accessToken = 로그인을_해_토큰을_발급받는다(1L);
-
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 2, false, LocalDateTime.now(),
-                List.of("항목1", "항목2", "항목3"));
-        String location = 투표를_생성한_뒤_투표_URL을_받는다(accessToken, request);
+        String otherToken = tokenProvider.createToken(2L + "");
+        String location = 기본_투표_생성을_요청한다().header("Location");
 
         // when
-        ExtractableResponse<Response> response = 투표를_마감한다(INVALID_ACCESS_TOKEN, location);
+        ExtractableResponse<Response> response = 투표_마감을_요청한다(location, otherToken);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
-    private String 로그인을_해_토큰을_발급받는다(Long id) {
-        return tokenProvider.createToken(String.valueOf(id));
+    private ExtractableResponse<Response> 투표_목록_조회를_요청한다(String path) {
+        return get(path, toHeader(accessToken));
     }
 
-    private ExtractableResponse<Response> 투표를_진행한다(String accessToken, String location,
-                                                   List<PollItemRequest> pollItemRequest) {
-        return RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
-                .body(pollItemRequest)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .put(location)
-                .then().log().all().extract();
+    private ExtractableResponse<Response> 투표_진행을_요청한다(String location, List<PollItemRequest> requests) {
+        return put(location, requests, toHeader(accessToken));
     }
 
-    private String 투표를_생성한_뒤_투표_URL을_받는다(String accessToken, PollCreateRequest request) {
-        return RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
-                .body(request).contentType(MediaType.APPLICATION_JSON_VALUE).post("/api/groups/MoraK123/polls")
-                .then().log().all().extract().header("Location");
+    private ExtractableResponse<Response> 투표_마감을_요청한다(String location) {
+        return 투표_마감을_요청한다(location, accessToken);
     }
 
-    private ExtractableResponse<Response> 투표를_마감한다(String accessToken, String location) {
-        return RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
-                .patch(location + "/close")
-                .then().log().all().extract();
+    private ExtractableResponse<Response> 투표_마감을_요청한다(String location, String accessToken) {
+        return patch(location + "/close", toHeader(accessToken));
+    }
+
+    private ExtractableResponse<Response> 기본_투표_생성을_요청한다() {
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2"));
+        return 투표_생성을_요청한다(request, accessToken);
+    }
+
+    private ExtractableResponse<Response> 투표_생성을_요청한다(PollCreateRequest request, String accessToken) {
+        return post("/api/groups/MoraK123/polls", request, toHeader(accessToken));
+    }
+
+    private ExtractableResponse<Response> 투표_단건_조회를_요청한다(String location) {
+        return get(location, toHeader(accessToken));
+    }
+
+    private ExtractableResponse<Response> 투표_결과_조회를_요청한다(String location) {
+        return get(location + "/result", toHeader(accessToken));
+    }
+
+    private ExtractableResponse<Response> 투표_선택항목_조회를_요청한다(String location) {
+        return get(location + "/items", toHeader(accessToken));
+    }
+
+    private ExtractableResponse<Response> 투표_삭제를_요청한다(String location) {
+        return delete(location, toHeader(accessToken));
     }
 }

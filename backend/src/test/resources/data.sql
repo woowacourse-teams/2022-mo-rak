@@ -1,9 +1,9 @@
-INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345678', 'eden', 'eden-profile.com', now(), now());
-INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('97533356', 'ellie', 'ellie-profile.com', now(), now());
-INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345679', 'bkr', 'bkr-profile.com', now(), now());
-INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345669', 'chalee', 'chalee-profile.com', now(), now());
-INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345668', 'albur', 'albur-profile.com', now(), now());
-INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345677', 'winnie', 'winnie-profile.com', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345678', 'eden', 'http://eden-profile.com', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('97533356', 'ellie', 'http://ellie-profile.com', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345679', 'bkr', 'http://bkr-profile.com', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345669', 'chalee', 'http://chalee-profile.com', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345668', 'albur', 'http://albur-profile.com', now(), now());
+INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) values('12345677', 'winnie', 'http://winnie-profile.com', now(), now());
 
 INSERT INTO team (name, code, created_at, updated_at) values('morak', 'MoraK123', now(), now());
 

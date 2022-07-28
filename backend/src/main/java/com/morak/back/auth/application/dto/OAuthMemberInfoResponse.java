@@ -2,10 +2,12 @@ package com.morak.back.auth.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.auth.domain.Member;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class OAuthMemberInfoResponse {
 
@@ -19,6 +21,10 @@ public class OAuthMemberInfoResponse {
     private String profileUrl;
 
     public Member toMember() {
-        return new Member(null, oauthId, name, profileUrl);
+        return Member.builder()
+                .oauthId(oauthId)
+                .name(name)
+                .profileUrl(profileUrl)
+                .build();
     }
 }

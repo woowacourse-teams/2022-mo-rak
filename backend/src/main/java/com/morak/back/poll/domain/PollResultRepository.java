@@ -1,6 +1,8 @@
 package com.morak.back.poll.domain;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import org.springframework.data.repository.Repository;
 
-public interface PollResultRepository extends JpaRepository<PollResult, Long> {
+public interface PollResultRepository extends Repository<PollResult, Long> {
+    List<PollResult> saveAll(Iterable<PollResult> pollResults);
 }
