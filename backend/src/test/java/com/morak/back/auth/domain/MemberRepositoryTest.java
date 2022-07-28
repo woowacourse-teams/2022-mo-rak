@@ -33,7 +33,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    public void oauth_id로_멤버를_조회한다() {
+    void oauth_id로_멤버를_조회한다() {
         // given
         String oauthId = "12345678";
 

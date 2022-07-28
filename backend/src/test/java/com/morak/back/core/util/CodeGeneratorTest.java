@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class CodeGeneratorTest {
 
     @Test
-    public void 랜덤_코드를_생성한다() {
+    void 랜덤_코드를_생성한다() {
         // given
         int length = 8;
 

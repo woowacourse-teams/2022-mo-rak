@@ -38,7 +38,7 @@ class OAuthServiceTest {
     private OAuthService oAuthService;
 
     @Test
-    public void OAuth_첫_로그인시_회원으로_등록하고_토큰을_발급한다() {
+    void OAuth_첫_로그인시_회원으로_등록하고_토큰을_발급한다() {
         // given
         given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
         given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
@@ -54,7 +54,7 @@ class OAuthServiceTest {
     }
 
     @Test
-    public void OAuth_로그인시_토큰을_발급한다() {
+    void OAuth_로그인시_토큰을_발급한다() {
         // given
         given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
         given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
