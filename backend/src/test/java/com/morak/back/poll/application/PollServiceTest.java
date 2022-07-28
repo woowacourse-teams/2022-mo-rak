@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -18,6 +19,7 @@ import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
+import com.morak.back.poll.domain.PollResult;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
@@ -110,11 +112,11 @@ class PollServiceTest {
         given(pollRepository.save(any(Poll.class))).willReturn(poll);
 
         // when
-        Long pollId = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest);
+        String pollCode = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest);
 
         // then
         verify(pollItemRepository).saveAll(any());
-        assertThat(pollId).isEqualTo(1L);
+        assertThat(pollCode).isEqualTo(poll.getCode());
     }
 
     @Test
@@ -152,13 +154,13 @@ class PollServiceTest {
 
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong())).willReturn(Optional.of(poll));
+        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
 
         given(pollItemRepository.findById(pollItem1.getId())).willReturn(Optional.of(pollItem1));
         given(pollItemRepository.findById(pollItem2.getId())).willReturn(Optional.of(pollItem2));
 
         // when
-        pollService.doPoll(team.getCode(), member.getId(), 1L,
+        pollService.doPoll(team.getCode(), member.getId(), poll.getCode(),
                 List.of(new PollResultRequest(1L, "그냥뇨"), new PollResultRequest(2L, "ㅋ")));
 
         // then
@@ -192,14 +194,14 @@ class PollServiceTest {
 
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong())).willReturn(Optional.of(poll));
+        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
 
         given(pollItemRepository.findById(pollItem1.getId())).willReturn(Optional.of(pollItem1));
         given(pollItemRepository.findById(pollItem2.getId())).willReturn(Optional.of(pollItem2));
         given(pollItemRepository.findById(pollItem3.getId())).willReturn(Optional.of(pollItem3));
 
         // when
-        pollService.doPoll(team.getCode(), member.getId(), poll.getId(),
+        pollService.doPoll(team.getCode(), member.getId(), poll.getCode(),
                 List.of(new PollResultRequest(pollItem2.getId(), "하기싫다."),
                         new PollResultRequest(pollItem3.getId(), "테스트 수정")
                 ));
@@ -217,10 +219,10 @@ class PollServiceTest {
         // given
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong())).willReturn(Optional.of(poll));
+        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
 
         // when
-        PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), poll.getId());
+        PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), poll.getCode());
 
         // then
         Assertions.assertAll(
@@ -247,11 +249,11 @@ class PollServiceTest {
 
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong())).willReturn(Optional.of(poll));
+        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
 
         // when
         List<PollItemResponse> pollItemResponses = pollService.findPollItems(team.getCode(), member.getId(),
-                poll.getId());
+                poll.getCode());
 
         // then
         Assertions.assertAll(
@@ -280,11 +282,11 @@ class PollServiceTest {
 
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong())).willReturn(Optional.of(poll));
+        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
 
         // when
         List<PollItemResponse> pollItemResponses = pollService.findPollItems(team.getCode(), member.getId(),
-                poll.getId());
+                poll.getCode());
 
         // then
         Assertions.assertAll(
@@ -317,11 +319,11 @@ class PollServiceTest {
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(1L));
 
-        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong())).willReturn(Optional.of(poll));
+        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
 
         // when
         List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(team.getCode(),
-                member.getId(), poll.getId());
+                member.getId(), poll.getCode());
 
         // then
         Assertions.assertAll(
@@ -345,6 +347,7 @@ class PollServiceTest {
                 .host(member)
                 .isAnonymous(false)
                 .status(CLOSED)
+                .code("abcd1234")
                 .build();
         PollItem pollItem1 = PollItem.builder()
                 .id(1L)
@@ -366,11 +369,11 @@ class PollServiceTest {
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
 
-        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong())).willReturn(Optional.of(poll));
+        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
 
         // when
         List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(team.getCode(),
-                member.getId(), poll.getId());
+                member.getId(), poll.getCode());
 
         // then
         Assertions.assertAll(
@@ -385,10 +388,10 @@ class PollServiceTest {
         // given
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong())).willReturn(Optional.of(poll));
+        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
 
         // when
-        pollService.deletePoll(team.getCode(), member.getId(), poll.getId());
+        pollService.deletePoll(team.getCode(), member.getId(), poll.getCode());
 
         // then
         verify(pollRepository).deleteById(poll.getId());
@@ -406,10 +409,10 @@ class PollServiceTest {
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(notHostMember));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
 
-        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong())).willReturn(Optional.of(poll));
+        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
 
         // when & then
-        assertThatThrownBy(() -> pollService.deletePoll(team.getCode(), notHostMember.getId(), poll.getId()))
+        assertThatThrownBy(() -> pollService.deletePoll(team.getCode(), notHostMember.getId(), poll.getCode()))
                 .isInstanceOf(InvalidRequestException.class);
     }
 
@@ -419,10 +422,10 @@ class PollServiceTest {
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
 
-        given(pollRepository.findByIdAndTeamId(anyLong(), anyLong())).willReturn(Optional.of(poll));
+        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
 
         // when
-        pollService.closePoll(team.getCode(), member.getId(), poll.getId());
+        pollService.closePoll(team.getCode(), member.getId(), poll.getCode());
 
         // then
         assertThat(poll.getStatus()).isEqualTo(CLOSED);
