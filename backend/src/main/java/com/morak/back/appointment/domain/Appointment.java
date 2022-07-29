@@ -3,8 +3,8 @@ package com.morak.back.appointment.domain;
 import static com.morak.back.appointment.domain.AppointmentStatus.OPEN;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.InvalidRequestException;
-import com.morak.back.core.util.CodeGenerator;
 import com.morak.back.poll.domain.BaseEntity;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
@@ -71,7 +71,9 @@ public class Appointment extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private AppointmentStatus status;
 
-    private String code;
+    @Embedded
+    @Valid
+    private Code code;
 
     private LocalDateTime closedAt;
 
@@ -81,7 +83,7 @@ public class Appointment extends BaseEntity {
     @Builder
     public Appointment(Long id, Team team, Member host, String title, String description, LocalDate startDate,
                        LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer durationHours,
-                       Integer durationMinutes, String code, LocalDateTime closedAt) {
+                       Integer durationMinutes, Code code, LocalDateTime closedAt) {
         this.id = id;
         this.team = team;
         this.host = host;
@@ -91,8 +93,7 @@ public class Appointment extends BaseEntity {
         this.timePeriod = new TimePeriod(startTime, endTime);
         this.durationMinutes = new DurationMinutes(durationHours, durationMinutes);
         this.status = OPEN;
-        // TODO: 2022/07/27 VO로 변경해야함!!
-        this.code = CodeGenerator.createRandomCode(8);
+        this.code = code;
         this.closedAt = LocalDateTime.now().plusMonths(1);
     }
 
@@ -138,6 +139,10 @@ public class Appointment extends BaseEntity {
 
     public LocalTime getEndTime() {
         return this.timePeriod.getEndTime();
+    }
+
+    public String getCode() {
+        return code.getCode();
     }
 
     public Integer getCount() {

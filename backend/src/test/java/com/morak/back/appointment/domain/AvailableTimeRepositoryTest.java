@@ -4,7 +4,9 @@ import static com.morak.back.appointment.domain.AvailableTime.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.appointment.FakeCodeGenerator;
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,11 +33,11 @@ class AvailableTimeRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        member = new Member(1L, null, null, null);
+        member = Member.builder().id(1L).build();
         this.appointment = appointmentRepository.save(
                 Appointment.builder()
                         .host(member)
-                        .team(new Team(1L, "null", "null"))
+                        .team(Team.builder().id(1L).build())
                         .title("회식 날짜")
                         .description("필참!!")
                         .startDate(LocalDate.now().plusDays(1))
@@ -44,6 +46,7 @@ class AvailableTimeRepositoryTest {
                         .endTime(LocalTime.of(18, 30))
                         .durationHours(1)
                         .durationMinutes(0)
+                        .code(Code.generate(new FakeCodeGenerator()))
                         .build()
         );
     }

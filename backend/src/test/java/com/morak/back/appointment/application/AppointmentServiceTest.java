@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import com.morak.back.appointment.FakeCodeGenerator;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.AvailableTimeRepository;
@@ -16,6 +17,7 @@ import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
+import com.morak.back.core.domain.Code;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
@@ -50,8 +52,11 @@ class AppointmentServiceTest {
     @InjectMocks
     private AppointmentService appointmentService;
 
-    private final Member 에덴 = new Member(1L, "oauthId11", "eden", "eden-profile.com");
-    private final Team 모락 = new Team(11L, "모락", "team-code");
+    private final Member 에덴 = Member.builder().id(1L).build();
+    private final Team 모락 = Team.builder().
+            id(1L)
+            .code(Code.generate(new FakeCodeGenerator()))
+            .build();
     private final Appointment 회식_날짜_약속잡기 = Appointment.builder()
             .id(101L)
             .host(에덴)
@@ -64,6 +69,7 @@ class AppointmentServiceTest {
             .endTime(LocalTime.of(20, 0))
             .durationHours(2)
             .durationMinutes(0)
+            .code(Code.generate(new FakeCodeGenerator()))
             .build();
 
     private final Appointment 스터디_날짜_약속잡기 = Appointment.builder()
@@ -77,6 +83,7 @@ class AppointmentServiceTest {
             .endTime(LocalTime.of(20, 0))
             .durationHours(2)
             .durationMinutes(0)
+            .code(Code.generate(new FakeCodeGenerator()))
             .build();
 
     @Test

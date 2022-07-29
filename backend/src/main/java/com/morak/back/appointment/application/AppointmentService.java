@@ -14,6 +14,8 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.auth.exception.TeamNotFoundException;
+import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMemberRepository;
@@ -42,7 +44,7 @@ public class AppointmentService {
         Team team = teamRepository.findByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(team.getId(), memberId);
 
-        Appointment appointment = request.toAppointment(team, member);
+        Appointment appointment = request.toAppointment(team, member, Code.generate(new RandomCodeGenerator()));
         Appointment savedAppointment = appointmentRepository.save(appointment);
 
         return savedAppointment.getCode();

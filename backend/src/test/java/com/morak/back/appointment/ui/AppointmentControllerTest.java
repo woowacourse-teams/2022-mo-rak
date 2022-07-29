@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.morak.back.appointment.application.AppointmentService;
-import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
@@ -75,32 +74,24 @@ class AppointmentControllerTest extends ControllerTest {
         // given
         String path = "/api/groups/{groupCode}/appointments";
 
-        AppointmentAllResponse response1 = AppointmentAllResponse.from(
-                Appointment.builder()
-                .code("FJn3ND26")
-                .title("모락 회식 날짜 및 시간")
-                .description("필참입니다.")
-                .startDate(LocalDate.of(2022, 8, 5))
-                .endDate(LocalDate.of(2022, 8, 20))
-                .startTime(LocalTime.of(16, 0))
-                .endTime(LocalTime.of(20, 0))
-                .durationHours(2)
-                .durationMinutes(30)
-                .build()
+        AppointmentAllResponse response1 = new AppointmentAllResponse(
+                "FJn3ND26",
+                "모락 회식 날짜 및 시간",
+                "필참입니다.",
+                2,
+                30,
+                false,
+                2
         );
 
-        AppointmentAllResponse response2 = AppointmentAllResponse.from(
-                Appointment.builder()
-                .code("j3KDcd2h")
-                .title("스터디 회의 시간")
-                .description("스터디 진행과 관련된 회의입니다.")
-                .startDate(LocalDate.of(2022, 8, 5))
-                .endDate(LocalDate.of(2022, 8, 20))
-                .startTime(LocalTime.of(16, 0))
-                .endTime(LocalTime.of(20, 0))
-                .durationHours(2)
-                .durationMinutes(0)
-                .build()
+        AppointmentAllResponse response2 = new AppointmentAllResponse(
+                "j3KDcd2h",
+                "스터디 회의 시간",
+                "스터디 진행과 관련된 회의입니다.",
+                2,
+                0,
+                true,
+                5
         );
 
         given(appointmentService.findAppointments(anyString(), anyLong())).willReturn(List.of(response1, response2));
@@ -124,18 +115,18 @@ class AppointmentControllerTest extends ControllerTest {
     void 약속잡기_단건을_조회한다() throws Exception {
         // given
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}";
-        AppointmentResponse findResponse = AppointmentResponse.from(
-                Appointment.builder()
-                .code("FJn3ND26")
-                .title("모락 회식 날짜 및 시간")
-                .description("필참입니다.")
-                .startDate(LocalDate.of(2022, 8, 5))
-                .endDate(LocalDate.of(2022, 8, 20))
-                .startTime(LocalTime.of(16, 0))
-                .endTime(LocalTime.of(20, 0))
-                .durationHours(2)
-                .durationMinutes(30)
-                .build()
+
+        AppointmentResponse findResponse = new AppointmentResponse(
+                "FJn3ND26",
+                "모락 회식 날짜 및 시간",
+                "필참입니다.",
+                2,
+                30,
+                LocalDate.of(2022, 8, 5),
+                LocalDate.of(2022, 8, 20),
+                LocalTime.of(16, 0),
+                LocalTime.of(20, 0),
+                false
         );
 
         given(appointmentService.findAppointment(anyString(), anyLong(), anyString())).willReturn(findResponse);

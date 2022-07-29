@@ -3,7 +3,9 @@ package com.morak.back.appointment.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.appointment.FakeCodeGenerator;
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,8 +29,8 @@ class AppointmentRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        member = new Member(1L, null, null, null);
-        team = new Team(1L, null, null);
+        member = Member.builder().id(1L).build();
+        team = Team.builder().id(1L).build();
     }
 
     @Test
@@ -45,6 +47,7 @@ class AppointmentRepositoryTest {
                 .endTime(LocalTime.of(18, 30))
                 .durationHours(1)
                 .durationMinutes(0)
+                .code(Code.generate(new FakeCodeGenerator()))
                 .build();
 
         // when
@@ -68,6 +71,7 @@ class AppointmentRepositoryTest {
                 .endTime(LocalTime.of(18, 30))
                 .durationHours(1)
                 .durationMinutes(0)
+                .code(Code.generate(new FakeCodeGenerator()))
                 .build();
         appointmentRepository.save(appointment);
 
@@ -82,7 +86,7 @@ class AppointmentRepositoryTest {
     }
 
     @Test
-    void 약속잡기_단건을_조회한다() {
+    void code로_약속잡기_단건을_조회한다() {
         //given
         Appointment appointment = Appointment.builder()
                 .host(member)
@@ -95,6 +99,7 @@ class AppointmentRepositoryTest {
                 .endTime(LocalTime.of(18, 30))
                 .durationHours(1)
                 .durationMinutes(0)
+                .code(Code.generate(new FakeCodeGenerator()))
                 .build();
 
         Appointment savedAppointment = appointmentRepository.save(appointment);
@@ -120,6 +125,7 @@ class AppointmentRepositoryTest {
                 .endTime(LocalTime.of(18, 30))
                 .durationHours(1)
                 .durationMinutes(0)
+                .code(Code.generate(new FakeCodeGenerator()))
                 .build();
 
         // when & then
@@ -141,6 +147,7 @@ class AppointmentRepositoryTest {
                 .endTime(LocalTime.of(18, 30))
                 .durationHours(1)
                 .durationMinutes(0)
+                .code(Code.generate(new FakeCodeGenerator()))
                 .build();
 
         // when & then
@@ -162,6 +169,7 @@ class AppointmentRepositoryTest {
                 .endTime(LocalTime.of(18, 30))
                 .durationHours(1)
                 .durationMinutes(0)
+                .code(Code.generate(new FakeCodeGenerator()))
                 .build();
 
         // when & then
@@ -184,6 +192,7 @@ class AppointmentRepositoryTest {
                 .endTime(LocalTime.of(18, 30))
                 .durationHours(1)
                 .durationMinutes(0)
+                .code(Code.generate(new FakeCodeGenerator()))
                 .build();
 
         // then
@@ -204,6 +213,7 @@ class AppointmentRepositoryTest {
                 .endTime(LocalTime.of(18, 30))
                 .durationHours(1)
                 .durationMinutes(0)
+                .code(Code.generate(new FakeCodeGenerator()))
                 .build();
 
         Appointment savedAppointment = appointmentRepository.save(appointment);
