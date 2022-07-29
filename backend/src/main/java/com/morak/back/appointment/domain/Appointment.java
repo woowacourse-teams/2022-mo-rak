@@ -20,6 +20,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Builder;
@@ -46,7 +47,7 @@ public class Appointment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member host;
 
-    @NotNull(message = "약속잡기 제목은 null일 수 없습니다.")
+    @NotBlank(message = "약속잡기 제목은 빈 값일 수 없습니다.")
     @Size(min = 1, max = 255, message = "약속잡기 제목의 길이는 1~255자여야 합니다.")
     private String title;
 
