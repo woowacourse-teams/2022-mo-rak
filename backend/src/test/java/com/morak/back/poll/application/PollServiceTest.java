@@ -70,7 +70,7 @@ class PollServiceTest {
         team = Team.builder()
                 .id(1L)
                 .name("team")
-                .code(new Code("abcd1234"))
+                .code(Code.generate(length -> "abcd1234"))
                 .build();
         poll = Poll.builder()
                 .id(1L)
@@ -81,7 +81,7 @@ class PollServiceTest {
                 .isAnonymous(true)
                 .status(OPEN)
                 .closedAt(LocalDateTime.now().plusDays(1L))
-                .code("ABCD1234")
+                .code(Code.generate(length -> "ABCD1234"))
                 .build();
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
     }

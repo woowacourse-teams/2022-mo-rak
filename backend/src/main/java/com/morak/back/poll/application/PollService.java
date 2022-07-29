@@ -4,6 +4,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.auth.exception.TeamNotFoundException;
+import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.poll.domain.Poll;
@@ -47,7 +48,7 @@ public class PollService {
         Team team = teamRepository.findByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(team.getId(), memberId);
 
-        Poll poll = request.toPoll(member, team, PollStatus.OPEN, GENERATOR.generate(8));
+        Poll poll = request.toPoll(member, team, PollStatus.OPEN, Code.generate(GENERATOR));
         Poll savedPoll = pollRepository.save(poll);
         List<PollItem> items = request.toPollItems(savedPoll);
         pollItemRepository.saveAll(items);

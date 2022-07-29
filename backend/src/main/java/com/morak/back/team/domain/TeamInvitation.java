@@ -40,7 +40,7 @@ public class TeamInvitation extends BaseEntity {
     private ExpiredTime expiredAt;
 
     @Builder
-    public TeamInvitation(Long id, Team team, Code code, ExpiredTime expiredAt) {
+    private TeamInvitation(Long id, Team team, Code code, ExpiredTime expiredAt) {
         this.id = id;
         this.team = team;
         this.code = code;

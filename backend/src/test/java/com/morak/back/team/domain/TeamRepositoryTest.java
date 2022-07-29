@@ -19,7 +19,7 @@ class TeamRepositoryTest {
         // given
         Team team = Team.builder()
                 .name("test-team")
-                .code(new Code("abcd1234"))
+                .code(Code.generate(length -> "abcd1234"))
                 .build();
 
         // when

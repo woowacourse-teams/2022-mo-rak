@@ -31,7 +31,7 @@ public class Team extends BaseEntity {
     private Code code;
 
     @Builder
-    public Team(Long id, String name, Code code) {
+    private Team(Long id, String name, Code code) {
         this.id = id;
         this.name = name;
         this.code = code;

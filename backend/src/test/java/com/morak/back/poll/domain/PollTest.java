@@ -29,16 +29,24 @@ class PollTest {
         team = Team.builder()
                 .id(1L)
                 .name("team1")
-                .code(new Code("abcd1234")).build();
+                .code(Code.generate(length -> "abcd1234")).build();
         member = Member.builder()
                 .id(1L)
                 .oauthId("12345678")
                 .name("ellie")
                 .profileUrl("http://ellie-profile.com")
                 .build();
-
-        poll = new Poll(1L, team, member, "title", 2, true, PollStatus.OPEN, LocalDateTime.now().plusDays(1),
-                "ABCE");
+        poll = Poll.builder()
+                .id(1L)
+                .team(team)
+                .host(member)
+                .title("title")
+                .allowedPollCount(2)
+                .isAnonymous(true)
+                .status(PollStatus.OPEN)
+                .closedAt(LocalDateTime.now().plusDays(1L))
+                .code(Code.generate(length -> "ABCD1234"))
+                .build();
         itemA = PollItem.builder()
                 .id(1L)
                 .poll(poll)

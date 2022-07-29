@@ -2,6 +2,7 @@ package com.morak.back.poll.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollStatus;
@@ -43,7 +44,7 @@ public class PollCreateRequest {
         this.subjects = subjects;
     }
 
-    public Poll toPoll(Member member, Team team, PollStatus status, String code) {
+    public Poll toPoll(Member member, Team team, PollStatus status, Code code) {
         return Poll.builder()
                 .team(team)
                 .host(member)
