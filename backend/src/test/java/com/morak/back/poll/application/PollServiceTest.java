@@ -347,7 +347,7 @@ class PollServiceTest {
                 .host(member)
                 .isAnonymous(false)
                 .status(CLOSED)
-                .code("abcd1234")
+                .code(Code.generate(length -> "abcd1234"))
                 .build();
         PollItem pollItem1 = PollItem.builder()
                 .id(1L)

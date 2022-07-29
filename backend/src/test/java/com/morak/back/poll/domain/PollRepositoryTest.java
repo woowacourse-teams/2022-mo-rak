@@ -37,7 +37,6 @@ class PollRepositoryTest {
                 .status(PollStatus.OPEN)
                 .closedAt(LocalDateTime.now().plusDays(1L))
                 .code(Code.generate(length -> "unique99"))
-                .code("unique99")
                 .build();
 
         // when
