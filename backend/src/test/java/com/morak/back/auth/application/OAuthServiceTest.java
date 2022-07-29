@@ -12,6 +12,7 @@ import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +24,12 @@ class OAuthServiceTest {
 
     private static final String CODE = "test-code";
     private static final String ACCESS_TOKEN = "test-token";
-    private static final Member MEMBER = new Member(1L, "oauthId", "박성우", "https://avatars.githubusercontent.com/u/79205414?v=4");
+    private static final Member MEMBER = Member.builder()
+            .id(1L)
+            .oauthId("oauthId")
+            .name("박성우")
+            .profileUrl("https://avatars.githubusercontent.com/u/79205414?v=4")
+            .build();
 
     @Mock
     private MemberRepository memberRepository;
@@ -37,11 +43,17 @@ class OAuthServiceTest {
     @InjectMocks
     private OAuthService oAuthService;
 
+    @BeforeEach
+    void setUp() {
+        given(oAuthClient.getAccessToken(anyString()))
+                .willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
+        given(oAuthClient.getMemberInfo(anyString()))
+                .willReturn(new OAuthMemberInfoResponse(MEMBER.getOauthId(), MEMBER.getName(), MEMBER.getProfileUrl()));
+    }
+
     @Test
     void OAuth_첫_로그인시_회원으로_등록하고_토큰을_발급한다() {
         // given
-        given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
-        given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
         given(memberRepository.findByOauthId(any())).willReturn(Optional.empty());
         given(memberRepository.save(any())).willReturn(MEMBER);
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
@@ -56,8 +68,6 @@ class OAuthServiceTest {
     @Test
     void OAuth_로그인시_토큰을_발급한다() {
         // given
-        given(oAuthClient.getAccessToken(anyString())).willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
-        given(oAuthClient.getMemberInfo(anyString())).willReturn(new OAuthMemberInfoResponse());
         given(memberRepository.findByOauthId(any())).willReturn(Optional.of(MEMBER));
         given(tokenProvider.createToken(anyString())).willReturn(ACCESS_TOKEN);
 

@@ -9,35 +9,33 @@ import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
 public class PollCreateRequest {
 
-    @NotBlank
+    @NotBlank(message = "title은 blank일 수 없습니다.")
     private final String title;
 
-    @Min(1)
-    @NotNull
+    @NotNull(message = "allowedPollCount 는 null 일 수 없습니다.")
     private final Integer allowedPollCount;
 
-    @NotNull
+    @NotNull(message = "isAnonymous 는 null 일 수 없습니다.")
     private final Boolean isAnonymous;
 
-    @NotNull
+    @Future(message = "closedAt은 미래여야 합니다.")
     private final LocalDateTime closedAt;
 
-    @NotNull
-    @Size(min = 2)
+    @NotNull(message = "subjects 는 null 일 수 없습니다.")
     private final List<String> subjects;
 
     @JsonCreator
     public PollCreateRequest(String title, Integer allowedPollCount, Boolean isAnonymous, LocalDateTime closedAt,
-        List<String> subjects) {
+                             List<String> subjects) {
         this.title = title;
         this.allowedPollCount = allowedPollCount;
         this.isAnonymous = isAnonymous;
@@ -46,13 +44,26 @@ public class PollCreateRequest {
     }
 
     public Poll toPoll(Member member, Team team, PollStatus status, String code) {
-
-        return new Poll(null, team, member, title, allowedPollCount, isAnonymous, status, closedAt, code);
+        return Poll.builder()
+                .team(team)
+                .host(member)
+                .title(title)
+                .allowedPollCount(allowedPollCount)
+                .isAnonymous(isAnonymous)
+                .status(status)
+                .closedAt(closedAt)
+                .code(code)
+                .build();
     }
 
     public List<PollItem> toPollItems(Poll poll) {
         return subjects.stream()
-            .map(subject -> new PollItem(null, poll, subject))
-            .collect(Collectors.toList());
+                .map(
+                        subject -> PollItem.builder()
+                                .poll(poll)
+                                .subject(subject)
+                                .build()
+                )
+                .collect(Collectors.toList());
     }
 }

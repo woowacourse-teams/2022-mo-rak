@@ -22,15 +22,15 @@ public class PollResponse {
 
     public static PollResponse from(Poll poll, Member member) {
         return new PollResponse(
-            poll.getId(),
-            poll.getTitle(),
-            poll.getAllowedPollCount(),
-            poll.getIsAnonymous(),
-            poll.getStatus().name(),
-            poll.getCreatedAt(),
-            poll.getClosedAt(),
-            poll.getCode(),
-            poll.isHost(member)
+                poll.getId(),
+                poll.getTitle(),
+                poll.getAllowedPollCount(),
+                poll.getIsAnonymous(),
+                poll.getStatus().name(),
+                poll.getCreatedAt(),
+                poll.getClosedAt(),
+                poll.getCode(),
+                poll.isHost(member)
         );
     }
 }

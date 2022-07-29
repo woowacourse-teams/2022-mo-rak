@@ -12,9 +12,9 @@ import static org.mockito.Mockito.verify;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.ui.dto.MemberResponse;
+import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.ResourceNotFoundException;
 import com.morak.back.team.domain.ExpiredTime;
-import com.morak.back.team.domain.InvitationCode;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
@@ -59,13 +59,28 @@ class TeamServiceTest {
     private Member member;
     private Team team;
     private TeamInvitation teamInvitation;
+    private Code code;
 
     @BeforeEach
     void setup() {
-        member = new Member(1L, "12345678", "ellie", "ellie-profile");
-        team = new Team(1L, "team", "ABCD1234");
-        teamInvitation = new TeamInvitation(1L, team, InvitationCode.generate((length) -> "inviteCode"),
-                ExpiredTime.withMinute(30L));
+        member = Member.builder()
+                .id(1L)
+                .oauthId("12345678")
+                .name("ellie")
+                .profileUrl("http://ellie-profile")
+                .build();
+        team = Team.builder()
+                .id(1L)
+                .name("team")
+                .code(new Code("ABCD1234"))
+                .build();
+        teamInvitation = TeamInvitation.builder()
+                .id(1L)
+                .team(team)
+                .code(new Code("12345678"))
+                .expiredAt(ExpiredTime.withMinute(30L))
+                .build();
+        code = new Code("abcd1234");
     }
 
     @Test
@@ -141,11 +156,13 @@ class TeamServiceTest {
     }
 
     @Test
-    void 초대코드가_만료된_경우_예외를_던진다() {
+    void 그룹_가입시_초대코드가_만료된_경우_예외를_던진다() {
         // given
-        TeamInvitation expiredTeamInvitation = new TeamInvitation(null, team,
-                InvitationCode.generate((length) -> "invitecode"),
-                ExpiredTime.withMinute(0L));
+        TeamInvitation expiredTeamInvitation = TeamInvitation.builder()
+                .team(team)
+                .code(code)
+                .expiredAt(ExpiredTime.withMinute(-30L))
+                .build();
 
         given(teamInvitationRepository.findByCode(anyString())).willReturn(Optional.of(expiredTeamInvitation));
 
@@ -157,13 +174,26 @@ class TeamServiceTest {
     @Test
     void 그룹_목록을_조회한다() {
         // given
-        Team teamA = new Team(null, "team-A", "testcode");
-        Team teamB = new Team(null, "team-B", "testcoed");
+        Code code = new Code("abcd1234");
+        Team teamA = Team.builder()
+                .name("team-A")
+                .code(code)
+                .build();
+        Team teamB = Team.builder()
+                .name("team-B")
+                .code(code)
+                .build();
 
         given(teamMemberRepository.findAllByMemberId(anyLong())).willReturn(
                 List.of(
-                        new TeamMember(1L, teamA, member),
-                        new TeamMember(2L, teamB, member)
+                        TeamMember.builder().id(1L)
+                                .team(teamA)
+                                .member(member)
+                                .build(),
+                        TeamMember.builder().id(2L)
+                                .team(teamB)
+                                .member(member)
+                                .build()
                 )
         );
 
@@ -183,10 +213,26 @@ class TeamServiceTest {
     @Test
     void 그룹에_속한_멤버_목록을_조회한다() {
         // given
-        Member member1 = new Member(1L, "oauthId1", "name1", "123");
-        Member member2 = new Member(2L, "oauthId2", "name2", "234");
-        TeamMember teamMember1 = new TeamMember(1L, team, member1);
-        TeamMember teamMember2 = new TeamMember(2L, team, member2);
+        Member member1 = Member.builder()
+                .id(1L)
+                .oauthId("oauthId1")
+                .name("name1")
+                .profileUrl("http://123-profile.com")
+                .build();
+        Member member2 = Member.builder()
+                .id(2L)
+                .oauthId("oauthId2")
+                .name("name2")
+                .profileUrl("http://234-profile.com")
+                .build();
+        TeamMember teamMember1 = TeamMember.builder().id(1L)
+                .team(team)
+                .member(member1)
+                .build();
+        TeamMember teamMember2 = TeamMember.builder().id(2L)
+                .team(team)
+                .member(member2)
+                .build();
 
         given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
@@ -217,7 +263,10 @@ class TeamServiceTest {
     @Test
     void 멤버가_그룹에서_탈퇴한다() {
         // given
-        TeamMember teamMember = new TeamMember(1L, team, member);
+        TeamMember teamMember = TeamMember.builder().id(1L)
+                .team(team)
+                .member(member)
+                .build();
 
         given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
         given(teamMemberRepository.findByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(Optional.of(teamMember));
@@ -244,10 +293,24 @@ class TeamServiceTest {
     @Test
     void 디폴트_그룹을_찾는다() {
         // given
-        Team teamA = new Team(1L, "team-A", "testcode");
-        Team teamB = new Team(2L, "team-B", "testcoed");
-        TeamMember teamMember1 = new TeamMember(1L, teamA, member);
-        TeamMember teamMember2 = new TeamMember(2L, teamB, member);
+        Team teamA = Team.builder()
+                .id(1L)
+                .name("team-A")
+                .code(code)
+                .build();
+        Team teamB = Team.builder()
+                .id(2L)
+                .name("team-B")
+                .code(code)
+                .build();
+        TeamMember teamMember1 = TeamMember.builder().id(1L)
+                .team(teamA)
+                .member(member)
+                .build();
+        TeamMember teamMember2 = TeamMember.builder().id(2L)
+                .team(teamB)
+                .member(member)
+                .build();
 
         given(teamMemberRepository.findAllByMemberId(anyLong())).willReturn(List.of(teamMember1, teamMember2));
 

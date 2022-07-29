@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.morak.back.poll.application.PollService;
 import com.morak.back.poll.ui.dto.MemberResultResponse;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemRequest;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
@@ -62,22 +62,22 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(parameterWithName("groupCode").description("그룹_코드"))
-                        ));
+                ));
     }
 
     @Test
     void 투표를_진행한다() throws Exception {
         // given
-        List<PollItemRequest> pollItemRequests = List.of(
-                new PollItemRequest(1L, "회는_싱싱하니까요~"),
-                new PollItemRequest(2L, "삼겹살은_언제나_좋아요!!")
+        List<PollResultRequest> pollResultRequests = List.of(
+                new PollResultRequest(1L, "회는_싱싱하니까요~"),
+                new PollResultRequest(2L, "삼겹살은_언제나_좋아요!!")
         );
 
         // when
         ResultActions response = mockMvc.perform(put("/api/groups/{groupCode}/polls/{id}", groupCode, 1L)
-                        .header("Authorization", "bearer access.token")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(pollItemRequests)));
+                .header("Authorization", "bearer access.token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pollResultRequests)));
 
         // then
         response
@@ -105,7 +105,7 @@ class PollControllerTest extends ControllerTest {
 
         // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls", groupCode)
-                        .header("Authorization", "bearer access.token"));
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -128,7 +128,7 @@ class PollControllerTest extends ControllerTest {
 
         // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -154,7 +154,7 @@ class PollControllerTest extends ControllerTest {
 
         // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}/items", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -183,7 +183,7 @@ class PollControllerTest extends ControllerTest {
 
         // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}/result", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -215,7 +215,7 @@ class PollControllerTest extends ControllerTest {
 
         // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}/result", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -234,7 +234,7 @@ class PollControllerTest extends ControllerTest {
     void 투표를_삭제한다() throws Exception {
         // when
         ResultActions response = mockMvc.perform(delete("/api/groups/{groupCode}/polls/{id}", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -252,7 +252,7 @@ class PollControllerTest extends ControllerTest {
     void 투표를_마감한다() throws Exception {
         // when
         ResultActions response = mockMvc.perform(patch("/api/groups/{groupCode}/polls/{id}/close", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+                .header("Authorization", "bearer access.token"));
 
         // then
         response

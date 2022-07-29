@@ -54,6 +54,31 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    void null인_값으로_그룹_생성_요청_시_400을_반환한() {
+        // given
+        TeamCreateRequest request = new TeamCreateRequest(null);
+
+        // when
+        ExtractableResponse<Response> response = 그룹_생성을_요청한다(request);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void n인_값으로_그룹_생성_요청_시_400을_반환한() {
+        // given
+        TeamCreateRequest request = new TeamCreateRequest(null);
+
+        // when
+        ExtractableResponse<Response> response = 그룹_생성을_요청한다(request);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+
+    @Test
     void 그룹_초대_코드를_생성한다() {
         // given
         String location = 기본_그룹_생성을_요청한다().header("Location");
@@ -156,8 +181,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(memberResponses).extracting("name", "profileUrl")
                 .containsExactly(
-                        tuple("eden", "eden-profile.com"),
-                        tuple("ellie", "ellie-profile.com")
+                        tuple("eden", "http://eden-profile.com"),
+                        tuple("ellie", "http://ellie-profile.com")
                 );
     }
 
