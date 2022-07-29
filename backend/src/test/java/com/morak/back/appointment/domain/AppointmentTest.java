@@ -2,50 +2,32 @@ package com.morak.back.appointment.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Assertions;
+import com.morak.back.auth.domain.Member;
+import com.morak.back.team.domain.Team;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 class AppointmentTest {
 
-    @ParameterizedTest
-    @CsvSource({
-            "60, 1, 0",
-            "150, 2, 30"
-    })
-    void 분에서_시간과_분을_추출한다(int durationMinutes, int hours, int minutes) {
-        // given
-        Appointment appointment = Appointment.builder()
-                .durationMinutes(durationMinutes)
-                .build();
-
-        // when & then
-        Assertions.assertAll(
-                () -> assertThat(appointment.parseHours()).isEqualTo(hours),
-                () -> assertThat(appointment.parseMinutes()).isEqualTo(minutes)
-        );
-    }
-
+    // TODO: 2022/07/28 AvailableTime 추가 후 테스트 필요!!
     @Test
-    void 약속잡기가_종료된_경우_true를_반환한다() {
-        // given
+    void 포뮬라를_적용해_count를_불러온다() {
+        // when
         Appointment appointment = Appointment.builder()
-                .status(AppointmentStatus.CLOSED)
+                .host(new Member())
+                .team(new Team())
+                .title("스터디 회의 날짜 정하기")
+                .description("필참!!")
+                .startDate(LocalDate.now().plusDays(1))
+                .endDate(LocalDate.now().plusDays(5))
+                .startTime(LocalTime.of(14, 0))
+                .endTime(LocalTime.of(18, 30))
+                .durationHours(1)
+                .durationMinutes(0)
                 .build();
 
-        // when & then
-        assertThat(appointment.isClosed()).isTrue();
-    }
-
-    @Test
-    void 약속잡기가_종료되지_않은_경우_false를_반환한다() {
-        // given
-        Appointment appointment = Appointment.builder()
-                .status(AppointmentStatus.OPEN)
-                .build();
-
-        // when & then
-        assertThat(appointment.isClosed()).isFalse();
+        // then
+        assertThat(appointment.getCount()).isEqualTo(0);
     }
 }

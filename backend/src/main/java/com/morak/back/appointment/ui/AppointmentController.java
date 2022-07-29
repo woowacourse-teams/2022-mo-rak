@@ -1,10 +1,8 @@
 package com.morak.back.appointment.ui;
 
-import static com.morak.back.appointment.domain.AppointmentStatus.OPEN;
-
 import com.morak.back.appointment.domain.Appointment;
-import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
+import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
@@ -46,16 +44,24 @@ public class AppointmentController {
                 .code("FJn3ND26")
                 .title("모락 회식 날짜 및 시간")
                 .description("필참입니다.")
-                .durationMinutes(150)
-                .status(OPEN)
+                .startDate(LocalDate.of(2022, 8, 5))
+                .endDate(LocalDate.of(2022, 8, 20))
+                .startTime(LocalTime.of(16, 0))
+                .endTime(LocalTime.of(20, 0))
+                .durationHours(2)
+                .durationMinutes(30)
                 .build();
 
         Appointment appointment2 = Appointment.builder()
                 .code("j3KDcd2h")
                 .title("스터디 회의 시간")
                 .description("스터디 진행과 관련된 회의입니다.")
-                .durationMinutes(120)
-                .status(OPEN)
+                .startDate(LocalDate.of(2022, 8, 5))
+                .endDate(LocalDate.of(2022, 8, 20))
+                .startTime(LocalTime.of(16, 0))
+                .endTime(LocalTime.of(20, 0))
+                .durationHours(2)
+                .durationMinutes(0)
                 .build();
         return ResponseEntity.ok(
                 List.of(AppointmentAllResponse.from(appointment1), AppointmentAllResponse.from(appointment2)));
@@ -73,8 +79,8 @@ public class AppointmentController {
                 .endDate(LocalDate.of(2022, 8, 20))
                 .startTime(LocalTime.of(16, 0))
                 .endTime(LocalTime.of(20, 0))
-                .status(OPEN)
-                .durationMinutes(150)
+                .durationHours(2)
+                .durationMinutes(30)
                 .build();
         return ResponseEntity.ok(AppointmentResponse.from(appointment));
     }

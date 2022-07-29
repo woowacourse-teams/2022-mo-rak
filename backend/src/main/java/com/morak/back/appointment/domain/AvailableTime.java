@@ -3,6 +3,7 @@ package com.morak.back.appointment.domain;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.domain.BaseEntity;
 import java.time.LocalDateTime;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,16 +11,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
+import javax.validation.Valid;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Builder
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "appointment_available_time")
 public class AvailableTime extends BaseEntity {
 
@@ -33,7 +32,16 @@ public class AvailableTime extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    private LocalDateTime startDateTime;
+    @Embedded
+    @Valid
+    private DateTimePeriod dateTimePeriod;
 
-    private LocalDateTime endDateTime;
+    @Builder
+    public AvailableTime(Long id, Appointment appointment, Member member,
+                         LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        this.id = id;
+        this.appointment = appointment;
+        this.member = member;
+        this.dateTimePeriod = new DateTimePeriod(startDateTime, endDateTime);
+    }
 }
