@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AppointmentAllResponse {
 
+    private Long id;
+
     private String code;
 
     private String title;
@@ -28,6 +30,7 @@ public class AppointmentAllResponse {
 
     public static AppointmentAllResponse from(Appointment appointment) {
         return new AppointmentAllResponse(
+                appointment.getId(),
                 appointment.getCode(),
                 appointment.getTitle(),
                 appointment.getDescription(),

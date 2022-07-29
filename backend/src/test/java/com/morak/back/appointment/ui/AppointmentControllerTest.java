@@ -75,6 +75,7 @@ class AppointmentControllerTest extends ControllerTest {
         String path = "/api/groups/{groupCode}/appointments";
 
         AppointmentAllResponse response1 = new AppointmentAllResponse(
+                1L,
                 "FJn3ND26",
                 "모락 회식 날짜 및 시간",
                 "필참입니다.",
@@ -85,6 +86,7 @@ class AppointmentControllerTest extends ControllerTest {
         );
 
         AppointmentAllResponse response2 = new AppointmentAllResponse(
+                2L,
                 "j3KDcd2h",
                 "스터디 회의 시간",
                 "스터디 진행과 관련된 회의입니다.",
@@ -117,6 +119,7 @@ class AppointmentControllerTest extends ControllerTest {
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}";
 
         AppointmentResponse findResponse = new AppointmentResponse(
+                1L,
                 "FJn3ND26",
                 "모락 회식 날짜 및 시간",
                 "필참입니다.",
