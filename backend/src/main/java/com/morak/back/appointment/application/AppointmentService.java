@@ -48,6 +48,7 @@ public class AppointmentService {
         return savedAppointment.getCode();
     }
 
+    @Transactional(readOnly = true)
     public List<AppointmentAllResponse> findAppointments(String teamCode, Long memberId) {
         Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(teamId, memberId);
@@ -58,6 +59,7 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public AppointmentResponse findAppointment(String teamCode, Long memberId, String appointmentCode) {
         Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(teamId, memberId);
@@ -85,6 +87,17 @@ public class AppointmentService {
                 .collect(Collectors.toList());
 
         saveAllAvailableTimes(availableTimes);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RecommendationResponse> recommendAvailableTimes(String teamCode, Long memberId,
+                                                                String appointmentCode) {
+        Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
+        validateMemberInTeam(teamId, memberId);
+
+        Appointment appointment = appointmentRepository.findByCode(appointmentCode)
+                .orElseThrow(() -> new AppointmentNotFoundException(appointmentCode));
+        return null;
     }
 
     public void closeAppointment(String teamCode, Long memberId, String appointmentCode) {
@@ -128,15 +141,5 @@ public class AppointmentService {
         } catch (DataIntegrityViolationException e) {
             throw new InvalidRequestException("동일한 약속잡기 가능 시간을 선택할 수 없습니다.");
         }
-    }
-
-    public List<RecommendationResponse> recommendAvailableTimes(String teamCode, Long memberId,
-                                                                String appointmentCode) {
-        Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
-        validateMemberInTeam(teamId, memberId);
-
-        Appointment appointment = appointmentRepository.findByCode(appointmentCode)
-                .orElseThrow(() -> new AppointmentNotFoundException(appointmentCode));
-        return null;
     }
 }
