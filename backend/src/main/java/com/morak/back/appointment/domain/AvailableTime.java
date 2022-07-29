@@ -15,9 +15,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "appointment_available_time")
 public class AvailableTime extends BaseEntity {
 
@@ -36,9 +38,6 @@ public class AvailableTime extends BaseEntity {
     @Embedded
     @Valid
     private DateTimePeriod dateTimePeriod;
-
-    protected AvailableTime() {
-    }
 
     @Builder
     private AvailableTime(Long id, Appointment appointment, Member member,

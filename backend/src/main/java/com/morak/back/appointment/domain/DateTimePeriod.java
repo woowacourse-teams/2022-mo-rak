@@ -40,7 +40,7 @@ public class DateTimePeriod {
 
     private void validateMinutesUnit(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         if (isNotDividedByUnit(startDateTime) || isNotDividedByUnit(endDateTime)) {
-            throw new InvalidRequestException("약속잡기 가능 시간은 30분 단위여야 합니다.");
+            throw new InvalidRequestException("약속잡기 가능 시간은 " + MINUTES_UNIT + "분 단위여야 합니다.");
         }
     }
 
@@ -50,7 +50,7 @@ public class DateTimePeriod {
 
     private void validateAvailableTimeRange(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         if (Duration.between(startDateTime, endDateTime).toMinutes() != MINUTES_UNIT) {
-            throw new InvalidRequestException("약속잡기 가능 시간은 30분이어야 합니다.");
+            throw new InvalidRequestException("약속잡기 가능 시간은 " + MINUTES_UNIT + "분이어야 합니다.");
         }
     }
 }

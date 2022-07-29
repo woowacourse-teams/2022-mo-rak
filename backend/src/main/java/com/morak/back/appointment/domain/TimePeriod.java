@@ -35,7 +35,7 @@ public class TimePeriod {
 
     private void validateMinutes(LocalTime startTime, LocalTime endTime) {
         if (isNotDividedByUnit(startTime) || isNotDividedByUnit(endTime)) {
-            throw new InvalidRequestException("약속잡기 시작/마지막 시간은 30분 단위여야 합니다.");
+            throw new InvalidRequestException("약속잡기 시작/마지막 시간은 " + MINUTES_UNIT + "분 단위여야 합니다.");
         }
     }
 

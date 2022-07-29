@@ -49,13 +49,13 @@ public class DurationMinutes {
 
     private void validateMinutes(Integer minutes) {
         if (minutes % MINUTES_UNIT != 0) {
-            throw new InvalidRequestException("약속잡기 진행 시간은 30분 단위여야 합니다.");
+            throw new InvalidRequestException("약속잡기 진행 시간은 " + MINUTES_UNIT + "분 단위여야 합니다.");
         }
     }
 
     private void validateDurationMinutesRange(Integer durationMinutes) {
         if (durationMinutes <=  MIN_TIME || durationMinutes > DAY_MINUTES) {
-            throw new InvalidRequestException("약속잡기 진행 시간은 30분~24시간 사이여야 합니다.");
+            throw new InvalidRequestException("약속잡기 진행 시간은 "  + MINUTES_UNIT + "~24시간 사이여야 합니다.");
         }
     }
 }

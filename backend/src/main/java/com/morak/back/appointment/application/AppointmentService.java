@@ -15,6 +15,7 @@ import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.auth.exception.TeamNotFoundException;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.team.domain.Team;
@@ -33,6 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AppointmentService {
 
+    private static final CodeGenerator CODE_GENERATOR = new RandomCodeGenerator();
+
     private final AppointmentRepository appointmentRepository;
     private final AvailableTimeRepository availableTimeRepository;
     private final MemberRepository memberRepository;
@@ -44,7 +47,7 @@ public class AppointmentService {
         Team team = teamRepository.findByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(team.getId(), memberId);
 
-        Appointment appointment = request.toAppointment(team, member, Code.generate(new RandomCodeGenerator()));
+        Appointment appointment = request.toAppointment(team, member, Code.generate(CODE_GENERATOR));
         Appointment savedAppointment = appointmentRepository.save(appointment);
 
         return savedAppointment.getCode();

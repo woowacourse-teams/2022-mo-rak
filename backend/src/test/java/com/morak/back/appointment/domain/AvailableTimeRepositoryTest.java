@@ -1,6 +1,5 @@
 package com.morak.back.appointment.domain;
 
-import static com.morak.back.appointment.domain.AvailableTime.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -54,7 +53,7 @@ class AvailableTimeRepositoryTest {
     @Test
     void 약속잡기_가능_시간을_저장한다() {
         // given
-        AvailableTime availableTime = builder()
+        AvailableTime availableTime = AvailableTime.builder()
                 .member(member)
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
@@ -71,14 +70,14 @@ class AvailableTimeRepositoryTest {
     @Test
     void 약속잡기_가능_시간을_모두_저장한다() {
         // given
-        AvailableTime availableTime1 = builder()
+        AvailableTime availableTime1 = AvailableTime.builder()
                 .member(member)
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
                 .build();
 
-        AvailableTime availableTime2 = builder()
+        AvailableTime availableTime2 = AvailableTime.builder()
                 .member(member)
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
@@ -98,14 +97,14 @@ class AvailableTimeRepositoryTest {
     @Test
     void 같은_약속잡기_가능_시간을_저장하는_경우_예외를_던진다() {
         // given
-        AvailableTime availableTime1 = builder()
+        AvailableTime availableTime1 = AvailableTime.builder()
                 .member(member)
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
                 .build();
 
-        AvailableTime availableTime2 = builder()
+        AvailableTime availableTime2 = AvailableTime.builder()
                 .member(member)
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
@@ -120,14 +119,14 @@ class AvailableTimeRepositoryTest {
     @Test
     void 멤버_id와_약속잡기_id로_약속잡기_가능_시간을_모두_삭제한다() {
         // given
-        AvailableTime availableTime1 = builder()
+        AvailableTime availableTime1 = AvailableTime.builder()
                 .member(member)
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
                 .build();
 
-        AvailableTime availableTime2 = builder()
+        AvailableTime availableTime2 = AvailableTime.builder()
                 .member(member)
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))

@@ -1,6 +1,5 @@
 package com.morak.back.appointment.domain;
 
-import static com.morak.back.appointment.domain.Appointment.builder;
 import static com.morak.back.appointment.domain.AppointmentStatus.CLOSED;
 import static java.time.LocalTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,9 +17,9 @@ class AppointmentTest {
     @Test
     void 포뮬라를_적용해_count를_불러온다() {
         // when
-        Appointment appointment = builder()
-                .host(Member.builder().build())
-                .team(Team.builder().build())
+        Appointment appointment = Appointment.builder()
+                .host(new Member())
+                .team(new Team())
                 .title("스터디 회의 날짜 정하기")
                 .description("필참!!")
                 .startDate(LocalDate.now().plusDays(1))
@@ -39,7 +38,7 @@ class AppointmentTest {
     void 약속잡기를_마감한다() {
         //given
         Member eden = Member.builder().id(1L).build();
-        Appointment appointment = builder()
+        Appointment appointment = Appointment.builder()
                 .host(eden)
                 .team(new Team())
                 .title("스터디 회의 날짜 정하기")
@@ -63,7 +62,7 @@ class AppointmentTest {
     void 약속잡기_마감_시_호스트가_아닐_경우_예외를_반환한다() {
         //given
         Member eden = Member.builder().id(1L).build();
-        Appointment appointment = builder()
+        Appointment appointment = Appointment.builder()
                 .host(eden)
                 .team(new Team())
                 .title("스터디 회의 날짜 정하기")
