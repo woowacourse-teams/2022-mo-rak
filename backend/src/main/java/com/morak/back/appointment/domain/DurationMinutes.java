@@ -15,7 +15,6 @@ public class DurationMinutes {
     private static final int MAX_MINUTES = 59;
     private static final int MAX_HOURS = 24;
     private static final int MINUTES_UNIT = 30;
-    private static final int REMAIN_ZERO = 0;
     private static final int DAY_MINUTES = 1440;
 
     private Integer durationMinutes;
@@ -47,7 +46,7 @@ public class DurationMinutes {
     }
 
     private void validateMinutes(Integer minutes) {
-        if (minutes % MINUTES_UNIT != REMAIN_ZERO) {
+        if (minutes % MINUTES_UNIT != 0) {
             throw new InvalidRequestException("약속잡기 진행 시간은 30분 단위여야 합니다.");
         }
     }

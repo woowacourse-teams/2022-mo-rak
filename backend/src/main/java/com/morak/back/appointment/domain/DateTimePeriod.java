@@ -26,6 +26,7 @@ public class DateTimePeriod {
 
     public DateTimePeriod(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         validateChronology(startDateTime, endDateTime);
+        validateMinutesUnit(startDateTime, endDateTime);
         validateAvailableTimeRange(startDateTime, endDateTime);
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
@@ -35,6 +36,16 @@ public class DateTimePeriod {
         if (startDateTime.isAfter(endDateTime)) {
             throw new InvalidRequestException("약속잡기 마지막 시점은 시작 시점 이후여야 합니다.");
         }
+    }
+
+    private void validateMinutesUnit(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        if (isNotDividedByUnit(startDateTime) || isNotDividedByUnit(endDateTime)) {
+            throw new InvalidRequestException("약속잡기 가능 시간은 30분 단위여야 합니다.");
+        }
+    }
+
+    private boolean isNotDividedByUnit(LocalDateTime time) {
+        return time.getMinute() % MINUTES_UNIT != 0;
     }
 
     private void validateAvailableTimeRange(LocalDateTime startDateTime, LocalDateTime endDateTime) {

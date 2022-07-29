@@ -3,9 +3,12 @@ package com.morak.back.appointment.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.core.exception.InvalidRequestException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class DateTimePeriodTest {
@@ -25,6 +28,18 @@ class DateTimePeriodTest {
         // when & then
         assertThatThrownBy(() -> new DateTimePeriod(LocalDateTime.now().withNano(0),
                 LocalDateTime.now().withNano(0).plusMinutes(minutes)))
+                .isInstanceOf(InvalidRequestException.class);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "10, 40",
+            "20, 50"
+    })
+    void 약속잡기_가능_시간이_30분이_아닌_경우_예외를_던진다(int startMinutes, int endMinutes) {
+        // when & then
+        assertThatThrownBy(() -> new DateTimePeriod(LocalDateTime.of(LocalDate.now(), LocalTime.of(16, startMinutes)),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(16, endMinutes))))
                 .isInstanceOf(InvalidRequestException.class);
     }
 }

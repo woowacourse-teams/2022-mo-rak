@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class TimePeriod {
 
     private static final int MINUTES_UNIT = 30;
-    private static final int REMAIN_ZERO = 0;
 
     @NotNull(message = "약속잡기 시작 시간은 null일 수 없습니다.")
     private LocalTime startTime;
@@ -35,7 +34,7 @@ public class TimePeriod {
     }
 
     private boolean isNotDividedByUnit(LocalTime time) {
-        return time.getMinute() % MINUTES_UNIT != REMAIN_ZERO;
+        return time.getMinute() % MINUTES_UNIT != 0;
     }
 
     private void validateChronology(LocalTime startTime, LocalTime endTime) {
