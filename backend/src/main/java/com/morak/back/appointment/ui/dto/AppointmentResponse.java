@@ -7,38 +7,43 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class AppointmentResponse {
 
-    private final String code;
+    private Long id;
 
-    private final String title;
+    private String code;
 
-    private final String description;
+    private String title;
 
-    private final Integer durationHours;
+    private String description;
 
-    private final Integer durationMinutes;
+    private Integer durationHours;
+
+    private Integer durationMinutes;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private final LocalDate startDate;
+    private LocalDate startDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private final LocalDate endDate;
+    private LocalDate endDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-    private final LocalTime startTime;
+    private LocalTime startTime;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-    private final LocalTime endTime;
+    private LocalTime endTime;
 
     @JsonProperty("isClosed")
-    private final Boolean closed;
+    private Boolean closed;
 
     public static AppointmentResponse from(Appointment appointment) {
         return new AppointmentResponse(
+                appointment.getId(),
                 appointment.getCode(),
                 appointment.getTitle(),
                 appointment.getDescription(),

@@ -3,7 +3,8 @@ package com.morak.back.appointment.domain;
 import static com.morak.back.appointment.domain.AppointmentStatus.OPEN;
 
 import com.morak.back.auth.domain.Member;
-import com.morak.back.core.util.CodeGenerator;
+import com.morak.back.core.domain.Code;
+import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.poll.domain.BaseEntity;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Builder;
@@ -45,7 +47,7 @@ public class Appointment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member host;
 
-    @NotNull(message = "약속잡기 제목은 null일 수 없습니다.")
+    @NotBlank(message = "약속잡기 제목은 빈 값일 수 없습니다.")
     @Size(min = 1, max = 255, message = "약속잡기 제목의 길이는 1~255자여야 합니다.")
     private String title;
 
@@ -69,7 +71,9 @@ public class Appointment extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private AppointmentStatus status;
 
-    private String code;
+    @Embedded
+    @Valid
+    private Code code;
 
     private LocalDateTime closedAt;
 
@@ -77,9 +81,9 @@ public class Appointment extends BaseEntity {
     private Integer count;
 
     @Builder
-    public Appointment(Long id, Team team, Member host, String title, String description, LocalDate startDate,
+    private Appointment(Long id, Team team, Member host, String title, String description, LocalDate startDate,
                        LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer durationHours,
-                       Integer durationMinutes, String code, LocalDateTime closedAt) {
+                       Integer durationMinutes, Code code, LocalDateTime closedAt) {
         this.id = id;
         this.team = team;
         this.host = host;
@@ -89,8 +93,7 @@ public class Appointment extends BaseEntity {
         this.timePeriod = new TimePeriod(startTime, endTime);
         this.durationMinutes = new DurationMinutes(durationHours, durationMinutes);
         this.status = OPEN;
-        // TODO: 2022/07/27 VO로 변경해야함!!
-        this.code = CodeGenerator.createRandomCode(8);
+        this.code = code;
         this.closedAt = LocalDateTime.now().plusMonths(1);
     }
 
@@ -100,6 +103,22 @@ public class Appointment extends BaseEntity {
 
     public Integer parseMinutes() {
         return this.durationMinutes.parseMinutes();
+    }
+
+    public void validateAvailableTimeRange(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        this.datePeriod.validateAvailableDateRange(startDateTime.toLocalDate(), endDateTime.toLocalDate());
+        this.timePeriod.validateAvailableTimeRange(startDateTime.toLocalTime(), endDateTime.toLocalTime());
+    }
+
+    public void close(Member member) {
+        validateHost(member);
+        status = status.close();
+    }
+
+    public void validateHost(Member member) {
+        if (!host.equals(member)) {
+            throw new InvalidRequestException(member.getId() + "번 멤버는 " + id + "번 약속잡기의 호스트가 아닙니다.");
+        }
     }
 
     public Boolean isClosed() {
@@ -120,6 +139,10 @@ public class Appointment extends BaseEntity {
 
     public LocalTime getEndTime() {
         return this.timePeriod.getEndTime();
+    }
+
+    public String getCode() {
+        return code.getCode();
     }
 
     public Integer getCount() {

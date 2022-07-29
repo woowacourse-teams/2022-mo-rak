@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class TimePeriod {
 
     private static final int MINUTES_UNIT = 30;
-    private static final int REMAIN_ZERO = 0;
 
     @NotNull(message = "약속잡기 시작 시간은 null일 수 없습니다.")
     private LocalTime startTime;
@@ -28,14 +27,20 @@ public class TimePeriod {
         this.endTime = endTime;
     }
 
+    public void validateAvailableTimeRange(LocalTime startTime, LocalTime endTime) {
+        if (startTime.isBefore(this.startTime) || endTime.isAfter(this.endTime)) {
+            throw new InvalidRequestException("약속잡기 가능 시간은 지정한 시간 이내여야 합니다.");
+        }
+    }
+
     private void validateMinutes(LocalTime startTime, LocalTime endTime) {
         if (isNotDividedByUnit(startTime) || isNotDividedByUnit(endTime)) {
-            throw new InvalidRequestException("약속잡기 시작/마지막 시간은 30분 단위여야 합니다.");
+            throw new InvalidRequestException("약속잡기 시작/마지막 시간은 " + MINUTES_UNIT + "분 단위여야 합니다.");
         }
     }
 
     private boolean isNotDividedByUnit(LocalTime time) {
-        return time.getMinute() % MINUTES_UNIT != REMAIN_ZERO;
+        return time.getMinute() % MINUTES_UNIT != 0;
     }
 
     private void validateChronology(LocalTime startTime, LocalTime endTime) {
