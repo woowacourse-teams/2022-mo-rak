@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,9 +27,11 @@ public class AvailableTime extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "약속잡기 가능 시간은 약속잡기에 소속되어 있어야합니다.")
     @ManyToOne(fetch = FetchType.LAZY)
     private Appointment appointment;
 
+    @NotNull(message = "약속잡기 가능 시간은 호스트가 있어야합니다.")
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 

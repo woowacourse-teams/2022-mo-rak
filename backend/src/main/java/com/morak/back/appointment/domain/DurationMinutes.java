@@ -2,6 +2,7 @@ package com.morak.back.appointment.domain;
 
 import com.morak.back.core.exception.InvalidRequestException;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ public class DurationMinutes {
     private static final int MINUTES_UNIT = 30;
     private static final int DAY_MINUTES = 1440;
 
+    @NotNull(message = "약속잡기 진행 시간은 null일 수 없습니다.")
     private Integer durationMinutes;
 
     public DurationMinutes(Integer hours, Integer minutes) {
