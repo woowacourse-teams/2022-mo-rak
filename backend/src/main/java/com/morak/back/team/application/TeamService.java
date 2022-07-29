@@ -6,6 +6,7 @@ import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.auth.exception.TeamNotFoundException;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.exception.ResourceNotFoundException;
 import com.morak.back.team.domain.Team;
@@ -33,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TeamService {
 
-    private static final RandomCodeGenerator CODE_GENERATOR = new RandomCodeGenerator();
+    private static final CodeGenerator CODE_GENERATOR = new RandomCodeGenerator();
 
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
@@ -43,7 +44,7 @@ public class TeamService {
     public String createTeam(Long memberId, TeamCreateRequest request) {
         Team team = Team.builder()
                 .name(request.getName())
-                .code(Code.generate(new RandomCodeGenerator()))
+                .code(Code.generate(CODE_GENERATOR))
                 .build();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
         Team savedTeam = teamRepository.save(team);

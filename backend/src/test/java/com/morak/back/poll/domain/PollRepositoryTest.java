@@ -3,6 +3,7 @@ package com.morak.back.poll.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ class PollRepositoryTest {
                 .allowedPollCount(1)
                 .status(PollStatus.OPEN)
                 .closedAt(LocalDateTime.now().plusDays(1L))
-                .code("testcode")
+                .code(new Code("testcode"))
                 .build();
 
         // when

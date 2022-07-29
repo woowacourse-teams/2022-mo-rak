@@ -79,7 +79,7 @@ class PollServiceTest {
                 .isAnonymous(true)
                 .status(OPEN)
                 .closedAt(LocalDateTime.now().plusDays(1L))
-                .code("ABCD1234")
+                .code(new Code("ABCD1234"))
                 .build();
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
     }
