@@ -76,7 +76,7 @@ public class Poll extends BaseEntity {
     private List<PollItem> pollItems = new ArrayList<>();
 
     @Builder
-    public Poll(Long id, Team team, Member host, String title, Integer allowedPollCount, Boolean isAnonymous,
+    private Poll(Long id, Team team, Member host, String title, Integer allowedPollCount, Boolean isAnonymous,
                 PollStatus status, LocalDateTime closedAt, Code code) {
 
         this.id = id;

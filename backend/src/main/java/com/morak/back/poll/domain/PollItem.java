@@ -42,7 +42,7 @@ public class PollItem extends BaseEntity {
     private List<PollResult> pollResults = new ArrayList<>();
 
     @Builder
-    public PollItem(Long id, Poll poll, String subject) {
+    private PollItem(Long id, Poll poll, String subject) {
         this.id = id;
         this.poll = poll;
         this.subject = subject;
