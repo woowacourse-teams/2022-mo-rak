@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
-import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,9 +24,6 @@ class AvailableTimeRepositoryTest {
     private AvailableTimeRepository availableTimeRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
     private AppointmentRepository appointmentRepository;
 
     private Member member;
@@ -35,7 +31,7 @@ class AvailableTimeRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.findById(1L).orElseThrow();
+        member = new Member(1L, null, null, null);
         this.appointment = appointmentRepository.save(
                 Appointment.builder()
                         .host(member)

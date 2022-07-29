@@ -4,9 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
-import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.team.domain.Team;
-import com.morak.back.team.domain.TeamRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -24,19 +22,13 @@ class AppointmentRepositoryTest {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    @Autowired
-    private TeamRepository teamRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
     private Member member;
     private Team team;
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.findById(1L).orElseThrow();
-        team = teamRepository.findByCode("MoraK123").orElseThrow();
+        member = new Member(1L, null, null, null);
+        team = new Team(1L, null, null);
     }
 
     @Test
