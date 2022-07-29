@@ -36,7 +36,8 @@ class PollRepositoryTest {
                 .allowedPollCount(1)
                 .status(PollStatus.OPEN)
                 .closedAt(LocalDateTime.now().plusDays(1L))
-                .code(Code.generate(length -> "testcode"))
+                .code(Code.generate(length -> "unique99"))
+                .code("unique99")
                 .build();
 
         // when
@@ -68,7 +69,7 @@ class PollRepositoryTest {
     @Test
     void 투표_단건을_조회한다() {
         // given
-        Poll poll = pollRepository.findByIdAndTeamId(1L, 1L).orElseThrow();
+        Poll poll = pollRepository.findByCodeAndTeamId("testcode", 1L).orElseThrow();
 
         // when & then
         Assertions.assertAll(
@@ -78,9 +79,9 @@ class PollRepositoryTest {
     }
 
     @Test
-    void 잘못된_팀_id로_조회할_경우_null을_반환한다() {
+    void 잘못된_팀_code로_조회할_경우_null을_반환한다() {
         // given
-        Optional<Poll> poll = pollRepository.findByIdAndTeamId(999L, 999L);
+        Optional<Poll> poll = pollRepository.findByCodeAndTeamId("chaleeleeeee", 999L);
 
         // when & then
         assertThat(poll).isEmpty();

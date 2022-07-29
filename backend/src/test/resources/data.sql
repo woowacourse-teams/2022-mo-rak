@@ -13,7 +13,7 @@ INSERT INTO team_member (team_id, member_id, created_at, updated_at) values(1, 3
 
 INSERT INTO poll (team_id, host_id, title, allowed_poll_count, is_anonymous, status, created_at, updated_at, closed_at,
                   code)
-values (1, 1, 'test-poll-title', 2, true, 'OPEN', now(), now(), now(), 'test-code');
+values (1, 1, 'test-poll-title', 2, true, 'OPEN', now(), now(), now(), 'testcode');
 
 INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
 values (1, 'test-poll-item-subject-A', now(), now());
