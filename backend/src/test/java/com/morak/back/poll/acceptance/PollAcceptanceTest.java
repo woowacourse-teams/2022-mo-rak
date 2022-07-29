@@ -13,7 +13,7 @@ import com.morak.back.AcceptanceTest;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemRequest;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
@@ -72,10 +72,10 @@ class PollAcceptanceTest extends AcceptanceTest {
     void 투표를_진행한다() {
         // given
         String location = 기본_투표_생성을_요청한다().header("Location");
-        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이 나기 때문이에요"));
+        List<PollResultRequest> pollResultRequests = List.of(new PollResultRequest(4L, "눈물이 나기 때문이에요"));
 
         // when
-        ExtractableResponse<Response> response = 투표_진행을_요청한다(location, pollItemRequests);
+        ExtractableResponse<Response> response = 투표_진행을_요청한다(location, pollResultRequests);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -86,12 +86,12 @@ class PollAcceptanceTest extends AcceptanceTest {
         // given
         String location = 기본_투표_생성을_요청한다().header("Location");
 
-        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이_나기_때문이에요"));
-        투표_진행을_요청한다(location, pollItemRequests);
+        List<PollResultRequest> pollResultRequests = List.of(new PollResultRequest(4L, "눈물이_나기_때문이에요"));
+        투표_진행을_요청한다(location, pollResultRequests);
 
         // when
-        List<PollItemRequest> rePollItemRequests = List.of(new PollItemRequest(5L, "다시_일어설거에요!"));
-        ExtractableResponse<Response> rePollResponse = 투표_진행을_요청한다(location, rePollItemRequests);
+        List<PollResultRequest> rePollResultRequests = List.of(new PollResultRequest(5L, "다시_일어설거에요!"));
+        ExtractableResponse<Response> rePollResponse = 투표_진행을_요청한다(location, rePollResultRequests);
 
         // then
         assertThat(rePollResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -138,7 +138,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     void 투표를_진행한_상태에서_투표_선택_항목을_조회한다() {
         // given
         String location = 기본_투표_생성을_요청한다().header("Location");
-        투표_진행을_요청한다(location, List.of(new PollItemRequest(4L, "월요일이기때문!!")));
+        투표_진행을_요청한다(location, List.of(new PollResultRequest(4L, "월요일이기때문!!")));
 
         // when
         ExtractableResponse<Response> response = 투표_선택항목_조회를_요청한다(location);
@@ -165,8 +165,8 @@ class PollAcceptanceTest extends AcceptanceTest {
                 List.of("항목1", "항목2", "항목3"));
         String location = 투표_생성을_요청한다(request, accessToken).header("Location");
 
-        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이_나기_때문이에요"));
-        투표_진행을_요청한다(location, pollItemRequests);
+        List<PollResultRequest> pollResultRequests = List.of(new PollResultRequest(4L, "눈물이_나기_때문이에요"));
+        투표_진행을_요청한다(location, pollResultRequests);
 
         // when
         ExtractableResponse<Response> response = 투표_결과_조회를_요청한다(location);
@@ -189,8 +189,8 @@ class PollAcceptanceTest extends AcceptanceTest {
         // given
         String location = 기본_투표_생성을_요청한다().header("Location");
 
-        List<PollItemRequest> pollItemRequests = List.of(new PollItemRequest(4L, "눈물이_나기_때문이에요"));
-        투표_진행을_요청한다(location, pollItemRequests);
+        List<PollResultRequest> pollResultRequests = List.of(new PollResultRequest(4L, "눈물이_나기_때문이에요"));
+        투표_진행을_요청한다(location, pollResultRequests);
 
         // when
         ExtractableResponse<Response> response = 투표_결과_조회를_요청한다(location);
@@ -269,11 +269,53 @@ class PollAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
+    @Test
+    void 종료시간이_없으면_BAD_REQUEST를_응답한다() {
+        // given
+        PollCreateRequest request = new PollCreateRequest(
+                "title", 2, false, null, List.of("hello", "world")
+        );
+
+        // when
+        ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 종료시간이_미래가_아니라면_BAD_REQUEST를_응답한다() {
+        // given
+        PollCreateRequest request = new PollCreateRequest(
+                "title", 2, false, LocalDateTime.now(), List.of("hello", "world")
+        );
+
+        // when
+        ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 종료시간이_과거라면_BAD_REQUEST를_응답한다() {
+        // given
+        PollCreateRequest request = new PollCreateRequest(
+                "title", 2, false, LocalDateTime.now().minusMinutes(1), List.of("hello", "world")
+        );
+
+        // when
+        ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
     private ExtractableResponse<Response> 투표_목록_조회를_요청한다(String path) {
         return get(path, toHeader(accessToken));
     }
 
-    private ExtractableResponse<Response> 투표_진행을_요청한다(String location, List<PollItemRequest> requests) {
+    private ExtractableResponse<Response> 투표_진행을_요청한다(String location, List<PollResultRequest> requests) {
         return put(location, requests, toHeader(accessToken));
     }
 

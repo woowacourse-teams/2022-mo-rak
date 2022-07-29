@@ -3,7 +3,7 @@ package com.morak.back.poll.ui;
 import com.morak.back.auth.support.Auth;
 import com.morak.back.poll.application.PollService;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemRequest;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
@@ -41,7 +41,7 @@ public class PollController {
     public ResponseEntity<Void> doPoll(@PathVariable String groupCode,
                                        @Auth Long memberId,
                                        @PathVariable Long id,
-                                       @Valid @RequestBody List<PollItemRequest> requests) {
+                                       @Valid @RequestBody List<PollResultRequest> requests) {
         pollService.doPoll(groupCode, memberId, id, requests);
         return ResponseEntity.ok().build();
     }

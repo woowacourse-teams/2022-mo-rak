@@ -11,11 +11,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class TeamInvitation extends BaseEntity {
 
     private static final long EXPIRED_MINUTES = 30L;
@@ -25,6 +28,7 @@ public class TeamInvitation extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull(message = "team은 null 일 수 없습니다.")
     private Team team;
 
     @Embedded
@@ -34,9 +38,6 @@ public class TeamInvitation extends BaseEntity {
     @Embedded
     @Valid
     private ExpiredTime expiredAt;
-
-    protected TeamInvitation() {
-    }
 
     @Builder
     public TeamInvitation(Long id, Team team, Code code, ExpiredTime expiredAt) {

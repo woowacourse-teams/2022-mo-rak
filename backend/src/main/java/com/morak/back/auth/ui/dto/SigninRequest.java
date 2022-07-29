@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SigninRequest {
 
-    @NotBlank
+    @NotBlank(message = "code는 blank일 수 없습니다.")
     private String code;
 }

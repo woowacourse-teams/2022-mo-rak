@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class TeamCreateRequest {
 
-    @NotBlank
+    @NotBlank(message = "team name은 blank 일 수 없습니다")
     private final String name;
 
     @JsonCreator

@@ -29,13 +29,15 @@ public class PollResult extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
+    @NotNull(message = "pollItem 은 null 일 수 없습니다.")
     private PollItem pollItem;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
+    @NotNull(message = "member 는 null 일 수 없습니다.")
     private Member member;
 
-    @NotNull
+    @NotNull(message = "description 은 null 일 수 없습니다.")
     @Size(max = 255, message = "description은 최대 255자여야 합니다.")
     private String description;
 

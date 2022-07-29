@@ -58,8 +58,8 @@ public class Member extends BaseEntity {
             return false;
         }
         Member member = (Member) o;
-        return Objects.equals(id, member.getId()) && Objects.equals(oauthId, member.oauthId)
-                && Objects.equals(name, member.name) && Objects.equals(profileUrl, member.profileUrl);
+        return Objects.equals(id, member.getId()) && Objects.equals(oauthId, member.getOauthId())
+                && Objects.equals(name, member.getName()) && Objects.equals(profileUrl, member.getProfileUrl());
     }
 
     @Override

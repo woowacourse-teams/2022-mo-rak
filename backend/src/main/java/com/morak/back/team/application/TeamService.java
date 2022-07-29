@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class TeamService {
+
     private static final RandomCodeGenerator CODE_GENERATOR = new RandomCodeGenerator();
 
     private final TeamRepository teamRepository;

@@ -43,9 +43,11 @@ public class Poll extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull(message = "team 은 null 일 수 없습니다.")
     private Team team;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull(message = "host 는 null 일 수 없습니다.")
     private Member host;
 
     @NotBlank(message = "title 은 blank 일 수 없습니다.")
@@ -60,8 +62,10 @@ public class Poll extends BaseEntity {
     private Boolean isAnonymous;
 
     @Enumerated(value = EnumType.STRING)
+    @NotNull(message = "status 는 null 일 수 없습니다.")
     private PollStatus status;
 
+    @NotNull(message = "closedAt 은 null 일 수 없습니다.")
     private LocalDateTime closedAt;
 
     @Embedded

@@ -14,7 +14,7 @@ import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.exception.PollItemNotFoundException;
 import com.morak.back.poll.exception.PollNotFoundException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemRequest;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
@@ -74,7 +74,7 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
-    public void doPoll(String teamCode, Long memberId, Long pollId, List<PollItemRequest> requests) {
+    public void doPoll(String teamCode, Long memberId, Long pollId, List<PollResultRequest> requests) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
         Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(teamId, memberId);
@@ -85,12 +85,12 @@ public class PollService {
         poll.doPoll(member, mapPollItemAndDescription(requests));
     }
 
-    private Map<PollItem, String> mapPollItemAndDescription(List<PollItemRequest> requests) {
+    private Map<PollItem, String> mapPollItemAndDescription(List<PollResultRequest> requests) {
         return requests.stream()
-                .collect(Collectors.toMap(this::getPollItem, PollItemRequest::getDescription));
+                .collect(Collectors.toMap(this::getPollItem, PollResultRequest::getDescription));
     }
 
-    private PollItem getPollItem(PollItemRequest request) {
+    private PollItem getPollItem(PollResultRequest request) {
         Long pollItemId = request.getItemId();
         return pollItemRepository.findById(pollItemId).orElseThrow(() -> new PollItemNotFoundException(pollItemId));
     }

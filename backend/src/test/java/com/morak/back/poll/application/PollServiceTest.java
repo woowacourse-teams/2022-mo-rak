@@ -19,7 +19,7 @@ import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemRequest;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
@@ -159,7 +159,7 @@ class PollServiceTest {
 
         // when
         pollService.doPoll(team.getCode(), member.getId(), 1L,
-                List.of(new PollItemRequest(1L, "그냥뇨"), new PollItemRequest(2L, "ㅋ")));
+                List.of(new PollResultRequest(1L, "그냥뇨"), new PollResultRequest(2L, "ㅋ")));
 
         // then
         Assertions.assertAll(
@@ -200,8 +200,8 @@ class PollServiceTest {
 
         // when
         pollService.doPoll(team.getCode(), member.getId(), poll.getId(),
-                List.of(new PollItemRequest(pollItem2.getId(), "하기싫다."),
-                        new PollItemRequest(pollItem3.getId(), "테스트 수정")
+                List.of(new PollResultRequest(pollItem2.getId(), "하기싫다."),
+                        new PollResultRequest(pollItem3.getId(), "테스트 수정")
                 ));
 
         // then

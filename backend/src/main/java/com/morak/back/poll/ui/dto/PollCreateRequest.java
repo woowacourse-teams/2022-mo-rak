@@ -10,28 +10,27 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.Future;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
 public class PollCreateRequest {
 
-    @NotBlank
+    @NotBlank(message = "title은 blank일 수 없습니다.")
     private final String title;
 
-    @NotNull
+    @NotNull(message = "allowedPollCount 는 null 일 수 없습니다.")
     private final Integer allowedPollCount;
 
-    @NotNull
+    @NotNull(message = "isAnonymous 는 null 일 수 없습니다.")
     private final Boolean isAnonymous;
 
-    @Future
+    @Future(message = "closedAt은 미래여야 합니다.")
     private final LocalDateTime closedAt;
 
-    @NotNull
+    @NotNull(message = "subjects 는 null 일 수 없습니다.")
     private final List<String> subjects;
 
     @JsonCreator
