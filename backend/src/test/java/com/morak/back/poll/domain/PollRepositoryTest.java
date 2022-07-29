@@ -36,7 +36,7 @@ class PollRepositoryTest {
                 .allowedPollCount(1)
                 .status(PollStatus.OPEN)
                 .closedAt(LocalDateTime.now().plusDays(1L))
-                .code(new Code("testcode"))
+                .code(Code.generate(length -> "testcode"))
                 .build();
 
         // when

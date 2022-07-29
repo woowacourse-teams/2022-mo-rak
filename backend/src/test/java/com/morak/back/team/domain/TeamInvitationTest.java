@@ -11,7 +11,7 @@ class TeamInvitationTest {
     void 만료되지_않은_시간인지_확인한다() {
         // given
         TeamInvitation teamInvitation = TeamInvitation.builder()
-                .code(new Code("abcd1234"))
+                .code(Code.generate(length -> "abcd1234"))
                 .expiredAt(ExpiredTime.withMinute(30L))
                 .build();
 
@@ -26,7 +26,7 @@ class TeamInvitationTest {
     void 만료된_시간인지_확인한다() {
         // given
         TeamInvitation teamInvitation = TeamInvitation.builder()
-                .code(new Code("abcd1234"))
+                .code(Code.generate(length -> "abcd1234"))
                 .expiredAt(ExpiredTime.withMinute(-10L))
                 .build();
 

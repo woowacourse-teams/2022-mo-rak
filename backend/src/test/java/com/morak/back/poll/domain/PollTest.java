@@ -29,7 +29,7 @@ class PollTest {
         team = Team.builder()
                 .id(1L)
                 .name("team1")
-                .code(new Code("abcd1234")).build();
+                .code(Code.generate(length -> "abcd1234")).build();
         member = Member.builder()
                 .id(1L)
                 .oauthId("12345678")
@@ -45,7 +45,7 @@ class PollTest {
                 .isAnonymous(true)
                 .status(PollStatus.OPEN)
                 .closedAt(LocalDateTime.now().plusDays(1L))
-                .code(new Code("ABCD1234"))
+                .code(Code.generate(length -> "ABCD1234"))
                 .build();
         itemA = PollItem.builder()
                 .id(1L)

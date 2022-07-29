@@ -72,15 +72,15 @@ class TeamServiceTest {
         team = Team.builder()
                 .id(1L)
                 .name("team")
-                .code(new Code("ABCD1234"))
+                .code(Code.generate(length -> "ABCD1234"))
                 .build();
         teamInvitation = TeamInvitation.builder()
                 .id(1L)
                 .team(team)
-                .code(new Code("12345678"))
+                .code(Code.generate(length -> "12345678"))
                 .expiredAt(ExpiredTime.withMinute(30L))
                 .build();
-        code = new Code("abcd1234");
+        code = Code.generate(length -> "abcd1234");
     }
 
     @Test
@@ -174,7 +174,7 @@ class TeamServiceTest {
     @Test
     void 그룹_목록을_조회한다() {
         // given
-        Code code = new Code("abcd1234");
+        Code code = Code.generate(length -> "abcd1234");
         Team teamA = Team.builder()
                 .name("team-A")
                 .code(code)
