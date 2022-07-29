@@ -25,12 +25,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Formula;
 
 @Entity
 @Getter
-@NoArgsConstructor
 public class Appointment extends BaseEntity {
 
     private static final int NO_ONE_SELECTED = 0;
@@ -80,8 +78,11 @@ public class Appointment extends BaseEntity {
     @Formula("(SELECT COUNT(DISTINCT aat.member_id) FROM appointment_available_time aat WHERE aat.appointment_id = id)")
     private Integer count;
 
+    protected Appointment() {
+    }
+
     @Builder
-    public Appointment(Long id, Team team, Member host, String title, String description, LocalDate startDate,
+    private Appointment(Long id, Team team, Member host, String title, String description, LocalDate startDate,
                        LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer durationHours,
                        Integer durationMinutes, Code code, LocalDateTime closedAt) {
         this.id = id;
