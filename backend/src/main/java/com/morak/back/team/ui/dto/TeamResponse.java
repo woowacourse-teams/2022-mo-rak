@@ -7,16 +7,18 @@ import lombok.Getter;
 @Getter
 public class TeamResponse {
 
+    private Long id;
     private String code;
     private String name;
 
     @JsonCreator
-    public TeamResponse(String code, String name) {
+    public TeamResponse(Long id, String code, String name) {
+        this.id = id;
         this.code = code;
         this.name = name;
     }
 
     public static TeamResponse from(Team team) {
-        return new TeamResponse(team.getCode(), team.getName());
+        return new TeamResponse(team.getId(), team.getCode(), team.getName());
     }
 }

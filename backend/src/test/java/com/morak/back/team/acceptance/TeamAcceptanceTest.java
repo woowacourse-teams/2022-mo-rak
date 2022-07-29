@@ -10,6 +10,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.AuthSupporter;
+import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
@@ -186,6 +187,23 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 );
     }
 
+    @Test
+    void 기본_그룹을_조회한다() {
+        String otherToken = tokenProvider.createToken(String.valueOf(4L));
+
+        String targetName = "AAA";
+        사용자로_그룹_생성을_요청한다(new TeamCreateRequest(targetName), otherToken);
+        사용자로_그룹_생성을_요청한다(new TeamCreateRequest("BBB"), otherToken);
+        사용자로_그룹_생성을_요청한다(new TeamCreateRequest("CCC"), otherToken);
+
+        ExtractableResponse<Response> response = get("/api/groups/default", toHeader(otherToken));
+
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.as(TeamResponse.class).getName()).isEqualTo(targetName)
+        );
+    }
+
 
     @Test
     void 그룹을_탈퇴한다() {
@@ -204,8 +222,12 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         return delete("/api/groups/out/" + teamCode, toHeader(token));
     }
 
-    private ExtractableResponse<Response> 그룹_생성을_요청한다(TeamCreateRequest request) {
+    private ExtractableResponse<Response> 사용자로_그룹_생성을_요청한다(TeamCreateRequest request, String token) {
         return post("/api/groups", request, toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 그룹_생성을_요청한다(TeamCreateRequest request) {
+        return 사용자로_그룹_생성을_요청한다(request, token);
     }
 
     private ExtractableResponse<Response> 기본_그룹_생성을_요청한다() {
