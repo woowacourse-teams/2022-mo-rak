@@ -9,7 +9,7 @@ public interface AvailableTimeRepository extends Repository<AvailableTime, Long>
 
     List<AvailableTime> saveAll(Iterable<AvailableTime> availableTimes);
 
-    void deleteAllByMemberIdAndAppointmentId(Long memberId, Long appointmentId);
-
     List<AvailableTime> findAllByMemberIdAndAppointmentId(Long memberId, Long appointmentId);
+
+    void deleteAllByMemberIdAndAppointmentId(Long memberId, Long appointmentId);
 }

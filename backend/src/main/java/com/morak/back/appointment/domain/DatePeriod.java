@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Embeddable
 public class DatePeriod {
-    
+
     @NotNull(message = "약속잡기 시작 날짜는 null일 수 없습니다.")
     private LocalDate startDate;
 
@@ -25,6 +25,12 @@ public class DatePeriod {
         this.endDate = endDate;
     }
 
+    public void validateAvailableDateRange(LocalDate startDate, LocalDate endDate) {
+        if (startDate.isBefore(this.startDate) || endDate.isAfter(this.endDate)) {
+            throw new InvalidRequestException("약속잡기 가능 시간은 지정한 날짜 이내여야 합니다.");
+        }
+    }
+
     private void validateFutureOrPresent(LocalDate startDate, LocalDate endDate) {
         if (startDate.isBefore(LocalDate.now()) || endDate.isBefore(LocalDate.now())) {
             throw new InvalidRequestException("약속잡기 날짜는 과거일 수 없습니다.");
@@ -34,12 +40,6 @@ public class DatePeriod {
     private void validateChronology(LocalDate startDate, LocalDate endDate) {
         if (startDate.isAfter(endDate)) {
             throw new InvalidRequestException("약속잡기 마지막 날짜는 시작 날짜 이후여야 합니다.");
-        }
-    }
-
-    public void validateAvailableDateRange(LocalDate startDate, LocalDate endDate) {
-        if (startDate.isBefore(this.startDate) || endDate.isAfter(this.endDate)) {
-            throw new InvalidRequestException("약속잡기 가능 시간은 지정한 날짜 이내여야 합니다.");
         }
     }
 }

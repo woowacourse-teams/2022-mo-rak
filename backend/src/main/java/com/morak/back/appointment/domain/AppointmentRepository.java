@@ -8,9 +8,9 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
 
     Appointment save(Appointment appointment);
 
-    Optional<Appointment> findByCode(String code);
-
     List<Appointment> findAllByTeamId(Long teamId);
+
+    Optional<Appointment> findByCode(String code);
 
     void deleteById(Long id);
 }
