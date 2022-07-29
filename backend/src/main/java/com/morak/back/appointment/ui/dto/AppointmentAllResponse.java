@@ -4,25 +4,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.appointment.domain.Appointment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class AppointmentAllResponse {
 
-    private final String code;
+    private String code;
 
-    private final String title;
+    private String title;
 
-    private final String description;
+    private String description;
 
-    private final Integer durationHours;
+    private Integer durationHours;
 
-    private final Integer durationMinutes;
+    private Integer durationMinutes;
 
     @JsonProperty("isClosed")
-    private final Boolean closed;
+    private Boolean closed;
 
-    private final Integer count;
+    private Integer count;
 
     public static AppointmentAllResponse from(Appointment appointment) {
         return new AppointmentAllResponse(

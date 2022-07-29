@@ -6,21 +6,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class RecommendationResponse {
 
-    private final Integer rank;
+    private Integer rank;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime recommendStartDateTime;
+    private LocalDateTime recommendStartDateTime;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime recommendEndDateTime;
+    private LocalDateTime recommendEndDateTime;
 
     // TODO: 2022/07/27 기존의 MemberResponse를 쓰기 위해 memberId를 id로 변경해서 사용하고 있음!
-    private final List<MemberResponse> availableMembers;
+    private List<MemberResponse> availableMembers;
 
-    private final List<MemberResponse> unavailableMembers;
+    private List<MemberResponse> unavailableMembers;
 }
