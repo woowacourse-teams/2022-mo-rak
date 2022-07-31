@@ -11,6 +11,8 @@ import SidebarLayout from './components/SidebarLayout/SidebarLayout';
 import MainPage from './pages/MainPage/MainPage';
 import InvitationPage from './pages/InvitationPage/InvitationPage';
 import { PrivateRoute } from './routes/PrivateRoute';
+import AppointmentMainPage from './pages/AppointmentMainPage/AppointmentMainPage';
+import AppointmentCreatePage from './pages/AppointmentCreatePage/AppointmentCreatePage';
 
 function App() {
   return (
@@ -28,6 +30,10 @@ function App() {
                   <Route path="create" element={<PollCreatePage />} />
                   <Route path=":pollId/progress" element={<PollProgressPage />} />
                   <Route path=":pollId/result" element={<PollResultPage />} />
+                </Route>
+                <Route path="appointment">
+                  <Route index element={<AppointmentMainPage />} />
+                  <Route path="create" element={<AppointmentCreatePage />} />
                 </Route>
               </Route>
             </Route>

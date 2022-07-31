@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import FlexContainer from '../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../common/FlexContainer/FlexContainer';
 
-import Poll from '../../assets/poll.svg';
-import Appointment from '../../assets/appointment.svg';
+import Poll from '../../../assets/poll.svg';
+import Appointment from '../../../assets/appointment.svg';
 
 function MainFeatureMenuContainer() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ function MainFeatureMenuContainer() {
 
   return (
     <FlexContainer flexDirection="column">
-      <StyledTitle>사용할 기능을 선택하세요!</StyledTitle>
+      <StyledTitle>사용s할 기능을 선택하세요!</StyledTitle>
 
       <FlexContainer justifyContent="center" gap="8rem">
         {/* TODO: 네이밍 고민 */}
@@ -25,7 +25,7 @@ function MainFeatureMenuContainer() {
           </StlyedImageWrapper>
           <StyledFeatureMenuName>투표하기</StyledFeatureMenuName>
         </StyledFeatureMenuContainer>
-        <StyledFeatureMenuContainer onClick={handleNavigate('/')}>
+        <StyledFeatureMenuContainer onClick={handleNavigate('appointment')}>
           <StlyedImageWrapper>
             <StyledImage src={Appointment} alt="appointment-menu" />
           </StlyedImageWrapper>
