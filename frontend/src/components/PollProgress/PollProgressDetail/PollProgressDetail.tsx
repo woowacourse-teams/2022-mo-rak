@@ -41,7 +41,7 @@ function PollProgressDetail({ isAnonymous, allowedPollCount }: Props) {
 const StyledDetail = styled.span(
   ({ theme }) => `
   color: ${theme.colors.PURPLE_100};
-  fontSize: 0.8rem;
+  font-size: 0.8rem;
 `
 );
 
