@@ -1,7 +1,7 @@
 interface CreateRangeInterface {
   size: number;
-  startNumber: number;
-  isReverse: boolean;
+  startNumber?: number;
+  isReverse?: boolean;
 }
 
 const createRange = ({
