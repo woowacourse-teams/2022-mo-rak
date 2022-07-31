@@ -14,6 +14,7 @@ interface Props {
   groupCode?: GroupInterface['code'];
 }
 
+// TODO: 삭제랑, 투표하기 버튼이 둘 다 있어서 Button Group 해야할듯?
 function PollProgressSubmitButton({ pollId, isHost, groupCode }: Props) {
   const theme = useTheme();
   const navigate = useNavigate();

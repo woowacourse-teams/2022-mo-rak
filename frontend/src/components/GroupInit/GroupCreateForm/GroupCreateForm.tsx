@@ -29,6 +29,9 @@ function GroupCreateForm() {
     setGroupName(e.target.value);
   };
 
+  // TODO: 컴포넌트 분리 일관성 고민해보기 - PollCreateForm에서는 Input을 따로 컴포넌트로 분리했는데, 여기서는 컴포넌트로 분리하지않음
+  // 그래서, 해주려면 한 가지 방식으로 해주는 게 좋아보임
+
   return (
     <StyledForm onSubmit={handleCreateGroup}>
       <StyledTitle>그룹생성</StyledTitle>
