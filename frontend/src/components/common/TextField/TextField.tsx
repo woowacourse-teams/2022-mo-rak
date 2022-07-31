@@ -48,14 +48,14 @@ const StyledContainer = styled.div<
     variantStyle: string;
   }
 >(
-  ({ width, borderRadius, variantStyle, padding }) => `
+  ({ width, borderRadius, variantStyle, padding, boxShadow }) => `
     ${variantStyle};
     position: relative;
     text-align: center;
     ${width && `width: ${width}`};
     ${borderRadius && `border-radius: ${borderRadius}`};
     ${padding && `padding: ${padding}`};
-
+    ${boxShadow && `box-shadow: 0px 4px 4px ${boxShadow};`};
   `
 );
 
