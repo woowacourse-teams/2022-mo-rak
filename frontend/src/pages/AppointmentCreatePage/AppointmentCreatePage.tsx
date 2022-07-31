@@ -2,13 +2,13 @@ import styled from '@emotion/styled';
 import React from 'react';
 import Box from '../../components/common/Box/Box';
 import AppointmentCreateForm from '../../components/AppointmentCreate/AppointmentCreateForm/AppointmentCreateForm';
+import AppointmentCreateHeader from '../../components/AppointmentCreate/AppointmentCreateHeader/AppointmentCreateHeadert';
 
 function AppointmentCreatePage() {
   return (
     <StyledContainer>
       <StyledLeftContainer>
-        <StyledHeader>약속을 생성하세요</StyledHeader>
-        <StyledHeaderContent>여러분이 만날날을 생성해주세요~</StyledHeaderContent>
+        <AppointmentCreateHeader />
         <Box width="45.2rem" minHeight="60rem" />
       </StyledLeftContainer>
       <StyledRightContainer>
@@ -24,14 +24,6 @@ const StyledContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 6rem;
-`;
-
-const StyledHeader = styled.header`
-  font-size: 4rem;
-`;
-
-const StyledHeaderContent = styled.p`
-  font-size: 2rem;
 `;
 
 const StyledLeftContainer = styled.div`
