@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import React, { PropsWithChildren, CSSProperties } from 'react';
+import React, { PropsWithChildren, CSSProperties, SelectHTMLAttributes } from 'react';
 
-interface Props extends PropsWithChildren {}
+interface Props extends PropsWithChildren<SelectHTMLAttributes<HTMLSelectElement>> {}
 
 function Select({ children }: Props & CSSProperties) {
   return <StyledSelect>{children}</StyledSelect>;
