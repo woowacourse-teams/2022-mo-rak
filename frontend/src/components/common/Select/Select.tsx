@@ -3,8 +3,8 @@ import React, { PropsWithChildren, CSSProperties, SelectHTMLAttributes } from 'r
 
 interface Props extends PropsWithChildren<SelectHTMLAttributes<HTMLSelectElement>> {}
 
-function Select({ children }: Props & CSSProperties) {
-  return <StyledSelect>{children}</StyledSelect>;
+function Select({ children, ...props }: Props & CSSProperties) {
+  return <StyledSelect {...props}>{children}</StyledSelect>;
 }
 
 const StyledSelect = styled.select<CSSProperties>`
