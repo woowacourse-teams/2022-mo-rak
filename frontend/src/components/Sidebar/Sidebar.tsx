@@ -24,7 +24,7 @@ function Sidebar() {
         const invitationCode = res.headers.get('location').split('/groups/in/')[1];
         const invitationLink = `
         링크를 클릭하거나, 참가 코드를 입력해주세요😀
-        url: http://localhost:3000/invite/${invitationCode}
+        url: ${process.env.BASE_API_URL}invite/${invitationCode}
         코드: ${invitationCode}
         `;
 
