@@ -6,6 +6,7 @@ function Calendar() {
   const [startDate, setStartDate] = useState(''); // 2022-08-20 과 같은 형식이 들어옴 -> new Date()로 감싸서 사용 가능
   const [endDate, setEndDate] = useState('');
   const weeks = ['일', '월', '화', '수', '목', '금', '토'];
+  console.log(startDate, endDate);
 
   const getPrevMonthDays = () => {
     const prevLastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate(); // 지난달 말일
@@ -46,6 +47,13 @@ function Calendar() {
     }
     // 첫번째 날이 선택 되어 있는 경우 -> end값을 설정해줘야함 
     if (startDate !== '' && endDate === '') {
+      // end값을 설정해줘야하는데, start 날짜보다 앞일 때
+      if (isBeforeStartDate(day)) {
+        setEndDate(startDate);
+        setStartDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`);
+
+        return;
+      }
       setEndDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`);
       return;
     }
@@ -67,6 +75,10 @@ function Calendar() {
 
   const isStartOrEndDate = (day) => {
     return startDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}` || endDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}`;
+  }
+
+  const isBeforeStartDate = (day) => {
+    return new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(startDate);
   }
 
   return (
@@ -215,7 +227,15 @@ const StyledNowMonthDays = styled.div<{
     border: 2px solid ${theme.colors.PURPLE_100};
     border-radius: 100%;
   }
-  
+
+  ${type === 'prev'?
+    `color: ${theme.colors.GRAY_200};` : ''
+  }
+
+  ${type === 'today'?
+  `color: ${theme.colors.BLACK_100};` : '' // 현재는 일반 날짜와 다른 것이 없지만, 이후 today에 대한 스타일이 필요하면 속성 추가 가능
+  }
+
   ${ isStartOrEndDate? 
     `background-color: ${theme.colors.PURPLE_100};
     color: ${theme.colors.WHITE_100};
@@ -226,14 +246,6 @@ const StyledNowMonthDays = styled.div<{
     `background-color: ${theme.colors.PURPLE_50};
     border-radius: 100%;
     ` : ''
-  }
-
-  ${type === 'prev'?
-    `color: ${theme.colors.GRAY_200};` : ''
-  }
-
-  ${type === 'today'?
-  `color: ${theme.colors.YELLOW_100};` : ''
   }
 `);
 
