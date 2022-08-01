@@ -66,12 +66,28 @@ function Calendar() {
       return;
     }
     setStartDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`); // 가장 처음 값을 설정해줌 
-  }
+  };
+
+  const isPrevToday = (day) => {
+    return new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`);
+  };
   
+  const isToday = (day) => {
+    return date.getFullYear() === new Date().getFullYear() && date.getMonth() === new Date().getMonth() && day === new Date().getDate();
+  };
+
+  const isBetweenStartEndDate = (day) => {
+    return new Date(startDate) < new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) && new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(endDate);
+  }
+
+  const isStartOrEndDate = (day) => {
+    return startDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}` || endDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}`;
+  }
+
   return (
     <StyledCalendar>
       <StyledMonth>
-        <StyledPrevButton onClick={handleShowPrevMonth} disabled={new Date().getMonth() === date.getMonth()}>&#8249;</StyledPrevButton>
+        <StyledPrevButton onClick={handleShowPrevMonth} disabled={new Date().getMonth() === date.getMonth()}>&#8249;</StyledPrevButton> 
         <StyledMonthTitle>{`${date.getFullYear()}년 ${date.getMonth() + 1}월`}</StyledMonthTitle>
         <StyledNextButton onClick={handleShowNextMonth}>&#8250;</StyledNextButton>
       </StyledMonth>
@@ -79,20 +95,22 @@ function Calendar() {
         {weeks.map((day) => <StyledWeekDay>{day}</StyledWeekDay>)}
       </StyledWeekends>
       <StyledDays>
+        {/* 지난 달 일부 날짜 */}
         {getPrevMonthDays().map((day) => (<StyledPrevMonthDays>{day}</StyledPrevMonthDays>))}
 
+        {/* 이번 달 날짜  */}
         {getNowMonthDays().map((day) => {
-          if (new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`)) {
+          if (isPrevToday(day)) {
             return (
             <StyledNowMonthDays type="prev">{day}</StyledNowMonthDays>)
           }
-          if (date.getFullYear() === new Date().getFullYear() && date.getMonth() === new Date().getMonth() && day === new Date().getDate()) {
+          if (isToday(day)) {
             return (
             <StyledNowMonthDays 
               type="today"
               onClick={handleSetStartOrEndDate(day)} 
-              isBetweenSelectedDate={new Date(startDate) < new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) && new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(endDate)} 
-              isSelectedDate={startDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}` || endDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}`} 
+              isBetweenStartEndDate={isBetweenStartEndDate(day)} 
+              isStartOrEndDate={isStartOrEndDate(day)} 
             >
               {day}
             </StyledNowMonthDays>)
@@ -100,13 +118,14 @@ function Calendar() {
           return (
           <StyledNowMonthDays 
             onClick={handleSetStartOrEndDate(day)} 
-            isBetweenSelectedDate={new Date(startDate) < new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) && new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(endDate)} 
-            isSelectedDate={startDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}` || endDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}`} 
+            isBetweenStartEndDate={isBetweenStartEndDate(day)} 
+            isStartOrEndDate={isStartOrEndDate(day)} 
           >
             {day}
           </StyledNowMonthDays>)
         })}
 
+        {/* 다음 달 일부 날짜  */}
         {getNextMonthDays().map((day) => (<StyledNextMonthDays>{day}</StyledNextMonthDays>))}
       </StyledDays>
     </StyledCalendar>
@@ -201,14 +220,14 @@ const StyledNextMonthDays = styled.div(({ theme }) => `
 `);
 
 const StyledNowMonthDays = styled.div<{
-  isBetweenSelectedDate?: boolean;
-  isSelectedDate?: boolean;
+  isBetweenStartEndDate?: boolean;
+  isStartOrEndDate?: boolean;
   type?: string;
-}>(({ theme, isBetweenSelectedDate, isSelectedDate, type }) => `
+}>(({ theme, isBetweenStartEndDate, isStartOrEndDate, type }) => `
   color: ${theme.colors.BLACK_100};
   
   // 선택 된 startDate, endDate라면 
-  ${ isSelectedDate? 
+  ${ isStartOrEndDate? 
     `background-color: ${theme.colors.PURPLE_100};
     color: ${theme.colors.WHITE_100};
     border-radius: 100%;` : ''
@@ -216,7 +235,7 @@ const StyledNowMonthDays = styled.div<{
 
   // 선택 된 startDate, endDate 사이에 있으면 
   // color theme으로 빼기 
-  ${ isBetweenSelectedDate?
+  ${ isBetweenStartEndDate?
     `background-color: #EEEDFF;
     border-radius: 100%;
     ` : ''
@@ -227,7 +246,7 @@ const StyledNowMonthDays = styled.div<{
   }
 
   ${type === 'today'?
-  `color: ${theme.colors.PURPLE_100};` : ''
+  `color: ${theme.colors.YELLOW_100};` : ''
 }
 `);
 
