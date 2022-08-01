@@ -83,7 +83,7 @@ function LandingPage() {
   return (
     <StyledContainer>
       <StyledLogo src={Logo} alt="logo" />
-      <StyledLink href="https://github.com/login/oauth/authorize?client_id=f67a30d27afefe8b241f">
+      <StyledLink href={`https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}`}>
         {/* TODO: 네이밍 고민  */}
         {/* TODO: button 컴포넌트와 레이아웃이 같지만, div 태그를 사용해야하기 때문에, 스타일 컴포넌트로 새로 만들어줌 이야기해봐야할듯  */}
         <StyledLoginContainer>
