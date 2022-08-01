@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
-// 이전, 다음 버튼 구현
-// 버전 -> today를 보여주는가?(지금 잠시 주석처리) , 이전 날짜를 이동할 수 없게 할 것인가? (글자disabled, 버튼 disabled)
 function Calendar() {
   const [date, setDate] = useState<Date>(new Date()); 
-  const [startDate, setStartDate] = useState(''); // new Date로 감싸서 사용하면 됨 
+  const [startDate, setStartDate] = useState(''); // 2022-08-20 과 같은 형식이 들어옴 -> new Date()로 감싸서 사용 가능
   const [endDate, setEndDate] = useState('');
   const weeks = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -55,15 +53,15 @@ function Calendar() {
     setDate(new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 1))
   };
 
-  const handleClickDay = (day: number) => () =>  {
+  const handleSetStartOrEndDate = (day: number) => () =>  {
     // 마지막 날이 선택 되어 있는 경우 -> 새로운 start 값을 설정해줘야함 
-    if(endDate !== '') {
+    if (endDate !== '') {
       setEndDate('');
       setStartDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`);
       return;
     }
     // 첫번째 날이 선택 되어 있는 경우 -> end값을 설정해줘야함 
-    if(startDate !== '' && endDate === '') {
+    if (startDate !== '' && endDate === '') {
       setEndDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`);
       return;
     }
@@ -82,22 +80,33 @@ function Calendar() {
       </StyledWeekends>
       <StyledDays>
         {getPrevMonthDays().map((day) => (<StyledPrevMonthDays>{day}</StyledPrevMonthDays>))}
+
         {getNowMonthDays().map((day) => {
           if (new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`)) {
-            return (<StyledPrevToday>{day}</StyledPrevToday>)
+            return (
+            <StyledNowMonthDays type="prev">{day}</StyledNowMonthDays>)
           }
           if (date.getFullYear() === new Date().getFullYear() && date.getMonth() === new Date().getMonth() && day === new Date().getDate()) {
-            return (<StyledTodayMonthDays>{day}</StyledTodayMonthDays>)
+            return (
+            <StyledNowMonthDays 
+              type="today"
+              onClick={handleSetStartOrEndDate(day)} 
+              isBetweenSelectedDate={new Date(startDate) < new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) && new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(endDate)} 
+              isSelectedDate={startDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}` || endDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}`} 
+            >
+              {day}
+            </StyledNowMonthDays>)
           }
           return (
           <StyledNowMonthDays 
-            onClick={handleClickDay(day)} 
+            onClick={handleSetStartOrEndDate(day)} 
             isBetweenSelectedDate={new Date(startDate) < new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) && new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(endDate)} 
             isSelectedDate={startDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}` || endDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}`} 
           >
-              {day}
+            {day}
           </StyledNowMonthDays>)
         })}
+
         {getNextMonthDays().map((day) => (<StyledNextMonthDays>{day}</StyledNextMonthDays>))}
       </StyledDays>
     </StyledCalendar>
@@ -192,9 +201,10 @@ const StyledNextMonthDays = styled.div(({ theme }) => `
 `);
 
 const StyledNowMonthDays = styled.div<{
-  isBetweenSelectedDate: boolean;
-  isSelectedDate: boolean;
-}>(({ theme, isBetweenSelectedDate, isSelectedDate }) => `
+  isBetweenSelectedDate?: boolean;
+  isSelectedDate?: boolean;
+  type?: string;
+}>(({ theme, isBetweenSelectedDate, isSelectedDate, type }) => `
   color: ${theme.colors.BLACK_100};
   
   // 선택 된 startDate, endDate라면 
@@ -211,16 +221,15 @@ const StyledNowMonthDays = styled.div<{
     border-radius: 100%;
     ` : ''
   }
+
+  ${type === 'prev'?
+    `color: ${theme.colors.GRAY_200};` : ''
+  }
+
+  ${type === 'today'?
+  `color: ${theme.colors.PURPLE_100};` : ''
+}
 `);
 
-const StyledTodayMonthDays = styled.div(({ theme }) => `
-  // background-color: ${theme.colors.PURPLE_100};
-  color: ${theme.colors.PURPLE_100};
-  border-radius: 100%;
-`);
-
-const StyledPrevToday = styled.div(({theme}) => `
-  color: ${theme.colors.GRAY_200};
-`);
 
 export default Calendar;
