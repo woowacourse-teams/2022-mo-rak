@@ -30,13 +30,11 @@ function Calendar() {
   };
 
   const handleShowPrevMonth = () => {
-    const nowDate = date;
-    setDate(new Date(nowDate.getFullYear(), nowDate.getMonth() - 1, 1))
+    setDate(new Date(date.getFullYear(), date.getMonth() - 1, 1))
   };
 
   const handleShowNextMonth = () => {
-    const nowDate = date;
-    setDate(new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 1))
+    setDate(new Date(date.getFullYear(), date.getMonth() + 1, 1))
   };
 
   const handleSetStartOrEndDate = (day: number) => () =>  {
@@ -51,7 +49,8 @@ function Calendar() {
       setEndDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`);
       return;
     }
-    setStartDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`); // 가장 처음 값을 설정해줌 
+    // 가장 처음 값을 설정해줌 (위 두가지가 아닌 경우)
+    setStartDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`); 
   };
 
   const isPrevToday = (day) => {
@@ -118,10 +117,9 @@ function Calendar() {
   );
 }
 
-// css 점검 (4단위, height 없애기)
 const StyledCalendar = styled.div(({ theme }) => `
   width: 45.2rem;
-  height: 60rem;
+  height: 54rem;
   background: ${theme.colors.WHITE_100};
   border-radius: 2rem;
 `);
@@ -146,12 +144,9 @@ const StyledWeekends = styled.div`
 
 const StyledWeekDay = styled.div`
   font-size: 1.6rem;
-  font-weight: 400;
-  letter-spacing: 0.12rem;
-  width: calc(44.2rem / 7);
+  width: calc(45.2rem / 7);
   display: flex;
   justify-content: center;
-  align-items: center;
 `;
 
 const StyledPrevButton = styled.button`
@@ -166,8 +161,6 @@ const StyledNextButton = styled.button`
 
 const StyledMonthTitle = styled.h1`
   font-size: 2.4rem;
-  font-weight: 400;
-  text-transform: uppercase;
 `;
 
 const StyledDays = styled.div`
@@ -176,26 +169,31 @@ const StyledDays = styled.div`
   flex-wrap: wrap;
   padding: 0.4rem;
   cursor: pointer;
-
-  div {
-    font-size: 1.6rem;
-    // 0.4하면 깨짐 
-    margin: 0.3rem; 
-    width: calc(40.2rem / 7);
-    height: calc(40.2rem / 7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 0.2s;
-  }
 `;
 
+// TODO: StyledPrevMonthDays, StyledNextMonthDays, StyledNowMonthDays에 공통적인 스타일이 들어감 (4단위로 맞지 않는 부분이 있는데, 4단위로 맞추면 깨지는 이슈...)
 const StyledPrevMonthDays = styled.div(({ theme }) => `
-  color: ${theme.colors.GRAY_200}; 
+  color: ${theme.colors.WHITE_100}; // TODO: 현재 달력에서는 이전달, 다음달 날짜 일부를 보여줄 필요가 없어서 화면에서 보이지 않도록 처리. (이후 필요할 시, props로 option을 받아서 보이도록 해줄 수 있음)
+  font-size: 1.6rem;
+  margin: 0.3rem; 
+  width: calc(40.2rem / 7);
+  height: calc(40.2rem / 7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s;
 `);
 
 const StyledNextMonthDays = styled.div(({ theme }) => `
-  color: ${theme.colors.GRAY_200};
+  color: ${theme.colors.WHITE_100};
+  font-size: 1.6rem;
+  margin: 0.3rem; 
+  width: calc(40.2rem / 7);
+  height: calc(40.2rem / 7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s;
 `);
 
 const StyledNowMonthDays = styled.div<{
@@ -204,18 +202,28 @@ const StyledNowMonthDays = styled.div<{
   type?: string;
 }>(({ theme, isBetweenStartEndDate, isStartOrEndDate, type }) => `
   color: ${theme.colors.BLACK_100};
+  font-size: 1.6rem;
+  margin: 0.3rem; 
+  width: calc(40.2rem / 7);
+  height: calc(40.2rem / 7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+
+  &:hover {
+    border: 2px solid ${theme.colors.PURPLE_100};
+    border-radius: 100%;
+  }
   
-  // 선택 된 startDate, endDate라면 
   ${ isStartOrEndDate? 
     `background-color: ${theme.colors.PURPLE_100};
     color: ${theme.colors.WHITE_100};
     border-radius: 100%;` : ''
   }
 
-  // 선택 된 startDate, endDate 사이에 있으면 
-  // color theme으로 빼기 
   ${ isBetweenStartEndDate?
-    `background-color: #EEEDFF;
+    `background-color: ${theme.colors.PURPLE_50};
     border-radius: 100%;
     ` : ''
   }
@@ -226,11 +234,6 @@ const StyledNowMonthDays = styled.div<{
 
   ${type === 'today'?
   `color: ${theme.colors.YELLOW_100};` : ''
-  }
-
-  &:hover {
-    border: 2px solid ${theme.colors.PURPLE_100};
-    border-radius: 100%;
   }
 `);
 
