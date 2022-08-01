@@ -8,39 +8,25 @@ function Calendar() {
   const weeks = ['일', '월', '화', '수', '목', '금', '토'];
 
   const getPrevMonthDays = () => {
-    const days = [];
-    const prevLastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate(); // 6월 말일
+    const prevLastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate(); // 지난달 말일
     date.setDate(1);
     const firstDayIndex = date.getDay(); // 1일의 요일
 
-    for (let x = firstDayIndex; x > 0; x--) {
-      days.push(prevLastDay - x + 1);
-    }
-
-    return days;
+    return Array.from({length: firstDayIndex}, (v, i) => prevLastDay - (firstDayIndex - i) + 1);
   };
 
   const getNowMonthDays = () => {
-    const days = [];
-    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate(); // 7월 말일
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate(); // 이번달 말일
 
-    for (let i = 1; i <= lastDay; i++) {
-        days.push(i);
-    }
+    return Array.from({length: lastDay}, (v, i) => i + 1);
 
-    return days;
   };
 
   const getNextMonthDays = () => {
-    const days = [];
     const lastDayIndex = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay(); // 막날의 요일
     const nextDays = 7 - lastDayIndex - 1; // 다음달 날짜
 
-    for (let j = 1; j <= nextDays; j++) {
-      days.push(j);
-    }
-
-    return days;
+    return Array.from({length: nextDays}, (v, i) => i + 1);
   };
 
   const handleShowPrevMonth = () => {
@@ -168,7 +154,6 @@ const StyledWeekDay = styled.div`
   align-items: center;
 `;
 
-// 중복 (rightButton)
 const StyledPrevButton = styled.button`
   font-size: 4.4rem;
   opacity: 0.5;
@@ -185,7 +170,7 @@ const StyledMonthTitle = styled.h1`
   text-transform: uppercase;
 `;
 
-const StyledDays = styled.div(({ theme }) => `
+const StyledDays = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -203,16 +188,10 @@ const StyledDays = styled.div(({ theme }) => `
     align-items: center;
     transition: background-color 0.2s;
   }
-
-  // 클릭되면 filled로 채워주기 
-  div:hover {
-    border: 2px solid ${theme.colors.PURPLE_100};
-    border-radius: 100%;
-  }
-`);
+`;
 
 const StyledPrevMonthDays = styled.div(({ theme }) => `
-  color: ${theme.colors.GRAY_200};
+  color: ${theme.colors.GRAY_200}; 
 `);
 
 const StyledNextMonthDays = styled.div(({ theme }) => `
@@ -247,7 +226,12 @@ const StyledNowMonthDays = styled.div<{
 
   ${type === 'today'?
   `color: ${theme.colors.YELLOW_100};` : ''
-}
+  }
+
+  &:hover {
+    border: 2px solid ${theme.colors.PURPLE_100};
+    border-radius: 100%;
+  }
 `);
 
 
