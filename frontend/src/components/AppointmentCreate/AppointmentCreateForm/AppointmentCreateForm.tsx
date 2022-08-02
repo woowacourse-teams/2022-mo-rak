@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React, { FormEvent } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import Box from '../../common/Box/Box';
 import AppointmentCreateFormButtonGroup from '../AppointmentCreateFormButtonGroup/AppointmentCreateFormButtonGroup';
 import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
@@ -26,7 +26,9 @@ const getFormattedTime = (time: Time) => {
 };
 
 function AppointmentCreateForm({ startDate, endDate }: Props) {
+  const navigate = useNavigate();
   const [title, handleTitle] = useInput();
+  // TODO: groupCode 받아오는 게 계속 중복되어서, 중복줄이자
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [description, handleDescription] = useInput();
   const [duration, handleDuration] = useInputs<Omit<Time, 'period'>>({ hour: '', minute: '' });
@@ -50,6 +52,8 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
     try {
       const res = await createAppointment(groupCode, appointment);
       const appointmentCode = res.headers.get('location').split('appointments/')[1];
+
+      navigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`);
       console.log(appointmentCode);
     } catch (error) {
       console.log(error);
