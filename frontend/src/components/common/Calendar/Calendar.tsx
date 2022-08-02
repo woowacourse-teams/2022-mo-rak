@@ -6,7 +6,6 @@ function Calendar() {
   const [startDate, setStartDate] = useState(''); // 2022-08-20 과 같은 형식이 들어옴 -> new Date()로 감싸서 사용 가능
   const [endDate, setEndDate] = useState('');
   const weeks = ['일', '월', '화', '수', '목', '금', '토'];
-  console.log(startDate, endDate);
 
   const getPrevMonthDays = () => {
     const prevLastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate(); // 지난달 말일
@@ -42,7 +41,7 @@ function Calendar() {
     // 마지막 날이 선택 되어 있는 경우 -> 새로운 start 값을 설정해줘야함 
     if (endDate !== '') {
       setEndDate('');
-      setStartDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`);
+      setStartDate(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`);
       return;
     }
     // 첫번째 날이 선택 되어 있는 경우 -> end값을 설정해줘야함 
@@ -50,15 +49,15 @@ function Calendar() {
       // end값을 설정해줘야하는데, start 날짜보다 앞일 때
       if (isBeforeStartDate(day)) {
         setEndDate(startDate);
-        setStartDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`);
+        setStartDate(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`);
 
         return;
       }
-      setEndDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`);
+      setEndDate(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`);
       return;
     }
-    // 가장 처음 값을 설정해줌 (위 두가지가 아닌 경우)
-    setStartDate(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`); 
+    // 가장 처음 값을 설정해줌 (위 두가지 조건을 충족하지 않은 경우)
+    setStartDate(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`); 
   };
 
   const isPrevToday = (day) => {
@@ -70,11 +69,11 @@ function Calendar() {
   };
 
   const isBetweenStartEndDate = (day) => {
-    return new Date(startDate) < new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) && new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(endDate);
+    return new Date(startDate) < new Date(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`) && new Date(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`) < new Date(endDate);
   }
 
   const isStartOrEndDate = (day) => {
-    return startDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}` || endDate === `${date.getFullYear()}-${date.getMonth() + 1}-${day}`;
+    return startDate === `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}` || endDate === `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
 
   const isBeforeStartDate = (day) => {
