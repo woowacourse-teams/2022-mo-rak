@@ -50,7 +50,7 @@ public class GlobalControllerAdvice {
     public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e) {
         String stackTrace = Arrays.stream(e.getStackTrace())
                 .map(StackTraceElement::toString)
-                .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining(" <- "));
         logger.error(stackTrace);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptionResponse("알 수 없는 에러입니다."));
