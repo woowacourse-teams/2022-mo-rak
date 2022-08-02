@@ -3,22 +3,14 @@ const dotenv = require('dotenv');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const isProduction = process.env.NODE_ENV === 'production';
-
 dotenv.config();
 
 // TODO: 절대경로 설정
-const config = {
+module.exports = {
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/'
-  },
-  devServer: {
-    open: true,
-    host: 'localhost',
-    port: 3000,
-    historyApiFallback: true
   },
   plugins: [
     new HtmlWebpackPlugin({ template: './public/index.html' }),
@@ -52,15 +44,4 @@ const config = {
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js', '...']
   }
-};
-
-// TODO: 이것이 어디에 쓰일 것인지 생각해보기
-module.exports = () => {
-  if (isProduction) {
-    config.mode = 'production';
-  } else {
-    config.mode = 'development';
-  }
-
-  return config;
 };
