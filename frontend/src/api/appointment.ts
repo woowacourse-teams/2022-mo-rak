@@ -1,46 +1,23 @@
-interface AppointmentInfoInterface {
-  code: string;
-}
+import fetcher from '../utils/fetcher';
+import { GroupInterface } from '../types/group';
+import { AppointmentInfoInterface } from '../types/appointment';
 
-interface AppointmentInterface {
-  id: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  durationHour: number;
-  durationMinute: number;
-  isClosed: boolean;
-}
+const getAppointmentResult = (
+  groupCode: GroupInterface['code'],
+  appointmentCode: AppointmentInfoInterface['code']
+) =>
+  fetcher({
+    method: 'GET',
+    path: `groups/${groupCode}/appointments/${appointmentCode}/recommendation`
+  });
 
-interface AppointmentMemberInterface {
-  id: number;
-  name: string;
-  profileUrl: string;
-}
+const getAppointment = (
+  groupCode: GroupInterface['code'],
+  appointmentCode: AppointmentInfoInterface['code']
+) =>
+  fetcher({
+    method: 'GET',
+    path: `groups/${groupCode}/appointments/${appointmentCode}`
+  });
 
-interface AppointmentResultInterface {
-  rank: number;
-  recommendStartDateTime: string;
-  recommendEndDateTime: string;
-  availableMembers: Array<AppointmentMemberInterface>;
-  unavailableMembers: Array<AppointmentMemberInterface>;
-}
-
-type CreateAppointmentRequest = Omit<AppointmentInterface, 'id' | 'isClosed'>;
-
-interface Time {
-  period: 'AM' | 'PM';
-  hour: string;
-  minute: string;
-}
-
-export {
-  AppointmentInfoInterface,
-  AppointmentResultInterface,
-  AppointmentInterface,
-  Time,
-  CreateAppointmentRequest
-};
+export { getAppointmentResult, getAppointment };
