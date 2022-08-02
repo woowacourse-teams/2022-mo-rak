@@ -50,3 +50,7 @@ security:
     github:
       client-id: ${GITHUB_CLIENT_ID}
       client-secret: ${GITHUB_CLIENT_SECRET}
+  slack:
+    notification:
+      slack:
+        url: ${SLACK_ERROR_URL}
