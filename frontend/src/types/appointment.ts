@@ -1,4 +1,4 @@
-interface Appointment {
+interface AppointmentInterface {
   id: number;
   title: string;
   description: string;
@@ -11,11 +11,11 @@ interface Appointment {
   isClosed: boolean;
 }
 
-type CreateAppointmentRequest = Omit<Appointment, 'id' | 'isClosed'>;
+type CreateAppointmentRequest = Omit<AppointmentInterface, 'id' | 'isClosed'>;
 
 interface Time {
   period: 'AM' | 'PM';
   hour: string;
   minute: string;
 }
-export { Time, Appointment, CreateAppointmentRequest };
+export { Time, AppointmentInterface, CreateAppointmentRequest };

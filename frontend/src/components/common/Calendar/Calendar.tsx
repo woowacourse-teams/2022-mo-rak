@@ -1,14 +1,14 @@
 import React, { SetStateAction, useState, Dispatch } from 'react';
 import styled from '@emotion/styled';
-import { Appointment } from '../../../types/appointment';
+import { AppointmentInterface } from '../../../types/appointment';
 
 interface Props {
   version?: 'default' | 'select';
   // NOTE: 이렇게 하면 Appointment에 의존하게 되어서 재사용이 불가능할듯?
-  startDate: Appointment['startDate'];
-  endDate: Appointment['endDate'];
-  setStartDate: Dispatch<SetStateAction<Appointment['startDate']>>;
-  setEndDate: Dispatch<SetStateAction<Appointment['endDate']>>;
+  startDate: AppointmentInterface['startDate'];
+  endDate: AppointmentInterface['endDate'];
+  setStartDate: Dispatch<SetStateAction<AppointmentInterface['startDate']>>;
+  setEndDate: Dispatch<SetStateAction<AppointmentInterface['endDate']>>;
 }
 
 // version "default"는 약속 잡기 생성에서 사용된다. 기본 version이 default로 설정되어있기 때문에,

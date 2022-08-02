@@ -1,10 +1,10 @@
 import React, { InputHTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 import Input from '../../common/Input/Input';
-import { Appointment } from '../../../types/appointment';
+import { AppointmentInterface } from '../../../types/appointment';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  description: Appointment['description'];
+  description: AppointmentInterface['description'];
 }
 
 function AppointmentCreateFormDescriptionInput({ description, onChange }: Props) {

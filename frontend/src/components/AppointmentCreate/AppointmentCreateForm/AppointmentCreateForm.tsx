@@ -10,13 +10,13 @@ import AppointmentCreateFormTimeLimitInput from '../AppointmentCreateFormTimeLim
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import useInput from '../../../hooks/useInput';
 import useInputs from '../../../hooks/useInputs';
-import { Time, CreateAppointmentRequest, Appointment } from '../../../types/appointment';
+import { Time, CreateAppointmentRequest, AppointmentInterface } from '../../../types/appointment';
 import { createAppointment } from '../../../api/appointment';
 import { GroupInterface } from '../../../types/group';
 
 interface Props {
-  startDate: Appointment['startDate'];
-  endDate: Appointment['endDate'];
+  startDate: AppointmentInterface['startDate'];
+  endDate: AppointmentInterface['endDate'];
 }
 
 const getFormattedTime = (time: Time) => {
@@ -48,7 +48,9 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
     };
 
     try {
-      createAppointment(groupCode, appointment);
+      const res = await createAppointment(groupCode, appointment);
+      const appointmentCode = res.headers.get('location').split('appointments/')[1];
+      console.log(appointmentCode);
     } catch (error) {
       console.log(error);
     }
