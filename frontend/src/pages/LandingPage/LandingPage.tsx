@@ -29,6 +29,9 @@ import { getDefaultGroup } from '../../api/group';
 function LandingPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const firstSection = useRef<HTMLTableSectionElement>(null);
+  const secondSection = useRef<HTMLTableSectionElement>(null);
+  const thirdSection = useRef<HTMLTableSectionElement>(null);
 
   const redirectUrl = getSessionStorageItem('redirectUrl');
   // TODO: 중복 로직해결
@@ -93,9 +96,18 @@ function LandingPage() {
     }
   }, []);
 
+  const handleMoveToSection = (section: RefObject<HTMLTableSectionElement>) => () => {
+    section.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <StyledContainer>
-      <StyledMainSection>
+      <StyledMainSection ref={firstSection}>
+        <StyledNavbar>
+          <li onClick={handleMoveToSection(firstSection)}>LOGIN</li>
+          <li onClick={handleMoveToSection(secondSection)}>ABOUT</li>
+          <li onClick={handleMoveToSection(thirdSection)}>CONTACT US</li>
+        </StyledNavbar>
         <StyledLogo src={Logo} alt="logo" />
         <StyledSmallTitle>
           모락이 해줄게요
@@ -122,7 +134,12 @@ function LandingPage() {
         </StlyedSectionGuideContainer>
       </StyledMainSection>
 
-      <StyledIntroduceSection>
+      <StyledIntroduceSection ref={secondSection}>
+        <StyledNavbar>
+          <li onClick={handleMoveToSection(firstSection)}>LOGIN</li>
+          <li onClick={handleMoveToSection(secondSection)}>ABOUT</li>
+          <li onClick={handleMoveToSection(thirdSection)}>CONTACT US</li>
+        </StyledNavbar>
         <div>
           <StyledMainIntroduceText>
             분산된 서비스...
@@ -144,7 +161,12 @@ function LandingPage() {
         </StyledImageContainer>
       </StyledIntroduceSection>
 
-      <StyledServiceIntroduceSection>
+      <StyledServiceIntroduceSection ref={thirdSection}>
+        <StyledNavbar>
+          <li onClick={handleMoveToSection(firstSection)}>LOGIN</li>
+          <li onClick={handleMoveToSection(secondSection)}>ABOUT</li>
+          <li onClick={handleMoveToSection(thirdSection)}>CONTACT US</li>
+        </StyledNavbar>
         <StyledExplainTextContainer>
           <StyledExplainBigText>
             모락을 통해서 할 수 있어요!
@@ -214,6 +236,17 @@ const StyledMainSection = styled.section`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom 0px right 0px;
+`;
+
+const StyledNavbar = styled.nav`
+  position: absolute;
+  right: 12rem;
+  top: 6rem;
+  display: flex;
+  list-style: none;
+  gap: 4rem;
+  font-size: 2rem;
+  cursor: pointer;
 `;
 
 const StyledSmallTitle = styled.div`
