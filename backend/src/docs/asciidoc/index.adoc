@@ -42,62 +42,6 @@ include::{snippets}/poll/poll-create/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/poll/poll-create/http-response.adoc[]
 
-=== 투표 진행
-include::{snippets}/poll/do-poll/path-parameters.adoc[]
-.HTTP REQUEST
-include::{snippets}/poll/do-poll/http-request.adoc[]
-.HTTP RESPONSE
-include::{snippets}/poll/do-poll/http-response.adoc[]
-
-=== 투표 목록 조회
-include::{snippets}/poll/get-polls/path-parameters.adoc[]
-.HTTP REQUEST
-include::{snippets}/poll/get-polls/http-request.adoc[]
-.HTTP RESPONSE
-include::{snippets}/poll/get-polls/http-response.adoc[]
-
-=== 투표 조회
-include::{snippets}/poll/get-poll/path-parameters.adoc[]
-.HTTP REQUEST
-include::{snippets}/poll/get-poll/http-request.adoc[]
-.HTTP RESPONSE
-include::{snippets}/poll/get-poll/http-response.adoc[]
-
-=== 투표 선택 항목들 조회
-include::{snippets}/poll/get-poll-items/path-parameters.adoc[]
-.HTTP REQUEST
-include::{snippets}/poll/get-poll-items/http-request.adoc[]
-.HTTP RESPONSE
-include::{snippets}/poll/get-poll-items/http-response.adoc[]
-
-=== 투표 결과 조회 (기명)
-include::{snippets}/poll/get-poll-results/path-parameters.adoc[]
-.HTTP REQUEST
-include::{snippets}/poll/get-poll-results/http-request.adoc[]
-.HTTP RESPONSE
-include::{snippets}/poll/get-poll-results/http-response.adoc[]
-
-=== 투표 결과 조회 (익명)
-include::{snippets}/poll/get-poll-results-anonymous/path-parameters.adoc[]
-.HTTP REQUEST
-include::{snippets}/poll/get-poll-results-anonymous/http-request.adoc[]
-.HTTP RESPONSE
-include::{snippets}/poll/get-poll-results-anonymous/http-response.adoc[]
-
-=== 투표 삭제
-include::{snippets}/poll/delete-poll/path-parameters.adoc[]
-.HTTP REQUEST
-include::{snippets}/poll/delete-poll/http-request.adoc[]
-.HTTP RESPONSE
-include::{snippets}/poll/delete-poll/http-response.adoc[]
-
-=== 투표 마감
-include::{snippets}/poll/close-poll/path-parameters.adoc[]
-.HTTP REQUEST
-include::{snippets}/poll/close-poll/http-request.adoc[]
-.HTTP RESPONSE
-include::{snippets}/poll/close-poll/http-response.adoc[]
-
 === 에러 코드
 
 [cols="1,3",options=header]
@@ -106,11 +50,225 @@ include::{snippets}/poll/close-poll/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다. +
-투표 규칙과 맞지 않습니다.
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
 
 |404
-|리소스를 찾을 수 없습니다.
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+=== 투표 진행
+include::{snippets}/poll/do-poll/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/poll/do-poll/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/poll/do-poll/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+=== 투표 목록 조회
+include::{snippets}/poll/get-polls/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/poll/get-polls/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/poll/get-polls/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+=== 투표 조회
+include::{snippets}/poll/get-poll/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/poll/get-poll/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/poll/get-poll/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+=== 투표 선택 항목들 조회
+include::{snippets}/poll/get-poll-items/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/poll/get-poll-items/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/poll/get-poll-items/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+=== 투표 결과 조회 (기명)
+include::{snippets}/poll/get-poll-results/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/poll/get-poll-results/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/poll/get-poll-results/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+=== 투표 결과 조회 (익명)
+include::{snippets}/poll/get-poll-results-anonymous/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/poll/get-poll-results-anonymous/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/poll/get-poll-results-anonymous/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+=== 투표 삭제
+include::{snippets}/poll/delete-poll/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/poll/delete-poll/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/poll/delete-poll/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+=== 투표 마감
+include::{snippets}/poll/close-poll/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/poll/close-poll/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/poll/close-poll/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
 |===
 
 == 그룹
@@ -122,6 +280,22 @@ include::{snippets}/group-create/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/group-create/http-response.adoc[]
 
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
 === 그룹 초대 코드 생성
 
 include::{snippets}/group-invitation-code-create/path-parameters.adoc[]
@@ -129,6 +303,25 @@ include::{snippets}/group-invitation-code-create/path-parameters.adoc[]
 include::{snippets}/group-invitation-code-create/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/group-invitation-code-create/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
 
 === 그룹 가입 여부 확인
 
@@ -138,6 +331,22 @@ include::{snippets}/group-isJoined/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/group-isJoined/http-response.adoc[]
 
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
 
 === 그룹 목록 조회
 
@@ -145,6 +354,19 @@ include::{snippets}/group-isJoined/http-response.adoc[]
 include::{snippets}/groups/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/groups/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|===
 
 === 그룹 소속 멤버 목록 조회
 
@@ -154,6 +376,25 @@ include::{snippets}/group-members/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/group-members/http-response.adoc[]
 
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
 === 그룹 탈퇴
 
 include::{snippets}/group-out/path-parameters.adoc[]
@@ -162,12 +403,44 @@ include::{snippets}/group-out/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/group-out/http-response.adoc[]
 
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
 === 기본 그룹 조회
 
 .HTTP REQUEST
 include::{snippets}/group-default/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/group-default/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|===
 
 == 약속잡기
 
@@ -179,12 +452,50 @@ include::{snippets}/appointment/create-appointment/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/appointment/create-appointment/http-response.adoc[]
 
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
 === 약속잡기 목록 조회
 include::{snippets}/appointment/get-appointments/path-parameters.adoc[]
 .HTTP REQUEST
 include::{snippets}/appointment/get-appointments/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/appointment/get-appointments/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
 
 === 약속잡기 단건 조회
 include::{snippets}/appointment/get-appointment/path-parameters.adoc[]
@@ -193,12 +504,50 @@ include::{snippets}/appointment/get-appointment/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/appointment/get-appointment/http-response.adoc[]
 
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
 === 약속잡기 선택 진행
 include::{snippets}/appointment/select-available-time/path-parameters.adoc[]
 .HTTP REQUEST
 include::{snippets}/appointment/select-available-time/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/appointment/select-available-time/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
 
 === 약속잡기 추천 목록 조회
 include::{snippets}/appointment/recommend-appointments/path-parameters.adoc[]
@@ -207,12 +556,50 @@ include::{snippets}/appointment/recommend-appointments/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/appointment/recommend-appointments/http-response.adoc[]
 
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
 === 약속잡기 마감
 include::{snippets}/appointment/close-appointment/path-parameters.adoc[]
 .HTTP REQUEST
 include::{snippets}/appointment/close-appointment/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/appointment/close-appointment/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
 
 === 약속잡기 삭제
 include::{snippets}/appointment/delete-appointment/path-parameters.adoc[]
@@ -221,17 +608,21 @@ include::{snippets}/appointment/delete-appointment/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/appointment/delete-appointment/http-response.adoc[]
 
-=== 에러 코드
-
 [cols="1,3",options=header]
 |===
 |Http Status Code
 |Description
 
 |400
-|요청 형식이 잘못되었습니다. +
-약속잡기 규칙과 맞지 않습니다.
+|요청 형식이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
 
 |404
-|리소스를 찾을 수 없습니다.
+|요청한 리소스를 찾을 수 없습니다.
+
 |===
