@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
-function Calendar() {
-  const [date, setDate] = useState<Date>(new Date()); 
+interface Props {
+  version: "default" | "select";
+}
+
+// version "default"는 약속 잡기 생성에서 사용된다. 기본 version이 default로 설정되어있기 때문에, 별도로 props로 version을 넘겨주지 않아도 된다. 
+// version "select"는 약속 잡기 선택하기에서 사용된다. 이때, props로 startDate, endDate가 넘어와야한다. 
+function Calendar({ version="default" }: Props) {
+  const [date, setDate] = useState<Date>(new Date()); // 현재 날짜
   const [startDate, setStartDate] = useState(''); // 2022-08-20 과 같은 형식이 들어옴 -> new Date()로 감싸서 사용 가능
   const [endDate, setEndDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState(''); // version="select"에서, 사용자가 선택한 날짜 
   const weeks = ['일', '월', '화', '수', '목', '금', '토'];
 
   const getPrevMonthDays = () => {
@@ -60,6 +67,10 @@ function Calendar() {
     setStartDate(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`); 
   };
 
+  const handleSetSelectedDate = (day: number) => () => {
+    setSelectedDate(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`);
+  }
+
   const isPrevToday = (day) => {
     return new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`);
   };
@@ -80,6 +91,14 @@ function Calendar() {
     return new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(startDate);
   }
 
+  const isNotInStartAndEndDate = (day) => {
+    return new Date(startDate) > new Date(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`) || new Date(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`) > new Date(endDate);
+  }
+
+  const isSelectedDate = (day) => {
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}` === selectedDate;
+  }
+
   return (
     <StyledCalendar>
       <StyledMonth>
@@ -96,9 +115,18 @@ function Calendar() {
 
         {/* 이번 달 날짜  */}
         {getNowMonthDays().map((day) => {
+          if (version === 'select') {
+            if (isNotInStartAndEndDate(day)) {
+              return(
+              <StyledNowMonthDays type="notInStartAndEndDate">{day}</StyledNowMonthDays>);
+            }
+            return(
+              <StyledNowMonthDays type="inStartAndEndDate" onClick={handleSetSelectedDate(day)} isSelectedDate={isSelectedDate(day)}>{day}</StyledNowMonthDays>);
+          }
+
           if (isPrevToday(day)) {
             return (
-            <StyledNowMonthDays type="prev">{day}</StyledNowMonthDays>)
+            <StyledNowMonthDays type="prevToday">{day}</StyledNowMonthDays>)
           }
           if (isToday(day)) {
             return (
@@ -130,7 +158,7 @@ function Calendar() {
 
 const StyledCalendar = styled.div(({ theme }) => `
   width: 45.2rem;
-  height: 54rem;
+  height: 60rem;
   background: ${theme.colors.WHITE_100};
   border-radius: 2rem;
 `);
@@ -210,8 +238,9 @@ const StyledNextMonthDays = styled.div(({ theme }) => `
 const StyledNowMonthDays = styled.div<{
   isBetweenStartEndDate?: boolean;
   isStartOrEndDate?: boolean;
+  isSelectedDate?: boolean;
   type?: string;
-}>(({ theme, isBetweenStartEndDate, isStartOrEndDate, type }) => `
+}>(({ theme, isBetweenStartEndDate, isStartOrEndDate, isSelectedDate, type }) => `
   color: ${theme.colors.BLACK_100};
   font-size: 1.6rem;
   margin: 0.3rem; 
@@ -227,7 +256,7 @@ const StyledNowMonthDays = styled.div<{
     border-radius: 100%;
   }
 
-  ${type === 'prev'?
+  ${type === 'prevToday'?
     `color: ${theme.colors.GRAY_200};` : ''
   }
 
@@ -245,6 +274,26 @@ const StyledNowMonthDays = styled.div<{
     `background-color: ${theme.colors.PURPLE_50};
     border-radius: 100%;
     ` : ''
+  }
+
+  // version이 select일 때
+
+  ${type === 'notInStartAndEndDate'?
+  `color: ${theme.colors.GRAY_200};
+  &:hover {
+    border: none;
+  }
+  ` : '' 
+  }
+
+  ${type === 'inStartAndEndDate'?
+  `color: ${theme.colors.BLACK_100};` : ''
+  }
+
+  ${ isSelectedDate? 
+    `background-color: ${theme.colors.PURPLE_100};
+    color: ${theme.colors.WHITE_100};
+    border-radius: 100%;` : ''
   }
 `);
 
