@@ -10,10 +10,11 @@ interface AppointmentInterface {
   endDate: string;
   startTime: string;
   endTime: string;
-  durationHour: number;
-  durationMinute: number;
+  durationHours: number;
+  durationMinutes: number;
   isClosed: boolean;
 }
+
 interface AppointmentMemberInterface {
   id: number;
   name: string;
@@ -35,6 +36,7 @@ interface Time {
   hour: string;
   minute: string;
 }
+
 export {
   Time,
   CreateAppointmentRequest,

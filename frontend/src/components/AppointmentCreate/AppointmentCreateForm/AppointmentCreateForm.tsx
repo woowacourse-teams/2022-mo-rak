@@ -45,8 +45,8 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
       endDate,
       startTime: getFormattedTime(startTime),
       endTime: getFormattedTime(endTime),
-      durationHour: Number(duration.hour),
-      durationMinute: Number(duration.minute)
+      durationHours: Number(duration.hour),
+      durationMinutes: Number(duration.minute)
     };
 
     try {

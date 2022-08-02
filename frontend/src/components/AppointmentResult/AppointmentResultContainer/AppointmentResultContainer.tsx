@@ -10,20 +10,18 @@ import AppointmentResultButtonGroup from '../AppointmentResultButtonGroup';
 
 function AppointmentResultContainer() {
   // TODO: api 연결 전 화면 확인을 위해 초기값 임시 설정
-  const [appointmentInfo, setAppointmentInfo] = useState<AppointmentInterface>(
-    {
-      id: 1,
-      title: '약속 잡기 제목',
-      description: '약속 잡기 설명',
-      startDate: '2022-07-26',
-      endDate: '2022-08-04',
-      startTime: '10:00AM',
-      endTime: '10:00PM',
-      durationHour: 2,
-      durationMinute: 30,
-      isClosed: false
-    }
-  );
+  const [appointmentInfo, setAppointmentInfo] = useState<AppointmentInterface>({
+    id: 1,
+    title: '약속 잡기 제목',
+    description: '약속 잡기 설명',
+    startDate: '2022-07-26',
+    endDate: '2022-08-04',
+    startTime: '10:00AM',
+    endTime: '10:00PM',
+    durationHours: 2,
+    durationMinutes: 30,
+    isClosed: false
+  });
 
   const { groupCode, appointmentCode } = useParams() as {
     groupCode: GroupInterface['code'];
@@ -44,15 +42,15 @@ function AppointmentResultContainer() {
 
   return (
     <div>
-      {appointmentInfo
-        ? (
-          <FlexContainer flexDirection="column" gap="4rem">
-            <StyledTitle>{appointmentInfo.title}</StyledTitle>
-            <AppointmentResultRanking groupCode={groupCode} appointmentCode={appointmentCode} />
-            <AppointmentResultButtonGroup />
-          </FlexContainer>
-        )
-        : <div>로딩중</div>}
+      {appointmentInfo ? (
+        <FlexContainer flexDirection="column" gap="4rem">
+          <StyledTitle>{appointmentInfo.title}</StyledTitle>
+          <AppointmentResultRanking groupCode={groupCode} appointmentCode={appointmentCode} />
+          <AppointmentResultButtonGroup />
+        </FlexContainer>
+      ) : (
+        <div>로딩중</div>
+      )}
     </div>
   );
 }
