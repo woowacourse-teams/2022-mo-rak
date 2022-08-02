@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import React, { FormEvent } from 'react';
+import { useParams } from 'react-router-dom';
 import Box from '../../common/Box/Box';
 import AppointmentCreateFormButtonGroup from '../AppointmentCreateFormButtonGroup/AppointmentCreateFormButtonGroup';
 import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
@@ -9,36 +10,48 @@ import AppointmentCreateFormTimeLimitInput from '../AppointmentCreateFormTimeLim
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import useInput from '../../../hooks/useInput';
 import useInputs from '../../../hooks/useInputs';
-import { Time, CreateAppointmentRequest } from '../../../types/appointment';
+import { Time, CreateAppointmentRequest, Appointment } from '../../../types/appointment';
+import { createAppointment } from '../../../api/appointment';
+import { GroupInterface } from '../../../types/group';
+
+interface Props {
+  startDate: Appointment['startDate'];
+  endDate: Appointment['endDate'];
+}
 
 const getFormattedTime = (time: Time) => {
   const { period, hour, minute } = time;
 
-  return `${hour}:${minute}${period}`;
+  return `${hour.padStart(2, '0')}:${minute}${period}`;
 };
 
-function AppointmentCreateForm() {
+function AppointmentCreateForm({ startDate, endDate }: Props) {
   const [title, handleTitle] = useInput();
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [description, handleDescription] = useInput();
   const [duration, handleDuration] = useInputs<Omit<Time, 'period'>>({ hour: '', minute: '' });
   const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '' });
   const [endTime, handleEndTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '' });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const appointment: CreateAppointmentRequest = {
       title,
       description,
-      startDate: '2022-07-26',
-      endDate: '2022-08-04',
+      startDate,
+      endDate,
       startTime: getFormattedTime(startTime),
       endTime: getFormattedTime(endTime),
       durationHour: Number(duration.hour),
       durationMinute: Number(duration.minute)
     };
 
-    console.log(appointment);
+    try {
+      createAppointment(groupCode, appointment);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -53,8 +66,8 @@ function AppointmentCreateForm() {
           <AppointmentCreateFormDurationInput duration={duration} onChange={handleDuration} />
           <AppointmentCreateFormTimeLimitInput
             startTime={startTime}
-            onChangeStartTime={handleStartTime}
             endTime={endTime}
+            onChangeStartTime={handleStartTime}
             onChangeEndTime={handleEndTime}
           />
         </FlexContainer>

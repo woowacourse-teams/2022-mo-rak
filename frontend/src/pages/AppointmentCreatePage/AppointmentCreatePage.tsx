@@ -1,18 +1,29 @@
 import styled from '@emotion/styled';
-import React from 'react';
-import Box from '../../components/common/Box/Box';
+import React, { useState } from 'react';
 import AppointmentCreateForm from '../../components/AppointmentCreate/AppointmentCreateForm/AppointmentCreateForm';
+import Calendar from '../../components/common/Calendar/Calendar';
 
 function AppointmentCreatePage() {
+  // TODO: 이 state들을 Form에 props로 내려주는 게 맞는 구조일지 생각해보기
+  // NOTE: 현재는 임시적으로 Page에서 state를 만들어서 props로 전달해줌.
+  const [startDate, setStartDate] = useState(''); // 2022-08-20 과 같은 형식이 들어옴 -> new Date()로 감싸서 사용 가능
+  const [endDate, setEndDate] = useState('');
+
   return (
     <StyledContainer>
       <StyledLeftContainer>
         <StyledHeader>약속을 생성하세요</StyledHeader>
         <StyledHeaderContent>여러분이 만날날을 생성해주세요~</StyledHeaderContent>
-        <Box width="45.2rem" minHeight="60rem" />
+        <Calendar
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+        />
       </StyledLeftContainer>
       <StyledRightContainer>
-        <AppointmentCreateForm />
+        {/* TODO: 이렇게 Form에 props로 내려주는 게 맞는 구조일지 생각해보기 */}
+        <AppointmentCreateForm startDate={startDate} endDate={endDate} />
       </StyledRightContainer>
     </StyledContainer>
   );
