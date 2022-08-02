@@ -5,6 +5,8 @@ spring:
     init:
       platform: local
       mode: always
+  mvc:
+    log-resolved-exception: off
 
 ---
 
