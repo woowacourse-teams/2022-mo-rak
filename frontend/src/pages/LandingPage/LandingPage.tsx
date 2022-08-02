@@ -222,7 +222,7 @@ const StyledContainer = styled.div`
 `;
 
 const StyledLogo = styled.img`
-  width: 5%; 
+  width: 10em; 
   position: absolute; 
   top: 2rem; 
   left: 4rem;
@@ -251,9 +251,9 @@ const StyledNavbar = styled.nav`
 
 const StyledSmallTitle = styled.div`
   font-size: 2.4rem;
-  margin-bottom: 12px;
+  margin-bottom: 1.2rem;
   color: black;
-  letter-spacing: 2px;
+  letter-spacing: 0.4rem;
 `;
 
 const StyledBigTitle = styled.h1`
@@ -276,7 +276,7 @@ const StyledSmileImage = styled.img`
 
 const StyledLineImage = styled.img`
   position: absolute; 
-  right: 46px;
+  right: 4.4rem;
   bottom: -4.4rem;
   width: 26rem;
 `;
@@ -284,15 +284,15 @@ const StyledLineImage = styled.img`
 const StyledGlitterImage = styled.img`
   position: absolute; 
   bottom: 0;
-  right: -32px;
+  right: -3.2rem;
   top: 5.2rem;
   width: 6rem;
 `;
 
 const StlyedSectionGuideContainer = styled.div`
   position: absolute; 
-  right: 140px; 
-  bottom: 60px;
+  right: 14rem; 
+  bottom: 6rem;
 `;
 
 const StlyedBlobContainer = styled.div`
@@ -301,8 +301,8 @@ const StlyedBlobContainer = styled.div`
 
 const StyledGuideText = styled.span`
   position: absolute; 
-  top: 72px; 
-  left: 42px; 
+  top: 7.2rem; 
+  left: 4.2rem; 
   font-size: 2.4rem; 
   color: black;
 `;
@@ -314,28 +314,28 @@ const StyledIntroduceSection = styled.section`
 `;
 
 const StyledMainIntroduceText = styled.h1`
-  font-size: 40px;
+  font-size: 4rem;
   text-align: left;
   color: black;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
   position: relative;
   font-weight: 700;
-  line-height: 45px;
-  letter-spacing: 4px;
+  line-height: 4.4rem;
+  letter-spacing: 0.4rem;
 `;
 
 const StyledHighlightImage = styled.img`
   position: absolute; 
-  left: -12px; 
-  top: 32px;
+  left: -1.2rem; 
+  top: 3.2rem;
 `;
 
 const StyledDetailIntroduceText = styled.span`
-  font-size: 20px;
+  font-size: 2rem;
   text-align: left;
   color: black;
-  letter-spacing: 1px;
-  line-height: 24px;
+  letter-spacing: 0.1rem; // TODO: 4단위
+  line-height: 2.4rem;
 `;
 
 const StyledImageContainer = styled.div`
@@ -349,60 +349,60 @@ const StyledServiceIntroduceSection = styled.section`
 `;
 
 const StyledExplainTextContainer = styled.div`
-  margin-bottom: 80px;
+  margin-bottom: 8rem;
 `;
 
-const StyledExplainBigText = styled.h1`
-  font-size: 40px;
+const StyledExplainBigText = styled.h1(({ theme }) => `
+  font-size: 4rem;
   text-align: left;
-  color: black;
-  margin-bottom: 10px;
+  color: ${theme.colors.BLACK_100};
+  margin-bottom: 1.2rem;
   position: relative;
   font-weight: 700;
-  line-height: 45px;
-  letter-spacing: 4px
-`;
+  line-height: 4.4rem;
+  letter-spacing: 0.4rem
+`);
 
-const StyledExplainSmallText = styled.div`
-  font-size: 20px;
+const StyledExplainSmallText = styled.div(({ theme }) => `
+  font-size: 2rem;
   text-align: left;
-  color: black;
-  letter-spacing: 1px;
-  line-height: 24px;
-`;
+  color: ${theme.colors.BLACK_100};
+  letter-spacing: 0.1rem; // TODO: 4단위
+  line-height: 2.4rem;
+`);
 
 const StyledServiceContainer = styled.div`
   display: flex; 
-  gap: 40px;
+  gap: 4rem;
 `;
 
-const StyledServiceWrapper = styled.div`
+const StyledServiceWrapper = styled.div(({ theme }) => `
   position: relative;
   border-radius: 100%;
-  width: 260px;
-  height: 260px;
-  background: #F8C846;
-  margin-bottom: 10px;
+  width: 26rem;
+  height: 26rem;
+  background: ${theme.colors.YELLOW_100};
+  margin-bottom: 1.2rem;
   display: flex;
   justify-content: center;
-`;
+`);
 
 const StyledServieHighlightImage = styled.img`
   position: absolute; 
-  top: 10px; 
-  left: -40px;
+  top: 1.2rem; 
+  left: -4rem;
 `;
 
 const StyledServiceName = styled.div`
   text-align: center; 
-  font-size: 20px;
+  font-size: 2rem;
 `;
 
 const StyledServieGlitterImage = styled.img`
   position: absolute; 
-  bottom: -20px; 
-  right: -10px; 
-  width: 40px;
+  bottom: -2rem; 
+  right: -1.2rem; 
+  width: 4rem;
 `;
 
 const StyledPollImage = styled.img`
@@ -427,11 +427,11 @@ const StyledGithubLogo = styled.img`
   width: 3.8rem;
 `;
 
-const StyledTitle = styled.p`
-  color: white;
+const StyledTitle = styled.p(({ theme }) => `
+  color: ${theme.colors.WHITE_100};
   padding: 2rem 0;
   font-size: 2rem;
-`;
+`);
 
 const StyledLoginContainer = styled.div(
   ({ theme }) => `
@@ -442,7 +442,7 @@ const StyledLoginContainer = styled.div(
   color: ${theme.colors.WHITE_100};
   background-color: ${theme.colors.BLACK_100};
   border-radius: 15px;
-  padding: 10px;
+  padding: 1.2rem;
 `
 );
 
