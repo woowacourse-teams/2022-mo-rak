@@ -6,14 +6,28 @@ import Avatar from '../common/Avatar/Avatar';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
 import Crown from '../../assets/crown.svg';
 import { getAppointmentResult } from '../../api/appointment';
-import { AppointmentResultInterface, AppointmentInterface } from '../../types/appointment';
+import { AppointmentResultInterface, AppointmentInfoInterface } from '../../types/appointment';
 import { MemberInterface, GroupInterface } from '../../types/group';
 import { getGroupMembers } from '../../api/group';
 
 interface Props {
   groupCode: GroupInterface['code'];
-  appointmentCode: AppointmentInterface['code'];
+  appointmentCode: AppointmentInfoInterface['code'];
 }
+
+const getDateTime = (recommendDateTime: AppointmentResultInterface['recommendStartDateTime' | 'recommendEndDateTime']) => {
+  const dateTime = new Date(recommendDateTime);
+  const week = ['일', '월', '화', '수', '목', '금', '토'];
+
+  const year = dateTime.getFullYear();
+  const month = dateTime.getMonth() + 1;
+  const date = dateTime.getDate();
+  const day = week[dateTime.getDay()];
+  const hour = dateTime.getHours().toString().padStart(2, '0');
+  const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+
+  return ` ${year}.${month}.${date}(${day}) ${hour}:${minutes} `;
+};
 
 function AppointmentResultRanking({ groupCode, appointmentCode }: Props) {
   // TODO: api 연결 전 화면 확인을 위해 초기값 임시 설정
@@ -76,19 +90,17 @@ function AppointmentResultRanking({ groupCode, appointmentCode }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
 
   const totalParticipants = groupMembers.length;
-  const week = ['일', '월', '화', '수', '목', '금', '토'];
 
   useEffect(() => {
     const fetchAppointmentResult = async () => {
-      const res = await getAppointmentResult(groupCode, appointmentCode);
-      setAppointmentResult(res);
+      try {
+        const res = await getAppointmentResult(groupCode, appointmentCode);
+        setAppointmentResult(res);
+      } catch (err) {
+        alert(err);
+      }
     };
-
-    try {
-      fetchAppointmentResult();
-    } catch (err) {
-      alert(err);
-    }
+    fetchAppointmentResult();
   }, []);
 
   useEffect(() => {
@@ -96,7 +108,6 @@ function AppointmentResultRanking({ groupCode, appointmentCode }: Props) {
       try {
         if (groupCode) {
           const res = await getGroupMembers(groupCode);
-
           setGroupMembers(res);
         }
       } catch (err) {
@@ -110,18 +121,6 @@ function AppointmentResultRanking({ groupCode, appointmentCode }: Props) {
 
   const handleShowParticipant = (rank: AppointmentResultInterface['rank']) => () => {
     setClickedRank(rank);
-  };
-
-  const getDateTime = (recommendDateTime: AppointmentResultInterface['recommendStartDateTime' | 'recommendEndDateTime']) => {
-    const dateTime = new Date(recommendDateTime);
-    const year = dateTime.getFullYear();
-    const month = dateTime.getMonth() + 1;
-    const date = dateTime.getDate();
-    const day = week[dateTime.getDay()];
-    const hour = dateTime.getHours().toString().padStart(2, '0');
-    const minutes = dateTime.getMinutes().toString().padStart(2, '0');
-
-    return ` ${year}.${month}.${date}(${day}) ${hour}:${minutes} `;
   };
 
   return (
@@ -153,7 +152,7 @@ function AppointmentResultRanking({ groupCode, appointmentCode }: Props) {
         ))}
       </StyledResultBox>
 
-      <FlexContainer flexDirection="column" gap="3.8rem">
+      <FlexContainer flexDirection="column" gap="3.6rem">
         <Box width="42rem" minHeight="28rem">
           <StyledSmallTitle>가능한 사람</StyledSmallTitle>
           <FlexContainer gap="0.8rem" justifyContent="center">

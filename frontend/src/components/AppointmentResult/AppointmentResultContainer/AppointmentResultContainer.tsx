@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 import { getAppointment } from '../../../api/appointment';
-import { AppointmentInfoInterface } from '../../../types/appointment';
+import { AppointmentInterface, AppointmentInfoInterface } from '../../../types/appointment';
+import { GroupInterface } from '../../../types/group';
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import AppointmentResultRanking from '../AppointmentResultRanking';
 import AppointmentResultButtonGroup from '../AppointmentResultButtonGroup';
 
 function AppointmentResultContainer() {
   // TODO: api 연결 전 화면 확인을 위해 초기값 임시 설정
-  const [appointmentInfo, setAppointmentInfo] = useState<AppointmentInfoInterface>(
+  const [appointmentInfo, setAppointmentInfo] = useState<AppointmentInterface>(
     {
       id: 1,
       title: '약속 잡기 제목',
@@ -25,21 +26,20 @@ function AppointmentResultContainer() {
   );
 
   const { groupCode, appointmentCode } = useParams() as {
-    groupCode: string;
-    appointmentCode: string
+    groupCode: GroupInterface['code'];
+    appointmentCode: AppointmentInfoInterface['code'];
   };
 
   useEffect(() => {
     const fetchAppointment = async () => {
-      const res = await getAppointment(groupCode, appointmentCode);
-      setAppointmentInfo(res);
+      try {
+        const res = await getAppointment(groupCode, appointmentCode);
+        setAppointmentInfo(res);
+      } catch (err) {
+        alert(err);
+      }
     };
-
-    try {
-      fetchAppointment();
-    } catch (err) {
-      alert(err);
-    }
+    fetchAppointment();
   }, []);
 
   return (

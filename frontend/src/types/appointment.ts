@@ -1,8 +1,8 @@
-interface AppointmentInterface {
+interface AppointmentInfoInterface {
   code: string;
 }
 
-interface AppointmentInfoInterface {
+interface AppointmentInterface {
   id: number;
   title: string;
   description: string;
@@ -15,7 +15,7 @@ interface AppointmentInfoInterface {
   isClosed: boolean;
 }
 
-interface AppointmentMembersInterface {
+interface AppointmentMemberInterface {
   id: number;
   name: string;
   profileUrl: string;
@@ -25,8 +25,8 @@ interface AppointmentResultInterface {
   rank: number;
   recommendStartDateTime: string;
   recommendEndDateTime: string;
-  availableMembers: Array<AppointmentMembersInterface>;
-  unavailableMembers: Array<AppointmentMembersInterface>;
+  availableMembers: Array<AppointmentMemberInterface>;
+  unavailableMembers: Array<AppointmentMemberInterface>;
 }
 
-export { AppointmentInterface, AppointmentResultInterface, AppointmentInfoInterface };
+export { AppointmentInfoInterface, AppointmentResultInterface, AppointmentInterface };

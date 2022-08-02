@@ -1,10 +1,10 @@
 import fetcher from '../utils/fetcher';
 import { GroupInterface } from '../types/group';
-import { AppointmentInterface } from '../types/appointment';
+import { AppointmentInfoInterface } from '../types/appointment';
 
 const getAppointmentResult = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInterface['code']
+  appointmentCode: AppointmentInfoInterface['code']
 ) =>
   fetcher({
     method: 'GET',
@@ -13,7 +13,7 @@ const getAppointmentResult = (
 
 const getAppointment = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInterface['code']
+  appointmentCode: AppointmentInfoInterface['code']
 ) =>
   fetcher({
     method: 'GET',
