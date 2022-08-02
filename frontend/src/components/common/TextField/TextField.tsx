@@ -48,6 +48,7 @@ const StyledContainer = styled.div<
     variantStyle: string;
   }
 >(
+  // TODO: text-align이 여기에 있는 게 맞을까??
   ({ width, borderRadius, variantStyle, padding }) => `
     ${variantStyle};
     position: relative;

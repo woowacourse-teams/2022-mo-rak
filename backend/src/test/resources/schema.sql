@@ -13,7 +13,7 @@ CREATE TABLE member
     `id`          bigint       NOT NULL AUTO_INCREMENT,
     `oauth_id`    varchar(255) NOT NULL UNIQUE,
     `name`        varchar(255) NOT NULL,
-    `profile_url` varchar(255),
+    `profile_url` varchar(255) NOT NULL,
     `created_at`  datetime     NOT NULL,
     `updated_at`  datetime     NOT NULL,
     PRIMARY KEY (id)
@@ -130,3 +130,6 @@ CREATE TABLE appointment_available_time
     FOREIGN KEY (appointment_id) REFERENCES appointment (id),
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
+
+ALTER TABLE appointment_available_time
+    ADD UNIQUE (appointment_id, member_id, start_date_time, end_date_time);

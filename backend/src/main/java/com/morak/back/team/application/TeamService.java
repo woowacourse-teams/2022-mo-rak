@@ -5,8 +5,10 @@ import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.auth.exception.TeamNotFoundException;
 import com.morak.back.auth.ui.dto.MemberResponse;
+import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.CodeGenerator;
+import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.exception.ResourceNotFoundException;
-import com.morak.back.core.util.CodeGenerator;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
@@ -32,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TeamService {
 
-    private static final int TEAM_CODE_LENGTH = 8;
+    private static final CodeGenerator CODE_GENERATOR = new RandomCodeGenerator();
 
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
@@ -40,11 +42,17 @@ public class TeamService {
     private final TeamInvitationRepository teamInvitationRepository;
 
     public String createTeam(Long memberId, TeamCreateRequest request) {
-        Team team = new Team(null, request.getName(), CodeGenerator.createRandomCode(TEAM_CODE_LENGTH));
+        Team team = Team.builder()
+                .name(request.getName())
+                .code(Code.generate(CODE_GENERATOR))
+                .build();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
         Team savedTeam = teamRepository.save(team);
 
-        TeamMember teamMember = new TeamMember(null, savedTeam, member);
+        TeamMember teamMember = TeamMember.builder()
+                .team(savedTeam)
+                .member(member)
+                .build();
         teamMemberRepository.save(teamMember);
 
         return savedTeam.getCode();
@@ -55,7 +63,10 @@ public class TeamService {
         validateJoined(team.getId(), memberId);
 
         TeamInvitation savedTeamInvitation = teamInvitationRepository.save(
-                TeamInvitation.issue(team, CodeGenerator::createRandomCode)
+                TeamInvitation.builder()
+                        .code(Code.generate(CODE_GENERATOR))
+                        .team(team)
+                        .build()
         );
         return savedTeamInvitation.getCode();
     }
@@ -88,7 +99,12 @@ public class TeamService {
         validateNotJoined(team.getId(), memberId);
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
-        teamMemberRepository.save(new TeamMember(null, team, member));
+        teamMemberRepository.save(
+                TeamMember.builder()
+                        .team(team)
+                        .member(member)
+                        .build()
+        );
         return team.getCode();
     }
 

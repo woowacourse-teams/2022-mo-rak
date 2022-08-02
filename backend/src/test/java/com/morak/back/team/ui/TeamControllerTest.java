@@ -135,7 +135,7 @@ class TeamControllerTest {
     void 그룹_목록을_조회한다() throws Exception {
         // given
         given(teamService.findTeams(anyLong())).willReturn(
-                List.of(new TeamResponse("ABCD1234", "모락"), new TeamResponse("1234ABCD", "모락오라"))
+                List.of(new TeamResponse(1L, "ABCD1234", "모락"), new TeamResponse(2L, "1234ABCD", "모락오라"))
         );
 
         // when & then
@@ -206,6 +206,9 @@ class TeamControllerTest {
     @Test
     void 기본_그룹을_조회한다() throws Exception {
         // when & then
+        given(teamService.findDefaultTeam(anyLong())).willReturn(
+                new TeamResponse(1L, "ABcd1234", "팀 이름")
+        );
         mockMvc.perform(
                 get("/api/groups/default")
                         .header("Authorization", "Bearer access-token")

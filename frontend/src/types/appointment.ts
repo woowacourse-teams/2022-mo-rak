@@ -14,7 +14,6 @@ interface AppointmentInterface {
   durationMinute: number;
   isClosed: boolean;
 }
-
 interface AppointmentMemberInterface {
   id: number;
   name: string;
@@ -29,4 +28,17 @@ interface AppointmentResultInterface {
   unavailableMembers: Array<AppointmentMemberInterface>;
 }
 
-export { AppointmentInfoInterface, AppointmentResultInterface, AppointmentInterface };
+type CreateAppointmentRequest = Omit<AppointmentInterface, 'id' | 'isClosed'>;
+
+interface Time {
+  period: 'AM' | 'PM';
+  hour: string;
+  minute: string;
+}
+export {
+  Time,
+  CreateAppointmentRequest,
+  AppointmentInfoInterface,
+  AppointmentResultInterface,
+  AppointmentInterface
+};

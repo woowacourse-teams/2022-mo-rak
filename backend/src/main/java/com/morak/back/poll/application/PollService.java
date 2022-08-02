@@ -4,7 +4,9 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.auth.exception.TeamNotFoundException;
-import com.morak.back.core.util.CodeGenerator;
+import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.CodeGenerator;
+import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
@@ -13,7 +15,7 @@ import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.exception.PollItemNotFoundException;
 import com.morak.back.poll.exception.PollNotFoundException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemRequest;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
@@ -33,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PollService {
 
-    private static final int CODE_LENGTH = 8;
+    private static final CodeGenerator GENERATOR = new RandomCodeGenerator();
 
     private final PollRepository pollRepository;
     private final MemberRepository memberRepository;
@@ -41,17 +43,17 @@ public class PollService {
     private final TeamMemberRepository teamMemberRepository;
     private final PollItemRepository pollItemRepository;
 
-    public Long createPoll(String teamCode, Long memberId, PollCreateRequest request) {
+    public String createPoll(String teamCode, Long memberId, PollCreateRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
         Team team = teamRepository.findByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(team.getId(), memberId);
 
-        Poll poll = request.toPoll(member, team, PollStatus.OPEN, CodeGenerator.createRandomCode(CODE_LENGTH));
+        Poll poll = request.toPoll(member, team, PollStatus.OPEN, Code.generate(GENERATOR));
         Poll savedPoll = pollRepository.save(poll);
         List<PollItem> items = request.toPollItems(savedPoll);
         pollItemRepository.saveAll(items);
 
-        return savedPoll.getId();
+        return savedPoll.getCode();
     }
 
     private void validateMemberInTeam(Long teamId, Long memberId) {
@@ -73,46 +75,46 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
-    public void doPoll(String teamCode, Long memberId, Long pollId, List<PollItemRequest> requests) {
+    public void doPoll(String teamCode, Long memberId, String pollCode, List<PollResultRequest> requests) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
         Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(teamId, memberId);
 
-        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId)
-                .orElseThrow(() -> new PollNotFoundException(pollId));
+        Poll poll = pollRepository.findByCodeAndTeamId(pollCode, teamId)
+                .orElseThrow(() -> new PollNotFoundException(pollCode, teamId));
 
         poll.doPoll(member, mapPollItemAndDescription(requests));
     }
 
-    private Map<PollItem, String> mapPollItemAndDescription(List<PollItemRequest> requests) {
+    private Map<PollItem, String> mapPollItemAndDescription(List<PollResultRequest> requests) {
         return requests.stream()
-                .collect(Collectors.toMap(this::getPollItem, PollItemRequest::getDescription));
+                .collect(Collectors.toMap(this::getPollItem, PollResultRequest::getDescription));
     }
 
-    private PollItem getPollItem(PollItemRequest request) {
+    private PollItem getPollItem(PollResultRequest request) {
         Long pollItemId = request.getItemId();
         return pollItemRepository.findById(pollItemId).orElseThrow(() -> new PollItemNotFoundException(pollItemId));
     }
 
     @Transactional(readOnly = true)
-    public PollResponse findPoll(String teamCode, Long memberId, Long pollId) {
+    public PollResponse findPoll(String teamCode, Long memberId, String pollCode) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
         Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(teamId, memberId);
 
-        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId)
-                .orElseThrow(() -> new PollNotFoundException(pollId));
+        Poll poll = pollRepository.findByCodeAndTeamId(pollCode, teamId)
+                .orElseThrow(() -> new PollNotFoundException(pollCode, teamId));
         return PollResponse.from(poll, member);
     }
 
     @Transactional(readOnly = true)
-    public List<PollItemResponse> findPollItems(String teamCode, Long memberId, Long pollId) {
+    public List<PollItemResponse> findPollItems(String teamCode, Long memberId, String pollCode) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
         Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(teamId, memberId);
 
-        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId)
-                .orElseThrow(() -> new PollNotFoundException(pollId));
+        Poll poll = pollRepository.findByCodeAndTeamId(pollCode, teamId)
+                .orElseThrow(() -> new PollNotFoundException(pollCode, teamId));
 
         return poll.getPollItems()
                 .stream()
@@ -121,12 +123,12 @@ public class PollService {
     }
 
     @Transactional(readOnly = true)
-    public List<PollItemResultResponse> findPollItemResults(String teamCode, Long memberId, Long pollId) {
+    public List<PollItemResultResponse> findPollItemResults(String teamCode, Long memberId, String pollCode) {
         Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         validateMemberInTeam(teamId, memberId);
 
-        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId)
-                .orElseThrow(() -> new PollNotFoundException(pollId));
+        Poll poll = pollRepository.findByCodeAndTeamId(pollCode, teamId)
+                .orElseThrow(() -> new PollNotFoundException(pollCode, teamId));
 
         return poll.getPollItems()
                 .stream()
@@ -134,25 +136,25 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
-    public void deletePoll(String teamCode, Long memberId, Long pollId) {
+    public void deletePoll(String teamCode, Long memberId, String pollCode) {
         Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
         validateMemberInTeam(teamId, memberId);
 
-        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId)
-                .orElseThrow(() -> new PollNotFoundException(pollId, teamId));
+        Poll poll = pollRepository.findByCodeAndTeamId(pollCode, teamId)
+                .orElseThrow(() -> new PollNotFoundException(pollCode, teamId));
         poll.validateHost(member);
 
-        pollRepository.deleteById(pollId);
+        pollRepository.deleteById(poll.getId());
     }
 
-    public void closePoll(String teamCode, Long memberId, Long pollId) {
+    public void closePoll(String teamCode, Long memberId, String pollCode) {
         Long teamId = teamRepository.findIdByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
         validateMemberInTeam(teamId, memberId);
 
-        Poll poll = pollRepository.findByIdAndTeamId(pollId, teamId)
-                .orElseThrow(() -> new PollNotFoundException(pollId, teamId));
+        Poll poll = pollRepository.findByCodeAndTeamId(pollCode, teamId)
+                .orElseThrow(() -> new PollNotFoundException(pollCode, teamId));
         poll.close(member);
     }
 }

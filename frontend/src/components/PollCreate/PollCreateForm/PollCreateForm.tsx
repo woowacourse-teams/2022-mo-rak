@@ -73,12 +73,16 @@ function PollCreateForm() {
         <MarginContainer margin="0 0 1.6rem 0">
           <PollCreateDetail
             isAnonymous={isAnonymous}
+            // NOTE: onClickAnonymous로 바꿔주는 게 어떨까?
             handleAnonymous={handleAnonymous}
             isAllowedMultiplePollCount={isAllowedMultiplePollCount}
+            // TODO: is 붙여주는 게 더 말이 될듯
+            // NOTE: onClickAllowedMultiplePollCount로 바꿔주는 게 어떨까?
             handleAllowedMultiplePollCount={handleAllowedMultiplePollCount}
           />
         </MarginContainer>
         <MarginContainer margin="0 0 4rem 0">
+          {/* NOTE: setPollItems를 넘겨주는 게 맞을까? 다른 것들은 handle함수를 만들어서 내려주는 데 일관성이 여기서 깨지는 것 같다  */}
           <PollCreateFormInputGroup pollItems={pollItems} setPollItems={setPollItems} />
         </MarginContainer>
         <PollCreateFormSubmitButton />

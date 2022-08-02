@@ -62,6 +62,12 @@ public class SimpleRestAssured {
                 .when().delete(path));
     }
 
+    public static ExtractableResponse<Response> patch(String path, Map<String, String> header) {
+        return thenExtract(given()
+                .headers(header)
+                .when().patch(path));
+    }
+
     private static RequestSpecification given() {
         return RestAssured.given().log().all();
     }
@@ -79,5 +85,4 @@ public class SimpleRestAssured {
     public static <T> List<T> toObjectList(ExtractableResponse<Response> response, Class<T> clazz) {
         return response.body().jsonPath().getList(".", clazz);
     }
-
 }

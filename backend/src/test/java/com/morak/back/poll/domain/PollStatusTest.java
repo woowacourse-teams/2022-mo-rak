@@ -36,6 +36,6 @@ class PollStatusTest {
         PollStatus closed = status.close();
         // then
         assertThatThrownBy(closed::close)
-            .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(InvalidRequestException.class);
     }
 }

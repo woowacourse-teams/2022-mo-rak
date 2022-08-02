@@ -27,7 +27,7 @@ function PollResultStatus({ status }: Props) {
 const StyledStatus = styled.span(
   ({ theme }) => `
   color: ${theme.colors.WHITE_100};
-  fontSize:1.2rem;
+  font-size:1.2rem;
 `
 );
 
