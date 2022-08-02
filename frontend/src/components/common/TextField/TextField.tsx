@@ -56,7 +56,6 @@ const StyledContainer = styled.div<
     ${width && `width: ${width}`};
     ${borderRadius && `border-radius: ${borderRadius}`};
     ${padding && `padding: ${padding}`};
-
   `
 );
 

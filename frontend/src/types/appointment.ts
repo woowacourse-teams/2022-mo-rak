@@ -1,3 +1,7 @@
+interface AppointmentInfoInterface {
+  code: string;
+}
+
 interface AppointmentInterface {
   id: number;
   title: string;
@@ -10,6 +14,19 @@ interface AppointmentInterface {
   durationMinute: number;
   isClosed: boolean;
 }
+interface AppointmentMemberInterface {
+  id: number;
+  name: string;
+  profileUrl: string;
+}
+
+interface AppointmentResultInterface {
+  rank: number;
+  recommendStartDateTime: string;
+  recommendEndDateTime: string;
+  availableMembers: Array<AppointmentMemberInterface>;
+  unavailableMembers: Array<AppointmentMemberInterface>;
+}
 
 type CreateAppointmentRequest = Omit<AppointmentInterface, 'id' | 'isClosed'>;
 
@@ -18,4 +35,10 @@ interface Time {
   hour: string;
   minute: string;
 }
-export { Time, AppointmentInterface, CreateAppointmentRequest };
+export {
+  Time,
+  CreateAppointmentRequest,
+  AppointmentInfoInterface,
+  AppointmentResultInterface,
+  AppointmentInterface
+};
