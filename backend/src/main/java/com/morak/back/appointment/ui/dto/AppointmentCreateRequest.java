@@ -8,7 +8,6 @@ import com.morak.back.core.domain.Code;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Locale;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -35,27 +34,27 @@ public class AppointmentCreateRequest {
     private final LocalTime startTime;
 
     @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mma", locale = "en_US")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mma", locale = "en_US")
     private final LocalTime endTime;
 
     @NotNull
-    private final Integer durationHour;
+    private final Integer durationHours;
 
     @NotNull
-    private final Integer durationMinute;
+    private final Integer durationMinutes;
 
     @JsonCreator
     public AppointmentCreateRequest(String title, String description, LocalDate startDate, LocalDate endDate,
-                                    LocalTime startTime, LocalTime endTime, Integer durationHour,
-                                    Integer durationMinute) {
+                                    LocalTime startTime, LocalTime endTime, Integer durationHours,
+                                    Integer durationMinutes) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.durationHour = durationHour;
-        this.durationMinute = durationMinute;
+        this.durationHours = durationHours;
+        this.durationMinutes = durationMinutes;
     }
 
     public Appointment toAppointment(Team team, Member member, Code code) {
@@ -68,8 +67,8 @@ public class AppointmentCreateRequest {
                 .endDate(this.endDate)
                 .startTime(this.startTime)
                 .endTime(this.endTime)
-                .durationHours(durationHour)
-                .durationMinutes(durationMinute)
+                .durationHours(this.durationHours)
+                .durationMinutes(this.durationMinutes)
                 .code(code)
                 .build();
     }
