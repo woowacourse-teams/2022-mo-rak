@@ -1,5 +1,6 @@
 package com.morak.back.core.ui;
 
+import com.morak.back.auth.support.Auth;
 import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.ui.dto.SlackWebhookCreateRequest;
 import java.net.URI;
@@ -18,8 +19,9 @@ public class NotificationController {
 
     @PostMapping("/api/groups/{groupCode}/slack")
     public ResponseEntity<Void> enrollSlackWebhookUrl(@PathVariable String groupCode,
+                                                      @Auth Long memberId,
                                                       @RequestBody SlackWebhookCreateRequest request) {
-        Long id = notificationService.saveSlackWebhook(groupCode, request);
+        Long id = notificationService.saveSlackWebhook(groupCode, memberId, request);
         return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/slack/" + id)).build();
     }
 }

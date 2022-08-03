@@ -10,7 +10,9 @@ import com.morak.back.core.util.MessageFormatter;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.team.domain.Team;
+import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
+import com.morak.back.team.exception.MismatchedTeamException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,7 @@ public class NotificationService {
     private final SlackClient slackClient;
     private final PollRepository pollRepository;
     private final TeamRepository teamRepository;
+    private final TeamMemberRepository teamMemberRepository;
     private final SlackWebhookRepository slackWebhookRepository;
 
     @Scheduled(cron = "0 0/1 * * * ?")
@@ -49,9 +52,12 @@ public class NotificationService {
             ));
     }
 
-    public Long saveSlackWebhook(String teamCode, SlackWebhookCreateRequest request) {
+    public Long saveSlackWebhook(String teamCode, Long memberId, SlackWebhookCreateRequest request) {
         Team team = teamRepository.findByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
+        validateMemberInTeam(team.getId(), memberId);
+
         slackWebhookRepository.deleteByTeamId(team.getId());
+        slackWebhookRepository.flush();
         SlackWebhook savedWebhook = slackWebhookRepository.save(
             SlackWebhook.builder()
                 .team(team)
@@ -59,5 +65,11 @@ public class NotificationService {
                 .build()
         );
         return savedWebhook.getId();
+    }
+
+    private void validateMemberInTeam(Long teamId, Long memberId) {
+        if (!teamMemberRepository.existsByTeamIdAndMemberId(teamId, memberId)) {
+            throw new MismatchedTeamException(teamId, memberId);
+        }
     }
 }

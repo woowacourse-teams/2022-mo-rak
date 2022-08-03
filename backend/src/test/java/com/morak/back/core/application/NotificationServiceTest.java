@@ -18,6 +18,7 @@ import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.team.domain.Team;
+import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +44,9 @@ class NotificationServiceTest {
     @Mock
     private TeamRepository teamRepository;
 
+    @Mock
+    private TeamMemberRepository teamMemberRepository;
+
     @InjectMocks
     private NotificationService notificationService;
 
@@ -55,6 +59,7 @@ class NotificationServiceTest {
         String url = "https://hello.world";
 
         given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
+        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         doNothing().when(slackWebhookRepository).deleteByTeamId(anyLong());
         given(slackWebhookRepository.save(any(SlackWebhook.class)))
             .willReturn(
@@ -67,7 +72,34 @@ class NotificationServiceTest {
 
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
         // when
-        Long webhookId = notificationService.saveSlackWebhook("teamCODE", request);
+        Long webhookId = notificationService.saveSlackWebhook("teamCODE", 1L, request);
+
+        // then
+        assertThat(webhookId).isEqualTo(10L);
+    }
+
+    @Test
+    void 등록된_웹훅_URL을_변경한다() {
+        Team team = Team.builder()
+            .id(1L)
+            .build();
+        String url = "https://hello.world";
+
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
+        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
+        doNothing().when(slackWebhookRepository).deleteByTeamId(anyLong());
+        given(slackWebhookRepository.save(any(SlackWebhook.class)))
+            .willReturn(
+                SlackWebhook.builder()
+                    .id(10L)
+                    .team(team)
+                    .url(url)
+                    .build()
+            );
+
+        SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
+        // when
+        Long webhookId = notificationService.saveSlackWebhook("teamCODE", 1L, request);
 
         // then
         assertThat(webhookId).isEqualTo(10L);
