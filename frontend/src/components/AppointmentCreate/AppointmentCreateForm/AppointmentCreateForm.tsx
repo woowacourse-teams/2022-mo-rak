@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React, { FormEvent } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Box from '../../common/Box/Box';
 import AppointmentCreateFormButtonGroup from '../AppointmentCreateFormButtonGroup/AppointmentCreateFormButtonGroup';
 import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
@@ -32,8 +32,8 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [description, handleDescription] = useInput();
   const [duration, handleDuration] = useInputs<Omit<Time, 'period'>>({ hour: '', minute: '' });
-  const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '' });
-  const [endTime, handleEndTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '' });
+  const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
+  const [endTime, handleEndTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +42,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
       title,
       description,
       startDate,
-      endDate,
+      endDate: endDate || startDate,
       startTime: getFormattedTime(startTime),
       endTime: getFormattedTime(endTime),
       durationHours: Number(duration.hour),
