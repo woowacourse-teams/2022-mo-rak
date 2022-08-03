@@ -4,9 +4,12 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.core.exception.MorakException;
 import com.morak.back.core.exception.ResourceNotFoundException;
+import com.morak.back.core.support.LogFormatter;
 import com.morak.back.poll.ui.dto.ExceptionResponse;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,11 +50,12 @@ public class GlobalControllerAdvice {
 
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e) {
+    public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e, HttpServletRequest request)
+            throws IOException {
         String stackTrace = Arrays.stream(e.getStackTrace())
                 .map(StackTraceElement::toString)
-                .collect(Collectors.joining("\n"));
-        logger.error(stackTrace);
+                .collect(Collectors.joining(" <- "));
+        logger.error(stackTrace + LogFormatter.toPrettyRequestString(request));
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptionResponse("알 수 없는 에러입니다."));
     }

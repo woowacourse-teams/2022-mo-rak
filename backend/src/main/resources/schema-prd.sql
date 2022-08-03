@@ -1,13 +1,3 @@
-DROP TABLE poll_result IF EXISTS;
-DROP TABLE poll_item IF EXISTS;
-DROP TABLE poll IF EXISTS;
-DROP TABLE team_member IF EXISTS;
-DROP TABLE team_invitation IF EXISTS;
-DROP TABLE appointment_available_time IF EXISTS;
-DROP TABLE appointment IF EXISTS;
-DROP TABLE team IF EXISTS;
-DROP TABLE member IF EXISTS;
-
 CREATE TABLE member
 (
     `id`          bigint       NOT NULL AUTO_INCREMENT,
