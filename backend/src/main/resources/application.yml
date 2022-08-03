@@ -70,3 +70,11 @@ security:
     github:
       client-id: ${GITHUB_CLIENT_ID}
       client-secret: ${GITHUB_CLIENT_SECRET}
+
+---
+
+logging:
+  slack:
+    error-url: ${SLACK_ERROR_URL}
+  config: classpath:logback-spring.xml
+

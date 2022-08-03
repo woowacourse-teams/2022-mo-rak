@@ -26,6 +26,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'com.github.maricn:logback-slack-appender:1.6.1'
 
     compileOnly 'org.projectlombok:lombok'
 

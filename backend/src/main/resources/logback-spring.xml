@@ -70,11 +70,35 @@
         </rollingPolicy>
     </appender>
 
+    <springProperty name="SLACK_ERROR_URL" source="logging.slack.error-url"/>
+    <appender name="SLACK" class="com.github.maricn.logback.SlackAppender">
+        <webhookUri>${SLACK_ERROR_URL}</webhookUri>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %msg %n</pattern>
+        </layout>
+        <username>MORAK-BOT</username>
+        <iconEmoji>:oncoming_police_car:</iconEmoji>
+        <colorCoding>true</colorCoding>
+    </appender>
+
+    <appender name="ASYNC_SLACK" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="SLACK"/>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="INFO_LOG"/>
         <appender-ref ref="WARN_LOG"/>
         <appender-ref ref="ERROR_LOG"/>
     </root>
+
+    <springProfile name="prd">
+        <logger name="GlobalControllerAdvice" level="ERROR">
+            <appender-ref ref="ASYNC_SLACK"/>
+        </logger>
+    </springProfile>
 
 </configuration>
