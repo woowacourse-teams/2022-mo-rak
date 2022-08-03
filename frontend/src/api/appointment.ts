@@ -1,13 +1,17 @@
 import fetcher from '../utils/fetcher';
 import { GroupInterface } from '../types/group';
-import { CreateAppointmentRequest, AppointmentInfoInterface } from '../types/appointment';
+import {
+  AppointmentInfoInterface,
+  CreateAppointmentRequest,
+  ProgressAppointmentRequest
+} from '../types/appointment';
 
 const createAppointment = (
   groupCode: GroupInterface['code'],
   appointment: CreateAppointmentRequest
 ) => fetcher({ method: 'POST', path: `groups/${groupCode}/appointments`, body: appointment });
 
-const getAppointmentResult = (
+const getAppointmentRecommendation = (
   groupCode: GroupInterface['code'],
   appointmentCode: AppointmentInfoInterface['code']
 ) =>
@@ -25,4 +29,15 @@ const getAppointment = (
     path: `groups/${groupCode}/appointments/${appointmentCode}`
   });
 
-export { getAppointmentResult, getAppointment, createAppointment };
+const progressAppointment = (
+  groupCode: GroupInterface['code'],
+  appointmentCode: AppointmentInfoInterface['code'],
+  availableTimes: ProgressAppointmentRequest
+) =>
+  fetcher({
+    method: 'PUT',
+    path: `groups/${groupCode}/appointments/${appointmentCode}`,
+    body: availableTimes
+  });
+
+export { getAppointment, createAppointment, progressAppointment, getAppointmentRecommendation };
