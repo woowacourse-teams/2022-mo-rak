@@ -51,6 +51,7 @@ public class NotificationService {
 
     public Long saveSlackWebhook(String teamCode, SlackWebhookCreateRequest request) {
         Team team = teamRepository.findByCode(teamCode).orElseThrow(() -> new TeamNotFoundException(teamCode));
+        slackWebhookRepository.deleteByTeamId(team.getId());
         SlackWebhook savedWebhook = slackWebhookRepository.save(
             SlackWebhook.builder()
                 .team(team)

@@ -60,4 +60,26 @@ class SlackWebhookRepositoryTest {
         // then
         assertThat(savedWebhook).isEqualTo(webhook);
     }
+
+    @Test
+    void 팀_아이디로_웹훅을_지운다() {
+        // given
+        Team team = teamRepository.save(
+            Team.builder()
+                .name("teamA?")
+                .code(Code.generate(length -> "AAAAaaaa"))
+                .build()
+        );
+        SlackWebhook webhook = webhookRepository.save(
+            SlackWebhook.builder()
+                .team(team)
+                .url("https://testB.com")
+                .build()
+        );
+        // when
+        webhookRepository.deleteByTeamId(team.getId());
+        // then
+
+        assertThat(webhookRepository.findByTeamId(team.getId())).isEmpty();
+    }
 }
