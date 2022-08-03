@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class SlackWebhookCreateRequest {
+
     private String url;
 }
