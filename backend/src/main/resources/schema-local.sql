@@ -135,7 +135,7 @@ CREATE TABLE appointment_available_time
 CREATE TABLE slack_webhook
 (
     `id`         BIGINT       NOT NULL AUTO_INCREMENT,
-    `team_id`    BIGINT       NOT NULL,
+    `team_id`    BIGINT       NOT NULL UNIQUE,
     `url`        VARCHAR(255) NOT NULL,
     `created_at` DATETIME     NOT NULL,
     `updated_at` DATETIME     NOT NULL,
