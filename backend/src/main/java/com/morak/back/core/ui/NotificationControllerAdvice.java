@@ -19,6 +19,6 @@ public class NotificationControllerAdvice {
     public ResponseEntity<ExceptionResponse> handleExternalFailure(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(new ExceptionResponse("API 요청을 실패했습니다."));
+            .body(new ExceptionResponse("외부 API 요청을 실패했습니다."));
     }
 }
