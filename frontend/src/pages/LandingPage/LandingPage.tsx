@@ -218,6 +218,7 @@ const StyledContainer = styled.div`
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
   height: 100vh;
+  width: 100%;
   font-family: 'Nanum Gothic', sans-serif;
 `;
 
@@ -419,7 +420,7 @@ const StyledUndefinedImage = styled.img`
 
 const StyledLink = styled.a`
   position: absolute;
-  bottom: 20rem;
+  bottom: 10rem;
   text-decoration: none;
 `;
 
