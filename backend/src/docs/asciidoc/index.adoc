@@ -27,7 +27,7 @@ include::{snippets}/auth/signin/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -50,7 +50,7 @@ include::{snippets}/poll/poll-create/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -76,7 +76,7 @@ include::{snippets}/poll/do-poll/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -102,7 +102,7 @@ include::{snippets}/poll/get-polls/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -128,7 +128,7 @@ include::{snippets}/poll/get-poll/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -154,7 +154,7 @@ include::{snippets}/poll/get-poll-items/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -180,7 +180,7 @@ include::{snippets}/poll/get-poll-results/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -206,7 +206,7 @@ include::{snippets}/poll/get-poll-results-anonymous/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -232,7 +232,7 @@ include::{snippets}/poll/delete-poll/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -258,7 +258,7 @@ include::{snippets}/poll/close-poll/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -286,7 +286,7 @@ include::{snippets}/group-create/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -310,7 +310,7 @@ include::{snippets}/group-invitation-code-create/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -337,7 +337,7 @@ include::{snippets}/group-isJoined/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -361,7 +361,7 @@ include::{snippets}/groups/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -382,7 +382,7 @@ include::{snippets}/group-members/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -409,7 +409,7 @@ include::{snippets}/group-out/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -435,7 +435,7 @@ include::{snippets}/group-default/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -458,7 +458,7 @@ include::{snippets}/appointment/create-appointment/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -484,7 +484,7 @@ include::{snippets}/appointment/get-appointments/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -510,7 +510,7 @@ include::{snippets}/appointment/get-appointment/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -536,7 +536,7 @@ include::{snippets}/appointment/select-available-time/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -562,7 +562,7 @@ include::{snippets}/appointment/recommend-appointments/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -588,7 +588,7 @@ include::{snippets}/appointment/close-appointment/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
@@ -614,7 +614,7 @@ include::{snippets}/appointment/delete-appointment/http-response.adoc[]
 |Description
 
 |400
-|요청 형식이 잘못되었습니다.
+|요청이 잘못되었습니다.
 
 |401
 |사용자 인증에 실패했습니다.
