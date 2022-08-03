@@ -1,5 +1,7 @@
 package com.morak.back.appointment.domain;
 
+import static com.morak.back.appointment.domain.Appointment.MINUTES_UNIT;
+
 import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.domain.BaseEntity;
 import java.time.LocalDateTime;
@@ -41,11 +43,13 @@ public class AvailableTime extends BaseEntity {
 
     @Builder
     private AvailableTime(Long id, Appointment appointment, Member member,
-                         LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        appointment.validateAvailableTimeRange(startDateTime, endDateTime);
+                          LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        DateTimePeriod dateTimePeriod = DateTimePeriod.of(startDateTime, endDateTime, MINUTES_UNIT);
+        appointment.validateAvailableTimeRange(dateTimePeriod);
+
         this.id = id;
         this.appointment = appointment;
         this.member = member;
-        this.dateTimePeriod = new DateTimePeriod(startDateTime, endDateTime);
+        this.dateTimePeriod = dateTimePeriod;
     }
 }
