@@ -6,6 +6,7 @@ import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AvailableTime;
 import com.morak.back.auth.domain.Member;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
@@ -13,11 +14,11 @@ import lombok.Getter;
 public class AvailableTimeRequest {
 
     @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mma", locale = "en_US")
     private final LocalDateTime start;
 
     @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mma", locale = "en_US")
     private final LocalDateTime end;
 
     @JsonCreator

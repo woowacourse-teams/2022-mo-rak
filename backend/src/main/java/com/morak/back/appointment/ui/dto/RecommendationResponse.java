@@ -15,10 +15,10 @@ public class RecommendationResponse {
 
     private Integer rank;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mma", locale = "en_US")
     private LocalDateTime recommendStartDateTime;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mma", locale = "en_US")
     private LocalDateTime recommendEndDateTime;
 
     // TODO: 2022/07/27 기존의 MemberResponse를 쓰기 위해 memberId를 id로 변경해서 사용하고 있음!
