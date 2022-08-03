@@ -8,7 +8,6 @@ import lombok.Getter;
 @Getter
 public class NotificationRequest {
 
-    private String channel;
     private String username;
     private String text;
     @JsonProperty("icon_emoji")
