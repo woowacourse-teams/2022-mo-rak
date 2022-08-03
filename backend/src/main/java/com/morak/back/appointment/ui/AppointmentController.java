@@ -7,9 +7,7 @@ import com.morak.back.appointment.ui.dto.AppointmentResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.support.Auth;
-import com.morak.back.auth.ui.dto.MemberResponse;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -65,28 +63,7 @@ public class AppointmentController {
     public ResponseEntity<List<RecommendationResponse>> recommendAppointments(@PathVariable String groupCode,
                                                                               @Auth Long memberId,
                                                                               @PathVariable String appointmentCode) {
-        List<RecommendationResponse> recommendationResponses = appointmentService.recommendAvailableTimes(groupCode, memberId, appointmentCode);
-        RecommendationResponse recommendationResponse1 = new RecommendationResponse(
-                1,
-                LocalDateTime.of(2022, 8, 6, 16, 0),
-                LocalDateTime.of(2022, 8, 6, 18, 30),
-                List.of(
-                        new MemberResponse(1L, "eden", "eden-profile.com"),
-                        new MemberResponse(2L, "ellie", "ellie-profile.com")
-                ),
-                List.of(new MemberResponse(5L, "albur", "albur-profile.com"))
-        );
-        RecommendationResponse recommendationResponse2 = new RecommendationResponse(
-                1,
-                LocalDateTime.of(2022, 8, 6, 17, 0),
-                LocalDateTime.of(2022, 8, 6, 19, 30),
-                List.of(new MemberResponse(1L, "eden", "eden-profile.com")),
-                List.of(
-                        new MemberResponse(5L, "albur", "albur-profile.com"),
-                        new MemberResponse(2L, "ellie", "ellie-profile.com")
-                )
-        );
-        return ResponseEntity.ok(List.of(recommendationResponse1, recommendationResponse2));
+        return ResponseEntity.ok(appointmentService.recommendAvailableTimes(groupCode, memberId, appointmentCode));
     }
 
     @PatchMapping("/{appointmentCode}/close")
