@@ -2,6 +2,7 @@ package com.morak.back.poll.domain;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.Menu;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
@@ -36,7 +37,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Poll extends BaseEntity {
+public class Poll extends BaseEntity implements Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -158,5 +159,10 @@ public class Poll extends BaseEntity {
 
     public String getCode() {
         return code.getCode();
+    }
+
+    @Override
+    public String getTeamName() {
+        return getTeam().getName();
     }
 }

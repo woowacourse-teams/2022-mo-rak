@@ -13,10 +13,10 @@ import com.morak.back.AcceptanceTest;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
@@ -46,7 +46,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     void 투표를_생성한다() {
         // given & when
         PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
-                List.of("항목1", "항목2"));
+            List.of("항목1", "항목2"));
         ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -63,8 +63,8 @@ class PollAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(pollResponses).hasSize(1)
+            () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+            () -> assertThat(pollResponses).hasSize(1)
         );
     }
 
@@ -108,9 +108,9 @@ class PollAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(pollResponse.getTitle()).isEqualTo("투표_제목"),
-                () -> assertThat(pollResponse.getIsHost()).isTrue()
+            () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+            () -> assertThat(pollResponse.getTitle()).isEqualTo("투표_제목"),
+            () -> assertThat(pollResponse.getIsHost()).isTrue()
         );
     }
 
@@ -125,12 +125,12 @@ class PollAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(pollItemResponses).hasSize(2),
-                () -> assertThat(pollItemResponses.get(0).getId()).isNotNull(),
-                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1"),
-                () -> assertThat(pollItemResponses.get(0).getSelected()).isFalse(),
-                () -> assertThat(pollItemResponses.get(0).getDescription()).isBlank()
+            () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+            () -> assertThat(pollItemResponses).hasSize(2),
+            () -> assertThat(pollItemResponses.get(0).getId()).isNotNull(),
+            () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1"),
+            () -> assertThat(pollItemResponses.get(0).getSelected()).isFalse(),
+            () -> assertThat(pollItemResponses.get(0).getDescription()).isBlank()
         );
     }
 
@@ -146,15 +146,15 @@ class PollAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(pollItemResponses).hasSize(2),
-                () -> assertThat(pollItemResponses.get(0).getId()).isNotNull(),
-                () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1"),
-                () -> assertThat(pollItemResponses.get(0).getSelected()).isTrue(),
-                () -> assertThat(pollItemResponses.get(0).getDescription()).isEqualTo("월요일이기때문!!"),
-                () -> assertThat(pollItemResponses.get(1).getSubject()).isEqualTo("항목2"),
-                () -> assertThat(pollItemResponses.get(1).getSelected()).isFalse(),
-                () -> assertThat(pollItemResponses.get(1).getDescription()).isBlank()
+            () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+            () -> assertThat(pollItemResponses).hasSize(2),
+            () -> assertThat(pollItemResponses.get(0).getId()).isNotNull(),
+            () -> assertThat(pollItemResponses.get(0).getSubject()).isEqualTo("항목1"),
+            () -> assertThat(pollItemResponses.get(0).getSelected()).isTrue(),
+            () -> assertThat(pollItemResponses.get(0).getDescription()).isEqualTo("월요일이기때문!!"),
+            () -> assertThat(pollItemResponses.get(1).getSubject()).isEqualTo("항목2"),
+            () -> assertThat(pollItemResponses.get(1).getSelected()).isFalse(),
+            () -> assertThat(pollItemResponses.get(1).getDescription()).isBlank()
         );
     }
 
@@ -162,7 +162,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     void 무기명_투표_결과를_조회한다() {
         // given
         PollCreateRequest request = new PollCreateRequest("투표_제목", 2, true, LocalDateTime.now().plusDays(1L),
-                List.of("항목1", "항목2", "항목3"));
+            List.of("항목1", "항목2", "항목3"));
         String location = 투표_생성을_요청한다(request, accessToken).header("Location");
 
         List<PollResultRequest> pollResultRequests = List.of(new PollResultRequest(4L, "눈물이_나기_때문이에요"));
@@ -174,13 +174,14 @@ class PollAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(resultResponses).hasSize(3),
-                () -> assertThat(resultResponses.get(0).getCount()).isEqualTo(1),
-                () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
-                () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
-                () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0),
-                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo(Member.getAnonymous().getName()),
-                () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요")
+            () -> assertThat(resultResponses).hasSize(3),
+            () -> assertThat(resultResponses.get(0).getCount()).isEqualTo(1),
+            () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
+            () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
+            () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0),
+            () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo(
+                Member.getAnonymous().getName()),
+            () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요")
         );
     }
 
@@ -198,11 +199,11 @@ class PollAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(resultResponses).hasSize(2),
-                () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
-                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo("eden"),
-                () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요"),
-                () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0)
+            () -> assertThat(resultResponses).hasSize(2),
+            () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
+            () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo("eden"),
+            () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요"),
+            () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0)
         );
     }
 
@@ -210,7 +211,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     void null인_값으로_투표요청시_400을_반환한다() {
         // given
         PollCreateRequest request = new PollCreateRequest(null, 1, false, LocalDateTime.now().plusDays(1),
-                List.of("항목1", "항목2"));
+            List.of("항목1", "항목2"));
 
         // when
         ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
@@ -223,7 +224,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     void 도메인_정책에_위반한_값으로_투표요청시_400을_반환한다() {
         // given
         PollCreateRequest request = new PollCreateRequest("하이", 0, false, LocalDateTime.now().plusDays(1),
-                List.of("항목1", "항목2"));
+            List.of("항목1", "항목2"));
 
         // when
         ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
@@ -273,7 +274,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     void 종료시간이_없으면_BAD_REQUEST를_응답한다() {
         // given
         PollCreateRequest request = new PollCreateRequest(
-                "title", 2, false, null, List.of("hello", "world")
+            "title", 2, false, null, List.of("hello", "world")
         );
 
         // when
@@ -287,7 +288,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     void 종료시간이_미래가_아니라면_BAD_REQUEST를_응답한다() {
         // given
         PollCreateRequest request = new PollCreateRequest(
-                "title", 2, false, LocalDateTime.now(), List.of("hello", "world")
+            "title", 2, false, LocalDateTime.now(), List.of("hello", "world")
         );
 
         // when
@@ -301,7 +302,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     void 종료시간이_과거라면_BAD_REQUEST를_응답한다() {
         // given
         PollCreateRequest request = new PollCreateRequest(
-                "title", 2, false, LocalDateTime.now().minusMinutes(1), List.of("hello", "world")
+            "title", 2, false, LocalDateTime.now().minusMinutes(1), List.of("hello", "world")
         );
 
         // when
@@ -329,7 +330,7 @@ class PollAcceptanceTest extends AcceptanceTest {
 
     private ExtractableResponse<Response> 기본_투표_생성을_요청한다() {
         PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
-                List.of("항목1", "항목2"));
+            List.of("항목1", "항목2"));
         return 투표_생성을_요청한다(request, accessToken);
     }
 

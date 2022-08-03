@@ -7,6 +7,11 @@ import com.morak.back.auth.exception.TeamNotFoundException;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.core.domain.slack.SlackClient;
+import com.morak.back.core.domain.slack.SlackWebhook;
+import com.morak.back.core.domain.slack.SlackWebhookRepository;
+import com.morak.back.core.exception.WebhookNotFoundException;
+import com.morak.back.core.util.MessageFormatter;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
@@ -37,11 +42,13 @@ public class PollService {
 
     private static final CodeGenerator GENERATOR = new RandomCodeGenerator();
 
+    private final SlackClient slackClient;
     private final PollRepository pollRepository;
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final PollItemRepository pollItemRepository;
+    private final SlackWebhookRepository slackWebhookRepository;
 
     public String createPoll(String teamCode, Long memberId, PollCreateRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
@@ -156,5 +163,8 @@ public class PollService {
         Poll poll = pollRepository.findByCodeAndTeamId(pollCode, teamId)
                 .orElseThrow(() -> new PollNotFoundException(pollCode, teamId));
         poll.close(member);
+        SlackWebhook webhook = slackWebhookRepository.findByTeamId(teamId)
+            .orElseThrow(() -> new WebhookNotFoundException(teamId));
+        slackClient.notifyClosed(webhook, MessageFormatter.format(poll));
     }
 }
