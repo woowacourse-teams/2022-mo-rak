@@ -5,6 +5,7 @@ DROP TABLE team_member IF EXISTS;
 DROP TABLE team_invitation IF EXISTS;
 DROP TABLE appointment_available_time IF EXISTS;
 DROP TABLE appointment IF EXISTS;
+DROP TABLE slack_webhook IF EXISTS;
 DROP TABLE team IF EXISTS;
 DROP TABLE member IF EXISTS;
 
@@ -129,4 +130,15 @@ CREATE TABLE appointment_available_time
     PRIMARY KEY (id),
     FOREIGN KEY (appointment_id) REFERENCES appointment (id),
     FOREIGN KEY (member_id) REFERENCES member (id)
+);
+
+CREATE TABLE slack_webhook
+(
+    `id`         BIGINT       NOT NULL AUTO_INCREMENT,
+    `team_id`    BIGINT       NOT NULL,
+    `url`        VARCHAR(255) NOT NULL,
+    `created_at` DATETIME     NOT NULL,
+    `updated_at` DATETIME     NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (team_id) REFERENCES team (id)
 );
