@@ -7,7 +7,6 @@ import static org.mockito.BDDMockito.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.times;
 import static org.mockito.BDDMockito.verify;
-import static org.mockito.Mockito.doNothing;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.slack.SlackClient;
@@ -60,7 +59,6 @@ class NotificationServiceTest {
 
         given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
-        doNothing().when(slackWebhookRepository).deleteByTeamId(anyLong());
         given(slackWebhookRepository.save(any(SlackWebhook.class)))
             .willReturn(
                 SlackWebhook.builder()
@@ -71,6 +69,7 @@ class NotificationServiceTest {
             );
 
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
+
         // when
         Long webhookId = notificationService.saveSlackWebhook("teamCODE", 1L, request);
 
@@ -87,7 +86,6 @@ class NotificationServiceTest {
 
         given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
-        doNothing().when(slackWebhookRepository).deleteByTeamId(anyLong());
         given(slackWebhookRepository.save(any(SlackWebhook.class)))
             .willReturn(
                 SlackWebhook.builder()
@@ -98,6 +96,7 @@ class NotificationServiceTest {
             );
 
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
+
         // when
         Long webhookId = notificationService.saveSlackWebhook("teamCODE", 1L, request);
 
@@ -109,6 +108,7 @@ class NotificationServiceTest {
     void 상태가_OPEN이고_마감시간이_지난_투표를_마감하고_알림을_보낸다() {
         // given
         Member host = new Member();
+
         given(pollRepository.findAllToBeClosed(any(), any()))
             .willReturn(List.of(
                     Poll.builder()
@@ -130,9 +130,10 @@ class NotificationServiceTest {
                 )
             );
         given(slackWebhookRepository.findByTeamId(anyLong())).willReturn(Optional.of(new SlackWebhook()));
-        doNothing().when(slackClient).notifyClosed(any(SlackWebhook.class), anyString());
+
         // when
         notificationService.notifyPoll();
+
         // then
         verify(pollRepository).findAllToBeClosed(any(LocalDateTime.class), any(LocalDateTime.class));
         verify(slackWebhookRepository, times(2)).findByTeamId(anyLong());
