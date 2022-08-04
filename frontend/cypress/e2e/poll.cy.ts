@@ -1,11 +1,6 @@
 describe('투표를 진행할 수 있다.', () => {
   beforeEach(() => {
-    localStorage.setItem(
-      'token',
-      JSON.stringify(
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU'
-      )
-    );
+    localStorage.setItem('token', JSON.stringify(Cypress.env('token')));
     cy.intercept('GET', '**/api/groups/**/polls').as('getPolls');
     cy.intercept('POST', '**/api/groups/**/polls').as('createPoll');
     cy.intercept('GET', '**/api/groups/**/polls/**/items').as('getPollItems');
