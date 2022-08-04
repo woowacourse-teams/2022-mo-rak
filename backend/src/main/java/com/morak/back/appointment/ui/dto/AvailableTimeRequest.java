@@ -6,6 +6,7 @@ import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AvailableTime;
 import com.morak.back.auth.domain.Member;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
@@ -33,5 +34,22 @@ public class AvailableTimeRequest {
                 .startDateTime(this.start)
                 .endDateTime(this.end)
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AvailableTimeRequest that = (AvailableTimeRequest) o;
+        return Objects.equals(start, that.start) && Objects.equals(end, that.end);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end);
     }
 }
