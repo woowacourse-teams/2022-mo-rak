@@ -35,6 +35,27 @@ class AppointmentTest {
     }
 
     @Test
+    void 약속잡기_생성시_마지막_날짜와_시간이_현재보다_과거이면_() {
+
+        // then & when
+        assertThatThrownBy(
+                () -> Appointment.builder()
+                        .host(new Member())
+                        .team(new Team())
+                        .title("스터디 회의 날짜 정하기")
+                        .description("필참!!")
+                        .startDate(LocalDate.now())
+                        .endDate(LocalDate.now())
+                        .startTime(of(0, 0))
+                        .endTime(of(1, 30))
+                        .durationHours(1)
+                        .durationMinutes(0)
+                        .build()
+        ).isInstanceOf(InvalidRequestException.class)
+                .hasMessageContaining("약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다.");
+    }
+
+    @Test
     void 약속잡기를_마감한다() {
         //given
         Member eden = Member.builder().id(1L).build();
