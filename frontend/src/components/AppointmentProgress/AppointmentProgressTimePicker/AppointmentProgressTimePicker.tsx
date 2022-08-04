@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React, { MouseEventHandler, useMemo } from 'react';
-import Box from '../../../components/common/Box/Box';
-import FlexContainer from '../../../components/common/FlexContainer/FlexContainer';
+import Box from '../../common/Box/Box';
+import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import { AppointmentInterface } from '../../../types/appointment';
 
 // TODO: 로직 리팩토링...엉망임
@@ -90,20 +90,18 @@ function AppointmentProgressTimePicker({
     <Box width="30rem" height="58rem" padding="3.6rem 2rem" overflow="auto">
       <FlexContainer flexDirection="column" gap="1.2rem">
         {!times.length && <StyledGuideText>왼쪽에서 날짜를 선택해주세요~</StyledGuideText>}
-        {times.map(({ start, end }) => {
-          return (
-            <StyledTime
-              onClick={onClickTime(start, end)}
-              isSelected={availableTimes.some(
-                (availableTime) =>
-                  availableTime.start === `${selectedDate}T${start}` &&
-                  availableTime.end === `${selectedDate}T${end}`
-              )}
-            >
-              {start}~{end}
-            </StyledTime>
-          );
-        })}
+        {times.map(({ start, end }) => (
+          <StyledTime
+            onClick={onClickTime(start, end)}
+            isSelected={availableTimes.some(
+              (availableTime) =>
+                availableTime.start === `${selectedDate}T${start}` &&
+                availableTime.end === `${selectedDate}T${end}`
+            )}
+          >
+            {start}~{end}
+          </StyledTime>
+        ))}
       </FlexContainer>
     </Box>
   );

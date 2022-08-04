@@ -37,11 +37,15 @@ function AppointmentProgressPage() {
     }
 
     const isSelected = availableTimes.find(
-      ({ start, end }) => start === `${selectedDate}T${start}` && end === `${selectedDate}T${end}`
+      (availableTime) =>
+        availableTime.start === `${selectedDate}T${start}` &&
+        availableTime.end === `${selectedDate}T${end}`
     );
 
     if (isSelected) {
-      const filteredAvailableTimes = availableTimes.filter((time) => time !== isSelected);
+      const filteredAvailableTimes = availableTimes.filter(
+        (availableTime) => availableTime !== isSelected
+      );
 
       setAvailableTimes(filteredAvailableTimes);
 
