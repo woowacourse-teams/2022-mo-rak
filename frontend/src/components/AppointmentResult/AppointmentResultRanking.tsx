@@ -121,28 +121,37 @@ function AppointmentResultRanking({ groupCode, appointmentCode }: Props) {
       </StyledResultBox>
 
       <FlexContainer flexDirection="column" gap="3.6rem">
-        <Box width="42rem" minHeight="28rem" padding="4rem">
-          <StyledSmallTitle>가능한 사람</StyledSmallTitle>
-          <FlexContainer gap="0.8rem" justifyContent="center">
-            {!clickedRecommendation ? (
-              <StyledGuideText>왼쪽에서 보고싶은 결과를 클릭하세요!</StyledGuideText>
-            ) : (
-              appointmentRecommendation[clickedRecommendation].availableMembers.map(
-                ({ name, profileUrl }) => <Avatar profileUrl={profileUrl} name={name} />
-              )
-            )}
+        <Box width="42rem" minHeight="28rem" padding="4rem" overflow="auto">
+          <FlexContainer flexDirection="column" gap="4rem">
+            <StyledSmallTitle>가능한 사람</StyledSmallTitle>
+            <FlexContainer gap="0.8rem" justifyContent="flex-start">
+              {!clickedRecommendation ? (
+                <StyledGuideText>왼쪽에서 보고싶은 결과를 클릭하세요!</StyledGuideText>
+              ) : (
+                appointmentRecommendation[clickedRecommendation].availableMembers.map(
+                  ({ name, profileUrl }) => <Avatar profileUrl={profileUrl} name={name} />
+                )
+              )}
+            </FlexContainer>
           </FlexContainer>
         </Box>
-        <Box width="42rem" minHeight="28rem" padding="4rem">
-          <StyledSmallTitle>설득할 사람</StyledSmallTitle>
-          <FlexContainer gap="0.8rem" justifyContent="center">
-            {!clickedRecommendation ? (
-              <StyledGuideText>왼쪽에서 보고싶은 결과를 클릭하세요!</StyledGuideText>
-            ) : (
-              appointmentRecommendation[clickedRecommendation].unavailableMembers.map(
-                ({ name, profileUrl }) => <Avatar profileUrl={profileUrl} name={name} />
-              )
-            )}
+        <Box width="42rem" minHeight="28rem" padding="4rem" overflow="auto">
+          <FlexContainer flexDirection="column" gap="4rem">
+            <StyledSmallTitle>설득할 사람</StyledSmallTitle>
+            <FlexContainer gap="0.8rem" justifyContent="flex-start">
+              {!clickedRecommendation ? (
+                <StyledGuideText>왼쪽에서 보고싶은 결과를 클릭하세요!</StyledGuideText>
+              ) : (
+                appointmentRecommendation[clickedRecommendation].unavailableMembers.map(
+                  ({ name, profileUrl }) => (
+                    <>
+                      <Avatar profileUrl={profileUrl} name={name} />
+                      <Avatar profileUrl={profileUrl} name={name} />
+                    </>
+                  )
+                )
+              )}
+            </FlexContainer>
           </FlexContainer>
         </Box>
       </FlexContainer>
