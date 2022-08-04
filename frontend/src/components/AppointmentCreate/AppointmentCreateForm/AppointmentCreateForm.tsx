@@ -35,7 +35,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
   const [endTime, handleEndTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleCreateAppointment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const appointment: CreateAppointmentRequest = {
@@ -54,14 +54,13 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
       const appointmentCode = res.headers.get('location').split('appointments/')[1];
 
       navigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`);
-      console.log(appointmentCode);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit}>
+    <StyledForm onSubmit={handleCreateAppointment}>
       <Box width="66rem" minHeight="56.4rem" padding="4.8rem">
         <FlexContainer flexDirection="column" gap="1.6rem">
           <AppointmentCreateFormTitleInput title={title} onChange={handleTitle} />
