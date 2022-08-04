@@ -73,6 +73,7 @@ function PollResultItemGroup({ pollCode, status, groupCode, pollResult }: Props)
             padding="1.2rem 0"
             borderRadius="15px"
             colorScheme={theme.colors.PURPLE_100}
+            aria-label={`${subject}-result`}
           >
             {status === 'OPEN' ? (
               <StyledCheckIcon checked={selectedPollItemIds.includes(id)} src={Check} alt="check" />

@@ -38,6 +38,7 @@ function PollMainButtonGroup({ pollCode, handleNavigate, status }: Props) {
         borderRadius="5px"
         colorScheme={theme.colors.PURPLE_100}
         onClick={handleNavigate(`${pollCode}/result`)}
+        aria-label={status}
       >
         결과보기
       </Button>

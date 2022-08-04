@@ -99,6 +99,7 @@ function PollProgressItemGroup({
                 fontSize="12px"
                 placeholder="선택한 이유는?"
                 onChange={handleDescription(id)}
+                aria-label={subject}
               />
             </TextField>
           </StyledDescription>
