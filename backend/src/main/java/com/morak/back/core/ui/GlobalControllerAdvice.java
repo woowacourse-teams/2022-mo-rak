@@ -1,6 +1,7 @@
 package com.morak.back.core.ui;
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.morak.back.core.exception.CachedBodyException;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.core.exception.MorakException;
 import com.morak.back.core.exception.ResourceNotFoundException;
@@ -26,7 +27,8 @@ public class GlobalControllerAdvice {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
-    @ExceptionHandler({MismatchedInputException.class, InvalidRequestException.class, HttpMessageNotReadableException.class})
+    @ExceptionHandler({MismatchedInputException.class, InvalidRequestException.class,
+            HttpMessageNotReadableException.class})
     public ResponseEntity<ExceptionResponse> handleMismatchedInput(MorakException e) {
         logger.warn(e.getMessage());
 
@@ -45,12 +47,17 @@ public class GlobalControllerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponse("잘못된 값이 입력되었습니다."));
     }
 
+    @ExceptionHandler(CachedBodyException.class)
+    public ResponseEntity<ExceptionResponse> handleCachedBodyException(CachedBodyException e) {
+        logger.warn(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponse("요청 정보를 캐싱하는데 실패했습니다."));
+    }
+
     @ExceptionHandler(MorakException.class)
     public ResponseEntity<ExceptionResponse> handleMorakException(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponse("처리하지 못한 예외입니다."));
     }
-
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e, HttpServletRequest request)
