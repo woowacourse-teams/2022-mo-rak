@@ -44,8 +44,8 @@ function AppointmentResultRanking({ groupCode, appointmentCode }: Props) {
   const [appointmentRecommendation, setAppointmentRecommendation] = useState<
     Array<AppointmentRecommendationInterface>
   >([]);
-  // TODO: number | null에 대해서 생각해보기
-  const [clickedRecommendation, setClickedRecommendation] = useState<number | null>(null);
+  // TODO: -1에 대해서 생각해보기
+  const [clickedRecommendation, setClickedRecommendation] = useState<number>(-1);
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
 
   const totalParticipants = groupMembers.length;
@@ -125,7 +125,7 @@ function AppointmentResultRanking({ groupCode, appointmentCode }: Props) {
           <FlexContainer flexDirection="column" gap="4rem">
             <StyledSmallTitle>가능한 사람</StyledSmallTitle>
             <FlexContainer gap="0.8rem" justifyContent="flex-start">
-              {!clickedRecommendation ? (
+              {clickedRecommendation === -1 ? (
                 <StyledGuideText>왼쪽에서 보고싶은 결과를 클릭하세요!</StyledGuideText>
               ) : (
                 appointmentRecommendation[clickedRecommendation].availableMembers.map(
@@ -139,16 +139,11 @@ function AppointmentResultRanking({ groupCode, appointmentCode }: Props) {
           <FlexContainer flexDirection="column" gap="4rem">
             <StyledSmallTitle>설득할 사람</StyledSmallTitle>
             <FlexContainer gap="0.8rem" justifyContent="flex-start">
-              {!clickedRecommendation ? (
+              {clickedRecommendation === -1 ? (
                 <StyledGuideText>왼쪽에서 보고싶은 결과를 클릭하세요!</StyledGuideText>
               ) : (
                 appointmentRecommendation[clickedRecommendation].unavailableMembers.map(
-                  ({ name, profileUrl }) => (
-                    <>
-                      <Avatar profileUrl={profileUrl} name={name} />
-                      <Avatar profileUrl={profileUrl} name={name} />
-                    </>
-                  )
+                  ({ name, profileUrl }) => <Avatar profileUrl={profileUrl} name={name} />
                 )
               )}
             </FlexContainer>
