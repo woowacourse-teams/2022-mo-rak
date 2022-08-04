@@ -9,6 +9,7 @@ import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.support.Auth;
 import java.net.URI;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,7 @@ public class AppointmentController {
     @PostMapping
     public ResponseEntity<Void> createAppointment(@PathVariable String groupCode,
                                                   @Auth Long memberId,
-                                                  @RequestBody AppointmentCreateRequest request) {
+                                                  @Valid @RequestBody AppointmentCreateRequest request) {
         String appointmentCode = appointmentService.createAppointment(groupCode, memberId, request);
         return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/appointments/" + appointmentCode))
                 .build();
@@ -54,7 +55,7 @@ public class AppointmentController {
     public ResponseEntity<Void> selectAvailableTimes(@PathVariable String groupCode,
                                                      @Auth Long memberId,
                                                      @PathVariable String appointmentCode,
-                                                     @RequestBody List<AvailableTimeRequest> requests) {
+                                                     @Valid @RequestBody List<AvailableTimeRequest> requests) {
         appointmentService.selectAvailableTimes(groupCode, memberId, appointmentCode, requests);
         return ResponseEntity.ok().build();
     }
