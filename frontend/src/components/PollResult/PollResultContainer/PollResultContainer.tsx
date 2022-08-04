@@ -17,24 +17,24 @@ import PollResultStatus from '../PollResultStatus/PollResultStatus';
 import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
 
 function PollResultContainer() {
-  const { groupCode, pollId } = useParams() as { groupCode: string; pollId: string };
+  const { groupCode, pollCode } = useParams() as { groupCode: string; pollCode: string };
   const [poll, setPoll] = useState<PollInterface>();
   const [pollResult, setPollResult] = useState<Array<PollItemResultType>>([]);
 
   useEffect(() => {
-    const fetchPoll = async (pollId: PollInterface['id']) => {
-      const res = await getPoll(pollId, groupCode);
+    const fetchPoll = async (pollCode: PollInterface['code']) => {
+      const res = await getPoll(pollCode, groupCode);
       setPoll(res);
     };
 
-    const fetchPollResult = async (pollId: PollInterface['id']) => {
-      const res = await getPollResult(pollId, groupCode);
+    const fetchPollResult = async (pollCode: PollInterface['code']) => {
+      const res = await getPollResult(pollCode, groupCode);
       setPollResult(res);
     };
 
     try {
-      fetchPoll(Number(pollId));
-      fetchPollResult(Number(pollId));
+      fetchPoll(pollCode);
+      fetchPollResult(pollCode);
     } catch (err) {
       alert(err);
     }
@@ -47,7 +47,7 @@ function PollResultContainer() {
           <FlexContainer justifyContent="end">
             <MarginContainer margin="0 0 1.4rem 0">
               <FlexContainer gap="1.2rem" alignItems="center">
-                <PollResultShareLink pollId={Number(pollId)} />
+                <PollResultShareLink pollCode={pollCode} />
                 <PollResultStatus status={poll.status} />
               </FlexContainer>
             </MarginContainer>
@@ -69,7 +69,7 @@ function PollResultContainer() {
             <FlexContainer flexDirection="column" gap="1.2rem">
               <PollResultItemGroup
                 status={poll.status}
-                pollId={poll.id}
+                pollCode={poll.code}
                 groupCode={groupCode}
                 pollResult={pollResult}
               />
@@ -78,7 +78,7 @@ function PollResultContainer() {
           <PollResultButtonGroup
             isHost={poll.isHost}
             status={poll.status}
-            pollId={poll.id}
+            pollCode={poll.code}
             groupCode={groupCode}
           />
         </>

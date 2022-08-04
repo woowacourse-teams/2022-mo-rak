@@ -10,32 +10,32 @@ import { PollInterface } from '../../../types/poll';
 import { GroupInterface } from '../../../types/group';
 
 interface Props {
-  pollId: PollInterface['id'];
+  pollCode: PollInterface['code'];
   status: PollInterface['status'];
   isHost: PollInterface['isHost'];
   groupCode: GroupInterface['code'];
 }
 
-function PollResultButtonGroup({ pollId, status, isHost, groupCode }: Props) {
+function PollResultButtonGroup({ pollCode, status, isHost, groupCode }: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
 
   const handleDeletePoll = async () => {
     if (window.confirm('투표를 삭제하시겠습니까?')) {
       try {
-        await deletePoll(pollId, groupCode);
+        await deletePoll(pollCode, groupCode);
         navigate(`/groups/${groupCode}/poll`);
       } catch (err) {
         alert(err);
       }
     }
-    navigate('/poll');
   };
 
   const handleClosePoll = async () => {
     if (window.confirm('투표를 마감하시겠습니까?')) {
       try {
-        await closePoll(pollId, groupCode);
+        await closePoll(pollCode, groupCode);
+        navigate(`/groups/${groupCode}/poll`);
       } catch (err) {
         alert(err);
       }
@@ -80,7 +80,7 @@ function PollResultButtonGroup({ pollId, status, isHost, groupCode }: Props) {
               padding="2rem 0"
               fontSize="2rem"
               colorScheme={theme.colors.PURPLE_100}
-              onClick={handleNavigate(`/groups/${groupCode}/poll/${pollId}/progress`)}
+              onClick={handleNavigate(`/groups/${groupCode}/poll/${pollCode}/progress`)}
             >
               재투표하기
             </Button>
@@ -115,7 +115,7 @@ function PollResultButtonGroup({ pollId, status, isHost, groupCode }: Props) {
             padding="2rem 0"
             fontSize="2rem"
             colorScheme={theme.colors.PURPLE_100}
-            onClick={handleNavigate(`/groups/${groupCode}/poll/${pollId}/progress`)}
+            onClick={handleNavigate(`/groups/${groupCode}/poll/${pollCode}/progress`)}
           >
             재투표하기
           </Button>

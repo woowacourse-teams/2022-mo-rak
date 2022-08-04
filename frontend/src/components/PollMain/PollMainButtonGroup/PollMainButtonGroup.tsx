@@ -5,12 +5,12 @@ import Button from '../../common/Button/Button';
 import { PollInterface } from '../../../types/poll';
 
 interface Props {
-  pollId: number;
+  pollCode: string;
   handleNavigate: (location: string) => () => void;
   status: PollInterface['status'];
 }
 
-function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
+function PollMainButtonGroup({ pollCode, handleNavigate, status }: Props) {
   const theme = useTheme();
 
   return (
@@ -24,7 +24,7 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
           fontSize="1.2rem"
           borderRadius="5px"
           colorScheme={theme.colors.PURPLE_100}
-          onClick={handleNavigate(`${pollId}/progress`)}
+          onClick={handleNavigate(`${pollCode}/progress`)}
         >
           투표하기
         </Button>
@@ -37,7 +37,8 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
         fontSize="1.2rem"
         borderRadius="5px"
         colorScheme={theme.colors.PURPLE_100}
-        onClick={handleNavigate(`${pollId}/result`)}
+        onClick={handleNavigate(`${pollCode}/result`)}
+        aria-label={status}
       >
         결과보기
       </Button>

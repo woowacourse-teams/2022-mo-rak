@@ -2,3 +2,4 @@
 /dist
 .env
 .DS_STORE
+cypress.env.json

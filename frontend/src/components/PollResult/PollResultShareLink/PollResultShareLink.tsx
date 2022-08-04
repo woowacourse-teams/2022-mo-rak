@@ -4,12 +4,12 @@ import Link from '../../../assets/link.svg';
 import { PollInterface } from '../../../types/poll';
 
 interface Props {
-  pollId: PollInterface['id'];
+  pollCode: PollInterface['code'];
 }
 
-function PollResultShareLink({ pollId }: Props) {
+function PollResultShareLink({ pollCode }: Props) {
   const handleCopyShareLink = async () => {
-    await navigator.clipboard.writeText(`/poll/${pollId}/progress (temp)`);
+    await navigator.clipboard.writeText(`/poll/${pollCode}/progress (temp)`);
     alert('투표를 공유할 수 있는 링크가 복사되었습니다 👋');
   };
 
