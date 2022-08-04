@@ -27,13 +27,14 @@ const getTimes = (
 
   const startHM = new Date();
   if (
-    (Number(endHour) !== 12 && startPeriod === 'PM') ||
-    (Number(endHour) === 12 && startPeriod === 'AM')
+    (Number(startHour) !== 12 && startPeriod === 'PM') ||
+    (Number(startHour) === 12 && startPeriod === 'AM')
   ) {
     startHM.setHours(Number(startHour) + 12);
   } else {
     startHM.setHours(Number(startHour));
   }
+
   startHM.setMinutes(Number(startMinute));
 
   const endHM = new Date();
