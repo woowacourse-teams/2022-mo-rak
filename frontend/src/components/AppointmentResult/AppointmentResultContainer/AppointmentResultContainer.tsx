@@ -10,18 +10,7 @@ import AppointmentResultButtonGroup from '../AppointmentResultButtonGroup';
 
 function AppointmentResultContainer() {
   // TODO: api 연결 전 화면 확인을 위해 초기값 임시 설정
-  const [appointmentInfo, setAppointmentInfo] = useState<AppointmentInterface>({
-    id: 1,
-    title: '약속 잡기 제목',
-    description: '약속 잡기 설명',
-    startDate: '2022-07-26',
-    endDate: '2022-08-04',
-    startTime: '10:00AM',
-    endTime: '10:00PM',
-    durationHours: 2,
-    durationMinutes: 30,
-    isClosed: false
-  });
+  const [appointment, setAppointment] = useState<AppointmentInterface>();
 
   const { groupCode, appointmentCode } = useParams() as {
     groupCode: GroupInterface['code'];
@@ -32,7 +21,7 @@ function AppointmentResultContainer() {
     const fetchAppointment = async () => {
       try {
         const res = await getAppointment(groupCode, appointmentCode);
-        setAppointmentInfo(res);
+        setAppointment(res);
       } catch (err) {
         alert(err);
       }
@@ -40,23 +29,25 @@ function AppointmentResultContainer() {
     fetchAppointment();
   }, []);
 
+  if (!appointment) return <div>로딩중입니다.</div>;
+
   return (
-    <div>
-      {appointmentInfo ? (
-        <FlexContainer flexDirection="column" gap="4rem">
-          <StyledTitle>{appointmentInfo.title}</StyledTitle>
-          <AppointmentResultRanking groupCode={groupCode} appointmentCode={appointmentCode} />
-          <AppointmentResultButtonGroup />
-        </FlexContainer>
-      ) : (
-        <div>로딩중</div>
-      )}
-    </div>
+    <FlexContainer flexDirection="column" gap="4rem">
+      <StyledTitle>{appointment.title}</StyledTitle>
+      <StyledContent>가장 많은 시간이 겹치는 시간을 추천해줍니다</StyledContent>
+      <AppointmentResultRanking groupCode={groupCode} appointmentCode={appointmentCode} />
+      <AppointmentResultButtonGroup />
+    </FlexContainer>
   );
 }
 
 const StyledTitle = styled.h1`
   font-size: 4rem;
+`;
+
+const StyledContent = styled.p`
+  font-size: 2.4rem;
+  ef
 `;
 
 export default AppointmentResultContainer;
