@@ -162,7 +162,7 @@ const StyledResultBox = styled.div(
   align-items: center;
   width: 78rem; 
   height: 59.6rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   border-radius: 15px;
   background-color: ${theme.colors.WHITE_100};
   box-shadow: 0px 4px 4px ${theme.colors.TRANSPARENT_BLACK_100_25};

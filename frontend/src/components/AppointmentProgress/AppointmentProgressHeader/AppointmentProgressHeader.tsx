@@ -30,7 +30,7 @@ const StyledHeader = styled.header`
 
 const StyledDescription = styled.div`
   font-size: 2rem;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 export default AppointmentProgressHeader;
