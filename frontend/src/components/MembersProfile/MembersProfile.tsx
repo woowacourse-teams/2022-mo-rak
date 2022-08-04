@@ -9,7 +9,6 @@ interface Props {
   groupCode: GroupInterface['code'];
 }
 
-// TODO: 컴포넌트 이름 생각해보자 profile은 단수
 function MembersProfile({ groupCode }: Props) {
   const navigate = useNavigate();
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
@@ -27,6 +26,12 @@ function MembersProfile({ groupCode }: Props) {
           const statusCode = err.message;
 
           if (statusCode === '401') {
+            alert('로그인 해주세요~');
+            navigate('/');
+          }
+
+          if (statusCode === '404' || '403' || '400') {
+            alert('그룹이 없어요~');
             navigate('/');
           }
         }

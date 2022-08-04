@@ -11,6 +11,9 @@ import SidebarLayout from './components/SidebarLayout/SidebarLayout';
 import MainPage from './pages/MainPage/MainPage';
 import InvitationPage from './pages/InvitationPage/InvitationPage';
 import { PrivateRoute } from './routes/PrivateRoute';
+import AppointmentMainPage from './pages/AppointmentMainPage/AppointmentMainPage';
+import AppointmentCreatePage from './pages/AppointmentCreatePage/AppointmentCreatePage';
+import AppointmentProgressPage from './pages/AppointmentProgressPage/AppointmentProgressPage';
 
 function App() {
   return (
@@ -19,22 +22,31 @@ function App() {
       <Routes>
         <Route path="/">
           <Route index element={<LandingPage />} />
+          <Route path="invite/:invitationCode" element={<InvitationPage />} />
+
           <Route element={<PrivateRoute />}>
+            <Route path="init" element={<GroupInitPage />} />
+
             <Route element={<SidebarLayout />}>
               <Route path="groups/:groupCode">
-                {/* TODO: 100% groupCode가 들어오니 단언을 해줘도 좋지 않을까? */}
                 <Route index element={<MainPage />} />
+
                 <Route path="poll">
                   <Route index element={<PollMainPage />} />
                   <Route path="create" element={<PollCreatePage />} />
                   <Route path=":pollId/progress" element={<PollProgressPage />} />
                   <Route path=":pollId/result" element={<PollResultPage />} />
                 </Route>
+
+                <Route path="appointment">
+                  <Route index element={<AppointmentMainPage />} />
+                  <Route path="create" element={<AppointmentCreatePage />} />
+                  <Route path=":appointmentCode/progress" element={<AppointmentProgressPage />} />
+                </Route>
               </Route>
             </Route>
-            <Route path="init" element={<GroupInitPage />} />
           </Route>
-          <Route path="invite/:invitationCode" element={<InvitationPage />} />
+
           <Route path="*" element={<div>error</div>} />
         </Route>
       </Routes>

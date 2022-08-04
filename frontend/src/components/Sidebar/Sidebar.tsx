@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/logo.svg';
-import LinkIcon from '../../assets/linkIcon.svg';
+import LinkIcon from '../../assets/link.svg';
 import { createInvitationCode, getGroups } from '../../api/group';
 import { writeClipboard } from '../../utils/clipboard';
 import { GroupInterface } from '../../types/group';
 
 function Sidebar() {
-  // TODO: groupCode가 무조건 존재하나?
   const { groupCode } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
@@ -25,7 +24,7 @@ function Sidebar() {
         const invitationCode = res.headers.get('location').split('/groups/in/')[1];
         const invitationLink = `
         링크를 클릭하거나, 참가 코드를 입력해주세요😀
-        url: http://localhost:3000/invite/${invitationCode}
+        url: ${process.env.BASE_API_URL}invite/${invitationCode}
         코드: ${invitationCode}
         `;
 
@@ -58,9 +57,7 @@ function Sidebar() {
     <StyledContainer>
       <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
       <StyledGroupContainer>
-        <StyledHeader>
-          <StyledGroupHeaderButton type="button">Groups</StyledGroupHeaderButton>
-        </StyledHeader>
+        <StyledGroupHeaderButton type="button">Groups</StyledGroupHeaderButton>
         <StyledContent>
           {groups.map((group) => (
             <StyledGroupButton
@@ -110,15 +107,12 @@ const StyledInvitationLink = styled.button`
   font-size: 1.6rem;
 `;
 
-// TODO: 네이밍
-
 const StyledGroupContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 2.8rem;
 `;
-const StyledHeader = styled.div``;
 
 const StyledContent = styled.div`
   width: 100%;

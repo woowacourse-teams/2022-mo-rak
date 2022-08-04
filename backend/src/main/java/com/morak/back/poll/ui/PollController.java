@@ -3,7 +3,7 @@ package com.morak.back.poll.ui;
 import com.morak.back.auth.support.Auth;
 import com.morak.back.poll.application.PollService;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemRequest;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
@@ -33,16 +33,16 @@ public class PollController {
     public ResponseEntity<Void> createPoll(@PathVariable String groupCode,
                                            @Auth Long memberId,
                                            @Valid @RequestBody PollCreateRequest request) {
-        Long id = pollService.createPoll(groupCode, memberId, request);
-        return ResponseEntity.created(URI.create("/api/groups/" + groupCode +"/polls/" + id)).build();
+        String pollCode = pollService.createPoll(groupCode, memberId, request);
+        return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/polls/" + pollCode)).build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{pollCode}")
     public ResponseEntity<Void> doPoll(@PathVariable String groupCode,
                                        @Auth Long memberId,
-                                       @PathVariable Long id,
-                                       @Valid @RequestBody List<PollItemRequest> requests) {
-        pollService.doPoll(groupCode, memberId, id, requests);
+                                       @PathVariable String pollCode,
+                                       @Valid @RequestBody List<PollResultRequest> requests) {
+        pollService.doPoll(groupCode, memberId, pollCode, requests);
         return ResponseEntity.ok().build();
     }
 
@@ -52,41 +52,41 @@ public class PollController {
         return ResponseEntity.ok(pollService.findPolls(groupCode, memberId));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{pollCode}")
     public ResponseEntity<PollResponse> findPoll(@PathVariable String groupCode,
                                                  @Auth Long memberId,
-                                                 @PathVariable Long id) {
-        return ResponseEntity.ok(pollService.findPoll(groupCode, memberId, id));
+                                                 @PathVariable String pollCode) {
+        return ResponseEntity.ok(pollService.findPoll(groupCode, memberId, pollCode));
     }
 
-    @GetMapping("/{id}/items")
+    @GetMapping("/{pollCode}/items")
     public ResponseEntity<List<PollItemResponse>> findPollItems(@PathVariable String groupCode,
                                                                 @Auth Long memberId,
-                                                                @PathVariable Long id) {
-        return ResponseEntity.ok(pollService.findPollItems(groupCode, memberId, id));
+                                                                @PathVariable String pollCode) {
+        return ResponseEntity.ok(pollService.findPollItems(groupCode, memberId, pollCode));
     }
 
 
-    @GetMapping("/{id}/result")
+    @GetMapping("/{pollCode}/result")
     public ResponseEntity<List<PollItemResultResponse>> findPollResult(@PathVariable String groupCode,
                                                                        @Auth Long memberId,
-                                                                       @PathVariable Long id) {
-        return ResponseEntity.ok(pollService.findPollItemResults(groupCode, memberId, id));
+                                                                       @PathVariable String pollCode) {
+        return ResponseEntity.ok(pollService.findPollItemResults(groupCode, memberId, pollCode));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{pollCode}")
     public ResponseEntity<Void> deletePoll(@PathVariable String groupCode,
                                            @Auth Long memberId,
-                                           @PathVariable Long id) {
-        pollService.deletePoll(groupCode, memberId, id);
+                                           @PathVariable String pollCode) {
+        pollService.deletePoll(groupCode, memberId, pollCode);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/close")
+    @PatchMapping("/{pollCode}/close")
     public ResponseEntity<Void> closePoll(@PathVariable String groupCode,
                                           @Auth Long memberId,
-                                          @PathVariable Long id) {
-        pollService.closePoll(groupCode, memberId, id);
+                                          @PathVariable String pollCode) {
+        pollService.closePoll(groupCode, memberId, pollCode);
         return ResponseEntity.ok().build();
     }
 }

@@ -27,7 +27,6 @@ const StyledUserProfile = styled.div<CSSProperties>(
 );
 
 const StyledUserImage = styled.img`
-  width: 100%;
   border-radius: 100%;
 `;
 

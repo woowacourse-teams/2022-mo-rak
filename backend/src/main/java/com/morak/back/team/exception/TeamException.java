@@ -1,6 +1,8 @@
 package com.morak.back.team.exception;
 
-public class TeamException extends RuntimeException{
+import com.morak.back.core.exception.MorakException;
+
+public class TeamException extends MorakException {
 
     public TeamException(String message) {
         super(message);

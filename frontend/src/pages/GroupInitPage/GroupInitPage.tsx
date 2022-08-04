@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import Logo from '../../assets/logo.svg';
 
-import GroupCreateForm from '../../components/GroupCreateForm/GroupCreateForm';
-import GroupParticipateForm from '../../components/GroupParticipateForm/GroupParticipateForm';
+import GroupCreateForm from '../../components/GroupInit/GroupCreateForm/GroupCreateForm';
+import GroupParticipateForm from '../../components/GroupInit/GroupParticipateForm/GroupParticipateForm';
 import Box from '../../components/common/Box/Box';
 import FlexContainer from '../../components/common/FlexContainer/FlexContainer';
 import { getDefaultGroup } from '../../api/group';
@@ -46,6 +46,8 @@ function GroupInitPage() {
   return (
     <StyledContainer>
       <StyledLogo src={Logo} alt="logo" />
+      {/* TODO: 얘만 따로 컴포넌트로 빼주자 - GroupInitFormContainer?? */}
+      {/* 만약, GroupCreateForm이랑 GroupParticipateForm가 Box로 감싸져있지 않았다면, 빼주지 않아도 될듯?  */}
       <Box width="60rem" minHeight="51.6rem" padding="8.4rem 3.2rem">
         <FlexContainer flexDirection="column" gap="6.8rem">
           <GroupCreateForm />
