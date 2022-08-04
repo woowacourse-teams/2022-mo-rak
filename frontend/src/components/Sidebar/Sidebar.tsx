@@ -22,9 +22,10 @@ function Sidebar() {
       if (groupCode) {
         const res = await createInvitationCode(groupCode);
         const invitationCode = res.headers.get('location').split('/groups/in/')[1];
+        // const invitationLink = `${process.env.CLIENT_URL}/invite/${invitationCode}`;
         const invitationLink = `
         링크를 클릭하거나, 참가 코드를 입력해주세요😀
-        url: ${process.env.BASE_API_URL}invite/${invitationCode}
+        url: ${process.env.CLIENT_URL}/invite/${invitationCode}}
         코드: ${invitationCode}
         `;
 
