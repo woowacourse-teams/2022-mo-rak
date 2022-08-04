@@ -14,6 +14,7 @@ import { PrivateRoute } from './routes/PrivateRoute';
 import AppointmentMainPage from './pages/AppointmentMainPage/AppointmentMainPage';
 import AppointmentCreatePage from './pages/AppointmentCreatePage/AppointmentCreatePage';
 import AppointmentProgressPage from './pages/AppointmentProgressPage/AppointmentProgressPage';
+import AppointmentResultPage from './pages/AppointmentResultPage/AppointmentResultPage';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
                   <Route index element={<AppointmentMainPage />} />
                   <Route path="create" element={<AppointmentCreatePage />} />
                   <Route path=":appointmentCode/progress" element={<AppointmentProgressPage />} />
+                  <Route path=":appointmentCode/result" element={<AppointmentResultPage />} />
                 </Route>
               </Route>
             </Route>

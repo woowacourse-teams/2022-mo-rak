@@ -30,7 +30,7 @@ const fetcher = async ({ method, path, body = {}, isTokenNeeded = true }: Props)
           body: JSON.stringify(body)
         };
 
-  const response = await fetch(`${process.env.BASE_API_URL}${path}`, config);
+  const response = await fetch(`${process.env.BASE_API_URL}/${path}`, config);
 
   if (!response.ok) {
     const statusCode = response.status;

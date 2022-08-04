@@ -7,17 +7,30 @@ interface Props {
   // NOTE: 이렇게 하면 Appointment에 의존하게 되어서 재사용이 불가능할듯?
   startDate: AppointmentInterface['startDate'];
   endDate: AppointmentInterface['endDate'];
-  setStartDate: Dispatch<SetStateAction<AppointmentInterface['startDate']>>;
-  setEndDate: Dispatch<SetStateAction<AppointmentInterface['endDate']>>;
+  // TODO: optional로 주는 게 맞을까?
+  setStartDate?: Dispatch<SetStateAction<AppointmentInterface['startDate']>>;
+  setEndDate?: Dispatch<SetStateAction<AppointmentInterface['endDate']>>;
+  // TODO: 임시 타이핑
+  selectedDate?: string;
+  setSelectedDate?: Dispatch<SetStateAction<string>>;
 }
 
 // version "default"는 약속 잡기 생성에서 사용된다. 기본 version이 default로 설정되어있기 때문에,
 // 별도로 props로 version을 넘겨주지 않아도 된다.
 // version "select"는 약속 잡기 선택하기에서 사용된다. 이때, props로 startDate, endDate가 넘어와야한다.
+// NOTE: version에 기반하여 컴포넌트가 둘로 나뉘어지기 때문에, 이는 두 가지 역할을 하나의 컴포넌트가 하는 게 아닐까 싶다.
+// 만약 version이 하나 더 생긴다면 로직이 복잡해질 것 같다. version을 없애는 게 첫 번째 리팩토링 포인트일듯
 // TODO: calendar 리팩토링
-function Calendar({ version = 'default', startDate, endDate, setStartDate, setEndDate }: Props) {
+function Calendar({
+  version = 'default',
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
+  selectedDate,
+  setSelectedDate
+}: Props) {
   const [date, setDate] = useState<Date>(new Date()); // 현재 날짜
-  const [selectedDate, setSelectedDate] = useState(''); // version="select"에서, 사용자가 선택한 날짜
   const weeks = ['일', '월', '화', '수', '목', '금', '토'];
 
   const getPrevMonthDays = () => {
@@ -49,51 +62,57 @@ function Calendar({ version = 'default', startDate, endDate, setStartDate, setEn
     setDate(new Date(date.getFullYear(), date.getMonth() + 1, 1));
   };
 
-  const handleSetStartOrEndDate = (day: number) => () => {
-    // 마지막 날이 선택 되어 있는 경우 -> 새로운 start 값을 설정해줘야함
-    if (endDate !== '') {
-      setEndDate('');
-      setStartDate(
-        `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-          .toString()
-          .padStart(2, '0')}`
-      );
-      return;
-    }
-    // 첫번째 날이 선택 되어 있는 경우 -> end값을 설정해줘야함
-    if (startDate !== '' && endDate === '') {
-      // end값을 설정해줘야하는데, start 날짜보다 앞일 때
-      if (isBeforeStartDate(day)) {
-        setEndDate(startDate);
+  const handleStartOrEndDate = (day: number) => () => {
+    // TODO: 약속잡기 진행페이지에서는 사용되지 않기 때문에, 분기처리를 해줌
+    if (setStartDate && setEndDate) {
+      // 마지막 날이 선택 되어 있는 경우 -> 새로운 start 값을 설정해줘야함
+      if (endDate !== '') {
+        setEndDate('');
         setStartDate(
           `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
             .toString()
             .padStart(2, '0')}`
         );
-
         return;
       }
-      setEndDate(
+      // 첫번째 날이 선택 되어 있는 경우 -> end값을 설정해줘야함
+      if (startDate !== '' && endDate === '') {
+        // end값을 설정해줘야하는데, start 날짜보다 앞일 때
+        if (isBeforeStartDate(day)) {
+          setEndDate(startDate);
+          setStartDate(
+            `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
+              .toString()
+              .padStart(2, '0')}`
+          );
+
+          return;
+        }
+        setEndDate(
+          `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
+            .toString()
+            .padStart(2, '0')}`
+        );
+        return;
+      }
+      // 가장 처음 값을 설정해줌 (위 두가지 조건을 충족하지 않은 경우)
+      setStartDate(
         `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
           .toString()
           .padStart(2, '0')}`
       );
-      return;
     }
-    // 가장 처음 값을 설정해줌 (위 두가지 조건을 충족하지 않은 경우)
-    setStartDate(
-      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-        .toString()
-        .padStart(2, '0')}`
-    );
   };
 
-  const handleSetSelectedDate = (day: number) => () => {
-    setSelectedDate(
-      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-        .toString()
-        .padStart(2, '0')}`
-    );
+  const handleSelectedDate = (day: number) => () => {
+    // TODO: 임시로 분기문 작성 -> 변경 필요
+    if (setSelectedDate) {
+      setSelectedDate(
+        `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
+          .toString()
+          .padStart(2, '0')}`
+      );
+    }
   };
 
   const isPrevToday = (day: number) =>
@@ -156,6 +175,7 @@ function Calendar({ version = 'default', startDate, endDate, setStartDate, setEn
           onClick={handleShowPrevMonth}
           disabled={new Date().getMonth() === date.getMonth()}
         >
+          {/* TODO: 이런 방식이 괜찮은 방법인지 고민하기 */}
           &#8249;
         </StyledPrevButton>
         <StyledMonthTitle>{`${date.getFullYear()}년 ${date.getMonth() + 1}월`}</StyledMonthTitle>
@@ -182,7 +202,7 @@ function Calendar({ version = 'default', startDate, endDate, setStartDate, setEn
             return (
               <StyledNowMonthDays
                 type="inStartAndEndDate"
-                onClick={handleSetSelectedDate(day)}
+                onClick={handleSelectedDate(day)}
                 isSelectedDate={isSelectedDate(day)}
               >
                 {day}
@@ -198,7 +218,8 @@ function Calendar({ version = 'default', startDate, endDate, setStartDate, setEn
             return (
               <StyledNowMonthDays
                 type="today"
-                onClick={handleSetStartOrEndDate(day)}
+                // TODO: 약속잡기 진행페이지에서는 사용되지 않기 때문에, 분기처리를 해줌
+                onClick={setStartDate && setEndDate && handleStartOrEndDate(day)}
                 isBetweenStartEndDate={isBetweenStartEndDate(day)}
                 isStartOrEndDate={isStartOrEndDate(day)}
               >
@@ -208,7 +229,7 @@ function Calendar({ version = 'default', startDate, endDate, setStartDate, setEn
           }
           return (
             <StyledNowMonthDays
-              onClick={handleSetStartOrEndDate(day)}
+              onClick={handleStartOrEndDate(day)}
               isBetweenStartEndDate={isBetweenStartEndDate(day)}
               isStartOrEndDate={isStartOrEndDate(day)}
             >

@@ -1,3 +1,4 @@
+// TODO: 변수명 고민해보기
 interface AppointmentInfoInterface {
   code: string;
 }
@@ -10,17 +11,18 @@ interface AppointmentInterface {
   endDate: string;
   startTime: string;
   endTime: string;
-  durationHour: number;
-  durationMinute: number;
+  durationHours: number;
+  durationMinutes: number;
   isClosed: boolean;
 }
+
 interface AppointmentMemberInterface {
   id: number;
   name: string;
   profileUrl: string;
 }
 
-interface AppointmentResultInterface {
+interface AppointmentRecommendationInterface {
   rank: number;
   recommendStartDateTime: string;
   recommendEndDateTime: string;
@@ -28,17 +30,21 @@ interface AppointmentResultInterface {
   unavailableMembers: Array<AppointmentMemberInterface>;
 }
 
-type CreateAppointmentRequest = Omit<AppointmentInterface, 'id' | 'isClosed'>;
-
 interface Time {
   period: 'AM' | 'PM';
   hour: string;
   minute: string;
 }
+
+type CreateAppointmentRequest = Omit<AppointmentInterface, 'id' | 'isClosed'>;
+// TODO: 괜찮나?
+type ProgressAppointmentRequest = Array<{ start: string; end: string }>;
+
 export {
   Time,
   CreateAppointmentRequest,
+  ProgressAppointmentRequest,
   AppointmentInfoInterface,
-  AppointmentResultInterface,
+  AppointmentRecommendationInterface,
   AppointmentInterface
 };

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React, { FormEvent } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Box from '../../common/Box/Box';
 import AppointmentCreateFormButtonGroup from '../AppointmentCreateFormButtonGroup/AppointmentCreateFormButtonGroup';
 import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
@@ -26,38 +26,41 @@ const getFormattedTime = (time: Time) => {
 };
 
 function AppointmentCreateForm({ startDate, endDate }: Props) {
+  const navigate = useNavigate();
   const [title, handleTitle] = useInput();
+  // TODO: groupCode 받아오는 게 계속 중복되어서, 중복줄이자
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [description, handleDescription] = useInput();
   const [duration, handleDuration] = useInputs<Omit<Time, 'period'>>({ hour: '', minute: '' });
-  const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '' });
-  const [endTime, handleEndTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '' });
+  const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
+  const [endTime, handleEndTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleCreateAppointment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const appointment: CreateAppointmentRequest = {
       title,
       description,
       startDate,
-      endDate,
+      endDate: endDate || startDate,
       startTime: getFormattedTime(startTime),
       endTime: getFormattedTime(endTime),
-      durationHour: Number(duration.hour),
-      durationMinute: Number(duration.minute)
+      durationHours: Number(duration.hour),
+      durationMinutes: Number(duration.minute)
     };
 
     try {
       const res = await createAppointment(groupCode, appointment);
       const appointmentCode = res.headers.get('location').split('appointments/')[1];
-      console.log(appointmentCode);
+
+      navigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit}>
+    <StyledForm onSubmit={handleCreateAppointment}>
       <Box width="66rem" minHeight="56.4rem" padding="4.8rem">
         <FlexContainer flexDirection="column" gap="1.6rem">
           <AppointmentCreateFormTitleInput title={title} onChange={handleTitle} />

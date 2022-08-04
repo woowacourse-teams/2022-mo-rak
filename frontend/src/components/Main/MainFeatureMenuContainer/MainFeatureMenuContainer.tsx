@@ -15,7 +15,7 @@ function MainFeatureMenuContainer() {
 
   return (
     <FlexContainer flexDirection="column">
-      <StyledTitle>사용s할 기능을 선택하세요!</StyledTitle>
+      <StyledTitle>사용할 기능을 선택하세요!</StyledTitle>
 
       <FlexContainer justifyContent="center" gap="8rem">
         {/* TODO: 네이밍 고민 */}
@@ -25,7 +25,7 @@ function MainFeatureMenuContainer() {
           </StlyedImageWrapper>
           <StyledFeatureMenuName>투표하기</StyledFeatureMenuName>
         </StyledFeatureMenuContainer>
-        <StyledFeatureMenuContainer onClick={handleNavigate('appointment')}>
+        <StyledFeatureMenuContainer onClick={handleNavigate('appointment/create')}>
           <StlyedImageWrapper>
             <StyledImage src={Appointment} alt="appointment-menu" />
           </StlyedImageWrapper>
@@ -54,8 +54,7 @@ const StlyedImageWrapper = styled.div(
   font-size: 3.2rem;
   border-radius: 100%;
   background: ${theme.colors.GRAY_200};
-  width: 50rem;
-  padding: 10rem;
+  padding: 8rem;
 
   &:hover {
     background: ${theme.colors.GRAY_300};
@@ -64,7 +63,7 @@ const StlyedImageWrapper = styled.div(
 );
 
 const StyledImage = styled.img`
-  width: 32rem;
+  width: 24rem;
 `;
 
 const StyledFeatureMenuName = styled.div`
