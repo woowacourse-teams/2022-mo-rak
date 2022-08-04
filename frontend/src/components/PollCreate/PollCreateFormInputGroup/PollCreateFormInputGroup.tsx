@@ -72,6 +72,7 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
               fontSize="1.2rem"
               placeholder="선택항목을 입력해주세요!"
               onChange={handleChange(idx)}
+              aria-label={`poll-input${idx}`}
               required
             />
             <DeleteIcon src={Bin} alt="bin" onClick={handleDeletePollItem(idx)} />

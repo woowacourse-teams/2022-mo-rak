@@ -14,7 +14,7 @@ import TextField from '../../common/TextField/TextField';
 import { GroupInterface } from '../../../types/group';
 
 interface Props {
-  pollId: PollInterface['id'];
+  pollCode: PollInterface['code'];
   status: PollInterface['status'];
   groupCode: GroupInterface['code'];
   pollResult: Array<PollItemResultType>;
@@ -33,7 +33,7 @@ const getWinningPollItemIds = (pollResult: PollItemResultType[]) => {
 const getSelectedPollItemIds = (pollItems: Array<{ id: number; isSelected: boolean }>) =>
   pollItems.filter((pollItem) => pollItem.isSelected).map((pollItem) => pollItem.id);
 
-function PollResultItemGroup({ pollId, status, groupCode, pollResult }: Props) {
+function PollResultItemGroup({ pollCode, status, groupCode, pollResult }: Props) {
   const theme = useTheme();
   const [activePollItem, setActivePollItem] = useState(0);
   const [selectedPollItemIds, setSelectedPollItemIds] = useState<Array<PollItemInterface['id']>>(
@@ -46,10 +46,10 @@ function PollResultItemGroup({ pollId, status, groupCode, pollResult }: Props) {
   };
 
   useEffect(() => {
-    const fetchPollItems = async (pollId: PollInterface['id']) => {
+    const fetchPollItems = async (pollCode: PollInterface['code']) => {
       try {
         if (groupCode) {
-          const res = await getPollItems(pollId, groupCode);
+          const res = await getPollItems(pollCode, groupCode);
           setSelectedPollItemIds(getSelectedPollItemIds(res));
         }
       } catch (err) {
@@ -57,8 +57,8 @@ function PollResultItemGroup({ pollId, status, groupCode, pollResult }: Props) {
       }
     };
 
-    if (pollId) {
-      fetchPollItems(pollId);
+    if (pollCode) {
+      fetchPollItems(pollCode);
     }
   }, []);
 
@@ -149,8 +149,8 @@ const StyledUserCount = styled.span<{
 }>(
   ({ theme, status, isWinningPollItem }) => `
   color: ${
-    status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
-  };
+  status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
+};
   font-size: 1.6rem;
 `
 );
@@ -158,8 +158,8 @@ const StyledUserCount = styled.span<{
 const StyledSubject = styled.span<{ isWinningPollItem: boolean; status: PollInterface['status'] }>(
   ({ theme, isWinningPollItem, status }) => `
   color: ${
-    status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
-  };
+  status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
+};
   font-size: 1.6rem;
 `
 );

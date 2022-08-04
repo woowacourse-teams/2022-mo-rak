@@ -17,7 +17,7 @@ import Input from '../../common/Input/Input';
 type SelectedPollItemsType = Array<SelectedPollItemInterface>;
 
 interface Props {
-  pollId: PollInterface['id'];
+  pollCode: PollInterface['code'];
   selectedPollItems: SelectedPollItemsType;
   allowedPollCount: PollInterface['allowedPollCount'];
   groupCode: GroupInterface['code'];
@@ -26,7 +26,7 @@ interface Props {
 }
 
 function PollProgressItemGroup({
-  pollId,
+  pollCode,
   selectedPollItems,
   handleSelectPollItems,
   handleDescription,
@@ -39,10 +39,10 @@ function PollProgressItemGroup({
     selectedPollItems.some((selectedPollItem) => selectedPollItem.itemId === pollId);
 
   useEffect(() => {
-    const fetchPollItems = async (pollId: PollInterface['id']) => {
+    const fetchPollItems = async (pollCode: PollInterface['code']) => {
       try {
         if (groupCode) {
-          const res = await getPollItems(pollId, groupCode);
+          const res = await getPollItems(pollCode, groupCode);
           setPollItems(res);
         }
       } catch (err) {
@@ -50,8 +50,8 @@ function PollProgressItemGroup({
       }
     };
 
-    if (pollId) {
-      fetchPollItems(pollId);
+    if (pollCode) {
+      fetchPollItems(pollCode);
     }
   }, []);
 

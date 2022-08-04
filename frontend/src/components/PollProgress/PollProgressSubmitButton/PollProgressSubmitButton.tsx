@@ -9,13 +9,13 @@ import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import { GroupInterface } from '../../../types/group';
 
 interface Props {
-  pollId: PollInterface['id'];
+  pollCode: PollInterface['code'];
   isHost: PollInterface['isHost'];
   groupCode?: GroupInterface['code'];
 }
 
 // TODO: 삭제랑, 투표하기 버튼이 둘 다 있어서 Button Group 해야할듯?
-function PollProgressSubmitButton({ pollId, isHost, groupCode }: Props) {
+function PollProgressSubmitButton({ pollCode, isHost, groupCode }: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ function PollProgressSubmitButton({ pollId, isHost, groupCode }: Props) {
     if (window.confirm('투표를 삭제하시겠습니까?')) {
       try {
         if (groupCode) {
-          await deletePoll(pollId, groupCode);
+          await deletePoll(pollCode, groupCode);
           navigate(`/groups/${groupCode}/poll`);
         }
       } catch (err) {

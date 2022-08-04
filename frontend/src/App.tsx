@@ -34,8 +34,8 @@ function App() {
                 <Route path="poll">
                   <Route index element={<PollMainPage />} />
                   <Route path="create" element={<PollCreatePage />} />
-                  <Route path=":pollId/progress" element={<PollProgressPage />} />
-                  <Route path=":pollId/result" element={<PollResultPage />} />
+                  <Route path=":pollCode/progress" element={<PollProgressPage />} />
+                  <Route path=":pollCode/result" element={<PollResultPage />} />
                 </Route>
 
                 <Route path="appointment">

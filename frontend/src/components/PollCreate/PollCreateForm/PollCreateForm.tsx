@@ -41,10 +41,10 @@ function PollCreateForm() {
       // TODO: 쿼리 적용
 
       const res = await createPoll(pollData, groupCode);
-      const pollId = res.headers.get('location').split('polls/')[1];
+      const pollCode = res.headers.get('location').split('polls/')[1];
 
       // TODO: 상수화
-      navigate(`/groups/${groupCode}/poll/${pollId}/progress`);
+      navigate(`/groups/${groupCode}/poll/${pollCode}/progress`);
     } catch (err) {
       // TODO: 에러 핸들링 고도화
       alert(err);

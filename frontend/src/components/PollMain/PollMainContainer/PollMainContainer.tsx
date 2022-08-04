@@ -39,7 +39,7 @@ function PollMainContainer() {
   return (
     <StyledContainer>
       {polls ? (
-        polls.map(({ status, title, id, isAnonymous, allowedPollCount }) => (
+        polls.map(({ status, title, id, code, isAnonymous, allowedPollCount }) => (
           <Box
             width="26.4rem"
             padding="2rem"
@@ -50,12 +50,12 @@ function PollMainContainer() {
               <PollMainStatus status={status} />
             </FlexContainer>
             <StyledTitle>{title}</StyledTitle>
-            <PollMainProgress pollId={id} groupCode={groupCode} />
+            <PollMainProgress pollCode={code} groupCode={groupCode} />
             <MarginContainer margin="0 0 1.2rem">
               {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
               <PollMainDetail isAnonymous={isAnonymous} allowedPollCount={allowedPollCount} />
             </MarginContainer>
-            <PollMainButtonGroup pollId={id} handleNavigate={handleNavigate} status={status} />
+            <PollMainButtonGroup pollCode={code} handleNavigate={handleNavigate} status={status} />
           </Box>
         ))
       ) : (

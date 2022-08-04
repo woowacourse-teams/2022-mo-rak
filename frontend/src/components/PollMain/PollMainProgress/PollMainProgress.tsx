@@ -8,7 +8,7 @@ import { GroupInterface, MemberInterface } from '../../../types/group';
 import { getGroupMembers } from '../../../api/group';
 
 interface Props {
-  pollId: PollInterface['id'];
+  pollCode: PollInterface['code'];
   groupCode: GroupInterface['code'];
 }
 
@@ -20,17 +20,17 @@ const getCurrentParticipants = (pollResult: Array<PollItemResultType>) => {
   return new Set(currentParticipants).size;
 };
 
-function PollMainProgress({ pollId, groupCode }: Props) {
+function PollMainProgress({ pollCode, groupCode }: Props) {
   const [pollResult, setPollResult] = useState<Array<PollItemResultType>>([]);
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
   const totalParticipants = groupMembers.length;
   const currentParticipants = getCurrentParticipants(pollResult);
 
   useEffect(() => {
-    const fetchPollResult = async (pollId: PollInterface['id']) => {
+    const fetchPollResult = async (pollCode: PollInterface['code']) => {
       try {
         if (groupCode) {
-          const res = await getPollResult(pollId, groupCode);
+          const res = await getPollResult(pollCode, groupCode);
           setPollResult(res);
         }
       } catch (err) {
@@ -38,7 +38,7 @@ function PollMainProgress({ pollId, groupCode }: Props) {
       }
     };
 
-    fetchPollResult(pollId);
+    fetchPollResult(pollCode);
   }, []);
 
   useEffect(() => {
@@ -67,7 +67,8 @@ function PollMainProgress({ pollId, groupCode }: Props) {
       <StyledParticipantsStatus>
         {currentParticipants}
         명/
-        {totalParticipants}명
+        {totalParticipants}
+        명
       </StyledParticipantsStatus>
     </FlexContainer>
   );

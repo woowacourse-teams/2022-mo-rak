@@ -14,9 +14,9 @@ import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 
 function PollProgressForm() {
   const navigate = useNavigate();
-  const { groupCode, pollId } = useParams() as {
+  const { groupCode, pollCode } = useParams() as {
     groupCode: string;
-    pollId: string;
+    pollCode: string;
   };
   // TODO: 기본 객체를 줘야할까? undefined로 놓는 것이 위험한가?
   const [poll, setPoll] = useState<PollInterface>();
@@ -28,8 +28,8 @@ function PollProgressForm() {
 
     try {
       if (poll) {
-        await progressPoll(poll.id, selectedPollItems, groupCode);
-        navigate(`/groups/${groupCode}/poll/${pollId}/result`);
+        await progressPoll(pollCode, selectedPollItems, groupCode);
+        navigate(`/groups/${groupCode}/poll/${pollCode}/result`);
       }
     } catch (err) {
       alert(err);
@@ -73,9 +73,9 @@ function PollProgressForm() {
   };
 
   useEffect(() => {
-    const fetchPoll = async (pollId: PollInterface['id']) => {
+    const fetchPoll = async (pollCode: PollInterface['code']) => {
       try {
-        const res = await getPoll(pollId, groupCode);
+        const res = await getPoll(pollCode, groupCode);
 
         if (res.status === 'CLOSED') {
           navigate(`/groups/${groupCode}/poll`);
@@ -90,7 +90,7 @@ function PollProgressForm() {
       }
     };
 
-    fetchPoll(Number(pollId));
+    fetchPoll(pollCode);
   }, []);
 
   return (
@@ -109,7 +109,7 @@ function PollProgressForm() {
           </MarginContainer>
           <MarginContainer margin="0 0 8.4rem 0">
             <PollProgressItemGroup
-              pollId={poll.id}
+              pollCode={poll.code}
               selectedPollItems={selectedPollItems}
               allowedPollCount={poll.allowedPollCount}
               handleSelectPollItems={handleSelectPollItems}
@@ -118,7 +118,7 @@ function PollProgressForm() {
             />
           </MarginContainer>
           <PollProgressSubmitButton
-            pollId={Number(pollId)}
+            pollCode={pollCode}
             isHost={poll.isHost}
             groupCode={groupCode}
           />
