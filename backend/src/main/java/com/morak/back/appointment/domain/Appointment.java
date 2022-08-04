@@ -33,6 +33,7 @@ import org.hibernate.annotations.Formula;
 @NoArgsConstructor
 public class Appointment extends BaseEntity {
 
+    public static final int MINUTES_UNIT = 30;
     private static final int NO_ONE_SELECTED = 0;
 
     @Id
@@ -82,16 +83,16 @@ public class Appointment extends BaseEntity {
 
     @Builder
     private Appointment(Long id, Team team, Member host, String title, String description, LocalDate startDate,
-                       LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer durationHours,
-                       Integer durationMinutes, Code code, LocalDateTime closedAt) {
+                        LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer durationHours,
+                        Integer durationMinutes, Code code, LocalDateTime closedAt) {
         this.id = id;
         this.team = team;
         this.host = host;
         this.title = title;
         this.description = description;
-        this.datePeriod = new DatePeriod(startDate, endDate);
-        this.timePeriod = new TimePeriod(startTime, endTime);
-        this.durationMinutes = new DurationMinutes(durationHours, durationMinutes);
+        this.datePeriod = DatePeriod.of(startDate, endDate, endTime);
+        this.timePeriod = TimePeriod.of(startTime, endTime, MINUTES_UNIT);
+        this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes, MINUTES_UNIT);
         this.status = OPEN;
         this.code = code;
         this.closedAt = LocalDateTime.now().plusMonths(1);
@@ -105,9 +106,9 @@ public class Appointment extends BaseEntity {
         return this.durationMinutes.parseMinutes();
     }
 
-    public void validateAvailableTimeRange(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        this.datePeriod.validateAvailableDateRange(startDateTime.toLocalDate(), endDateTime.toLocalDate());
-        this.timePeriod.validateAvailableTimeRange(startDateTime.toLocalTime(), endDateTime.toLocalTime());
+    public void validateAvailableTimeRange(DateTimePeriod dateTimePeriod) {
+        this.datePeriod.validateAvailableDateRange(dateTimePeriod.toDatePeriod());
+        this.timePeriod.validateAvailableTimeRange(dateTimePeriod.toTimePeriod());
     }
 
     public void close(Member member) {
@@ -150,5 +151,13 @@ public class Appointment extends BaseEntity {
             return NO_ONE_SELECTED;
         }
         return this.count;
+    }
+
+    public LocalDateTime getFirstStartDateTime() {
+        return LocalDateTime.of(datePeriod.getStartDate(), timePeriod.getStartTime());
+    }
+
+    public LocalDateTime getLastEndDateTime() {
+        return LocalDateTime.of(datePeriod.getEndDate(), timePeriod.getEndTime());
     }
 }

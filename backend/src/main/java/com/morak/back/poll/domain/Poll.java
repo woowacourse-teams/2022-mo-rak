@@ -109,7 +109,7 @@ public class Poll extends BaseEntity {
         }
     }
 
-    private void validateCounts(int pollItemCount) {
+    private void validateCounts(Integer pollItemCount) {
         if (!allowedPollCount.isAllowed(pollItemCount)) {
             throw new InvalidRequestException(id + "번 투표에 " + pollItemCount + "개의 투표 항목을 선택할 수 없습니다.");
         }
