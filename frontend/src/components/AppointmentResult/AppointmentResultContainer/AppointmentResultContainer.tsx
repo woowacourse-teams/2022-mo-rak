@@ -34,8 +34,9 @@ function AppointmentResultContainer() {
     <FlexContainer flexDirection="column" gap="4rem">
       <StyledTitle>{appointment.title}</StyledTitle>
       <StyledContent>모락은 가장 많이 겹치는 시간을 추천해드립니다🦔</StyledContent>
+      {/* TODO: 항상 groupCode와 appointmentCode를 props로 내려주는 작업들이 반복되고 있다. 이를 전역으로 가지고 있어도 되지 않을까? */}
       <AppointmentResultRanking groupCode={groupCode} appointmentCode={appointmentCode} />
-      <AppointmentResultButtonGroup />
+      <AppointmentResultButtonGroup groupCode={groupCode} appointmentCode={appointmentCode} />
     </FlexContainer>
   );
 }
