@@ -9,7 +9,6 @@ import AppointmentResultRanking from '../AppointmentResultRanking';
 import AppointmentResultButtonGroup from '../AppointmentResultButtonGroup';
 
 function AppointmentResultContainer() {
-  // TODO: api 연결 전 화면 확인을 위해 초기값 임시 설정
   const [appointment, setAppointment] = useState<AppointmentInterface>();
 
   const { groupCode, appointmentCode } = useParams() as {
@@ -34,7 +33,7 @@ function AppointmentResultContainer() {
   return (
     <FlexContainer flexDirection="column" gap="4rem">
       <StyledTitle>{appointment.title}</StyledTitle>
-      <StyledContent>가장 많은 시간이 겹치는 시간을 추천해줍니다</StyledContent>
+      <StyledContent>모락은 가장 많이 겹치는 시간을 추천해드립니다🦔</StyledContent>
       <AppointmentResultRanking groupCode={groupCode} appointmentCode={appointmentCode} />
       <AppointmentResultButtonGroup />
     </FlexContainer>
