@@ -51,13 +51,13 @@ const getTimes = (
   const timetables = [];
 
   while (startHM.getTime() !== endHM.getTime()) {
-    const s = [startHM.getHours(), startHM.getMinutes()];
+    const [startHour, startMinute] = [startHM.getHours(), startHM.getMinutes()];
     startHM.setMinutes(startHM.getMinutes() + 30);
-    const e = [startHM.getHours(), startHM.getMinutes()];
+    const [endHour, endMinute] = [startHM.getHours(), startHM.getMinutes()];
 
     timetables.push({
-      start: formatHM(s[0], s[1]),
-      end: formatHM(e[0], e[1])
+      start: formatHM(startHour, startMinute),
+      end: formatHM(endHour, endMinute)
     });
   }
 
@@ -79,13 +79,7 @@ function AppointmentProgressTimePicker({
   onClickTime,
   availableTimes
 }: Props) {
-  const times = useMemo(() => {
-    if (startTime && endTime && selectedDate) {
-      return getTimes(startTime, endTime);
-    }
-
-    return [];
-  }, [selectedDate]);
+  const times = useMemo(() => getTimes(startTime, endTime), []);
 
   return (
     <Box width="30rem" height="58rem" padding="3.6rem 2rem" overflow="auto">
@@ -114,7 +108,7 @@ const StyledTime = styled.div<{ isSelected: boolean }>(
   font-size: 1.6rem;
   text-align: center;
   padding: 0.8rem 0;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
 
   background-color: ${
