@@ -157,7 +157,7 @@ public class Appointment extends BaseEntity {
         return LocalDateTime.of(datePeriod.getStartDate(), timePeriod.getStartTime());
     }
 
-    public LocalDateTime getLastStartDateTime() {
+    public LocalDateTime getLastEndDateTime() {
         return LocalDateTime.of(datePeriod.getEndDate(), timePeriod.getEndTime());
     }
 }

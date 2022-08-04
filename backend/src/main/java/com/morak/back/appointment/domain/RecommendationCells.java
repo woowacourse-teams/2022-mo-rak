@@ -7,26 +7,21 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RecommendationCells {
 
     private static final long MAX_SIZE = 10;
 
     private List<RecommendationCell> cells;
 
-    private RecommendationCells(List<RecommendationCell> cells) {
-        this.cells = cells;
-    }
-
     public static RecommendationCells of(Appointment appointment, List<Member> members) {
-//        DatePeriod datePeriod = appointment.getDatePeriod();
-//        TimePeriod timePeriod = appointment.getTimePeriod();
-//        LocalDateTime startDateTime = LocalDateTime.of(datePeriod.getStartDate(), timePeriod.getStartTime());
-//        LocalDateTime endDateTime = LocalDateTime.of(datePeriod.getEndDate(), timePeriod.getEndTime());
         LocalDateTime firstStartDateTime = appointment.getFirstStartDateTime();
-        LocalDateTime lastEndDateTime = appointment.getLastStartDateTime();
+        LocalDateTime lastEndDateTime = appointment.getLastEndDateTime();
         DurationMinutes durationMinutes = appointment.getDurationMinutes();
 
         return new RecommendationCells(Stream.iterate(

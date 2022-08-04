@@ -1,50 +1,50 @@
 INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at)
-values ('12345678', 'eden', 'http://eden-profile.com', now(), now());
+VALUES ('12345678', 'eden', 'http://eden-profile.com', now(), now());
 INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at)
-values ('97533356', 'ellie', 'http://ellie-profile.com', now(), now());
+VALUES ('97533356', 'ellie', 'http://ellie-profile.com', now(), now());
 INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at)
-values ('12345679', 'bkr', 'http://bkr-profile.com', now(), now());
+VALUES ('12345679', 'bkr', 'http://bkr-profile.com', now(), now());
 INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at)
-values ('12345669', 'chalee', 'http://chalee-profile.com', now(), now());
+VALUES ('12345669', 'chalee', 'http://chalee-profile.com', now(), now());
 INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at)
-values ('12345668', 'albur', 'http://albur-profile.com', now(), now());
+VALUES ('12345668', 'albur', 'http://albur-profile.com', now(), now());
 INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at)
-values ('12345677', 'winnie', 'http://winnie-profile.com', now(), now());
+VALUES ('12345677', 'winnie', 'http://winnie-profile.com', now(), now());
 
 INSERT INTO team (name, code, created_at, updated_at)
-values ('morak', 'MoraK123', now(), now());
+VALUES ('morak', 'MoraK123', now(), now());
 
 INSERT INTO team_member (team_id, member_id, created_at, updated_at)
-values (1, 1, now(), now());
+VALUES (1, 1, now(), now());
 INSERT INTO team_member (team_id, member_id, created_at, updated_at)
-values (1, 2, now(), now());
+VALUES (1, 2, now(), now());
 INSERT INTO team_member (team_id, member_id, created_at, updated_at)
-values (1, 3, now(), now());
+VALUES (1, 3, now(), now());
 
 INSERT INTO poll (team_id, host_id, title, allowed_poll_count, is_anonymous, status, created_at, updated_at, closed_at,
                   code)
-values (1, 1, 'test-poll-title', 2, true, 'OPEN', now(), now(), now(), 'testcode');
+VALUES (1, 1, 'test-poll-title', 2, true, 'OPEN', now(), now(), now(), 'testcode');
 
 INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
-values (1, 'test-poll-item-subject-A', now(), now());
+VALUES (1, 'test-poll-item-subject-A', now(), now());
 
 INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
-values (1, 'test-poll-item-subject-B', now(), now());
+VALUES (1, 'test-poll-item-subject-B', now(), now());
 
 INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
-values (1, 'test-poll-item-subject-C', now(), now());
+VALUES (1, 'test-poll-item-subject-C', now(), now());
 
 INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
-values (1, 1, '까라는 매일 자니깐..', now(), now());
+VALUES (1, 1, '까라는 매일 자니깐..', now(), now());
 
 INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
-values (2, 1, '그냥뇨', now(), now());
+VALUES (2, 1, '그냥뇨', now(), now());
 
 INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
-values (2, 2, '', now(), now());
+VALUES (2, 2, '', now(), now());
 
 INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
-values (3, 2, '에덴이 시켰어요', now(), now());
+VALUES (3, 2, '에덴이 시켰어요', now(), now());
 
 INSERT INTO appointment (team_id, host_id, title, description, start_date, end_date, start_time, end_time,
                          duration_minutes, status, code, closed_at, created_at, updated_at)

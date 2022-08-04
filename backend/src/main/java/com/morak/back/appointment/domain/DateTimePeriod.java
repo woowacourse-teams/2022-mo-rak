@@ -8,11 +8,15 @@ import java.time.LocalDateTime;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// TODO: 2022/08/04 this 객체는 available time 객체와 recommend 로직에서 모두 쓰임! 수정 필요할 것 같다는 엘리의 진단!
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Embeddable
 public class DateTimePeriod {
 
@@ -24,11 +28,6 @@ public class DateTimePeriod {
     @FutureOrPresent(message = "약속잡기 가능 마지막 시점은 현재보다 과거일 수 없습니다.")
     private LocalDateTime endDateTime;
 
-    private DateTimePeriod(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-    }
-
     public static DateTimePeriod of(LocalDateTime startDateTime, LocalDateTime endDateTime, int minutesUnit) {
         validateChronology(startDateTime, endDateTime);
         validateMinutesUnit(startDateTime, endDateTime);
@@ -36,12 +35,12 @@ public class DateTimePeriod {
         return new DateTimePeriod(startDateTime, endDateTime);
     }
 
-    public DatePeriod toDatePeriod() {
-        return new DatePeriod(startDateTime.toLocalDate(), endDateTime.toLocalDate());
+    public boolean contains(DateTimePeriod other) {
+        return !(other.startDateTime.isBefore(this.startDateTime) || other.endDateTime.isAfter(this.endDateTime));
     }
 
-    public TimePeriod toTimePeriod() {
-        return TimePeriod.of(startDateTime.toLocalTime(), endDateTime.toLocalTime(), MINUTES_UNIT);
+    public long getDurationUnitCount() {
+        return Duration.between(this.startDateTime, this.endDateTime).toMinutes() / MINUTES_UNIT;
     }
 
     private static void validateChronology(LocalDateTime startDateTime, LocalDateTime endDateTime) {
@@ -67,11 +66,11 @@ public class DateTimePeriod {
         }
     }
 
-    public boolean contains(DateTimePeriod other) {
-        return !(other.startDateTime.isBefore(this.startDateTime) || other.endDateTime.isAfter(this.endDateTime));
+    public DatePeriod toDatePeriod() {
+        return new DatePeriod(startDateTime.toLocalDate(), endDateTime.toLocalDate());
     }
 
-    public long getDurationUnitCount() {
-        return Duration.between(this.startDateTime, this.endDateTime).toMinutes() / MINUTES_UNIT;
+    public TimePeriod toTimePeriod() {
+        return TimePeriod.of(startDateTime.toLocalTime(), endDateTime.toLocalTime(), MINUTES_UNIT);
     }
 }

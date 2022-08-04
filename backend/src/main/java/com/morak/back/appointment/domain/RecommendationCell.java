@@ -6,20 +6,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RecommendationCell implements Comparable<RecommendationCell> {
 
     private static final int INITIAL_SCORE = 0;
 
     private final DateTimePeriod dateTimePeriod;
     private final Map<Member, Integer> memberScores;
-
-    private RecommendationCell(DateTimePeriod dateTimePeriod, Map<Member, Integer> memberScores) {
-        this.dateTimePeriod = dateTimePeriod;
-        this.memberScores = memberScores;
-    }
 
     public static RecommendationCell of(LocalDateTime startDateTime, DurationMinutes durationMinutes,
                                         List<Member> members) {

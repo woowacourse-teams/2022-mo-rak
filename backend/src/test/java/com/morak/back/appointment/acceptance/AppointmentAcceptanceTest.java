@@ -352,7 +352,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
                 총_진행시간이_1440이상인_약속잡기_요청_데이터
         };
     }
-//
+
 //    @Test
 //    void 약속잡기_가능시간을_중복으로_선택_시_BAD_REQUEST를_반환한다() {
 //        // given

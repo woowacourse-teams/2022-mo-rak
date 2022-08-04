@@ -11,8 +11,6 @@ public class DomainFixture {
 
     public static final LocalDateTime 시작_시간 = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0));
 
-//    public static final LocalDateTime 시작_시간 = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0));
-
     public static final DurationMinutes 두시간_일정 = DurationMinutes.of(2, 0, 30);
 
     public static final DurationMinutes 한시간_일정 = DurationMinutes.of(1, 0, 30);

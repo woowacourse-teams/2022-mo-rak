@@ -3,11 +3,14 @@ package com.morak.back.appointment.domain;
 import com.morak.back.core.exception.InvalidRequestException;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Embeddable
 public class DurationMinutes {
 
@@ -19,10 +22,6 @@ public class DurationMinutes {
 
     @NotNull(message = "약속잡기 진행 시간은 null일 수 없습니다.")
     private Integer durationMinutes;
-
-    private DurationMinutes(Integer durationMinutes) {
-        this.durationMinutes = durationMinutes;
-    }
 
     public static DurationMinutes of(Integer hours, Integer minutes, int minutesUnit) {
         validateMinutes(minutes, minutesUnit);
@@ -58,7 +57,7 @@ public class DurationMinutes {
 
     private static void validateDurationMinutesRange(Integer durationMinutes, int minutesUnit) {
         if (durationMinutes <= MIN_TIME || durationMinutes > DAY_MINUTES) {
-            throw new InvalidRequestException("약속잡기 진행 시간은 " + minutesUnit + "~24시간 사이여야 합니다.");
+            throw new InvalidRequestException("약속잡기 진행 시간은 최소 " + minutesUnit + "분에서 24시간 사이여야 합니다.");
         }
     }
 }

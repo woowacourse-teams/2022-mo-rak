@@ -5,11 +5,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class DatePeriod {
 
@@ -20,11 +23,6 @@ public class DatePeriod {
 
     @NotNull(message = "약속잡기 마지막 날짜는 null일 수 없습니다.")
     private LocalDate endDate;
-
-    protected DatePeriod(LocalDate startDate, LocalDate endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
 
     public static DatePeriod of(LocalDate startDate, LocalDate endDate, LocalTime endTime) {
         validateFutureOrPresent(startDate, endDate);

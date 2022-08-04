@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -87,8 +88,7 @@ public class AppointmentService {
 
         validateAppointmentStatus(appointment);
 
-        availableTimeRepository.deleteAllByMemberIdAndAppointmentId(memberId, appointment.getId());
-        availableTimeRepository.flush();
+        deleteOldAvailableTimes(memberId, appointment);
 
         List<AvailableTime> availableTimes = requests.stream()
                 .map(request -> request.toAvailableTime(member, appointment))
@@ -110,10 +110,10 @@ public class AppointmentService {
                 .map(TeamMember::getMember)
                 .collect(Collectors.toList());
 
-        RecommendationCells recommender = RecommendationCells.of(appointment, members);
+        RecommendationCells recommendationCells = RecommendationCells.of(appointment, members);
 
         List<AvailableTime> availableTimes = availableTimeRepository.findAllByAppointmentId(appointment.getId());
-        List<RankRecommendation> rankRecommendations = recommender.recommend(availableTimes);
+        List<RankRecommendation> rankRecommendations = recommendationCells.recommend(availableTimes);
 
         return rankRecommendations.stream()
                 .map(RecommendationResponse::from)
@@ -152,5 +152,10 @@ public class AppointmentService {
         if (appointment.isClosed()) {
             throw new InvalidRequestException(appointment.getId() + "번 약속잡기는 마감되었습니다.");
         }
+    }
+
+    private void deleteOldAvailableTimes(Long memberId, Appointment appointment) {
+        availableTimeRepository.deleteAllByMemberIdAndAppointmentId(memberId, appointment.getId());
+        availableTimeRepository.flush();
     }
 }
