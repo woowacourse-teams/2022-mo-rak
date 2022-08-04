@@ -25,6 +25,7 @@ function AppointmentCreateFormTimeLimitInput({
   return (
     <>
       <StyledLabel>가능 시간 제한</StyledLabel>
+      <StyledHelperText>AM 12:00 ~ AM 12:00(다음날)은 하루종일을 의미합니다.</StyledHelperText>
       <FlexContainer alignItems="center" gap="2.8rem">
         <TextField
           variant="outlined"
@@ -50,7 +51,6 @@ function AppointmentCreateFormTimeLimitInput({
             </Select>
             <StyledContent>:</StyledContent>
             <Select name="minute" value={startTime.minute} onChange={onChangeStartTime} required>
-              <option value="">--</option>
               <option value="00">00</option>
               <option value="30">30</option>
             </Select>
@@ -80,7 +80,6 @@ function AppointmentCreateFormTimeLimitInput({
             </Select>
             <StyledContent>:</StyledContent>
             <Select name="minute" value={endTime.minute} onChange={onChangeEndTime} required>
-              <option value="">--</option>
               <option value="00">00</option>
               <option value="30">30</option>
             </Select>
@@ -97,6 +96,10 @@ const StyledLabel = styled.label(
   color: ${theme.colors.PURPLE_100};
 `
 );
+
+const StyledHelperText = styled.p`
+  font-size: 1.6rem;
+`;
 
 const StyledContent = styled.p`
   font-size: 3.2rem;

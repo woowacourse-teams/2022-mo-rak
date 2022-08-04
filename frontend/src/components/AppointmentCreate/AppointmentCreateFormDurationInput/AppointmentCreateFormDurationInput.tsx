@@ -27,7 +27,7 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
         <Select id="hour" onChange={onChange} value={hour} name="hour" required>
           <option value="">--</option>
           {createRange({
-            size: 100
+            size: 25
           }).map((hour: number) => (
             <option value={hour}>{hour}</option>
           ))}
@@ -42,7 +42,6 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
         width="9.2rem"
       >
         <Select id="minute" onChange={onChange} value={minute} name="minute" required>
-          <option value="">--</option>
           <option value="00">00</option>
           <option value="30">30</option>
         </Select>
