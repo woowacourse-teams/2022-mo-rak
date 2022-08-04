@@ -40,4 +40,17 @@ const progressAppointment = (
     body: availableTimes
   });
 
-export { getAppointment, createAppointment, progressAppointment, getAppointmentRecommendation };
+const closeAppointment = (
+  groupCode: GroupInterface['code'],
+  appointmentCode: AppointmentInfoInterface['code']
+) =>
+  // TODO: appointment, poll, group등 따로 api url을 만들어서 중복을 줄여줄 수도 있겠다. 해보자
+  fetcher({ method: 'PATCH', path: `groups/${groupCode}/appointments/${appointmentCode}/close` });
+
+export {
+  getAppointment,
+  createAppointment,
+  progressAppointment,
+  getAppointmentRecommendation,
+  closeAppointment
+};

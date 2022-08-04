@@ -75,6 +75,11 @@ function AppointmentProgressPage() {
     (async () => {
       try {
         const res = await getAppointment(groupCode, appointmentCode);
+        if (res.isClosed) {
+          alert('마감된 약속잡기입니다');
+
+          return;
+        }
         setAppointment(res);
       } catch (error) {
         console.log(error);

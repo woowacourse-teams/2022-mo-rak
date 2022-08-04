@@ -6,6 +6,7 @@ import Button from '../common/Button/Button';
 import FlexContainer from '../common/FlexContainer/FlexContainer';
 import { GroupInterface } from '../../types/group';
 import { AppointmentInfoInterface } from '../../types/appointment';
+import { closeAppointment } from '../../api/appointment';
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -20,6 +21,17 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode }: Props) {
     navigate(location);
   };
 
+  const handleCloseAppointment = async () => {
+    try {
+      if (window.confirm('약속잡기를 삭제하시겠습니까?')) {
+        const res = await closeAppointment(groupCode, appointmentCode);
+        console.log(res);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <FlexContainer gap="4rem">
       <Button
@@ -28,6 +40,7 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode }: Props) {
         width="30rem"
         padding="2.4rem"
         fontSize="4rem"
+        onClick={handleCloseAppointment}
       >
         마감
       </Button>
