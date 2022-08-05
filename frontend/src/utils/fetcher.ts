@@ -1,8 +1,11 @@
+import { getLocalStorageItem } from './storage';
+
+// TODO: interface와 type의 차이? 조사하고 정리해보자
 interface Props {
   method: 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'GET';
   path: string;
   body?: object;
-  token?: string;
+  isTokenNeeded?: boolean;
 }
 
 // TODO: type명 이게 최선일까?
@@ -10,28 +13,29 @@ type Headers = {
   [key: string]: string;
 };
 
-const fetcher = async ({ method, path, body = {}, token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3OTYxMzE3LCJleHAiOjE2ODk1Mjk3MTd9.NrQzpKPjKTyfLZFNsL90KBqV_E_ps0ofp3Ne81fSgoU' }: Props) => {
+const fetcher = async ({ method, path, body = {}, isTokenNeeded = true }: Props) => {
   const headers: Headers = { 'Content-Type': 'application/json' };
-  if (token) headers.Authorization = `Bearer ${token}`;
+  if (isTokenNeeded) headers.Authorization = `Bearer ${getLocalStorageItem('token')}`;
 
   // TODO: refactoring 필요
-  const config = Object.keys(body).length === 0
-    ? {
-      method,
-      headers
-    }
-    : {
-      method,
-      headers,
-      body: JSON.stringify(body)
-    };
+  const config =
+    Object.keys(body).length === 0
+      ? {
+          method,
+          headers
+        }
+      : {
+          method,
+          headers,
+          body: JSON.stringify(body)
+        };
 
-  const response = await fetch(`${process.env.BASE_API_URL}${path}`, config);
+  const response = await fetch(`${process.env.BASE_API_URL}/${path}`, config);
 
   if (!response.ok) {
-    const errorMessage = await response.json();
+    const statusCode = response.status;
 
-    throw Error(errorMessage);
+    throw new Error(String(statusCode));
   }
 
   if (response.headers.get('content-type') === 'application/json') {

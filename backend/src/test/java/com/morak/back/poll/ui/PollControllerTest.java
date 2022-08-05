@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.morak.back.poll.application.PollService;
 import com.morak.back.poll.ui.dto.MemberResultResponse;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemRequest;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
@@ -39,14 +39,15 @@ class PollControllerTest extends ControllerTest {
     private PollService pollService;
 
     private final String groupCode = "rlgHKPj3";
+    private final String pollCode = "abCD1234";
 
     @Test
     void 투표를_생성한다() throws Exception {
         // given
-        PollCreateRequest pollCreateRequest = new PollCreateRequest("회식 메뉴", 2, false, LocalDateTime.now().plusDays(1),
+        PollCreateRequest pollCreateRequest = new PollCreateRequest("회식_메뉴", 2, false, LocalDateTime.now().plusDays(1),
                 List.of("회", "삼겹살", "꿔바로우"));
 
-        given(pollService.createPoll(anyString(), anyLong(), any(PollCreateRequest.class))).willReturn(1L);
+        given(pollService.createPoll(anyString(), anyLong(), any(PollCreateRequest.class))).willReturn("abCD1234");
 
         // when
         ResultActions response = mockMvc.perform(post("/api/groups/{groupCode}/polls", groupCode)
@@ -57,27 +58,27 @@ class PollControllerTest extends ControllerTest {
         // then
         response
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/api/groups/" + groupCode + "/polls/1"))
+                .andExpect(header().string("Location", "/api/groups/" + groupCode + "/polls/abCD1234"))
                 .andDo(document("poll/poll-create",
                         getDocumentRequest(),
                         getDocumentResponse(),
-                        pathParameters(parameterWithName("groupCode").description("그룹 코드"))
-                        ));
+                        pathParameters(parameterWithName("groupCode").description("그룹_코드"))
+                ));
     }
 
     @Test
     void 투표를_진행한다() throws Exception {
         // given
-        List<PollItemRequest> pollItemRequests = List.of(
-                new PollItemRequest(1L, "회는 싱싱하니까요~"),
-                new PollItemRequest(2L, "삼겹살은 언제나 좋아요!!")
+        List<PollResultRequest> pollResultRequests = List.of(
+                new PollResultRequest(1L, "회는_싱싱하니까요~"),
+                new PollResultRequest(2L, "삼겹살은_언제나_좋아요!!")
         );
 
         // when
-        ResultActions response = mockMvc.perform(put("/api/groups/{groupCode}/polls/{id}", groupCode, 1L)
-                        .header("Authorization", "bearer access.token")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(pollItemRequests)));
+        ResultActions response = mockMvc.perform(put("/api/groups/{groupCode}/polls/{pollCode}", groupCode, pollCode)
+                .header("Authorization", "bearer access.token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pollResultRequests)));
 
         // then
         response
@@ -86,8 +87,8 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("pollCode").description("투표_코드")
                         )
                 ));
     }
@@ -97,15 +98,15 @@ class PollControllerTest extends ControllerTest {
         // given
         given(pollService.findPolls(anyString(), anyLong()))
                 .willReturn(List.of(
-                        new PollResponse(1L, "회식 메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
+                        new PollResponse(1L, "회식_메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
                                 LocalDateTime.now().plusDays(3), groupCode, true),
-                        new PollResponse(2L, "좋아하는 색상", 1, true, "OPEN", LocalDateTime.now().minusDays(1),
+                        new PollResponse(2L, "좋아하는_색상", 1, true, "OPEN", LocalDateTime.now().minusDays(1),
                                 LocalDateTime.now().plusDays(3), "SZ72Yofx", false)
                 ));
 
         // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls", groupCode)
-                        .header("Authorization", "bearer access.token"));
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -114,7 +115,7 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드")
+                                parameterWithName("groupCode").description("그룹_코드")
                         )
                 ));
     }
@@ -122,13 +123,13 @@ class PollControllerTest extends ControllerTest {
     @Test
     void 투표를_조회한다() throws Exception {
         // given
-        given(pollService.findPoll(anyString(), anyLong(), anyLong()))
-                .willReturn(new PollResponse(1L, "회식 메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
+        given(pollService.findPoll(anyString(), anyLong(), anyString()))
+                .willReturn(new PollResponse(1L, "회식_메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
                         LocalDateTime.now().plusDays(3), groupCode, true));
 
         // when
-        ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+        ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{pollCode}", groupCode, pollCode)
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -137,24 +138,24 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("pollCode").description("투표_코드")
                         )));
     }
 
     @Test
     void 투표_선택_항목들을_조회한다() throws Exception {
         // given
-        given(pollService.findPollItems(anyString(), anyLong(), anyLong()))
+        given(pollService.findPollItems(anyString(), anyLong(), anyString()))
                 .willReturn(List.of(
-                        new PollItemResponse(1L, "회", true, "위니가 회를 참 좋아해요."),
-                        new PollItemResponse(2L, "삼겹살", true, "해리가 정말 좋아해요."),
+                        new PollItemResponse(1L, "회", true, "위니가_회를_참_좋아해요."),
+                        new PollItemResponse(2L, "삼겹살", true, "해리가_정말_좋아해요."),
                         new PollItemResponse(3L, "꿔바로우", false, "")
                 ));
 
         // when
-        ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}/items", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+        ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{pollCode}/items", groupCode, pollCode)
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -163,18 +164,18 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("pollCode").description("투표_코드")
                         )));
     }
 
     @Test
     void 익명_투표_결과를_조회한다() throws Exception {
         // given
-        MemberResultResponse memberResultResponse1 = new MemberResultResponse(0L, "", "", "위니가 회를 참 좋아해요.");
-        MemberResultResponse memberResultResponse2 = new MemberResultResponse(0L, "", "", "해리가 삼겹살을 정말 좋아해요.");
+        MemberResultResponse memberResultResponse1 = new MemberResultResponse(0L, "", "", "위니가_회를_참_좋아해요.");
+        MemberResultResponse memberResultResponse2 = new MemberResultResponse(0L, "", "", "해리가_삼겹살을_정말_좋아해요.");
 
-        given(pollService.findPollItemResults(anyString(), anyLong(), anyLong()))
+        given(pollService.findPollItemResults(anyString(), anyLong(), anyString()))
                 .willReturn(List.of(
                         new PollItemResultResponse(1L, 1, List.of(memberResultResponse1), "회"),
                         new PollItemResultResponse(2L, 1, List.of(memberResultResponse2), "삼겹살"),
@@ -182,8 +183,8 @@ class PollControllerTest extends ControllerTest {
                 ));
 
         // when
-        ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}/result", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+        ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{pollCode}/result", groupCode, pollCode)
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -192,8 +193,8 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("pollCode").description("투표_코드")
                         )
                 ));
     }
@@ -202,11 +203,11 @@ class PollControllerTest extends ControllerTest {
     void 기명_투표_결과를_조회한다() throws Exception {
         // given
         MemberResultResponse memberResultResponse1 = new MemberResultResponse(1L, "송상민씨", "albur-profile-image-url",
-                "위니가 회를 참 좋아해요.");
+                "위니가_회를_참_좋아해요.");
         MemberResultResponse memberResultResponse2 = new MemberResultResponse(2L, "리엘", "ellie-profile-image-url",
-                "해리가 삼겹살을 정말 좋아해요.");
+                "해리가_삼겹살을_정말_좋아해요.");
 
-        given(pollService.findPollItemResults(anyString(), anyLong(), anyLong()))
+        given(pollService.findPollItemResults(anyString(), anyLong(), anyString()))
                 .willReturn(List.of(
                         new PollItemResultResponse(1L, 1, List.of(memberResultResponse1), "회"),
                         new PollItemResultResponse(2L, 1, List.of(memberResultResponse2), "삼겹살"),
@@ -214,8 +215,8 @@ class PollControllerTest extends ControllerTest {
                 ));
 
         // when
-        ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{id}/result", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+        ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{pollCode}/result", groupCode, pollCode)
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -224,8 +225,8 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("pollCode").description("투표_코드")
                         )
                 ));
     }
@@ -233,8 +234,8 @@ class PollControllerTest extends ControllerTest {
     @Test
     void 투표를_삭제한다() throws Exception {
         // when
-        ResultActions response = mockMvc.perform(delete("/api/groups/{groupCode}/polls/{id}", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+        ResultActions response = mockMvc.perform(delete("/api/groups/{groupCode}/polls/{pollCode}", groupCode, pollCode)
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -243,16 +244,16 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("pollCode").description("투표_코드")
                         )));
     }
 
     @Test
     void 투표를_마감한다() throws Exception {
         // when
-        ResultActions response = mockMvc.perform(patch("/api/groups/{groupCode}/polls/{id}/close", groupCode, 1L)
-                        .header("Authorization", "bearer access.token"));
+        ResultActions response = mockMvc.perform(patch("/api/groups/{groupCode}/polls/{pollCode}/close", groupCode, pollCode)
+                .header("Authorization", "bearer access.token"));
 
         // then
         response
@@ -261,8 +262,8 @@ class PollControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("groupCode").description("그룹 코드"),
-                                parameterWithName("id").description("투표 아이디")
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("pollCode").description("투표_코드")
                         )));
     }
 }

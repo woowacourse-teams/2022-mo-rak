@@ -4,9 +4,10 @@
     "moduleResolution": "node",
     "noImplicitAny": true,
     "module": "es6",
-    "target": "es5",
+    "target": "ES2015",
     "jsx": "react",
-    "strict": true
+    "strict": true,
+    "lib": ["dom.iterable", "dom"],
   },
   // TODO: d.ts로 끝나는 파일들이 다 포함될 수 있도록 바꿔주자
   // TODO: 왜 src/*로는 types 폴더를 참조해서 compile 않을까?
