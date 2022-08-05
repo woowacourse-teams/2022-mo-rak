@@ -3,6 +3,7 @@ package com.morak.back.appointment.domain;
 import static com.morak.back.appointment.domain.AppointmentStatus.CLOSED;
 import static java.time.LocalTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
@@ -32,6 +33,68 @@ class AppointmentTest {
 
         // then
         assertThat(appointment.getCount()).isEqualTo(0);
+    }
+
+    @Test
+    void 약속잡기_생성시_마지막_날짜와_시간이_현재보다_과거이면_예외를_던진다() {
+
+        // then & when
+        assertThatThrownBy(
+                () -> Appointment.builder()
+                        .host(new Member())
+                        .team(new Team())
+                        .title("스터디 회의 날짜 정하기")
+                        .description("필참!!")
+                        .startDate(LocalDate.now())
+                        .endDate(LocalDate.now())
+                        .startTime(of(0, 0))
+                        .endTime(of(1, 30))
+                        .durationHours(1)
+                        .durationMinutes(0)
+                        .build()
+        ).isInstanceOf(InvalidRequestException.class)
+                .hasMessageContaining("약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다.");
+    }
+
+    @Test
+    void 약속잡기_생성시_약속잡기_시간이_진행_시간보다_짧으면_예외를_던진다() {
+
+        // then & when
+        assertThatThrownBy(
+                () -> Appointment.builder()
+                        .host(new Member())
+                        .team(new Team())
+                        .title("스터디 회의 날짜 정하기")
+                        .description("필참!!")
+                        .startDate(LocalDate.now().plusDays(1))
+                        .endDate(LocalDate.now().plusDays(5))
+                        .startTime(of(10, 0))
+                        .endTime(of(11, 0))
+                        .durationHours(2)
+                        .durationMinutes(0)
+                        .build()
+        ).isInstanceOf(InvalidRequestException.class)
+                .hasMessageContaining("진행 시간은 약속잡기 시간보다 짧을 수 없습니다.");
+    }
+
+    @Test
+    void 약속잡기_생성시_약속잡기_시간이_진행_시간과_같으면_예외를_던지지_않는다() {
+
+        // then & when
+        assertThatNoException().isThrownBy(
+                        () -> Appointment.builder()
+                                .host(new Member())
+                                .team(new Team())
+                                .title("스터디 회의 날짜 정하기")
+                                .description("필참!!")
+                                .startDate(LocalDate.now().plusDays(1))
+                                .endDate(LocalDate.now().plusDays(5))
+                                .startTime(of(10, 0))
+                                .endTime(of(11, 0))
+                                .durationHours(1)
+                                .durationMinutes(0)
+                                .build()
+                );
     }
 
     @Test

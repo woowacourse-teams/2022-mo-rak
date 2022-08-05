@@ -3,6 +3,7 @@ package com.morak.back.appointment.domain;
 import static com.morak.back.appointment.domain.Appointment.MINUTES_UNIT;
 
 import com.morak.back.core.exception.InvalidRequestException;
+import java.time.Duration;
 import java.time.LocalTime;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
@@ -80,5 +81,12 @@ public class TimePeriod {
 
     private boolean isOutOfEndTime(LocalTime selectedEndTime) {
         return selectedEndTime.isAfter(this.endTime) || isMidnight(selectedEndTime);
+    }
+
+    public boolean isLessThanDurationMinutes(Integer durationMinutes) {
+        if (endTime.equals(ZERO_TIME)) {
+            return Duration.between(startTime, endTime).plusDays(1).toMinutes() < durationMinutes;
+        }
+        return Duration.between(startTime, endTime).toMinutes() < durationMinutes;
     }
 }

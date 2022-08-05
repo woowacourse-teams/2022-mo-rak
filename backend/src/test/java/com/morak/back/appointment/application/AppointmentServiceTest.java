@@ -194,6 +194,36 @@ class AppointmentServiceTest {
     }
 
     @Test
+    void 약속잡기_가능시간을_중복으로_선택하면_예외를_던진다() {
+        // given
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
+        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
+        given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
+
+        // when
+        String teamCode = "teamCode";
+        Long memberId = 에덴.getId();
+        String appointmentCode = "appointmentCode";
+
+        AvailableTimeRequest availableTimeRequest1 = new AvailableTimeRequest(
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)),
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30))
+        );
+
+        AvailableTimeRequest availableTimeRequest2 = new AvailableTimeRequest(
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)),
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30))
+        );
+        List<AvailableTimeRequest> requests = List.of(availableTimeRequest1, availableTimeRequest2);
+
+        // then
+        assertThatThrownBy(() -> appointmentService.selectAvailableTimes(teamCode, memberId, appointmentCode, requests))
+                .isInstanceOf(InvalidRequestException.class)
+                .hasMessageContaining("중복된 약속잡기 가능 시간은 허용되지 않습니다.");
+    }
+
+    @Test
     void 약속잡기_가능시간을_선택할_때_약속잡기가_이미_마감되었으면_예외를_던진다() {
         // given
         회식_날짜_약속잡기.close(에덴);

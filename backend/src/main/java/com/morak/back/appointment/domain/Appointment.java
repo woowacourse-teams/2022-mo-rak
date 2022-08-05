@@ -92,10 +92,24 @@ public class Appointment extends BaseEntity {
         this.description = description;
         this.datePeriod = DatePeriod.of(startDate, endDate, endTime);
         this.timePeriod = TimePeriod.of(startTime, endTime, MINUTES_UNIT);
+        validateLastDatetime(LocalDateTime.of(endDate, endTime));
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes, MINUTES_UNIT);
+        validateDurationMinutesLessThanTimePeriod(this.durationMinutes, timePeriod);
         this.status = OPEN;
         this.code = code;
         this.closedAt = LocalDateTime.now().plusMonths(1);
+    }
+
+    private void validateLastDatetime(LocalDateTime lastDateTime) {
+        if ( lastDateTime.isBefore(LocalDateTime.now())) {
+            throw new InvalidRequestException("약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다.");
+        }
+    }
+
+    private void validateDurationMinutesLessThanTimePeriod(DurationMinutes durationMinutes, TimePeriod timePeriod) {
+        if (timePeriod.isLessThanDurationMinutes(durationMinutes.getDurationMinutes())) {
+            throw new InvalidRequestException("진행 시간은 약속잡기 시간보다 짧을 수 없습니다.");
+        }
     }
 
     public Integer parseHours() {

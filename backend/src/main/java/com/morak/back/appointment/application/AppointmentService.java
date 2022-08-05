@@ -25,6 +25,9 @@ import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.MismatchedTeamException;
+import java.time.Duration;
+import java.time.Period;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -90,11 +93,20 @@ public class AppointmentService {
 
         deleteOldAvailableTimes(memberId, appointment);
 
+        validateDuplicatedRequest(requests);
+
         List<AvailableTime> availableTimes = requests.stream()
                 .map(request -> request.toAvailableTime(member, appointment))
                 .collect(Collectors.toList());
 
         availableTimeRepository.saveAll(availableTimes);
+    }
+
+    private void validateDuplicatedRequest(List<AvailableTimeRequest> availableTimeRequest) {
+        HashSet<AvailableTimeRequest> availableTimeRequestsSet = new HashSet<>(availableTimeRequest);
+        if (availableTimeRequestsSet.size() != availableTimeRequest.size()) {
+            throw new InvalidRequestException("중복된 약속잡기 가능 시간은 허용되지 않습니다.");
+        }
     }
 
     @Transactional(readOnly = true)
