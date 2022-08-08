@@ -129,7 +129,6 @@ class AppointmentServiceTest {
                 30
         );
 
-
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
         given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
