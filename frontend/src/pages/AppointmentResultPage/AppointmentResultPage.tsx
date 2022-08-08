@@ -5,6 +5,7 @@ import AppointmentResultContainer from '../../components/AppointmentResult/Appoi
 function AppointmentResultPage() {
   return (
     <StyledContainer>
+      {/* TODO: 피그마를 기반으로 컴포넌트들 보여주기 */}
       <AppointmentResultContainer />
     </StyledContainer>
   );

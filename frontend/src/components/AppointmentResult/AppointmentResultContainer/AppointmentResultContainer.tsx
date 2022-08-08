@@ -5,8 +5,8 @@ import { getAppointment } from '../../../api/appointment';
 import { AppointmentInterface, AppointmentInfoInterface } from '../../../types/appointment';
 import { GroupInterface } from '../../../types/group';
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import AppointmentResultRanking from '../AppointmentResultRanking';
-import AppointmentResultButtonGroup from '../AppointmentResultButtonGroup';
+import AppointmentResultRanking from '../AppointmentResultRanking/AppointmentResultRanking';
+import AppointmentResultButtonGroup from '../AppointmentResultButtonGroup/AppointmentResultButtonGroup';
 
 function AppointmentResultContainer() {
   const [appointment, setAppointment] = useState<AppointmentInterface>();
