@@ -19,40 +19,38 @@ import AppointmentResultPage from './pages/AppointmentResultPage/AppointmentResu
 function App() {
   return (
     // TODO: default 그룹을 찾는 요청을 해서 그룹이 있는 지 없는 지 확인하는 Route 생성? (PASS)
-    <FlexContainer>
-      <Routes>
-        <Route path="/">
-          <Route index element={<LandingPage />} />
-          <Route path="invite/:invitationCode" element={<InvitationPage />} />
+    <Routes>
+      <Route path="/">
+        <Route index element={<LandingPage />} />
+        <Route path="invite/:invitationCode" element={<InvitationPage />} />
 
-          <Route element={<PrivateRoute />}>
-            <Route path="init" element={<GroupInitPage />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="init" element={<GroupInitPage />} />
 
-            <Route element={<SidebarLayout />}>
-              <Route path="groups/:groupCode">
-                <Route index element={<MainPage />} />
+          <Route element={<SidebarLayout />}>
+            <Route path="groups/:groupCode">
+              <Route index element={<MainPage />} />
 
-                <Route path="poll">
-                  <Route index element={<PollMainPage />} />
-                  <Route path="create" element={<PollCreatePage />} />
-                  <Route path=":pollCode/progress" element={<PollProgressPage />} />
-                  <Route path=":pollCode/result" element={<PollResultPage />} />
-                </Route>
+              <Route path="poll">
+                <Route index element={<PollMainPage />} />
+                <Route path="create" element={<PollCreatePage />} />
+                <Route path=":pollCode/progress" element={<PollProgressPage />} />
+                <Route path=":pollCode/result" element={<PollResultPage />} />
+              </Route>
 
-                <Route path="appointment">
-                  <Route index element={<AppointmentMainPage />} />
-                  <Route path="create" element={<AppointmentCreatePage />} />
-                  <Route path=":appointmentCode/progress" element={<AppointmentProgressPage />} />
-                  <Route path=":appointmentCode/result" element={<AppointmentResultPage />} />
-                </Route>
+              <Route path="appointment">
+                <Route index element={<AppointmentMainPage />} />
+                <Route path="create" element={<AppointmentCreatePage />} />
+                <Route path=":appointmentCode/progress" element={<AppointmentProgressPage />} />
+                <Route path=":appointmentCode/result" element={<AppointmentResultPage />} />
               </Route>
             </Route>
           </Route>
-
-          <Route path="*" element={<div>error</div>} />
         </Route>
-      </Routes>
-    </FlexContainer>
+
+        <Route path="*" element={<div>error</div>} />
+      </Route>
+    </Routes>
   );
 }
 
