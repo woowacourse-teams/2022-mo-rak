@@ -121,8 +121,8 @@ class AppointmentServiceTest {
         AppointmentCreateRequest request = new AppointmentCreateRequest(
                 "모락 회식 날짜 및 시간",
                 "필참입니다.",
-                LocalDate.of(2022, 8, 5),
-                LocalDate.of(2022, 8, 20),
+                LocalDate.now().plusDays(5),
+                LocalDate.now().plusDays(15),
                 LocalTime.of(16, 0),
                 LocalTime.of(20, 0),
                 2,
