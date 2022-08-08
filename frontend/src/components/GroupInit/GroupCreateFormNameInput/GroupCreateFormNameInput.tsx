@@ -19,7 +19,12 @@ function GroupCreateFormNameInput({ groupName, onChange }: Props) {
       borderRadius="10px"
       padding="1.2rem 0"
     >
-      <Input placeholder="그룹이름을 입력해주세요!" value={groupName} onChange={onChange} />
+      <Input
+        placeholder="그룹이름을 입력해주세요!"
+        value={groupName}
+        onChange={onChange}
+        autoFocus
+      />
     </TextField>
   );
 }
