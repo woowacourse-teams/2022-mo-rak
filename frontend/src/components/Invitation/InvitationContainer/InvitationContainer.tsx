@@ -69,6 +69,8 @@ function InvitationContainer() {
           그룹으로 초대합니다
         </StyledTitle>
         <InvitationButtonGroup
+          // NOTE: useParams으로 code들을 다 내려주고 있는데, navigate만 내려주지 않고 자식 컴포넌트에서
+          // 다시 호출해서 navigate를 만드는 게 맞을까?
           navigate={navigate}
           invitationCode={invitationCode}
           groupCode={groupCode}

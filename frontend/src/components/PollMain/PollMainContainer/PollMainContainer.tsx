@@ -14,7 +14,6 @@ import { PollInterface } from '../../../types/poll';
 import PollMainButtonGroup from '../PollMainButtonGroup/PollMainButtonGroup';
 
 function PollMainContainer() {
-  const navigate = useNavigate();
   const { groupCode } = useParams() as { groupCode: string };
   const [polls, setPolls] = useState<Array<PollInterface>>([]);
 
@@ -30,11 +29,6 @@ function PollMainContainer() {
       alert(err);
     }
   }, []);
-
-  // TODO: hook으로 뺄까?
-  const handleNavigate = (location: string) => () => {
-    navigate(location);
-  };
 
   return (
     <StyledContainer>
@@ -55,7 +49,7 @@ function PollMainContainer() {
               {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
               <PollMainDetail isAnonymous={isAnonymous} allowedPollCount={allowedPollCount} />
             </MarginContainer>
-            <PollMainButtonGroup pollCode={code} handleNavigate={handleNavigate} status={status} />
+            <PollMainButtonGroup pollCode={code} status={status} />
           </Box>
         ))
       ) : (
