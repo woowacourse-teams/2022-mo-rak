@@ -1,10 +1,15 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent, ChangeEventHandler } from 'react';
 
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 
-import { PollInterface, PollItemInterface, SelectedPollItemInterface } from '../../../types/poll';
+import {
+  PollInterface,
+  PollItemInterface,
+  SelectedPollItem,
+  getPollItemsResponse
+} from '../../../types/poll';
 
 import { GroupInterface } from '../../../types/group';
 
@@ -14,15 +19,13 @@ import Radio from '../../common/Radio/Radio';
 import Checkbox from '../../common/Checkbox/Checkbox';
 import Input from '../../common/Input/Input';
 
-type SelectedPollItemsType = Array<SelectedPollItemInterface>;
-
 interface Props {
   pollCode: PollInterface['code'];
-  selectedPollItems: SelectedPollItemsType;
+  selectedPollItems: Array<SelectedPollItem>;
   allowedPollCount: PollInterface['allowedPollCount'];
   groupCode: GroupInterface['code'];
-  handleSelectPollItems: (mode: string) => (e: ChangeEvent<HTMLInputElement>) => void;
-  handleDescription: (pollId: number) => (e: ChangeEvent<HTMLInputElement>) => void;
+  handleSelectPollItems: (mode: string) => ChangeEventHandler<HTMLInputElement>;
+  handleDescription: (pollId: number) => ChangeEventHandler<HTMLInputElement>;
 }
 
 function PollProgressItemGroup({
@@ -34,7 +37,7 @@ function PollProgressItemGroup({
   groupCode
 }: Props) {
   const theme = useTheme();
-  const [pollItems, setPollItems] = useState<Array<PollItemInterface>>([]);
+  const [pollItems, setPollItems] = useState<getPollItemsResponse>([]);
   const getIsSelectedPollItem = (pollId: PollInterface['id']) =>
     selectedPollItems.some((selectedPollItem) => selectedPollItem.itemId === pollId);
 

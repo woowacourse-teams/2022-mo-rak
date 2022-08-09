@@ -1,7 +1,12 @@
 import React, { useEffect, useState, CSSProperties } from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { PollInterface, PollItemInterface, PollItemResultType } from '../../../types/poll';
+import {
+  PollInterface,
+  PollItemInterface,
+  getPollResultResponse,
+  getPollItemsResponse
+} from '../../../types/poll';
 import { getPollItems } from '../../../api/poll';
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import Crown from '../../../assets/crown.svg';
@@ -17,10 +22,10 @@ interface Props {
   pollCode: PollInterface['code'];
   status: PollInterface['status'];
   groupCode: GroupInterface['code'];
-  pollResult: Array<PollItemResultType>;
+  pollResult: getPollResultResponse;
 }
 
-const getWinningPollItemIds = (pollResult: PollItemResultType[]) => {
+const getWinningPollItemIds = (pollResult: getPollResultResponse) => {
   const pollItemCounts = pollResult.map((pollItem) => pollItem.count);
   const maxCount = Math.max(...pollItemCounts);
 
@@ -30,7 +35,7 @@ const getWinningPollItemIds = (pollResult: PollItemResultType[]) => {
 };
 
 // TODO: 타이핑 리팩토링, poll에 관한 원형 타입들 한 번 손봐야할듯
-const getSelectedPollItemIds = (pollItems: Array<{ id: number; isSelected: boolean }>) =>
+const getSelectedPollItemIds = (pollItems: getPollItemsResponse) =>
   pollItems.filter((pollItem) => pollItem.isSelected).map((pollItem) => pollItem.id);
 
 function PollResultItemGroup({ pollCode, status, groupCode, pollResult }: Props) {
@@ -41,6 +46,7 @@ function PollResultItemGroup({ pollCode, status, groupCode, pollResult }: Props)
   );
   const winningPollItemIds = getWinningPollItemIds(pollResult);
 
+  // TODO: 뭐지? 살펴보기
   const handleShowParticipant = (pollId: PollInterface['id']) => () => {
     setActivePollItem(pollId);
   };
@@ -150,8 +156,8 @@ const StyledUserCount = styled.span<{
 }>(
   ({ theme, status, isWinningPollItem }) => `
   color: ${
-  status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
-};
+    status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
+  };
   font-size: 1.6rem;
 `
 );
@@ -159,8 +165,8 @@ const StyledUserCount = styled.span<{
 const StyledSubject = styled.span<{ isWinningPollItem: boolean; status: PollInterface['status'] }>(
   ({ theme, isWinningPollItem, status }) => `
   color: ${
-  status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
-};
+    status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100
+  };
   font-size: 1.6rem;
 `
 );

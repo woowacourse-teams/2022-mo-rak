@@ -9,7 +9,7 @@ import MarginContainer from '../../common/MarginContainer/MarginContainer';
 import PollProgressSubmitButton from '../PollProgressSubmitButton/PollProgressSubmitButton';
 import { getPoll, progressPoll } from '../../../api/poll';
 import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGroup';
-import { PollInterface, SelectedPollItemInterface } from '../../../types/poll';
+import { PollInterface, SelectedPollItem, getPollResponse } from '../../../types/poll';
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 
 function PollProgressForm() {
@@ -19,8 +19,8 @@ function PollProgressForm() {
     pollCode: string;
   };
   // TODO: 기본 객체를 줘야할까? undefined로 놓는 것이 위험한가?
-  const [poll, setPoll] = useState<PollInterface>();
-  const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItemInterface>>([]);
+  const [poll, setPoll] = useState<getPollResponse>();
+  const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItem>>([]);
 
   // TODO: 객체로 state를 관리하는 것에 단점이 분명히 있다. 리팩토링 필요 usereducer 찾아보자
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

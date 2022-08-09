@@ -6,13 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import Button from '../../common/Button/Button';
 import { closePoll, deletePoll } from '../../../api/poll';
-import { PollInterface } from '../../../types/poll';
+import { PollInterface, getPollResponse } from '../../../types/poll';
 import { GroupInterface } from '../../../types/group';
 
 interface Props {
   pollCode: PollInterface['code'];
   status: PollInterface['status'];
-  isHost: PollInterface['isHost'];
+  isHost: getPollResponse['isHost'];
   groupCode: GroupInterface['code'];
 }
 

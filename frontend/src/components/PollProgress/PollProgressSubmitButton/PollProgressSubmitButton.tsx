@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 import { deletePoll } from '../../../api/poll';
-import { PollInterface } from '../../../types/poll';
+import { PollInterface, getPollResponse } from '../../../types/poll';
 
 import Button from '../../common/Button/Button';
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
@@ -10,7 +10,7 @@ import { GroupInterface } from '../../../types/group';
 
 interface Props {
   pollCode: PollInterface['code'];
-  isHost: PollInterface['isHost'];
+  isHost: getPollResponse['isHost'];
   groupCode?: GroupInterface['code'];
 }
 

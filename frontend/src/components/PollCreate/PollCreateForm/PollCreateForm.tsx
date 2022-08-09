@@ -12,7 +12,7 @@ import PollCreateFormSubmitButton from '../PollCreateFormSubmitButton/PollCreate
 import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateFormTitleInput';
 
 import { createPoll } from '../../../api/poll';
-import { PollCreateType, PollInterface } from '../../../types/poll';
+import { createPollData, PollInterface } from '../../../types/poll';
 
 function PollCreateForm() {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ function PollCreateForm() {
     const allowedPollCount = isAllowedMultiplePollCount ? pollItems.length : 1;
 
     // TODO: PollCreateRequest?
-    const pollData: PollCreateType = {
+    const pollData: createPollData = {
       title,
       allowedPollCount,
       isAnonymous,
