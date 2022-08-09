@@ -17,10 +17,7 @@ import { getDefaultGroup } from '../../api/group';
 function LandingPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const redirectUrl = getSessionStorageItem('redirectUrl');
-  // TODO: 중복 로직해결
-  // TODO: 다시 한 번 token을 가져오는
-  const token = getLocalStorageItem('token');
+
   useEffect(() => {
     const fetchGetDefaultGroup = async () => {
       try {
@@ -44,6 +41,9 @@ function LandingPage() {
         }
       }
     };
+    // TODO: 중복 로직해결
+    // TODO: 다시 한 번 token을 가져오는
+    const token = getLocalStorageItem('token');
 
     if (token) {
       fetchGetDefaultGroup();
@@ -58,6 +58,8 @@ function LandingPage() {
         const { token } = await signin(code);
 
         saveLocalStorageItem<string>('token', token);
+
+        const redirectUrl = getSessionStorageItem('redirectUrl');
 
         if (redirectUrl) {
           navigate(redirectUrl);

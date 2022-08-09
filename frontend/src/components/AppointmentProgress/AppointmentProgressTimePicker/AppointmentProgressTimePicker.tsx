@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React, { MouseEventHandler, useMemo } from 'react';
 import Box from '../../common/Box/Box';
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import { AppointmentInterface } from '../../../types/appointment';
+import { AppointmentInterface, AvailableTimes } from '../../../types/appointment';
 
 // TODO: 로직 리팩토링...엉망임
 // NOTE: () => [{s: '10:00AM', e: '10:30AM' ....}]
@@ -68,8 +68,12 @@ interface Props {
   startTime: AppointmentInterface['startTime'];
   endTime: AppointmentInterface['endTime'];
   selectedDate: string;
-  onClickTime: (start: string, end: string) => MouseEventHandler<HTMLDivElement>;
-  availableTimes: Array<{ start: string; end: string }>;
+  // NOTE: onClickTime이라는 확장성을 열어둔 prop에 (start, end)를 특정해주게 되면 의미가 없지 않을까?
+  onClickTime: (
+    start: string,
+    end: string
+  ) => MouseEventHandler<HTMLDivElement> | MouseEventHandler<HTMLDivElement>;
+  availableTimes: AvailableTimes;
 }
 
 function AppointmentProgressTimePicker({

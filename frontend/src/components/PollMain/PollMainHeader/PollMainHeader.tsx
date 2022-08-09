@@ -4,11 +4,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import Button from '../../common/Button/Button';
 import MembersProfile from '../../MembersProfile/MembersProfile';
+import { GroupInterface } from '../../../types/group';
 
 function PollMainHeader() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { groupCode } = useParams() as { groupCode: string };
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
 
   const handleNavigate = (location: string) => () => {
     navigate(location);

@@ -15,6 +15,11 @@ interface Props {
   setSelectedDate?: Dispatch<SetStateAction<string>>;
 }
 
+const formatDate = (date: Date, day: number) =>
+  `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
+    .toString()
+    .padStart(2, '0')}`;
+
 // version "default"는 약속 잡기 생성에서 사용된다. 기본 version이 default로 설정되어있기 때문에,
 // 별도로 props로 version을 넘겨주지 않아도 된다.
 // version "select"는 약속 잡기 선택하기에서 사용된다. 이때, props로 startDate, endDate가 넘어와야한다.
@@ -33,6 +38,7 @@ function Calendar({
   const [date, setDate] = useState<Date>(new Date()); // 현재 날짜
   const weeks = ['일', '월', '화', '수', '목', '금', '토'];
 
+  // NOTE: UI - 여기 있어도 될듯, date에 의존적이다 - start
   const getPrevMonthDays = () => {
     const prevLastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate(); // 지난달 말일
     date.setDate(1);
@@ -53,6 +59,7 @@ function Calendar({
 
     return Array.from({ length: nextDays }, (v, i) => i + 1);
   };
+  // NOTE: UI - 여기 있어도 될듯, date에 의존적이다 - end
 
   const handleShowPrevMonth = () => {
     setDate(new Date(date.getFullYear(), date.getMonth() - 1, 1));
@@ -68,11 +75,7 @@ function Calendar({
       // 마지막 날이 선택 되어 있는 경우 -> 새로운 start 값을 설정해줘야함
       if (endDate !== '') {
         setEndDate('');
-        setStartDate(
-          `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-            .toString()
-            .padStart(2, '0')}`
-        );
+        setStartDate(formatDate(date, day));
         return;
       }
       // 첫번째 날이 선택 되어 있는 경우 -> end값을 설정해줘야함
@@ -80,38 +83,22 @@ function Calendar({
         // end값을 설정해줘야하는데, start 날짜보다 앞일 때
         if (isBeforeStartDate(day)) {
           setEndDate(startDate);
-          setStartDate(
-            `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-              .toString()
-              .padStart(2, '0')}`
-          );
+          setStartDate(formatDate(date, day));
 
           return;
         }
-        setEndDate(
-          `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-            .toString()
-            .padStart(2, '0')}`
-        );
+        setEndDate(formatDate(date, day));
         return;
       }
       // 가장 처음 값을 설정해줌 (위 두가지 조건을 충족하지 않은 경우)
-      setStartDate(
-        `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-          .toString()
-          .padStart(2, '0')}`
-      );
+      setStartDate(formatDate(date, day));
     }
   };
 
   const handleSelectedDate = (day: number) => () => {
     // TODO: 임시로 분기문 작성 -> 변경 필요
     if (setSelectedDate) {
-      setSelectedDate(
-        `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-          .toString()
-          .padStart(2, '0')}`
-      );
+      setSelectedDate(formatDate(date, day));
     }
   };
 
@@ -125,43 +112,18 @@ function Calendar({
     day === new Date().getDate();
 
   const isBetweenStartEndDate = (day: number) =>
-    new Date(startDate) <
-      new Date(
-        `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-          .toString()
-          .padStart(2, '0')}`
-      ) &&
-    new Date(
-      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-        .toString()
-        .padStart(2, '0')}`
-    ) < new Date(endDate);
+    new Date(startDate) < new Date(formatDate(date, day)) &&
+    new Date(formatDate(date, day)) < new Date(endDate);
 
   const isStartOrEndDate = (day: number) =>
-    startDate ===
-      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-        .toString()
-        .padStart(2, '0')}` ||
-    endDate ===
-      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-        .toString()
-        .padStart(2, '0')}`;
+    startDate === formatDate(date, day) || endDate === formatDate(date, day);
 
   const isBeforeStartDate = (day: number) =>
     new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(startDate);
 
   const isNotInStartAndEndDate = (day: number) =>
-    new Date(startDate) >
-      new Date(
-        `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-          .toString()
-          .padStart(2, '0')}`
-      ) ||
-    new Date(
-      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-        .toString()
-        .padStart(2, '0')}`
-    ) > new Date(endDate);
+    new Date(startDate) > new Date(formatDate(date, day)) ||
+    new Date(formatDate(date, day)) > new Date(endDate);
 
   const isSelectedDate = (day: number) =>
     `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
