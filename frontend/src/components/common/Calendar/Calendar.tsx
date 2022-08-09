@@ -1,16 +1,12 @@
 import React, { SetStateAction, useState, Dispatch } from 'react';
 import styled from '@emotion/styled';
-import { AppointmentInterface } from '../../../types/appointment';
 
 interface Props {
   version?: 'default' | 'select';
-  // NOTE: 이렇게 하면 Appointment에 의존하게 되어서 재사용이 불가능할듯?
-  startDate: AppointmentInterface['startDate'];
-  endDate: AppointmentInterface['endDate'];
-  // TODO: optional로 주는 게 맞을까?
-  setStartDate?: Dispatch<SetStateAction<AppointmentInterface['startDate']>>;
-  setEndDate?: Dispatch<SetStateAction<AppointmentInterface['endDate']>>;
-  // TODO: 임시 타이핑
+  startDate: string;
+  endDate: string;
+  setStartDate?: Dispatch<SetStateAction<string>>;
+  setEndDate?: Dispatch<SetStateAction<string>>;
   selectedDate?: string;
   setSelectedDate?: Dispatch<SetStateAction<string>>;
 }
