@@ -76,18 +76,21 @@ function Calendar({
       if (endDate !== '') {
         setEndDate('');
         setStartDate(formatDate(date, day));
+
         return;
       }
+
       // 첫번째 날이 선택 되어 있는 경우 -> end값을 설정해줘야함
       if (startDate !== '' && endDate === '') {
         // end값을 설정해줘야하는데, start 날짜보다 앞일 때
         if (isBeforeStartDate(day)) {
-          setEndDate(startDate);
           setStartDate(formatDate(date, day));
+          setEndDate('');
 
           return;
         }
         setEndDate(formatDate(date, day));
+
         return;
       }
       // 가장 처음 값을 설정해줌 (위 두가지 조건을 충족하지 않은 경우)
@@ -151,7 +154,12 @@ function Calendar({
       <StyledDays>
         {/* 지난 달 일부 날짜 */}
         {getPrevMonthDays().map((day) => (
-          <StyledPrevMonthDays>{day}</StyledPrevMonthDays>
+          <StyledPrevMonthDays
+            onClick={handleShowPrevMonth}
+            isHidden={new Date().getMonth() === date.getMonth()}
+          >
+            {day}
+          </StyledPrevMonthDays>
         ))}
 
         {/* 이번 달 날짜  */}
@@ -202,7 +210,7 @@ function Calendar({
 
         {/* 다음 달 일부 날짜  */}
         {getNextMonthDays().map((day) => (
-          <StyledNextMonthDays>{day}</StyledNextMonthDays>
+          <StyledNextMonthDays onClick={handleShowNextMonth}>{day}</StyledNextMonthDays>
         ))}
       </StyledDays>
     </StyledCalendar>
@@ -219,7 +227,6 @@ const StyledCalendar = styled.div(
 );
 
 const StyledMonth = styled.div`
-  width: 100%;
   height: 12rem;
   display: flex;
   justify-content: space-between;
@@ -229,7 +236,6 @@ const StyledMonth = styled.div`
 `;
 
 const StyledWeekends = styled.div`
-  width: 100%;
   height: 5.2rem;
   padding: 0 0.4rem;
   display: flex;
@@ -258,7 +264,6 @@ const StyledMonthTitle = styled.h1`
 `;
 
 const StyledDays = styled.div`
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
   padding: 0.4rem;
@@ -267,9 +272,11 @@ const StyledDays = styled.div`
 
 // TODO: StyledPrevMonthDays, StyledNextMonthDays, StyledNowMonthDays에 공통적인 스타일이 들어감
 // (4단위로 맞지 않는 부분이 있는데, 4단위로 맞추면 깨지는 이슈...)
-const StyledPrevMonthDays = styled.div(
-  ({ theme }) => `
-  color: ${theme.colors.WHITE_100}; // TODO: 현재 달력에서는 이전달, 다음달 날짜 일부를 보여줄 필요가 없어서 화면에서 보이지 않도록 처리. (이후 필요할 시, props로 option을 받아서 보이도록 해줄 수 있음)
+const StyledPrevMonthDays = styled.div<{ isHidden: boolean }>(
+  ({ theme, isHidden }) => `
+  color: ${
+    theme.colors.GRAY_300
+  }; // TODO: 현재 달력에서는 이전달, 다음달 날짜 일부를 보여줄 필요가 없어서 화면에서 보이지 않도록 처리. (이후 필요할 시, props로 option을 받아서 보이도록 해줄 수 있음)
   font-size: 1.6rem;
   margin: 0.3rem; 
   width: calc(40.2rem / 7);
@@ -278,14 +285,15 @@ const StyledPrevMonthDays = styled.div(
   justify-content: center;
   align-items: center;
   transition: background-color 0.2s;
+  ${isHidden && 'visibility: hidden'}
 `
 );
 
 const StyledNextMonthDays = styled.div(
   ({ theme }) => `
-  color: ${theme.colors.WHITE_100};
+  color: ${theme.colors.GRAY_300};
   font-size: 1.6rem;
-  margin: 0.3rem; 
+  margin: 0.3rem;
   width: calc(40.2rem / 7);
   height: calc(40.2rem / 7);
   display: flex;
