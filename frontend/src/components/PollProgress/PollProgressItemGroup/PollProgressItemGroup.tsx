@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent, ChangeEventHandler } from 'react';
+import React, { useEffect, useState, ChangeEventHandler } from 'react';
 
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -24,15 +24,17 @@ interface Props {
   selectedPollItems: Array<SelectedPollItem>;
   allowedPollCount: PollInterface['allowedPollCount'];
   groupCode: GroupInterface['code'];
-  handleSelectPollItems: (mode: string) => ChangeEventHandler<HTMLInputElement>;
-  handleDescription: (pollId: number) => ChangeEventHandler<HTMLInputElement>;
+  onChangeCheckbox: ChangeEventHandler<HTMLInputElement>;
+  onChangeRadio: ChangeEventHandler<HTMLInputElement>;
+  onChangeText: (pollId: number) => ChangeEventHandler<HTMLInputElement>;
 }
 
 function PollProgressItemGroup({
   pollCode,
   selectedPollItems,
-  handleSelectPollItems,
-  handleDescription,
+  onChangeCheckbox,
+  onChangeRadio,
+  onChangeText,
   allowedPollCount,
   groupCode
 }: Props) {
@@ -44,10 +46,8 @@ function PollProgressItemGroup({
   useEffect(() => {
     const fetchPollItems = async (pollCode: PollInterface['code']) => {
       try {
-        if (groupCode) {
-          const res = await getPollItems(pollCode, groupCode);
-          setPollItems(res);
-        }
+        const res = await getPollItems(pollCode, groupCode);
+        setPollItems(res);
       } catch (err) {
         alert(err);
       }
@@ -73,7 +73,7 @@ function PollProgressItemGroup({
               <Checkbox
                 id={String(id)}
                 checked={getIsSelectedPollItem(id)}
-                onChange={handleSelectPollItems('multiple')}
+                onChange={onChangeCheckbox}
               >
                 {subject}
               </Checkbox>
@@ -82,7 +82,7 @@ function PollProgressItemGroup({
                 id={String(id)}
                 name={subject}
                 checked={getIsSelectedPollItem(id)}
-                onChange={handleSelectPollItems('single')}
+                onChange={onChangeRadio}
               >
                 {subject}
               </Radio>
@@ -101,7 +101,7 @@ function PollProgressItemGroup({
                 color={theme.colors.BLACK_100}
                 fontSize="12px"
                 placeholder="선택한 이유는?"
-                onChange={handleDescription(id)}
+                onChange={onChangeText(id)}
                 aria-label={subject}
               />
             </TextField>
