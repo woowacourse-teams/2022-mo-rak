@@ -6,7 +6,6 @@ import PollProgressPage from './pages/PollProgressPage/PollProgressPage';
 import LandingPage from './pages/LandingPage/LandingPage';
 import PollResultPage from './pages/PollResultPage/PollResultPage';
 import GroupInitPage from './pages/GroupInitPage/GroupInitPage';
-import FlexContainer from './components/common/FlexContainer/FlexContainer';
 import SidebarLayout from './components/SidebarLayout/SidebarLayout';
 import MainPage from './pages/MainPage/MainPage';
 import InvitationPage from './pages/InvitationPage/InvitationPage';

@@ -38,8 +38,6 @@ function AppointmentResultPage() {
       {/* TODO: 피그마를 기반으로 컴포넌트들 보여주기 */}
       <FlexContainer flexDirection="column" gap="4rem">
         <AppointmentResultHeader title={appointment.title} />
-        {/* TODO: 항상 groupCode와 appointmentCode를 props로 내려주는 작업들이 반복되고 있다.
-        // 이를 전역으로 가지고 있어도 되지 않을까? */}
         <AppointmentResultRanking groupCode={groupCode} appointmentCode={appointmentCode} />
         <AppointmentResultButtonGroup groupCode={groupCode} appointmentCode={appointmentCode} />
       </FlexContainer>
