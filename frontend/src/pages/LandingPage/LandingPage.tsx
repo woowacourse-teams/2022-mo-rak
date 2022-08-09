@@ -123,7 +123,7 @@ function LandingPage() {
         <StyledLink href="https://github.com/login/oauth/authorize?client_id=f67a30d27afefe8b241f">
           <StyledLoginContainer>
             <StyledGithubLogo src={GithubLogo} alt="github-logo" />
-            <StyledTitle>GITHUB으로 로그인</StyledTitle>
+            <StyledLoginText>GITHUB으로 로그인</StyledLoginText>
           </StyledLoginContainer>
         </StyledLink>
         <StlyedSectionGuideContainer>
@@ -444,7 +444,7 @@ const StyledGithubLogo = styled.img`
   width: 3.8rem;
 `;
 
-const StyledTitle = styled.p(({ theme }) => `
+const StyledLoginText = styled.p(({ theme }) => `
   color: ${theme.colors.WHITE_100};
   padding: 2rem 0;
   font-size: 2rem;
