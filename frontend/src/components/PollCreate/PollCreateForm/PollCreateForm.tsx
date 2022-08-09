@@ -13,10 +13,11 @@ import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateForm
 
 import { createPoll } from '../../../api/poll';
 import { createPollData, PollInterface } from '../../../types/poll';
+import { GroupInterface } from '../../../types/group';
 
 function PollCreateForm() {
   const navigate = useNavigate();
-  const { groupCode } = useParams() as { groupCode: string };
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
 
   const [title, setTitle] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
