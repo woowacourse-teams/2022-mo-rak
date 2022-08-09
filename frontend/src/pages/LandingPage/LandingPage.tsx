@@ -21,7 +21,7 @@ import Undefined from '../../assets/question.svg';
 import Services from '../../assets/service_group.svg';
 import Blob from '../../assets/blob.svg';
 import CircleHighlight from '../../assets/circle_highlight.svg';
-import GithubLogo from '../../assets/githubLogo.svg';
+import GithubLogo from '../../assets/github-logo.svg';
 import { signin } from '../../api/auth';
 import { getDefaultGroup } from '../../api/group';
 
@@ -230,7 +230,13 @@ const StyledLogo = styled.img`
 `;
 
 // section 1
+// TODO: section태그마다 반복되는 속성들을 공통으로 묶어줄 수 있는 방법은 없을까
 const StyledMainSection = styled.section`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
   position: relative;
   flex-direction: column;
   background-image: url(${Circle});
@@ -310,6 +316,11 @@ const StyledGuideText = styled.span`
 
 // section2
 const StyledIntroduceSection = styled.section`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
   position: relative;
   justify-content: space-evenly;
 `;
@@ -345,6 +356,11 @@ const StyledImageContainer = styled.div`
 
 // section3
 const StyledServiceIntroduceSection = styled.section`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
   position: relative;
   flex-direction: column;
 `;

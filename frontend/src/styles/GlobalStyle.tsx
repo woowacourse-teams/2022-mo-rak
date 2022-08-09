@@ -73,14 +73,6 @@ const style = css`
   input:focus {
     outline: none;
   }
-
-  section {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    scroll-snap-align: start;
-  }
 `;
 
 function GlobalStyle() {
