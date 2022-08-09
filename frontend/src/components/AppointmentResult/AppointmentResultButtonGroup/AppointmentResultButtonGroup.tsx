@@ -2,15 +2,16 @@ import React from 'react';
 import { useTheme } from '@emotion/react';
 
 import { useNavigate } from 'react-router-dom';
-import Button from '../common/Button/Button';
-import FlexContainer from '../common/FlexContainer/FlexContainer';
-import { GroupInterface } from '../../types/group';
-import { AppointmentInfoInterface } from '../../types/appointment';
-import { closeAppointment } from '../../api/appointment';
+
+import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import { GroupInterface } from '../../../types/group';
+import { AppointmentInterface } from '../../../types/appointment';
+import { closeAppointment } from '../../../api/appointment';
+import Button from '../../common/Button/Button';
 
 interface Props {
   groupCode: GroupInterface['code'];
-  appointmentCode: AppointmentInfoInterface['code'];
+  appointmentCode: AppointmentInterface['code'];
 }
 
 function AppointmentResultButtonGroup({ groupCode, appointmentCode }: Props) {

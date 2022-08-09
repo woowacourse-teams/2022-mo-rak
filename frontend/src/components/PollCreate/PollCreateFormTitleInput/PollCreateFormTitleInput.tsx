@@ -20,6 +20,7 @@ function PollCreateFormTitleInput({ title, ...props }: Props) {
         color={theme.colors.BLACK_100}
         textAlign="left"
         required
+        autoFocus
         {...props}
       />
     </TextField>

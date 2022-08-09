@@ -1,19 +1,13 @@
 import fetcher from '../utils/fetcher';
 import { GroupInterface } from '../types/group';
-import {
-  AppointmentInfoInterface,
-  CreateAppointmentRequest,
-  ProgressAppointmentRequest
-} from '../types/appointment';
+import { AppointmentInterface, createAppointmentData, AvailableTimes } from '../types/appointment';
 
-const createAppointment = (
-  groupCode: GroupInterface['code'],
-  appointment: CreateAppointmentRequest
-) => fetcher({ method: 'POST', path: `groups/${groupCode}/appointments`, body: appointment });
+const createAppointment = (groupCode: GroupInterface['code'], appointment: createAppointmentData) =>
+  fetcher({ method: 'POST', path: `groups/${groupCode}/appointments`, body: appointment });
 
 const getAppointmentRecommendation = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInfoInterface['code']
+  appointmentCode: AppointmentInterface['code']
 ) =>
   fetcher({
     method: 'GET',
@@ -22,7 +16,7 @@ const getAppointmentRecommendation = (
 
 const getAppointment = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInfoInterface['code']
+  appointmentCode: AppointmentInterface['code']
 ) =>
   fetcher({
     method: 'GET',
@@ -31,8 +25,8 @@ const getAppointment = (
 
 const progressAppointment = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInfoInterface['code'],
-  availableTimes: ProgressAppointmentRequest
+  appointmentCode: AppointmentInterface['code'],
+  availableTimes: AvailableTimes
 ) =>
   fetcher({
     method: 'PUT',
@@ -42,7 +36,7 @@ const progressAppointment = (
 
 const closeAppointment = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInfoInterface['code']
+  appointmentCode: AppointmentInterface['code']
 ) =>
   // TODO: appointment, poll, group등 따로 api url을 만들어서 중복을 줄여줄 수도 있겠다. 해보자
   fetcher({ method: 'PATCH', path: `groups/${groupCode}/appointments/${appointmentCode}/close` });

@@ -1,17 +1,22 @@
 import React from 'react';
 import { useTheme } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import Button from '../../common/Button/Button';
 import { PollInterface } from '../../../types/poll';
 
 interface Props {
-  pollCode: string;
-  handleNavigate: (location: string) => () => void;
+  pollCode: PollInterface['code'];
   status: PollInterface['status'];
 }
 
-function PollMainButtonGroup({ pollCode, handleNavigate, status }: Props) {
+function PollMainButtonGroup({ pollCode, status }: Props) {
   const theme = useTheme();
+  const navigate = useNavigate();
+
+  const handleNavigate = (location: string) => () => {
+    navigate(location);
+  };
 
   return (
     <FlexContainer gap="1.2rem" justifyContent="end">

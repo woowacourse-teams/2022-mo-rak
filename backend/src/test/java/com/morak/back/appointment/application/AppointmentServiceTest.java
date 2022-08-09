@@ -120,14 +120,14 @@ class AppointmentServiceTest {
     void 약속잡기를_생성한다() {
         // given
         AppointmentCreateRequest request = new AppointmentCreateRequest(
-            "모락 회식 날짜 및 시간",
-            "필참입니다.",
-            LocalDate.now().plusDays(1),
-            LocalDate.now().plusDays(15),
-            LocalTime.of(16, 0),
-            LocalTime.of(20, 0),
-            2,
-            30
+                "모락 회식 날짜 및 시간",
+                "필참입니다.",
+                LocalDate.now().plusDays(5),
+                LocalDate.now().plusDays(15),
+                LocalTime.of(16, 0),
+                LocalTime.of(20, 0),
+                2,
+                30
         );
 
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));

@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import React, { CSSProperties } from 'react';
-import { PollMembersInterface } from '../../../types/poll';
+import { MemberInterface } from '../../../types/group';
 
 interface Props extends CSSProperties {
-  profileUrl: PollMembersInterface['profileUrl'];
-  name: PollMembersInterface['name'];
+  profileUrl: MemberInterface['profileUrl'];
+  name: MemberInterface['name'];
 }
 
 function Avatar({ profileUrl, name, width, fontSize }: Props) {
