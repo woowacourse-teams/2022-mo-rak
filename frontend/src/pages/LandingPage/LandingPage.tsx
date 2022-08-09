@@ -155,10 +155,9 @@ function LandingPage() {
           </StyledDetailIntroduceText>
         </div>
 
-        {/* TODO: 야매말고 배치 제대로... */}
-        <StyledImageContainer>
+        <StyledImageWrapper>
           <img src={Services} alt="services" />
-        </StyledImageContainer>
+        </StyledImageWrapper>
       </StyledIntroduceSection>
 
       <StyledServiceIntroduceSection ref={thirdSection}>
@@ -350,7 +349,7 @@ const StyledDetailIntroduceText = styled.span`
   line-height: 2.4rem;
 `;
 
-const StyledImageContainer = styled.div`
+const StyledImageWrapper = styled.div`
   position: relative;
 `;
 
