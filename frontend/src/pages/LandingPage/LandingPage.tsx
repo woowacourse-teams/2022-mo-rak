@@ -10,17 +10,17 @@ import {
   removeSessionStorageItem
 } from '../../utils/storage';
 import Logo from '../../assets/logo.svg';
-import Circle from '../../assets/half_circle.svg';
+import Circle from '../../assets/half-circle.svg';
 import Smile from '../../assets/smile.svg';
 import Line from '../../assets/line.svg';
 import Glitter from '../../assets/glitter.svg';
 import Highlight from '../../assets/highlight.svg';
-import Poll from '../../assets/poll_small.svg';
+import Poll from '../../assets/poll-small.svg';
 import Appointment from '../../assets/time.svg';
 import Undefined from '../../assets/question.svg';
-import Services from '../../assets/service_group.svg';
+import Services from '../../assets/service-group.svg';
 import Blob from '../../assets/blob.svg';
-import CircleHighlight from '../../assets/circle_highlight.svg';
+import CircleHighlight from '../../assets/circle-highlight.svg';
 import GithubLogo from '../../assets/github-logo.svg';
 import { signin } from '../../api/auth';
 import { getDefaultGroup } from '../../api/group';
