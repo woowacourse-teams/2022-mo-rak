@@ -20,6 +20,8 @@ const formatDate = (date: Date, day: number) =>
     .toString()
     .padStart(2, '0')}`;
 
+const weeks = ['일', '월', '화', '수', '목', '금', '토'];
+
 // version "default"는 약속 잡기 생성에서 사용된다. 기본 version이 default로 설정되어있기 때문에,
 // 별도로 props로 version을 넘겨주지 않아도 된다.
 // version "select"는 약속 잡기 선택하기에서 사용된다. 이때, props로 startDate, endDate가 넘어와야한다.
@@ -36,7 +38,6 @@ function Calendar({
   setSelectedDate
 }: Props) {
   const [date, setDate] = useState<Date>(new Date()); // 현재 날짜
-  const weeks = ['일', '월', '화', '수', '목', '금', '토'];
 
   // NOTE: UI - 여기 있어도 될듯, date에 의존적이다 - start
   const getPrevMonthDays = () => {
@@ -154,63 +155,64 @@ function Calendar({
       <StyledDays>
         {/* 지난 달 일부 날짜 */}
         {getPrevMonthDays().map((day) => (
-          <StyledPrevMonthDays
+          <StyledPrevMonthDay
             onClick={handleShowPrevMonth}
             isHidden={new Date().getMonth() === date.getMonth()}
           >
             {day}
-          </StyledPrevMonthDays>
+          </StyledPrevMonthDay>
         ))}
 
         {/* 이번 달 날짜  */}
         {getNowMonthDays().map((day) => {
           if (version === 'select') {
             if (isNotInStartAndEndDate(day)) {
-              return <StyledNowMonthDays type="notInStartAndEndDate">{day}</StyledNowMonthDays>;
+              return (
+                <StyledNowMonthDayNotInStartAndEndDate>{day}</StyledNowMonthDayNotInStartAndEndDate>
+              );
             }
 
             return (
-              <StyledNowMonthDays
-                type="inStartAndEndDate"
+              <StyledNowMonthDayInStartAndEndDate
                 onClick={handleSelectedDate(day)}
                 isSelectedDate={isSelectedDate(day)}
               >
                 {day}
-              </StyledNowMonthDays>
+              </StyledNowMonthDayInStartAndEndDate>
             );
           }
 
           if (isPrevToday(day)) {
-            return <StyledNowMonthDays type="prevToday">{day}</StyledNowMonthDays>;
+            return <StyledNowMonthDayPrevToday>{day}</StyledNowMonthDayPrevToday>;
           }
 
           if (isToday(day)) {
             return (
-              <StyledNowMonthDays
-                type="today"
+              <StyledNowMonthDayToday
                 // TODO: 약속잡기 진행페이지에서는 사용되지 않기 때문에, 분기처리를 해줌
                 onClick={setStartDate && setEndDate && handleStartOrEndDate(day)}
                 isBetweenStartEndDate={isBetweenStartEndDate(day)}
                 isStartOrEndDate={isStartOrEndDate(day)}
               >
                 {day}
-              </StyledNowMonthDays>
+              </StyledNowMonthDayToday>
             );
           }
+
           return (
-            <StyledNowMonthDays
+            <StyledNowMonthDay
               onClick={handleStartOrEndDate(day)}
               isBetweenStartEndDate={isBetweenStartEndDate(day)}
               isStartOrEndDate={isStartOrEndDate(day)}
             >
               {day}
-            </StyledNowMonthDays>
+            </StyledNowMonthDay>
           );
         })}
 
         {/* 다음 달 일부 날짜  */}
         {getNextMonthDays().map((day) => (
-          <StyledNextMonthDays onClick={handleShowNextMonth}>{day}</StyledNextMonthDays>
+          <StyledNextMonthDay onClick={handleShowNextMonth}>{day}</StyledNextMonthDay>
         ))}
       </StyledDays>
     </StyledCalendar>
@@ -270,28 +272,7 @@ const StyledDays = styled.div`
   cursor: pointer;
 `;
 
-// TODO: StyledPrevMonthDays, StyledNextMonthDays, StyledNowMonthDays에 공통적인 스타일이 들어감
-// (4단위로 맞지 않는 부분이 있는데, 4단위로 맞추면 깨지는 이슈...)
-const StyledPrevMonthDays = styled.div<{ isHidden: boolean }>(
-  ({ theme, isHidden }) => `
-  color: ${
-    theme.colors.GRAY_300
-  }; // TODO: 현재 달력에서는 이전달, 다음달 날짜 일부를 보여줄 필요가 없어서 화면에서 보이지 않도록 처리. (이후 필요할 시, props로 option을 받아서 보이도록 해줄 수 있음)
-  font-size: 1.6rem;
-  margin: 0.3rem; 
-  width: calc(40.2rem / 7);
-  height: calc(40.2rem / 7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.2s;
-  ${isHidden && 'visibility: hidden'}
-`
-);
-
-const StyledNextMonthDays = styled.div(
-  ({ theme }) => `
-  color: ${theme.colors.GRAY_300};
+const StyledMonthDay = styled.div`
   font-size: 1.6rem;
   margin: 0.3rem;
   width: calc(40.2rem / 7);
@@ -300,42 +281,50 @@ const StyledNextMonthDays = styled.div(
   justify-content: center;
   align-items: center;
   transition: background-color 0.2s;
+`;
+
+// (4단위로 맞지 않는 부분이 있는데, 4단위로 맞추면 깨지는 이슈...)
+const StyledPrevMonthDay = styled(StyledMonthDay)<{ isHidden: boolean }>(
+  ({ theme, isHidden }) => `
+  color: ${
+    theme.colors.GRAY_300
+  }; // TODO: 현재 달력에서는 이전달, 다음달 날짜 일부를 보여줄 필요가 없어서 화면에서 보이지 않도록 처리. (이후 필요할 시, props로 option을 받아서 보이도록 해줄 수 있음)
+  ${isHidden && 'visibility: hidden'}
 `
 );
 
-const StyledNowMonthDays = styled.div<{
+const StyledNextMonthDay = styled(StyledMonthDay)(
+  ({ theme }) => `
+  color: ${theme.colors.GRAY_300};
+`
+);
+
+const StyledNowMonthDay = styled(StyledMonthDay)<{
   isBetweenStartEndDate?: boolean;
   isStartOrEndDate?: boolean;
   isSelectedDate?: boolean;
-  type?: string;
 }>(
-  ({ theme, isBetweenStartEndDate, isStartOrEndDate, isSelectedDate, type }) => `
+  ({ theme, isBetweenStartEndDate, isStartOrEndDate, isSelectedDate }) => `
   color: ${theme.colors.BLACK_100};
-  font-size: 1.6rem;
-  margin: 0.3rem; 
-  width: calc(40.2rem / 7);
-  height: calc(40.2rem / 7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.3s;
 
   &:hover {
     border: 2px solid ${theme.colors.PURPLE_100};
     border-radius: 100%;
   }
-
-  ${type === 'prevToday' ? `color: ${theme.colors.GRAY_200};` : ''}
-
+  
   ${
-    type === 'today' ? `color: ${theme.colors.BLACK_100};` : '' // 현재는 일반 날짜와 다른 것이 없지만, 이후 today에 대한 스타일이 필요하면 속성 추가 가능
+    isSelectedDate
+      ? `background-color: ${theme.colors.PURPLE_100};
+    color: ${theme.colors.WHITE_100};
+    border-radius: 100%;`
+      : ''
   }
 
   ${
     isStartOrEndDate
       ? `background-color: ${theme.colors.PURPLE_100};
-    color: ${theme.colors.WHITE_100};
-    border-radius: 100%;`
+  color: ${theme.colors.WHITE_100};
+  border-radius: 100%;`
       : ''
   }
 
@@ -346,28 +335,29 @@ const StyledNowMonthDays = styled.div<{
     `
       : ''
   }
+`
+);
 
-  // version이 select일 때
+const StyledNowMonthDayPrevToday = styled(StyledNowMonthDay)(
+  ({ theme }) => `
+  color: ${theme.colors.GRAY_200};
+`
+);
 
-  ${
-    type === 'notInStartAndEndDate'
-      ? `color: ${theme.colors.GRAY_200};
+const StyledNowMonthDayToday = styled(StyledNowMonthDay)``;
+
+const StyledNowMonthDayNotInStartAndEndDate = styled(StyledNowMonthDay)(
+  ({ theme }) => `
+  color: ${theme.colors.GRAY_200};
   &:hover {
     border: none;
   }
-  `
-      : ''
-  }
+`
+);
 
-  ${type === 'inStartAndEndDate' ? `color: ${theme.colors.BLACK_100};` : ''}
-
-  ${
-    isSelectedDate
-      ? `background-color: ${theme.colors.PURPLE_100};
-    color: ${theme.colors.WHITE_100};
-    border-radius: 100%;`
-      : ''
-  }
+const StyledNowMonthDayInStartAndEndDate = styled(StyledNowMonthDay)(
+  ({ theme }) => `
+  color: ${theme.colors.BLACK_100};
 `
 );
 
