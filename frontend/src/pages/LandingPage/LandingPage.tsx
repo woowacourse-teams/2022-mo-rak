@@ -166,14 +166,14 @@ function LandingPage() {
           <li onClick={handleMoveToSection(secondSection)}>ABOUT</li>
           <li onClick={handleMoveToSection(thirdSection)}>CONTACT US</li>
         </StyledNavbar>
-        <StyledExplainTextContainer>
-          <StyledExplainBigText>
+        <StyledExplanationTextContainer>
+          <StyledExplanationBigText>
             모락을 통해서 할 수 있어요!
-          </StyledExplainBigText>
-          <StyledExplainSmallText>
+          </StyledExplanationBigText>
+          <StyledExplanationSmallText>
             모락이 모임을 더 편하고, 즐겁게 할 수 있도록 도와줄게요
-          </StyledExplainSmallText>
-        </StyledExplainTextContainer>
+          </StyledExplanationSmallText>
+        </StyledExplanationTextContainer>
 
         <StyledServiceContainer>
 
@@ -364,11 +364,11 @@ const StyledServiceIntroduceSection = styled.section`
   flex-direction: column;
 `;
 
-const StyledExplainTextContainer = styled.div`
+const StyledExplanationTextContainer = styled.div`
   margin-bottom: 8rem;
 `;
 
-const StyledExplainBigText = styled.h1(({ theme }) => `
+const StyledExplanationBigText = styled.h1(({ theme }) => `
   font-size: 4rem;
   text-align: left;
   color: ${theme.colors.BLACK_100};
@@ -379,7 +379,7 @@ const StyledExplainBigText = styled.h1(({ theme }) => `
   letter-spacing: 0.4rem
 `);
 
-const StyledExplainSmallText = styled.div(({ theme }) => `
+const StyledExplanationSmallText = styled.div(({ theme }) => `
   font-size: 2rem;
   text-align: left;
   color: ${theme.colors.BLACK_100};
