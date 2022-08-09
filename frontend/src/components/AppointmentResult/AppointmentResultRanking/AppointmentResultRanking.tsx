@@ -8,15 +8,11 @@ import { getGroupMembers } from '../../../api/group';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 
 const getDateTime = (
-  // TODO: 타이핑 고민해보기
-  recommendDateTime: AppointmentRecommendationInterface[
-    | 'recommendStartDateTime'
-    | 'recommendEndDateTime']
+  recommendationDateTime: AppointmentRecommendationInterface['recommendStartDateTime' | 'recommendEndDateTime']
 ) => {
   // TODO: 리팩토링
-  // TODO: recommend? recommendation? 변수명 고민해보기
-  const period = recommendDateTime.slice(-2);
-  const dateTime = new Date(recommendDateTime.slice(0, -2));
+  const period = recommendationDateTime.slice(-2);
+  const dateTime = new Date(recommendationDateTime.slice(0, -2));
   const week = ['일', '월', '화', '수', '목', '금', '토'];
 
   const year = dateTime.getFullYear();
@@ -38,13 +34,11 @@ interface Props {
   clickedRecommendation: number;
 }
 
-{ /* TODO: scroll으로 인해(overflow-y) height가 필요해서, Box 컴포넌트를 쓰지 않고 styled component를 만듦 */ }
 function AppointmentResultRanking({
   groupCode,
   appointmentRecommendation,
   onClickRank,
   clickedRecommendation }: Props) {
-  // TODO: -1에 대해서 생각해보기
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
   const totalParticipants = groupMembers.length;
 
