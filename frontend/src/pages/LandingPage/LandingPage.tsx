@@ -176,34 +176,33 @@ function LandingPage() {
         </StyledExplanationTextContainer>
 
         <StyledServiceContainer>
-
           <div>
-            <StyledServiceWrapper>
+            <StyledServiceCircle>
               <StyledPollImage src={Poll} alt="poll" />
               <StyledServieHighlightImage src={Highlight} alt="highlight" />
-            </StyledServiceWrapper>
+            </StyledServiceCircle>
             <StyledServiceName>투표하기</StyledServiceName>
           </div>
 
           <div>
-            <StyledServiceWrapper>
+            <StyledServiceCircle>
               <StyledAppointmentImage src={Appointment} alt="appointment" />
-            </StyledServiceWrapper>
+            </StyledServiceCircle>
             <StyledServiceName>약속잡기</StyledServiceName>
           </div>
 
           <div>
-            <StyledServiceWrapper>
+            <StyledServiceCircle>
               <StyledUndefinedImage src={Undefined} alt="undefined" />
               <StyledServieGlitterImage src={Glitter} alt="glitter" />
-            </StyledServiceWrapper>
+            </StyledServiceCircle>
             <StyledServiceName>coming soon!</StyledServiceName>
           </div>
 
           <div>
-            <StyledServiceWrapper>
+            <StyledServiceCircle>
               <StyledUndefinedImage src={Undefined} alt="undefined" />
-            </StyledServiceWrapper>
+            </StyledServiceCircle>
             <StyledServiceName>coming soon!</StyledServiceName>
           </div>
         </StyledServiceContainer>
@@ -392,7 +391,7 @@ const StyledServiceContainer = styled.div`
   gap: 4rem;
 `;
 
-const StyledServiceWrapper = styled.div(({ theme }) => `
+const StyledServiceCircle = styled.div(({ theme }) => `
   position: relative;
   border-radius: 100%;
   width: 26rem;
