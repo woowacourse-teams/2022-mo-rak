@@ -5,7 +5,7 @@ import Crown from '../../../assets/crown.svg';
 import { AppointmentRecommendationInterface } from '../../../types/appointment';
 import { GroupInterface, MemberInterface } from '../../../types/group';
 import { getGroupMembers } from '../../../api/group';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 
 const getDateTime = (
   // TODO: 타이핑 고민해보기

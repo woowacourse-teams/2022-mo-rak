@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { getAppointment, getAppointmentRecommendation } from '../../api/appointment';
 import { getAppointmentResponse, AppointmentInterface, AppointmentRecommendationInterface } from '../../types/appointment';
 import { GroupInterface } from '../../types/group';
-import FlexContainer from '../../components/common/FlexContainer/FlexContainer';
+import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
 import AppointmentResultRanking from '../../components/AppointmentResult/AppointmentResultRanking/AppointmentResultRanking';
 import AppointmentResultAvailableMembers from '../../components/AppointmentResult/AppointmentResultAvailableMembers/AppointmentResultAvailableMembers';
 import AppointmentResultButtonGroup from '../../components/AppointmentResult/AppointmentResultButtonGroup/AppointmentResultButtonGroup';

@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import Box from '../../common/Box/Box';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import Box from '../../@common/Box/Box';
 import { AppointmentRecommendationInterface } from '../../../types/appointment';
-import Avatar from '../../common/Avatar/Avatar';
+import Avatar from '../../@common/Avatar/Avatar';
 
 interface Props {
   appointmentRecommendation: Array<AppointmentRecommendationInterface>,

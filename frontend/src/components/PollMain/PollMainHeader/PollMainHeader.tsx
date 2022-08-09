@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate, useParams } from 'react-router-dom';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import Button from '../../common/Button/Button';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import Button from '../../@common/Button/Button';
 import MembersProfile from '../../MembersProfile/MembersProfile';
 import { GroupInterface } from '../../../types/group';
 
