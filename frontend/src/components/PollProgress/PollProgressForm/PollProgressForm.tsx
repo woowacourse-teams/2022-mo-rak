@@ -5,50 +5,41 @@ import styled from '@emotion/styled';
 import Box from '../../common/Box/Box';
 import Divider from '../../common/Divider/Divider';
 import MarginContainer from '../../common/MarginContainer/MarginContainer';
-
-import PollProgressSubmitButton from '../PollProgressSubmitButton/PollProgressSubmitButton';
+import PollProgressButtonGroup from '../PollProgressButtonGroup/PollProgressButtonGroup';
 import { getPoll, progressPoll } from '../../../api/poll';
 import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGroup';
 import { PollInterface, SelectedPollItem, getPollResponse } from '../../../types/poll';
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
+import { GroupInterface } from '../../../types/group';
 
 function PollProgressForm() {
   const navigate = useNavigate();
   const { groupCode, pollCode } = useParams() as {
-    groupCode: string;
-    pollCode: string;
+    groupCode: GroupInterface['code'];
+    pollCode: PollInterface['code'];
   };
-  // TODO: 기본 객체를 줘야할까? undefined로 놓는 것이 위험한가?
   const [poll, setPoll] = useState<getPollResponse>();
   const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItem>>([]);
 
-  // TODO: 객체로 state를 관리하는 것에 단점이 분명히 있다. 리팩토링 필요 usereducer 찾아보자
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    if (!poll) return;
+
     e.preventDefault();
 
     try {
-      if (poll) {
-        await progressPoll(pollCode, selectedPollItems, groupCode);
-        navigate(`/groups/${groupCode}/poll/${pollCode}/result`);
-      }
+      await progressPoll(pollCode, selectedPollItems, groupCode);
+      navigate(`/groups/${groupCode}/poll/${pollCode}/result`);
     } catch (err) {
       alert(err);
     }
   };
 
-  // TODO: 두 가지 역할을 하는 걸까? 나중에 시간 있을 때 하기~
-  const handleSelectPollItems = (mode: string) => (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSelectPollItems = (e: ChangeEvent<HTMLInputElement>) => {
     const id = Number(e.target.id);
     // TODO: 깊은 복사 함수 만들어보기!
     const newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
 
-    if (mode === 'single') {
-      setSelectedPollItems([{ itemId: id, description: '' }]);
-
-      return;
-    }
-
-    if (mode === 'multiple' && e.target.checked) {
+    if (e.target.checked) {
       setSelectedPollItems([...newSelectedPollItems, { itemId: id, description: '' }]);
 
       return;
@@ -57,6 +48,12 @@ function PollProgressForm() {
     setSelectedPollItems(
       [...newSelectedPollItems].filter((selectedPollItem) => selectedPollItem.itemId !== id)
     );
+  };
+
+  const handleSelectPollItem = (e: ChangeEvent<HTMLInputElement>) => {
+    const id = Number(e.target.id);
+
+    setSelectedPollItems([{ itemId: id, description: '' }]);
   };
 
   const handleDescription = (pollId: PollInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -112,16 +109,13 @@ function PollProgressForm() {
               pollCode={poll.code}
               selectedPollItems={selectedPollItems}
               allowedPollCount={poll.allowedPollCount}
-              handleSelectPollItems={handleSelectPollItems}
-              handleDescription={handleDescription}
+              onChangeCheckbox={handleSelectPollItems}
+              onChangeRadio={handleSelectPollItem}
+              onChangeText={handleDescription}
               groupCode={groupCode}
             />
           </MarginContainer>
-          <PollProgressSubmitButton
-            pollCode={pollCode}
-            isHost={poll.isHost}
-            groupCode={groupCode}
-          />
+          <PollProgressButtonGroup pollCode={pollCode} isHost={poll.isHost} groupCode={groupCode} />
         </form>
       ) : (
         <div>로딩중</div>
