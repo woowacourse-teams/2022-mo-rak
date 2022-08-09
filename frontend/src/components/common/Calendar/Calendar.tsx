@@ -5,9 +5,9 @@ interface Props {
   version?: 'default' | 'select';
   startDate: string;
   endDate: string;
+  selectedDate?: string;
   setStartDate?: Dispatch<SetStateAction<string>>;
   setEndDate?: Dispatch<SetStateAction<string>>;
-  selectedDate?: string;
   setSelectedDate?: Dispatch<SetStateAction<string>>;
 }
 
@@ -69,29 +69,22 @@ function Calendar({
   const handleStartOrEndDate = (day: number) => () => {
     // TODO: 약속잡기 진행페이지에서는 사용되지 않기 때문에, 분기처리를 해줌
     if (setStartDate && setEndDate) {
-      // 마지막 날이 선택 되어 있는 경우 -> 새로운 start 값을 설정해줘야함
-      if (endDate !== '') {
+      if (!startDate) {
+        // 시작 날짜가 없으면 선택해줌
+        setStartDate(formatDate(date, day));
+
+        return;
+      }
+
+      // 마지막 날이 선택 되어 있거나 시작 날짜 이전이면 -> 새로운 start 값을 설정해줘야함
+      if (endDate || isBeforeStartDate(day)) {
         setEndDate('');
         setStartDate(formatDate(date, day));
 
         return;
       }
 
-      // 첫번째 날이 선택 되어 있는 경우 -> end값을 설정해줘야함
-      if (startDate !== '' && endDate === '') {
-        // end값을 설정해줘야하는데, start 날짜보다 앞일 때
-        if (isBeforeStartDate(day)) {
-          setStartDate(formatDate(date, day));
-          setEndDate('');
-
-          return;
-        }
-        setEndDate(formatDate(date, day));
-
-        return;
-      }
-      // 가장 처음 값을 설정해줌 (위 두가지 조건을 충족하지 않은 경우)
-      setStartDate(formatDate(date, day));
+      setEndDate(formatDate(date, day));
     }
   };
 
