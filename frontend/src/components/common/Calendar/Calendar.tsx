@@ -23,6 +23,7 @@ const weeks = ['일', '월', '화', '수', '목', '금', '토'];
 // version "select"는 약속 잡기 선택하기에서 사용된다. 이때, props로 startDate, endDate가 넘어와야한다.
 // NOTE: version에 기반하여 컴포넌트가 둘로 나뉘어지기 때문에, 이는 두 가지 역할을 하나의 컴포넌트가 하는 게 아닐까 싶다.
 // 만약 version이 하나 더 생긴다면 로직이 복잡해질 것 같다. version을 없애는 게 첫 번째 리팩토링 포인트일듯
+// NOTE: 1차 리팩토링 끝
 // TODO: calendar 리팩토링
 function Calendar({
   version = 'default',
@@ -70,13 +71,11 @@ function Calendar({
     // TODO: 약속잡기 진행페이지에서는 사용되지 않기 때문에, 분기처리를 해줌
     if (setStartDate && setEndDate) {
       if (!startDate) {
-        // 시작 날짜가 없으면 선택해줌
         setStartDate(formatDate(date, day));
 
         return;
       }
 
-      // 마지막 날이 선택 되어 있거나 시작 날짜 이전이면 -> 새로운 start 값을 설정해줘야함
       if (endDate || isBeforeStartDate(day)) {
         setEndDate('');
         setStartDate(formatDate(date, day));
@@ -153,51 +152,53 @@ function Calendar({
         ))}
 
         {/* 이번 달 날짜  */}
-        {getNowMonthDays().map((day) => {
-          if (version === 'select') {
-            if (isNotInStartAndEndDate(day)) {
+        {version === 'select'
+          ? getNowMonthDays().map((day) => {
+              if (isNotInStartAndEndDate(day)) {
+                return (
+                  <StyledNowMonthDayNotInStartAndEndDate>
+                    {day}
+                  </StyledNowMonthDayNotInStartAndEndDate>
+                );
+              }
+
               return (
-                <StyledNowMonthDayNotInStartAndEndDate>{day}</StyledNowMonthDayNotInStartAndEndDate>
+                <StyledNowMonthDayInStartAndEndDate
+                  onClick={handleSelectedDate(day)}
+                  isSelectedDate={isSelectedDate(day)}
+                >
+                  {day}
+                </StyledNowMonthDayInStartAndEndDate>
               );
-            }
+            })
+          : getNowMonthDays().map((day) => {
+              if (isPrevToday(day)) {
+                return <StyledNowMonthDayPrevToday>{day}</StyledNowMonthDayPrevToday>;
+              }
 
-            return (
-              <StyledNowMonthDayInStartAndEndDate
-                onClick={handleSelectedDate(day)}
-                isSelectedDate={isSelectedDate(day)}
-              >
-                {day}
-              </StyledNowMonthDayInStartAndEndDate>
-            );
-          }
+              if (isToday(day)) {
+                return (
+                  <StyledNowMonthDayToday
+                    // TODO: 약속잡기 진행페이지에서는 사용되지 않기 때문에, 분기처리를 해줌
+                    onClick={setStartDate && setEndDate && handleStartOrEndDate(day)}
+                    isBetweenStartEndDate={isBetweenStartEndDate(day)}
+                    isStartOrEndDate={isStartOrEndDate(day)}
+                  >
+                    {day}
+                  </StyledNowMonthDayToday>
+                );
+              }
 
-          if (isPrevToday(day)) {
-            return <StyledNowMonthDayPrevToday>{day}</StyledNowMonthDayPrevToday>;
-          }
-
-          if (isToday(day)) {
-            return (
-              <StyledNowMonthDayToday
-                // TODO: 약속잡기 진행페이지에서는 사용되지 않기 때문에, 분기처리를 해줌
-                onClick={setStartDate && setEndDate && handleStartOrEndDate(day)}
-                isBetweenStartEndDate={isBetweenStartEndDate(day)}
-                isStartOrEndDate={isStartOrEndDate(day)}
-              >
-                {day}
-              </StyledNowMonthDayToday>
-            );
-          }
-
-          return (
-            <StyledNowMonthDay
-              onClick={handleStartOrEndDate(day)}
-              isBetweenStartEndDate={isBetweenStartEndDate(day)}
-              isStartOrEndDate={isStartOrEndDate(day)}
-            >
-              {day}
-            </StyledNowMonthDay>
-          );
-        })}
+              return (
+                <StyledNowMonthDay
+                  onClick={handleStartOrEndDate(day)}
+                  isBetweenStartEndDate={isBetweenStartEndDate(day)}
+                  isStartOrEndDate={isStartOrEndDate(day)}
+                >
+                  {day}
+                </StyledNowMonthDay>
+              );
+            })}
 
         {/* 다음 달 일부 날짜  */}
         {getNextMonthDays().map((day) => (
