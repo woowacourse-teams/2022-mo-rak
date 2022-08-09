@@ -27,8 +27,7 @@ public class TimePeriod {
     /*
         endTime이 00:00일 경우 다음날의 자정을 의미한다.
      */
-//    @NotNull(message =  CustomErrorCode.ABC + "$약속잡기 마지막 시간은 null일 수 없습니다.")
-    @NotNull(message = CustomErrorCode.APPOINTMENT_TIME_PERIOD_END_TIME_NOT_NULL + "$약속잡기 마지막 시간은 null 일 수 없습니다.")
+    @NotNull(message = "약속잡기 마지막 시간은 null일 수 없습니다.")
     private LocalTime endTime;
 
     private TimePeriod(LocalTime startTime, LocalTime endTime) {

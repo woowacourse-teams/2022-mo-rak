@@ -78,7 +78,6 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
-
     @Test
     void 그룹_초대_코드를_생성한다() {
         // given

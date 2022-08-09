@@ -1,6 +1,5 @@
 package com.morak.back.core.ui;
 
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.morak.back.auth.exception.AuthenticationException;
 import com.morak.back.core.exception.AuthorizationException;
 import com.morak.back.core.exception.CachedBodyException;
@@ -12,6 +11,7 @@ import com.morak.back.core.support.LogFormatter;
 import com.morak.back.poll.ui.dto.ExceptionResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +19,12 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -35,57 +37,67 @@ public class GlobalControllerAdvice {
     public ResponseEntity<ExceptionResponse> handleDomainLogic(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ExceptionResponse.from(e.getCode()));
+            .body(new ExceptionResponse(e.getCode().getNumber(), "잘못된 요청입니다."));
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ExceptionResponse> handleAuthentication(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-            .body(ExceptionResponse.from(e.getCode()));
+            .body(new ExceptionResponse(e.getCode().getNumber(), "사용자 인증에 실패했습니다."));
     }
 
     @ExceptionHandler(AuthorizationException.class)
     public ResponseEntity<ExceptionResponse> handleAuthorization(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-            .body(ExceptionResponse.from(e.getCode()));
+            .body(new ExceptionResponse(e.getCode().getNumber(), "접근 권한이 없는 요청입니다."));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleResourceNotFound(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body(ExceptionResponse.from(e.getCode()));
+            .body(new ExceptionResponse(e.getCode().getNumber(), "요청한 리소스를 찾을 수 없습니다."));
     }
 
-    //TODO MethodArgumentValidateException
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ExceptionResponse> handleConstraintViolation(ConstraintViolationException e) {
         logger.warn(e.getMessage());
 
-        String violationMessage = createViolationMessage(e.getConstraintViolations());
+        String messages = extractErrorMessages(e.getConstraintViolations());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ExceptionResponse(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber(), violationMessage));
+            .body(new ExceptionResponse(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber(), messages));
     }
 
-    @ExceptionHandler({MismatchedInputException.class, HttpMessageNotReadableException.class})
-    public ResponseEntity<ExceptionResponse> handleMismatchedInput(ConstraintViolationException e) {
-        // TODO : check this
+    private String extractErrorMessages(Set<ConstraintViolation<?>> constraintViolations) {
+        return constraintViolations.stream()
+            .map(ConstraintViolation::getMessage)
+            .collect(Collectors.joining(", "));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionResponse> handleMismatchedInput(MethodArgumentNotValidException e) {
         logger.warn(e.getMessage());
 
-        String violationMessage = createViolationMessage(e.getConstraintViolations());
+        String messages = extractErrorMessages(e.getBindingResult().getFieldErrors());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ExceptionResponse(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber(), violationMessage));
+            .body(new ExceptionResponse(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber(), messages));
     }
 
+    private String extractErrorMessages(List<FieldError> fieldErrors) {
+        return fieldErrors
+            .stream()
+            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            .collect(Collectors.joining(","));
+    }
 
-    private String createViolationMessage(Set<ConstraintViolation<?>> constraintViolations) {
-        for (ConstraintViolation<?> constraintViolation : constraintViolations) {
-            System.out.println("constraintViolation.getMessage() = " + constraintViolation.getMessage());
-            System.out.println("constraintViolation.getMessageTemplate() = " + constraintViolation.getMessageTemplate());
-        }
-        return "";
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public ResponseEntity<ExceptionResponse> handleMismatchedInput(Exception e) {
+        logger.warn(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(new ExceptionResponse(CustomErrorCode.RUNTIME_ERROR.getNumber(), "Xxxxx"));
     }
 
     //TODO
@@ -93,14 +105,14 @@ public class GlobalControllerAdvice {
     public ResponseEntity<ExceptionResponse> handleCachedBodyException(CachedBodyException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(ExceptionResponse.from(CustomErrorCode.CACHED_BODY_ERROR));
+            .body(new ExceptionResponse(CustomErrorCode.CACHED_BODY_ERROR.getNumber(), ""));
     }
 
     @ExceptionHandler(MorakException.class)
     public ResponseEntity<ExceptionResponse> handleMorak(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ExceptionResponse.from(CustomErrorCode.MORAK_ERROR));
+            .body(new ExceptionResponse(CustomErrorCode.MORAK_ERROR.getNumber(), ""));
     }
 
     @ExceptionHandler(RuntimeException.class)
@@ -112,6 +124,6 @@ public class GlobalControllerAdvice {
         logger.error(stackTrace + LogFormatter.toPrettyRequestString(request));
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(ExceptionResponse.from(CustomErrorCode.RUNTIME_ERROR));
+            .body(new ExceptionResponse(CustomErrorCode.RUNTIME_ERROR.getNumber(), ""));
     }
 }
