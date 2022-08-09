@@ -34,7 +34,6 @@ const getWinningPollItemIds = (pollResult: getPollResultResponse) => {
     .map((pollItem) => pollItem.id);
 };
 
-// TODO: 타이핑 리팩토링, poll에 관한 원형 타입들 한 번 손봐야할듯
 const getSelectedPollItemIds = (pollItems: getPollItemsResponse) =>
   pollItems.filter((pollItem) => pollItem.isSelected).map((pollItem) => pollItem.id);
 
@@ -47,8 +46,8 @@ function PollResultItemGroup({ pollCode, status, groupCode, pollResult }: Props)
   const winningPollItemIds = getWinningPollItemIds(pollResult);
 
   // TODO: 뭐지? 살펴보기
-  const handleShowParticipant = (pollId: PollInterface['id']) => () => {
-    setActivePollItem(pollId);
+  const handleShowParticipant = (pollItemId: PollItemInterface['id']) => () => {
+    setActivePollItem(pollItemId);
   };
 
   useEffect(() => {
