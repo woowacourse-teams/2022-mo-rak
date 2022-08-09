@@ -56,7 +56,7 @@ public class RecommendationCell implements Comparable<RecommendationCell> {
     }
 
     public long getDurationUnitCount() {
-        return this.dateTimePeriod.getDurationUnitCount();
+        return this.dateTimePeriod.countDurationUnit();
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.AvailableTime;
 import com.morak.back.appointment.domain.AvailableTimeRepository;
+import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
@@ -23,7 +24,6 @@ import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import org.assertj.core.api.AbstractThrowableAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -119,14 +120,14 @@ class AppointmentServiceTest {
     void 약속잡기를_생성한다() {
         // given
         AppointmentCreateRequest request = new AppointmentCreateRequest(
-                "모락 회식 날짜 및 시간",
-                "필참입니다.",
-                LocalDate.of(2022, 8, 5),
-                LocalDate.of(2022, 8, 20),
-                LocalTime.of(16, 0),
-                LocalTime.of(20, 0),
-                2,
-                30
+            "모락 회식 날짜 및 시간",
+            "필참입니다.",
+            LocalDate.now().plusDays(1),
+            LocalDate.now().plusDays(15),
+            LocalTime.of(16, 0),
+            LocalTime.of(20, 0),
+            2,
+            30
         );
 
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
@@ -219,8 +220,7 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(teamCode, memberId, appointmentCode, requests))
-                .isInstanceOf(InvalidRequestException.class)
-                .hasMessageContaining("중복된 약속잡기 가능 시간은 허용되지 않습니다.");
+            .isInstanceOf(AppointmentDomainLogicException.class);
     }
 
     @Test
@@ -243,8 +243,7 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(teamCode, memberId, appointmentCode, requests))
-                .isInstanceOf(InvalidRequestException.class)
-                .hasMessageContaining("번 약속잡기는 마감되었습니다.");
+            .isInstanceOf(AppointmentDomainLogicException.class);
     }
 
     @Test

@@ -2,9 +2,10 @@ package com.morak.back.appointment.domain;
 
 import static com.morak.back.appointment.domain.AppointmentStatus.OPEN;
 
+import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.exception.InvalidRequestException;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.domain.BaseEntity;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
@@ -101,14 +102,20 @@ public class Appointment extends BaseEntity {
     }
 
     private void validateLastDatetime(LocalDateTime lastDateTime) {
-        if ( lastDateTime.isBefore(LocalDateTime.now())) {
-            throw new InvalidRequestException("약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다.");
+        if (lastDateTime.isBefore(LocalDateTime.now())) {
+            throw new AppointmentDomainLogicException(
+                CustomErrorCode.APPOINTMENT_PAST_CREATE_ERROR,
+                "약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다."
+            );
         }
     }
 
     private void validateDurationMinutesLessThanTimePeriod(DurationMinutes durationMinutes, TimePeriod timePeriod) {
         if (timePeriod.isLessThanDurationMinutes(durationMinutes.getDurationMinutes())) {
-            throw new InvalidRequestException("진행 시간은 약속잡기 시간보다 짧을 수 없습니다.");
+            throw new AppointmentDomainLogicException(
+                CustomErrorCode.APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR,
+                "진행 시간은 약속잡기 시간보다 짧을 수 없습니다."
+            );
         }
     }
 
@@ -120,9 +127,12 @@ public class Appointment extends BaseEntity {
         return this.durationMinutes.parseMinutes();
     }
 
-    public void validateAvailableTimeRange(DateTimePeriod dateTimePeriod) {
-        this.datePeriod.validateAvailableDateRange(dateTimePeriod.toDatePeriod());
-        this.timePeriod.validateAvailableTimeRange(dateTimePeriod.toTimePeriod());
+    public boolean isAvailableDateRange(DatePeriod datePeriod) {
+        return this.datePeriod.isAvailableRange(datePeriod);
+    }
+
+    public boolean isAvailableTimeRange(TimePeriod timePeriod) {
+        return this.timePeriod.isAvailableRange(timePeriod);
     }
 
     public void close(Member member) {
@@ -132,7 +142,10 @@ public class Appointment extends BaseEntity {
 
     public void validateHost(Member member) {
         if (!host.equals(member)) {
-            throw new InvalidRequestException(member.getId() + "번 멤버는 " + id + "번 약속잡기의 호스트가 아닙니다.");
+            throw new AppointmentDomainLogicException(
+                CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR,
+                member.getId() + "번 멤버는 " + id + "번 약속잡기의 호스트가 아닙니다."
+            );
         }
     }
 

@@ -3,7 +3,7 @@ package com.morak.back.auth.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.auth.exception.AuthorizationException;
+import com.morak.back.auth.exception.AuthenticationException;
 import org.junit.jupiter.api.Test;
 
 class JwtTokenProviderTest {
@@ -33,7 +33,7 @@ class JwtTokenProviderTest {
 
         // when & then
         assertThatThrownBy(() -> jwtTokenProvider.validateToken(token))
-                .isInstanceOf(AuthorizationException.class);
+                .isInstanceOf(AuthenticationException.class);
     }
 
     @Test
@@ -44,6 +44,6 @@ class JwtTokenProviderTest {
 
         // when & then
         assertThatThrownBy(() -> jwtTokenProvider.validateToken(token))
-                .isInstanceOf(AuthorizationException.class);
+                .isInstanceOf(AuthenticationException.class);
     }
 }

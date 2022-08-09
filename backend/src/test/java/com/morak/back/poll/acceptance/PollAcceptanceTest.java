@@ -220,7 +220,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 도메인_정책에_위반한_값으로_투표요청시_400을_반환한다() {
+    void 도메인_정책에_위반한_값으로_투표_생성_요청시_400을_반환한다() {
         // given
         PollCreateRequest request = new PollCreateRequest("하이", 0, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
@@ -229,6 +229,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
 
         // then
+
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
@@ -266,7 +267,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표_마감을_요청한다(location, otherToken);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
     }
 
     @Test

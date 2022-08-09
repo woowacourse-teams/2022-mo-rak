@@ -14,12 +14,12 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
-import com.morak.back.poll.domain.PollResult;
+import com.morak.back.poll.exception.PollAuthorizationException;
+import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
@@ -153,8 +153,8 @@ class PollServiceTest {
         poll.addItem(pollItem2);
 
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-        given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
+        given(teamRepository.findByCode(team.getCode())).willReturn(Optional.of(team));
+        given(pollRepository.findByCode(anyString())).willReturn(Optional.of(poll));
 
         given(pollItemRepository.findById(pollItem1.getId())).willReturn(Optional.of(pollItem1));
         given(pollItemRepository.findById(pollItem2.getId())).willReturn(Optional.of(pollItem2));
@@ -193,8 +193,8 @@ class PollServiceTest {
         poll.addItem(pollItem3);
 
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-        given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
+        given(teamRepository.findByCode(team.getCode())).willReturn(Optional.of(team));
+        given(pollRepository.findByCode(anyString())).willReturn(Optional.of(poll));
 
         given(pollItemRepository.findById(pollItem1.getId())).willReturn(Optional.of(pollItem1));
         given(pollItemRepository.findById(pollItem2.getId())).willReturn(Optional.of(pollItem2));
@@ -218,8 +218,8 @@ class PollServiceTest {
     void 투표_단건을_조회한다() {
         // given
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-        given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
+        given(teamRepository.findByCode(team.getCode())).willReturn(Optional.of(team));
+        given(pollRepository.findByCode(anyString())).willReturn(Optional.of(poll));
 
         // when
         PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), poll.getCode());
@@ -248,8 +248,8 @@ class PollServiceTest {
         poll.addItem(pollItem2);
 
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-        given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
+        given(teamRepository.findByCode(team.getCode())).willReturn(Optional.of(team));
+        given(pollRepository.findByCode(anyString())).willReturn(Optional.of(poll));
 
         // when
         List<PollItemResponse> pollItemResponses = pollService.findPollItems(team.getCode(), member.getId(),
@@ -281,8 +281,8 @@ class PollServiceTest {
         poll.addItem(pollItem2);
 
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-        given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
+        given(teamRepository.findByCode(team.getCode())).willReturn(Optional.of(team));
+        given(pollRepository.findByCode(anyString())).willReturn(Optional.of(poll));
 
         // when
         List<PollItemResponse> pollItemResponses = pollService.findPollItems(team.getCode(), member.getId(),
@@ -317,9 +317,8 @@ class PollServiceTest {
         poll.addItem(pollItem2);
 
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
-        given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(1L));
-
-        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
+        given(teamRepository.findByCode(team.getCode())).willReturn(Optional.of(team));
+        given(pollRepository.findByCode(anyString())).willReturn(Optional.of(poll));
 
         // when
         List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(team.getCode(),
@@ -367,9 +366,9 @@ class PollServiceTest {
         poll.addItem(pollItem2);
 
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-        given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
+        given(teamRepository.findByCode(team.getCode())).willReturn(Optional.of(team));
 
-        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
+        given(pollRepository.findByCode(anyString())).willReturn(Optional.of(poll));
 
         // when
         List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(team.getCode(),
@@ -387,8 +386,8 @@ class PollServiceTest {
     void 투표를_삭제한다() {
         // given
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-        given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
+        given(teamRepository.findByCode(team.getCode())).willReturn(Optional.of(team));
+        given(pollRepository.findByCode(anyString())).willReturn(Optional.of(poll));
 
         // when
         pollService.deletePoll(team.getCode(), member.getId(), poll.getCode());
@@ -407,22 +406,20 @@ class PollServiceTest {
                 .profileUrl("http://eden-profile.cloudfront.net")
                 .build();
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(notHostMember));
-        given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-
-        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
+        given(teamRepository.findByCode(team.getCode())).willReturn(Optional.of(team));
+        given(pollRepository.findByCode(anyString())).willReturn(Optional.of(poll));
 
         // when & then
         assertThatThrownBy(() -> pollService.deletePoll(team.getCode(), notHostMember.getId(), poll.getCode()))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(PollAuthorizationException.class);
     }
 
     @Test
     void 투표를_종료한다() {
         // given
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
-        given(teamRepository.findIdByCode(team.getCode())).willReturn(Optional.of(team.getId()));
-
-        given(pollRepository.findByCodeAndTeamId(anyString(), anyLong())).willReturn(Optional.of(poll));
+        given(teamRepository.findByCode(team.getCode())).willReturn(Optional.of(team));
+        given(pollRepository.findByCode(anyString())).willReturn(Optional.of(poll));
 
         // when
         pollService.closePoll(team.getCode(), member.getId(), poll.getCode());

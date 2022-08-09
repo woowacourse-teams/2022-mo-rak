@@ -6,8 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;
-import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
@@ -52,7 +52,7 @@ class AppointmentTest {
                         .durationHours(1)
                         .durationMinutes(0)
                         .build()
-        ).isInstanceOf(InvalidRequestException.class)
+        ).isInstanceOf(AppointmentDomainLogicException.class)
                 .hasMessageContaining("약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다.");
     }
 
@@ -73,7 +73,7 @@ class AppointmentTest {
                         .durationHours(2)
                         .durationMinutes(0)
                         .build()
-        ).isInstanceOf(InvalidRequestException.class)
+        ).isInstanceOf(AppointmentDomainLogicException.class)
                 .hasMessageContaining("진행 시간은 약속잡기 시간보다 짧을 수 없습니다.");
     }
 
@@ -141,6 +141,6 @@ class AppointmentTest {
 
         //when & then
         assertThatThrownBy(() -> appointment.close(ellie))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(AppointmentDomainLogicException.class);
     }
 }

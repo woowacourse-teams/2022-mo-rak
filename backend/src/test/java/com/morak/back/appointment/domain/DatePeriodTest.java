@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.core.exception.InvalidRequestException;
+import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +19,7 @@ class DatePeriodTest {
                 LocalDate.now().minusDays(2),
                 LocalDate.now().minusDays(1),
                 LocalTime.of(20, 0)
-        )).isInstanceOf(InvalidRequestException.class);
+        )).isInstanceOf(AppointmentDomainLogicException.class);
     }
 
     @Test
@@ -29,7 +29,7 @@ class DatePeriodTest {
                 LocalDate.now().plusDays(2),
                 LocalDate.now().plusDays(1),
                 LocalTime.of(0, 0)
-        )).isInstanceOf(InvalidRequestException.class);
+        )).isInstanceOf(AppointmentDomainLogicException.class);
 
     }
 

@@ -2,7 +2,7 @@ package com.morak.back.appointment.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.core.exception.InvalidRequestException;
+import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -19,7 +19,7 @@ class DateTimePeriodTest {
         assertThatThrownBy(() -> DateTimePeriod.of(LocalDateTime.now().withNano(0).plusDays(2),
                 LocalDateTime.now().withNano(0).plusDays(1), 30)
         )
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(AppointmentDomainLogicException.class);
 
     }
 
@@ -29,7 +29,7 @@ class DateTimePeriodTest {
         // when & then
         assertThatThrownBy(() -> DateTimePeriod.of(LocalDateTime.now().withNano(0),
                 LocalDateTime.now().withNano(0).plusMinutes(minutes), 30))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(AppointmentDomainLogicException.class);
     }
 
     @ParameterizedTest
@@ -41,6 +41,6 @@ class DateTimePeriodTest {
         // when & then
         assertThatThrownBy(() -> DateTimePeriod.of(LocalDateTime.of(LocalDate.now(), LocalTime.of(16, startMinutes)),
                 LocalDateTime.of(LocalDate.now(), LocalTime.of(16, endMinutes)), 30))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(AppointmentDomainLogicException.class);
     }
 }

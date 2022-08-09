@@ -5,7 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.exception.InvalidRequestException;
+import com.morak.back.poll.exception.PollAuthorizationException;
+import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -75,7 +76,7 @@ class PollTest {
         mappedItemAndDescription.put(itemC, "힘내!");
 
         // when
-        poll.doPoll(member, mappedItemAndDescription);
+        poll.doPoll(member, team, mappedItemAndDescription);
 
         // then
         List<PollResult> pollResults = poll.getPollItems().get(1).getPollResults();
@@ -92,14 +93,14 @@ class PollTest {
         Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
         mappedItemAndDescription.put(itemB, "거의_다왔어요!");
         mappedItemAndDescription.put(itemC, "힘내!");
-        poll.doPoll(member, mappedItemAndDescription);
+        poll.doPoll(member, team, mappedItemAndDescription);
 
         Map<PollItem, String> reMappedItemAndDescription = new HashMap<>();
         reMappedItemAndDescription.put(itemA, "화장실_다녀오세요.");
         reMappedItemAndDescription.put(itemB, "거의_다왔어요!");
 
         // when
-        poll.doPoll(member, reMappedItemAndDescription);
+        poll.doPoll(member, team, reMappedItemAndDescription);
 
         // then
         List<PollResult> pollResults1 = poll.getPollItems().get(0).getPollResults();
@@ -122,15 +123,15 @@ class PollTest {
         mappedItemAndDescription.put(itemC, "힘내!!");
 
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
-                .isInstanceOf(InvalidRequestException.class);
+        assertThatThrownBy(() -> poll.doPoll(member, team, mappedItemAndDescription))
+                .isInstanceOf(PollDomainLogicException.class);
     }
 
     @Test
     void 응답_개수가_0인_경우_예외를_던진다() {
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, new HashMap<>()))
-                .isInstanceOf(InvalidRequestException.class);
+        assertThatThrownBy(() -> poll.doPoll(member, team, new HashMap<>()))
+                .isInstanceOf(PollDomainLogicException.class);
     }
 
     @Test
@@ -146,8 +147,8 @@ class PollTest {
         mappedItemAndDescription.put(itemD, "프링글스는_초록_프링글스지");
 
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
-                .isInstanceOf(InvalidRequestException.class);
+        assertThatThrownBy(() -> poll.doPoll(member, team, mappedItemAndDescription))
+                .isInstanceOf(PollAuthorizationException.class);
     }
 
     @Test
@@ -162,7 +163,7 @@ class PollTest {
 
         // when & then
         assertThatThrownBy(() -> poll.validateHost(member))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(PollAuthorizationException.class);
     }
 
     @Test
@@ -181,7 +182,7 @@ class PollTest {
 
         // then
         assertThatThrownBy(() -> poll.close(member))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(PollDomainLogicException.class);
     }
 
     @Test
@@ -196,6 +197,6 @@ class PollTest {
 
         // when & then
         assertThatThrownBy(() -> poll.close(member))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(PollAuthorizationException.class);
     }
 }

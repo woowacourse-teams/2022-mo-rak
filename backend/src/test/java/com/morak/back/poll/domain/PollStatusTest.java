@@ -3,7 +3,7 @@ package com.morak.back.poll.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.core.exception.InvalidRequestException;
+import com.morak.back.poll.exception.PollDomainLogicException;
 import org.junit.jupiter.api.Test;
 
 class PollStatusTest {
@@ -36,6 +36,6 @@ class PollStatusTest {
         PollStatus closed = status.close();
         // then
         assertThatThrownBy(closed::close)
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(PollDomainLogicException.class);
     }
 }

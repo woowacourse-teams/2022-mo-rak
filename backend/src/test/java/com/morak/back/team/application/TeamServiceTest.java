@@ -21,9 +21,8 @@ import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
-import com.morak.back.team.exception.AlreadyJoinedTeamException;
-import com.morak.back.team.exception.ExpiredInvitationException;
-import com.morak.back.team.exception.MismatchedTeamException;
+import com.morak.back.team.exception.TeamAuthorizationException;
+import com.morak.back.team.exception.TeamDomainLogicException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
@@ -152,7 +151,7 @@ class TeamServiceTest {
 
         // when & then
         assertThatThrownBy(() -> teamService.join(member.getId(), teamInvitation.getCode()))
-                .isInstanceOf(AlreadyJoinedTeamException.class);
+                .isInstanceOf(TeamDomainLogicException.class);
     }
 
     @Test
@@ -168,7 +167,7 @@ class TeamServiceTest {
 
         // when & then
         assertThatThrownBy(() -> teamService.join(member.getId(), expiredTeamInvitation.getCode()))
-                .isInstanceOf(ExpiredInvitationException.class);
+                .isInstanceOf(TeamDomainLogicException.class);
     }
 
     @Test
@@ -257,7 +256,7 @@ class TeamServiceTest {
 
         // when & then
         assertThatThrownBy(() -> teamService.findMembersInTeam(member.getId(), team.getCode()))
-                .isInstanceOf(MismatchedTeamException.class);
+                .isInstanceOf(TeamAuthorizationException.class);
     }
 
     @Test
@@ -283,11 +282,11 @@ class TeamServiceTest {
         // given
         given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
         given(teamMemberRepository.findByTeamIdAndMemberId(anyLong(), anyLong()))
-                .willThrow(MismatchedTeamException.class);
+                .willThrow(TeamAuthorizationException.class);
 
         // when & then
         assertThatThrownBy(() -> teamService.exitMemberFromTeam(member.getId(), team.getCode()))
-                .isInstanceOf(MismatchedTeamException.class);
+                .isInstanceOf(TeamAuthorizationException.class);
     }
 
     @Test
