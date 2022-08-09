@@ -12,12 +12,17 @@ import PollResultDetail from '../PollResultDetail/PollResultDetail';
 import PollResultButtonGroup from '../PollResultButtonGroup/PollResultButtonGroup';
 import { getPoll, getPollResult } from '../../../api/poll';
 import { PollInterface, getPollResponse, getPollResultResponse } from '../../../types/poll';
+import { GroupInterface } from '../../../types/group';
+
 import PollResultProgress from '../PollResultProgress/PollResultProgress';
 import PollResultStatus from '../PollResultStatus/PollResultStatus';
 import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
 
 function PollResultContainer() {
-  const { groupCode, pollCode } = useParams() as { groupCode: string; pollCode: string };
+  const { groupCode, pollCode } = useParams() as {
+    groupCode: GroupInterface['code'];
+    pollCode: PollInterface['code'];
+  };
   const [poll, setPoll] = useState<getPollResponse>();
   const [pollResult, setPollResult] = useState<getPollResultResponse>([]);
 

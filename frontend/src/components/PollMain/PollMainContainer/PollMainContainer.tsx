@@ -11,10 +11,12 @@ import MarginContainer from '../../common/MarginContainer/MarginContainer';
 
 import { getPolls } from '../../../api/poll';
 import { getPollsResponse } from '../../../types/poll';
+import { GroupInterface } from '../../../types/group';
+
 import PollMainButtonGroup from '../PollMainButtonGroup/PollMainButtonGroup';
 
 function PollMainContainer() {
-  const { groupCode } = useParams() as { groupCode: string };
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [polls, setPolls] = useState<getPollsResponse>([]);
 
   useEffect(() => {

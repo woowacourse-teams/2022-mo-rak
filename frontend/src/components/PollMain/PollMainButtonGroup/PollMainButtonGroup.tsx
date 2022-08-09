@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTheme } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import Button from '../../common/Button/Button';
 import { PollInterface } from '../../../types/poll';
-import { useNavigate } from 'react-router-dom';
 
 interface Props {
-  pollCode: string;
+  pollCode: PollInterface['code'];
   status: PollInterface['status'];
 }
 
