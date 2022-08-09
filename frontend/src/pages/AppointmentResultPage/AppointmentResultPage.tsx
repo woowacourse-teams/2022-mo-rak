@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 
 import { getAppointment } from '../../api/appointment';
-import { AppointmentInterface, AppointmentInfoInterface } from '../../types/appointment';
+import { getAppointmentResponse, AppointmentInterface } from '../../types/appointment';
 import { GroupInterface } from '../../types/group';
 import FlexContainer from '../../components/common/FlexContainer/FlexContainer';
 import AppointmentResultRanking from '../../components/AppointmentResult/AppointmentResultRanking/AppointmentResultRanking';
@@ -11,11 +11,11 @@ import AppointmentResultButtonGroup from '../../components/AppointmentResult/App
 import AppointmentResultHeader from '../../components/AppointmentResult/AppointmentResultHeader/AppointmentResultHeader';
 
 function AppointmentResultPage() {
-  const [appointment, setAppointment] = useState<AppointmentInterface>();
+  const [appointment, setAppointment] = useState<getAppointmentResponse>();
 
   const { groupCode, appointmentCode } = useParams() as {
     groupCode: GroupInterface['code'];
-    appointmentCode: AppointmentInfoInterface['code'];
+    appointmentCode: AppointmentInterface['code'];
   };
 
   useEffect(() => {
@@ -27,6 +27,7 @@ function AppointmentResultPage() {
         alert(err);
       }
     };
+
     fetchAppointment();
   }, []);
 

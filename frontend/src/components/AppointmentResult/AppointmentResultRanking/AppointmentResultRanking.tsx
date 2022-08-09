@@ -7,7 +7,7 @@ import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import Crown from '../../../assets/crown.svg';
 import { getAppointmentRecommendation } from '../../../api/appointment';
 import {
-  AppointmentInfoInterface,
+  AppointmentInterface,
   AppointmentRecommendationInterface
 } from '../../../types/appointment';
 import { MemberInterface, GroupInterface } from '../../../types/group';
@@ -15,7 +15,7 @@ import { getGroupMembers } from '../../../api/group';
 
 interface Props {
   groupCode: GroupInterface['code'];
-  appointmentCode: AppointmentInfoInterface['code'];
+  appointmentCode: AppointmentInterface['code'];
 }
 
 const getDateTime = (

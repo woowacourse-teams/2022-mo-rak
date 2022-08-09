@@ -5,13 +5,13 @@ import { useNavigate } from 'react-router-dom';
 
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import { GroupInterface } from '../../../types/group';
-import { AppointmentInfoInterface } from '../../../types/appointment';
+import { AppointmentInterface } from '../../../types/appointment';
 import { closeAppointment } from '../../../api/appointment';
 import Button from '../../common/Button/Button';
 
 interface Props {
   groupCode: GroupInterface['code'];
-  appointmentCode: AppointmentInfoInterface['code'];
+  appointmentCode: AppointmentInterface['code'];
 }
 
 function AppointmentResultButtonGroup({ groupCode, appointmentCode }: Props) {

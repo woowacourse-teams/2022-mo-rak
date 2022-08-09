@@ -10,7 +10,7 @@ import AppointmentCreateFormTimeLimitInput from '../AppointmentCreateFormTimeLim
 import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import useInput from '../../../hooks/useInput';
 import useInputs from '../../../hooks/useInputs';
-import { Time, CreateAppointmentRequest, AppointmentInterface } from '../../../types/appointment';
+import { Time, createAppointmentData, AppointmentInterface } from '../../../types/appointment';
 import { createAppointment } from '../../../api/appointment';
 import { GroupInterface } from '../../../types/group';
 
@@ -38,7 +38,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   const handleCreateAppointment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const appointment: CreateAppointmentRequest = {
+    const appointment: createAppointmentData = {
       title,
       description,
       startDate,
