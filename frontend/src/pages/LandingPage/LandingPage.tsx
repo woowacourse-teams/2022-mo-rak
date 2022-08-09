@@ -434,7 +434,7 @@ const StyledUndefinedImage = styled.img`
 
 const StyledLink = styled.a`
   position: absolute;
-  bottom: 10rem;
+  bottom: 20rem;
   text-decoration: none;
 `;
 
