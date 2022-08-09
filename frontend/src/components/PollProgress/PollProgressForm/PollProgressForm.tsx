@@ -57,15 +57,18 @@ function PollProgressForm() {
   };
 
   const handleDescription = (pollId: PollInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
-    const newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
-    // TODO: for문 개선, 에러 해결
-    for (const newSelectedPollItem of newSelectedPollItems) {
-      if (newSelectedPollItem.itemId === pollId) {
-        newSelectedPollItem.description = e.target.value;
-        setSelectedPollItems(newSelectedPollItems);
+    // TODO: 깊은 복사 함수 만들기
+    const newSelectedPollItems: Array<SelectedPollItem> = JSON.parse(
+      JSON.stringify(selectedPollItems)
+    );
 
-        return;
-      }
+    const targetPollItem = newSelectedPollItems.find(
+      (newSelectedPollItem) => newSelectedPollItem.itemId === pollId
+    );
+
+    if (targetPollItem) {
+      targetPollItem.description = e.target.value;
+      setSelectedPollItems(newSelectedPollItems);
     }
   };
 
