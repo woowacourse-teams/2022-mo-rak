@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.exception.AuthenticationException;
 import com.morak.back.core.exception.CustomErrorCode;
-import java.util.Currency;
 import org.junit.jupiter.api.Test;
 
 class JwtTokenProviderTest {
@@ -25,6 +24,21 @@ class JwtTokenProviderTest {
 
         // then
         assertThat(jwtTokenProvider.parsePayload(token)).isEqualTo(payload);
+    }
+
+    @Test
+    void 유효하지않은_토큰에서_payload를_가져올_때_예외를_던진다() {
+        // given
+        jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 3600000L);
+
+        // when
+        String invalidToken = "invalidToken";
+
+        // then
+        assertThatThrownBy(() ->jwtTokenProvider.parsePayload(invalidToken))
+                .isInstanceOf(AuthenticationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.INVALID_AUTHORIZATION_ERROR);
     }
 
     @Test

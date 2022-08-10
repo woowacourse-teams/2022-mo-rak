@@ -32,7 +32,9 @@ class MemberRepositoryTest {
         Assertions.assertAll(
                 () -> assertThat(savedMember).isNotNull(),
                 () -> assertThat(savedMember.getId()).isNotNull(),
-                () -> assertThat(savedMember.getName()).isEqualTo("ellie")
+                () -> assertThat(savedMember)
+                        .extracting("oauthId", "name", "profileUrl")
+                        .containsExactly(MEMBER.getOauthId(), MEMBER.getName(), MEMBER.getProfileUrl())
         );
     }
 
@@ -53,117 +55,136 @@ class MemberRepositoryTest {
     @Test
     public void oauth_id로_멤버를_조회한다() {
         // given
-        String oauthId = "12345678";
+        Member savedMember = memberRepository.save(MEMBER);
 
         // when
-        Optional<Member> member = memberRepository.findByOauthId(oauthId);
+        Optional<Member> findMember = memberRepository.findByOauthId(MEMBER.getOauthId());
 
         // then
         Assertions.assertAll(
-                () -> assertThat(member).isPresent(),
-                () -> assertThat(member.get().getName()).isEqualTo("eden")
+                () -> assertThat(findMember).isPresent(),
+                () -> assertThat(findMember.get())
+                        .extracting("oauthId", "name", "profileUrl")
+                        .containsExactly(savedMember.getOauthId(), savedMember.getName(), savedMember.getProfileUrl())
         );
     }
 
     @Test
-    void 이미_저장된_회원을_가져온다() {
-        Member savedMember = memberRepository.save(MEMBER);
-
-        Optional<Member> findMember = memberRepository.findByOauthId(savedMember.getOauthId());
-
-        assertThat(findMember).isPresent();
-    }
-
-    @Test
     void OAUTH_ID가_같은_회원을_두번_저장할수_없다() {
+        //given
+        memberRepository.save(MEMBER);
+
         Member otherMember = Member.builder()
                 .oauthId(MEMBER.getOauthId())
                 .name(MEMBER.getName())
                 .profileUrl(MEMBER.getProfileUrl())
                 .build();
-        Member savedMember = memberRepository.save(MEMBER);
 
+        //when & then
         assertThatThrownBy(() -> memberRepository.save(otherMember))
                 .isInstanceOf(DataIntegrityViolationException.class);
     }
 
     @Test
     void 길이가_0인_이름은_저장할_수_없다() {
+        //given
         Member member = Member.builder()
                 .oauthId("1234")
                 .name("")
                 .profileUrl("http://")
                 .build();
+
+        //when & then
         assertThatThrownBy(() -> memberRepository.save(member))
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     void 길이가_255이상인_이름은_저장할_수_없다() {
+        //given
         String name = "1".repeat(256);
+
         Member member = Member.builder()
                 .oauthId("1234")
                 .name(name)
                 .profileUrl("http://")
                 .build();
+
+        //when & then
         assertThatThrownBy(() -> memberRepository.save(member))
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     void 길이가_0인_oauthId는_저장할_수_없다() {
+        //given
         Member member = Member.builder()
                 .oauthId("")
                 .name("name")
                 .profileUrl("http://")
                 .build();
+
+        //when & then
         assertThatThrownBy(() -> memberRepository.save(member))
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     void 길이가_255이상인_oauthId는_저장할_수_없다() {
+        //given
         String oauthId = "1".repeat(256);
+
         Member member = Member.builder()
                 .oauthId(oauthId)
                 .name("name")
                 .profileUrl("http://")
                 .build();
+
+        //when & then
         assertThatThrownBy(() -> memberRepository.save(member))
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     void 길이가_0인_profileUrl는_저장할_수_없다() {
+        //given
         Member member = Member.builder()
                 .oauthId("1234")
                 .name("name")
                 .profileUrl("")
                 .build();
+
+        //when & then
         assertThatThrownBy(() -> memberRepository.save(member))
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     void 길이가_255이상인_profileUrl는_저장할_수_없다() {
-
+        //given
         String profileUrl = "http://" + "1".repeat(255);
+
         Member member = Member.builder()
                 .oauthId("1234")
                 .name("name")
                 .profileUrl(profileUrl)
                 .build();
+
+        //when & then
         assertThatThrownBy(() -> memberRepository.save(member))
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     void 형식이_안맞는_profileUrl는_저장할_수_없다() {
+        //given
         Member member = Member.builder()
                 .oauthId("1234")
                 .name("name")
                 .profileUrl("htt")
                 .build();
+
+        //when & then
         assertThatThrownBy(() -> memberRepository.save(member))
                 .isInstanceOf(ConstraintViolationException.class);
     }
