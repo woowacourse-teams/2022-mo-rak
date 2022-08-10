@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.exception.AuthenticationException;
+import com.morak.back.core.exception.CustomErrorCode;
+import java.util.Currency;
 import org.junit.jupiter.api.Test;
 
 class JwtTokenProviderTest {
@@ -33,7 +35,9 @@ class JwtTokenProviderTest {
 
         // when & then
         assertThatThrownBy(() -> jwtTokenProvider.validateToken(token))
-                .isInstanceOf(AuthenticationException.class);
+                .isInstanceOf(AuthenticationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.INVALID_AUTHORIZATION_ERROR);
     }
 
     @Test
@@ -44,6 +48,8 @@ class JwtTokenProviderTest {
 
         // when & then
         assertThatThrownBy(() -> jwtTokenProvider.validateToken(token))
-                .isInstanceOf(AuthenticationException.class);
+                .isInstanceOf(AuthenticationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.EXPIRED_AUTHORIZATION_ERROR);
     }
 }

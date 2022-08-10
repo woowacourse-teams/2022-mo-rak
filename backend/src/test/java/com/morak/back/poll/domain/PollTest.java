@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.team.domain.Team;
@@ -124,14 +125,18 @@ class PollTest {
 
         // when & then
         assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
-                .isInstanceOf(PollDomainLogicException.class);
+                .isInstanceOf(PollDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_COUNT_OVER_ERROR);
     }
 
     @Test
     void 응답_개수가_0인_경우_예외를_던진다() {
         // when & then
         assertThatThrownBy(() -> poll.doPoll(member, new HashMap<>()))
-                .isInstanceOf(PollDomainLogicException.class);
+                .isInstanceOf(PollDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_COUNT_OVER_ERROR);
     }
 
     @Test
@@ -148,7 +153,9 @@ class PollTest {
 
         // when & then
         assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
-                .isInstanceOf(PollAuthorizationException.class);
+                .isInstanceOf(PollAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_ITEM_MISMATCHED_ERROR);
     }
 
     @Test
@@ -184,7 +191,9 @@ class PollTest {
 
         // then
         assertThatThrownBy(() -> poll.close(member))
-                .isInstanceOf(PollDomainLogicException.class);
+                .isInstanceOf(PollDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_ALREADY_CLOSED_ERROR);
     }
 
     @Test
@@ -199,6 +208,8 @@ class PollTest {
 
         // when & then
         assertThatThrownBy(() -> poll.close(member))
-                .isInstanceOf(PollAuthorizationException.class);
+                .isInstanceOf(PollAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_MEMBER_MISMATCHED_ERROR);
     }
 }

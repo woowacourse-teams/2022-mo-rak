@@ -5,8 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.auth.ui.dto.SigninRequest;
+import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.ui.dto.ExceptionResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -23,7 +26,12 @@ public class OAuthAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 로그인을_요청한다(path, request);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
+                () -> assertThat(response.as(ExceptionResponse.class))
+                        .extracting("codeNumber")
+                        .isEqualTo(CustomErrorCode.GITHUB_AUTHORIZATION_ERROR.getNumber())
+        );
     }
 
     private ExtractableResponse<Response> 로그인을_요청한다(String path, SigninRequest request) {

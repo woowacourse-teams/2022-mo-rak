@@ -3,6 +3,7 @@ package com.morak.back.poll.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +37,8 @@ class PollStatusTest {
         PollStatus closed = status.close();
         // then
         assertThatThrownBy(closed::close)
-                .isInstanceOf(PollDomainLogicException.class);
+                .isInstanceOf(PollDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_ALREADY_CLOSED_ERROR);
     }
 }

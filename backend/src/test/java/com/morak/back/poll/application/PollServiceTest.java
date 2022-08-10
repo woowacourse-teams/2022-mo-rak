@@ -14,6 +14,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
@@ -410,7 +411,9 @@ class PollServiceTest {
 
         // when & then
         assertThatThrownBy(() -> pollService.deletePoll(team.getCode(), notHostMember.getId(), poll.getCode()))
-                .isInstanceOf(PollAuthorizationException.class);
+                .isInstanceOf(PollAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_MEMBER_MISMATCHED_ERROR);
     }
 
     @Test
