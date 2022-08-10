@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class AppointmentFixture {
+public class AppointmentCreateRequestFixture {
 
     public static AppointmentCreateRequest 모락_회식_약속잡기_요청_데이터 = new AppointmentCreateRequest(
             "모락 회식 날짜 및 시간",

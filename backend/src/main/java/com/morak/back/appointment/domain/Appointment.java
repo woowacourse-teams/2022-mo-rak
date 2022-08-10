@@ -94,7 +94,7 @@ public class Appointment extends BaseEntity {
         this.description = description;
         this.datePeriod = DatePeriod.of(startDate, endDate, endTime);
         this.timePeriod = TimePeriod.of(startTime, endTime);
-        validateLastDatetime(LocalDateTime.of(endDate, endTime));
+        validateLastDatetime(endDate, endTime);
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
         validateDurationMinutesLessThanTimePeriod(this.durationMinutes, this.timePeriod);
         this.status = OPEN;
@@ -102,7 +102,8 @@ public class Appointment extends BaseEntity {
         this.closedAt = closedAt;
     }
 
-    private void validateLastDatetime(LocalDateTime lastDateTime) {
+    private void validateLastDatetime(LocalDate endDate, LocalTime endTime) {
+        LocalDateTime lastDateTime = LocalDateTime.of(endDate, endTime);
         if (lastDateTime.isBefore(LocalDateTime.now())) {
             throw new AppointmentDomainLogicException(
                     CustomErrorCode.APPOINTMENT_PAST_CREATE_ERROR,
@@ -121,7 +122,6 @@ public class Appointment extends BaseEntity {
                     )
             );
         }
-
     }
 
     public Integer parseHours() {
@@ -152,6 +152,18 @@ public class Appointment extends BaseEntity {
                     member.getId() + "번 멤버는 " + getCode() + "코드의 약속잡기의 호스트가 아닙니다."
             );
         }
+    }
+
+    public LocalDateTime getFirstStartDateTime() {
+        return LocalDateTime.of(datePeriod.getStartDate(), timePeriod.getStartTime());
+    }
+
+    public LocalDateTime getLastEndDateTime() {
+        return LocalDateTime.of(datePeriod.getEndDate(), timePeriod.getEndTime());
+    }
+
+    public boolean isBelongedTo(Team otherTeam) {
+        return team.equals(otherTeam);
     }
 
     public boolean isHost(Member member) {
@@ -187,17 +199,5 @@ public class Appointment extends BaseEntity {
             return NO_ONE_SELECTED;
         }
         return this.count;
-    }
-
-    public LocalDateTime getFirstStartDateTime() {
-        return LocalDateTime.of(datePeriod.getStartDate(), timePeriod.getStartTime());
-    }
-
-    public LocalDateTime getLastEndDateTime() {
-        return LocalDateTime.of(datePeriod.getEndDate(), timePeriod.getEndTime());
-    }
-
-    public boolean isBelongedTo(Team otherTeam) {
-        return team.equals(otherTeam);
     }
 }
