@@ -59,7 +59,6 @@ public class DatePeriod {
     }
 
     public boolean isAvailableRange(DatePeriod other) {
-        // TODO : 로직 제대로 구현되었는지 확인할때 가독성있게 수정
         return !(other.startDate.isBefore(this.startDate) || other.endDate.isAfter(this.endDate));
     }
 }

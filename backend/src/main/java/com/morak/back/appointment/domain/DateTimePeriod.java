@@ -31,6 +31,9 @@ public class DateTimePeriod {
     @FutureOrPresent(message = "약속잡기 가능 마지막 시점은 현재보다 과거일 수 없습니다.")
     private LocalDateTime endDateTime;
 
+    /*
+    `DateTimePeriod`는 `Recommendation`에서도 사용하기 때문에 `minutesUnit`이 필요하다.
+     */
     public static DateTimePeriod of(LocalDateTime startDateTime, LocalDateTime endDateTime, int minutesUnit) {
         validateChronology(startDateTime, endDateTime);
         validateAvailableTimeRange(startDateTime, endDateTime, minutesUnit);
@@ -98,6 +101,6 @@ public class DateTimePeriod {
     }
 
     public TimePeriod toTimePeriod() {
-        return TimePeriod.of(startDateTime.toLocalTime(), endDateTime.toLocalTime(), MINUTES_UNIT);
+        return TimePeriod.of(startDateTime.toLocalTime(), endDateTime.toLocalTime());
     }
 }

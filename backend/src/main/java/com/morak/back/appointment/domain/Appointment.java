@@ -93,10 +93,10 @@ public class Appointment extends BaseEntity {
         this.title = title;
         this.description = description;
         this.datePeriod = DatePeriod.of(startDate, endDate, endTime);
-        this.timePeriod = TimePeriod.of(startTime, endTime, MINUTES_UNIT);
+        this.timePeriod = TimePeriod.of(startTime, endTime);
         validateLastDatetime(LocalDateTime.of(endDate, endTime));
-        this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes, MINUTES_UNIT);
-        validateDurationMinutesLessThanTimePeriod(this.durationMinutes, timePeriod);
+        this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
+        validateDurationMinutesLessThanTimePeriod(this.durationMinutes, this.timePeriod);
         this.status = OPEN;
         this.code = code;
         this.closedAt = closedAt;

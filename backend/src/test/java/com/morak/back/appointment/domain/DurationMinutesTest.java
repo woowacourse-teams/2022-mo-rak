@@ -19,7 +19,7 @@ class DurationMinutesTest {
     })
     void 약속잡기_시간과_분을_합친다(int hours, int minutes, int total) {
         // given
-        DurationMinutes durationMinutes = DurationMinutes.of(hours, minutes, 30);
+        DurationMinutes durationMinutes = DurationMinutes.of(hours, minutes);
 
         // when & then
         assertThat(durationMinutes.getDurationMinutes()).isEqualTo(total);
@@ -32,7 +32,7 @@ class DurationMinutesTest {
     })
     void 약속잡기_진행_시간에서_시간과_분을_추출한다(int hours, int minutes) {
         // given
-        DurationMinutes durationMinutes = DurationMinutes.of(hours, minutes, 30);
+        DurationMinutes durationMinutes = DurationMinutes.of(hours, minutes);
 
         // when & then
         assertAll(
@@ -45,7 +45,7 @@ class DurationMinutesTest {
     @ValueSource(ints = {-1, 25})
     void 약속잡기_진행_시간의_시_가_자연적이지_않을_경우_예외를_던진다(int hours) {
         // when & then
-        assertThatThrownBy(() -> DurationMinutes.of(hours, 0, 30))
+        assertThatThrownBy(() -> DurationMinutes.of(hours, 0))
                 .isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_HOUR_OUT_OF_RANGE_ERROR);
@@ -55,7 +55,7 @@ class DurationMinutesTest {
     @ValueSource(ints = {-1, 60})
     void 약속잡기_진행_시간의_분_이_자연적이지_않을_경우_예외를_던진다(int minutes) {
         // when & then
-        assertThatThrownBy(() -> DurationMinutes.of(0, minutes, 30))
+        assertThatThrownBy(() -> DurationMinutes.of(0, minutes))
                 .isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_MINUTE_OUT_OF_RANGE_ERROR);
@@ -65,7 +65,7 @@ class DurationMinutesTest {
     @ValueSource(ints = {1, 29, 31, 59})
     void 약속잡기_진행_시간이_30분_단위가_아닐_경우_예외를_던진다(int minutes) {
         // when & then
-        assertThatThrownBy(() -> DurationMinutes.of(0, minutes, 30))
+        assertThatThrownBy(() -> DurationMinutes.of(0, minutes))
                 .isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_NOT_MINUTES_UNIT_ERROR);
@@ -78,7 +78,7 @@ class DurationMinutesTest {
     })
     void 약속잡기_진행_시간이_범위를_벗어날_경우_예외를_던진다(int hours, int minutes) {
         // when & then
-        assertThatThrownBy(() -> DurationMinutes.of(hours, minutes, 30))
+        assertThatThrownBy(() -> DurationMinutes.of(hours, minutes))
                 .isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_MINUTE_RANGE_ERROR);

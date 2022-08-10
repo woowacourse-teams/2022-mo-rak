@@ -35,12 +35,11 @@ public class TimePeriod {
         this.endTime = endTime;
     }
 
-    public static TimePeriod of(LocalTime startTime, LocalTime endTime, int minutesUnit) {
+    public static TimePeriod of(LocalTime startTime, LocalTime endTime) {
         if (!isMidnight(endTime)) {
             validateChronology(startTime, endTime);
         }
-        validateMinutes(startTime, endTime, minutesUnit);
-
+        validateMinutes(startTime, endTime);
         return new TimePeriod(startTime, endTime);
     }
 
@@ -61,13 +60,13 @@ public class TimePeriod {
     }
 
     // TODO : minutesUnit. 상수인가, 변수인가
-    private static void validateMinutes(LocalTime startTime, LocalTime endTime, int minutesUnit) {
+    private static void validateMinutes(LocalTime startTime, LocalTime endTime) {
         if (isNotDividedByUnit(startTime) || isNotDividedByUnit(endTime)) {
             throw new AppointmentDomainLogicException(
                 CustomErrorCode.APPOINTMENT_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR,
                 String.format(
                     "약속잡기 시작/마지막 시간(%s, %s)은 %d분 단위여야 합니다.",
-                    startTime, endTime, minutesUnit
+                    startTime, endTime, MINUTES_UNIT
                 )
             );
         }
