@@ -56,7 +56,6 @@ public class AppointmentService {
 
         Appointment appointment = request.toAppointment(team, member, Code.generate(CODE_GENERATOR));
         Appointment savedAppointment = appointmentRepository.save(appointment);
-
         return savedAppointment.getCode();
     }
 

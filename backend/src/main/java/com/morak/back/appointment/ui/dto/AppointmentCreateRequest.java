@@ -7,6 +7,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -69,6 +70,7 @@ public class AppointmentCreateRequest {
                 .endTime(this.endTime)
                 .durationHours(this.durationHours)
                 .durationMinutes(this.durationMinutes)
+                .closedAt(LocalDateTime.now().plusMonths(1))
                 .code(code)
                 .build();
     }

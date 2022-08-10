@@ -47,6 +47,7 @@ class AvailableTimeRepositoryTest {
                         .durationHours(1)
                         .durationMinutes(0)
                         .code(Code.generate(new FakeCodeGenerator()))
+                        .closedAt(LocalDateTime.now().plusMonths(1))
                         .build()
         );
     }

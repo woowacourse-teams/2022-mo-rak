@@ -99,7 +99,7 @@ public class Appointment extends BaseEntity {
         validateDurationMinutesLessThanTimePeriod(this.durationMinutes, timePeriod);
         this.status = OPEN;
         this.code = code;
-        this.closedAt = LocalDateTime.now().plusMonths(1);
+        this.closedAt = closedAt;
     }
 
     private void validateLastDatetime(LocalDateTime lastDateTime) {

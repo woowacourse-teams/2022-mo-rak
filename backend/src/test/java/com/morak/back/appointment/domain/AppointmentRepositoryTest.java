@@ -9,6 +9,7 @@ import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +50,7 @@ class AppointmentRepositoryTest {
                 .durationHours(1)
                 .durationMinutes(0)
                 .code(Code.generate(new FakeCodeGenerator()))
+                .closedAt(LocalDateTime.now().plusMonths(1))
                 .build();
 
         // when
@@ -73,6 +75,7 @@ class AppointmentRepositoryTest {
                 .durationHours(1)
                 .durationMinutes(0)
                 .code(Code.generate(new FakeCodeGenerator()))
+                .closedAt(LocalDateTime.now().plusMonths(1))
                 .build();
         appointmentRepository.save(appointment);
 
@@ -101,6 +104,7 @@ class AppointmentRepositoryTest {
                 .durationHours(1)
                 .durationMinutes(0)
                 .code(Code.generate(new FakeCodeGenerator()))
+                .closedAt(LocalDateTime.now().plusMonths(1))
                 .build();
 
         Appointment savedAppointment = appointmentRepository.save(appointment);
@@ -215,6 +219,7 @@ class AppointmentRepositoryTest {
                 .durationHours(1)
                 .durationMinutes(0)
                 .code(Code.generate(new FakeCodeGenerator()))
+                .closedAt(LocalDateTime.now().plusMonths(1))
                 .build();
 
         Appointment savedAppointment = appointmentRepository.save(appointment);
