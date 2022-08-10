@@ -1,16 +1,13 @@
 package com.morak.back.core.ui;
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.morak.back.core.exception.CachedBodyException;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.core.exception.MorakException;
 import com.morak.back.core.exception.ResourceNotFoundException;
 import com.morak.back.core.support.LogFormatter;
 import com.morak.back.poll.ui.dto.ExceptionResponse;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @Order(2)
 @RestControllerAdvice
@@ -47,12 +45,6 @@ public class GlobalControllerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponse("잘못된 값이 입력되었습니다."));
     }
 
-    @ExceptionHandler(CachedBodyException.class)
-    public ResponseEntity<ExceptionResponse> handleCachedBodyException(CachedBodyException e) {
-        logger.warn(e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponse("요청 정보를 캐싱하는데 실패했습니다."));
-    }
-
     @ExceptionHandler(MorakException.class)
     public ResponseEntity<ExceptionResponse> handleMorakException(MorakException e) {
         logger.warn(e.getMessage());
@@ -60,12 +52,11 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e, HttpServletRequest request)
-            throws IOException {
+    public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e, ContentCachingRequestWrapper requestWrapper) {
         String stackTrace = Arrays.stream(e.getStackTrace())
                 .map(StackTraceElement::toString)
                 .collect(Collectors.joining(" <- "));
-        logger.error(stackTrace + LogFormatter.toPrettyRequestString(request));
+        logger.error(stackTrace + LogFormatter.toPrettyRequestString(requestWrapper));
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptionResponse("알 수 없는 에러입니다."));
     }
