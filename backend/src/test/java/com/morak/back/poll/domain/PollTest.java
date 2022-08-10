@@ -127,7 +127,7 @@ class PollTest {
         assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_COUNT_OVER_ERROR);
+                .isEqualTo(CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR);
     }
 
     @Test
@@ -136,7 +136,7 @@ class PollTest {
         assertThatThrownBy(() -> poll.doPoll(member, new HashMap<>()))
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_COUNT_OVER_ERROR);
+                .isEqualTo(CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR);
     }
 
     @Test

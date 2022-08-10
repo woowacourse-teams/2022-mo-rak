@@ -10,6 +10,7 @@ import static com.morak.back.SimpleRestAssured.toObjectList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
+import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.exception.CustomErrorCode;
@@ -51,8 +52,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.EMPTY_AUTHORIZATION_ERROR.getNumber())
         );
     }
@@ -70,8 +70,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR.getNumber())
         );
     }
@@ -129,8 +128,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.POLL_NOT_FOUND_ERROR.getNumber())
         );
     }
@@ -147,8 +145,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.POLL_ITEM_NOT_FOUND_ERROR.getNumber())
         );
     }
@@ -294,8 +291,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
         );
     }
@@ -312,8 +308,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
         );
     }
@@ -354,8 +349,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.POLL_MEMBER_MISMATCHED_ERROR.getNumber())
         );
     }
@@ -373,8 +367,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
         );
     }
@@ -392,8 +385,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
         );
     }
@@ -411,8 +403,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
         );
     }

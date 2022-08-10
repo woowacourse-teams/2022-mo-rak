@@ -55,7 +55,7 @@ public class DurationMinutes {
     private static void validateTimeFormat(Integer hours, Integer minutes) {
         if (hours < MIN_TIME || hours > MAX_HOURS) {
             throw new AppointmentDomainLogicException(
-                CustomErrorCode.APPOINTMENT_DURATION_HOUR_OVER_DAY_ERROR,
+                CustomErrorCode.APPOINTMENT_DURATION_HOUR_OUT_OF_RANGE_ERROR,
                 String.format(
                     "약속잡기 진행시간 %d 는 0~24시 사이여야 합니다.", hours
                 )
@@ -65,7 +65,7 @@ public class DurationMinutes {
 
         if (minutes < MIN_TIME || minutes > MAX_MINUTES) {
             throw new AppointmentDomainLogicException(
-                CustomErrorCode.APPOINTMENT_DURATION_MINUTE_OVER_HOUR_ERROR,
+                CustomErrorCode.APPOINTMENT_DURATION_MINUTE_OUT_OF_RANGE_ERROR,
                 String.format(
                     "약속잡기 진행시간 %d 는 0~59분 사이여야 합니다.", minutes
                 )

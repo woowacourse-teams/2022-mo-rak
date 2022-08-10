@@ -4,6 +4,7 @@ import static com.morak.back.SimpleRestAssured.post;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
+import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.ui.dto.ExceptionResponse;
@@ -28,8 +29,7 @@ public class OAuthAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.GITHUB_AUTHORIZATION_ERROR.getNumber())
         );
     }

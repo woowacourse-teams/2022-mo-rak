@@ -116,7 +116,7 @@ public class Poll extends BaseEntity {
     private void validateCounts(Integer pollItemCount) {
         if (!allowedPollCount.isAllowed(pollItemCount)) {
             throw new PollDomainLogicException(
-                CustomErrorCode.POLL_COUNT_OVER_ERROR,
+                CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR,
                 getCode() + "번 투표에 " + pollItemCount + "개의 투표 항목을 선택할 수 없습니다."
             );
         }

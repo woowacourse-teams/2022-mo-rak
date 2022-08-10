@@ -158,7 +158,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.as(ExceptionResponse.class).getCodeNumber())
+        assertThat(SimpleRestAssured.extractCodeNumber(response))
                 .isEqualTo(CustomErrorCode.AVAILABLETIME_TIME_OUT_OF_RANGE_ERROR.getNumber());
     }
 
@@ -210,7 +210,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.as(ExceptionResponse.class).getCodeNumber())
+        assertThat(SimpleRestAssured.extractCodeNumber(response))
                 .isEqualTo(CustomErrorCode.AVAILABLETIME_TIME_OUT_OF_RANGE_ERROR.getNumber());
     }
 
@@ -348,7 +348,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.as(ExceptionResponse.class).getCodeNumber())
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
         );
     }
@@ -369,7 +369,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.as(ExceptionResponse.class).getCodeNumber()).startsWith("31")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response)).startsWith("31")
         );
     }
 
@@ -403,7 +403,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.as(ExceptionResponse.class).getCodeNumber())
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.APPOINTMENT_DUPLICATED_AVAILABLE_TIME_ERROR.getNumber())
         );
     }
@@ -421,7 +421,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
-                () -> assertThat(response.as(ExceptionResponse.class).getCodeNumber())
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.APPOINTMENT_TEAM_MISMATCHED_ERROR.getNumber())
         );
     }

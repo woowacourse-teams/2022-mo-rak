@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.AuthSupporter;
+import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.core.exception.CustomErrorCode;
@@ -67,8 +68,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
         );
     }
@@ -99,8 +99,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
-                () -> assertThat(response.as(ExceptionResponse.class))
-                        .extracting("codeNumber")
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.TEAM_INVITATION_NOT_FOUND_ERROR.getNumber())
         );
     }
@@ -210,7 +209,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 기본_그룹을_조회한다() {
-        String otherToken = tokenProvider.createToken(String.valueOf(4L));
+        String otherToken = tokenProvider.createToken(String.valueOf(5L));
 
         String targetName = "AAA";
         사용자로_그룹_생성을_요청한다(new TeamCreateRequest(targetName), otherToken);

@@ -48,7 +48,7 @@ class DurationMinutesTest {
         assertThatThrownBy(() -> DurationMinutes.of(hours, 0, 30))
                 .isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_HOUR_OVER_DAY_ERROR);
+                .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_HOUR_OUT_OF_RANGE_ERROR);
     }
 
     @ParameterizedTest
@@ -58,7 +58,7 @@ class DurationMinutesTest {
         assertThatThrownBy(() -> DurationMinutes.of(0, minutes, 30))
                 .isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_MINUTE_OVER_HOUR_ERROR);
+                .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_MINUTE_OUT_OF_RANGE_ERROR);
     }
 
     @ParameterizedTest
