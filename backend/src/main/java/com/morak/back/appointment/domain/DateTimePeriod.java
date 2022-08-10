@@ -33,8 +33,8 @@ public class DateTimePeriod {
 
     public static DateTimePeriod of(LocalDateTime startDateTime, LocalDateTime endDateTime, int minutesUnit) {
         validateChronology(startDateTime, endDateTime);
-        validateMinutesUnit(startDateTime, endDateTime);
         validateAvailableTimeRange(startDateTime, endDateTime, minutesUnit);
+        validateMinutesUnit(startDateTime, endDateTime);
         return new DateTimePeriod(startDateTime, endDateTime);
     }
 
@@ -59,25 +59,6 @@ public class DateTimePeriod {
     }
 
     /**
-    20분 ~ 50분인 경우를 검증한다.
-     */
-    private static void validateMinutesUnit(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        if (isNotDividedByUnit(startDateTime) || isNotDividedByUnit(endDateTime)) {
-            throw new AppointmentDomainLogicException(
-                CustomErrorCode.AVAILABLETIME_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR,
-                String.format(
-                    "약속잡기 가능 시간(%s, %s)은 " + MINUTES_UNIT + "분 단위여야 합니다.",
-                    startDateTime, endDateTime
-                )
-            );
-        }
-    }
-
-    private static boolean isNotDividedByUnit(LocalDateTime time) {
-        return time.getMinute() % MINUTES_UNIT != 0;
-    }
-
-    /**
      * Duration이 30분이 아닌 경우를 검증한다.
      */
     private static void validateAvailableTimeRange(LocalDateTime startDateTime, LocalDateTime endDateTime,
@@ -91,6 +72,25 @@ public class DateTimePeriod {
                 )
             );
         }
+    }
+
+    /**
+     20분 ~ 50분인 경우를 검증한다.
+     */
+    private static void validateMinutesUnit(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        if (isNotDividedByUnit(startDateTime) || isNotDividedByUnit(endDateTime)) {
+            throw new AppointmentDomainLogicException(
+                    CustomErrorCode.AVAILABLETIME_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR,
+                    String.format(
+                            "약속잡기 가능 시간(%s, %s)은 " + MINUTES_UNIT + "분 단위여야 합니다.",
+                            startDateTime, endDateTime
+                    )
+            );
+        }
+    }
+
+    private static boolean isNotDividedByUnit(LocalDateTime time) {
+        return time.getMinute() % MINUTES_UNIT != 0;
     }
 
     public DatePeriod toDatePeriod() {

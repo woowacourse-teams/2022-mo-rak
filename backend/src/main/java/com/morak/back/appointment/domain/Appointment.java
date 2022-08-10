@@ -106,7 +106,7 @@ public class Appointment extends BaseEntity {
         if (lastDateTime.isBefore(LocalDateTime.now())) {
             throw new AppointmentDomainLogicException(
                     CustomErrorCode.APPOINTMENT_PAST_CREATE_ERROR,
-                    "약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다."
+                    String.format("약속잡기의 마지막 날짜와 시간(%s)은 현재보다 과거일 수 없습니다.", lastDateTime)
             );
         }
     }
@@ -115,9 +115,13 @@ public class Appointment extends BaseEntity {
         if (timePeriod.isLessThanDurationMinutes(durationMinutes.getDurationMinutes())) {
             throw new AppointmentDomainLogicException(
                     CustomErrorCode.APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR,
-                    "진행 시간은 약속잡기 시간보다 짧을 수 없습니다."
+                    String.format(
+                            "진행시간(%d)은 약속잡기의 시작시간~마지막시간(%s ~ %s)은 보다 짧아야 합니다.",
+                            durationMinutes.getDurationMinutes(), timePeriod.getStartTime(), timePeriod.getEndTime()
+                    )
             );
         }
+
     }
 
     public Integer parseHours() {

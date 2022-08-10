@@ -25,8 +25,8 @@ public class DurationMinutes {
     private Integer durationMinutes;
 
     public static DurationMinutes of(Integer hours, Integer minutes, int minutesUnit) {
-        validateMinutes(minutes, minutesUnit);
         validateTimeFormat(hours, minutes);
+        validateMinutes(minutes, minutesUnit);
         int durationMinutes = hours * HOUR_MINUTES + minutes;
         validateDurationMinutesRange(durationMinutes, minutesUnit);
         return new DurationMinutes(durationMinutes);

@@ -30,7 +30,7 @@ public enum CustomErrorCode {
     POLL_ITEM_NOT_FOUND_ERROR("2301", "요청한 투표항목을 찾을 수 없습니다."),
 
     APPOINTMENT_ALREADY_CLOSED_ERROR("3100", "이미 마감된 약속잡기입니다."),
-    APPOINTMENT_DUPLICATED_AVAILABLE_TIME_ERROR("3101", "약속잡기 선택에 중복된 시간이 있습니다."),
+    APPOINTMENT_DUPLICATED_AVAILABLE_TIME_ERROR("3101", "약속잡기 선택에 중복된 시간이 있습니다."), // TODO -> availableTime
     APPOINTMENT_PAST_CREATE_ERROR("3102", "약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다.."),
     APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR("3103", "진행 시간은 약속잡기 시간보다 짧을 수 없습니다."),
     APPOINTMENT_DURATION_NOT_MINUTES_UNIT_ERROR("3104", "약속잡기 진행시간은 30분 단위여야 합니다."),
@@ -53,8 +53,8 @@ public enum CustomErrorCode {
     INVALID_PROPERTY_ERROR("4000", "잘못된 값이 입력되었습니다."),
     CACHED_BODY_ERROR("4100", "캐시바디"),
 
-    MORAK_ERROR("9901", ""),
-    RUNTIME_ERROR("9902", "");
+    MORAK_ERROR("9901", "처리하지 못한 예외입니다."),
+    RUNTIME_ERROR("9902", "예상치 못한 예외입니다.");
 
     private final String number;
     private final String information;

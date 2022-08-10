@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
+import com.morak.back.core.exception.CustomErrorCode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -42,18 +43,22 @@ class DurationMinutesTest {
 
     @ParameterizedTest
     @ValueSource(ints = {-1, 25})
-    void 약속잡기_진행_시간이_자연적이지_않을_경우_예외를_던진다(int hours) {
+    void 약속잡기_진행_시간의_시_가_자연적이지_않을_경우_예외를_던진다(int hours) {
         // when & then
         assertThatThrownBy(() -> DurationMinutes.of(hours, 0, 30))
-                .isInstanceOf(AppointmentDomainLogicException.class);
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_HOUR_OVER_DAY_ERROR);
     }
 
     @ParameterizedTest
     @ValueSource(ints = {-1, 60})
-    void 약속잡기_진행_시간의_분이_자연적이지_않을_경우_예외를_던진다(int minutes) {
+    void 약속잡기_진행_시간의_분_이_자연적이지_않을_경우_예외를_던진다(int minutes) {
         // when & then
         assertThatThrownBy(() -> DurationMinutes.of(0, minutes, 30))
-                .isInstanceOf(AppointmentDomainLogicException.class);
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_MINUTE_OVER_HOUR_ERROR);
     }
 
     @ParameterizedTest
@@ -61,7 +66,9 @@ class DurationMinutesTest {
     void 약속잡기_진행_시간이_30분_단위가_아닐_경우_예외를_던진다(int minutes) {
         // when & then
         assertThatThrownBy(() -> DurationMinutes.of(0, minutes, 30))
-                .isInstanceOf(AppointmentDomainLogicException.class);
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_NOT_MINUTES_UNIT_ERROR);
     }
 
     @ParameterizedTest
@@ -72,6 +79,8 @@ class DurationMinutesTest {
     void 약속잡기_진행_시간이_범위를_벗어날_경우_예외를_던진다(int hours, int minutes) {
         // when & then
         assertThatThrownBy(() -> DurationMinutes.of(hours, minutes, 30))
-                .isInstanceOf(AppointmentDomainLogicException.class);
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_MINUTE_RANGE_ERROR);
     }
 }

@@ -10,6 +10,7 @@ import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
@@ -55,7 +56,8 @@ class AppointmentTest {
                         .durationMinutes(0)
                         .build()
         ).isInstanceOf(AppointmentDomainLogicException.class)
-                .hasMessageContaining("약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다.");
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_PAST_CREATE_ERROR);
     }
 
     @Test
@@ -76,7 +78,8 @@ class AppointmentTest {
                         .durationMinutes(0)
                         .build()
         ).isInstanceOf(AppointmentDomainLogicException.class)
-                .hasMessageContaining("진행 시간은 약속잡기 시간보다 짧을 수 없습니다.");
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR);
     }
 
     @Test
@@ -84,19 +87,19 @@ class AppointmentTest {
 
         // then & when
         assertThatNoException().isThrownBy(
-                        () -> Appointment.builder()
-                                .host(new Member())
-                                .team(new Team())
-                                .title("스터디 회의 날짜 정하기")
-                                .description("필참!!")
-                                .startDate(LocalDate.now().plusDays(1))
-                                .endDate(LocalDate.now().plusDays(5))
-                                .startTime(of(10, 0))
-                                .endTime(of(11, 0))
-                                .durationHours(1)
-                                .durationMinutes(0)
-                                .build()
-                );
+                () -> Appointment.builder()
+                        .host(new Member())
+                        .team(new Team())
+                        .title("스터디 회의 날짜 정하기")
+                        .description("필참!!")
+                        .startDate(LocalDate.now().plusDays(1))
+                        .endDate(LocalDate.now().plusDays(5))
+                        .startTime(of(10, 0))
+                        .endTime(of(11, 0))
+                        .durationHours(1)
+                        .durationMinutes(0)
+                        .build()
+        );
     }
 
     @Test
@@ -145,6 +148,8 @@ class AppointmentTest {
 
         //when & then
         assertThatThrownBy(() -> appointment.close(ellie))
-                .isInstanceOf(AppointmentAuthorizationException.class);
+                .isInstanceOf(AppointmentAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR);
     }
 }

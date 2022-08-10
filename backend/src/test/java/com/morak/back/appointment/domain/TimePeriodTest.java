@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
+import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,7 +18,9 @@ class TimePeriodTest {
     void 약속잡기_시작_시간이_30분_단위가_아닐_경우_생성시_예외를_던진다(int minutes) {
         // when & then
         assertThatThrownBy(() -> TimePeriod.of(LocalTime.of(10, minutes), LocalTime.of(14, 0), 30))
-                .isInstanceOf(AppointmentDomainLogicException.class);
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR);
     }
 
     @ParameterizedTest
@@ -25,7 +28,9 @@ class TimePeriodTest {
     void 약속잡기_마지막_시간이_30분_단위가_아닐_경우_생성시_예외를_던진다(int minutes) {
         // when & then
         assertThatThrownBy(() -> TimePeriod.of(LocalTime.of(10, 30), LocalTime.of(14, minutes), 30))
-                .isInstanceOf(AppointmentDomainLogicException.class);
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR);
     }
 
     @Test
@@ -39,6 +44,23 @@ class TimePeriodTest {
         );
     }
 
+    @Test
+    void 약속잡기_마지막_시간이_시작_시간보다_빠를경우_예외를_던진다() {
+        // given
+        int startTimeHour = 10;
+        int endTimeHour = 5;
+        // when & then
+        assertThatThrownBy(() -> TimePeriod.of(
+                LocalTime.of(startTimeHour, 0),
+                LocalTime.of(endTimeHour, 0),
+                30))
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_TIME_REVERSE_CHRONOLOGY_ERROR);
+
+    }
+
+    // TODO : 아래 테스트를 parameterized Test로 전환한다.
     @Test
     void 약속잡기_가능시간이_10시부터_20시이고_선택시간이_23시_30분부터_24시이면_예외를_던진다() {
         // given
