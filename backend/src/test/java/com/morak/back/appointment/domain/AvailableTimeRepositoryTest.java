@@ -3,10 +3,8 @@ package com.morak.back.appointment.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.appointment.FakeCodeGenerator;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,7 +44,7 @@ class AvailableTimeRepositoryTest {
                         .endTime(LocalTime.of(18, 30))
                         .durationHours(1)
                         .durationMinutes(0)
-                        .code(Code.generate(new FakeCodeGenerator()))
+                        .code(Code.generate(length -> "FJn3ND26"))
                         .closedAt(LocalDateTime.now().plusMonths(1))
                         .build()
         );

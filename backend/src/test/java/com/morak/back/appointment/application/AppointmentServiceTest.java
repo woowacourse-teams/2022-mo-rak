@@ -10,7 +10,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.morak.back.appointment.FakeCodeGenerator;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.AvailableTime;
@@ -76,7 +75,7 @@ class AppointmentServiceTest {
         에덴 = Member.builder().id(1L).build();
         모락 = Team.builder().
                 id(1L)
-                .code(Code.generate(new FakeCodeGenerator()))
+                .code(Code.generate(length -> "FJn3ND26"))
                 .build();
         회식_날짜_약속잡기 = Appointment.builder()
                 .id(101L)
@@ -90,7 +89,7 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .code(Code.generate(new FakeCodeGenerator()))
+                .code(Code.generate(length -> "FJn3ND26"))
                 .build();
         스터디_날짜_약속잡기 = Appointment.builder()
                 .host(에덴)
@@ -103,7 +102,7 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .code(Code.generate(new FakeCodeGenerator()))
+                .code(Code.generate(length -> "FJn3ND26"))
                 .build();
         회식_가능_시간_4시부터_4시반까지 = AvailableTime.builder()
                 .member(에덴)
@@ -185,7 +184,7 @@ class AppointmentServiceTest {
         // given
         Team 다른팀 = Team.builder().
                 id(2L)
-                .code(Code.generate(new FakeCodeGenerator()))
+                .code(Code.generate(length -> "FJn3ND26"))
                 .build();
         given(teamRepository.findByCode(anyString())).willReturn(Optional.of(다른팀));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
