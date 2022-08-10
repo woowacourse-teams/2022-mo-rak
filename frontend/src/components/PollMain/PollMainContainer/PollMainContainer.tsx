@@ -22,7 +22,8 @@ function PollMainContainer() {
   useEffect(() => {
     const fetchPolls = async () => {
       const res = await getPolls(groupCode);
-      setPolls(res);
+      console.log(res);
+      setPolls(res.data);
     };
 
     try {

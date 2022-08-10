@@ -47,7 +47,7 @@ function PollProgressItemGroup({
     const fetchPollItems = async (pollCode: PollInterface['code']) => {
       try {
         const res = await getPollItems(pollCode, groupCode);
-        setPollItems(res);
+        setPollItems(res.data);
       } catch (err) {
         alert(err);
       }

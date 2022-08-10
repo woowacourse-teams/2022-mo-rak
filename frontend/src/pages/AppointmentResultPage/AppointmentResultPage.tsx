@@ -22,7 +22,7 @@ function AppointmentResultPage() {
     const fetchAppointment = async () => {
       try {
         const res = await getAppointment(groupCode, appointmentCode);
-        setAppointment(res);
+        setAppointment(res.data);
       } catch (err) {
         alert(err);
       }
