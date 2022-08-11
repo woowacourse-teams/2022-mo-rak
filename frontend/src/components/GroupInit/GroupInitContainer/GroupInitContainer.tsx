@@ -1,6 +1,6 @@
 import React from 'react';
-import Box from '../../common/Box/Box';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import Box from '../../@common/Box/Box';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import GroupCreateForm from '../GroupCreateForm/GroupCreateForm';
 import GroupParticipateForm from '../GroupParticipateForm/GroupParticipateForm';
 

@@ -3,8 +3,8 @@ import { useTheme } from '@emotion/react';
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import Button from '../../common/Button/Button';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import Button from '../../@common/Button/Button';
 import { closePoll, deletePoll } from '../../../api/poll';
 import { PollInterface, getPollResponse } from '../../../types/poll';
 import { GroupInterface } from '../../../types/group';

@@ -3,11 +3,11 @@ import { useTheme } from '@emotion/react';
 
 import { useNavigate } from 'react-router-dom';
 
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { GroupInterface } from '../../../types/group';
 import { AppointmentInterface } from '../../../types/appointment';
 import { closeAppointment } from '../../../api/appointment';
-import Button from '../../common/Button/Button';
+import Button from '../../@common/Button/Button';
 
 interface Props {
   groupCode: GroupInterface['code'];
