@@ -55,16 +55,16 @@ const StyledIntroduceSection = styled.section`
   justify-content: space-evenly;
 `;
 
-const StyledMainIntroduceText = styled.h1`
+const StyledMainIntroduceText = styled.h1(({ theme }) => `
   font-size: 4rem;
   text-align: left;
-  color: black;
+  color: ${theme.colors.BLACK_100};
   margin-bottom: 2rem;
   position: relative;
   font-weight: 700;
   line-height: 4.4rem;
   letter-spacing: 0.4rem;
-`;
+`);
 
 const StyledHighlightImage = styled.img`
   position: absolute; 
@@ -72,13 +72,13 @@ const StyledHighlightImage = styled.img`
   top: 3.2rem;
 `;
 
-const StyledDetailIntroduceText = styled.span`
+const StyledDetailIntroduceText = styled.span(({ theme }) => `
   font-size: 2rem;
   text-align: left;
-  color: black;
+  color: ${theme.colors.BLACK_100};
   letter-spacing: 0.1rem; // TODO: 4단위
   line-height: 2.4rem;
-`;
+`);
 
 const StyledImageWrapper = styled.div`
   position: relative;

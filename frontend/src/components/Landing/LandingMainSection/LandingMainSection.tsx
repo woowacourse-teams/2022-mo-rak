@@ -1,4 +1,4 @@
-import React, { RefObject, MouseEvent } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 
 import Logo from '../../../assets/logo.svg';
@@ -86,7 +86,7 @@ const StyledNavbar = styled.nav`
 `;
 
 const StyledLogo = styled.img`
-  width: 10em; 
+  width: 10rem; 
   position: absolute; 
   top: 2rem; 
   left: 4rem;
@@ -105,25 +105,25 @@ const StyledMainSection = styled.section`
   background-image: url(${Circle});
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: bottom 0px right 0px;
+  background-position: bottom 0 right 0;
 `;
 
-const StyledSmallTitle = styled.div`
+const StyledSmallTitle = styled.div(({ theme }) => `
   font-size: 2.4rem;
   margin-bottom: 1.2rem;
-  color: black;
+  color: ${theme.colors.BLACK_100};
   letter-spacing: 0.4rem;
-`;
+`);
 
-const StyledBigTitle = styled.h1`
+const StyledBigTitle = styled.h1(({ theme }) => `
   font-size: 10.4rem;
   font-weight: 700;
   text-align: center;
   position: relative;
-  color: black;
+  color: ${theme.colors.BLACK_100};
   line-height: 12rem;
   letter-spacing: -0.4rem;
-`;
+`);
 
 const StyledSmileImage = styled.img`
   position: absolute; 
@@ -158,12 +158,12 @@ const StlyedBlobContainer = styled.div`
   position: relative;
 `;
 
-const StyledGuideText = styled.span`
+const StyledGuideText = styled.span(({ theme }) => `
   position: absolute; 
   top: 7.2rem; 
   left: 4.2rem; 
   font-size: 2.4rem; 
-  color: black;
-`;
+  color: ${theme.colors.BLACK_100};
+`);
 
 export default LandingMainSection;
