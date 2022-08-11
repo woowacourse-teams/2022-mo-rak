@@ -42,7 +42,7 @@ function PollCreateForm() {
       // TODO: 쿼리 적용
 
       const res = await createPoll(pollData, groupCode);
-      const pollCode = res.headers.get('location').split('polls/')[1];
+      const pollCode = res.headers.location.split('polls/')[1];
 
       // TODO: 상수화
       navigate(`/groups/${groupCode}/poll/${pollCode}/progress`);

@@ -43,11 +43,23 @@ function AppointmentResultRanking({
   const totalParticipants = groupMembers.length;
 
   useEffect(() => {
+    const fetchAppointmentRecommendation = async () => {
+      try {
+        const res = await getAppointmentRecommendation(groupCode, appointmentCode);
+        setAppointmentRecommendation(res.data);
+      } catch (err) {
+        alert(err);
+      }
+    };
+    fetchAppointmentRecommendation();
+  }, []);
+
+  useEffect(() => {
     const fetchGroupMembers = async () => {
       try {
         if (groupCode) {
           const res = await getGroupMembers(groupCode);
-          setGroupMembers(res);
+          setGroupMembers(res.data);
         }
       } catch (err) {
         if (err instanceof Error) {

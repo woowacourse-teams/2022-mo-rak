@@ -55,7 +55,7 @@ function PollResultItemGroup({ pollCode, status, groupCode, pollResult }: Props)
       try {
         if (groupCode) {
           const res = await getPollItems(pollCode, groupCode);
-          setSelectedPollItemIds(getSelectedPollItemIds(res));
+          setSelectedPollItemIds(getSelectedPollItemIds(res.data));
         }
       } catch (err) {
         alert(err);

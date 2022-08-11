@@ -31,7 +31,7 @@ function PollMainProgress({ pollCode, groupCode }: Props) {
       try {
         if (groupCode) {
           const res = await getPollResult(pollCode, groupCode);
-          setPollResult(res);
+          setPollResult(res.data);
         }
       } catch (err) {
         alert(err);
@@ -47,7 +47,7 @@ function PollMainProgress({ pollCode, groupCode }: Props) {
         if (groupCode) {
           const res = await getGroupMembers(groupCode);
 
-          setGroupMembers(res);
+          setGroupMembers(res.data);
         }
       } catch (err) {
         if (err instanceof Error) {

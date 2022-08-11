@@ -29,12 +29,12 @@ function PollResultContainer() {
   useEffect(() => {
     const fetchPoll = async (pollCode: PollInterface['code']) => {
       const res = await getPoll(pollCode, groupCode);
-      setPoll(res);
+      setPoll(res.data);
     };
 
     const fetchPollResult = async (pollCode: PollInterface['code']) => {
       const res = await getPollResult(pollCode, groupCode);
-      setPollResult(res);
+      setPollResult(res.data);
     };
 
     try {
