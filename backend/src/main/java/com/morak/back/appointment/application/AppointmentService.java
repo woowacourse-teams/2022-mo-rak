@@ -88,7 +88,9 @@ public class AppointmentService {
         if (!appointment.isBelongedTo(findTeam)) {
             throw new AppointmentAuthorizationException(
                     CustomErrorCode.APPOINTMENT_TEAM_MISMATCHED_ERROR,
-                    "%s 코드의 약속잡기는 %s 코드의 팀에 속해있지 않습니다."
+                    String.format("%s 코드의 약속잡기는 %s 코드의 팀에 속해있지 않습니다.",
+                            appointment.getCode(), findTeam.getCode()
+                    )
             );
         }
     }
@@ -106,9 +108,9 @@ public class AppointmentService {
                         CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR, appointmentCode
                 ));
 
+        validateDuplicatedRequest(requests);
         validateAppointmentInTeam(team, appointment);
         validateAppointmentStatus(appointment);
-        validateDuplicatedRequest(requests);
         deleteOldAvailableTimes(memberId, appointment);
 
         List<AvailableTime> availableTimes = requests.stream()

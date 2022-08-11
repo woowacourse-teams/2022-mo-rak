@@ -7,6 +7,8 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.domain.BaseEntity;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -55,19 +57,21 @@ public class AvailableTime extends BaseEntity {
         this.dateTimePeriod = dateTimePeriod;
     }
 
-    private void validateAvailableTimeRange(Appointment appointment, DateTimePeriod dateTimePeriod) {
-        validateDateRange(appointment, dateTimePeriod);
-        validateTimeRange(appointment, dateTimePeriod);
+    private void validateAvailableTimeRange(Appointment appointment, DateTimePeriod createDateTimePeriod) {
+        validateDateRange(appointment, createDateTimePeriod);
+        validateTimeRange(appointment, createDateTimePeriod);
     }
 
-    private void validateDateRange(Appointment appointment, DateTimePeriod dateTimePeriod) {
-        if (!appointment.isAvailableDateRange(dateTimePeriod.toDatePeriod())) {
+    private void validateDateRange(Appointment appointment, DateTimePeriod createDataTimePeriod) {
+        LocalTime localTime = createDataTimePeriod.getEndDateTime().toLocalTime().withSecond(0).withNano(0);
+
+        if (!appointment.isAvailableDateRange(createDataTimePeriod.toDatePeriod(localTime))) {
             throw new AppointmentDomainLogicException(
                 CustomErrorCode.AVAILABLETIME_DATE_OUT_OF_RANGE_ERROR,
                 String.format(
-                    "%s 코드 투표의 약속잡기 선택날짜 %s 는 %s 이내여야 합니다.",
+                    "%s 코드 투표의 약속잡기선택날짜 %s 는 약속잡기날짜 %s 이내여야 합니다.",
                     appointment.getCode(),
-                    dateTimePeriod.toDatePeriod(),
+                    createDataTimePeriod.toDatePeriod(localTime),
                     appointment.getDatePeriod()
                 )
             );
@@ -86,5 +90,24 @@ public class AvailableTime extends BaseEntity {
                 )
             );
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        AvailableTime that = (AvailableTime) o;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getAppointment(),
+                that.getAppointment()) && Objects.equals(getMember(), that.getMember())
+                && Objects.equals(getDateTimePeriod(), that.getDateTimePeriod());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getAppointment(), getMember(), getDateTimePeriod());
     }
 }

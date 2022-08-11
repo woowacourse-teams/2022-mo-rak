@@ -132,8 +132,11 @@ public class Appointment extends BaseEntity {
         return this.durationMinutes.parseMinutes();
     }
 
-    public boolean isAvailableDateRange(DatePeriod datePeriod) {
-        return this.datePeriod.isAvailableRange(datePeriod);
+    /*
+    DatePeriod를 직접 사용하면 getEndDate()의 minusDay 를 호출할 수 없습니다.
+     */
+    public boolean isAvailableDateRange(DatePeriod otherDatePeriod) {
+        return new DatePeriod(getStartDate(), getEndDate()).isAvailableRange(otherDatePeriod);
     }
 
     public boolean isAvailableTimeRange(TimePeriod timePeriod) {
@@ -154,11 +157,11 @@ public class Appointment extends BaseEntity {
         }
     }
 
-    public LocalDateTime getFirstStartDateTime() {
+    public LocalDateTime getStartDateTime() {
         return LocalDateTime.of(datePeriod.getStartDate(), timePeriod.getStartTime());
     }
 
-    public LocalDateTime getLastEndDateTime() {
+    public LocalDateTime getEndDateTime() {
         return LocalDateTime.of(datePeriod.getEndDate(), timePeriod.getEndTime());
     }
 
@@ -179,7 +182,11 @@ public class Appointment extends BaseEntity {
     }
 
     public LocalDate getEndDate() {
-        return this.datePeriod.getEndDate();
+        LocalDate endDate = this.datePeriod.getEndDate();
+        if (this.timePeriod.getEndTime().equals(LocalTime.of(0, 0))) {
+            endDate = endDate.minusDays(1);
+        }
+        return endDate;
     }
 
     public LocalTime getStartTime() {

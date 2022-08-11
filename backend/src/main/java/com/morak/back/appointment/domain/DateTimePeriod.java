@@ -5,7 +5,9 @@ import static com.morak.back.appointment.domain.Appointment.MINUTES_UNIT;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
@@ -96,11 +98,16 @@ public class DateTimePeriod {
         return time.getMinute() % MINUTES_UNIT != 0;
     }
 
-    public DatePeriod toDatePeriod() {
-        return new DatePeriod(startDateTime.toLocalDate(), endDateTime.toLocalDate());
+    public DatePeriod toDatePeriod(LocalTime localTime) {
+        LocalDate endDate = endDateTime.toLocalDate();
+        if (localTime.equals(LocalTime.of(0, 0))) {
+            endDate = endDate.minusDays(1);
+        }
+        return new DatePeriod(startDateTime.toLocalDate(), endDate);
     }
 
     public TimePeriod toTimePeriod() {
         return TimePeriod.of(startDateTime.toLocalTime(), endDateTime.toLocalTime());
     }
+
 }

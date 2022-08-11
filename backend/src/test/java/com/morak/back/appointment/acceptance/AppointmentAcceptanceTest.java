@@ -190,7 +190,6 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
     @CsvSource({
             "1, 15, 30, 1, 16, 0",
             "2, 0, 0, 2, 0, 30",
-            "2, 0, 0, 2, 0, 30",
             "4, 0, 0, 4, 0, 30"
     })
     void 약속잡기가_16시부터_자정까지_선택_가능한_경우_범위를_벗어나면_BAD_REQUEST를_응답한다(
@@ -210,7 +209,8 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(SimpleRestAssured.extractCodeNumber(response))
-                .isEqualTo(CustomErrorCode.AVAILABLETIME_TIME_OUT_OF_RANGE_ERROR.getNumber());
+                .isIn(CustomErrorCode.AVAILABLETIME_TIME_OUT_OF_RANGE_ERROR.getNumber(),
+                        CustomErrorCode.AVAILABLETIME_DATE_OUT_OF_RANGE_ERROR.getNumber());
     }
 
     @ParameterizedTest

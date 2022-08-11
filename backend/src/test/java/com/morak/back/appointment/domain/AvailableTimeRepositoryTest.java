@@ -4,8 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
+import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
+import com.morak.back.team.domain.TeamRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,10 +17,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-@DataJpaTest
+@RepositoryTest
 class AvailableTimeRepositoryTest {
 
     @Autowired
@@ -30,12 +32,14 @@ class AvailableTimeRepositoryTest {
     private Appointment appointment;
 
     @BeforeEach
-    void setUp() {
-        member = Member.builder().id(1L).build();
+    void setUp(@Autowired MemberRepository memberRepository, @Autowired TeamRepository teamRepository) {
+        member = memberRepository.findById(1L).orElseThrow();
+        Team team = teamRepository.findByCode("MoraK123").orElseThrow();
+
         this.appointment = appointmentRepository.save(
                 Appointment.builder()
                         .host(member)
-                        .team(Team.builder().id(1L).build())
+                        .team(team)
                         .title("회식 날짜")
                         .description("필참!!")
                         .startDate(LocalDate.now().plusDays(1))

@@ -1,6 +1,7 @@
 package com.morak.back.appointment.domain;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,5 +33,6 @@ public class DomainFixture {
             .endTime(LocalTime.of(20, 0))
             .durationHours(1)
             .durationMinutes(0)
+            .code(Code.generate(length -> "ABCD1234"))
             .build();
 }

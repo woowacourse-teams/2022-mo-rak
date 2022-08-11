@@ -76,7 +76,7 @@ public class DurationMinutes {
     }
 
     private static void validateDurationMinutesRange(Integer durationMinutes) {
-        if (durationMinutes <= MINUTES_UNIT || durationMinutes > DAY_MINUTES) {
+        if (durationMinutes < MINUTES_UNIT || durationMinutes > DAY_MINUTES) {
             throw new AppointmentDomainLogicException(
                 CustomErrorCode.APPOINTMENT_DURATION_MINUTE_RANGE_ERROR,
                 String.format(

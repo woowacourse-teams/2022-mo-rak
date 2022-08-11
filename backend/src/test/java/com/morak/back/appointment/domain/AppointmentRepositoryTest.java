@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,16 +16,14 @@ import java.util.Optional;
 import java.util.function.Function;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@DataJpaTest
+@RepositoryTest
 class AppointmentRepositoryTest {
 
     private static AppointmentBuilder DEFAULT_BUILDER = Appointment.builder()
@@ -154,8 +153,10 @@ class AppointmentRepositoryTest {
         Function<AppointmentBuilder, AppointmentBuilder> hostNull = (AppointmentBuilder builder) -> builder.host(null);
         Function<AppointmentBuilder, AppointmentBuilder> teamNull = (AppointmentBuilder builder) -> builder.host(null);
         Function<AppointmentBuilder, AppointmentBuilder> titleNull = (AppointmentBuilder builder) -> builder.host(null);
-        Function<AppointmentBuilder, AppointmentBuilder> descriptionNull = (AppointmentBuilder builder) -> builder.host(null);
-        Function<AppointmentBuilder, AppointmentBuilder> closedAtNull = (AppointmentBuilder builder) -> builder.host(null);
+        Function<AppointmentBuilder, AppointmentBuilder> descriptionNull = (AppointmentBuilder builder) -> builder.host(
+                null);
+        Function<AppointmentBuilder, AppointmentBuilder> closedAtNull = (AppointmentBuilder builder) -> builder.host(
+                null);
 
         return List.of(
                 Arguments.of(hostNull),
