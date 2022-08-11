@@ -8,7 +8,7 @@ import {
   AvailableTimes,
   AppointmentInterface
 } from '../../types/appointment';
-import Calendar from '../../components/@common/Calendar/Calendar';
+import Calendar from '../../components/common/Calendar/Calendar';
 import AppointmentProgressHeader from '../../components/AppointmentProgress/AppointmentProgressHeader/AppointmentProgressHeader';
 import AppointmentProgressDetail from '../../components/AppointmentProgress/AppointmentProgressDetail/AppointmentProgressDetail';
 import AppointmentProgressTimePicker from '../../components/AppointmentProgress/AppointmentProgressTimePicker/AppointmentProgressTimePicker';

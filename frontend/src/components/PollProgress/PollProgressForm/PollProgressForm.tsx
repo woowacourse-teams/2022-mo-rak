@@ -2,9 +2,9 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import Box from '../../@common/Box/Box';
-import Divider from '../../@common/Divider/Divider';
-import MarginContainer from '../../@common/MarginContainer/MarginContainer';
+import Box from '../../common/Box/Box';
+import Divider from '../../common/Divider/Divider';
+import MarginContainer from '../../common/MarginContainer/MarginContainer';
 import PollProgressButtonGroup from '../PollProgressButtonGroup/PollProgressButtonGroup';
 import { getPoll, progressPoll } from '../../../api/poll';
 import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGroup';
