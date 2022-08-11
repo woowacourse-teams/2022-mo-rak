@@ -1,5 +1,6 @@
 package com.morak.back.core.support;
 
+import java.util.Arrays;
 import java.util.Enumeration;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
@@ -33,7 +34,7 @@ public class LogFormatter {
     private static StringBuilder getBody(ContentCachingRequestWrapper requestWrapper) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("body: ").append(NEWLINE);
-        stringBuilder.append(new String(requestWrapper.getContentAsByteArray()));
+        stringBuilder.append(Arrays.toString(requestWrapper.getContentAsByteArray()));
         return stringBuilder;
     }
 }
