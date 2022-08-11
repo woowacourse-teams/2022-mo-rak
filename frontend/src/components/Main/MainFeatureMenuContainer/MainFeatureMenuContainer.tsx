@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import FlexContainer from '../../common/FlexContainer/FlexContainer';
 
 import Poll from '../../../assets/poll.svg';
 import Appointment from '../../../assets/appointment.svg';

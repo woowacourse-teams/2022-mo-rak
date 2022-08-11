@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import React, { FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Box from '../../@common/Box/Box';
+import Box from '../../common/Box/Box';
 import AppointmentCreateFormButtonGroup from '../AppointmentCreateFormButtonGroup/AppointmentCreateFormButtonGroup';
 import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
 import AppointmentCreateFormDescriptionInput from '../AppointmentCreateFormDescriptionInput/AppointmentCreateFormDescriptionInput';
 import AppointmentCreateFormDurationInput from '../AppointmentCreateFormDurationInput/AppointmentCreateFormDurationInput';
 import AppointmentCreateFormTimeLimitInput from '../AppointmentCreateFormTimeLimitInput/AppointmentCreateFormTimeLimitInput';
-import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import useInput from '../../../hooks/useInput';
 import useInputs from '../../../hooks/useInputs';
 import { Time, createAppointmentData, AppointmentInterface } from '../../../types/appointment';

@@ -2,7 +2,7 @@ import React, { useEffect, useState, ChangeEventHandler } from 'react';
 
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import FlexContainer from '../../common/FlexContainer/FlexContainer';
 
 import {
   PollInterface,
@@ -14,10 +14,10 @@ import {
 import { GroupInterface } from '../../../types/group';
 
 import { getPollItems } from '../../../api/poll';
-import TextField from '../../@common/TextField/TextField';
-import Radio from '../../@common/Radio/Radio';
-import Checkbox from '../../@common/Checkbox/Checkbox';
-import Input from '../../@common/Input/Input';
+import TextField from '../../common/TextField/TextField';
+import Radio from '../../common/Radio/Radio';
+import Checkbox from '../../common/Checkbox/Checkbox';
+import Input from '../../common/Input/Input';
 
 interface Props {
   pollCode: PollInterface['code'];

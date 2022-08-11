@@ -1,9 +1,9 @@
 import { useTheme } from '@emotion/react';
 import React, { SelectHTMLAttributes } from 'react';
 import styled from '@emotion/styled';
-import FlexContainer from '../../@common/FlexContainer/FlexContainer';
-import TextField from '../../@common/TextField/TextField';
-import Select from '../../@common/Select/Select';
+import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import TextField from '../../common/TextField/TextField';
+import Select from '../../common/Select/Select';
 import { createRange } from '../../../utils/number';
 import { Time } from '../../../types/appointment';
 

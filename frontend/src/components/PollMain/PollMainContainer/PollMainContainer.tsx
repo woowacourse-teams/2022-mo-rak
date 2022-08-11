@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import Box from '../../@common/Box/Box';
+import Box from '../../common/Box/Box';
 import PollMainStatus from '../PollMainStatus/PollMainStatus';
 import PollMainDetail from '../PollMainDetail/PollMainDetail';
 import PollMainProgress from '../PollMainProgress/PollMainProgress';
-import FlexContainer from '../../@common/FlexContainer/FlexContainer';
-import MarginContainer from '../../@common/MarginContainer/MarginContainer';
+import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import MarginContainer from '../../common/MarginContainer/MarginContainer';
 
 import { getPolls } from '../../../api/poll';
 import { getPollsResponse } from '../../../types/poll';

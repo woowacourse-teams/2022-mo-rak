@@ -1,6 +1,6 @@
 import { useTheme } from '@emotion/react';
 import React from 'react';
-import Button from '../../@common/Button/Button';
+import Button from '../../common/Button/Button';
 
 function GroupParticipateFormSubmitButton() {
   const theme = useTheme();

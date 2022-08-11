@@ -1,7 +1,7 @@
 import { useTheme } from '@emotion/react';
 import React, { ChangeEventHandler } from 'react';
-import TextField from '../../@common/TextField/TextField';
-import Input from '../../@common/Input/Input';
+import TextField from '../../common/TextField/TextField';
+import Input from '../../common/Input/Input';
 
 interface Props {
   invitationCode: string;
