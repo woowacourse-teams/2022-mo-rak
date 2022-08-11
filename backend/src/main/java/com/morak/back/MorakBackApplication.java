@@ -11,4 +11,5 @@ public class MorakBackApplication {
     public static void main(String[] args) {
         SpringApplication.run(MorakBackApplication.class, args);
     }
+
 }
