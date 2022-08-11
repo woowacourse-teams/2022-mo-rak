@@ -14,7 +14,8 @@ function GroupInitPage() {
   useEffect(() => {
     const fetchGetDefaultGroup = async () => {
       try {
-        const { code: groupCode } = await getDefaultGroup();
+        const res = await getDefaultGroup();
+        const { code: groupCode } = res.data;
 
         navigate(`/groups/${groupCode}`);
       } catch (err) {

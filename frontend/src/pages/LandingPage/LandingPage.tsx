@@ -21,7 +21,8 @@ function LandingPage() {
   useEffect(() => {
     const fetchGetDefaultGroup = async () => {
       try {
-        const { code: groupCode } = await getDefaultGroup();
+        const res = await getDefaultGroup();
+        const { code: groupCode } = res.data;
 
         navigate(`/groups/${groupCode}`);
       } catch (err) {
@@ -55,7 +56,8 @@ function LandingPage() {
     // TODO: strict mode라서 로그인이 된 이후에도 요청을 다시 보내서 에러가 나온다.
     const fetchSignin = async (code: string) => {
       try {
-        const { token } = await signin(code);
+        const response = await signin(code);
+        const { token } = response.data;
 
         saveLocalStorageItem<string>('token', token);
 

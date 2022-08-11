@@ -51,7 +51,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
 
     try {
       const res = await createAppointment(groupCode, appointment);
-      const appointmentCode = res.headers.get('location').split('appointments/')[1];
+      const appointmentCode = res.headers.location.split('appointments/')[1];
 
       navigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`);
     } catch (error) {
