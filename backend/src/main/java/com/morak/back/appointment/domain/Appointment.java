@@ -12,6 +12,7 @@ import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import javax.persistence.Basic;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -78,9 +79,11 @@ public class Appointment extends BaseEntity {
     @Valid
     private Code code;
 
+    @NotNull
     private LocalDateTime closedAt;
 
-    @Formula("(SELECT COUNT(DISTINCT aat.member_id) FROM appointment_available_time aat WHERE aat.appointment_id = id)")
+    @Basic(fetch = FetchType.LAZY)
+    @Formula("(SELECT COUNT(DISTINCT aat.member_id) FROM appointment_available_time as aat WHERE aat.appointment_id = id)")
     private Integer count;
 
     @Builder

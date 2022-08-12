@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.auth.domain.Member;
+import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
 import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
@@ -14,6 +15,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,21 +29,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RepositoryTest
 class AppointmentRepositoryTest {
 
-    private static AppointmentBuilder DEFAULT_BUILDER = Appointment.builder()
-            .title("스터디 회의 날짜 정하기")
-            .description("필참!!")
-            .startDate(LocalDate.now().plusDays(1))
-            .endDate(LocalDate.now().plusDays(5))
-            .startTime(LocalTime.of(14, 0))
-            .endTime(LocalTime.of(18, 30))
-            .durationHours(1)
-            .durationMinutes(0)
-            .closedAt(LocalDateTime.now().plusDays(1))
-            .code(Code.generate(length -> "FJn3ND26"))
-            .closedAt(LocalDateTime.now().plusDays(1));
+    private static AppointmentBuilder DEFAULT_BUILDER;
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private AvailableTimeRepository availableTimeRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private Member member;
     private Team team;
@@ -53,7 +54,7 @@ class AppointmentRepositoryTest {
         team = Team.builder()
                 .id(1L)
                 .build();
-        DEFAULT_BUILDER = DEFAULT_BUILDER
+        DEFAULT_BUILDER = Appointment.builder()
                 .title("스터디 회의 날짜 정하기")
                 .description("필참!!")
                 .startDate(LocalDate.now().plusDays(1))
@@ -152,44 +153,51 @@ class AppointmentRepositoryTest {
     }
 
     static List<Arguments> getAppointmentWithEachNull() {
+        ;
         Function<AppointmentBuilder, AppointmentBuilder> hostNull = (AppointmentBuilder builder) -> builder.host(null);
-        Function<AppointmentBuilder, AppointmentBuilder> teamNull = (AppointmentBuilder builder) -> builder.host(null);
-        Function<AppointmentBuilder, AppointmentBuilder> titleNull = (AppointmentBuilder builder) -> builder.host(null);
-        Function<AppointmentBuilder, AppointmentBuilder> descriptionNull = (AppointmentBuilder builder) -> builder.host(
+        Function<AppointmentBuilder, AppointmentBuilder> teamNull = (AppointmentBuilder builder) -> builder.team(null);
+        Function<AppointmentBuilder, AppointmentBuilder> titleNull = (AppointmentBuilder builder) -> builder.title(
                 null);
-        Function<AppointmentBuilder, AppointmentBuilder> closedAtNull = (AppointmentBuilder builder) -> builder.host(
+        Function<AppointmentBuilder, AppointmentBuilder> descriptionNull = (AppointmentBuilder builder) -> builder.description(
                 null);
 
         return List.of(
                 Arguments.of(hostNull),
                 Arguments.of(teamNull),
                 Arguments.of(titleNull),
-                Arguments.of(descriptionNull),
-                Arguments.of(closedAtNull)
+                Arguments.of(descriptionNull)
         );
     }
 
     // TODO: 2022/07/28 AvailableTime 추가 후 테스트 필요!!
     @Test
     void 포뮬라를_적용해_count를_불러온다() {
-        // when
-        Appointment appointment = Appointment.builder()
-                .host(member)
-                .team(team)
-                .title("스터디 회의 날짜 정하기")
-                .description("필참!!")
-                .startDate(LocalDate.now().plusDays(1))
-                .endDate(LocalDate.now().plusDays(5))
-                .startTime(LocalTime.of(14, 0))
-                .endTime(LocalTime.of(18, 30))
-                .durationHours(1)
-                .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1))
-                .code(Code.generate(length -> "FJn3ND26"))
+        // given
+        Member member = memberRepository.findById(1L).orElseThrow();
+        Appointment appointment = DEFAULT_BUILDER.build();
+        appointmentRepository.save(appointment);
+
+        AvailableTime availableTime = AvailableTime.builder()
+                .appointment(appointment)
+                .member(member)
+                .startDateTime(appointment.getStartDateTime().plusHours(1))
+                .endDateTime(appointment.getStartDateTime().plusHours(1).plusMinutes(30))
                 .build();
 
+        AvailableTime availableTime2 = AvailableTime.builder()
+                .appointment(appointment)
+                .member(member)
+                .startDateTime(appointment.getStartDateTime().plusHours(1).plusMinutes(30))
+                .endDateTime(appointment.getStartDateTime().plusHours(2))
+                .build();
+        availableTimeRepository.saveAll(List.of(availableTime, availableTime2));
+        entityManager.refresh(appointment);
+
+        // when
+        Appointment foundAppointment = appointmentRepository.findByCode(appointment.getCode()).orElseThrow();
+
         // then
-        assertThat(appointment.getCount()).isEqualTo(0);
+        assertThat(foundAppointment.getCount()).isEqualTo(1);
     }
 
     @Test
