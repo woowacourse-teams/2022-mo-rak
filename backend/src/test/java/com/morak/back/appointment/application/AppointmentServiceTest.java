@@ -159,7 +159,8 @@ class AppointmentServiceTest {
                 LocalTime.of(20, 0),
                 2,
                 30,
-                LocalDateTime.now().plusDays(1));
+                LocalDateTime.now().plusDays(10)
+        );
 
         // when
         String createdAppointmentCode = appointmentService.createAppointment("MoraK123", 1L, request);

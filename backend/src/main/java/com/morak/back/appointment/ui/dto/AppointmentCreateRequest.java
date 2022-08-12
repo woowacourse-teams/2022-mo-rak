@@ -75,7 +75,7 @@ public class AppointmentCreateRequest {
                 .endTime(this.endTime)
                 .durationHours(this.durationHours)
                 .durationMinutes(this.durationMinutes)
-                .closedAt(LocalDateTime.now().plusDays(1))
+                .closedAt(this.closedAt)
                 .code(code)
                 .build();
     }

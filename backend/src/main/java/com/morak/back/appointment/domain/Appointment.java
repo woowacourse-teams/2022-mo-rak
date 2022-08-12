@@ -103,15 +103,18 @@ public class Appointment extends BaseEntity {
         this.status = OPEN;
         this.code = code;
         this.closedAt = closedAt;
-        validateClosedAtBeforeEndDate(endDate, closedAt);
+        validateClosedAtBeforeEndDate(closedAt, datePeriod);
     }
 
-    private void validateClosedAtBeforeEndDate(LocalDate endDate, LocalDateTime closedAt) {
-        if(closedAt.toLocalDate().isAfter(endDate)) {
+    private void validateClosedAtBeforeEndDate(LocalDateTime closedAt, DatePeriod datePeriod) {
+        LocalDate closeDate = closedAt.toLocalDate();
+        if (!datePeriod.isInRange(closeDate)) {
             throw new AppointmentDomainLogicException(
-                    CustomErrorCode.APPOINTMENT_CLOSED_AT_AFTER_END_DATE_ERROR,
-                    String.format("약속잡기의 마감 날짜(%s)는 마지막 날짜(%s)보다 빨라야합니다.",
-                            closedAt.toLocalDate(), endDate)
+                    CustomErrorCode.APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR,
+                    String.format(
+                            "약속잡기의 마감 날짜(%s)는 시작날짜와 마지막 날짜 사이(%s)여야 합니다.",
+                            closedAt.toLocalDate(), datePeriod
+                    )
             );
         }
     }
@@ -171,14 +174,6 @@ public class Appointment extends BaseEntity {
         }
     }
 
-    public LocalDateTime getStartDateTime() {
-        return LocalDateTime.of(datePeriod.getStartDate(), timePeriod.getStartTime());
-    }
-
-    public LocalDateTime getEndDateTime() {
-        return LocalDateTime.of(datePeriod.getEndDate(), timePeriod.getEndTime());
-    }
-
     public boolean isBelongedTo(Team otherTeam) {
         return team.equals(otherTeam);
     }
@@ -191,13 +186,21 @@ public class Appointment extends BaseEntity {
         return this.status.isClosed();
     }
 
+    public LocalDateTime getStartDateTime() {
+        return LocalDateTime.of(datePeriod.getStartDate(), timePeriod.getStartTime());
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return LocalDateTime.of(datePeriod.getEndDate(), timePeriod.getEndTime());
+    }
+
     public LocalDate getStartDate() {
         return this.datePeriod.getStartDate();
     }
 
     public LocalDate getEndDate() {
         LocalDate endDate = this.datePeriod.getEndDate();
-        if (this.timePeriod.getEndTime().equals(LocalTime.of(0, 0))) {
+        if (this.timePeriod.getEndTime().equals(LocalTime.MIDNIGHT)) {
             endDate = endDate.minusDays(1);
         }
         return endDate;

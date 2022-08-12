@@ -63,4 +63,8 @@ public class DatePeriod {
     public boolean isAvailableRange(DatePeriod other) {
         return !(other.startDate.isBefore(this.startDate) || other.endDate.isAfter(this.endDate));
     }
+
+    public boolean isInRange(LocalDate otherDate) {
+        return !startDate.isAfter(otherDate) && !endDate.isBefore(otherDate);
+    }
 }

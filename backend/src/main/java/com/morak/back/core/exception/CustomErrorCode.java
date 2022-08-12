@@ -46,8 +46,8 @@ public enum CustomErrorCode {
     AVAILABLETIME_REVERSE_CHRONOLOGY_ERROR("3114", "약속잡기 마지막 날짜&시각은 현재 날짜&시각보다 미래여야 합니다."),
     AVAILABLETIME_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR("3115", "약속잡기 선택 시각은 30분 단위여야 합니다."),
     AVAILABLETIME_DURATION_NOT_MINUTES_UNIT_ERROR("3116", "약속잡기 선택 진행 시간은 30분 단위여야 합니다."),
-    APPOINTMENT_CLOSED_AT_AFTER_END_DATE_ERROR("3117", "약속잡기 마감 시간은 마지막 날짜보다 빨라야 합니다."),
-    APPOINTMENT_CLOSED_AT_PAST_ERROR("3118", "약속잡기 마감 시간은 미래여야합니다."),
+    APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR("3117", "약속잡기 마감 시간은 마지막 날짜보다 빨라야 합니다."),
+
     APPOINTMENT_MEMBER_MISMATCHED_ERROR("3200", "멤버가 약속잡기의 호스트가 아닙니다."),
     APPOINTMENT_TEAM_MISMATCHED_ERROR("3201", "약속잡기가 그룹에 속해있지 않습니다."),
     APPOINTMENT_NOT_FOUND_ERROR("3300", "요청한 약속잡기를 찾을 수 없습니다."),
