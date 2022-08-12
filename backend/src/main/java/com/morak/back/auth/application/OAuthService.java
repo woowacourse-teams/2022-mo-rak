@@ -4,9 +4,10 @@ import com.morak.back.auth.application.dto.OAuthAccessTokenResponse;
 import com.morak.back.auth.application.dto.OAuthMemberInfoResponse;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
-import com.morak.back.auth.exception.AuthorizationException;
+import com.morak.back.auth.exception.AuthenticationException;
 import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
+import com.morak.back.core.exception.CustomErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
@@ -42,7 +43,7 @@ public class OAuthService {
             OAuthAccessTokenResponse tokenResponse = oAuthClient.getAccessToken(code);
             return oAuthClient.getMemberInfo(tokenResponse.getAccessToken());
         } catch (HttpClientErrorException e) {
-            throw new AuthorizationException("깃허브에서 사용자 정보를 받아오는 데 실패했습니다.");
+            throw new AuthenticationException(CustomErrorCode.GITHUB_AUTHORIZATION_ERROR, code + "를 이용해서 깃허브에서 사용자 정보를 받아오는 데 실패했습니다.");
         }
     }
 

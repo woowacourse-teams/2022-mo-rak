@@ -13,6 +13,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.ResourceNotFoundException;
 import com.morak.back.team.domain.ExpiredTime;
 import com.morak.back.team.domain.Team;
@@ -21,9 +22,8 @@ import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
-import com.morak.back.team.exception.AlreadyJoinedTeamException;
-import com.morak.back.team.exception.ExpiredInvitationException;
-import com.morak.back.team.exception.MismatchedTeamException;
+import com.morak.back.team.exception.TeamAuthorizationException;
+import com.morak.back.team.exception.TeamDomainLogicException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
@@ -152,7 +152,9 @@ class TeamServiceTest {
 
         // when & then
         assertThatThrownBy(() -> teamService.join(member.getId(), teamInvitation.getCode()))
-                .isInstanceOf(AlreadyJoinedTeamException.class);
+                .isInstanceOf(TeamDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_ALREADY_JOINED_ERROR);
     }
 
     @Test
@@ -168,7 +170,9 @@ class TeamServiceTest {
 
         // when & then
         assertThatThrownBy(() -> teamService.join(member.getId(), expiredTeamInvitation.getCode()))
-                .isInstanceOf(ExpiredInvitationException.class);
+                .isInstanceOf(TeamDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_INVITATION_EXPIRED_ERROR);
     }
 
     @Test
@@ -257,7 +261,10 @@ class TeamServiceTest {
 
         // when & then
         assertThatThrownBy(() -> teamService.findMembersInTeam(member.getId(), team.getCode()))
-                .isInstanceOf(MismatchedTeamException.class);
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+        ;
     }
 
     @Test
@@ -283,11 +290,17 @@ class TeamServiceTest {
         // given
         given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
         given(teamMemberRepository.findByTeamIdAndMemberId(anyLong(), anyLong()))
-                .willThrow(MismatchedTeamException.class);
+                .willThrow(TeamAuthorizationException.of(
+                        CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR,
+                        99L,
+                        99L)
+                );
 
         // when & then
         assertThatThrownBy(() -> teamService.exitMemberFromTeam(member.getId(), team.getCode()))
-                .isInstanceOf(MismatchedTeamException.class);
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
     }
 
     @Test
@@ -316,6 +329,7 @@ class TeamServiceTest {
 
         // when
         TeamResponse defaultTeamResponse = teamService.findDefaultTeam(member.getId());
+
         // then
         assertThat(defaultTeamResponse).extracting("code", "name")
                 .containsExactly(teamA.getCode(), teamA.getName());
@@ -328,6 +342,9 @@ class TeamServiceTest {
 
         // when & then
         assertThatThrownBy(() -> teamService.findDefaultTeam(member.getId()))
-                .isInstanceOf(ResourceNotFoundException.class);
+                .isInstanceOf(ResourceNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
+        ;
     }
 }

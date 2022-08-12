@@ -15,6 +15,8 @@ import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.AvailableTime;
 import com.morak.back.appointment.domain.AvailableTimeRepository;
+import com.morak.back.appointment.exception.AppointmentAuthorizationException;
+import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
@@ -23,7 +25,7 @@ import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.exception.InvalidRequestException;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
@@ -33,6 +35,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -60,60 +63,67 @@ class AppointmentServiceTest {
     @InjectMocks
     private AppointmentService appointmentService;
 
-    private final Member 에덴 = Member.builder().id(1L).build();
-    private final Team 모락 = Team.builder().
-            id(1L)
-            .code(Code.generate(new FakeCodeGenerator()))
-            .build();
-    private final Appointment 회식_날짜_약속잡기 = Appointment.builder()
-            .id(101L)
-            .host(에덴)
-            .team(모락)
-            .title("회식 날짜")
-            .description("필참입니다.")
-            .startDate(LocalDate.now().plusDays(1))
-            .endDate(LocalDate.now().plusDays(5))
-            .startTime(LocalTime.of(14, 0))
-            .endTime(LocalTime.of(20, 0))
-            .durationHours(2)
-            .durationMinutes(0)
-            .code(Code.generate(new FakeCodeGenerator()))
-            .build();
+    private Member 에덴;
+    private Team 모락;
+    private Appointment 회식_날짜_약속잡기;
+    private Appointment 스터디_날짜_약속잡기;
+    private AvailableTime 회식_가능_시간_4시부터_4시반까지;
+    private AvailableTime 회식_가능_시간_4시반부터_5시까지;
+    private AvailableTime 회식_가능_시간_5시부터_5시반까지;
 
-    private final Appointment 스터디_날짜_약속잡기 = Appointment.builder()
-            .host(에덴)
-            .team(모락)
-            .title("스터디 날짜")
-            .description("하지말까요?")
-            .startDate(LocalDate.now().plusDays(1))
-            .endDate(LocalDate.now().plusDays(5))
-            .startTime(LocalTime.of(14, 0))
-            .endTime(LocalTime.of(20, 0))
-            .durationHours(2)
-            .durationMinutes(0)
-            .code(Code.generate(new FakeCodeGenerator()))
-            .build();
-
-    private final AvailableTime 회식_가능_시간_4시부터_4시반까지 = AvailableTime.builder()
-            .member(에덴)
-            .appointment(회식_날짜_약속잡기)
-            .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)))
-            .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30)))
-            .build();
-
-    private final AvailableTime 회식_가능_시간_4시반부터_5시까지 = AvailableTime.builder()
-            .member(에덴)
-            .appointment(회식_날짜_약속잡기)
-            .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)))
-            .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30)))
-            .build();
-
-    private final AvailableTime 회식_가능_시간_5시부터_5시반까지 = AvailableTime.builder()
-            .member(에덴)
-            .appointment(회식_날짜_약속잡기)
-            .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)))
-            .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30)))
-            .build();
+    @BeforeEach
+    void setUp() {
+        에덴 = Member.builder().id(1L).build();
+        모락 = Team.builder().
+                id(1L)
+                .code(Code.generate(new FakeCodeGenerator()))
+                .build();
+        회식_날짜_약속잡기 = Appointment.builder()
+                .id(101L)
+                .host(에덴)
+                .team(모락)
+                .title("회식 날짜")
+                .description("필참입니다.")
+                .startDate(LocalDate.now().plusDays(1))
+                .endDate(LocalDate.now().plusDays(5))
+                .startTime(LocalTime.of(14, 0))
+                .endTime(LocalTime.of(20, 0))
+                .durationHours(2)
+                .durationMinutes(0)
+                .code(Code.generate(new FakeCodeGenerator()))
+                .build();
+        스터디_날짜_약속잡기 = Appointment.builder()
+                .host(에덴)
+                .team(모락)
+                .title("스터디 날짜")
+                .description("하지말까요?")
+                .startDate(LocalDate.now().plusDays(1))
+                .endDate(LocalDate.now().plusDays(5))
+                .startTime(LocalTime.of(14, 0))
+                .endTime(LocalTime.of(20, 0))
+                .durationHours(2)
+                .durationMinutes(0)
+                .code(Code.generate(new FakeCodeGenerator()))
+                .build();
+        회식_가능_시간_4시부터_4시반까지 = AvailableTime.builder()
+                .member(에덴)
+                .appointment(회식_날짜_약속잡기)
+                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)))
+                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30)))
+                .build();
+        회식_가능_시간_4시반부터_5시까지 = AvailableTime.builder()
+                .member(에덴)
+                .appointment(회식_날짜_약속잡기)
+                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)))
+                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30)))
+                .build();
+        회식_가능_시간_5시부터_5시반까지 = AvailableTime.builder()
+                .member(에덴)
+                .appointment(회식_날짜_약속잡기)
+                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)))
+                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30)))
+                .build();
+    }
 
     @Test
     void 약속잡기를_생성한다() {
@@ -158,7 +168,7 @@ class AppointmentServiceTest {
     @Test
     void 약속잡기_단건을_조회한다() {
         // given
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
 
@@ -171,10 +181,29 @@ class AppointmentServiceTest {
     }
 
     @Test
+    void 투표가_그룹에_속해있지_않다면_예외를_던진다() {
+        // given
+        Team 다른팀 = Team.builder().
+                id(2L)
+                .code(Code.generate(new FakeCodeGenerator()))
+                .build();
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(다른팀));
+        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
+        given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
+
+        // when & then
+        assertThatThrownBy(() -> appointmentService.findAppointment(
+                모락.getCode(), 1L, 회식_날짜_약속잡기.getCode()
+        )).isInstanceOf(AppointmentAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_TEAM_MISMATCHED_ERROR);
+    }
+
+    @Test
     void 약속잡기_가능시간을_선택한다() {
         // given
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
 
@@ -197,7 +226,7 @@ class AppointmentServiceTest {
     void 약속잡기_가능시간을_중복으로_선택하면_예외를_던진다() {
         // given
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
 
@@ -219,8 +248,9 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(teamCode, memberId, appointmentCode, requests))
-                .isInstanceOf(InvalidRequestException.class)
-                .hasMessageContaining("중복된 약속잡기 가능 시간은 허용되지 않습니다.");
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_DUPLICATED_AVAILABLE_TIME_ERROR);
     }
 
     @Test
@@ -228,7 +258,7 @@ class AppointmentServiceTest {
         // given
         회식_날짜_약속잡기.close(에덴);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
         // when
@@ -243,14 +273,39 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(teamCode, memberId, appointmentCode, requests))
-                .isInstanceOf(InvalidRequestException.class)
-                .hasMessageContaining("번 약속잡기는 마감되었습니다.");
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR);
+    }
+
+    @Test
+    void 약속잡기_가능시간을_선택할_때_중복된_시간이_있다면_예외를_던진다() {
+        // given
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
+        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
+        given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
+        // when
+        String teamCode = "teamCode";
+        Long memberId = 에덴.getId();
+        String appointmentCode = "appointmentCode";
+        AvailableTimeRequest availableTimeRequest = new AvailableTimeRequest(
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)),
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30))
+        );
+        List<AvailableTimeRequest> requests = List.of(availableTimeRequest, availableTimeRequest);
+
+        // then
+        assertThatThrownBy(() -> appointmentService.selectAvailableTimes(teamCode, memberId, appointmentCode, requests))
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_DUPLICATED_AVAILABLE_TIME_ERROR);
     }
 
     @Test
     void 약속잡기_가능시간_추천_결과를_조회한다() {
         // given
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
         given(teamMemberRepository.findAllByTeamId(anyLong())).willReturn(List.of(new TeamMember(1L, 모락, 에덴)));
@@ -271,7 +326,7 @@ class AppointmentServiceTest {
     void 약속잡기를_마감한다() {
         //given
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
 
@@ -286,7 +341,7 @@ class AppointmentServiceTest {
     void 약속잡기를_삭제한다() {
         //given
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(에덴));
-        given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
+        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(모락));
         given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
         given(appointmentRepository.findByCode(anyString())).willReturn(Optional.of(회식_날짜_약속잡기));
 

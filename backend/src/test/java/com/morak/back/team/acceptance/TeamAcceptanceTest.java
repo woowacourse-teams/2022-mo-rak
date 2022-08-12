@@ -6,6 +6,7 @@ import static com.morak.back.SimpleRestAssured.get;
 import static com.morak.back.SimpleRestAssured.post;
 import static com.morak.back.SimpleRestAssured.toObjectList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
 import static org.assertj.core.api.Assertions.tuple;
 
 import com.morak.back.AcceptanceTest;
@@ -13,6 +14,8 @@ import com.morak.back.AuthSupporter;
 import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.ui.dto.MemberResponse;
+import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.ui.dto.ExceptionResponse;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
@@ -63,21 +66,12 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 그룹_생성을_요청한다(request);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
+        );
     }
-
-    @Test
-    void n인_값으로_그룹_생성_요청_시_400을_반환한() {
-        // given
-        TeamCreateRequest request = new TeamCreateRequest(null);
-
-        // when
-        ExtractableResponse<Response> response = 그룹_생성을_요청한다(request);
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-    }
-
 
     @Test
     void 그룹_초대_코드를_생성한다() {
@@ -95,17 +89,34 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    void 그룹_초대_코드가_존재하지_않으면_NOT_FOUND를_반환한다() {
+        // given
+        String invalidTeamInvitationCode = "invalidTeamInvitationCode";
+
+        // when
+        ExtractableResponse<Response> response = get("api/groups/in/" + invalidTeamInvitationCode, toHeader(token));
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.TEAM_INVITATION_NOT_FOUND_ERROR.getNumber())
+        );
+    }
+
+    @Test
     void 그룹에_참가한_멤버의_그룹_참가_여부를_확인한다() {
         // given
         String teamLocation = 기본_그룹_생성을_요청한다().header("Location");
         String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation).header("Location");
 
         // when
-        InvitationJoinedResponse isJoinedResponse =
-                그룹_참가_여부_조회를_요청한다(teamInvitationLocation, token).as(InvitationJoinedResponse.class);
+        ExtractableResponse<Response> response = 그룹_참가_여부_조회를_요청한다(teamInvitationLocation, token);
+        InvitationJoinedResponse isJoinedResponse = response.as(InvitationJoinedResponse.class);
 
         // then
         Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(isJoinedResponse.getGroupCode()).hasSize(8),
                 () -> assertThat(isJoinedResponse.getName()).isEqualTo("albur"),
                 () -> assertThat(isJoinedResponse.getIsJoined()).isTrue()
@@ -115,7 +126,6 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     void 그룹에_참가하지_않은_멤버의_그룹_참가_여부를_확인한다() {
         // given
-        TeamCreateRequest request = new TeamCreateRequest("albur");
         String teamLocation = 기본_그룹_생성을_요청한다().header("Location");
 
         String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation).header("Location");
@@ -128,6 +138,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(isJoinedResponse.getGroupCode()).hasSize(8),
                 () -> assertThat(isJoinedResponse.getName()).isEqualTo("albur"),
                 () -> assertThat(isJoinedResponse.getIsJoined()).isFalse()
@@ -142,10 +153,14 @@ public class TeamAcceptanceTest extends AcceptanceTest {
 
         // when
         String otherToken = tokenProvider.createToken(String.valueOf(2L));
-        String location = 그룹_참가를_요청한다(teamInvitationLocation, otherToken).header("Location");
+        ExtractableResponse<Response> response = 그룹_참가를_요청한다(teamInvitationLocation, otherToken);
+        String location = response.header("Location");
 
         // then
-        assertThat(location).startsWith("/api/groups/");
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
+                () -> assertThat(location).startsWith("/api/groups/")
+        );
     }
 
     @Test
@@ -155,10 +170,12 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         그룹_생성을_요청한다(new TeamCreateRequest("group-B")).header("Location");
 
         // when
-        List<TeamResponse> teamResponses = toObjectList(그룹_목록_조회를_요청한다(token), TeamResponse.class);
+        ExtractableResponse<Response> response = 그룹_목록_조회를_요청한다(token);
+        List<TeamResponse> teamResponses = toObjectList(response, TeamResponse.class);
 
         // then
         Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(teamResponses).hasSize(3),
                 () -> assertThat(teamResponses.get(0).getName()).isEqualTo("morak"),
                 () -> assertThat(teamResponses.get(1).getName()).isEqualTo("group-A"),
@@ -180,16 +197,19 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         List<MemberResponse> memberResponses = toObjectList(response, MemberResponse.class);
 
         // then
-        assertThat(memberResponses).extracting("name", "profileUrl")
-                .containsExactly(
-                        tuple("eden", "http://eden-profile.com"),
-                        tuple("ellie", "http://ellie-profile.com")
-                );
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(memberResponses).extracting("name", "profileUrl")
+                        .containsExactly(
+                                tuple("eden", "http://eden-profile.com"),
+                                tuple("ellie", "http://ellie-profile.com")
+                        )
+        );
     }
 
     @Test
     void 기본_그룹을_조회한다() {
-        String otherToken = tokenProvider.createToken(String.valueOf(4L));
+        String otherToken = tokenProvider.createToken(String.valueOf(5L));
 
         String targetName = "AAA";
         사용자로_그룹_생성을_요청한다(new TeamCreateRequest(targetName), otherToken);

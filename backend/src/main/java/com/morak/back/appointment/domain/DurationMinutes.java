@@ -1,6 +1,7 @@
 package com.morak.back.appointment.domain;
 
-import com.morak.back.core.exception.InvalidRequestException;
+import com.morak.back.appointment.exception.AppointmentDomainLogicException;
+import com.morak.back.core.exception.CustomErrorCode;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -24,8 +25,8 @@ public class DurationMinutes {
     private Integer durationMinutes;
 
     public static DurationMinutes of(Integer hours, Integer minutes, int minutesUnit) {
-        validateMinutes(minutes, minutesUnit);
         validateTimeFormat(hours, minutes);
+        validateMinutes(minutes, minutesUnit);
         int durationMinutes = hours * HOUR_MINUTES + minutes;
         validateDurationMinutesRange(durationMinutes, minutesUnit);
         return new DurationMinutes(durationMinutes);
@@ -41,23 +42,46 @@ public class DurationMinutes {
 
     private static void validateMinutes(Integer minutes, int minutesUnit) {
         if (minutes % minutesUnit != 0) {
-            throw new InvalidRequestException("약속잡기 진행 시간은 " + minutesUnit + "분 단위여야 합니다.");
+            throw new AppointmentDomainLogicException(
+                CustomErrorCode.APPOINTMENT_DURATION_NOT_MINUTES_UNIT_ERROR,
+                String.format(
+                    "약속잡기 진행시간 %d 는 %d 분 단위여야 합니다.",
+                    minutes, minutesUnit
+                )
+            );
         }
     }
 
     private static void validateTimeFormat(Integer hours, Integer minutes) {
         if (hours < MIN_TIME || hours > MAX_HOURS) {
-            throw new InvalidRequestException("약속잡기 진행 시간은 0~24시 사이여야 합니다.");
+            throw new AppointmentDomainLogicException(
+                CustomErrorCode.APPOINTMENT_DURATION_HOUR_OUT_OF_RANGE_ERROR,
+                String.format(
+                    "약속잡기 진행시간 %d 는 0~24시 사이여야 합니다.", hours
+                )
+
+            );
         }
 
         if (minutes < MIN_TIME || minutes > MAX_MINUTES) {
-            throw new InvalidRequestException("약속잡기 진행 시간은 0~59분 사이여야 합니다.");
+            throw new AppointmentDomainLogicException(
+                CustomErrorCode.APPOINTMENT_DURATION_MINUTE_OUT_OF_RANGE_ERROR,
+                String.format(
+                    "약속잡기 진행시간 %d 는 0~59분 사이여야 합니다.", minutes
+                )
+            );
         }
     }
 
     private static void validateDurationMinutesRange(Integer durationMinutes, int minutesUnit) {
-        if (durationMinutes <= MIN_TIME || durationMinutes > DAY_MINUTES) {
-            throw new InvalidRequestException("약속잡기 진행 시간은 최소 " + minutesUnit + "분에서 24시간 사이여야 합니다.");
+        if (durationMinutes <= minutesUnit || durationMinutes > DAY_MINUTES) {
+            throw new AppointmentDomainLogicException(
+                CustomErrorCode.APPOINTMENT_DURATION_MINUTE_RANGE_ERROR,
+                String.format(
+                    "약속잡기 진행 시간 %d 은 최소 %d 분에서 %d 분 사이여야 합니다.",
+                    durationMinutes, minutesUnit, DAY_MINUTES
+                )
+            );
         }
     }
 }

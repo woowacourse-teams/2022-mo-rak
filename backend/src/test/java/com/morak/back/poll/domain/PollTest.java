@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.exception.InvalidRequestException;
+import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.poll.exception.PollAuthorizationException;
+import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -123,14 +125,18 @@ class PollTest {
 
         // when & then
         assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(PollDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR);
     }
 
     @Test
     void 응답_개수가_0인_경우_예외를_던진다() {
         // when & then
         assertThatThrownBy(() -> poll.doPoll(member, new HashMap<>()))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(PollDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR);
     }
 
     @Test
@@ -147,11 +153,13 @@ class PollTest {
 
         // when & then
         assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(PollAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_ITEM_MISMATCHED_ERROR);
     }
 
     @Test
-    void 호스트가_아닐_시_예외를_던진다() {
+    void 멤버가_호스트인지_확인한다() {
         // given
         Member member = Member.builder()
                 .id(3L)
@@ -160,9 +168,11 @@ class PollTest {
                 .profileUrl("http://bkr-profile.com")
                 .build();
 
-        // when & then
-        assertThatThrownBy(() -> poll.validateHost(member))
-                .isInstanceOf(InvalidRequestException.class);
+        // when
+        boolean isHost = poll.isHost(member);
+
+        // then
+        assertThat(isHost).isFalse();
     }
 
     @Test
@@ -181,7 +191,9 @@ class PollTest {
 
         // then
         assertThatThrownBy(() -> poll.close(member))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(PollDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_ALREADY_CLOSED_ERROR);
     }
 
     @Test
@@ -196,6 +208,8 @@ class PollTest {
 
         // when & then
         assertThatThrownBy(() -> poll.close(member))
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(PollAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_MEMBER_MISMATCHED_ERROR);
     }
 }
