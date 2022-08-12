@@ -173,7 +173,7 @@ class AppointmentTest {
     }
 
     @Test
-    void durationMinutes객체의_시간의_시을_얻어온다() {
+    void durationMinutes객체의_시간의_시를_얻어온다() {
         // given
         Appointment appointment = DEFAULT_BUILDER.build();
 

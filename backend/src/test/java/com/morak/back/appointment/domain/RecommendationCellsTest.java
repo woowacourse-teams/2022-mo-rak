@@ -1,6 +1,7 @@
 package com.morak.back.appointment.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.auth.domain.Member;
@@ -14,27 +15,25 @@ import org.junit.jupiter.api.Test;
 
 class RecommendationCellsTest {
 
-    private static final AppointmentBuilder DEFAULT_BUILDER = Appointment.builder()
-            .title("회식 날짜")
-            .description("필참입니다.")
-            .code(Code.generate(length -> "FJn3ND26"))
-            .closedAt(LocalDateTime.now().plusDays(1));
+    private static AppointmentBuilder DEFAULT_BUILDER;
 
-    private Appointment appointment;
     private Member memberA;
     private Member memberB;
 
     @BeforeEach
     void setUp() {
-        appointment = Appointment.builder()
+        DEFAULT_BUILDER = Appointment.builder()
+                .title("회식 날짜")
+                .description("필참입니다.")
+                .code(Code.generate(length -> "FJn3ND26"))
+                .closedAt(LocalDateTime.now().plusDays(1))
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(5))
                 .startTime(LocalTime.of(14, 0))
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1))
-                .build();
+                .closedAt(LocalDateTime.now().plusDays(1));
         memberA = Member.builder()
                 .id(1L)
                 .name("멤버A")
@@ -47,7 +46,13 @@ class RecommendationCellsTest {
 
     @Test
     void RecommendationCells를_약속잡기로_생성한다() {
-        RecommendationCells cells = RecommendationCells.of(appointment, List.of(memberA, memberB));
+        // given
+        Appointment appointment = DEFAULT_BUILDER.build();
+
+        // when & then
+        assertThatNoException().isThrownBy(
+                () -> RecommendationCells.of(appointment, List.of(memberA, memberB))
+        );
     }
 
     @Test
@@ -71,6 +76,7 @@ class RecommendationCellsTest {
     @Test
     void 약속잡기_추천_목록을_생성한다() {
         // given
+        Appointment appointment = DEFAULT_BUILDER.build();
         RecommendationCells cells = RecommendationCells.of(appointment, List.of(memberA, memberB));
 
         // when

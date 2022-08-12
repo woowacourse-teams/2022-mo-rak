@@ -39,11 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ServiceTest
 class AppointmentServiceTest {
 
-    private static AppointmentBuilder DEFAULT_BUILDER = Appointment.builder()
-            .title("회식 날짜")
-            .description("필참입니다.")
-            .code(Code.generate(length -> "FJn3ND26"))
-            .closedAt(LocalDateTime.now().plusDays(1));
+    private static AppointmentBuilder DEFAULT_BUILDER;
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -80,7 +76,13 @@ class AppointmentServiceTest {
         );
         에덴 = memberRepository.findById(1L).orElseThrow();
         모락 = teamRepository.findByCode("MoraK123").orElseThrow();
-        DEFAULT_BUILDER = DEFAULT_BUILDER.team(모락).host(에덴);
+        DEFAULT_BUILDER = Appointment.builder()
+                .title("회식 날짜")
+                .description("필참입니다.")
+                .code(Code.generate(length -> "FJn3ND26"))
+                .team(모락)
+                .host(에덴)
+                .closedAt(LocalDateTime.now().plusDays(1));
 
         약속잡기_중간 = DEFAULT_BUILDER
                 .startDate(LocalDate.now().plusDays(1))
@@ -89,7 +91,6 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
         약속잡기_자정까지 = DEFAULT_BUILDER
                 .startDate(LocalDate.now().plusDays(1))
@@ -98,7 +99,6 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(0, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
         약속잡기_하루동안_30분 = DEFAULT_BUILDER
                 .startDate(LocalDate.now().plusDays(1))
@@ -116,7 +116,6 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(0, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
         약속잡기_하루동안_하루종일 = DEFAULT_BUILDER
                 .startDate(LocalDate.now().plusDays(1))
@@ -125,8 +124,8 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(0, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
+
         회식_가능_시간_4시부터_4시반까지 = AvailableTime.builder()
                 .member(에덴)
                 .appointment(약속잡기_중간)
