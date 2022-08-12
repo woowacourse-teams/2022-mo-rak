@@ -9,8 +9,10 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class AvailableTimeRequest {
 
     @NotNull

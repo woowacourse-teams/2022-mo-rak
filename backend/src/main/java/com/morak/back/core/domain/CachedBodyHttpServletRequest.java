@@ -1,6 +1,7 @@
 package com.morak.back.core.domain;
 
 import com.morak.back.core.exception.CachedBodyException;
+import com.morak.back.core.exception.CustomErrorCode;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class CachedBodyHttpServletRequest extends HttpServletRequestWrapper {
             try {
                 return cachedBodyInputStream.available() == 0;
             } catch (IOException e) {
-                throw new CachedBodyException("CachedBodyServletInputStream에 읽을 데이터가 남아있는지 확인하는데 실패했습니다.");
+                throw new CachedBodyException(CustomErrorCode.CACHED_BODY_ERROR, "CachedBodyServletInputStream에 읽을 데이터가 남아있는지 확인하는데 실패했습니다.");
             }
         }
 
@@ -62,7 +63,7 @@ public class CachedBodyHttpServletRequest extends HttpServletRequestWrapper {
 
         @Override
         public void setReadListener(ReadListener readListener) {
-            throw new CachedBodyException("CachedBodyServletInputStream에서는 지원하지 않는 메서드입니다.");
+            throw new CachedBodyException(CustomErrorCode.CACHED_BODY_ERROR, "CachedBodyServletInputStream에서는 지원하지 않는 메서드입니다.");
         }
     }
 }

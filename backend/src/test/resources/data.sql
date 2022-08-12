@@ -14,12 +14,18 @@ VALUES ('12345677', 'winnie', 'http://winnie-profile.com', now(), now());
 INSERT INTO team (name, code, created_at, updated_at)
 VALUES ('morak', 'MoraK123', now(), now());
 
+INSERT INTO team (name, code, created_at, updated_at)
+VALUES ('betrayed', 'Betrayed', now(), now());
+
 INSERT INTO team_member (team_id, member_id, created_at, updated_at)
 VALUES (1, 1, now(), now());
 INSERT INTO team_member (team_id, member_id, created_at, updated_at)
 VALUES (1, 2, now(), now());
 INSERT INTO team_member (team_id, member_id, created_at, updated_at)
 VALUES (1, 3, now(), now());
+
+INSERT INTO team_member (team_id, member_id, created_at, updated_at)
+VALUES (2, 4, now(), now());
 
 INSERT INTO poll (team_id, host_id, title, allowed_poll_count, is_anonymous, status, created_at, updated_at, closed_at,
                   code)

@@ -2,7 +2,7 @@ package com.morak.back.core.exception;
 
 public class CachedBodyException extends MorakException {
 
-    public CachedBodyException(String message) {
-        super(message);
+    public CachedBodyException(CustomErrorCode code, String logMessage) {
+        super(code, logMessage);
     }
 }
