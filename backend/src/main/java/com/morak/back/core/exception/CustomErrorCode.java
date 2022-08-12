@@ -8,10 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum CustomErrorCode {
 
-    EXPIRED_AUTHORIZATION_ERROR("0200", "사용자 인증에 실패했습니다."),
-    INVALID_AUTHORIZATION_ERROR("0201", "사용자 인증에 실패했습니다."),
-    GITHUB_AUTHORIZATION_ERROR("0202", "사용자 인증에 실패했습니다."),
-    EMPTY_AUTHORIZATION_ERROR("0203", "사용자 인증에 실패했습니다."),
+    EXPIRED_AUTHORIZATION_ERROR("0200", "이미 만료된 토큰입니다."),
+    INVALID_AUTHORIZATION_ERROR("0201", "인증되지 않은 토큰입니다."),
+    GITHUB_AUTHORIZATION_ERROR("0202", "깃허브 인증에 실패했습니다."),
+    EMPTY_AUTHORIZATION_ERROR("0203", "인증 토큰이 존재하지 않습니다"),
 
     MEMBER_NOT_FOUND_ERROR("0300", "요청한 멤버를 찾을 수 없습니다."),
 
