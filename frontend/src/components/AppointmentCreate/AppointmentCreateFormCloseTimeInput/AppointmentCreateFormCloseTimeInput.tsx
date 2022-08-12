@@ -23,6 +23,8 @@ function AppointmentCreateFormCloseTimeInput({
   const theme = useTheme();
   const [today] = new Date().toISOString().split('T');
 
+  console.log(maxCloseDate, 'max');
+
   return (
     <>
       <StyledLabel>마감 시간 설정</StyledLabel>

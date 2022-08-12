@@ -86,21 +86,27 @@ function AppointmentProgressTimePicker({
   const times = useMemo(() => getTimes(startTime, endTime), []);
 
   return (
-    <Box width="30rem" height="58rem" padding="3.6rem 2rem" overflow="auto">
+    // TODO: box minheight 없애야할듯
+    <Box width="30rem" minHeight="52rem" height="52rem" padding="3.6rem 2rem" overflow="auto">
       <FlexContainer flexDirection="column" gap="1.2rem">
-        {!times.length && <StyledGuideText>왼쪽에서 날짜를 선택해주세요~</StyledGuideText>}
-        {times.map(({ start, end }) => (
-          <StyledTime
-            onClick={onClickTime(start, end)}
-            isSelected={availableTimes.some(
-              (availableTime) =>
-                availableTime.start === `${selectedDate}T${start}` &&
-                availableTime.end === `${selectedDate}T${end}`
-            )}
-          >
-            {start}~{end}
-          </StyledTime>
-        ))}
+        {!selectedDate ? (
+          <StyledGuideText>왼쪽에서 날짜를 선택해주세요~</StyledGuideText>
+        ) : (
+          <>
+            {times.map(({ start, end }) => (
+              <StyledTime
+                onClick={onClickTime(start, end)}
+                isSelected={availableTimes.some(
+                  (availableTime) =>
+                    availableTime.start === `${selectedDate}T${start}` &&
+                    availableTime.end === `${selectedDate}T${end}`
+                )}
+              >
+                {start}~{end}
+              </StyledTime>
+            ))}
+          </>
+        )}
       </FlexContainer>
     </Box>
   );
@@ -128,9 +134,9 @@ const StyledGuideText = styled.p(
   ({ theme }) => `
   font-size: 2rem;
   text-align: center;
-  line-height: 58rem;
+  line-height: 44.8rem;
 
-  color: ${theme.colors.GRAY_400}
+  color: ${theme.colors.GRAY_400};
 `
 );
 export default AppointmentProgressTimePicker;
