@@ -31,7 +31,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   const [title, handleTitle] = useInput();
   // TODO: groupCode 받아오는 게 계속 중복되어서, 중복줄이자
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
-  const [description, handleDescription] = useInput();
+  const [description, handleDescription] = useInput('');
   const [duration, handleDuration] = useInputs<Omit<Time, 'period'>>({ hour: '', minute: '' });
   const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
   const [endTime, handleEndTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
@@ -84,6 +84,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
             onChangeTime={handleCloseTime}
             closeDate={closeDate}
             onChangeDate={handleCloseDate}
+            maxCloseDate={endDate}
           />
         </FlexContainer>
       </Box>
