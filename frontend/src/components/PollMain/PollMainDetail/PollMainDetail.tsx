@@ -2,10 +2,10 @@ import { useTheme } from '@emotion/react';
 import React from 'react';
 import styled from '@emotion/styled';
 
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 
 import { PollInterface } from '../../../types/poll';
-import TextField from '../../common/TextField/TextField';
+import TextField from '../../@common/TextField/TextField';
 
 interface Props extends Pick<PollInterface, 'isAnonymous' | 'allowedPollCount'> {}
 

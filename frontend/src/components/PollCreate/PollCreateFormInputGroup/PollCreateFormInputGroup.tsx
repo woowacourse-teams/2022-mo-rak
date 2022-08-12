@@ -3,10 +3,10 @@ import React, { Dispatch, SetStateAction, MouseEvent, ChangeEvent } from 'react'
 import { useTheme } from '@emotion/react';
 
 import styled from '@emotion/styled';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import Input from '../../common/Input/Input';
-import TextField from '../../common/TextField/TextField';
-import Button from '../../common/Button/Button';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import Input from '../../@common/Input/Input';
+import TextField from '../../@common/TextField/TextField';
+import Button from '../../@common/Button/Button';
 
 import Bin from '../../../assets/bin.svg';
 import { PollItemInterface } from '../../../types/poll';
