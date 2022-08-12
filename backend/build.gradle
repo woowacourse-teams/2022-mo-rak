@@ -76,7 +76,7 @@ task createDocument(type: Copy) {
     dependsOn asciidoctor
 
     from file("build/docs/asciidoc")
-    into file("src/main/resources/static")
+    into file("src/main/resources/static/docs")
 }
 
 bootJar {
