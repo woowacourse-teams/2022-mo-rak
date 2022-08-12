@@ -100,6 +100,17 @@ public class Appointment extends BaseEntity {
         this.status = OPEN;
         this.code = code;
         this.closedAt = closedAt;
+        validateClosedAtBeforeEndDate(endDate, closedAt);
+    }
+
+    private void validateClosedAtBeforeEndDate(LocalDate endDate, LocalDateTime closedAt) {
+        if(closedAt.toLocalDate().isAfter(endDate)) {
+            throw new AppointmentDomainLogicException(
+                    CustomErrorCode.APPOINTMENT_CLOSED_AT_AFTER_END_DATE_ERROR,
+                    String.format("약속잡기의 마감 날짜(%s)는 마지막 날짜(%s)보다 빨라야합니다.",
+                            closedAt.toLocalDate(), endDate)
+            );
+        }
     }
 
     private void validateLastDatetime(LocalDate endDate, LocalTime endTime) {
@@ -117,7 +128,7 @@ public class Appointment extends BaseEntity {
             throw new AppointmentDomainLogicException(
                     CustomErrorCode.APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR,
                     String.format(
-                            "진행시간(%d)은 약속잡기의 시작시간~마지막시간(%s ~ %s)은 보다 짧아야 합니다.",
+                            "진행시간(%d)은 약속잡기의 시작시간~마지막시간(%s ~ %s) 보다 짧아야 합니다.",
                             durationMinutes.getDurationMinutes(), timePeriod.getStartTime(), timePeriod.getEndTime()
                     )
             );

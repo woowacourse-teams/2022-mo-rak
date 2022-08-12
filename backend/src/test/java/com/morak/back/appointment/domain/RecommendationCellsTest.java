@@ -1,6 +1,6 @@
 package com.morak.back.appointment.domain;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.auth.domain.Member;
@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class RecommendationCellsTest {
@@ -19,7 +18,7 @@ class RecommendationCellsTest {
             .title("회식 날짜")
             .description("필참입니다.")
             .code(Code.generate(length -> "FJn3ND26"))
-            .closedAt(LocalDateTime.now().plusMonths(1));
+            .closedAt(LocalDateTime.now().plusDays(1));
 
     private Appointment appointment;
     private Member memberA;
@@ -34,6 +33,7 @@ class RecommendationCellsTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
         memberA = Member.builder()
                 .id(1L)
@@ -59,6 +59,7 @@ class RecommendationCellsTest {
                 .endTime(LocalTime.of(16, 30))
                 .durationHours(2)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
         // when
         RecommendationCells cells = RecommendationCells.of(appointment, List.of(memberA, memberB));

@@ -48,8 +48,9 @@ class AvailableTimeRepositoryTest {
                         .endTime(LocalTime.of(18, 30))
                         .durationHours(1)
                         .durationMinutes(0)
+                        .closedAt(LocalDateTime.now().plusDays(1))
                         .code(Code.generate(length -> "FJn3ND26"))
-                        .closedAt(LocalDateTime.now().plusMonths(1))
+                        .closedAt(LocalDateTime.now().plusDays(1))
                         .build()
         );
     }

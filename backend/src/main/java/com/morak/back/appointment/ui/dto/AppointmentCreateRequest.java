@@ -44,10 +44,14 @@ public class AppointmentCreateRequest {
     @NotNull
     private final Integer durationMinutes;
 
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    private final LocalDateTime closedAt;
+
     @JsonCreator
     public AppointmentCreateRequest(String title, String description, LocalDate startDate, LocalDate endDate,
                                     LocalTime startTime, LocalTime endTime, Integer durationHours,
-                                    Integer durationMinutes) {
+                                    Integer durationMinutes, LocalDateTime closedAt) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -56,6 +60,7 @@ public class AppointmentCreateRequest {
         this.endTime = endTime;
         this.durationHours = durationHours;
         this.durationMinutes = durationMinutes;
+        this.closedAt = closedAt;
     }
 
     public Appointment toAppointment(Team team, Member member, Code code) {
@@ -70,7 +75,7 @@ public class AppointmentCreateRequest {
                 .endTime(this.endTime)
                 .durationHours(this.durationHours)
                 .durationMinutes(this.durationMinutes)
-                .closedAt(LocalDateTime.now().plusMonths(1))
+                .closedAt(LocalDateTime.now().plusDays(1))
                 .code(code)
                 .build();
     }

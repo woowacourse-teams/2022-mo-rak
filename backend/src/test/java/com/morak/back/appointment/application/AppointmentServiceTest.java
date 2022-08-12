@@ -43,7 +43,7 @@ class AppointmentServiceTest {
             .title("회식 날짜")
             .description("필참입니다.")
             .code(Code.generate(length -> "FJn3ND26"))
-            .closedAt(LocalDateTime.now().plusMonths(1));
+            .closedAt(LocalDateTime.now().plusDays(1));
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -89,6 +89,7 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
         약속잡기_자정까지 = DEFAULT_BUILDER
                 .startDate(LocalDate.now().plusDays(1))
@@ -97,6 +98,7 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(0, 0))
                 .durationHours(2)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
         약속잡기_하루동안_30분 = DEFAULT_BUILDER
                 .startDate(LocalDate.now().plusDays(1))
@@ -114,6 +116,7 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(0, 0))
                 .durationHours(2)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
         약속잡기_하루동안_하루종일 = DEFAULT_BUILDER
                 .startDate(LocalDate.now().plusDays(1))
@@ -122,6 +125,7 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(0, 0))
                 .durationHours(2)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
         회식_가능_시간_4시부터_4시반까지 = AvailableTime.builder()
                 .member(에덴)
@@ -154,8 +158,8 @@ class AppointmentServiceTest {
                 LocalTime.of(16, 0),
                 LocalTime.of(20, 0),
                 2,
-                30
-        );
+                30,
+                LocalDateTime.now().plusDays(1));
 
         // when
         String createdAppointmentCode = appointmentService.createAppointment("MoraK123", 1L, request);

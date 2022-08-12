@@ -13,6 +13,7 @@ import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ class AppointmentTest {
 
     @BeforeEach
     void setUp() {
-         DEFAULT_BUILDER = Appointment.builder()
+        DEFAULT_BUILDER = Appointment.builder()
                 .host(new Member())
                 .team(new Team())
                 .title("스터디 회의 날짜 정하기")
@@ -34,7 +35,8 @@ class AppointmentTest {
                 .startTime(LocalTime.of(14, 0))
                 .endTime(LocalTime.of(18, 30))
                 .durationHours(1)
-                .durationMinutes(0);
+                .durationMinutes(0)
+                .closedAt(LocalDateTime.now().plusDays(1));
     }
 
     // TODO: 2022/07/28 AvailableTime 추가 후 테스트 필요!!
@@ -59,6 +61,7 @@ class AppointmentTest {
                         .endTime(LocalTime.of(1, 30))
                         .durationHours(1)
                         .durationMinutes(0)
+                        .closedAt(LocalDateTime.now().plusDays(1))
                         .build()
         ).isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
@@ -74,10 +77,42 @@ class AppointmentTest {
                         .endTime(LocalTime.of(11, 0))
                         .durationHours(2)
                         .durationMinutes(0)
+                        .closedAt(LocalDateTime.now().plusDays(1))
                         .build()
         ).isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR);
+    }
+
+    @Test
+    void 마감시간이_마지막날짜보다_빠를수있다() {
+        // given
+        LocalDateTime closedAt = LocalDateTime.now().plusDays(5);
+        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(10);
+
+        // when & then
+        assertThatNoException().isThrownBy(
+                () -> DEFAULT_BUILDER.closedAt(closedAt).
+                        startDate(startDate)
+                        .endDate(endDate)
+                        .build()
+        );
+    }
+
+    @Test
+    void 마감시간이_마지막날짜보다_빠르면_예외를_던진다() {
+        // given
+        LocalDateTime closedAt = LocalDateTime.now().plusDays(15);
+        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(10);
+
+        // when & then
+        assertThatThrownBy(() -> DEFAULT_BUILDER.closedAt(closedAt).
+                startDate(startDate)
+                .endDate(endDate)
+                .build()
+        ).isInstanceOf(AppointmentDomainLogicException.class);
     }
 
     @Test
@@ -89,6 +124,7 @@ class AppointmentTest {
                         .endTime(LocalTime.of(11, 0))
                         .durationHours(1)
                         .durationMinutes(0)
+                        .closedAt(LocalDateTime.now().plusDays(1))
                         .build()
         );
     }

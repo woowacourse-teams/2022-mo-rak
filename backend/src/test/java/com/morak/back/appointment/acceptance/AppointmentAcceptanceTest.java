@@ -373,7 +373,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
     }
 
     static AppointmentCreateRequest[] getInvalidDomainLogicAppointmentCreateRequest() {
-        return new AppointmentCreateRequest[] {
+        return new AppointmentCreateRequest[]{
                 과거_날짜로_생성_요청된_약속잡기_요청_데이터,
                 약속잡기_범위_시작_날짜가_끝나는_날짜보다_나중인_약속잡기_요청_데이터,
                 약속_잡기_범위_시작과_끝나는_시간이_30분으로_안나눠지는_약속잡기_요청_데이터,
