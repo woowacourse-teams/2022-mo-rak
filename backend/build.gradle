@@ -103,8 +103,8 @@ jacocoTestReport {
     reports {
         // 원하는 리포트를 켜고 끌 수 있습니다.
         html.enabled true
-        xml.enabled false
-        csv.enabled false
+        xml.enabled true
+        csv.enabled true
 
 //  각 리포트 타입 마다 리포트 저장 경로를 설정할 수 있습니다.
 //  html.destination file("$buildDir/jacocoHtml")
