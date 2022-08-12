@@ -279,16 +279,4 @@ class AppointmentTest {
         // then
         assertThat(isAvailable).isFalse();
     }
-
-    @Test
-    void 자코코_테스트를_추가한다() {
-        // given
-        Appointment appointment = new Appointment();
-
-        // when
-
-
-        // then
-        assertThat(appointment.saySomething("HI")).isEqualTo("Hi guys!");
-    }
 }
