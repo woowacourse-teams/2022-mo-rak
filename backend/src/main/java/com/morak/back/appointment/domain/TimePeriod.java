@@ -18,8 +18,6 @@ import lombok.ToString;
 @ToString
 public class TimePeriod {
 
-    public static final LocalTime ZERO_TIME = LocalTime.of(0, 0);
-
     /*
         startTime이 00:00일 경우 당일의 자정을 의미한다.
      */
@@ -46,7 +44,7 @@ public class TimePeriod {
     }
 
     private static boolean isMidnight(LocalTime endTime) {
-        return endTime.equals(ZERO_TIME);
+        return endTime.equals(LocalTime.MIDNIGHT);
     }
 
     private static void validateChronology(LocalTime startTime, LocalTime endTime) {
@@ -98,7 +96,7 @@ public class TimePeriod {
     }
 
     public boolean isLessThanDurationMinutes(Integer durationMinutes) {
-        if (endTime.equals(ZERO_TIME)) {
+        if (endTime.equals(LocalTime.MIDNIGHT)) {
             return Duration.between(startTime, endTime).plusDays(1).toMinutes() < durationMinutes;
         }
         return Duration.between(startTime, endTime).toMinutes() < durationMinutes;

@@ -30,7 +30,7 @@ public class DatePeriod {
     public static DatePeriod of(LocalDate startDate, LocalDate endDate, LocalTime endTime) {
         validateFutureOrPresent(startDate, endDate);
         validateChronology(startDate, endDate);
-        if (endTime.equals(TimePeriod.ZERO_TIME)) {
+        if (endTime.equals(LocalTime.MIDNIGHT)) {
             endDate = endDate.plusDays(ONE_DAY);
         }
         return new DatePeriod(startDate, endDate);

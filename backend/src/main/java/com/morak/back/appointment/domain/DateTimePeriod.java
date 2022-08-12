@@ -72,8 +72,8 @@ public class DateTimePeriod {
             throw new AppointmentDomainLogicException(
                 CustomErrorCode.AVAILABLETIME_DURATION_NOT_MINUTES_UNIT_ERROR,
                 String.format(
-                    "약속잡기 가능 시간(%s~%s)은 " + minutesUnit + "분이어야 합니다.",
-                    startDateTime, endDateTime
+                    "약속잡기 가능 시간(%s~%s)은 %d 분이어야 합니다.",
+                    startDateTime, endDateTime, minutesUnit
                 )
             );
         }
@@ -87,8 +87,8 @@ public class DateTimePeriod {
             throw new AppointmentDomainLogicException(
                     CustomErrorCode.AVAILABLETIME_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR,
                     String.format(
-                            "약속잡기 가능 시간(%s, %s)은 " + MINUTES_UNIT + "분 단위여야 합니다.",
-                            startDateTime, endDateTime
+                            "약속잡기 가능 시간(%s, %s)은 %d 분 단위여야 합니다.",
+                            startDateTime, endDateTime, MINUTES_UNIT
                     )
             );
         }
@@ -100,7 +100,7 @@ public class DateTimePeriod {
 
     public DatePeriod toDatePeriod(LocalTime localTime) {
         LocalDate endDate = endDateTime.toLocalDate();
-        if (localTime.equals(LocalTime.of(0, 0))) {
+        if (localTime.equals(LocalTime.MIDNIGHT)) {
             endDate = endDate.minusDays(1);
         }
         return new DatePeriod(startDateTime.toLocalDate(), endDate);
