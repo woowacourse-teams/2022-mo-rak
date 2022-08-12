@@ -11,6 +11,7 @@ interface AppointmentInterface {
   endTime: string;
   durationHours: number;
   durationMinutes: number;
+  closedAt: string;
 }
 
 interface AppointmentRecommendationInterface {
