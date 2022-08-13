@@ -16,7 +16,6 @@ import AppointmentMainButtonGroup from '../AppointmentMainButtonGroup/Appointmen
 function AppointmentMainContainer() {
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [appointments, setAppointments] = useState<getAppointmentsResponse>([]);
-  console.log(appointments);
 
   useEffect(() => {
     const fetchAppointments = async () => {
