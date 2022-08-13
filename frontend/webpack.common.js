@@ -13,7 +13,10 @@ module.exports = {
     publicPath: '/'
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: './public/index.html' }),
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      favicon: './src/assets/icon.ico'
+    }),
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(process.env)
     })
