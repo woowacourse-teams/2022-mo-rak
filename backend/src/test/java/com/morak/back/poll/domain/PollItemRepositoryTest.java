@@ -40,6 +40,8 @@ class PollItemRepositoryTest {
         // then
         assertThat(savedItems).allMatch(item -> item.getId() != null);
     }
+
+    // TODO: 2022/08/11 data.sql 의존
     @Test
     void 투표_id로_투표_선택_항목을_조회한다() {
         // given
@@ -51,5 +53,4 @@ class PollItemRepositoryTest {
                 () -> assertThat(pollItems.get(0).getSubject()).isEqualTo("test-poll-item-subject-A")
         );
     }
-
 }

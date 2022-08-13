@@ -52,9 +52,13 @@ public class PollService {
         validateMemberInTeam(team.getId(), memberId);
 
         Poll poll = request.toPoll(member, team, PollStatus.OPEN, Code.generate(GENERATOR));
+        List<PollItem> items = request.toPollItems(poll);
+
+        for (PollItem item : items) {
+            poll.addItem(item);
+        }
+
         Poll savedPoll = pollRepository.save(poll);
-        List<PollItem> items = request.toPollItems(savedPoll);
-        pollItemRepository.saveAll(items);
 
         return savedPoll.getCode();
     }
@@ -80,6 +84,7 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
+    // TODO: 2022/08/11 PollResultResponse에 같은 itemId가 들어오는 경우 ?
     public void doPoll(String teamCode, Long memberId, String pollCode, List<PollResultRequest> requests) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
@@ -93,6 +98,14 @@ public class PollService {
         poll.doPoll(member, mapPollItemAndDescription(requests));
     }
 
+    private void validateTeam(Team findTeam, Poll poll) {
+        if (!poll.isBelongedTo(findTeam)) {
+            throw new PollAuthorizationException(CustomErrorCode.POLL_TEAM_MISMATCHED_ERROR,
+                    poll.getCode() + " 코드의 투표는 " + findTeam.getCode() + " 코드의 팀에 속해있지 않습니다."
+            );
+        }
+    }
+
     private Map<PollItem, String> mapPollItemAndDescription(List<PollResultRequest> requests) {
         return requests.stream()
                 .collect(Collectors.toMap(this::getPollItem, PollResultRequest::getDescription));
@@ -102,14 +115,6 @@ public class PollService {
         Long pollItemId = request.getId();
         return pollItemRepository.findById(pollItemId)
             .orElseThrow(() -> PollNotFoundException.ofPollItem(CustomErrorCode.POLL_ITEM_NOT_FOUND_ERROR, pollItemId));
-    }
-
-    public void validateTeam(Team findTeam, Poll poll) {
-        if (!poll.isBelongedTo(findTeam)) {
-            throw new PollAuthorizationException(CustomErrorCode.POLL_TEAM_MISMATCHED_ERROR,
-                    poll.getCode() + " 코드의 투표는 " + findTeam.getCode() + " 코드의 팀에 속해있지 않습니다."
-            );
-        }
     }
 
     @Transactional(readOnly = true)

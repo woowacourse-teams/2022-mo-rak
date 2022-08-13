@@ -46,12 +46,13 @@ class PollRepositoryTest {
         Assertions.assertAll(
                 () -> assertThat(savedPoll).isNotNull(),
                 () -> assertThat(savedPoll.getId()).isNotNull(),
-                () -> assertThat(savedPoll.getTitle()).isEqualTo(savedPoll.getTitle()),
-                () -> assertThat(savedPoll.getTeam()).isNotNull(),
-                () -> assertThat(savedPoll.getHost()).isNotNull()
+                () -> assertThat(savedPoll.getTitle()).isEqualTo(poll.getTitle()),
+                () -> assertThat(savedPoll.getTeam()).isEqualTo(team),
+                () -> assertThat(savedPoll.getHost()).isEqualTo(member)
         );
     }
 
+    // TODO: 2022/08/11 data.sql 의존 제거
     @Test
     void 팀ID로_투표_목록을_조회한다() {
         // given
@@ -64,7 +65,7 @@ class PollRepositoryTest {
         assertThat(polls).hasSize(1);
     }
 
-
+    // TODO: 2022/08/11 data.sql 의존
     @Test
     void 투표_단건을_조회한다() {
         // given
@@ -77,6 +78,7 @@ class PollRepositoryTest {
         );
     }
 
+    // TODO: 2022/08/11 data.sql 의존
     @Test
     void 잘못된_팀_code로_조회할_경우_null을_반환한다() {
         // given
@@ -86,6 +88,7 @@ class PollRepositoryTest {
         assertThat(poll).isEmpty();
     }
 
+    // TODO: 2022/08/11 data.sql 의존
     @Test
     void id로_투표를_삭제한다() {
         // given

@@ -12,6 +12,7 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("/api/groups/{groupCode}/polls")
 public class PollController {
 
@@ -47,8 +49,7 @@ public class PollController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PollResponse>> findPolls(@PathVariable String groupCode,
-                                                        @Auth Long memberId) {
+    public ResponseEntity<List<PollResponse>> findPolls(@PathVariable String groupCode, @Auth Long memberId) {
         return ResponseEntity.ok(pollService.findPolls(groupCode, memberId));
     }
 
