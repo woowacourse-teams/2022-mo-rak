@@ -11,12 +11,11 @@ class JwtTokenProviderTest {
 
     private static final String SECRET_KEY = "9875a0b4ee6605257509be56c0c0db8ac7657c56e008b2d0087efece6e0accd8";
 
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 3600000L);
 
     @Test
     void 토큰에서_payload를_가져온다() {
         // given
-        jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 3600000L);
         String payload = "엘리";
 
         // when
@@ -29,12 +28,9 @@ class JwtTokenProviderTest {
     @Test
     void 유효하지않은_토큰에서_payload를_가져올_때_예외를_던진다() {
         // given
-        jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 3600000L);
-
-        // when
         String invalidToken = "invalidToken";
 
-        // then
+        // when & then
         assertThatThrownBy(() ->jwtTokenProvider.parsePayload(invalidToken))
                 .isInstanceOf(AuthenticationException.class)
                 .extracting("code")
@@ -44,7 +40,6 @@ class JwtTokenProviderTest {
     @Test
     void 유효하지않은_토큰인경우_예외를_던진다() {
         // given
-        jwtTokenProvider = new JwtTokenProvider(SECRET_KEY, 3600000L);
         String token = "test-token";
 
         // when & then

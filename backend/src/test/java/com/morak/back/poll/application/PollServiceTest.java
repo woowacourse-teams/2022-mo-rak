@@ -40,19 +40,14 @@ import org.springframework.test.context.jdbc.Sql;
 @Sql(scripts = "classpath:schema.sql")
 class PollServiceTest {
 
-    @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
     private TeamRepository teamRepository;
 
-    @Autowired
     private TeamMemberRepository teamMemberRepository;
 
-    @Autowired
     private PollRepository pollRepository;
 
-    @Autowired
     private PollItemRepository pollItemRepository;
 
     private PollService pollService;
@@ -61,16 +56,26 @@ class PollServiceTest {
     private Team team;
     private Poll poll;
 
-    @BeforeEach
-    void setup() {
-        pollService = new PollService(
+    @Autowired
+    public PollServiceTest(MemberRepository memberRepository, TeamRepository teamRepository,
+                           TeamMemberRepository teamMemberRepository, PollRepository pollRepository,
+                           PollItemRepository pollItemRepository) {
+        this.memberRepository = memberRepository;
+        this.teamRepository = teamRepository;
+        this.teamMemberRepository = teamMemberRepository;
+        this.pollRepository = pollRepository;
+        this.pollItemRepository = pollItemRepository;
+        this.pollService = new PollService(
                 pollRepository,
                 memberRepository,
                 teamRepository,
                 teamMemberRepository,
                 pollItemRepository
         );
+    }
 
+    @BeforeEach
+    void setup() {
         member = memberRepository.save(Member.builder()
                 .oauthId("oauthmem")
                 .name("박성우")

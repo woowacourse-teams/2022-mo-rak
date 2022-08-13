@@ -94,7 +94,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    public static List<Arguments> getPollCreateRequest() {
+    private static List<Arguments> getPollCreateRequest() {
         return List.of(
                 Arguments.of(
                         new PollCreateRequest(" ", 1, false, LocalDateTime.now().plusDays(1), List.of("항목1", "항목2"))),
@@ -217,7 +217,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    public static List<Arguments> getPollResultRequest() {
+    private static List<Arguments> getPollResultRequest() {
         return List.of(
                 Arguments.of(new PollResultRequest()),
                 Arguments.of(new PollResultRequest(null, "집 가고 싶다."))
