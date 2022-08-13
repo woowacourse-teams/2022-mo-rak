@@ -95,28 +95,15 @@ public class Appointment extends BaseEntity {
         this.host = host;
         this.title = title;
         this.description = description;
+        validateLastDatetime(endDate, endTime);
         this.datePeriod = DatePeriod.of(startDate, endDate, endTime);
         this.timePeriod = TimePeriod.of(startTime, endTime);
-        validateLastDatetime(endDate, endTime);
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
         validateDurationMinutesLessThanTimePeriod(this.durationMinutes, this.timePeriod);
         this.status = OPEN;
         this.code = code;
         this.closedAt = closedAt;
         validateClosedAtBeforeEndDate(closedAt, datePeriod);
-    }
-
-    private void validateClosedAtBeforeEndDate(LocalDateTime closedAt, DatePeriod datePeriod) {
-        LocalDate closeDate = closedAt.toLocalDate();
-        if (!datePeriod.isInRange(closeDate)) {
-            throw new AppointmentDomainLogicException(
-                    CustomErrorCode.APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR,
-                    String.format(
-                            "약속잡기의 마감 날짜(%s)는 시작날짜와 마지막 날짜 사이(%s)여야 합니다.",
-                            closedAt.toLocalDate(), datePeriod
-                    )
-            );
-        }
     }
 
     private void validateLastDatetime(LocalDate endDate, LocalTime endTime) {
@@ -136,6 +123,19 @@ public class Appointment extends BaseEntity {
                     String.format(
                             "진행시간(%d)은 약속잡기의 시작시간~마지막시간(%s ~ %s) 보다 짧아야 합니다.",
                             durationMinutes.getDurationMinutes(), timePeriod.getStartTime(), timePeriod.getEndTime()
+                    )
+            );
+        }
+    }
+
+    private void validateClosedAtBeforeEndDate(LocalDateTime closedAt, DatePeriod datePeriod) {
+        LocalDate closeDate = closedAt.toLocalDate();
+        if (!datePeriod.isInRange(closeDate)) {
+            throw new AppointmentDomainLogicException(
+                    CustomErrorCode.APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR,
+                    String.format(
+                            "약속잡기의 마감 날짜(%s)는 시작날짜와 마지막 날짜 사이(%s)여야 합니다.",
+                            closedAt.toLocalDate(), datePeriod
                     )
             );
         }

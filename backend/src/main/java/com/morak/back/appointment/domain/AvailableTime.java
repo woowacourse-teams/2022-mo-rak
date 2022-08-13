@@ -62,30 +62,30 @@ public class AvailableTime extends BaseEntity {
         validateTimeRange(appointment, createDateTimePeriod);
     }
 
-    private void validateDateRange(Appointment appointment, DateTimePeriod createDataTimePeriod) {
-        LocalTime localTime = createDataTimePeriod.getEndDateTime().toLocalTime().withSecond(0).withNano(0);
+    private void validateDateRange(Appointment appointment, DateTimePeriod createDateTimePeriod) {
+        LocalTime createLocalTime = createDateTimePeriod.getEndDateTime().toLocalTime();
 
-        if (!appointment.isAvailableDateRange(createDataTimePeriod.toDatePeriod(localTime))) {
+        if (!appointment.isAvailableDateRange(createDateTimePeriod.toDatePeriod(createLocalTime))) {
             throw new AppointmentDomainLogicException(
                 CustomErrorCode.AVAILABLETIME_DATE_OUT_OF_RANGE_ERROR,
                 String.format(
                     "%s 코드 투표의 약속잡기선택날짜 %s 는 약속잡기날짜 %s 이내여야 합니다.",
                     appointment.getCode(),
-                    createDataTimePeriod.toDatePeriod(localTime),
+                    createDateTimePeriod.toDatePeriod(createLocalTime),
                     appointment.getDatePeriod()
                 )
             );
         }
     }
 
-    private void validateTimeRange(Appointment appointment, DateTimePeriod dateTimePeriod) {
-        if (!appointment.isAvailableTimeRange(dateTimePeriod.toTimePeriod())) {
+    private void validateTimeRange(Appointment appointment, DateTimePeriod createDateTimePeriod) {
+        if (!appointment.isAvailableTimeRange(createDateTimePeriod.toTimePeriod())) {
             throw new AppointmentDomainLogicException(
                 CustomErrorCode.AVAILABLETIME_TIME_OUT_OF_RANGE_ERROR,
                 String.format(
                     "%s 코드 투표의 약속잡기 선택시간 %s 는 %s 이내여야 합니다.",
                     appointment.getCode(),
-                    dateTimePeriod.toTimePeriod(),
+                    createDateTimePeriod.toTimePeriod(),
                     appointment.getTimePeriod()
                 )
             );

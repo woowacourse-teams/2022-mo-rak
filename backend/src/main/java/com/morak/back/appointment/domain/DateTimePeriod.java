@@ -43,7 +43,7 @@ public class DateTimePeriod {
         return new DateTimePeriod(startDateTime, endDateTime);
     }
 
-    public boolean contains(DateTimePeriod other) {
+    public boolean isAvailableRange(DateTimePeriod other) {
         return !(other.startDateTime.isBefore(this.startDateTime) || other.endDateTime.isAfter(this.endDateTime));
     }
 
