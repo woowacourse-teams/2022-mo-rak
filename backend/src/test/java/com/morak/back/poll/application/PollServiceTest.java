@@ -3,7 +3,6 @@ package com.morak.back.poll.application;
 import static com.morak.back.poll.domain.PollStatus.OPEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.tuple;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
@@ -301,7 +300,7 @@ class PollServiceTest {
     }
 
     @Test
-    void 투표진행시_멤버가_해당_투표_팀_소속이_아니면_예외를_던진다() {
+    void 투표진행_시_멤버가_해당_투표_팀_소속이_아니면_예외를_던진다() {
         // given
         List<PollItem> pollItems = pollItemRepository.saveAll(List.of(
                 PollItem.builder()
@@ -648,7 +647,7 @@ class PollServiceTest {
         assertThatThrownBy(() -> pollService.deletePoll(team.getCode(), 차리.getId(), poll.getCode()))
                 .isInstanceOf(PollAuthorizationException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_MEMBER_MISMATCHED_ERROR);
+                .isEqualTo(CustomErrorCode.POLL_HOST_MISMATCHED_ERROR);
     }
 
     @Test
@@ -674,5 +673,24 @@ class PollServiceTest {
 
         // then
         assertThat(poll.getStatus()).isEqualTo(PollStatus.CLOSED);
+    }
+
+    @Test
+    void 투표_종료_시_호스트가_아니면_예외를_던진다() {
+        // given
+        Member 차리 = memberRepository.save(Member.builder()
+                .oauthId("leechari")
+                .name("이찬주")
+                .profileUrl("http://lee-profile.com")
+                .build());
+
+        teamMemberRepository.save(new TeamMember(null, team, 차리));
+
+        // when & then
+            assertThatThrownBy(() -> pollService.closePoll(team.getCode(), 차리.getId(), poll.getCode()))
+                .isInstanceOf(PollAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_HOST_MISMATCHED_ERROR);
+
     }
 }

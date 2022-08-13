@@ -157,7 +157,7 @@ public class Poll extends BaseEntity {
     private void validateHost(Member member) {
         if (!isHost(member)) {
             throw new PollAuthorizationException(
-                CustomErrorCode.POLL_MEMBER_MISMATCHED_ERROR,
+                CustomErrorCode.POLL_HOST_MISMATCHED_ERROR,
                 member.getId() + "번 멤버는 " + getCode() + " 코드 투표의 호스트가 아닙니다."
             );
         }

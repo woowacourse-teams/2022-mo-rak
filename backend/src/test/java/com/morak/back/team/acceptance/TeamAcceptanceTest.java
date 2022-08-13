@@ -46,7 +46,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         TeamCreateRequest request = new TeamCreateRequest("albur");
 
         // when
-        ExtractableResponse<Response> response = 사용자로_그룹_생성을_요청한다(request, token);
+        ExtractableResponse<Response> response = 그룹_생성을_요청한다(request, token);
 
         // then
         Assertions.assertAll(
@@ -77,7 +77,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         TeamCreateRequest request = new TeamCreateRequest("albur");
 
         // when
-        ExtractableResponse<Response> response = 사용자로_그룹_생성을_요청한다(request, "invalidToken");
+        ExtractableResponse<Response> response = 그룹_생성을_요청한다(request, "invalidToken");
 
         // then
         Assertions.assertAll(
@@ -94,7 +94,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String notExistMemberToken = tokenProvider.createToken(String.valueOf(0L));
 
         // when
-        ExtractableResponse<Response> response = 사용자로_그룹_생성을_요청한다(request, notExistMemberToken);
+        ExtractableResponse<Response> response = 그룹_생성을_요청한다(request, notExistMemberToken);
 
         // then
         Assertions.assertAll(
@@ -105,12 +105,12 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void null인_값으로_그룹_생성_요청_시_400을_반환한다() {
+    void null인_값으로_그룹_생성_요청_시_BAD_REQUEST를_반환한다() {
         // given
         TeamCreateRequest request = new TeamCreateRequest(null);
 
         // when
-        ExtractableResponse<Response> response = 사용자로_그룹_생성을_요청한다(request, token);
+        ExtractableResponse<Response> response = 그룹_생성을_요청한다(request, token);
 
         // then
         Assertions.assertAll(
@@ -123,10 +123,11 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     void 그룹_초대_코드를_생성한다() {
         // given
-        String location = 기본_사용자로_그룹_생성을_요청한다().header("Location");
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String location = 그룹_생성을_요청한다(request, token).header("Location");
 
         // when
-        ExtractableResponse<Response> response = 그룹_초대코드_생성을_요청한다(location);
+        ExtractableResponse<Response> response = 그룹_초대코드_생성을_요청한다(location, token);
 
         // then
         Assertions.assertAll(
@@ -138,11 +139,12 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     void 그룹_초대_코드를_여러번_생성할_수_있다() {
         // given
-        String location = 기본_사용자로_그룹_생성을_요청한다().header("Location");
-        그룹_초대코드_생성을_요청한다(location);
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String location = 그룹_생성을_요청한다(request, token).header("Location");
+        그룹_초대코드_생성을_요청한다(location, token);
 
         // when
-        ExtractableResponse<Response> response = 그룹_초대코드_생성을_요청한다(location);
+        ExtractableResponse<Response> response = 그룹_초대코드_생성을_요청한다(location, token);
 
         // then
         Assertions.assertAll(
@@ -171,8 +173,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     void 그룹에_참가한_멤버의_그룹_참가_여부를_확인한다() {
         // given
         TeamCreateRequest teamCreateRequest = new TeamCreateRequest("하이");
-        String teamLocation = 사용자로_그룹_생성을_요청한다(teamCreateRequest, token).header("Location");
-        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation).header("Location");
+        String teamLocation = 그룹_생성을_요청한다(teamCreateRequest, token).header("Location");
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
 
         // when
         ExtractableResponse<Response> response = 그룹_참가_여부_조회를_요청한다(teamInvitationLocation, token);
@@ -192,8 +194,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     void 그룹에_참가하지_않은_멤버의_그룹_참가_여부를_확인한다() {
         // given
         TeamCreateRequest teamCreateRequest = new TeamCreateRequest("하이");
-        String teamLocation = 사용자로_그룹_생성을_요청한다(teamCreateRequest, token).header("Location");
-        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation).header("Location");
+        String teamLocation = 그룹_생성을_요청한다(teamCreateRequest, token).header("Location");
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
         String otherToken = tokenProvider.createToken(String.valueOf(2L));
 
         // when
@@ -214,8 +216,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     void 없는_멤버가_그룹_참가_여부를_요청하면_팀코드_팀이름_false를_반환한다() {
         // given
         TeamCreateRequest teamCreateRequest = new TeamCreateRequest("하이");
-        String teamLocation = 사용자로_그룹_생성을_요청한다(teamCreateRequest, token).header("Location");
-        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation).header("Location");
+        String teamLocation = 그룹_생성을_요청한다(teamCreateRequest, token).header("Location");
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
         String otherToken = tokenProvider.createToken(String.valueOf(0L));
 
         // when
@@ -253,8 +255,9 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     void 그룹에_참가한다() {
         // given
-        String teamLocation = 기본_사용자로_그룹_생성을_요청한다().header("Location");
-        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation).header("Location");
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
         String otherToken = tokenProvider.createToken(String.valueOf(2L));
 
         // when
@@ -271,8 +274,9 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     void 없는_멤버가_그룹에_참가하면_NOT_FOUND가_반환된다() {
         // given
-        String teamLocation = 기본_사용자로_그룹_생성을_요청한다().header("Location");
-        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation).header("Location");
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
         String otherToken = tokenProvider.createToken(String.valueOf(0L));
 
         // when
@@ -305,8 +309,9 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     void 그룹에_참가한_멤버가_또_같은_그룹에_참가하면_400을_반환한다() {
         // given
-        String teamLocation = 기본_사용자로_그룹_생성을_요청한다().header("Location");
-        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation).header("Location");
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
         String otherToken = tokenProvider.createToken(String.valueOf(2L));
 
         // when
@@ -324,10 +329,11 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     void 이미_그룹에_참가한_멤버가_다른_그룹에_참가할_수_있다() {
         // given
-        String team1Location = 기본_사용자로_그룹_생성을_요청한다().header("Location");
-        String team2Location = 기본_사용자로_그룹_생성을_요청한다().header("Location");
-        String team1InvitationLocation = 그룹_초대코드_생성을_요청한다(team1Location).header("Location");
-        String team2InvitationLocation = 그룹_초대코드_생성을_요청한다(team2Location).header("Location");
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String team1Location = 그룹_생성을_요청한다(request, token).header("Location");
+        String team2Location = 그룹_생성을_요청한다(request, token).header("Location");
+        String team1InvitationLocation = 그룹_초대코드_생성을_요청한다(team1Location, token).header("Location");
+        String team2InvitationLocation = 그룹_초대코드_생성을_요청한다(team2Location, token).header("Location");
 
         String otherToken = tokenProvider.createToken(String.valueOf(2L));
 
@@ -347,8 +353,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // given
         TeamCreateRequest requestA = new TeamCreateRequest("team-A");
         TeamCreateRequest requestB = new TeamCreateRequest("team-B");
-        String teamALocation1 = 사용자로_그룹_생성을_요청한다(requestA, token).header("Location");
-        사용자로_그룹_생성을_요청한다(requestB, token).header("Location");
+        String teamALocation1 = 그룹_생성을_요청한다(requestA, token).header("Location");
+        그룹_생성을_요청한다(requestB, token).header("Location");
 
         // when
         ExtractableResponse<Response> response = 그룹_목록_조회를_요청한다(token);
@@ -382,8 +388,9 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     void 그룹의_멤버들을_조회한다() {
         // given
         String otherToken = tokenProvider.createToken(String.valueOf(2L));
-        String teamLocation = 기본_사용자로_그룹_생성을_요청한다().header("Location");
-        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation).header("Location");
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
         그룹_참가를_요청한다(teamInvitationLocation, otherToken);
 
         // when
@@ -421,7 +428,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     void 그룹에_속하지않은_멤버가_그룹의_멤버들을_조회하면_FORBIDDEN이_반환된다() {
         // given
-        String teamLocation = 기본_사용자로_그룹_생성을_요청한다().header("Location");
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
         String otherToken = tokenProvider.createToken(String.valueOf(2L));
 
         // when
@@ -438,7 +446,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     void 없는_멤버가_그룹의_멤버들을_조회하면_NOT_FOUND가_반환된다() {
         // given
-        String teamLocation = 기본_사용자로_그룹_생성을_요청한다().header("Location");
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
         String invalidToken = tokenProvider.createToken(String.valueOf(0L));
 
         // when
@@ -457,9 +466,9 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String otherToken = tokenProvider.createToken(String.valueOf(5L));
 
         String targetName = "AAA";
-        String targetTeamLocation = 사용자로_그룹_생성을_요청한다(new TeamCreateRequest(targetName), otherToken).header("Location");
-        사용자로_그룹_생성을_요청한다(new TeamCreateRequest("BBB"), otherToken);
-        사용자로_그룹_생성을_요청한다(new TeamCreateRequest("CCC"), otherToken);
+        String targetTeamLocation = 그룹_생성을_요청한다(new TeamCreateRequest(targetName), otherToken).header("Location");
+        그룹_생성을_요청한다(new TeamCreateRequest("BBB"), otherToken);
+        그룹_생성을_요청한다(new TeamCreateRequest("CCC"), otherToken);
 
         ExtractableResponse<Response> response = 기본_그룹_조회를_요청한다(otherToken);
         TeamResponse teamResponse = response.as(TeamResponse.class);
@@ -502,7 +511,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     void 그룹을_탈퇴한다() {
         // given
         String otherToken = tokenProvider.createToken(String.valueOf(5L));
-        String teamLocation = 사용자로_그룹_생성을_요청한다(new TeamCreateRequest("하이"), otherToken).header("Location");
+        String teamLocation = 그룹_생성을_요청한다(new TeamCreateRequest("하이"), otherToken).header("Location");
         String teamCode = teamLocation.split("/")[3];
 
         // when
@@ -520,7 +529,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     void 이미_탈퇴한_그룹을_다시_탈퇴하면_FORBIDDEN을_반환한다() {
         // given
         String otherToken = tokenProvider.createToken(String.valueOf(5L));
-        String teamLocation = 사용자로_그룹_생성을_요청한다(new TeamCreateRequest("하이"), otherToken).header("Location");
+        String teamLocation = 그룹_생성을_요청한다(new TeamCreateRequest("하이"), otherToken).header("Location");
         String teamCode = teamLocation.split("/")[3];
 
         // when
@@ -538,7 +547,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     void 없는_멤버가_그룹_탈퇴_요청을_보내면_FORBIDDEN이_반환된다() {
         // given
-        String teamLocation = 기본_사용자로_그룹_생성을_요청한다().header("Location");
+        TeamCreateRequest request = new TeamCreateRequest("albur");
+        String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
         String teamCode = teamLocation.split("/")[3];
         String otherToken = tokenProvider.createToken(String.valueOf(0L));
 
@@ -570,16 +580,11 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    public ExtractableResponse<Response> 기본_사용자로_그룹_생성을_요청한다() {
-        TeamCreateRequest request = new TeamCreateRequest("기본그룹");
-        return 사용자로_그룹_생성을_요청한다(request, token);
-    }
-
-    public ExtractableResponse<Response> 사용자로_그룹_생성을_요청한다(TeamCreateRequest request, String token) {
+    public ExtractableResponse<Response> 그룹_생성을_요청한다(TeamCreateRequest request, String token) {
         return post("/api/groups", request, toHeader(token));
     }
 
-    public ExtractableResponse<Response> 그룹_초대코드_생성을_요청한다(String location) {
+    public ExtractableResponse<Response> 그룹_초대코드_생성을_요청한다(String location, String token) {
         return post(location + "/invitation", "", toHeader(token));
     }
 

@@ -182,7 +182,7 @@ public class PollService {
     private void validateHost(Member member, Poll poll) {
         if (!poll.isHost(member)) {
             throw new PollAuthorizationException(
-                    CustomErrorCode.POLL_MEMBER_MISMATCHED_ERROR,
+                    CustomErrorCode.POLL_HOST_MISMATCHED_ERROR,
                     member.getId() + "번 멤버는 " + poll.getCode() + " 코드 투표의 호스트가 아닙니다."
             );
         }

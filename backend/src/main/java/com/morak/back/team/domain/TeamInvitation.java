@@ -35,7 +35,6 @@ public class TeamInvitation extends BaseEntity {
     @Valid
     private Code code;
 
-    //TODO expiredAt을 지우는 방향으로 가보자 createdAt + 30 = 제한 시간
     @Embedded
     @Valid
     private ExpiredTime expiredAt;

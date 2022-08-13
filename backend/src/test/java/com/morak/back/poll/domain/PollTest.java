@@ -189,6 +189,23 @@ class PollTest {
     }
 
     @Test
+    void 호스트가_아닌_멤버가_투표를_종료하는_경우_예외를_던진다() {
+        // given
+        Member member = Member.builder()
+                .id(100L)
+                .oauthId("174837283")
+                .name("ohzzi")
+                .profileUrl("http://wrong-member")
+                .build();
+
+        // when & then
+        assertThatThrownBy(() -> poll.close(member))
+                .isInstanceOf(PollAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_HOST_MISMATCHED_ERROR);
+    }
+
+    @Test
     void 이미_투표가_종료된_상태에서_다시_종료하는_경우_예외를_던진다() {
         // given
         poll.close(member);
@@ -259,22 +276,5 @@ class PollTest {
 
         // then
         assertThat(isHost).isFalse();
-    }
-
-    @Test
-    void 호스트가_아닌_멤버가_투표를_종료하는_경우_예외를_던진다() {
-        // given
-        Member member = Member.builder()
-                .id(100L)
-                .oauthId("174837283")
-                .name("ohzzi")
-                .profileUrl("http://wrong-member")
-                .build();
-
-        // when & then
-        assertThatThrownBy(() -> poll.close(member))
-                .isInstanceOf(PollAuthorizationException.class)
-                .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_MEMBER_MISMATCHED_ERROR);
     }
 }

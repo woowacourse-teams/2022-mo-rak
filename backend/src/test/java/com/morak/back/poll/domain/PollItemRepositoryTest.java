@@ -36,6 +36,7 @@ class PollItemRepositoryTest {
                         .subject("subject-3")
                         .build()
         );
+
         // when
         List<PollItem> savedItems = pollItemRepository.saveAll(items);
 
