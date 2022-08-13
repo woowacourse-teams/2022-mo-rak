@@ -10,10 +10,12 @@ import PollCreateFormInputGroup from '../PollCreateFormInputGroup/PollCreateForm
 import PollCreateDetail from '../PollCreateDetail/PollCreateDetail';
 import PollCreateFormSubmitButton from '../PollCreateFormSubmitButton/PollCreateFormSubmitButton';
 import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateFormTitleInput';
+import PollCreateCloseTimeInput from '../PollCreateCloseTimeInput/PollCreateCloseTimeInput';
 
 import { createPoll } from '../../../api/poll';
 import { createPollData, PollInterface } from '../../../types/poll';
 import { GroupInterface } from '../../../types/group';
+import useInput from '../../../hooks/useInput';
 
 function PollCreateForm() {
   const navigate = useNavigate();
@@ -23,24 +25,24 @@ function PollCreateForm() {
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isAllowedMultiplePollCount, setIsAllowedMultiplePollCount] = useState(false);
   const [pollItems, setPollItems] = useState(['', '']);
+  const [closeDate, handleCloseDate] = useInput('');
+  const [closeTime, handleCloseTime] = useInput('');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const allowedPollCount = isAllowedMultiplePollCount ? pollItems.length : 1;
 
-    // TODO: PollCreateRequest?
     const pollData: createPollData = {
       title,
       allowedPollCount,
       isAnonymous,
-      closedAt: '9999-12-31T11:59:59',
+      closedAt: `${closeDate}T${closeTime}`,
       subjects: pollItems
     };
 
     try {
       // TODO: 쿼리 적용
-
       const res = await createPoll(pollData, groupCode);
       const pollCode = res.headers.location.split('polls/')[1];
 
@@ -67,6 +69,12 @@ function PollCreateForm() {
   return (
     <Box width="84.4rem" padding="6.4rem 4.8rem 14rem">
       <form onSubmit={handleSubmit}>
+        <PollCreateCloseTimeInput
+          closeDate={closeDate}
+          closeTime={closeTime}
+          onChangeDate={handleCloseDate}
+          onChangeTime={handleCloseTime}
+        />
         <MarginContainer margin="0 0 4rem 0">
           <PollCreateFormTitleInput title={title} onChange={handleTitle} />
           <Divider />
