@@ -24,7 +24,6 @@ function AppointmentMainButtonGroup({ appointmentCode, isClosed }: Props) {
     <FlexContainer gap="1.2rem" justifyContent="end">
       {isOpen(isClosed) && (
         <Button
-          type="button"
           variant="filled"
           width="6rem"
           padding="0.4rem 0"
@@ -37,7 +36,6 @@ function AppointmentMainButtonGroup({ appointmentCode, isClosed }: Props) {
         </Button>
       )}
       <Button
-        type="button"
         variant="outlined"
         width="6rem"
         padding="0.4rem 0"
