@@ -8,7 +8,8 @@ import { PollInterface } from '../../../types/poll';
 
 interface Props extends Pick<PollInterface, 'isAnonymous' | 'allowedPollCount' | 'closedAt'> {}
 
-// TODO: 변수명 통일
+// TODO: 변수명 통일해주자! formatted?
+// TODO: 메인페이지에서도 사용하는 데 어디에 이 함수를 놓을 수 있을지 고민해보자!
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);
 
