@@ -122,13 +122,12 @@ function Calendar({
       .toString()
       .padStart(2, '0')}` === selectedDate;
 
+  const isThisMonth = () => new Date().getMonth() === date.getMonth();
+
   return (
     <StyledCalendar>
       <StyledMonth>
-        <StyledPrevButton
-          onClick={handleShowPrevMonth}
-          disabled={new Date().getMonth() === date.getMonth()}
-        >
+        <StyledPrevButton onClick={handleShowPrevMonth} disabled={isThisMonth()}>
           {/* TODO: 이런 방식이 괜찮은 방법인지 고민하기 */}
           &#8249;
         </StyledPrevButton>
@@ -143,10 +142,7 @@ function Calendar({
       <StyledDays>
         {/* 지난 달 일부 날짜 */}
         {getPrevMonthDays().map((day) => (
-          <StyledPrevMonthDay
-            onClick={handleShowPrevMonth}
-            isHidden={new Date().getMonth() === date.getMonth()}
-          >
+          <StyledPrevMonthDay onClick={handleShowPrevMonth} isHidden={isThisMonth()}>
             {day}
           </StyledPrevMonthDay>
         ))}
