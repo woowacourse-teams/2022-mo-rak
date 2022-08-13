@@ -41,7 +41,6 @@ class AppointmentTest {
                 .closedAt(LocalDateTime.now().plusDays(1));
     }
 
-    // TODO: 2022/07/28 AvailableTime 추가 후 테스트 필요!!
     @Test
     void POJO객체의_count는_항상_0이다() {
         // when

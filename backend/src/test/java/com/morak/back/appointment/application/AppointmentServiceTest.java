@@ -39,7 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ServiceTest
 class AppointmentServiceTest {
 
-    private static AppointmentBuilder DEFAULT_BUILDER;
+    private AppointmentBuilder DEFAULT_BUILDER;
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -170,12 +170,7 @@ class AppointmentServiceTest {
 
     @Test
     void 약속잡기_목록을_조회한다() {
-        // given
-        //given(teamRepository.findIdByCode(anyString())).willReturn(Optional.of(모락.getId()));
-        //given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
-        //given(appointmentRepository.findAllByTeamId(anyLong())).willReturn(List.of(회식_날짜_약속잡기, 스터디_날짜_약속잡기));
-
-        // when
+        // given & when
         List<AppointmentAllResponse> appointmentsResponse = appointmentService.findAppointments("MoraK123", 1L);
 
         // then
