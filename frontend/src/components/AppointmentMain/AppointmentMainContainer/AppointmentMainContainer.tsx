@@ -72,8 +72,7 @@ function AppointmentMainContainer() {
 const StyledContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  column-gap: 3.2rem;
-  row-gap: 3.2rem;
+  gap: 2.4rem;
 `;
 
 const StyledTitle = styled.h1`
