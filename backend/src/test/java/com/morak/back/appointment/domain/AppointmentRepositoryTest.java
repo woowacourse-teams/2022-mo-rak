@@ -153,13 +153,14 @@ class AppointmentRepositoryTest {
     }
 
     static List<Arguments> getAppointmentWithEachNull() {
-        ;
-        Function<AppointmentBuilder, AppointmentBuilder> hostNull = (AppointmentBuilder builder) -> builder.host(null);
-        Function<AppointmentBuilder, AppointmentBuilder> teamNull = (AppointmentBuilder builder) -> builder.team(null);
-        Function<AppointmentBuilder, AppointmentBuilder> titleNull = (AppointmentBuilder builder) -> builder.title(
-                null);
-        Function<AppointmentBuilder, AppointmentBuilder> descriptionNull = (AppointmentBuilder builder) -> builder.description(
-                null);
+        Function<AppointmentBuilder, AppointmentBuilder> hostNull =
+                (AppointmentBuilder builder) -> builder.host(null);
+        Function<AppointmentBuilder, AppointmentBuilder> teamNull =
+                (AppointmentBuilder builder) -> builder.team(null);
+        Function<AppointmentBuilder, AppointmentBuilder> titleNull =
+                (AppointmentBuilder builder) -> builder.title(null);
+        Function<AppointmentBuilder, AppointmentBuilder> descriptionNull =
+                (AppointmentBuilder builder) -> builder.description(null);
 
         return List.of(
                 Arguments.of(hostNull),
@@ -169,7 +170,6 @@ class AppointmentRepositoryTest {
         );
     }
 
-    // TODO: 2022/07/28 AvailableTime 추가 후 테스트 필요!!
     @Test
     void 포뮬라를_적용해_count를_불러온다() {
         // given
@@ -191,7 +191,7 @@ class AppointmentRepositoryTest {
                 .endDateTime(appointment.getStartDateTime().plusHours(2))
                 .build();
         availableTimeRepository.saveAll(List.of(availableTime, availableTime2));
-        entityManager.refresh(appointment);
+        entityManager.detach(appointment);
 
         // when
         Appointment foundAppointment = appointmentRepository.findByCode(appointment.getCode()).orElseThrow();

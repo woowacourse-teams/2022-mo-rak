@@ -38,7 +38,6 @@ public class RecommendationCell implements Comparable<RecommendationCell> {
     }
 
     private void increaseScoreIfAvailableTimeRange(AvailableTime availableTime) {
-        // TODO: 2022/08/03 contains 이름 바꾸기!
         if (this.dateTimePeriod.isAvailableRange(availableTime.getDateTimePeriod())) {
             this.memberScores.computeIfPresent(availableTime.getMember(), (member, score) -> score + 1);
         }
