@@ -274,12 +274,12 @@ const StyledMonthDay = styled.div`
 `;
 
 // (4단위로 맞지 않는 부분이 있는데, 4단위로 맞추면 깨지는 이슈...)
+// TODO: 현재 달력에서는 이전달, 다음달 날짜 일부를 보여줄 필요가 없어서 화면에서 보이지 않도록 처리.
+// (이후 필요할 시, props로 option을 받아서 보이도록 해줄 수 있음)
 const StyledPrevMonthDay = styled(StyledMonthDay)<{ isHidden: boolean }>(
   ({ theme, isHidden }) => `
-  color: ${
-    theme.colors.GRAY_300
-  }; // TODO: 현재 달력에서는 이전달, 다음달 날짜 일부를 보여줄 필요가 없어서 화면에서 보이지 않도록 처리. (이후 필요할 시, props로 option을 받아서 보이도록 해줄 수 있음)
-  ${isHidden && 'visibility: hidden'}
+  color: ${theme.colors.GRAY_300};
+  ${isHidden && 'visibility: hidden'};
 `
 );
 
