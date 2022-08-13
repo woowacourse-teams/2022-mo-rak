@@ -24,10 +24,11 @@ function AppointmentMainHeader() {
       <FlexContainer justifyContent="space-between">
         <StyledTitle>약속잡기 목록</StyledTitle>
         <Button
-          width="8rem"
+          width="12rem"
           colorScheme={theme.colors.PURPLE_100}
           variant="filled"
           onClick={handleNavigate('create')}
+          fontSize="1.6rem"
         >
           약속 생성하기
         </Button>
