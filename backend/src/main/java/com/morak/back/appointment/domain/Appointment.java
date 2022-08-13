@@ -82,7 +82,6 @@ public class Appointment extends BaseEntity {
     @NotNull
     private LocalDateTime closedAt;
 
-    @Basic(fetch = FetchType.LAZY)
     @Formula("(SELECT COUNT(DISTINCT aat.member_id) FROM appointment_available_time as aat WHERE aat.appointment_id = id)")
     private Integer count;
 
@@ -102,8 +101,8 @@ public class Appointment extends BaseEntity {
         validateDurationMinutesLessThanTimePeriod(this.durationMinutes, this.timePeriod);
         this.status = OPEN;
         this.code = code;
+        validateClosedAtBeforeEndDate(closedAt, endDate);
         this.closedAt = closedAt;
-        validateClosedAtBeforeEndDate(closedAt, datePeriod);
     }
 
     private void validateLastDatetime(LocalDate endDate, LocalTime endTime) {
@@ -128,14 +127,14 @@ public class Appointment extends BaseEntity {
         }
     }
 
-    private void validateClosedAtBeforeEndDate(LocalDateTime closedAt, DatePeriod datePeriod) {
+    private void validateClosedAtBeforeEndDate(LocalDateTime closedAt, LocalDate endDate) {
         LocalDate closeDate = closedAt.toLocalDate();
-        if (!datePeriod.isInRange(closeDate)) {
+        if (closeDate.isBefore(LocalDate.now()) || closeDate.isAfter(endDate)) {
             throw new AppointmentDomainLogicException(
                     CustomErrorCode.APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR,
                     String.format(
-                            "약속잡기의 마감 날짜(%s)는 시작날짜와 마지막 날짜 사이(%s)여야 합니다.",
-                            closedAt.toLocalDate(), datePeriod
+                            "약속잡기의 마감 날짜(%s)는 오늘과 마지막 날짜 사이(%s)여야 합니다.",
+                            closedAt.toLocalDate(), endDate
                     )
             );
         }

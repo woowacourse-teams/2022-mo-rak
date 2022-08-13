@@ -52,12 +52,15 @@ class AppointmentTest {
 
     @Test
     void 약속잡기_생성시_마지막_날짜와_시간이_현재보다_과거이면_예외를_던진다() {
+        // given
+        LocalDate startDate = LocalDate.now().minusDays(2L);
+        LocalDate endDate = LocalDate.now().minusDays(1L);
+
         // then & when
-        // TODO : mocking
         assertThatThrownBy(
                 () -> DEFAULT_BUILDER
-                        .startDate(LocalDate.now())
-                        .endDate(LocalDate.now())
+                        .startDate(startDate)
+                        .endDate(endDate)
                         .startTime(LocalTime.of(0, 0))
                         .endTime(LocalTime.of(1, 30))
                         .durationHours(1)
@@ -102,8 +105,8 @@ class AppointmentTest {
     }
 
     @ParameterizedTest
-    @ValueSource(longs = {0, 11, 15})
-    void 마감시간이_시작날짜나_마지막날짜를_벗어나면_예외를_던진다(long plusDays) {
+    @ValueSource(longs = {-1L, 11L, 15L})
+    void 마감시간이_오늘과_마지막날짜를_벗어나면_예외를_던진다(long plusDays) {
         // given
         LocalDateTime closedAt = LocalDateTime.now().plusDays(plusDays);
         LocalDate startDate = LocalDate.now().plusDays(1);
