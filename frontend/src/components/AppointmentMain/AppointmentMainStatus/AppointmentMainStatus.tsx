@@ -10,17 +10,15 @@ interface Props {
 function AppointmentMainStatus({ isClosed }: Props) {
   const theme = useTheme();
 
-  const isOpen = (isClosed: boolean) => !isClosed;
-
   return (
     <TextField
       variant="filled"
       width="4rem"
       padding="0.4rem 0"
       borderRadius="5px"
-      colorScheme={isOpen(isClosed) ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
+      colorScheme={!isClosed ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
     >
-      <StyledStatus>{isOpen(isClosed) ? '진행중' : '완료'}</StyledStatus>
+      <StyledStatus>{!isClosed ? '진행중' : '완료'}</StyledStatus>
     </TextField>
   );
 }

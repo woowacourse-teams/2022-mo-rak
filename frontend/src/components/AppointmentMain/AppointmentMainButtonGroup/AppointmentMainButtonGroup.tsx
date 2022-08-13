@@ -18,11 +18,9 @@ function AppointmentMainButtonGroup({ appointmentCode, isClosed }: Props) {
     navigate(location);
   };
 
-  const isOpen = (isClosed: boolean) => !isClosed;
-
   return (
     <FlexContainer gap="1.2rem" justifyContent="end">
-      {isOpen(isClosed) && (
+      {!isClosed && (
         <Button
           variant="filled"
           width="6rem"
