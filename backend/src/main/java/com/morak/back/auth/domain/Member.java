@@ -21,13 +21,6 @@ import org.hibernate.validator.constraints.URL;
 @Builder
 public class Member extends BaseEntity {
 
-    private static final Member ANONYMOUS_MEMBER = new Member(
-            0L,
-            "00000000",
-            "anonymous",
-            "https://user-images.githubusercontent.com/45311765/179645488-2d8c29c8-f8ed-43e9-9951-b30e82ead5ed.png"
-    );
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,7 +39,12 @@ public class Member extends BaseEntity {
     private String profileUrl;
 
     public static Member getAnonymous() {
-        return ANONYMOUS_MEMBER;
+        return new Member(
+                0L,
+                "00000000",
+                "anonymous",
+                "https://user-images.githubusercontent.com/45311765/179645488-2d8c29c8-f8ed-43e9-9951-b30e82ead5ed.png"
+        );
     }
 
     @Override

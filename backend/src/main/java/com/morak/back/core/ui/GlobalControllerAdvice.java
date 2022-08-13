@@ -97,16 +97,17 @@ public class GlobalControllerAdvice {
         logger.warn(e.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ExceptionResponse(CustomErrorCode.RUNTIME_ERROR.getNumber(), "Xxxxx"));
+                .body(new ExceptionResponse(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber(), "잘못된 요청입니다."));
     }
 
     @ExceptionHandler(MorakException.class)
     public ResponseEntity<ExceptionResponse> handleMorak(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ExceptionResponse(CustomErrorCode.MORAK_ERROR.getNumber(), ""));
+                .body(new ExceptionResponse(CustomErrorCode.MORAK_ERROR.getNumber(), "처리하지 못한 예외입니다."));
     }
 
+    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e,
                                                              ContentCachingRequestWrapper requestWrapper) {
         String stackTrace = Arrays.stream(e.getStackTrace())

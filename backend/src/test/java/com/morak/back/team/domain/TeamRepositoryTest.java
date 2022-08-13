@@ -29,8 +29,8 @@ class TeamRepositoryTest {
         Assertions.assertAll(
                 () -> assertThat(savedTeam).isNotNull(),
                 () -> assertThat(savedTeam.getId()).isNotNull(),
-                () -> assertThat(savedTeam.getName()).isEqualTo("test-team")
+                () -> assertThat(savedTeam).extracting("name", "code")
+                        .containsExactly(team.getName(), team.getCode())
         );
-
     }
 }
