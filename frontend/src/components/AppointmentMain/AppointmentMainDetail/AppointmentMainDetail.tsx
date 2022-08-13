@@ -17,7 +17,7 @@ function AppointmentMainDetail({ durationHours, durationMinutes }: Props) {
   return (
     <FlexContainer gap="1.2rem">
       <TextField
-        width="3.6rem"
+        width="5.2rem"
         borderRadius="20px"
         variant="outlined"
         padding="0.4rem 0"
@@ -26,7 +26,7 @@ function AppointmentMainDetail({ durationHours, durationMinutes }: Props) {
         <StyledDetail>
           {durationHours}
           시간
-          {durationMinutes}
+          {durationMinutes.toString().padStart(2, '0')}
           분
         </StyledDetail>
       </TextField>
