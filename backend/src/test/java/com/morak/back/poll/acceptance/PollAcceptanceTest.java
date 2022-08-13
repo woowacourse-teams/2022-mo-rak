@@ -16,6 +16,7 @@ import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.domain.PollStatus;
+import com.morak.back.poll.ui.dto.MemberResultResponse;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
@@ -308,10 +309,12 @@ class PollAcceptanceTest extends AcceptanceTest {
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(pollResponses)
-                        .extracting("title", "allowedPollCount", "isAnonymous", "status", "closedAt", "code", "isHost")
-                        .containsExactly(
-                                tuple(request.getTitle(), request.getAllowedPollCount(), request.getIsAnonymous(),
-                                        PollStatus.OPEN.name(), request.getClosedAt(), pollCode, true)
+                        .usingRecursiveComparison()
+                        .ignoringFields("id", "createdAt")
+                        .isEqualTo(
+                                List.of(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
+                                        request.getIsAnonymous(),
+                                        PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true))
                         )
         );
     }
@@ -349,11 +352,12 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(pollResponse).extracting("title", "allowedPollCount", "isAnonymous", "status",
-                                "closedAt", "code", "isHost")
-                        .containsExactly(
-                                request.getTitle(), request.getAllowedPollCount(), request.getIsAnonymous(),
-                                PollStatus.OPEN.name(), request.getClosedAt(), pollCode, true)
+                () -> assertThat(pollResponse)
+                        .usingRecursiveComparison()
+                        .ignoringFields("id", "createdAt")
+                        .isEqualTo(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
+                                request.getIsAnonymous(),
+                                PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true))
         );
     }
 
@@ -409,8 +413,10 @@ class PollAcceptanceTest extends AcceptanceTest {
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(SimpleRestAssured.toObjectList(response, PollItemResponse.class))
-                        .extracting("subject", "selected", "description")
-                        .containsExactly(tuple(항목1, false, ""), tuple(항목2, false, ""))
+                        .usingRecursiveComparison()
+                        .ignoringFields("id")
+                        .isEqualTo(List.of(new PollItemResponse(null, 항목1, false, ""),
+                                new PollItemResponse(null, 항목2, false, "")))
         );
     }
 
@@ -477,10 +483,11 @@ class PollAcceptanceTest extends AcceptanceTest {
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(toObjectList(response, PollItemResponse.class))
-                        .extracting("id", "subject", "selected", "description")
-                        .containsExactly(
-                                tuple(pollItemId1, subject1, true, pollResultRequest.getDescription()),
-                                tuple(pollItemId2, subject2, false, "")
+                        .usingRecursiveComparison()
+                        .isEqualTo(
+                                List.of(new PollItemResponse(pollItemId1, subject1, true,
+                                                pollResultRequest.getDescription()),
+                                        new PollItemResponse(pollItemId2, subject2, false, ""))
                         )
         );
     }
@@ -514,15 +521,11 @@ class PollAcceptanceTest extends AcceptanceTest {
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(pollItemResultResponses)
-                        .extracting("id", "count", "subject")
-                        .containsExactly(
-                                tuple(pollItemId1, 1, subject1),
-                                tuple(pollItemId2, 0, subject2)
-                        ),
-                () -> assertThat(pollItemResultResponses.get(0).getMembers())
-                        .extracting("id", "name", "profileUrl", "description")
-                        .containsExactly(
-                                tuple(anonymous.getId(), anonymous.getName(), anonymous.getProfileUrl(), description))
+                        .usingRecursiveComparison()
+                        .isEqualTo(List.of(new PollItemResultResponse(pollItemId1, 1,
+                                        List.of(new MemberResultResponse(anonymous.getId(), anonymous.getName(),
+                                                anonymous.getProfileUrl(), description)), subject1),
+                                new PollItemResultResponse(pollItemId2, 0, List.of(), subject2)))
         );
     }
 
@@ -555,17 +558,14 @@ class PollAcceptanceTest extends AcceptanceTest {
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(pollItemResultResponses)
-                        .extracting("id", "count", "subject")
-                        .containsExactly(
-                                tuple(pollItemId1, 1, subject1),
-                                tuple(pollItemId2, 0, subject2)
-                        ),
-                () -> assertThat(pollItemResultResponses.get(0).getMembers())
-                        .extracting("id", "name", "profileUrl", "description")
-                        .containsExactly(tuple(1L, "eden", "http://eden-profile.com", description))
+                        .usingRecursiveComparison()
+                        .isEqualTo(List.of(new PollItemResultResponse(pollItemId1, 1,
+                                        List.of(new MemberResultResponse(1L, "eden", "http://eden-profile.com", description)),
+                                        subject1), new PollItemResultResponse(pollItemId2, 0, List.of(), subject2)
+                                )
+                        )
         );
     }
-
 
     @Test
     void 투표를_삭제한다() {

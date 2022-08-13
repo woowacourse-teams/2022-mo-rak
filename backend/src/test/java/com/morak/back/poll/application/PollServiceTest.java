@@ -17,6 +17,7 @@ import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollNotFoundException;
+import com.morak.back.poll.ui.dto.MemberResultResponse;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
@@ -160,15 +161,20 @@ class PollServiceTest {
         List<PollResponse> polls = pollService.findPolls(team.getCode(), member.getId());
 
         // then
-        assertThat(polls).extracting("title", "allowedPollCount", "isAnonymous", "status", "closedAt", "code", "isHost")
-                .containsExactly(
-                        tuple(poll.getTitle(), poll.getAllowedPollCount(), poll.getIsAnonymous(),
-                                poll.getStatus().name(),
-                                poll.getClosedAt(), poll.getCode(), true),
-                        tuple(pollCreateRequest.getTitle(), pollCreateRequest.getAllowedPollCount(),
-                                pollCreateRequest.getIsAnonymous(), OPEN.name(), pollCreateRequest.getClosedAt(),
-                                pollCode,
-                                true)
+        assertThat(polls)
+                .usingRecursiveComparison()
+                .ignoringFields("id", "createdAt")
+                .isEqualTo(
+                        List.of(new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), true),
+                                new PollResponse(null, pollCreateRequest.getTitle(),
+                                        pollCreateRequest.getAllowedPollCount(),
+                                        pollCreateRequest.getIsAnonymous(), OPEN.name(), null,
+                                        pollCreateRequest.getClosedAt(),
+                                        pollCode,
+                                        true))
                 );
     }
 
@@ -195,13 +201,20 @@ class PollServiceTest {
         List<PollResponse> polls = pollService.findPolls(team.getCode(), 차리.getId());
 
         // then
-        assertThat(polls).extracting("title", "allowedPollCount", "isAnonymous", "status", "closedAt", "code", "isHost")
-                .containsExactly(
-                        tuple(poll.getTitle(), poll.getAllowedPollCount(), poll.getIsAnonymous(),
-                                poll.getStatus().name(), poll.getClosedAt(), poll.getCode(), false),
-                        tuple(pollCreateRequest.getTitle(), pollCreateRequest.getAllowedPollCount(),
-                                pollCreateRequest.getIsAnonymous(), OPEN.name(), pollCreateRequest.getClosedAt(),
-                                pollCode, false)
+        assertThat(polls)
+                .usingRecursiveComparison()
+                .ignoringFields("id", "createdAt")
+                .isEqualTo(
+                        List.of(new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), false),
+                                new PollResponse(null, pollCreateRequest.getTitle(),
+                                        pollCreateRequest.getAllowedPollCount(),
+                                        pollCreateRequest.getIsAnonymous(), OPEN.name(), null,
+                                        pollCreateRequest.getClosedAt(),
+                                        pollCode,
+                                        false))
                 );
     }
 
@@ -282,7 +295,8 @@ class PollServiceTest {
                         .containsExactly(pollItem1, member),
                 () -> assertThat(pollItem2.getPollResults().get(0))
                         .extracting("pollItem", "member")
-                        .containsExactly(pollItem2, member)
+                        .containsExactly(pollItem2, member),
+                () -> assertThat(pollItem3.getPollResults()).hasSize(0)
         );
     }
 
@@ -419,9 +433,10 @@ class PollServiceTest {
 
         // then
         assertThat(pollResponse)
-                .extracting("title", "allowedPollCount", "isAnonymous", "status", "closedAt", "code", "isHost")
-                .containsExactly(poll.getTitle(), poll.getAllowedPollCount(), poll.getIsAnonymous(),
-                        poll.getStatus().name(), poll.getClosedAt(), poll.getCode(), true);
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(new PollResponse(null, poll.getTitle(), poll.getAllowedPollCount(), poll.getIsAnonymous(),
+                        poll.getStatus().name(), poll.getCreatedAt(), poll.getClosedAt(), poll.getCode(), true));
     }
 
     @Test
@@ -480,12 +495,10 @@ class PollServiceTest {
 
         // then
         assertThat(pollItemResponses)
-                .extracting("id", "subject", "selected", "description")
-                .containsExactly(
-                        tuple(pollItem1.getId(), pollItem1.getSubject(), false,
-                                pollItem1.getDescriptionFrom(member)),
-                        tuple(pollItem2.getId(), pollItem2.getSubject(), false,
-                                pollItem2.getDescriptionFrom(member))
+                .usingRecursiveComparison()
+                .isEqualTo(
+                        List.of(new PollItemResponse(pollItem1.getId(), pollItem1.getSubject(), false, ""),
+                                new PollItemResponse(pollItem2.getId(), pollItem2.getSubject(), false, ""))
                 );
     }
 
@@ -496,7 +509,8 @@ class PollServiceTest {
                 .poll(poll)
                 .subject("항목1")
                 .build();
-        pollItem1.addPollResult(member, "그냥뇨~");
+        String description = "그냥뇨~";
+        pollItem1.addPollResult(member, description);
         PollItem pollItem2 = PollItem.builder()
                 .poll(poll)
                 .subject("항목2")
@@ -511,12 +525,10 @@ class PollServiceTest {
 
         // then
         assertThat(pollItemResponses)
-                .extracting("id", "subject", "selected", "description")
-                .containsExactly(
-                        tuple(pollItem1.getId(), pollItem1.getSubject(), true,
-                                pollItem1.getDescriptionFrom(member)),
-                        tuple(pollItem2.getId(), pollItem2.getSubject(), false,
-                                pollItem2.getDescriptionFrom(member))
+                .usingRecursiveComparison()
+                .isEqualTo(
+                        List.of(new PollItemResponse(pollItem1.getId(), pollItem1.getSubject(), true, description),
+                                new PollItemResponse(pollItem2.getId(), pollItem2.getSubject(), false, ""))
                 );
     }
 
@@ -550,23 +562,23 @@ class PollServiceTest {
         anonymousPoll.addItem(pollItem2);
 
         Poll testPoll = pollRepository.save(anonymousPoll);
+
+        Member anonymous = Member.getAnonymous();
         // when
         List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(team.getCode(),
                 member.getId(), testPoll.getCode());
 
         // then
-        Assertions.assertAll(
-                () -> assertThat(pollItemResultResponses).extracting("count", "subject")
-                        .containsExactly(tuple(1, pollItem1.getSubject()), tuple(1, pollItem2.getSubject())),
-                () -> assertThat(pollItemResultResponses.get(0).getMembers())
-                        .extracting("name", "profileUrl", "description")
-                        .containsExactly(tuple(Member.getAnonymous().getName(), Member.getAnonymous().getProfileUrl(),
-                                description1)),
-                () -> assertThat(pollItemResultResponses.get(1).getMembers())
-                        .extracting("name", "profileUrl", "description")
-                        .containsExactly(tuple(Member.getAnonymous().getName(), Member.getAnonymous().getProfileUrl(),
-                                description2))
-        );
+        assertThat(pollItemResultResponses)
+                .usingRecursiveComparison()
+                .isEqualTo(
+                        List.of(new PollItemResultResponse(pollItem1.getId(), 1,
+                                        List.of(new MemberResultResponse(anonymous.getId(), anonymous.getName(),
+                                                anonymous.getProfileUrl(), description1)), pollItem1.getSubject()),
+                                new PollItemResultResponse(pollItem2.getId(), 1,
+                                        List.of(new MemberResultResponse(anonymous.getId(), anonymous.getName(),
+                                                anonymous.getProfileUrl(), description2)), pollItem2.getSubject()))
+                );
     }
 
     @Test
@@ -597,16 +609,16 @@ class PollServiceTest {
                 member.getId(), poll.getCode());
 
         // then
-        Assertions.assertAll(
-                () -> assertThat(pollItemResultResponses).extracting("count", "subject")
-                        .containsExactly(tuple(1, pollItem1.getSubject()), tuple(1, pollItem2.getSubject())),
-                () -> assertThat(pollItemResultResponses.get(0).getMembers())
-                        .extracting("name", "profileUrl", "description")
-                        .containsExactly(tuple(member.getName(), member.getProfileUrl(), description1)),
-                () -> assertThat(pollItemResultResponses.get(1).getMembers())
-                        .extracting("name", "profileUrl", "description")
-                        .containsExactly(tuple(member.getName(), member.getProfileUrl(), description2))
-        );
+        assertThat(pollItemResultResponses)
+                .usingRecursiveComparison()
+                .isEqualTo(
+                        List.of(new PollItemResultResponse(pollItem1.getId(), 1,
+                                        List.of(new MemberResultResponse(member.getId(), member.getName(),
+                                                member.getProfileUrl(), description1)), pollItem1.getSubject()),
+                                new PollItemResultResponse(pollItem2.getId(), 1,
+                                        List.of(new MemberResultResponse(member.getId(), member.getName(),
+                                                member.getProfileUrl(), description2)), pollItem2.getSubject()))
+                );
     }
 
     @Test

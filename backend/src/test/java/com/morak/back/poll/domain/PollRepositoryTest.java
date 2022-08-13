@@ -19,6 +19,7 @@ class PollRepositoryTest {
     @Autowired
     private PollRepository pollRepository;
 
+    // TODO: 2022/08/14 data.sql의존
     @Test
     void 투표를_저장한다() {
         // given
@@ -43,13 +44,10 @@ class PollRepositoryTest {
         Poll savedPoll = pollRepository.save(poll);
 
         // then
-        Assertions.assertAll(
-                () -> assertThat(savedPoll).isNotNull(),
-                () -> assertThat(savedPoll.getId()).isNotNull(),
-                () -> assertThat(savedPoll.getTitle()).isEqualTo(poll.getTitle()),
-                () -> assertThat(savedPoll.getTeam()).isEqualTo(team),
-                () -> assertThat(savedPoll.getHost()).isEqualTo(member)
-        );
+        assertThat(savedPoll)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(poll);
     }
 
     // TODO: 2022/08/11 data.sql 의존 제거

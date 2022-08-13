@@ -172,7 +172,7 @@ class PollTest {
 
     @Test
     void 응답_개수가_0인_경우_예외를_던진다() {
-        // when[ & then
+        // when & then
         assertThatThrownBy(() -> poll.doPoll(member, new HashMap<>()))
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")

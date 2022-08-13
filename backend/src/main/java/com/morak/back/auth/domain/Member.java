@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,14 @@ import org.hibernate.validator.constraints.URL;
 @Getter
 @Builder
 public class Member extends BaseEntity {
+
+    @Transient
+    public static final Member ANONYMOUS_MEMBER = new Member(
+            0L,
+            "00000000",
+            "anonymous",
+            "https://user-images.githubusercontent.com/45311765/179645488-2d8c29c8-f8ed-43e9-9951-b30e82ead5ed.png"
+    );
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,12 +48,7 @@ public class Member extends BaseEntity {
     private String profileUrl;
 
     public static Member getAnonymous() {
-        return new Member(
-                0L,
-                "00000000",
-                "anonymous",
-                "https://user-images.githubusercontent.com/45311765/179645488-2d8c29c8-f8ed-43e9-9951-b30e82ead5ed.png"
-        );
+        return ANONYMOUS_MEMBER;
     }
 
     @Override

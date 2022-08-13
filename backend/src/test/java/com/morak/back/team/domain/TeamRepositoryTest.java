@@ -29,8 +29,10 @@ class TeamRepositoryTest {
         Assertions.assertAll(
                 () -> assertThat(savedTeam).isNotNull(),
                 () -> assertThat(savedTeam.getId()).isNotNull(),
-                () -> assertThat(savedTeam).extracting("name", "code")
-                        .containsExactly(team.getName(), team.getCode())
+                () -> assertThat(savedTeam)
+                        .usingRecursiveComparison()
+                        .ignoringFields("id")
+                        .isEqualTo(team)
         );
     }
 }

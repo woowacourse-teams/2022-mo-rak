@@ -127,8 +127,9 @@ class TeamServiceTest {
         InvitationJoinedResponse invitationJoinedResponse = teamService.isJoined(member.getId(), invitationCode);
 
         // then
-        assertThat(invitationJoinedResponse).extracting("groupCode", "name", "isJoined")
-                .containsExactly(team.getCode(), team.getName(), true);
+        assertThat(invitationJoinedResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(new InvitationJoinedResponse(team.getCode(), team.getName(), true));
     }
 
     @Test
@@ -146,8 +147,9 @@ class TeamServiceTest {
         InvitationJoinedResponse invitationJoinedResponse = teamService.isJoined(박성우.getId(), invitationCode);
 
         // then
-        assertThat(invitationJoinedResponse).extracting("groupCode", "name", "isJoined")
-                .containsExactly(team.getCode(), team.getName(), false);
+        assertThat(invitationJoinedResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(new InvitationJoinedResponse(team.getCode(), team.getName(), false));
     }
 
     @Test
@@ -274,10 +276,11 @@ class TeamServiceTest {
         List<TeamResponse> teamResponses = teamService.findTeams(member.getId());
 
         // then
-        assertThat(teamResponses).extracting("id", "name", "code")
-                .containsExactly(
-                        tuple(team.getId(), team.getName(), team.getCode()),
-                        tuple(teamA.getId(), teamA.getName(), teamA.getCode())
+        assertThat(teamResponses)
+                .usingRecursiveComparison()
+                .isEqualTo(
+                        List.of(new TeamResponse(team.getId(), team.getCode(), team.getName()),
+                                new TeamResponse(teamA.getId(), teamA.getCode(), teamA.getName()))
                 );
     }
 
@@ -318,11 +321,14 @@ class TeamServiceTest {
         List<MemberResponse> memberResponses = teamService.findMembersInTeam(박성우.getId(), team.getCode());
 
         // then
-        assertThat(memberResponses).extracting("id", "name", "profileUrl")
-                .containsExactly(
-                        tuple(member.getId(), member.getName(), member.getProfileUrl()),
-                        tuple(박성우.getId(), 박성우.getName(), 박성우.getProfileUrl()),
-                        tuple(이찬주.getId(), 이찬주.getName(), 이찬주.getProfileUrl())
+        assertThat(memberResponses)
+                .usingRecursiveComparison()
+                .isEqualTo(
+                        List.of(
+                                new MemberResponse(member.getId(), member.getName(), member.getProfileUrl()),
+                                new MemberResponse(박성우.getId(), 박성우.getName(), 박성우.getProfileUrl()),
+                                new MemberResponse(이찬주.getId(), 이찬주.getName(), 이찬주.getProfileUrl())
+                        )
                 );
     }
 
@@ -426,8 +432,9 @@ class TeamServiceTest {
         TeamResponse defaultTeamResponse = teamService.findDefaultTeam(member.getId());
 
         // then
-        assertThat(defaultTeamResponse).extracting("id", "code", "name")
-                .containsExactly(team.getId(), team.getCode(), team.getName());
+        assertThat(defaultTeamResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(new TeamResponse(team.getId(), team.getCode(), team.getName()));
     }
 
     @Test

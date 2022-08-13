@@ -17,6 +17,7 @@ class MemberRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
+
     private static final Member MEMBER = Member.builder()
             .oauthId("87654321")
             .name("ellie")
@@ -33,8 +34,9 @@ class MemberRepositoryTest {
                 () -> assertThat(savedMember).isNotNull(),
                 () -> assertThat(savedMember.getId()).isNotNull(),
                 () -> assertThat(savedMember)
-                        .extracting("oauthId", "name", "profileUrl")
-                        .containsExactly(MEMBER.getOauthId(), MEMBER.getName(), MEMBER.getProfileUrl())
+                        .usingRecursiveComparison()
+                        .ignoringFields("id", "updatedAt", "createdAt")
+                        .isEqualTo(MEMBER)
         );
     }
 
@@ -64,13 +66,14 @@ class MemberRepositoryTest {
         Assertions.assertAll(
                 () -> assertThat(findMember).isPresent(),
                 () -> assertThat(findMember.get())
-                        .extracting("oauthId", "name", "profileUrl")
-                        .containsExactly(savedMember.getOauthId(), savedMember.getName(), savedMember.getProfileUrl())
+                        .usingRecursiveComparison()
+                        .ignoringFields("id")
+                        .isEqualTo(savedMember)
         );
     }
 
     @Test
-    void OAUTH_ID가_같은_회원을_두번_저장할수_없다() {
+    void OAUTH_ID가_같은_멤버가_이미_존재하면_저장할수_없다() {
         //given
         memberRepository.save(MEMBER);
 

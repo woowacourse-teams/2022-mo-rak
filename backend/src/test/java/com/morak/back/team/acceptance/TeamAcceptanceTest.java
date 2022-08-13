@@ -178,12 +178,13 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 그룹_참가_여부_조회를_요청한다(teamInvitationLocation, token);
 
         // then
-        InvitationJoinedResponse isJoinedResponse = response.as(InvitationJoinedResponse.class);
+        InvitationJoinedResponse invitationJoinedResponse = response.as(InvitationJoinedResponse.class);
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(isJoinedResponse.getGroupCode()).hasSize(8),
-                () -> assertThat(isJoinedResponse).extracting("name", "isJoined")
-                        .containsExactly(teamCreateRequest.getName(), true)
+                () -> assertThat(invitationJoinedResponse)
+                        .usingRecursiveComparison()
+                        .isEqualTo(new InvitationJoinedResponse(teamLocation.split("/")[3], teamCreateRequest.getName(),
+                                true))
         );
     }
 
@@ -199,12 +200,13 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 그룹_참가_여부_조회를_요청한다(teamInvitationLocation, otherToken);
 
         // then
-        InvitationJoinedResponse isJoinedResponse = response.as(InvitationJoinedResponse.class);
+        InvitationJoinedResponse invitationJoinedResponse = response.as(InvitationJoinedResponse.class);
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(isJoinedResponse.getGroupCode()).hasSize(8),
-                () -> assertThat(isJoinedResponse).extracting("name", "isJoined")
-                        .containsExactly(teamCreateRequest.getName(), false)
+                () -> assertThat(invitationJoinedResponse)
+                        .usingRecursiveComparison()
+                        .isEqualTo(new InvitationJoinedResponse(teamLocation.split("/")[3], teamCreateRequest.getName(),
+                                false))
         );
     }
 
@@ -222,9 +224,10 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(invitationJoinedResponse.getGroupCode()).hasSize(8),
-                () -> assertThat(invitationJoinedResponse).extracting("name", "isJoined")
-                        .containsExactly(teamCreateRequest.getName(), false)
+                () -> assertThat(invitationJoinedResponse)
+                        .usingRecursiveComparison()
+                        .isEqualTo(new InvitationJoinedResponse(teamLocation.split("/")[3], teamCreateRequest.getName(),
+                                false))
         );
     }
 
@@ -344,7 +347,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // given
         TeamCreateRequest requestA = new TeamCreateRequest("team-A");
         TeamCreateRequest requestB = new TeamCreateRequest("team-B");
-        사용자로_그룹_생성을_요청한다(requestA, token).header("Location");
+        String teamALocation1 = 사용자로_그룹_생성을_요청한다(requestA, token).header("Location");
         사용자로_그룹_생성을_요청한다(requestB, token).header("Location");
 
         // when
@@ -354,7 +357,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(teamResponses).extracting("name")
+                () -> assertThat(teamResponses)
+                        .extracting("name")
                         .containsExactly("morak", requestA.getName(), requestB.getName())
         );
     }
@@ -453,7 +457,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         String otherToken = tokenProvider.createToken(String.valueOf(5L));
 
         String targetName = "AAA";
-        사용자로_그룹_생성을_요청한다(new TeamCreateRequest(targetName), otherToken);
+        String targetTeamLocation = 사용자로_그룹_생성을_요청한다(new TeamCreateRequest(targetName), otherToken).header("Location");
         사용자로_그룹_생성을_요청한다(new TeamCreateRequest("BBB"), otherToken);
         사용자로_그룹_생성을_요청한다(new TeamCreateRequest("CCC"), otherToken);
 
@@ -462,8 +466,10 @@ public class TeamAcceptanceTest extends AcceptanceTest {
 
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(teamResponse.getCode()).hasSize(8),
-                () -> assertThat(teamResponse.getName()).isEqualTo(targetName)
+                () -> assertThat(teamResponse)
+                        .usingRecursiveComparison()
+                        .ignoringFields("id")
+                        .isEqualTo(new TeamResponse(null, targetTeamLocation.split("/")[3], targetName))
         );
     }
 
@@ -568,7 +574,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         TeamCreateRequest request = new TeamCreateRequest("기본그룹");
         return 사용자로_그룹_생성을_요청한다(request, token);
     }
-    
+
     public ExtractableResponse<Response> 사용자로_그룹_생성을_요청한다(TeamCreateRequest request, String token) {
         return post("/api/groups", request, toHeader(token));
     }
