@@ -3,18 +3,31 @@ import styled from '@emotion/styled';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/logo.svg';
 import LinkIcon from '../../assets/link.svg';
+import Close from '../../assets/close-button.svg';
 import { createInvitationCode, getGroups } from '../../api/group';
 import { writeClipboard } from '../../utils/clipboard';
 import { GroupInterface } from '../../types/group';
+import Slack from '../../assets/slack.svg';
+import TextField from '../@common/TextField/TextField';
+import Input from '../@common/Input/Input';
+import Button from '../@common/Button/Button';
+import FlexContainer from '../@common/FlexContainer/FlexContainer';
+import theme from '../../styles/theme';
 
 function Sidebar() {
   const { groupCode } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
+  const [isClickedSlackMenu, setIsClickedSlackMenu] = useState(true);
+
   const navigate = useNavigate();
 
   const handleNavigate = (location: string) => () => {
     navigate(location);
+  };
+
+  const handleShowSlackPopup = () => {
+    setIsClickedSlackMenu(true);
   };
 
   const handleCopyInviationCode = async () => {
@@ -54,28 +67,149 @@ function Sidebar() {
   if (isLoading) return <div>로딩중</div>;
 
   return (
-    <StyledContainer>
-      <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
-      <StyledGroupContainer>
-        <StyledGroupHeaderButton type="button">Groups</StyledGroupHeaderButton>
-        <StyledContent>
-          {groups.map((group) => (
-            <StyledGroupButton
-              to={`groups/${group.code}`}
-              isDefaultGroup={groupCode === group.code}
-            >
-              {group.name}
-            </StyledGroupButton>
-          ))}
-        </StyledContent>
-      </StyledGroupContainer>
-      <StyledInvitationLink onClick={handleCopyInviationCode}>
-        <img src={LinkIcon} alt="inivation-link" />
-        <p>초대 링크 복사</p>
-      </StyledInvitationLink>
-    </StyledContainer>
+    <>
+      <StyledContainer>
+        <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+        <StyledGroupContainer>
+          <StyledGroupHeaderButton type="button">Groups</StyledGroupHeaderButton>
+          <StyledContent>
+            {groups.map((group) => (
+              <StyledGroupButton
+                to={`groups/${group.code}`}
+                isDefaultGroup={groupCode === group.code}
+              >
+                {group.name}
+              </StyledGroupButton>
+            ))}
+          </StyledContent>
+        </StyledGroupContainer>
+        <StyledInvitationLink onClick={handleCopyInviationCode}>
+          <img src={LinkIcon} alt="inivation-link" />
+          <p>초대 링크 복사</p>
+        </StyledInvitationLink>
+
+        {/* TODO: 슬랙 메뉴 임시 (사이드바 pr merge되면, 대체하기) */}
+        <StyledSlackMenu onClick={handleShowSlackPopup}>슬랙 메뉴</StyledSlackMenu>
+      </StyledContainer>
+
+      <StyledSlackModalContainer>
+        <StyledSlackModal>
+
+          <StyledTop>
+            <StyledSlackLogo src={Slack} alt="slack-logo" />
+            <StyledHeaderText>슬랙 채널과 연동해보세요!</StyledHeaderText>
+            <StyledGuideText>슬랙 채널과 연동하면, 그룹의 새소식을 슬랙으로 받아볼 수 있어요.</StyledGuideText>
+            <StyledCloseButton src={Close} alt="close-button" />
+            <StyledTriangle />
+          </StyledTop>
+          <StyledBottom>
+            <FlexContainer flexDirection="column" alignItems="center" gap="2.4rem">
+              <TextField
+                variant="filled"
+                colorScheme={theme.colors.WHITE_100}
+                borderRadius="10px"
+                padding="1.6rem 10rem"
+                width="50.4rem"
+              >
+                <Input placeholder="슬랙 채널 url 입력 후, 확인버튼을 누르면 연동 끝!" fontSize="1.6REM" required />
+                <StyledLinkIcon src={LinkIcon} alt="link-icon" />
+              </TextField>
+
+              <Button colorScheme="#ECB22E" variant="filled" width="14rem" padding="1.6rem 4rem" fontSize="1.6rem">확인</Button>
+            </FlexContainer>
+          </StyledBottom>
+        </StyledSlackModal>
+      </StyledSlackModalContainer>
+    </>
   );
 }
+
+// 팝업 스타일
+const StyledSlackModalContainer = styled.div(({ theme }) => `
+  background-color: ${theme.colors.TRANSPARENT_BLACK_100_25};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+`);
+
+const StyledSlackModal = styled.div(({ theme }) => `
+  position: relative;
+  background-color: ${theme.colors.WHITE_100};
+  border-radius: 12px;
+  width: 68rem;
+  height: 41.6rem;
+`);
+
+const StyledSlackLogo = styled.img`
+  width: 8rem;
+  display: block;
+  margin: 0 auto ;
+  margin-bottom: 2rem;
+`;
+
+const StyledHeaderText = styled.div`
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1.2rem;
+`;
+
+const StyledGuideText = styled.div`
+  font-size: 1.6rem;
+  text-align: center;
+`;
+
+const StyledTop = styled.div`
+  position: relative;
+  height: calc(100% / 2);
+  padding-top: 2.4rem;
+`;
+
+const StyledCloseButton = styled.img`
+  position: absolute;
+  right: 2.4rem;
+  top: 2.4rem;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+    transition: all 0.3s linear;
+  }
+`;
+
+const StyledTriangle = styled.div`
+  position: absolute;
+  border-left: 2rem solid transparent;
+  border-right: 2rem solid transparent;
+  border-top: 2rem solid ${theme.colors.WHITE_100};
+  width: 0;
+  bottom: -2.8rem;
+  right: 50%;
+  transform: translate(50%,-50%);
+`;
+
+const StyledBottom = styled.div(({ theme }) => `
+  background: ${theme.colors.YELLOW_50};
+  height: calc(100% / 2);
+  padding-top: 4.4rem;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+`);
+
+const StyledLinkIcon = styled.img`
+  position: absolute;
+  left: 1.2rem;
+  top: 1.2rem;
+`;
+
+// TODO: 슬랙 메뉴 임시 (사이드바 pr merge되면, 대체하기)
+const StyledSlackMenu = styled.div`
+  font-size: 1.6rem;
+`;
 
 const StyledContainer = styled.div(
   ({ theme }) => `
