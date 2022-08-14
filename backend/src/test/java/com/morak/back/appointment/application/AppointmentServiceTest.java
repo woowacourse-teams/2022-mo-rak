@@ -187,7 +187,7 @@ class AppointmentServiceTest {
                 LocalDateTime.now().plusDays(10)
         );
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> appointmentService.createAppointment(모락.getCode(), 차리.getId(),
                 request))
                 .isInstanceOf(TeamAuthorizationException.class)
@@ -200,7 +200,7 @@ class AppointmentServiceTest {
         // given
         String invalidTeamCode = "morakko";
 
-        //when & then
+        // when & then
         assertThatThrownBy(
                 () -> appointmentService.createAppointment(invalidTeamCode, 에덴.getId(), new AppointmentCreateRequest()))
                 .isInstanceOf(TeamNotFoundException.class)
@@ -222,7 +222,7 @@ class AppointmentServiceTest {
         // given
         Member 차리 = memberRepository.findById(4L).orElseThrow();
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> appointmentService.findAppointments(모락.getCode(), 차리.getId()))
                 .isInstanceOf(TeamAuthorizationException.class)
                 .extracting("code")
@@ -234,7 +234,7 @@ class AppointmentServiceTest {
         // given
         String invalidTeamCode = "morakko";
 
-        //when & then
+        // when & then
         assertThatThrownBy(
                 () -> appointmentService.findAppointments(invalidTeamCode, 에덴.getId()))
                 .isInstanceOf(TeamNotFoundException.class)
@@ -261,7 +261,7 @@ class AppointmentServiceTest {
         // given
         String invalidTeamCode = "morakko";
 
-        //when & then
+        // when & then
         assertThatThrownBy(
                 () -> appointmentService.findAppointment(invalidTeamCode, 에덴.getId(), 약속잡기_중간.getCode()))
                 .isInstanceOf(TeamNotFoundException.class)
@@ -289,7 +289,7 @@ class AppointmentServiceTest {
         // given
         Member 차리 = memberRepository.findById(4L).orElseThrow();
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> appointmentService.findAppointment(모락.getCode(), 차리.getId(), 약속잡기_중간.getCode()))
                 .isInstanceOf(TeamAuthorizationException.class)
                 .extracting("code")
@@ -331,7 +331,7 @@ class AppointmentServiceTest {
 
         List<AvailableTimeRequest> requests = List.of(availableTimeRequest);
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(모락.getCode(), 차리.getId(), 약속잡기_중간.getCode(),
                 requests))
                 .isInstanceOf(TeamAuthorizationException.class)
@@ -344,7 +344,7 @@ class AppointmentServiceTest {
         // given
         String invalidTeamCode = "morakko";
 
-        //when & then
+        // when & then
         assertThatThrownBy(
                 () -> appointmentService.selectAvailableTimes(invalidTeamCode, 에덴.getId(), 약속잡기_중간.getCode(),
                         List.of(new AvailableTimeRequest())))
@@ -713,7 +713,7 @@ class AppointmentServiceTest {
         // given
         Member 차리 = memberRepository.findById(4L).orElseThrow();
 
-        //when & then
+        // when & then
         assertThatThrownBy(
                 () -> appointmentService.recommendAvailableTimes(모락.getCode(), 차리.getId(), 약속잡기_중간.getCode()))
                 .isInstanceOf(TeamAuthorizationException.class)
@@ -726,7 +726,7 @@ class AppointmentServiceTest {
         // given
         String invalidTeamCode = "morakko";
 
-        //when & then
+        // when & then
         assertThatThrownBy(
                 () -> appointmentService.recommendAvailableTimes(invalidTeamCode, 에덴.getId(), 약속잡기_중간.getCode()))
                 .isInstanceOf(TeamNotFoundException.class)
@@ -739,14 +739,14 @@ class AppointmentServiceTest {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_중간);
 
-        //when
+        // when
         appointmentService.closeAppointment(
                 appointment.getTeam().getCode(),
                 appointment.getHost().getId(),
                 appointment.getCode()
         );
 
-        //then
+        // then
         assertThat(약속잡기_중간.getStatus()).isEqualTo(CLOSED);
     }
 
@@ -755,7 +755,7 @@ class AppointmentServiceTest {
         // given
         String invalidTeamCode = "morakko";
 
-        //when & then
+        // when & then
         assertThatThrownBy(
                 () -> appointmentService.closeAppointment(invalidTeamCode, 에덴.getId(), 약속잡기_중간.getCode()))
                 .isInstanceOf(TeamNotFoundException.class)
@@ -769,7 +769,7 @@ class AppointmentServiceTest {
         Appointment appointment = appointmentRepository.save(약속잡기_중간);
         Member 엘리 = memberRepository.findById(2L).orElseThrow();
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> appointmentService.closeAppointment(appointment.getTeam().getCode(), 엘리.getId(),
                 appointment.getCode()))
                 .isInstanceOf(AppointmentAuthorizationException.class)
@@ -782,7 +782,7 @@ class AppointmentServiceTest {
         // given
         String invalidAppointmentCode = "kingEden";
 
-        //when & then
+        // when & then
         assertThatThrownBy(
                 () -> appointmentService.closeAppointment(모락.getCode(), 에덴.getId(), invalidAppointmentCode))
                 .isInstanceOf(AppointmentNotFoundException.class)
@@ -795,7 +795,7 @@ class AppointmentServiceTest {
         // given
         Member 차리 = memberRepository.findById(4L).orElseThrow();
 
-        //when & then
+        // when & then
         assertThatThrownBy(
                 () -> appointmentService.closeAppointment(모락.getCode(), 차리.getId(), 약속잡기_중간.getCode()))
                 .isInstanceOf(TeamAuthorizationException.class)
@@ -808,14 +808,14 @@ class AppointmentServiceTest {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_중간);
 
-        //when
+        // when
         appointmentService.deleteAppointment(
                 appointment.getTeam().getCode(),
                 appointment.getHost().getId(),
                 appointment.getCode()
         );
 
-        //then
+        // then
         assertThat(appointmentRepository.findByCode(appointment.getCode())).isEmpty();
     }
 
@@ -825,7 +825,7 @@ class AppointmentServiceTest {
         Appointment appointment = appointmentRepository.save(약속잡기_중간);
         Member 엘리 = memberRepository.findById(2L).orElseThrow();
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> appointmentService.deleteAppointment(appointment.getTeam().getCode(), 엘리.getId(),
                 appointment.getCode()))
                 .isInstanceOf(AppointmentAuthorizationException.class)
@@ -838,7 +838,7 @@ class AppointmentServiceTest {
         // given
         Member 차리 = memberRepository.findById(4L).orElseThrow();
 
-        //when & then
+        // when & then
         assertThatThrownBy(
                 () -> appointmentService.deleteAppointment(모락.getCode(), 차리.getId(), 약속잡기_중간.getCode()))
                 .isInstanceOf(TeamAuthorizationException.class)
@@ -851,7 +851,7 @@ class AppointmentServiceTest {
         // given
         String invalidTeamCode = "morakko";
 
-        //when & then
+        // when & then
         assertThatThrownBy(
                 () -> appointmentService.deleteAppointment(invalidTeamCode, 에덴.getId(), 약속잡기_중간.getCode()))
                 .isInstanceOf(TeamNotFoundException.class)

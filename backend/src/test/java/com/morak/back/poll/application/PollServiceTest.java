@@ -477,7 +477,7 @@ class PollServiceTest {
 
     @Test
     void 투표_단건을_조회한다() {
-        //when
+        // when
         PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), poll.getCode());
 
         // then
@@ -490,13 +490,13 @@ class PollServiceTest {
 
     @Test
     void 속하지않은_팀의_투표항목을_조회하면_예외를_던진다() {
-        //given
+        // given
         Team invalidTeam = teamRepository.save(Team.builder()
                 .name("invalidTeam")
                 .code(Code.generate(length -> "12341234"))
                 .build());
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> pollService.findPoll(invalidTeam.getCode(), member.getId(), poll.getCode()))
                 .isInstanceOf(TeamAuthorizationException.class)
                 .extracting("code")
@@ -505,14 +505,14 @@ class PollServiceTest {
 
     @Test
     void 팀에_속하지않은_투표항목을_조회하면_예외를_던진다() {
-        //given
+        // given
         Team invalidTeam = teamRepository.save(Team.builder()
                 .name("invalidTeam")
                 .code(Code.generate(length -> "12341234"))
                 .build());
         teamMemberRepository.save(new TeamMember(null, invalidTeam, member));
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> pollService.findPoll(invalidTeam.getCode(), member.getId(), poll.getCode()))
                 .isInstanceOf(PollAuthorizationException.class)
                 .extracting("code")
@@ -719,7 +719,7 @@ class PollServiceTest {
 
     @Test
     void 투표_삭제_시_호스트가_아니면_예외를_던진다() {
-        //given
+        // given
         Member 차리 = memberRepository.save(Member.builder()
                 .oauthId("leechari")
                 .name("이찬주")
@@ -737,7 +737,7 @@ class PollServiceTest {
 
     @Test
     void 투표_삭제_시_팀에_속하지않은_투표를_삭제하면_예외를_던진다() {
-        //given
+        // given
         Team newTeam = teamRepository.save(Team.builder()
                 .name("newTeam")
                 .code(Code.generate(length -> "123xx111"))

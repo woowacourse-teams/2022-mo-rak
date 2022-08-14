@@ -104,10 +104,10 @@ class AppointmentRepositoryTest {
         Appointment appointment = DEFAULT_BUILDER.build();
         Appointment savedAppointment = appointmentRepository.save(appointment);
 
-        //when
+        // when
         Appointment foundAppointment = appointmentRepository.findByCode(savedAppointment.getCode()).orElseThrow();
 
-        //then
+        // then
         assertThat(savedAppointment).isEqualTo(foundAppointment);
     }
 
@@ -222,10 +222,10 @@ class AppointmentRepositoryTest {
         Appointment savedAppointment = appointmentRepository.save(appointment);
         appointmentRepository.deleteById(savedAppointment.getId());
 
-        //when
+        // when
         Optional<Appointment> appointmentOptional = appointmentRepository.findByCode(savedAppointment.getCode());
 
-        //then
+        // then
         assertThat(appointmentOptional).isEmpty();
     }
 }
