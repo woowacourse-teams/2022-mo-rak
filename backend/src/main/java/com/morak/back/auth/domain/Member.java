@@ -23,7 +23,7 @@ import org.hibernate.validator.constraints.URL;
 public class Member extends BaseEntity {
 
     @Transient
-    public static final Member ANONYMOUS_MEMBER = new Member(
+    private static final Member ANONYMOUS_MEMBER = new Member(
             0L,
             "00000000",
             "anonymous",
