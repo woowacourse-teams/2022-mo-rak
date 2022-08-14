@@ -116,6 +116,6 @@ public class GlobalControllerAdvice {
         logger.error(stackTrace + LogFormatter.toPrettyRequestString(requestWrapper));
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ExceptionResponse(CustomErrorCode.RUNTIME_ERROR.getNumber(), ""));
+                .body(new ExceptionResponse(CustomErrorCode.RUNTIME_ERROR.getNumber(), "알 수 없는 예외입니다."));
     }
 }
