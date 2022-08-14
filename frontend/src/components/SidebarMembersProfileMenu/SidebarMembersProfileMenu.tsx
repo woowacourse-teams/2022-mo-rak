@@ -10,7 +10,7 @@ interface Props {
   groupCode: GroupInterface['code'];
 }
 
-function SidebarMembersProfile({ groupCode }: Props) {
+function SidebarMembersProfileMenu({ groupCode }: Props) {
   const navigate = useNavigate();
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
   const groupMembersCount = groupMembers.length;
@@ -45,7 +45,7 @@ function SidebarMembersProfile({ groupCode }: Props) {
   }, [groupCode]);
 
   return (
-    <>
+    <StyledMemberListContainer>
       <StyledMenuHeader>
         멤버 목록 (
         {groupMembersCount}
@@ -59,9 +59,13 @@ function SidebarMembersProfile({ groupCode }: Props) {
           </FlexContainer>
         ))}
       </StyledContainer>
-    </>
+    </StyledMemberListContainer>
   );
 }
+
+const StyledMemberListContainer = styled.div`
+  margin: 2.8rem 0;
+`;
 
 const StyledMenuHeader = styled.div`
 width: 100%;
@@ -80,4 +84,4 @@ const StyledContainer = styled.div`
   
 `;
 
-export default SidebarMembersProfile;
+export default SidebarMembersProfileMenu;
