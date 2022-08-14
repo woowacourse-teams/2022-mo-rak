@@ -4,20 +4,20 @@ import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import Input from '../../@common/Input/Input';
 
 interface Props {
-  closeTime: string;
-  closeDate: string;
+  closingTime: string;
+  closingDate: string;
   onChangeTime: ChangeEventHandler<HTMLInputElement>;
   onChangeDate: ChangeEventHandler<HTMLInputElement>;
 }
 
-function PollCreateCloseTimeInput({ closeTime, closeDate, onChangeTime, onChangeDate }: Props) {
+function PollCreateCloseTimeInput({ closingTime, closingDate, onChangeTime, onChangeDate }: Props) {
   return (
     <FlexContainer justifyContent="end" alignItems="center">
       <FlexContainer flexDirection="column" alignItems="end" gap="0.4rem">
-        {/* TODO: 하나의 label 여러개 input */}
+        {/* TODO: 하나의 label 여러개 input은 html에서 권장하지 않는 것이니 해결 필요 */}
         <StyledLabel>마감시간</StyledLabel>
-        <Input type="date" fontSize="1.6rem" value={closeDate} onChange={onChangeDate} required />
-        <Input type="time" fontSize="1.6rem" value={closeTime} onChange={onChangeTime} required />
+        <Input type="date" fontSize="1.6rem" value={closingDate} onChange={onChangeDate} required />
+        <Input type="time" fontSize="1.6rem" value={closingTime} onChange={onChangeTime} required />
       </FlexContainer>
     </FlexContainer>
   );

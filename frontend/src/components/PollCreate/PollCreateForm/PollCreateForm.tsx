@@ -25,8 +25,8 @@ function PollCreateForm() {
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isAllowedMultiplePollCount, setIsAllowedMultiplePollCount] = useState(false);
   const [pollItems, setPollItems] = useState(['', '']);
-  const [closeDate, handleCloseDate] = useInput('');
-  const [closeTime, handleCloseTime] = useInput('');
+  const [closingDate, handleCloseDate] = useInput('');
+  const [closingTime, handleCloseTime] = useInput('');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,7 +37,7 @@ function PollCreateForm() {
       title,
       allowedPollCount,
       isAnonymous,
-      closedAt: `${closeDate}T${closeTime}`,
+      closedAt: `${closingDate}T${closingTime}`,
       subjects: pollItems
     };
 
@@ -70,8 +70,8 @@ function PollCreateForm() {
     <Box width="84.4rem" padding="6.4rem 4.8rem 14rem">
       <form onSubmit={handleSubmit}>
         <PollCreateCloseTimeInput
-          closeDate={closeDate}
-          closeTime={closeTime}
+          closingDate={closingDate}
+          closingTime={closingTime}
           onChangeDate={handleCloseDate}
           onChangeTime={handleCloseTime}
         />
