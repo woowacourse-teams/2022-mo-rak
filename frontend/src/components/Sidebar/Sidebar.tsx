@@ -10,7 +10,6 @@ import { GroupInterface } from '../../types/group';
 import Slack from '../../assets/slack.svg';
 import TextField from '../@common/TextField/TextField';
 import Input from '../@common/Input/Input';
-import Button from '../@common/Button/Button';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
 import theme from '../../styles/theme';
 
@@ -113,7 +112,7 @@ function Sidebar() {
                 <Input placeholder="슬랙 채널 url 입력 후, 확인버튼을 누르면 연동 끝!" fontSize="1.6REM" required />
                 <StyledLinkIcon src={LinkIcon} alt="link-icon" />
               </TextField>
-              <Button colorScheme="#ECB22E" variant="filled" width="14rem" padding="1.6rem 4rem" fontSize="1.6rem">확인</Button>
+              <StyledButton>확인</StyledButton>
             </FlexContainer>
           </StyledBottom>
         </StyledSlackModal>
@@ -202,6 +201,22 @@ const StyledLinkIcon = styled.img`
   position: absolute;
   left: 1.2rem;
   top: 1.2rem;
+`;
+
+const StyledButton = styled.button`
+  background-color: ${theme.colors.YELLOW_200};
+  color: ${theme.colors.WHITE_100};
+  width: 14rem; 
+  padding: 1.6rem 4rem;
+  font-size: 1.6rem;
+  position: relative;
+  text-align: center;
+  border-radius: 15px;
+
+  &:hover {
+    transform: scale(1.1);
+    transition: all 0.3s linear;
+  }
 `;
 
 // TODO: 슬랙 메뉴 임시 (사이드바 pr merge되면, 대체하기)
