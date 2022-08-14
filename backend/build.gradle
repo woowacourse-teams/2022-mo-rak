@@ -17,7 +17,7 @@ configurations {
 jacoco {
     // JaCoCo 버전
     toolVersion = '0.8.7'
-
+//    exclude("*equals", "*hashCode")
 //  테스트결과 리포트를 저장할 경로 변경
 //  default는 "$/jacoco"
 //  reportsDir = file("$buildDir/customJacocoReportDir")
@@ -151,7 +151,7 @@ tasks.named('jacocoTestCoverageVerification') {
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
-                minimum = 0.40
+                minimum = 0.80
             }
 
             // 라인 커버리지를 최소한 80% 만족시켜야 합니다.
@@ -165,20 +165,15 @@ tasks.named('jacocoTestCoverageVerification') {
             limit {
                 counter = 'METHOD'
                 value = 'COVEREDRATIO'
-                minimum = 0.40
+                minimum = 0.60
             }
 
             excludes = [
-                    '**.*Exception*',
                     '**.LogFormatter*',
-                    '**.*OAuthClient*',
-                    '**.*BaseEntity*',
-                    '**.*InputStream*',
-                    '**.*ControllerAdvice*',
+                    '**.*GithubOAuthClient*',
                     '**.*MorakBackApplication*',
-                    '**.*Response*',
-                    '**.*OAuthClient*',
-                    '**.*Interceptor*'
+                    '**.*Interceptor*',
+                    '**.*Extractor*'
             ]
         }
 
