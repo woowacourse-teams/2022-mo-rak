@@ -6,6 +6,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -46,6 +47,10 @@ public class AppointmentCreateRequest {
     @NotNull
     private Integer durationMinutes;
 
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime closedAt;
+
     public Appointment toAppointment(Team team, Member member, Code code) {
         return Appointment.builder()
                 .team(team)
@@ -58,6 +63,7 @@ public class AppointmentCreateRequest {
                 .endTime(this.endTime)
                 .durationHours(this.durationHours)
                 .durationMinutes(this.durationMinutes)
+                .closedAt(this.closedAt)
                 .code(code)
                 .build();
     }

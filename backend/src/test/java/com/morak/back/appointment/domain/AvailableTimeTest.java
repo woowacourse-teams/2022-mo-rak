@@ -29,6 +29,7 @@ class AvailableTimeTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(1)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
 
         // when & then
@@ -59,6 +60,7 @@ class AvailableTimeTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(1)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
 
         // when & then

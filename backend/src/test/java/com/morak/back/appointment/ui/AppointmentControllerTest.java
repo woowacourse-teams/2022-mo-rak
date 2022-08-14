@@ -50,8 +50,8 @@ class AppointmentControllerTest extends ControllerTest {
                 LocalTime.of(16, 0),
                 LocalTime.of(20, 0),
                 2,
-                30
-        );
+                30,
+                LocalDateTime.now().plusDays(1));
 
         given(appointmentService.createAppointment(anyString(), anyLong(), any())).willReturn("KDIs23K3");
 

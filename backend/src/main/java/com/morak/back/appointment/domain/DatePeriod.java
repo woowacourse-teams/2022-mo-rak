@@ -10,11 +10,13 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
+@ToString
 public class DatePeriod {
 
     private static final long ONE_DAY = 1L;
@@ -28,7 +30,7 @@ public class DatePeriod {
     public static DatePeriod of(LocalDate startDate, LocalDate endDate, LocalTime endTime) {
         validateFutureOrPresent(startDate, endDate);
         validateChronology(startDate, endDate);
-        if (endTime.equals(TimePeriod.ZERO_TIME)) {
+        if (endTime.equals(LocalTime.MIDNIGHT)) {
             endDate = endDate.plusDays(ONE_DAY);
         }
         return new DatePeriod(startDate, endDate);
@@ -59,7 +61,10 @@ public class DatePeriod {
     }
 
     public boolean isAvailableRange(DatePeriod other) {
-        // TODO : 로직 제대로 구현되었는지 확인할때 가독성있게 수정
         return !(other.startDate.isBefore(this.startDate) || other.endDate.isAfter(this.endDate));
+    }
+
+    public boolean isInRange(LocalDate otherDate) {
+        return !startDate.isAfter(otherDate) && !endDate.isBefore(otherDate);
     }
 }
