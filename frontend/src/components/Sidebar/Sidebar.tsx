@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, MouseEventHandler } from 'react';
 import styled from '@emotion/styled';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/logo.svg';
 import Poll from '../../assets/person-check.svg';
 import Appointment from '../../assets/calendar-clock.svg';
@@ -14,20 +14,20 @@ import Menu from '../../assets/menu.svg';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
 import Avatar from '../@common/Avatar/Avatar';
 
-function Sidebar() {
-  const { groupCode } = useParams();
+interface Props {
+  groupCode: GroupInterface['code'];
+  handleSetClickedMenu: (menu: string) => MouseEventHandler<HTMLDivElement>;
+  clickedMenu: string;
+}
+
+function Sidebar({ groupCode, handleSetClickedMenu, clickedMenu }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
-  const [clickedMenu, setClickedMenu] = useState('poll');
 
   const navigate = useNavigate();
 
   const handleNavigate = (location: string) => () => {
     navigate(location);
-  };
-
-  const handleSetClickedMenu = (menu: string) => () => {
-    setClickedMenu(menu);
   };
 
   const handleCopyInviationCode = async () => {
@@ -189,6 +189,7 @@ const StyledContainer = styled.div(
   background: ${theme.colors.WHITE_100};
   padding-left: 4rem;
   gap: 2rem;
+  border: none;
 `
 );
 
