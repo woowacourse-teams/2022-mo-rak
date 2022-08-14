@@ -23,7 +23,7 @@ function GroupInitPage() {
           const statusCode = err.message;
           if (statusCode === '401') {
             removeLocalStorageItem('token');
-            navigate('/');
+            navigate('/error');
 
             return;
           }

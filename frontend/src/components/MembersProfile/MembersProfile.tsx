@@ -27,12 +27,12 @@ function MembersProfile({ groupCode }: Props) {
 
           if (statusCode === '401') {
             alert('로그인 해주세요~');
-            navigate('/');
+            navigate('/error');
           }
 
           if (statusCode === '404' || '403' || '400') {
             alert('그룹이 없어요~');
-            navigate('/');
+            navigate('/error');
           }
         }
         console.log(err);
