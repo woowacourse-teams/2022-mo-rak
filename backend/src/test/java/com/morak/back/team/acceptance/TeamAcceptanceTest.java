@@ -185,7 +185,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(invitationJoinedResponse)
                         .usingRecursiveComparison()
-                        .isEqualTo(new InvitationJoinedResponse(teamLocation.split("/")[3], teamCreateRequest.getName(),
+                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation), teamCreateRequest.getName(),
                                 true))
         );
     }
@@ -207,7 +207,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(invitationJoinedResponse)
                         .usingRecursiveComparison()
-                        .isEqualTo(new InvitationJoinedResponse(teamLocation.split("/")[3], teamCreateRequest.getName(),
+                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation), teamCreateRequest.getName(),
                                 false))
         );
     }
@@ -228,7 +228,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(invitationJoinedResponse)
                         .usingRecursiveComparison()
-                        .isEqualTo(new InvitationJoinedResponse(teamLocation.split("/")[3], teamCreateRequest.getName(),
+                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation), teamCreateRequest.getName(),
                                 false))
         );
     }
@@ -478,7 +478,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(teamResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("id")
-                        .isEqualTo(new TeamResponse(null, targetTeamLocation.split("/")[3], targetName))
+                        .isEqualTo(new TeamResponse(null, extractTeamCodeFromLocation(targetTeamLocation), targetName))
         );
     }
 
@@ -512,7 +512,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // given
         String otherToken = tokenProvider.createToken(String.valueOf(5L));
         String teamLocation = 그룹_생성을_요청한다(new TeamCreateRequest("하이"), otherToken).header("Location");
-        String teamCode = teamLocation.split("/")[3];
+        String teamCode = extractTeamCodeFromLocation(teamLocation);
 
         // when
         ExtractableResponse<Response> teamExitResponse = 그룹_탈퇴를_요청한다(teamCode, otherToken);
@@ -530,7 +530,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // given
         String otherToken = tokenProvider.createToken(String.valueOf(5L));
         String teamLocation = 그룹_생성을_요청한다(new TeamCreateRequest("하이"), otherToken).header("Location");
-        String teamCode = teamLocation.split("/")[3];
+        String teamCode = extractTeamCodeFromLocation(teamLocation);
 
         // when
         그룹_탈퇴를_요청한다(teamCode, otherToken);
@@ -549,7 +549,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         // given
         TeamCreateRequest request = new TeamCreateRequest("albur");
         String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
-        String teamCode = teamLocation.split("/")[3];
+        String teamCode = extractTeamCodeFromLocation(teamLocation);
         String otherToken = tokenProvider.createToken(String.valueOf(0L));
 
         // when
@@ -610,5 +610,9 @@ public class TeamAcceptanceTest extends AcceptanceTest {
 
     public ExtractableResponse<Response> 그룹_탈퇴를_요청한다(String teamCode, String token) {
         return delete("/api/groups/out/" + teamCode, toHeader(token));
+    }
+
+    private static String extractTeamCodeFromLocation(String teamLocation) {
+        return teamLocation.split("/")[3];
     }
 }

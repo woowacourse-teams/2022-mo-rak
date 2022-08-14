@@ -7,14 +7,14 @@ import org.junit.jupiter.api.Test;
 class CodeTest {
 
     @Test
-    void Code를_생성한다() {
+    void 랜덤한_8자리의_Code를_생성한다() {
         // given
-        String randomCode = "하이하이하이하이";
+        RandomCodeGenerator randomCodeGenerator = new RandomCodeGenerator();
 
-        //When
-        Code code = Code.generate((length) -> randomCode);
+        // when
+        Code code = Code.generate(randomCodeGenerator);
 
         // then
-        assertThat(code.getCode()).isEqualTo(randomCode);
+        assertThat(code.getCode()).hasSize(8);
     }
 }
