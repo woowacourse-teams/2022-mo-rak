@@ -67,7 +67,7 @@ function PollCreateForm() {
   };
 
   return (
-    <Box width="84.4rem" padding="6.4rem 4.8rem 14rem">
+    <Box width="84.4rem" padding="4.8rem 4.8rem 14rem">
       <form onSubmit={handleSubmit}>
         <PollCreateCloseTimeInput
           closingDate={closingDate}
