@@ -208,7 +208,9 @@ const StyledLogo = styled.img`
 
 // 그룹
 const StyledGroupListBox = styled.div<{isClickedShowGroupList: boolean}>(({ theme, isClickedShowGroupList }) => `
-  display: ${isClickedShowGroupList ? 'block' : 'none'};
+  visibility: 'hidden';
+  opacity: 0;
+  transition: visibility 0s, opacity 0.2s ease-in-out;
   width: 24rem;
   background: ${theme.colors.WHITE_100};
   position: absolute;
@@ -216,6 +218,11 @@ const StyledGroupListBox = styled.div<{isClickedShowGroupList: boolean}>(({ them
   top: 44px;
   border-radius: 12px;
   max-height: 45.2rem;
+
+  ${isClickedShowGroupList && `
+  visibility: visible;
+  opacity: 1;
+  `}
 `);
 
 const StyledGroupListContainer = styled.div`
@@ -226,11 +233,20 @@ const StyledGroupListContainer = styled.div`
 const StyledSettingIcon = styled.img`
   width: 2.4rem;
   cursor: pointer;
+
+  &:hover {
+    transform: rotate(0.5turn);
+    transition: all 0.3s linear;
+  }
 `;
 
 const StyledGroupListIcon = styled.img`
   width: 2.4rem;
   cursor: pointer;
+  &:hover {
+    transform: scale(1.1, 1.1);
+    transition: all 0.3s linear;
+  }
 `;
 
 const StyledGroupImage = styled.img`
@@ -299,8 +315,12 @@ const StyledParticipateNewGroup = styled.button`
   cursor: pointer;
   gap: 1.2rem;
   font-size: 1.6rem;
-  width: 100%;
   padding: 2rem;
+
+  &:hover {
+    transform: scale(1.05);
+    transition: all 0.2s linear;
+  }
 `;
 
 const StyledCreateNewGroup = styled.button`
@@ -311,6 +331,11 @@ const StyledCreateNewGroup = styled.button`
   font-size: 1.6rem;
   width: 100%;
   padding: 2rem;
+
+  &:hover {
+    transform: scale(1.05);
+    transition: all 0.2s linear;
+  }
 `;
 
 const StyledGroupText = styled.p`
@@ -346,6 +371,12 @@ const StyledPollMenu = styled.div<{
     background: ${theme.colors.GRAY_100}; 
     border-top-left-radius: 4rem; 
     border-bottom-left-radius: 4rem;`};
+
+  &:hover {
+    background: ${!isClicked && theme.colors.TRANSPARENT_GRAY_100_80};
+    border-top-left-radius: 4rem; 
+    border-bottom-left-radius: 4rem;
+  } 
 `
 );
 
@@ -357,10 +388,19 @@ const StyledAppointmentMenu = styled.div<{
   gap: 2rem;
   cursor: pointer;
   padding: 2rem;
+  
   ${isClicked && `
-    background: ${theme.colors.GRAY_100}; 
+  background: ${theme.colors.GRAY_100}; 
+  border-top-left-radius: 4rem; 
+  border-bottom-left-radius: 4rem;
+  `};
+
+  &:hover {
+    background: ${!isClicked && theme.colors.TRANSPARENT_GRAY_100_80};
     border-top-left-radius: 4rem; 
-    border-bottom-left-radius: 4rem;`};
+    border-bottom-left-radius: 4rem;
+  } 
+  
 `
 );
 
