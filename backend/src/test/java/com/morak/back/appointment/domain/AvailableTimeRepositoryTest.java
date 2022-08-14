@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.morak.back.appointment.FakeCodeGenerator;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

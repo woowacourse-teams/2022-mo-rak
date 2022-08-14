@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import Box from '../../common/Box/Box';
+import Box from '../../@common/Box/Box';
 import PollMainStatus from '../PollMainStatus/PollMainStatus';
 import PollMainDetail from '../PollMainDetail/PollMainDetail';
 import PollMainProgress from '../PollMainProgress/PollMainProgress';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import MarginContainer from '../../common/MarginContainer/MarginContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import MarginContainer from '../../@common/MarginContainer/MarginContainer';
 
 import { getPolls } from '../../../api/poll';
 import { getPollsResponse } from '../../../types/poll';
@@ -22,7 +22,8 @@ function PollMainContainer() {
   useEffect(() => {
     const fetchPolls = async () => {
       const res = await getPolls(groupCode);
-      setPolls(res);
+      console.log(res);
+      setPolls(res.data);
     };
 
     try {
@@ -64,8 +65,7 @@ function PollMainContainer() {
 const StyledContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  column-gap: 3.2rem;
-  row-gap: 3.2rem;
+  gap: 2.4rem;
 `;
 
 const StyledTitle = styled.h1`

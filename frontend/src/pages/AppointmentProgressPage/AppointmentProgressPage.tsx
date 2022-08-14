@@ -8,7 +8,7 @@ import {
   AvailableTimes,
   AppointmentInterface
 } from '../../types/appointment';
-import Calendar from '../../components/common/Calendar/Calendar';
+import Calendar from '../../components/@common/Calendar/Calendar';
 import AppointmentProgressHeader from '../../components/AppointmentProgress/AppointmentProgressHeader/AppointmentProgressHeader';
 import AppointmentProgressDetail from '../../components/AppointmentProgress/AppointmentProgressDetail/AppointmentProgressDetail';
 import AppointmentProgressTimePicker from '../../components/AppointmentProgress/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
@@ -75,12 +75,12 @@ function AppointmentProgressPage() {
     (async () => {
       try {
         const res = await getAppointment(groupCode, appointmentCode);
-        if (res.isClosed) {
+        if (res.data.isClosed) {
           alert('마감된 약속잡기입니다');
 
           return;
         }
-        setAppointment(res);
+        setAppointment(res.data);
       } catch (error) {
         console.log(error);
       }

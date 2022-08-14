@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import Progress from '../../common/Progress/Progress';
+import Progress from '../../@common/Progress/Progress';
 import { getPollResultResponse } from '../../../types/poll';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { GroupInterface, MemberInterface } from '../../../types/group';
 import { getGroupMembers } from '../../../api/group';
 
@@ -29,7 +29,7 @@ function PollResultProgress({ pollResult, groupCode }: Props) {
         if (groupCode) {
           const res = await getGroupMembers(groupCode);
 
-          setGroupMembers(res);
+          setGroupMembers(res.data);
         }
       } catch (err) {
         if (err instanceof Error) {

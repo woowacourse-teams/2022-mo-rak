@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import React, { FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Box from '../../common/Box/Box';
+import Box from '../../@common/Box/Box';
 import AppointmentCreateFormButtonGroup from '../AppointmentCreateFormButtonGroup/AppointmentCreateFormButtonGroup';
 import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
 import AppointmentCreateFormDescriptionInput from '../AppointmentCreateFormDescriptionInput/AppointmentCreateFormDescriptionInput';
 import AppointmentCreateFormDurationInput from '../AppointmentCreateFormDurationInput/AppointmentCreateFormDurationInput';
 import AppointmentCreateFormTimeLimitInput from '../AppointmentCreateFormTimeLimitInput/AppointmentCreateFormTimeLimitInput';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import useInput from '../../../hooks/useInput';
 import useInputs from '../../../hooks/useInputs';
 import { Time, createAppointmentData, AppointmentInterface } from '../../../types/appointment';
@@ -51,7 +51,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
 
     try {
       const res = await createAppointment(groupCode, appointment);
-      const appointmentCode = res.headers.get('location').split('appointments/')[1];
+      const appointmentCode = res.headers.location.split('appointments/')[1];
 
       navigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`);
     } catch (error) {

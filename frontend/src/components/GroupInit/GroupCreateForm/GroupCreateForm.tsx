@@ -15,7 +15,7 @@ function GroupCreateForm() {
 
     try {
       const res = await createGroup(groupName);
-      const groupCode = res.headers.get('location').split('groups/')[1];
+      const groupCode = res.headers.location.split('groups/')[1];
 
       navigate(`/groups/${groupCode}`);
     } catch (err) {

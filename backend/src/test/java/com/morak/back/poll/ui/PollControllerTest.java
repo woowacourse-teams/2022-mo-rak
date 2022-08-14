@@ -17,6 +17,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.application.PollService;
 import com.morak.back.poll.ui.dto.MemberResultResponse;
 import com.morak.back.poll.ui.dto.PollCreateRequest;

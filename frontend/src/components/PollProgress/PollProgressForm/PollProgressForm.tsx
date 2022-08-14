@@ -2,9 +2,9 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import Box from '../../common/Box/Box';
-import Divider from '../../common/Divider/Divider';
-import MarginContainer from '../../common/MarginContainer/MarginContainer';
+import Box from '../../@common/Box/Box';
+import Divider from '../../@common/Divider/Divider';
+import MarginContainer from '../../@common/MarginContainer/MarginContainer';
 import PollProgressButtonGroup from '../PollProgressButtonGroup/PollProgressButtonGroup';
 import { getPoll, progressPoll } from '../../../api/poll';
 import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGroup';
@@ -77,13 +77,14 @@ function PollProgressForm() {
       try {
         const res = await getPoll(pollCode, groupCode);
 
-        if (res.status === 'CLOSED') {
+        // TODO: res.data vs poll => 이후에 통일해줘야함
+        if (res.data.status === 'CLOSED') {
           navigate(`/groups/${groupCode}/poll`);
 
           return;
         }
 
-        setPoll(res);
+        setPoll(res.data);
       } catch (err) {
         alert('poll 없어~~');
         navigate(`/groups/${groupCode}/poll`);

@@ -10,13 +10,16 @@ import static com.morak.back.SimpleRestAssured.toObjectList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
+import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.ui.dto.ExceptionResponse;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
@@ -29,8 +32,6 @@ import org.springframework.http.HttpStatus;
 
 class PollAcceptanceTest extends AcceptanceTest {
 
-    private static final String INVALID_ACCESS_TOKEN = "invalid.access.token";
-
     private String accessToken;
 
     @Autowired
@@ -40,6 +41,38 @@ class PollAcceptanceTest extends AcceptanceTest {
     public void setUp() {
         super.setUp();
         accessToken = tokenProvider.createToken(String.valueOf(1L));
+    }
+
+    @Test
+    void 토큰이_없는_경우_투표를_생성_시_UNAUTHORIZED을_반환한다() {
+        // given & when
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2"));
+        ExtractableResponse<Response> response = post("/api/groups/MoraK123/polls", request);
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.EMPTY_AUTHORIZATION_ERROR.getNumber())
+        );
+    }
+
+    @Test
+    void 멤버가_없는_경우_투표를_생성_시_NOT_FOUND를_반환한다() {
+        // given & when
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2"));
+        ExtractableResponse<Response> response = post(
+                "/api/groups/MoraK123/polls",
+                request,
+                toHeader(tokenProvider.createToken(999L + ""))
+        );
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR.getNumber())
+        );
     }
 
     @Test
@@ -80,6 +113,43 @@ class PollAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
+
+    @Test
+    void 없는_투표를_진행하려고하면_NOT_FOUND를_반환한다() {
+        // given
+
+        List<PollResultRequest> pollResultRequests = List.of(new PollResultRequest(4L, "눈물이 나기 때문이에요"));
+
+        // when
+        String invalidPollCode = "invalidPollCode";
+        ExtractableResponse<Response> response = 투표_진행을_요청한다("/api/groups/MoraK123/polls/" + invalidPollCode,
+                pollResultRequests);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.POLL_NOT_FOUND_ERROR.getNumber())
+        );
+    }
+
+    @Test
+    void 없는_투표항목에_투표하면_NOT_FOUND를_반환한다() {
+        // given
+        String location = 기본_투표_생성을_요청한다().header("Location");
+        List<PollResultRequest> pollResultRequests = List.of(new PollResultRequest(999L, "눈물이_나기_때문이에요"));
+
+        // when
+        ExtractableResponse<Response> response = 투표_진행을_요청한다(location, pollResultRequests);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.POLL_ITEM_NOT_FOUND_ERROR.getNumber())
+        );
+    }
+
 
     @Test
     void 재투표를_진행한다() {
@@ -174,12 +244,14 @@ class PollAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(resultResponses).hasSize(3),
                 () -> assertThat(resultResponses.get(0).getCount()).isEqualTo(1),
                 () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
                 () -> assertThat(resultResponses.get(1).getMembers()).hasSize(0),
                 () -> assertThat(resultResponses.get(2).getMembers()).hasSize(0),
-                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo(Member.getAnonymous().getName()),
+                () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo(
+                        Member.getAnonymous().getName()),
                 () -> assertThat(resultResponses.get(0).getMembers().get(0).getDescription()).isEqualTo("눈물이_나기_때문이에요")
         );
     }
@@ -198,6 +270,7 @@ class PollAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(resultResponses).hasSize(2),
                 () -> assertThat(resultResponses.get(0).getMembers()).hasSize(1),
                 () -> assertThat(resultResponses.get(0).getMembers().get(0).getName()).isEqualTo("eden"),
@@ -216,11 +289,15 @@ class PollAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
+        );
     }
 
     @Test
-    void 도메인_정책에_위반한_값으로_투표요청시_400을_반환한다() {
+    void 도메인_정책에_위반한_값으로_투표_생성_요청시_400을_반환한다() {
         // given
         PollCreateRequest request = new PollCreateRequest("하이", 0, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
@@ -229,7 +306,11 @@ class PollAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
+        );
     }
 
     @Test
@@ -257,7 +338,7 @@ class PollAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 호스트가_아닌_사용자가_투표마감시_BAD_REQUEST를_응답한다() {
+    void 호스트가_아닌_사용자가_투표마감시_FORBIDDEN를_응답한다() {
         // given
         String otherToken = tokenProvider.createToken(2L + "");
         String location = 기본_투표_생성을_요청한다().header("Location");
@@ -266,7 +347,11 @@ class PollAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표_마감을_요청한다(location, otherToken);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.POLL_MEMBER_MISMATCHED_ERROR.getNumber())
+        );
     }
 
     @Test
@@ -280,7 +365,11 @@ class PollAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
+        );
     }
 
     @Test
@@ -294,7 +383,11 @@ class PollAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
+        );
     }
 
     @Test
@@ -308,7 +401,11 @@ class PollAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표_생성을_요청한다(request, accessToken);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
+        );
     }
 
     private ExtractableResponse<Response> 투표_목록_조회를_요청한다(String path) {

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getGroupMembers } from '../../api/group';
 import { GroupInterface, MemberInterface } from '../../types/group';
-import Avatar from '../common/Avatar/Avatar';
+import Avatar from '../@common/Avatar/Avatar';
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -19,7 +19,7 @@ function MembersProfile({ groupCode }: Props) {
         if (groupCode) {
           const res = await getGroupMembers(groupCode);
 
-          setGroupMembers(res);
+          setGroupMembers(res.data);
         }
       } catch (err) {
         if (err instanceof Error) {

@@ -2,9 +2,9 @@ import React, { useState, FormEvent, ChangeEvent } from 'react';
 
 // TODO: 자동정렬 설정
 import { useNavigate, useParams } from 'react-router-dom';
-import Box from '../../common/Box/Box';
-import Divider from '../../common/Divider/Divider';
-import MarginContainer from '../../common/MarginContainer/MarginContainer';
+import Box from '../../@common/Box/Box';
+import Divider from '../../@common/Divider/Divider';
+import MarginContainer from '../../@common/MarginContainer/MarginContainer';
 
 import PollCreateFormInputGroup from '../PollCreateFormInputGroup/PollCreateFormInputGroup';
 import PollCreateDetail from '../PollCreateDetail/PollCreateDetail';
@@ -42,7 +42,7 @@ function PollCreateForm() {
       // TODO: 쿼리 적용
 
       const res = await createPoll(pollData, groupCode);
-      const pollCode = res.headers.get('location').split('polls/')[1];
+      const pollCode = res.headers.location.split('polls/')[1];
 
       // TODO: 상수화
       navigate(`/groups/${groupCode}/poll/${pollCode}/progress`);

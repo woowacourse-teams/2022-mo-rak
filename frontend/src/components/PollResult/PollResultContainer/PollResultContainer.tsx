@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { useParams } from 'react-router-dom';
-import Box from '../../common/Box/Box';
-import Divider from '../../common/Divider/Divider';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import MarginContainer from '../../common/MarginContainer/MarginContainer';
+import Box from '../../@common/Box/Box';
+import Divider from '../../@common/Divider/Divider';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import MarginContainer from '../../@common/MarginContainer/MarginContainer';
 
 import PollResultItemGroup from '../PollResultItemGroup/PollResultItemGroup';
 import PollResultDetail from '../PollResultDetail/PollResultDetail';
@@ -29,12 +29,12 @@ function PollResultContainer() {
   useEffect(() => {
     const fetchPoll = async (pollCode: PollInterface['code']) => {
       const res = await getPoll(pollCode, groupCode);
-      setPoll(res);
+      setPoll(res.data);
     };
 
     const fetchPollResult = async (pollCode: PollInterface['code']) => {
       const res = await getPollResult(pollCode, groupCode);
-      setPollResult(res);
+      setPollResult(res.data);
     };
 
     try {

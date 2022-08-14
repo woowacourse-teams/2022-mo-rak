@@ -2,7 +2,9 @@ package com.morak.back.appointment.domain;
 
 import static com.morak.back.appointment.domain.Appointment.MINUTES_UNIT;
 
+import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.domain.BaseEntity;
 import java.time.LocalDateTime;
 import javax.persistence.Embedded;
@@ -45,11 +47,44 @@ public class AvailableTime extends BaseEntity {
     private AvailableTime(Long id, Appointment appointment, Member member,
                           LocalDateTime startDateTime, LocalDateTime endDateTime) {
         DateTimePeriod dateTimePeriod = DateTimePeriod.of(startDateTime, endDateTime, MINUTES_UNIT);
-        appointment.validateAvailableTimeRange(dateTimePeriod);
+        validateAvailableTimeRange(appointment, dateTimePeriod);
 
         this.id = id;
         this.appointment = appointment;
         this.member = member;
         this.dateTimePeriod = dateTimePeriod;
+    }
+
+    private void validateAvailableTimeRange(Appointment appointment, DateTimePeriod dateTimePeriod) {
+        validateDateRange(appointment, dateTimePeriod);
+        validateTimeRange(appointment, dateTimePeriod);
+    }
+
+    private void validateDateRange(Appointment appointment, DateTimePeriod dateTimePeriod) {
+        if (!appointment.isAvailableDateRange(dateTimePeriod.toDatePeriod())) {
+            throw new AppointmentDomainLogicException(
+                CustomErrorCode.AVAILABLETIME_DATE_OUT_OF_RANGE_ERROR,
+                String.format(
+                    "%s 코드 투표의 약속잡기 선택날짜 %s 는 %s 이내여야 합니다.",
+                    appointment.getCode(),
+                    dateTimePeriod.toDatePeriod(),
+                    appointment.getDatePeriod()
+                )
+            );
+        }
+    }
+
+    private void validateTimeRange(Appointment appointment, DateTimePeriod dateTimePeriod) {
+        if (!appointment.isAvailableTimeRange(dateTimePeriod.toTimePeriod())) {
+            throw new AppointmentDomainLogicException(
+                CustomErrorCode.AVAILABLETIME_TIME_OUT_OF_RANGE_ERROR,
+                String.format(
+                    "%s 코드 투표의 약속잡기 선택시간 %s 는 %s 이내여야 합니다.",
+                    appointment.getCode(),
+                    dateTimePeriod.toTimePeriod(),
+                    appointment.getTimePeriod()
+                )
+            );
+        }
     }
 }
