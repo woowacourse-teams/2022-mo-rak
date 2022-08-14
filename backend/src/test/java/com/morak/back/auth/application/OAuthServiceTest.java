@@ -46,7 +46,7 @@ class OAuthServiceTest {
     @BeforeEach
     void setUp() {
         given(oAuthClient.getAccessToken(anyString()))
-                .willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN, null, null));
+                .willReturn(new OAuthAccessTokenResponse(ACCESS_TOKEN));
         given(oAuthClient.getMemberInfo(anyString()))
                 .willReturn(new OAuthMemberInfoResponse(MEMBER.getOauthId(), MEMBER.getName(), MEMBER.getProfileUrl()));
     }

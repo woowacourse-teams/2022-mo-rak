@@ -24,7 +24,7 @@ public enum CustomErrorCode {
     POLL_ALREADY_CLOSED_ERROR("2100", "이미 마감된 투표입니다."),
     POLL_COUNT_OUT_OF_RANGE_ERROR("2101", "허용된 투표 개수의 범위를 벗어났습니다."),
     POLL_TEAM_MISMATCHED_ERROR("2200", "투표가 그룹에 속해있지 않습니다."),
-    POLL_MEMBER_MISMATCHED_ERROR("2201", "투표의 호스트가 아닙니다."),
+    POLL_HOST_MISMATCHED_ERROR("2201", "투표의 호스트가 아닙니다."),
     POLL_ITEM_MISMATCHED_ERROR("2202", "투표 선택 항목이 투표에 속해있지 않습니다."),
     POLL_NOT_FOUND_ERROR("2300", "요청한 투표를 찾을 수 없습니다."),
     POLL_ITEM_NOT_FOUND_ERROR("2301", "요청한 투표항목을 찾을 수 없습니다."),
