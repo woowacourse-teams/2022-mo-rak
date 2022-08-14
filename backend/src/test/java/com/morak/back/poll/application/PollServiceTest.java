@@ -22,6 +22,7 @@ import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
 import com.morak.back.poll.ui.dto.PollResultRequest;
+import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
@@ -33,11 +34,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.jdbc.Sql;
 
-@DataJpaTest
-@Sql(scripts = "classpath:schema.sql")
+@ServiceTest
 class PollServiceTest {
 
     private MemberRepository memberRepository;
@@ -687,7 +685,7 @@ class PollServiceTest {
         teamMemberRepository.save(new TeamMember(null, team, 차리));
 
         // when & then
-            assertThatThrownBy(() -> pollService.closePoll(team.getCode(), 차리.getId(), poll.getCode()))
+        assertThatThrownBy(() -> pollService.closePoll(team.getCode(), 차리.getId(), poll.getCode()))
                 .isInstanceOf(PollAuthorizationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_HOST_MISMATCHED_ERROR);
