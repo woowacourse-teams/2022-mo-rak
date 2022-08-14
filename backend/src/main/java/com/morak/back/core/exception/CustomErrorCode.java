@@ -53,11 +53,10 @@ public enum CustomErrorCode {
     APPOINTMENT_NOT_FOUND_ERROR("3300", "요청한 약속잡기를 찾을 수 없습니다."),
 
     INVALID_PROPERTY_ERROR("4000", "잘못된 값이 입력되었습니다."),
-    CACHED_BODY_ERROR("4100", "캐시바디"),
+    API_NOT_FOUND_ERROR("4300", "요청한 API가 존재하지 않습니다"),
 
     MORAK_ERROR("9901", "처리하지 못한 예외입니다."),
     RUNTIME_ERROR("9902", "예상치 못한 예외입니다.");
-
     private final String number;
     private final String information;
 }

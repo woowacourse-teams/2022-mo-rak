@@ -24,6 +24,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @RestControllerAdvice
@@ -104,6 +105,15 @@ public class GlobalControllerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ExceptionResponse(CustomErrorCode.MORAK_ERROR.getNumber(), "처리하지 못한 예외입니다."));
     }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ExceptionResponse> noHandlerFoundHandle(NoHandlerFoundException e) {
+        logger.warn(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ExceptionResponse(CustomErrorCode.API_NOT_FOUND_ERROR.getNumber(), "처리할 수 없는 요청입니다."));
+    }
+
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e,
