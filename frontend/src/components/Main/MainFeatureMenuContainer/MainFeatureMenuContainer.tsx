@@ -25,7 +25,7 @@ function MainFeatureMenuContainer() {
           </StlyedImageWrapper>
           <StyledFeatureMenuName>투표하기</StyledFeatureMenuName>
         </StyledFeatureMenuContainer>
-        <StyledFeatureMenuContainer onClick={handleNavigate('appointment/create')}>
+        <StyledFeatureMenuContainer onClick={handleNavigate('appointment')}>
           <StlyedImageWrapper>
             <StyledImage src={Appointment} alt="appointment-menu" />
           </StlyedImageWrapper>

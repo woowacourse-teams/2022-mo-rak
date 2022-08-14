@@ -1,11 +1,13 @@
 package com.morak.back.auth.ui.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class SigninResponse {
 
-    private final String token;
+    private String token;
 }
