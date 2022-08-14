@@ -160,7 +160,7 @@ class AppointmentTest {
 
     @Test
     void 약속잡기를_마감한다() {
-        //given
+        // given
         Member eden = Member.builder()
                 .id(1L)
                 .build();
@@ -177,7 +177,7 @@ class AppointmentTest {
 
     @Test
     void 약속잡기_마감_시_호스트가_아닐_경우_예외를_반환한다() {
-        //given
+        // given
         Member eden = Member.builder()
                 .id(1L)
                 .build();

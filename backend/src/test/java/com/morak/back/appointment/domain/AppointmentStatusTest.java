@@ -29,7 +29,7 @@ class AppointmentStatusTest {
 
     @Test
     void 상태를_close로_만든다() {
-        //given
+        // given
         AppointmentStatus open = AppointmentStatus.OPEN;
 
         //when
@@ -41,7 +41,7 @@ class AppointmentStatusTest {
 
     @Test
     void 상태가_close일떄_close_하는_경우_예외를_던진다() {
-        //given
+        // given
         AppointmentStatus status = AppointmentStatus.CLOSED;
 
         //when & then

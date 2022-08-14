@@ -313,7 +313,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 약속잡기_추천_결과를_조회한다() {
-        //given
+        // given
         String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
 
         List<AvailableTimeRequest> requests = List.of(
@@ -436,7 +436,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 약속잡기를_마감한다() {
-        //given
+        // given
         String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
 
         //when
@@ -448,7 +448,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 약속잡기를_삭제한다() {
-        //given
+        // given
         String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
 
         //when

@@ -100,7 +100,7 @@ class AppointmentRepositoryTest {
 
     @Test
     void code로_약속잡기_단건을_조회한다() {
-        //given
+        // given
         Appointment appointment = DEFAULT_BUILDER.build();
         Appointment savedAppointment = appointmentRepository.save(appointment);
 
@@ -202,7 +202,7 @@ class AppointmentRepositoryTest {
 
     @Test
     void 약속잡기를_삭제한다() {
-        //given
+        // given
         Appointment appointment = Appointment.builder()
                 .host(member)
                 .team(team)
