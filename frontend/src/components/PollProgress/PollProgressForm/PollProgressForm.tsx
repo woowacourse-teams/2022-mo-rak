@@ -40,20 +40,20 @@ function PollProgressForm() {
     const newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
 
     if (e.target.checked) {
-      setSelectedPollItems([...newSelectedPollItems, { itemId: id, description: '' }]);
+      setSelectedPollItems([...newSelectedPollItems, { id, description: '' }]);
 
       return;
     }
 
     setSelectedPollItems(
-      [...newSelectedPollItems].filter((selectedPollItem) => selectedPollItem.itemId !== id)
+      [...newSelectedPollItems].filter((selectedPollItem) => selectedPollItem.id !== id)
     );
   };
 
   const handleSelectPollItem = (e: ChangeEvent<HTMLInputElement>) => {
     const id = Number(e.target.id);
 
-    setSelectedPollItems([{ itemId: id, description: '' }]);
+    setSelectedPollItems([{ id, description: '' }]);
   };
 
   const handleDescription = (pollId: PollInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +63,7 @@ function PollProgressForm() {
     );
 
     const targetPollItem = newSelectedPollItems.find(
-      (newSelectedPollItem) => newSelectedPollItem.itemId === pollId
+      (newSelectedPollItem) => newSelectedPollItem.id === pollId
     );
 
     if (targetPollItem) {
