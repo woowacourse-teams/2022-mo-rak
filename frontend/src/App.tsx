@@ -14,6 +14,7 @@ import AppointmentMainPage from './pages/AppointmentMainPage/AppointmentMainPage
 import AppointmentCreatePage from './pages/AppointmentCreatePage/AppointmentCreatePage';
 import AppointmentProgressPage from './pages/AppointmentProgressPage/AppointmentProgressPage';
 import AppointmentResultPage from './pages/AppointmentResultPage/AppointmentResultPage';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
     <Routes>
       <Route path="/">
         <Route index element={<LandingPage />} />
+        <Route path="error" element={<NotFoundPage />} />
         <Route path="invite/:invitationCode" element={<InvitationPage />} />
 
         <Route element={<PrivateRoute />}>
