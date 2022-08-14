@@ -47,6 +47,10 @@ public class AppointmentCreateRequest {
     @NotNull
     private Integer durationMinutes;
 
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime closedAt;
+
     public Appointment toAppointment(Team team, Member member, Code code) {
         return Appointment.builder()
                 .team(team)
