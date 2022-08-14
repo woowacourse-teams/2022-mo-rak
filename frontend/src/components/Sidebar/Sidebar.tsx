@@ -18,7 +18,7 @@ function Sidebar() {
   const { groupCode } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
-  const [isClickedSlackMenu, setIsClickedSlackMenu] = useState(true);
+  const [isClickedSlackMenu, setIsClickedSlackMenu] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,8 +26,8 @@ function Sidebar() {
     navigate(location);
   };
 
-  const handleShowSlackPopup = () => {
-    setIsClickedSlackMenu(true);
+  const handleSetIsClickedSlackMenu = () => {
+    setIsClickedSlackMenu(!isClickedSlackMenu);
   };
 
   const handleCopyInviationCode = async () => {
@@ -89,17 +89,16 @@ function Sidebar() {
         </StyledInvitationLink>
 
         {/* TODO: 슬랙 메뉴 임시 (사이드바 pr merge되면, 대체하기) */}
-        <StyledSlackMenu onClick={handleShowSlackPopup}>슬랙 메뉴</StyledSlackMenu>
+        <StyledSlackMenu onClick={handleSetIsClickedSlackMenu}>슬랙 메뉴</StyledSlackMenu>
       </StyledContainer>
 
-      <StyledSlackModalContainer>
+      <StyledSlackModalContainer isClickedSlackMenu={isClickedSlackMenu}>
         <StyledSlackModal>
-
           <StyledTop>
             <StyledSlackLogo src={Slack} alt="slack-logo" />
             <StyledHeaderText>슬랙 채널과 연동해보세요!</StyledHeaderText>
             <StyledGuideText>슬랙 채널과 연동하면, 그룹의 새소식을 슬랙으로 받아볼 수 있어요.</StyledGuideText>
-            <StyledCloseButton src={Close} alt="close-button" />
+            <StyledCloseButton onClick={handleSetIsClickedSlackMenu} src={Close} alt="close-button" />
             <StyledTriangle />
           </StyledTop>
           <StyledBottom>
@@ -114,7 +113,6 @@ function Sidebar() {
                 <Input placeholder="슬랙 채널 url 입력 후, 확인버튼을 누르면 연동 끝!" fontSize="1.6REM" required />
                 <StyledLinkIcon src={LinkIcon} alt="link-icon" />
               </TextField>
-
               <Button colorScheme="#ECB22E" variant="filled" width="14rem" padding="1.6rem 4rem" fontSize="1.6rem">확인</Button>
             </FlexContainer>
           </StyledBottom>
@@ -125,9 +123,9 @@ function Sidebar() {
 }
 
 // 팝업 스타일
-const StyledSlackModalContainer = styled.div(({ theme }) => `
+const StyledSlackModalContainer = styled.div<{isClickedSlackMenu: boolean}>(({ theme, isClickedSlackMenu }) => `
+  display: ${isClickedSlackMenu ? 'flex' : 'none'};
   background-color: ${theme.colors.TRANSPARENT_BLACK_100_25};
-  display: flex;
   align-items: center;
   justify-content: center;
   position: fixed;
