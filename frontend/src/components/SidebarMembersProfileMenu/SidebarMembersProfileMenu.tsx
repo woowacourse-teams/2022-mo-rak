@@ -80,7 +80,7 @@ const StyledName = styled.div`
 
 const StyledContainer = styled.div`
   overflow-y: auto;
-  height: 52rem;
+  height: 40rem;
   
 `;
 

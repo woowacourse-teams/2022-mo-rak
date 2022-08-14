@@ -40,11 +40,9 @@ const StyledInvitationLink = styled.button`
   display: flex;
   align-items: center;
   cursor: pointer;
-  position: absolute;
-  bottom: 3.6rem;
-  left: 3.6rem;
   gap: 1.2rem;
   font-size: 1.6rem;
+  padding: 0.4rem;
 `;
 
 const StyledInviteText = styled.p`

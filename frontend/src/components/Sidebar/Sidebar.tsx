@@ -11,6 +11,8 @@ import SidebarGroupMenu from '../SidebarGroupMenu/SidebarGroupMenu';
 import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembersProfileMenu';
 import SidebarFeatureMenu from '../SidebarFeatureMenu/SidebarFeatureMenu';
 import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
+import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
+import FlexContainer from '../@common/FlexContainer/FlexContainer';
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -61,8 +63,14 @@ function Sidebar({ groupCode, handleSetClickedMenu, clickedMenu }: Props) {
       <Divider />
       <SidebarMembersProfileMenu groupCode={groupCode} />
 
-      {/* 초대링크 */}
-      <SidebarInvitationMenu groupCode={groupCode} />
+      <StyledBottomMenu>
+        {/* 슬랙연동 */}
+        <SidebarSlackMenu />
+
+        {/* 초대링크 */}
+        <SidebarInvitationMenu groupCode={groupCode} />
+      </StyledBottomMenu>
+
     </StyledContainer>
   );
 }
@@ -88,6 +96,14 @@ const StyledLogo = styled.img`
   width: 12rem;
   cursor: pointer;
   padding-right: 4rem;
+`;
+
+const StyledBottomMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: absolute;
+  bottom: 4rem;
 `;
 
 export default Sidebar;
