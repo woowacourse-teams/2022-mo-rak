@@ -82,7 +82,7 @@ class AppointmentServiceTest {
                 .code(Code.generate(length -> "FJn3ND26"))
                 .team(모락)
                 .host(에덴)
-                .closedAt(LocalDateTime.now().plusDays(1));
+                .closedAt(LocalDateTime.now().plusDays(1).plusMinutes(30));
 
         약속잡기_중간 = DEFAULT_BUILDER
                 .startDate(LocalDate.now().plusDays(1))

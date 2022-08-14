@@ -89,28 +89,45 @@ public class Appointment extends BaseEntity {
     private Appointment(Long id, Team team, Member host, String title, String description, LocalDate startDate,
                         LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer durationHours,
                         Integer durationMinutes, Code code, LocalDateTime closedAt) {
+        LocalDate validationDate = endDate;
+        if (endTime.equals(LocalTime.MIDNIGHT)) {
+            validationDate = validationDate.plusDays(1);
+        }
+        LocalDateTime validationEndDateTime = LocalDateTime.of(validationDate, endTime);
+        validateLastDatetime(validationEndDateTime);
+        validateClosedAtBeforeEndDate(closedAt, validationEndDateTime);
+
         this.id = id;
         this.team = team;
         this.host = host;
         this.title = title;
         this.description = description;
-        validateLastDatetime(endDate, endTime);
         this.datePeriod = DatePeriod.of(startDate, endDate, endTime);
         this.timePeriod = TimePeriod.of(startTime, endTime);
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
         validateDurationMinutesLessThanTimePeriod(this.durationMinutes, this.timePeriod);
         this.status = OPEN;
         this.code = code;
-        validateClosedAtBeforeEndDate(closedAt, endDate);
         this.closedAt = closedAt;
     }
 
-    private void validateLastDatetime(LocalDate endDate, LocalTime endTime) {
-        LocalDateTime lastDateTime = LocalDateTime.of(endDate, endTime);
-        if (lastDateTime.isBefore(LocalDateTime.now())) {
+    private void validateLastDatetime(LocalDateTime validationEndDateTime) {
+        if (validationEndDateTime.isBefore(LocalDateTime.now())) {
             throw new AppointmentDomainLogicException(
                     CustomErrorCode.APPOINTMENT_PAST_CREATE_ERROR,
-                    String.format("약속잡기의 마지막 날짜와 시간(%s)은 현재보다 과거일 수 없습니다.", lastDateTime)
+                    String.format("약속잡기의 마지막 날짜와 시간(%s)은 현재보다 과거일 수 없습니다.", validationEndDateTime)
+            );
+        }
+    }
+
+    private void validateClosedAtBeforeEndDate(LocalDateTime closedAt, LocalDateTime endDateTime) {
+        if (closedAt.isBefore(LocalDateTime.now()) || closedAt.isAfter(endDateTime)) {
+            throw new AppointmentDomainLogicException(
+                    CustomErrorCode.APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR,
+                    String.format(
+                            "약속잡기의 마감 날짜/시각(%s)은 지금(%s)과 마지막 날짜/시각(%s) 사이여야 합니다.",
+                            closedAt, LocalDateTime.now(), endDateTime
+                    )
             );
         }
     }
@@ -122,19 +139,6 @@ public class Appointment extends BaseEntity {
                     String.format(
                             "진행시간(%d)은 약속잡기의 시작시간~마지막시간(%s ~ %s) 보다 짧아야 합니다.",
                             durationMinutes.getDurationMinutes(), timePeriod.getStartTime(), timePeriod.getEndTime()
-                    )
-            );
-        }
-    }
-
-    private void validateClosedAtBeforeEndDate(LocalDateTime closedAt, LocalDate endDate) {
-        LocalDate closeDate = closedAt.toLocalDate();
-        if (closeDate.isBefore(LocalDate.now()) || closeDate.isAfter(endDate)) {
-            throw new AppointmentDomainLogicException(
-                    CustomErrorCode.APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR,
-                    String.format(
-                            "약속잡기의 마감 날짜(%s)는 오늘과 마지막 날짜 사이(%s)여야 합니다.",
-                            closedAt.toLocalDate(), endDate
                     )
             );
         }

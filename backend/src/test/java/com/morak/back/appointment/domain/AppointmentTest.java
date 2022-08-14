@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class AppointmentTest {
@@ -106,11 +107,32 @@ class AppointmentTest {
 
     @ParameterizedTest
     @ValueSource(longs = {-1L, 11L, 15L})
-    void 마감시간이_오늘과_마지막날짜를_벗어나면_예외를_던진다(long plusDays) {
+    void 마감시간이_오늘과_마지막의_날짜를_벗어나면_예외를_던진다(long plusDays) {
         // given
         LocalDateTime closedAt = LocalDateTime.now().plusDays(plusDays);
         LocalDate startDate = LocalDate.now().plusDays(1);
         LocalDate endDate = LocalDate.now().plusDays(10);
+
+        // when & then
+        assertThatThrownBy(() -> DEFAULT_BUILDER.closedAt(closedAt).
+                startDate(startDate)
+                .endDate(endDate)
+                .build()
+        ).isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0, -1",
+            "10, 1111" // 18:30 + 1
+    })
+    void 마감시간이_오늘과_마지막의_시간을_벗어나면_예외를_던진다(long plusDays, long plusMinutes) {
+        // given
+        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(10);
+        LocalDateTime closedAt = LocalDateTime.now().plusDays(plusDays).plusMinutes(plusMinutes);
 
         // when & then
         assertThatThrownBy(() -> DEFAULT_BUILDER.closedAt(closedAt).
