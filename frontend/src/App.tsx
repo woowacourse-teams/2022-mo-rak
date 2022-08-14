@@ -49,7 +49,7 @@ function App() {
           </Route>
         </Route>
 
-        <Route path="*" element={<div>error</div>} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );
