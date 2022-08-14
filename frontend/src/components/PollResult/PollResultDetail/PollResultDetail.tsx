@@ -3,17 +3,35 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 import TextField from '../../@common/TextField/TextField';
-import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 
 import { PollInterface } from '../../../types/poll';
 
-interface Props extends Pick<PollInterface, 'isAnonymous' | 'allowedPollCount'> {}
+interface Props extends Pick<PollInterface, 'isAnonymous' | 'allowedPollCount' | 'closedAt'> {}
 
-function PollResultDetail({ isAnonymous, allowedPollCount }: Props) {
+// TODO: 변수명 통일해주자! formatted?
+// TODO: 메인페이지에서도 사용하는 데 어디에 이 함수를 놓을 수 있을지 고민해보자!
+const getFormattedClosedTime = (value: string) => {
+  const date = new Date(value);
+
+  return date.toLocaleString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  });
+};
+
+function PollResultDetail({ isAnonymous, allowedPollCount, closedAt }: Props) {
   const theme = useTheme();
 
   return (
-    <FlexContainer gap="1.2rem">
+    <StyledContainer>
+      <StyledCloseTime>
+        {getFormattedClosedTime(closedAt)}
+        까지
+      </StyledCloseTime>
       <TextField
         width="6.4rem"
         borderRadius="20px"
@@ -34,9 +52,21 @@ function PollResultDetail({ isAnonymous, allowedPollCount }: Props) {
           {allowedPollCount === 1 ? '하나만 투표가능' : '여러개 투표가능'}
         </StyledDetail>
       </TextField>
-    </FlexContainer>
+    </StyledContainer>
   );
 }
+
+const StyledContainer = styled.div`
+  display: flex;
+  gap: 1.2rem;
+  position: relative;
+`;
+
+const StyledCloseTime = styled.p`
+  font-size: 1.2rem;
+  position: absolute;
+  right: 0;
+`;
 
 const StyledDetail = styled.span(
   ({ theme }) => `
