@@ -43,7 +43,7 @@ class OAuthControllerTest extends ControllerTest {
         // then
         response.andExpect(status().isCreated())
                 .andDo(document(
-                        "/api/auth/signin",
+                        "auth/signin",
                         getDocumentRequest(),
                         getDocumentResponse()
                 ));
@@ -63,7 +63,7 @@ class OAuthControllerTest extends ControllerTest {
         // then
         response.andExpect(status().isOk())
                 .andDo(document(
-                        "/api/auth/me",
+                        "auth/me",
                         getDocumentRequest(),
                         getDocumentResponse()
                 ));
