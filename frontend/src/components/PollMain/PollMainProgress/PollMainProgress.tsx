@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import Progress from '../../common/Progress/Progress';
+import Progress from '../../@common/Progress/Progress';
 import { PollInterface, getPollResultResponse } from '../../../types/poll';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { getPollResult } from '../../../api/poll';
 import { GroupInterface, MemberInterface } from '../../../types/group';
 import { getGroupMembers } from '../../../api/group';

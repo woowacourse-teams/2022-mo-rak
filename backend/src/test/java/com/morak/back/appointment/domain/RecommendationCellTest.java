@@ -94,6 +94,26 @@ class RecommendationCellTest {
     }
 
     @Test
+    void 추천셀에_포함된_멤버가_있는지_확인한다() {
+        // given
+        RecommendationCell recommendationCell = RecommendationCell.of(시작_시간, 두시간_일정, List.of(에덴, 까라));
+
+        // when
+        AvailableTime notOverlappedAvailableTime = AvailableTime.builder()
+                .member(에덴)
+                .appointment(약속잡기_회식_날짜)
+                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(18, 0)))
+                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(18, 30)))
+                .build();
+
+        List<AvailableTime> availableTimes = List.of(notOverlappedAvailableTime);
+        recommendationCell.calculate(availableTimes);
+
+        // then
+        assertThat(recommendationCell.hasAnyMembers()).isFalse();
+    }
+
+    @Test
     void 마지막_시간에_자정이_포함된_recommendationCell을_계산한다() {
         // given
         RecommendationCell recommendationCell = RecommendationCell.of(시작_시간, 두시간_일정, List.of(에덴, 까라));

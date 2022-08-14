@@ -1,6 +1,7 @@
 package com.morak.back.appointment.domain;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,9 +12,9 @@ public class DomainFixture {
 
     public static final LocalDateTime 시작_시간 = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0));
 
-    public static final DurationMinutes 두시간_일정 = DurationMinutes.of(2, 0, 30);
+    public static final DurationMinutes 두시간_일정 = DurationMinutes.of(2, 0);
 
-    public static final DurationMinutes 한시간_일정 = DurationMinutes.of(1, 0, 30);
+    public static final DurationMinutes 한시간_일정 = DurationMinutes.of(1, 0);
 
     public static final Member 에덴 = new Member(1L, "oauth-id1", "eden", "eden-profile.com");
 
@@ -32,5 +33,7 @@ public class DomainFixture {
             .endTime(LocalTime.of(20, 0))
             .durationHours(1)
             .durationMinutes(0)
+            .closedAt(LocalDateTime.now().plusDays(1))
+            .code(Code.generate(length -> "ABCD1234"))
             .build();
 }

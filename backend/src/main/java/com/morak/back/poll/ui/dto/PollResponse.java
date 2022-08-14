@@ -3,22 +3,24 @@ package com.morak.back.poll.ui.dto;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.domain.Poll;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PollResponse {
 
-    private final Long id;
-    private final String title;
-    private final Integer allowedPollCount;
-    private final Boolean isAnonymous;
-    private final String status;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime closedAt;
-    private final String code;
-    private final Boolean isHost;
+    private Long id;
+    private String title;
+    private Integer allowedPollCount;
+    private Boolean isAnonymous;
+    private String status;
+    private LocalDateTime createdAt;
+    private LocalDateTime closedAt;
+    private String code;
+    private Boolean isHost;
 
     public static PollResponse from(Poll poll, Member member) {
         return new PollResponse(

@@ -2,8 +2,8 @@ import { useTheme } from '@emotion/react';
 import React from 'react';
 
 import styled from '@emotion/styled';
-import TextField from '../../common/TextField/TextField';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import TextField from '../../@common/TextField/TextField';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 
 import { PollInterface } from '../../../types/poll';
 

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React, { FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Box from '../../common/Box/Box';
+import Box from '../../@common/Box/Box';
 import AppointmentCreateFormButtonGroup from '../AppointmentCreateFormButtonGroup/AppointmentCreateFormButtonGroup';
 import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
 import AppointmentCreateFormDescriptionInput from '../AppointmentCreateFormDescriptionInput/AppointmentCreateFormDescriptionInput';

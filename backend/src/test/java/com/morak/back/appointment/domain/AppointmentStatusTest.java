@@ -3,7 +3,8 @@ package com.morak.back.appointment.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.core.exception.InvalidRequestException;
+import com.morak.back.appointment.exception.AppointmentDomainLogicException;
+import com.morak.back.core.exception.CustomErrorCode;
 import org.junit.jupiter.api.Test;
 
 class AppointmentStatusTest {
@@ -28,7 +29,7 @@ class AppointmentStatusTest {
 
     @Test
     void 상태를_close로_만든다() {
-        //given
+        // given
         AppointmentStatus open = AppointmentStatus.OPEN;
 
         //when
@@ -40,11 +41,13 @@ class AppointmentStatusTest {
 
     @Test
     void 상태가_close일떄_close_하는_경우_예외를_던진다() {
-        //given
+        // given
         AppointmentStatus status = AppointmentStatus.CLOSED;
 
         //when & then
         assertThatThrownBy(() -> status.close())
-                .isInstanceOf(InvalidRequestException.class);
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR);
     }
 }

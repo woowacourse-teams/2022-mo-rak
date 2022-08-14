@@ -1,6 +1,7 @@
 package com.morak.back.auth.application;
 
-import com.morak.back.auth.exception.AuthorizationException;
+import com.morak.back.auth.exception.AuthenticationException;
+import com.morak.back.core.exception.CustomErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -47,7 +48,7 @@ public class JwtTokenProvider implements TokenProvider {
                     .getBody()
                     .getSubject();
         } catch (JwtException | IllegalArgumentException e) {
-            throw new AuthorizationException("유효하지 않은 토큰입니다.");
+            throw new AuthenticationException(CustomErrorCode.INVALID_AUTHORIZATION_ERROR, token + "은 유효하지 않은 토큰입니다.");
         }
     }
 
@@ -59,9 +60,9 @@ public class JwtTokenProvider implements TokenProvider {
                     .build()
                     .parseClaimsJws(token);
         } catch (ExpiredJwtException e) {
-            throw new AuthorizationException("만료된 토큰입니다.");
+            throw new AuthenticationException(CustomErrorCode.EXPIRED_AUTHORIZATION_ERROR, token + "은 만료된 토큰입니다.");
         } catch (JwtException | IllegalArgumentException e) {
-            throw new AuthorizationException("유효하지 않은 토큰입니다.");
+            throw new AuthenticationException(CustomErrorCode.INVALID_AUTHORIZATION_ERROR, token + "은 유효하지 않은 토큰입니다.");
         }
     }
 }

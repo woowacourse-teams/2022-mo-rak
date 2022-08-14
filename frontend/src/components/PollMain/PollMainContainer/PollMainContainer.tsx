@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import Box from '../../common/Box/Box';
+import Box from '../../@common/Box/Box';
 import PollMainStatus from '../PollMainStatus/PollMainStatus';
 import PollMainDetail from '../PollMainDetail/PollMainDetail';
 import PollMainProgress from '../PollMainProgress/PollMainProgress';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import MarginContainer from '../../common/MarginContainer/MarginContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import MarginContainer from '../../@common/MarginContainer/MarginContainer';
 
 import { getPolls } from '../../../api/poll';
 import { getPollsResponse } from '../../../types/poll';
@@ -36,7 +36,7 @@ function PollMainContainer() {
   return (
     <StyledContainer>
       {polls ? (
-        polls.map(({ status, title, id, code, isAnonymous, allowedPollCount }) => (
+        polls.map(({ status, title, code, isAnonymous, allowedPollCount, closedAt }) => (
           <Box
             width="26.4rem"
             padding="2rem"
@@ -50,7 +50,11 @@ function PollMainContainer() {
             <PollMainProgress pollCode={code} groupCode={groupCode} />
             <MarginContainer margin="0 0 1.2rem">
               {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
-              <PollMainDetail isAnonymous={isAnonymous} allowedPollCount={allowedPollCount} />
+              <PollMainDetail
+                isAnonymous={isAnonymous}
+                allowedPollCount={allowedPollCount}
+                closedAt={closedAt}
+              />
             </MarginContainer>
             <PollMainButtonGroup pollCode={code} status={status} />
           </Box>
@@ -65,8 +69,7 @@ function PollMainContainer() {
 const StyledContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  column-gap: 3.2rem;
-  row-gap: 3.2rem;
+  gap: 2.4rem;
 `;
 
 const StyledTitle = styled.h1`

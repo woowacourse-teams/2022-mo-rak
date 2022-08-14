@@ -5,6 +5,8 @@ interface AppointmentInterface {
   code: string;
   title: string;
   description: string;
+  durationHours: number;
+  durationMinutes: number;
   startDate: string;
   endDate: string;
   startTime: string;
@@ -36,10 +38,18 @@ type getAppointmentResponse = AppointmentInterface & {
   isClosed: boolean;
 };
 
+type getAppointmentsResponse = Array<
+  Omit<AppointmentInterface, 'startDate' | 'endDate' | 'startTime' | 'endTime'> & {
+    isClosed: boolean;
+    count: number;
+  }
+>;
+
 export {
   Time,
   createAppointmentData,
   getAppointmentResponse,
+  getAppointmentsResponse,
   AvailableTimes,
   AppointmentRecommendationInterface,
   AppointmentInterface

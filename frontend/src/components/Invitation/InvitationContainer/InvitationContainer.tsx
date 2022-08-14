@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import Box from '../../common/Box/Box';
+import Box from '../../@common/Box/Box';
 import Logo from '../../../assets/logo.svg';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import InvitationButtonGroup from '../InvitationButtonGroup/InvitationButtonGroup';
 import { getIsJoinedGroup } from '../../../api/group';
 import { GroupInterface } from '../../../types/group';

@@ -1,33 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { MouseEventHandler, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 
-import Box from '../../common/Box/Box';
-import Avatar from '../../common/Avatar/Avatar';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
 import Crown from '../../../assets/crown.svg';
-import { getAppointmentRecommendation } from '../../../api/appointment';
-import {
-  AppointmentInterface,
-  AppointmentRecommendationInterface
-} from '../../../types/appointment';
-import { MemberInterface, GroupInterface } from '../../../types/group';
+import { AppointmentRecommendationInterface } from '../../../types/appointment';
+import { GroupInterface, MemberInterface } from '../../../types/group';
 import { getGroupMembers } from '../../../api/group';
-
-interface Props {
-  groupCode: GroupInterface['code'];
-  appointmentCode: AppointmentInterface['code'];
-}
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 
 const getDateTime = (
-  // TODO: 타이핑 고민해보기
-  recommendDateTime: AppointmentRecommendationInterface[
-    | 'recommendStartDateTime'
-    | 'recommendEndDateTime']
+  recommendationDateTime: AppointmentRecommendationInterface['recommendStartDateTime' | 'recommendEndDateTime']
 ) => {
   // TODO: 리팩토링
-  // TODO: recommend? recommendation? 변수명 고민해보기
-  const period = recommendDateTime.slice(-2);
-  const dateTime = new Date(recommendDateTime.slice(0, -2));
+  const period = recommendationDateTime.slice(-2);
+  const dateTime = new Date(recommendationDateTime.slice(0, -2));
   const week = ['일', '월', '화', '수', '목', '금', '토'];
 
   const year = dateTime.getFullYear();
@@ -40,27 +25,22 @@ const getDateTime = (
   return ` ${year}.${month}.${date}(${day}) ${hour}:${minutes}${period} `;
 };
 
-function AppointmentResultRanking({ groupCode, appointmentCode }: Props) {
-  const [appointmentRecommendation, setAppointmentRecommendation] = useState<
-    Array<AppointmentRecommendationInterface>
-  >([]);
-  // TODO: -1에 대해서 생각해보기
-  const [clickedRecommendation, setClickedRecommendation] = useState<number>(-1);
+interface Props {
+  groupCode: GroupInterface['code'];
+  appointmentRecommendation: Array<AppointmentRecommendationInterface>;
+  onClickRank: (
+    idx: number,
+  ) => MouseEventHandler<HTMLDivElement>;
+  clickedRecommendation: number;
+}
+
+function AppointmentResultRanking({
+  groupCode,
+  appointmentRecommendation,
+  onClickRank,
+  clickedRecommendation }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
-
   const totalParticipants = groupMembers.length;
-
-  useEffect(() => {
-    const fetchAppointmentRecommendation = async () => {
-      try {
-        const res = await getAppointmentRecommendation(groupCode, appointmentCode);
-        setAppointmentRecommendation(res.data);
-      } catch (err) {
-        alert(err);
-      }
-    };
-    fetchAppointmentRecommendation();
-  }, []);
 
   useEffect(() => {
     const fetchGroupMembers = async () => {
@@ -78,79 +58,46 @@ function AppointmentResultRanking({ groupCode, appointmentCode }: Props) {
     fetchGroupMembers();
   }, [groupCode]);
 
-  const handleShowParticipant = (idx: number) => () => {
-    setClickedRecommendation(idx);
-  };
-
   return (
-    <FlexContainer gap="4rem">
-      {/* TODO: scroll으로 인해(overflow-y) height가 필요해서, Box 컴포넌트를 쓰지 않고 styled component를 만듦 */}
-      <StyledResultBox>
-        {appointmentRecommendation.map(
-          (
-            {
-              rank,
-              recommendStartDateTime,
-              recommendEndDateTime,
-              availableMembers
-            }: AppointmentRecommendationInterface,
-            idx
-          ) => (
-            <StyledRank
-              onClick={handleShowParticipant(idx)}
-              isClicked={idx === clickedRecommendation}
-            >
-              <FlexContainer justifyContent="space-between">
-                {/* TODO: 상수화 */}
-                {rank === 1 ? (
-                  <StyledCrownIcon src={Crown} alt="crown" />
-                ) : (
-                  // TODO: Text라는 suffix에 대해서 일관성 살펴보기
-                  <StyledResultText>{rank}</StyledResultText>
-                )}
-                <StyledResultText>
-                  {getDateTime(recommendStartDateTime)}~{getDateTime(recommendEndDateTime)}
-                </StyledResultText>
-                <StyledResultText>
-                  {availableMembers.length}/{totalParticipants}명 가능
-                </StyledResultText>
-              </FlexContainer>
-            </StyledRank>
-          )
-        )}
-      </StyledResultBox>
-
-      <FlexContainer flexDirection="column" gap="3.6rem">
-        <Box width="42rem" minHeight="28rem" padding="4rem" overflow="auto">
-          <FlexContainer flexDirection="column" gap="4rem">
-            <StyledSmallTitle>가능한 사람</StyledSmallTitle>
-            <FlexContainer gap="0.8rem" justifyContent="flex-start">
-              {clickedRecommendation === -1 ? (
-                <StyledGuideText>왼쪽에서 보고싶은 결과를 클릭하세요!</StyledGuideText>
+    <StyledResultBox>
+      {appointmentRecommendation.map(
+        (
+          {
+            rank,
+            recommendStartDateTime,
+            recommendEndDateTime,
+            availableMembers
+          }: AppointmentRecommendationInterface,
+          idx
+        ) => (
+          <StyledRank
+            onClick={onClickRank(idx)}
+            isClicked={idx === clickedRecommendation}
+          >
+            <FlexContainer justifyContent="space-between">
+              {/* TODO: 상수화 */}
+              {rank === 1 ? (
+                <StyledCrownIcon src={Crown} alt="crown" />
               ) : (
-                appointmentRecommendation[clickedRecommendation].availableMembers.map(
-                  ({ name, profileUrl }) => <Avatar profileUrl={profileUrl} name={name} />
-                )
+              // TODO: Text라는 suffix에 대해서 일관성 살펴보기
+                <StyledResultText>{rank}</StyledResultText>
               )}
+              <StyledResultText>
+                {getDateTime(recommendStartDateTime)}
+                ~
+                {getDateTime(recommendEndDateTime)}
+              </StyledResultText>
+              <StyledResultText>
+                {availableMembers.length}
+                /
+                {totalParticipants}
+                명 가능
+              </StyledResultText>
             </FlexContainer>
-          </FlexContainer>
-        </Box>
-        <Box width="42rem" minHeight="28rem" padding="4rem" overflow="auto">
-          <FlexContainer flexDirection="column" gap="4rem">
-            <StyledSmallTitle>설득할 사람</StyledSmallTitle>
-            <FlexContainer gap="0.8rem" justifyContent="flex-start">
-              {clickedRecommendation === -1 ? (
-                <StyledGuideText>왼쪽에서 보고싶은 결과를 클릭하세요!</StyledGuideText>
-              ) : (
-                appointmentRecommendation[clickedRecommendation].unavailableMembers.map(
-                  ({ name, profileUrl }) => <Avatar profileUrl={profileUrl} name={name} />
-                )
-              )}
-            </FlexContainer>
-          </FlexContainer>
-        </Box>
-      </FlexContainer>
-    </FlexContainer>
+          </StyledRank>
+        )
+      )}
+    </StyledResultBox>
   );
 }
 
@@ -195,16 +142,5 @@ const StyledRank = styled.div<{
   color: ${isClicked ? theme.colors.WHITE_100 : theme.colors.BLACK_100};
 `
 );
-
-const StyledGuideText = styled.div(
-  ({ theme }) => `
-  font-size: 2rem;
-  color: ${theme.colors.GRAY_400};
-`
-);
-
-const StyledSmallTitle = styled.h1`
-  font-size: 2rem;
-`;
 
 export default AppointmentResultRanking;

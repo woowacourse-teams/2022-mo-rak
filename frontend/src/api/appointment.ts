@@ -5,6 +5,9 @@ import { AppointmentInterface, createAppointmentData, AvailableTimes } from '../
 const createAppointment = (groupCode: GroupInterface['code'], appointment: createAppointmentData) =>
   axios.post(`/${groupCode}/appointments`, appointment);
 
+const getAppointments = (groupCode: GroupInterface['code']) =>
+  axios.get(`/${groupCode}/appointments`);
+
 const getAppointmentRecommendation = (
   groupCode: GroupInterface['code'],
   appointmentCode: AppointmentInterface['code']
@@ -27,6 +30,7 @@ const closeAppointment = (
 ) => axios.patch(`/${groupCode}/appointments/${appointmentCode}/close`);
 
 export {
+  getAppointments,
   getAppointment,
   createAppointment,
   progressAppointment,

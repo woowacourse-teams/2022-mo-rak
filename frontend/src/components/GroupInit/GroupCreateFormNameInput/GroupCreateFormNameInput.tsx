@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler } from 'react';
 import { useTheme } from '@emotion/react';
-import Input from '../../common/Input/Input';
-import TextField from '../../common/TextField/TextField';
+import Input from '../../@common/Input/Input';
+import TextField from '../../@common/TextField/TextField';
 import { GroupInterface } from '../../../types/group';
 
 interface Props {

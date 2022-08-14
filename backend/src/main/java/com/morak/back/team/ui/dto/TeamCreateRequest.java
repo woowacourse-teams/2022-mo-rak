@@ -1,17 +1,15 @@
 package com.morak.back.team.ui.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TeamCreateRequest {
 
     @NotBlank(message = "team name은 blank 일 수 없습니다")
-    private final String name;
-
-    @JsonCreator
-    public TeamCreateRequest(String name) {
-        this.name = name;
-    }
+    private String name;
 }

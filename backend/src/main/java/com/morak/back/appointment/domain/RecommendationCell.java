@@ -38,8 +38,7 @@ public class RecommendationCell implements Comparable<RecommendationCell> {
     }
 
     private void increaseScoreIfAvailableTimeRange(AvailableTime availableTime) {
-        // TODO: 2022/08/03 contains 이름 바꾸기!
-        if (this.dateTimePeriod.contains(availableTime.getDateTimePeriod())) {
+        if (this.dateTimePeriod.isAvailableRange(availableTime.getDateTimePeriod())) {
             this.memberScores.computeIfPresent(availableTime.getMember(), (member, score) -> score + 1);
         }
     }
@@ -56,7 +55,7 @@ public class RecommendationCell implements Comparable<RecommendationCell> {
     }
 
     public long getDurationUnitCount() {
-        return this.dateTimePeriod.getDurationUnitCount();
+        return this.dateTimePeriod.countDurationUnit();
     }
 
     @Override
