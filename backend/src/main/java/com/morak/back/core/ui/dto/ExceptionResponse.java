@@ -2,11 +2,13 @@ package com.morak.back.core.ui.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ExceptionResponse {
 
-    private final String codeNumber;
-    private final String message;
+    private String codeNumber;
+    private String message;
 }
