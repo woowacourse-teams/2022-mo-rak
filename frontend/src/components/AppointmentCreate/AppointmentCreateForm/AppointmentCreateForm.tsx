@@ -38,8 +38,6 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   const [closeDate, handleCloseDate] = useInput('');
   const [closeTime, handleCloseTime] = useInput('');
 
-  console.log(endDate);
-
   const handleCreateAppointment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
