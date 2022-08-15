@@ -17,8 +17,7 @@ interface PollItemInterface {
 }
 
 // TODO: description 분리
-type SelectedPollItem = {
-  itemId: PollItemInterface['id'];
+type SelectedPollItem = Pick<PollItemInterface, 'id'> & {
   description: string;
 };
 

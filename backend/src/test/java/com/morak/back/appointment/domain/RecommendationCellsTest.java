@@ -64,8 +64,9 @@ class RecommendationCellsTest {
                 .endTime(LocalTime.of(16, 30))
                 .durationHours(2)
                 .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1))
+                .closedAt(LocalDateTime.now().plusMinutes(30))
                 .build();
+
         // when
         RecommendationCells cells = RecommendationCells.of(appointment, List.of(memberA, memberB));
 

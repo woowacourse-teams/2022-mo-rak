@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'java'
+    id 'jacoco'
 }
 
 group = 'com.morak'
@@ -11,6 +12,10 @@ sourceCompatibility = '11'
 
 configurations {
     asciidoctorExtensions
+}
+
+jacoco {
+    toolVersion = '0.8.7'
 }
 
 repositories {
@@ -81,4 +86,69 @@ task createDocument(type: Copy) {
 
 bootJar {
     dependsOn createDocument
+}
+
+task testCoverage(type: Test) {
+    group 'verification'
+    description 'Runs the unit tests with coverage'
+
+    dependsOn(':test',
+            ':jacocoTestReport',
+            ':jacocoTestCoverageVerification')
+
+    tasks['jacocoTestReport'].mustRunAfter(tasks['test'])
+    tasks['jacocoTestCoverageVerification'].mustRunAfter(tasks['jacocoTestReport'])
+}
+
+tasks.named('jacocoTestReport') {
+    reports {
+        html.enabled true
+        xml.enabled true
+        csv.enabled false
+    }
+}
+
+tasks.named('jacocoTestCoverageVerification') {
+    violationRules {
+        rule {
+            element = 'CLASS'
+
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.70
+            }
+
+            limit {
+                counter = 'METHOD'
+                value = 'COVEREDRATIO'
+                minimum = 0.60
+            }
+
+            excludes = [
+                    '**.LogFormatter*',
+                    '**.*BaseEntity*',
+                    '**.*GithubOAuthClient*',
+                    '**.*MorakBackApplication*',
+                    '**.*Interceptor*',
+                    '**.*Extractor*'
+            ]
+        }
+
+        rule {
+            element = 'METHOD'
+
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 200
+            }
+        }
+    }
 }

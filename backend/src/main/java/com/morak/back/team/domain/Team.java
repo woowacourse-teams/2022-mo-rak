@@ -1,6 +1,7 @@
 package com.morak.back.team.domain;
 
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.support.Generated;
 import com.morak.back.poll.domain.BaseEntity;
 import java.util.Objects;
 import javax.persistence.Embedded;
@@ -42,6 +43,7 @@ public class Team extends BaseEntity {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -55,6 +57,7 @@ public class Team extends BaseEntity {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(getId(), getName(), getCode());
     }
