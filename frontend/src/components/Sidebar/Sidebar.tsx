@@ -16,7 +16,10 @@ import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
 function Sidebar() {
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
+
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -32,8 +35,6 @@ function Sidebar() {
 
     fetchGroups();
   }, []);
-
-  const navigate = useNavigate();
 
   const handleNavigate = (location: string) => () => {
     navigate(location);
