@@ -71,7 +71,7 @@ function PollResultContainer() {
           <FlexContainer justifyContent="end">
             <MarginContainer margin="0 0 1.4rem 0">
               <FlexContainer gap="1.2rem" alignItems="center">
-                <PollResultShareLink pollCode={pollCode} />
+                <PollResultShareLink groupCode={groupCode} pollCode={pollCode} />
                 <PollResultStatus status={poll.status} />
               </FlexContainer>
             </MarginContainer>
