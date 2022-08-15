@@ -1,8 +1,10 @@
 package com.morak.back.core.domain.slack;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.morak.back.team.domain.Team;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class SlackClientTest {
@@ -13,11 +15,11 @@ class SlackClientTest {
         FakeApiReceiver receiver = new FakeApiReceiver();
         SlackClient client = new FakeSlackClient(receiver);
         // when
-        SlackWebhook webhook = new SlackWebhook(1L, new Team(),
-            "https://hooks.slack.com/services/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");
+        SlackWebhook webhook = new SlackWebhook(1L, new Team(), "https://test-url.com");
         // then
-        assertThatNoException().isThrownBy(
-            () -> client.notifyClosed(webhook, "hi")
+        Assertions.assertAll(
+                () -> assertThatNoException().isThrownBy(() -> client.notifyClosed(webhook, "hi")),
+                () -> assertThat(receiver.getMessage()).contains("test-url")
         );
     }
 }
