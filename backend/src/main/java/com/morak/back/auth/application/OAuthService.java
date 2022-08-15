@@ -55,7 +55,7 @@ public class OAuthService {
                 .orElseGet(() -> memberRepository.save(memberResponse.toMember()));
     }
 
-    public MemberResponse findMe(Long id) {
+    public MemberResponse findMember(Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, id));
         return MemberResponse.from(member);

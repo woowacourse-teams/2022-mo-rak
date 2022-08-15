@@ -52,7 +52,7 @@ class OAuthControllerTest extends ControllerTest {
     @Test
     void 자기자신을_조회한다() throws Exception {
         // given
-        given(oAuthService.findMe(anyLong()))
+        given(oAuthService.findMember(anyLong()))
                 .willReturn(new MemberResponse(1L, "member-name", "https://profile-url.com"));
 
         // when

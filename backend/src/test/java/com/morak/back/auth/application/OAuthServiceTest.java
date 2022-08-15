@@ -69,7 +69,7 @@ class OAuthServiceTest {
         Member savedMember = memberRepository.save(oAuthClient.getMemberInfo("ignored").toMember());
 
         // when
-        MemberResponse response = oAuthService.findMe(savedMember.getId());
+        MemberResponse response = oAuthService.findMember(savedMember.getId());
 
         // then
         assertThat(savedMember.getId()).isEqualTo(response.getId());
