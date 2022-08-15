@@ -31,7 +31,7 @@ class JwtTokenProviderTest {
         String invalidToken = "invalidToken";
 
         // when & then
-        assertThatThrownBy(() ->jwtTokenProvider.parsePayload(invalidToken))
+        assertThatThrownBy(() -> jwtTokenProvider.parsePayload(invalidToken))
                 .isInstanceOf(AuthenticationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.INVALID_AUTHORIZATION_ERROR);
