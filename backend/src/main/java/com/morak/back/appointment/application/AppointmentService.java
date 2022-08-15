@@ -182,6 +182,7 @@ public class AppointmentService {
                 .orElseThrow(() -> AppointmentNotFoundException.ofAppointment(
                         CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR, appointmentCode
                 ));
+        validateHost(member, appointment);
         validateAppointmentInTeam(team, appointment);
         appointment.close(member);
     }
