@@ -2,7 +2,6 @@ package com.morak.back.appointment.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.appointment.domain.Appointment;
-import com.morak.back.poll.domain.PollStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,7 +47,7 @@ public class AppointmentAllResponse implements Comparable<AppointmentAllResponse
             return Long.compare(o.id, this.id);
         }
 
-        if (!this.closed) {
+        if (Boolean.FALSE.equals(this.closed)) {
             return -1;
         }
 

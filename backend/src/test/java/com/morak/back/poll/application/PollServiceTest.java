@@ -221,7 +221,7 @@ class PollServiceTest {
         String pollCode1 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest1);
         String pollCode2 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest2);
 
-        //when
+        // when
         pollService.closePoll(team.getCode(), member.getId(), pollCode1);
         List<PollResponse> polls = pollService.findPolls(team.getCode(), member.getId());
 
@@ -281,7 +281,7 @@ class PollServiceTest {
         String pollCode2 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest2);
         String pollCode3 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest3);
 
-        //when
+        // when
         pollService.closePoll(team.getCode(), member.getId(), pollCode1);
         pollService.closePoll(team.getCode(), member.getId(), pollCode3);
         List<PollResponse> polls = pollService.findPolls(team.getCode(), member.getId());
