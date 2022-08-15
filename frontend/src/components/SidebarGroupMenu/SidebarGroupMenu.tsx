@@ -16,7 +16,7 @@ interface Props {
 }
 
 function SidebarGroupMenu({ groupCode, groups }: Props) {
-  const [isClickedGroupList, setIsClickedGroupList] = useState(false);
+  const [isShowGroupList, setIsShowGroupList] = useState(false);
   const [defaultGroup, setDefaultGroup] = useState<GroupInterface>();
 
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
   }, []);
 
   const handleShowGroupList = () => {
-    setIsClickedGroupList(!isClickedGroupList);
+    setIsShowGroupList(!isShowGroupList);
   };
 
   return (
@@ -75,7 +75,7 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
       </FlexContainer>
 
       {/* group list */}
-      <StyledGroupListBox isShowGroupList={isClickedGroupList}>
+      <StyledGroupListBox isShowGroupList={isShowGroupList}>
         <StyledGroupListContainer>
           {groups.map((group) => (
             <StyledGroupList to={`groups/${group.code}`} isDefaultGroup={groupCode === group.code}>
