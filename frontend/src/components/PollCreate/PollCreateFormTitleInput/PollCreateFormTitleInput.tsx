@@ -12,7 +12,7 @@ function PollCreateFormTitleInput({ title, ...props }: Props) {
   const theme = useTheme();
 
   return (
-    <TextField variant="unstyled" colorScheme={theme.colors.PURPLE_100}>
+    <TextField variant="unstyled">
       <Input
         value={title}
         placeholder="투표 제목을 입력해주세요🧐"

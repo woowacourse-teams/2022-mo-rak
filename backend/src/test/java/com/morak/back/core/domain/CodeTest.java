@@ -11,7 +11,7 @@ class CodeTest {
         // given
         String randomCode = "하이하이하이하이";
 
-        //When
+        // when
         Code code = Code.generate((length) -> randomCode);
 
         // then

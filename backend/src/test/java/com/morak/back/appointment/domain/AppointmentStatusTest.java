@@ -32,10 +32,10 @@ class AppointmentStatusTest {
         // given
         AppointmentStatus open = AppointmentStatus.OPEN;
 
-        //when
+        // when
         AppointmentStatus status = open.close();
 
-        //then
+        // then
         assertThat(status).isEqualTo(AppointmentStatus.CLOSED);
     }
 
@@ -44,7 +44,7 @@ class AppointmentStatusTest {
         // given
         AppointmentStatus status = AppointmentStatus.CLOSED;
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> status.close())
                 .isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")

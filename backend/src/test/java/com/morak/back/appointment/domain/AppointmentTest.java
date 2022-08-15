@@ -168,10 +168,10 @@ class AppointmentTest {
                 .host(eden)
                 .build();
 
-        //when
+        // when
         appointment.close(eden);
 
-        //then
+        // then
         assertThat(appointment.getStatus()).isEqualTo(CLOSED);
     }
 
@@ -189,7 +189,7 @@ class AppointmentTest {
                 .id(2L)
                 .build();
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> appointment.close(ellie))
                 .isInstanceOf(AppointmentAuthorizationException.class)
                 .extracting("code")

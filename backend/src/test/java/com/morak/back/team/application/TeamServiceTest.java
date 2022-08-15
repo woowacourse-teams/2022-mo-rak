@@ -269,7 +269,7 @@ class TeamServiceTest {
 
         teamMemberRepository.save(new TeamMember(null, teamA, member));
 
-        //when
+        // when
         List<TeamResponse> teamResponses = teamService.findTeams(member.getId());
 
         // then
@@ -290,7 +290,7 @@ class TeamServiceTest {
                 .profileUrl("https://avatars.githubusercontent.com/u/79205414?v=4")
                 .build());
 
-        //when
+        // when
         List<TeamResponse> teamResponses = teamService.findTeams(박성우.getId());
 
         // then

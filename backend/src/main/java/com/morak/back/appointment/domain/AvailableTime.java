@@ -5,6 +5,7 @@ import static com.morak.back.appointment.domain.Appointment.MINUTES_UNIT;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.support.Generated;
 import com.morak.back.poll.domain.BaseEntity;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -93,6 +94,7 @@ public class AvailableTime extends BaseEntity {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -107,6 +109,7 @@ public class AvailableTime extends BaseEntity {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(getId(), getAppointment(), getMember(), getDateTimePeriod());
     }
