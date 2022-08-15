@@ -10,8 +10,13 @@ import MarginContainer from '../../@common/MarginContainer/MarginContainer';
 import PollResultItemGroup from '../PollResultItemGroup/PollResultItemGroup';
 import PollResultDetail from '../PollResultDetail/PollResultDetail';
 import PollResultButtonGroup from '../PollResultButtonGroup/PollResultButtonGroup';
-import { getPoll, getPollResult } from '../../../api/poll';
-import { PollInterface, getPollResponse, getPollResultResponse } from '../../../types/poll';
+import { getPoll, getPollResult, getPollItems } from '../../../api/poll';
+import {
+  PollInterface,
+  getPollResponse,
+  getPollResultResponse,
+  getPollItemsResponse
+} from '../../../types/poll';
 import { GroupInterface } from '../../../types/group';
 
 import PollResultProgress from '../PollResultProgress/PollResultProgress';
@@ -25,6 +30,7 @@ function PollResultContainer() {
   };
   const [poll, setPoll] = useState<getPollResponse>();
   const [pollResult, setPollResult] = useState<getPollResultResponse>([]);
+  const [pollItems, setPollItems] = useState<getPollItemsResponse>([]);
 
   useEffect(() => {
     const fetchPoll = async () => {
@@ -43,6 +49,19 @@ function PollResultContainer() {
     } catch (err) {
       alert(err);
     }
+  }, []);
+
+  useEffect(() => {
+    const fetchPollItems = async (pollCode: PollInterface['code']) => {
+      try {
+        const res = await getPollItems(pollCode, groupCode);
+        setPollItems(res.data);
+      } catch (err) {
+        alert(err);
+      }
+    };
+
+    fetchPollItems(pollCode);
   }, []);
 
   return (
@@ -75,9 +94,8 @@ function PollResultContainer() {
             <FlexContainer flexDirection="column" gap="1.2rem">
               <PollResultItemGroup
                 status={poll.status}
-                pollCode={poll.code}
-                groupCode={groupCode}
                 pollResult={pollResult}
+                pollItems={pollItems}
               />
             </FlexContainer>
           </MarginContainer>
@@ -86,6 +104,7 @@ function PollResultContainer() {
             status={poll.status}
             pollCode={poll.code}
             groupCode={groupCode}
+            pollItems={pollItems}
           />
         </>
       ) : (
