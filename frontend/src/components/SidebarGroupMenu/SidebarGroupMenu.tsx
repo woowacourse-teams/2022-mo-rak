@@ -63,7 +63,6 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
           <StyledGroupImage src="https://us.123rf.com/450wm/zoomzoom/zoomzoom1803/zoomzoom180300055/97726350-%EB%B9%9B-%EA%B5%AC%EB%A6%84%EA%B3%BC-%ED%91%B8%EB%A5%B8-%EB%B4%84-%ED%95%98%EB%8A%98.jpg?ver=6" />
           <FlexContainer flexDirection="column">
             <StyledGroupTitle>{defaultGroup && defaultGroup.name}</StyledGroupTitle>
-            <StyledGroupMemberCount>?명의 멤버</StyledGroupMemberCount>
           </FlexContainer>
         </FlexContainer>
 
@@ -82,7 +81,6 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
               <StyledGroupListImage src="https://us.123rf.com/450wm/zoomzoom/zoomzoom1803/zoomzoom180300055/97726350-%EB%B9%9B-%EA%B5%AC%EB%A6%84%EA%B3%BC-%ED%91%B8%EB%A5%B8-%EB%B4%84-%ED%95%98%EB%8A%98.jpg?ver=6" />
               <FlexContainer flexDirection="column">
                 <StyledGroupTitle>{group.name}</StyledGroupTitle>
-                <StyledGroupMemberCount>?명의 멤버</StyledGroupMemberCount>
               </FlexContainer>
             </StyledGroupList>
           ))}
@@ -165,11 +163,6 @@ const StyledGroupTitle = styled.div`
   font-size: 1.6rem;
   margin-bottom: 1.2rem;
 `;
-
-const StyledGroupMemberCount = styled.div(({ theme }) => `
-  font-size: 1.6rem;
-  color: ${theme.colors.GRAY_400};
-`);
 
 const StyledGroupContainer = styled.div`
 position: relative;
