@@ -57,6 +57,7 @@ public enum CustomErrorCode {
     SLACK_WEBHOOK_NOT_FOUND_ERROR("4301", "웹훅 URL이 존재하지 않습니다."),
     NOTIFICATION_INVALID_URL_ERROR("4400", "알림 요청 URL이 잘못되었습니다."),
     NOTIFICATION_REQUEST_FAILURE_ERROR("4401", "요청 결과에 실패했습니다."),
+    NOTIFICATION_SCHEDULING_FAILURE_ERROR("4402", "스케줄링 실행 중 실패했습니다."),
 
     MORAK_ERROR("9901", "처리하지 못한 예외입니다."),
     RUNTIME_ERROR("9902", "예상치 못한 예외입니다.");

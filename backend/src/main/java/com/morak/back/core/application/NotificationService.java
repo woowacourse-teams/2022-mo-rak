@@ -6,6 +6,7 @@ import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.ExternalException;
+import com.morak.back.core.exception.SchedulingException;
 import com.morak.back.core.ui.dto.SlackWebhookCreateRequest;
 import com.morak.back.core.util.MessageFormatter;
 import com.morak.back.team.domain.Team;
@@ -13,6 +14,12 @@ import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamAuthorizationException;
 import com.morak.back.team.exception.TeamNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -50,14 +57,33 @@ public class NotificationService {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public boolean closeAndNotify(Menu menu, SlackWebhook webhook) {
+    public void closeAndNotifyMenus(Map<Menu, SlackWebhook> menuWebhooks) {
+        List<ExternalException> exceptions = menuWebhooks.entrySet()
+                .stream()
+                .map(entry -> closeAndNotify(entry.getKey(), entry.getValue()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        throwsIfAnyWebhookFailed(exceptions);
+    }
+
+    private ExternalException closeAndNotify(Menu menu, SlackWebhook webhook) {
         try {
             slackClient.notifyClosed(webhook, MessageFormatter.format(menu));
             menu.close(menu.getHost());
-            return true;
+            return null;
         } catch (ExternalException e) {
-            return false;
+            return e;
         }
+    }
+
+    private void throwsIfAnyWebhookFailed(List<ExternalException> exceptions) {
+        if (exceptions.isEmpty()) {
+            return;
+        }
+        throw new SchedulingException(
+                CustomErrorCode.NOTIFICATION_SCHEDULING_FAILURE_ERROR,
+                "스케줄링 실행 중 실패 케이스가 존재합니다.",
+                exceptions
+        );
     }
 }

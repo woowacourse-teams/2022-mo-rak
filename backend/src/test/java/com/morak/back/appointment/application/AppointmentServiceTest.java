@@ -23,6 +23,7 @@ import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.slack.FakeSlackClient;
+import com.morak.back.core.domain.slack.FakeApiReceiver;
 import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.CustomErrorCode;
@@ -46,20 +47,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ServiceTest
 class AppointmentServiceTest {
 
-    private AppointmentBuilder DEFAULT_BUILDER;
-
     private AppointmentRepository appointmentRepository;
     private AvailableTimeRepository availableTimeRepository;
     private MemberRepository memberRepository;
     private TeamRepository teamRepository;
     private TeamMemberRepository teamMemberRepository;
     private SlackWebhookRepository slackWebhookRepository;
+    private FakeApiReceiver receiver;
 
     private NotificationService notificationService;
     private AppointmentService appointmentService;
 
+    private AppointmentBuilder DEFAULT_BUILDER;
+
     private Member 에덴;
     private Team 모락;
+
     private Appointment 약속잡기_중간;
     private Appointment 약속잡기_자정까지;
     private Appointment 약속잡기_하루동안_30분;
@@ -79,13 +82,13 @@ class AppointmentServiceTest {
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.slackWebhookRepository = slackWebhookRepository;
-        SlackClient slackClient = new FakeSlackClient();
-        NotificationService notificationService =
+
+        this.receiver = new FakeApiReceiver();
+        SlackClient slackClient = new FakeSlackClient(receiver);
+        this.notificationService =
                 new NotificationService(slackClient, teamRepository, teamMemberRepository, slackWebhookRepository);
-        appointmentService = new AppointmentService(
-                appointmentRepository, availableTimeRepository, memberRepository, teamRepository, teamMemberRepository,
-                slackWebhookRepository, notificationService
-        );
+        appointmentService = new AppointmentService(slackClient, appointmentRepository, availableTimeRepository,
+                memberRepository, teamRepository, teamMemberRepository, slackWebhookRepository, notificationService);
     }
 
     @BeforeEach

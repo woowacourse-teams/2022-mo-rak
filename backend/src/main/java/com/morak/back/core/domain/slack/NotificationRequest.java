@@ -12,5 +12,4 @@ public class NotificationRequest {
     private String text;
     @JsonProperty("icon_emoji")
     private String iconEmoji;
-
 }

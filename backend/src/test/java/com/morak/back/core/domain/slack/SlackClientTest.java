@@ -10,7 +10,8 @@ class SlackClientTest {
     @Test
     void 모락_슬랙에_마감_알림을_보낸다() {
         // given
-        SlackClient client = new FakeSlackClient();
+        FakeApiReceiver receiver = new FakeApiReceiver();
+        SlackClient client = new FakeSlackClient(receiver);
         // when
         SlackWebhook webhook = new SlackWebhook(1L, new Team(),
             "https://hooks.slack.com/services/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");

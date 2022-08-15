@@ -7,6 +7,7 @@ import com.morak.back.core.exception.DomainLogicException;
 import com.morak.back.core.exception.ExternalException;
 import com.morak.back.core.exception.MorakException;
 import com.morak.back.core.exception.ResourceNotFoundException;
+import com.morak.back.core.exception.SchedulingException;
 import com.morak.back.core.support.LogFormatter;
 import com.morak.back.core.ui.dto.ExceptionResponse;
 import java.util.Arrays;
@@ -120,6 +121,17 @@ public class GlobalControllerAdvice {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(e.getCode().getNumber(), "외부 API 요청을 실패했습니다."));
+    }
+
+    @ExceptionHandler(SchedulingException.class)
+    public ResponseEntity<ExceptionResponse> handleSchedulingFailures(SchedulingException e) {
+        List<String> exceptionMessages = e.getExceptions().stream()
+                .map(exception -> exception.getCode() + "," + exception.getMessage())
+                .collect(Collectors.toList());
+        logger.error(exceptionMessages.toString());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ExceptionResponse(e.getCode().getNumber(), "스케줄링 실행 중 실패가 있습니다."));
     }
     
     @ExceptionHandler(RuntimeException.class)

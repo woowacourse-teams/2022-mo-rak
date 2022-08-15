@@ -8,6 +8,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.slack.FakeApiReceiver;
 import com.morak.back.core.domain.slack.FakeSlackClient;
 import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
@@ -51,8 +52,8 @@ class PollServiceTest {
     private PollRepository pollRepository;
     private PollItemRepository pollItemRepository;
     private SlackWebhookRepository slackWebhookRepository;
+    private FakeApiReceiver receiver;
     private SlackClient slackClient;
-
 
     private NotificationService notificationService;
     private PollService pollService;
@@ -71,7 +72,8 @@ class PollServiceTest {
         this.pollRepository = pollRepository;
         this.pollItemRepository = pollItemRepository;
         this.slackWebhookRepository = slackWebhookRepository;
-        this.slackClient = new FakeSlackClient();
+        this.receiver = new FakeApiReceiver();
+        this.slackClient = new FakeSlackClient(receiver);
         this.notificationService = new NotificationService(slackClient, teamRepository,
                 teamMemberRepository, slackWebhookRepository);
         this.pollService = new PollService(

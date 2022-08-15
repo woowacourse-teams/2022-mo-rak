@@ -12,7 +12,6 @@ import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.core.exception.WebhookNotFoundException;
 import com.morak.back.core.util.MessageFormatter;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
@@ -34,7 +33,6 @@ import com.morak.back.team.exception.TeamNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -225,9 +223,7 @@ public class PollService {
         List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.MIN, LocalDateTime.now());
 
         Map<Menu, SlackWebhook> pollWebhooks = joinPollsWithWebhooks(pollsToBeClosed);
-        for (Entry<Menu, SlackWebhook> entry : pollWebhooks.entrySet()) {
-            notificationService.closeAndNotify(entry.getKey(), entry.getValue());
-        }
+        notificationService.closeAndNotifyMenus(pollWebhooks);
     }
 
     private Map<Menu, SlackWebhook> joinPollsWithWebhooks(List<Poll> pollsToBeClosed) {

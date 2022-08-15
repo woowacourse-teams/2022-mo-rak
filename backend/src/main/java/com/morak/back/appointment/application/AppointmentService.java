@@ -22,9 +22,11 @@ import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.Menu;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.util.MessageFormatter;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
@@ -50,6 +52,7 @@ public class AppointmentService {
 
     private static final CodeGenerator CODE_GENERATOR = new RandomCodeGenerator();
 
+    private final SlackClient slackClient;
     private final AppointmentRepository appointmentRepository;
     private final AvailableTimeRepository availableTimeRepository;
     private final MemberRepository memberRepository;
@@ -197,7 +200,8 @@ public class AppointmentService {
         validateHost(member, appointment);
         validateAppointmentInTeam(team, appointment);
         appointment.close(member);
-        // todo : notify here
+        slackWebhookRepository.findByTeamId(team.getId())
+                .ifPresent(webhook -> slackClient.notifyClosed(webhook, MessageFormatter.format(appointment)));
     }
 
     public void deleteAppointment(String teamCode, Long memberId, String appointmentCode) {
@@ -237,9 +241,7 @@ public class AppointmentService {
                 appointmentRepository.findAllToBeClosed(LocalDateTime.MIN, LocalDateTime.now());
 
         Map<Menu, SlackWebhook> appointmentWebHooks = joinAppointmentsWithWebHooks(appointmentsToBeClosed);
-        for (Entry<Menu, SlackWebhook> entry : appointmentWebHooks.entrySet()) {
-            notificationService.closeAndNotify(entry.getKey(), entry.getValue());
-        }
+        notificationService.closeAndNotifyMenus(appointmentWebHooks);
     }
 
     private Map<Menu, SlackWebhook> joinAppointmentsWithWebHooks(List<Appointment> appointmentsToBeClosed) {
