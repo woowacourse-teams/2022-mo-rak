@@ -2,6 +2,7 @@ package com.morak.back.core.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -12,6 +13,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
+import com.morak.back.core.exception.ExternalException;
 import com.morak.back.core.ui.dto.SlackWebhookCreateRequest;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollRepository;
@@ -139,5 +141,4 @@ class NotificationServiceTest {
         verify(slackWebhookRepository, times(2)).findByTeamId(anyLong());
         verify(slackClient, times(2)).notifyClosed(any(SlackWebhook.class), anyString());
     }
-
 }

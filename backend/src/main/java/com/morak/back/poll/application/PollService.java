@@ -4,8 +4,10 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.auth.exception.TeamNotFoundException;
+import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
+import com.morak.back.core.domain.Menu;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhook;
@@ -20,18 +22,22 @@ import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.exception.PollItemNotFoundException;
 import com.morak.back.poll.exception.PollNotFoundException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.MismatchedTeamException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +55,8 @@ public class PollService {
     private final TeamMemberRepository teamMemberRepository;
     private final PollItemRepository pollItemRepository;
     private final SlackWebhookRepository slackWebhookRepository;
+
+    private final NotificationService notificationService;
 
     public String createPoll(String teamCode, Long memberId, PollCreateRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
@@ -164,7 +172,25 @@ public class PollService {
                 .orElseThrow(() -> new PollNotFoundException(pollCode, teamId));
         poll.close(member);
         SlackWebhook webhook = slackWebhookRepository.findByTeamId(teamId)
-            .orElseThrow(() -> new WebhookNotFoundException(teamId));
+                .orElseThrow(() -> new WebhookNotFoundException(teamId));
         slackClient.notifyClosed(webhook, MessageFormatter.format(poll));
+    }
+
+    @Scheduled(cron = "0 0/1 * * * ?")
+     void notifyPoll() {
+        List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.MIN, LocalDateTime.now());
+
+        Map<Menu, SlackWebhook> pollWebhooks = joinPollsWithWebhooks(pollsToBeClosed);
+        for (Entry<Menu, SlackWebhook> entry : pollWebhooks.entrySet()) {
+            notificationService.closeAndNotify(entry.getKey(), entry.getValue());
+        }
+    }
+
+    private Map<Menu, SlackWebhook> joinPollsWithWebhooks(List<Poll> pollsToBeClosed) {
+        return pollsToBeClosed.stream()
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        poll -> slackWebhookRepository.findByTeamId(poll.getTeam().getId()).orElseThrow()
+                ));
     }
 }

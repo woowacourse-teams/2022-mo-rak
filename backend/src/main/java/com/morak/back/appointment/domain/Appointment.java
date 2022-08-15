@@ -4,6 +4,7 @@ import static com.morak.back.appointment.domain.AppointmentStatus.OPEN;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.Menu;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.poll.domain.BaseEntity;
 import com.morak.back.team.domain.Team;
@@ -31,7 +32,7 @@ import org.hibernate.annotations.Formula;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Appointment extends BaseEntity {
+public class Appointment extends BaseEntity implements Menu {
 
     private static final int NO_ONE_SELECTED = 0;
 
@@ -123,6 +124,11 @@ public class Appointment extends BaseEntity {
 
     public Boolean isClosed() {
         return this.status.isClosed();
+    }
+
+    @Override
+    public String getTeamName() {
+        return getTeam().getName();
     }
 
     public LocalDate getStartDate() {

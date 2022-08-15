@@ -14,18 +14,27 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.auth.exception.TeamNotFoundException;
+import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
+import com.morak.back.core.domain.Menu;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.core.domain.slack.SlackWebhook;
+import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.InvalidRequestException;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.MismatchedTeamException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +50,9 @@ public class AppointmentService {
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
+    private final SlackWebhookRepository slackWebhookRepository;
+
+    private final NotificationService notificationService;
 
     public String createAppointment(String teamCode, Long memberId, AppointmentCreateRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
@@ -146,5 +158,24 @@ public class AppointmentService {
         } catch (DataIntegrityViolationException e) {
             throw new InvalidRequestException("동일한 약속잡기 가능 시간을 선택할 수 없습니다.");
         }
+    }
+
+    @Scheduled(cron = "0 0/1 * * * ?")
+    void notifyPoll() {
+        List<Appointment> appointmentsToBeClosed =
+                appointmentRepository.findAllToBeClosed(LocalDateTime.MIN, LocalDateTime.now());
+
+        Map<Menu, SlackWebhook> pollWebhooks = joinAppointmentsWithWebHooks(appointmentsToBeClosed);
+        for (Entry<Menu, SlackWebhook> entry : pollWebhooks.entrySet()) {
+            notificationService.closeAndNotify(entry.getKey(), entry.getValue());
+        }
+    }
+
+    private Map<Menu, SlackWebhook> joinAppointmentsWithWebHooks(List<Appointment> appointmentsToBeClosed) {
+        return appointmentsToBeClosed.stream()
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        appointment -> slackWebhookRepository.findByTeamId(appointment.getTeam().getId()).orElseThrow()
+                ));
     }
 }
