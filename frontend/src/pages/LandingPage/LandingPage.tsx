@@ -17,14 +17,12 @@ import { getDefaultGroup } from '../../api/group';
 function LandingPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const redirectUrl = getSessionStorageItem('redirectUrl');
-  // TODO: 중복 로직해결
-  // TODO: 다시 한 번 token을 가져오는
-  const token = getLocalStorageItem('token');
+
   useEffect(() => {
     const fetchGetDefaultGroup = async () => {
       try {
-        const { code: groupCode } = await getDefaultGroup();
+        const res = await getDefaultGroup();
+        const { code: groupCode } = res.data;
 
         navigate(`/groups/${groupCode}`);
       } catch (err) {
@@ -44,6 +42,9 @@ function LandingPage() {
         }
       }
     };
+    // TODO: 중복 로직해결
+    // TODO: 다시 한 번 token을 가져오는
+    const token = getLocalStorageItem('token');
 
     if (token) {
       fetchGetDefaultGroup();
@@ -55,9 +56,12 @@ function LandingPage() {
     // TODO: strict mode라서 로그인이 된 이후에도 요청을 다시 보내서 에러가 나온다.
     const fetchSignin = async (code: string) => {
       try {
-        const { token } = await signin(code);
+        const response = await signin(code);
+        const { token } = response.data;
 
         saveLocalStorageItem<string>('token', token);
+
+        const redirectUrl = getSessionStorageItem('redirectUrl');
 
         if (redirectUrl) {
           navigate(redirectUrl);
@@ -83,7 +87,9 @@ function LandingPage() {
   return (
     <StyledContainer>
       <StyledLogo src={Logo} alt="logo" />
-      <StyledLink href={`https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}`}>
+      <StyledLink
+        href={`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}`}
+      >
         {/* TODO: 네이밍 고민  */}
         {/* TODO: button 컴포넌트와 레이아웃이 같지만, div 태그를 사용해야하기 때문에, 스타일 컴포넌트로 새로 만들어줌 이야기해봐야할듯  */}
         <StyledLoginContainer>

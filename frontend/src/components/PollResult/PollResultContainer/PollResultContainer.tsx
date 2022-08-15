@@ -2,39 +2,44 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { useParams } from 'react-router-dom';
-import Box from '../../common/Box/Box';
-import Divider from '../../common/Divider/Divider';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import MarginContainer from '../../common/MarginContainer/MarginContainer';
+import Box from '../../@common/Box/Box';
+import Divider from '../../@common/Divider/Divider';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import MarginContainer from '../../@common/MarginContainer/MarginContainer';
 
 import PollResultItemGroup from '../PollResultItemGroup/PollResultItemGroup';
 import PollResultDetail from '../PollResultDetail/PollResultDetail';
 import PollResultButtonGroup from '../PollResultButtonGroup/PollResultButtonGroup';
 import { getPoll, getPollResult } from '../../../api/poll';
-import { PollInterface, PollItemResultType } from '../../../types/poll';
+import { PollInterface, getPollResponse, getPollResultResponse } from '../../../types/poll';
+import { GroupInterface } from '../../../types/group';
+
 import PollResultProgress from '../PollResultProgress/PollResultProgress';
 import PollResultStatus from '../PollResultStatus/PollResultStatus';
 import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
 
 function PollResultContainer() {
-  const { groupCode, pollId } = useParams() as { groupCode: string; pollId: string };
-  const [poll, setPoll] = useState<PollInterface>();
-  const [pollResult, setPollResult] = useState<Array<PollItemResultType>>([]);
+  const { groupCode, pollCode } = useParams() as {
+    groupCode: GroupInterface['code'];
+    pollCode: PollInterface['code'];
+  };
+  const [poll, setPoll] = useState<getPollResponse>();
+  const [pollResult, setPollResult] = useState<getPollResultResponse>([]);
 
   useEffect(() => {
-    const fetchPoll = async (pollId: PollInterface['id']) => {
-      const res = await getPoll(pollId, groupCode);
-      setPoll(res);
+    const fetchPoll = async () => {
+      const res = await getPoll(pollCode, groupCode);
+      setPoll(res.data);
     };
 
-    const fetchPollResult = async (pollId: PollInterface['id']) => {
-      const res = await getPollResult(pollId, groupCode);
-      setPollResult(res);
+    const fetchPollResult = async () => {
+      const res = await getPollResult(pollCode, groupCode);
+      setPollResult(res.data);
     };
 
     try {
-      fetchPoll(Number(pollId));
-      fetchPollResult(Number(pollId));
+      fetchPoll();
+      fetchPollResult();
     } catch (err) {
       alert(err);
     }
@@ -47,7 +52,7 @@ function PollResultContainer() {
           <FlexContainer justifyContent="end">
             <MarginContainer margin="0 0 1.4rem 0">
               <FlexContainer gap="1.2rem" alignItems="center">
-                <PollResultShareLink pollId={Number(pollId)} />
+                <PollResultShareLink pollCode={pollCode} />
                 <PollResultStatus status={poll.status} />
               </FlexContainer>
             </MarginContainer>
@@ -63,13 +68,14 @@ function PollResultContainer() {
             <PollResultDetail
               isAnonymous={poll.isAnonymous}
               allowedPollCount={poll.allowedPollCount}
+              closedAt={poll.closedAt}
             />
           </MarginContainer>
           <MarginContainer margin="0 0 4rem 0">
             <FlexContainer flexDirection="column" gap="1.2rem">
               <PollResultItemGroup
                 status={poll.status}
-                pollId={poll.id}
+                pollCode={poll.code}
                 groupCode={groupCode}
                 pollResult={pollResult}
               />
@@ -78,7 +84,7 @@ function PollResultContainer() {
           <PollResultButtonGroup
             isHost={poll.isHost}
             status={poll.status}
-            pollId={poll.id}
+            pollCode={poll.code}
             groupCode={groupCode}
           />
         </>

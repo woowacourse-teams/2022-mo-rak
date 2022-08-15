@@ -1,17 +1,22 @@
 import React from 'react';
 import { useTheme } from '@emotion/react';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import Button from '../../common/Button/Button';
+import { useNavigate } from 'react-router-dom';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import Button from '../../@common/Button/Button';
 import { PollInterface } from '../../../types/poll';
 
 interface Props {
-  pollId: number;
-  handleNavigate: (location: string) => () => void;
+  pollCode: PollInterface['code'];
   status: PollInterface['status'];
 }
 
-function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
+function PollMainButtonGroup({ pollCode, status }: Props) {
   const theme = useTheme();
+  const navigate = useNavigate();
+
+  const handleNavigate = (location: string) => () => {
+    navigate(location);
+  };
 
   return (
     <FlexContainer gap="1.2rem" justifyContent="end">
@@ -24,7 +29,7 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
           fontSize="1.2rem"
           borderRadius="5px"
           colorScheme={theme.colors.PURPLE_100}
-          onClick={handleNavigate(`${pollId}/progress`)}
+          onClick={handleNavigate(`${pollCode}/progress`)}
         >
           투표하기
         </Button>
@@ -37,7 +42,8 @@ function PollMainButtonGroup({ pollId, handleNavigate, status }: Props) {
         fontSize="1.2rem"
         borderRadius="5px"
         colorScheme={theme.colors.PURPLE_100}
-        onClick={handleNavigate(`${pollId}/result`)}
+        onClick={handleNavigate(`${pollCode}/result`)}
+        aria-label={status}
       >
         결과보기
       </Button>

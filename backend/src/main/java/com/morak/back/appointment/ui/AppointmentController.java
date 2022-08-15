@@ -7,10 +7,9 @@ import com.morak.back.appointment.ui.dto.AppointmentResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.support.Auth;
-import com.morak.back.auth.ui.dto.MemberResponse;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +32,7 @@ public class AppointmentController {
     @PostMapping
     public ResponseEntity<Void> createAppointment(@PathVariable String groupCode,
                                                   @Auth Long memberId,
-                                                  @RequestBody AppointmentCreateRequest request) {
+                                                  @Valid @RequestBody AppointmentCreateRequest request) {
         String appointmentCode = appointmentService.createAppointment(groupCode, memberId, request);
         return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/appointments/" + appointmentCode))
                 .build();
@@ -56,7 +55,7 @@ public class AppointmentController {
     public ResponseEntity<Void> selectAvailableTimes(@PathVariable String groupCode,
                                                      @Auth Long memberId,
                                                      @PathVariable String appointmentCode,
-                                                     @RequestBody List<AvailableTimeRequest> requests) {
+                                                     @Valid @RequestBody List<AvailableTimeRequest> requests) {
         appointmentService.selectAvailableTimes(groupCode, memberId, appointmentCode, requests);
         return ResponseEntity.ok().build();
     }
@@ -65,28 +64,7 @@ public class AppointmentController {
     public ResponseEntity<List<RecommendationResponse>> recommendAppointments(@PathVariable String groupCode,
                                                                               @Auth Long memberId,
                                                                               @PathVariable String appointmentCode) {
-        List<RecommendationResponse> recommendationResponses = appointmentService.recommendAvailableTimes(groupCode, memberId, appointmentCode);
-        RecommendationResponse recommendationResponse1 = new RecommendationResponse(
-                1,
-                LocalDateTime.of(2022, 8, 6, 16, 0),
-                LocalDateTime.of(2022, 8, 6, 18, 30),
-                List.of(
-                        new MemberResponse(1L, "eden", "eden-profile.com"),
-                        new MemberResponse(2L, "ellie", "ellie-profile.com")
-                ),
-                List.of(new MemberResponse(5L, "albur", "albur-profile.com"))
-        );
-        RecommendationResponse recommendationResponse2 = new RecommendationResponse(
-                1,
-                LocalDateTime.of(2022, 8, 6, 17, 0),
-                LocalDateTime.of(2022, 8, 6, 19, 30),
-                List.of(new MemberResponse(1L, "eden", "eden-profile.com")),
-                List.of(
-                        new MemberResponse(5L, "albur", "albur-profile.com"),
-                        new MemberResponse(2L, "ellie", "ellie-profile.com")
-                )
-        );
-        return ResponseEntity.ok(List.of(recommendationResponse1, recommendationResponse2));
+        return ResponseEntity.ok(appointmentService.recommendAvailableTimes(groupCode, memberId, appointmentCode));
     }
 
     @PatchMapping("/{appointmentCode}/close")

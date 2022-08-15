@@ -80,6 +80,6 @@ public class PollItem extends BaseEntity {
                 .filter(result -> result.isSameMember(member))
                 .map(PollResult::getDescription)
                 .findFirst()
-                .orElseGet(() -> "");
+                .orElse("");
     }
 }

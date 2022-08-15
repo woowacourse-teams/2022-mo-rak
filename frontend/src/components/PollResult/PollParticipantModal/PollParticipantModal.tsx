@@ -1,10 +1,11 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import styled from '@emotion/styled';
-import { PollMembersInterface } from '../../../types/poll';
+import { MemberInterface } from '../../../types/group';
+import { SelectedPollItem } from '../../../types/poll';
 
 interface Props {
-  participants: Array<PollMembersInterface>;
+  participants: Array<MemberInterface & Pick<SelectedPollItem, 'description'>>;
 }
 
 function PollParticipantModal({ participants }: Props) {

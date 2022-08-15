@@ -1,3 +1,13 @@
+DROP TABLE IF EXISTS poll_result;
+DROP TABLE IF EXISTS poll_item;
+DROP TABLE IF EXISTS poll;
+DROP TABLE IF EXISTS team_member;
+DROP TABLE IF EXISTS team_invitation;
+DROP TABLE IF EXISTS appointment_available_time;
+DROP TABLE IF EXISTS appointment;
+DROP TABLE IF EXISTS team;
+DROP TABLE IF EXISTS member;
+
 CREATE TABLE member
 (
     `id`          bigint       NOT NULL AUTO_INCREMENT,
@@ -120,6 +130,9 @@ CREATE TABLE appointment_available_time
     FOREIGN KEY (appointment_id) REFERENCES appointment (id),
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
+
+ALTER TABLE appointment_available_time
+    ADD UNIQUE (appointment_id, member_id, start_date_time, end_date_time);
 
 CREATE TABLE slack_webhook
 (

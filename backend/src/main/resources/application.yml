@@ -3,8 +3,26 @@ spring:
     active: local
   sql:
     init:
-      mode: always
       platform: local
+      mode: always
+  mvc:
+    log-resolved-exception: off
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prd
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DATABASE_HOST}:3306/${DATABASE_NAME}?serverTimezone=Asia/Seoul&character_set_server=utf8mb4
+    username: ${USERNAME}
+    password: ${PASSWORD}
 
 ---
 
@@ -13,15 +31,10 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:h2:~/${DATABASE_NAME};MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: ${USER_NAME}
-  h2:
-    console:
-      enabled: true
-
----
-
-spring:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DATABASE_HOST}:3306/${DATABASE_NAME}?serverTimezone=Asia/Seoul&character_set_server=utf8mb4
+    username: ${USERNAME}
+    password: ${PASSWORD}
   jpa:
     show-sql: true
     hibernate:
@@ -29,15 +42,26 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+---
+
+spring:
   config:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:h2:~/${DATABASE_NAME};MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: ${USER_NAME}
+    url: jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: ${USERNAME}
   h2:
     console:
       enabled: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
 
 ---
 
@@ -54,3 +78,11 @@ security:
     notification:
       slack:
         url: ${SLACK_ERROR_URL}
+
+---
+
+logging:
+  slack:
+    error-url: ${SLACK_ERROR_URL}
+  config: classpath:logback-spring.xml
+

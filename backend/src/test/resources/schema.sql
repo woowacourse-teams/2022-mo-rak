@@ -1,13 +1,13 @@
-DROP TABLE poll_result IF EXISTS;
-DROP TABLE poll_item IF EXISTS;
-DROP TABLE poll IF EXISTS;
-DROP TABLE team_member IF EXISTS;
-DROP TABLE team_invitation IF EXISTS;
-DROP TABLE appointment_available_time IF EXISTS;
-DROP TABLE appointment IF EXISTS;
-DROP TABLE slack_webhook IF EXISTS;
-DROP TABLE team IF EXISTS;
-DROP TABLE member IF EXISTS;
+DROP TABLE IF EXISTS poll_result;
+DROP TABLE IF EXISTS poll_item;
+DROP TABLE IF EXISTS poll;
+DROP TABLE IF EXISTS team_member;
+DROP TABLE IF EXISTS team_invitation;
+DROP TABLE IF EXISTS appointment_available_time;
+DROP TABLE IF EXISTS appointment;
+DROP TABLE IF EXISTS slack_webhook;
+DROP TABLE IF EXISTS team;
+DROP TABLE IF EXISTS member;
 
 CREATE TABLE member
 (

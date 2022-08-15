@@ -2,85 +2,71 @@ package com.morak.back.team.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.AssertionsForClassTypes.tuple;
-import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.anyLong;
-import static org.mockito.BDDMockito.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
+import static org.assertj.core.api.Assertions.tuple;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
+import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.exception.ResourceNotFoundException;
-import com.morak.back.team.domain.ExpiredTime;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.team.domain.Team;
-import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
-import com.morak.back.team.exception.AlreadyJoinedTeamException;
-import com.morak.back.team.exception.ExpiredInvitationException;
-import com.morak.back.team.exception.MismatchedTeamException;
+import com.morak.back.team.exception.TeamAuthorizationException;
+import com.morak.back.team.exception.TeamDomainLogicException;
+import com.morak.back.team.exception.TeamNotFoundException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
 import java.util.List;
-import java.util.Optional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
-@ExtendWith(MockitoExtension.class)
+@DataJpaTest
+@Sql(scripts = "classpath:schema.sql")
 class TeamServiceTest {
 
-    @Mock
-    private TeamRepository teamRepository;
-
-    @Mock
+    @Autowired
     private MemberRepository memberRepository;
 
-    @Mock
+    @Autowired
+    private TeamRepository teamRepository;
+
+    @Autowired
     private TeamMemberRepository teamMemberRepository;
 
-    @Mock
+    @Autowired
     private TeamInvitationRepository teamInvitationRepository;
 
-
-    @InjectMocks
     private TeamService teamService;
 
     private Member member;
+
     private Team team;
-    private TeamInvitation teamInvitation;
-    private Code code;
 
     @BeforeEach
-    void setup() {
-        member = Member.builder()
-                .id(1L)
-                .oauthId("12345678")
-                .name("ellie")
-                .profileUrl("http://ellie-profile")
-                .build();
-        team = Team.builder()
-                .id(1L)
-                .name("team")
+    void setUp() {
+        teamService = new TeamService(teamRepository, memberRepository, teamMemberRepository, teamInvitationRepository);
+
+        member = memberRepository.save(Member.builder()
+                .id(null)
+                .name("송상민")
+                .oauthId("94000000")
+                .profileUrl("http://abur-profile")
+                .build());
+
+        team = teamRepository.save(Team.builder()
+                .name("모락")
                 .code(Code.generate(length -> "ABCD1234"))
-                .build();
-        teamInvitation = TeamInvitation.builder()
-                .id(1L)
-                .team(team)
-                .code(Code.generate(length -> "12345678"))
-                .expiredAt(ExpiredTime.withMinute(30L))
-                .build();
-        code = Code.generate(length -> "abcd1234");
+                .build());
+
+        teamMemberRepository.save(new TeamMember(null, team, member));
     }
 
     @Test
@@ -88,57 +74,135 @@ class TeamServiceTest {
         // given
         TeamCreateRequest request = new TeamCreateRequest("test-team");
 
-        given(teamRepository.save(any())).willReturn(team);
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
-
         // when
         String code = teamService.createTeam(member.getId(), request);
 
         // then
-        assertThat(code).isEqualTo(team.getCode());
+        assertThat(code).hasSize(8);
+    }
+
+    @Test
+    void 없는_멤버로_팀_생성_시_예외를_던진다() {
+        // given
+        TeamCreateRequest request = new TeamCreateRequest("test-team");
+
+        Member invalidMember = Member.builder()
+                .id(9999999L)
+                .build();
+
+        // when & then
+        assertThatThrownBy(() -> teamService.createTeam(invalidMember.getId(), request))
+                .isInstanceOf(MemberNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR);
     }
 
     @Test
     void 그룹_초대코드를_생성한다() {
-        // given
-        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
-        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
-        given(teamInvitationRepository.save(any())).willReturn(teamInvitation);
-
-        // when
         String invitationCode = teamService.createInvitationCode(member.getId(), team.getCode());
 
         // then
-        assertThat(invitationCode).isEqualTo(teamInvitation.getCode());
+        assertThat(invitationCode).hasSize(8);
     }
 
     @Test
-    void 그룹_참가_여부를_확인한다() {
+    void 그룹에_속하지않은_멤버가_그룹_초대코드를_생성_시_예외를_던진다() {
+        Team 새로운팀 = teamRepository.save(Team.builder()
+                .name("새로운팀")
+                .code(Code.generate((length) -> "12345678"))
+                .build());
+        // when & then
+        assertThatThrownBy(() -> teamService.createInvitationCode(member.getId(), 새로운팀.getCode()))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 그룹에_참가했을_때_그룹_참가여부를_요청하면_팀코드_팀이름_true를_반환한다() {
         // given
-        given(teamInvitationRepository.findByCode(anyString())).willReturn(Optional.of(teamInvitation));
-        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
+        String invitationCode = teamService.createInvitationCode(member.getId(), team.getCode());
 
         // when
-        InvitationJoinedResponse invitationJoinedResponse = teamService.isJoined(1L, "inviteCode");
+        InvitationJoinedResponse invitationJoinedResponse = teamService.isJoined(member.getId(), invitationCode);
 
         // then
-        Assertions.assertAll(
-                () -> assertThat(invitationJoinedResponse.getGroupCode()).isEqualTo(team.getCode()),
-                () -> assertThat(invitationJoinedResponse.getName()).isEqualTo(team.getName()),
-                () -> assertThat(invitationJoinedResponse.getIsJoined()).isTrue()
-        );
+        assertThat(invitationJoinedResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(new InvitationJoinedResponse(team.getCode(), team.getName(), true));
     }
+
+    @Test
+    void 그룹에_참가하지_않았을_때_그룹_참가여부를_요청하면_팀코드_팀이름_false를_반환한다() {
+        // given
+        Member 박성우 = memberRepository.save(Member.builder()
+                .oauthId("19980513")
+                .name("박성우")
+                .profileUrl("https://avatars.githubusercontent.com/u/79205414?v=4")
+                .build());
+
+        String invitationCode = teamService.createInvitationCode(member.getId(), team.getCode());
+
+        // when
+        InvitationJoinedResponse invitationJoinedResponse = teamService.isJoined(박성우.getId(), invitationCode);
+
+        // then
+        assertThat(invitationJoinedResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(new InvitationJoinedResponse(team.getCode(), team.getName(), false));
+    }
+
+    @Test
+    void 없는_그룹코드를_이용해_그룹_참가여부를_요청하면_예외를_던진다() {
+        // given
+        String invalidInvitationCode = "invalidInvitationCode";
+
+        // when & then
+        assertThatThrownBy(() -> teamService.isJoined(member.getId(), invalidInvitationCode))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_INVITATION_NOT_FOUND_ERROR);
+    }
+
+    @Test
+    void 없는_멤버가_그룹_참가여부를_요청하면_예외를_던진다() {
+        // given
+        String invalidInvitationCode = "invalidInvitationCode";
+
+        // when & then
+        assertThatThrownBy(() -> teamService.isJoined(member.getId(), invalidInvitationCode))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_INVITATION_NOT_FOUND_ERROR);
+    }
+    // TODO: 2022/08/11 시간 목킹
+//    @Test
+//    void 그룹_가입시_초대코드가_만료된_경우_예외를_던진다() {
+//        // given
+//        String invitationCode = teamService.createInvitationCode(member.getId(), team.getCode());
+//
+//        // when
+//
+//        // then
+//        assertThatThrownBy(() -> teamService.isJoined(member.getId(), invitationCode))
+//                .isInstanceOf(TeamDomainLogicException.class)
+//                .extracting("code")
+//                .isEqualTo(CustomErrorCode.TEAM_INVITATION_EXPIRED_ERROR);
+//    }
+
 
     @Test
     void 그룹에_참가한다() {
         // given
-        given(teamInvitationRepository.findByCode(anyString())).willReturn(Optional.of(teamInvitation));
-        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(false);
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
-        given(teamMemberRepository.save(any())).willReturn(any());
+        String invitationCode = teamService.createInvitationCode(member.getId(), team.getCode());
+        Member 박성우 = memberRepository.save(Member.builder()
+                .oauthId("19980513")
+                .name("박성우")
+                .profileUrl("https://avatars.githubusercontent.com/u/79205414?v=4")
+                .build());
 
         // when
-        String teamCode = teamService.join(member.getId(), teamInvitation.getCode());
+        String teamCode = teamService.join(박성우.getId(), invitationCode);
 
         // then
         assertThat(teamCode).isEqualTo(team.getCode());
@@ -147,187 +211,245 @@ class TeamServiceTest {
     @Test
     void 그룹에_이미_참가한_경우_예외를_던진다() {
         // given
-        given(teamInvitationRepository.findByCode(anyString())).willReturn(Optional.of(teamInvitation));
-        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
+        String invitationCode = teamService.createInvitationCode(member.getId(), team.getCode());
 
         // when & then
-        assertThatThrownBy(() -> teamService.join(member.getId(), teamInvitation.getCode()))
-                .isInstanceOf(AlreadyJoinedTeamException.class);
+        assertThatThrownBy(() -> teamService.join(member.getId(), invitationCode))
+                .isInstanceOf(TeamDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_ALREADY_JOINED_ERROR);
     }
 
     @Test
-    void 그룹_가입시_초대코드가_만료된_경우_예외를_던진다() {
+    void 없는_그룹코드를_이용해_그룹에_참가를_요청하면_예외를_던진다() {
         // given
-        TeamInvitation expiredTeamInvitation = TeamInvitation.builder()
-                .team(team)
-                .code(code)
-                .expiredAt(ExpiredTime.withMinute(-30L))
-                .build();
-
-        given(teamInvitationRepository.findByCode(anyString())).willReturn(Optional.of(expiredTeamInvitation));
+        String invalidInvitationCode = "invalidInvitationCode";
 
         // when & then
-        assertThatThrownBy(() -> teamService.join(member.getId(), expiredTeamInvitation.getCode()))
-                .isInstanceOf(ExpiredInvitationException.class);
+        assertThatThrownBy(() -> teamService.join(member.getId(), invalidInvitationCode))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_INVITATION_NOT_FOUND_ERROR);
     }
+
+    @Test
+    void 없는_멤버가_그룹에_참가를_요청하면_예외를_던진다() {
+        // given
+        String invitationCode = teamService.createInvitationCode(member.getId(), team.getCode());
+
+        // when & then
+        assertThatThrownBy(() -> teamService.join(member.getId() + 1, invitationCode))
+                .isInstanceOf(MemberNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR);
+    }
+    // TODO: 2022/08/11 시간 목킹
+//    @Test
+//    void 그룹_가입시_초대코드가_만료된_경우_예외를_던진다() {
+//        // given
+//        TeamInvitation expiredTeamInvitation = TeamInvitation.builder()
+//                .team(team)
+//                .code(code)
+//                .expiredAt(ExpiredTime.withMinute(-30L))
+//                .build();
+//
+//        given(teamInvitationRepository.findByCode(anyString())).willReturn(Optional.of(expiredTeamInvitation));
+//
+//        // when & then
+//        assertThatThrownBy(() -> teamService.join(member.getId(), expiredTeamInvitation.getCode()))
+//                .isInstanceOf(TeamDomainLogicException.class)
+//                .extracting("code")
+//                .isEqualTo(CustomErrorCode.TEAM_INVITATION_EXPIRED_ERROR);
+//    }
 
     @Test
     void 그룹_목록을_조회한다() {
         // given
-        Code code = Code.generate(length -> "abcd1234");
-        Team teamA = Team.builder()
+        Team teamA = teamRepository.save(Team.builder()
                 .name("team-A")
-                .code(code)
-                .build();
-        Team teamB = Team.builder()
-                .name("team-B")
-                .code(code)
-                .build();
+                .code(Code.generate(length -> "abcd1234"))
+                .build());
 
-        given(teamMemberRepository.findAllByMemberId(anyLong())).willReturn(
-                List.of(
-                        TeamMember.builder().id(1L)
-                                .team(teamA)
-                                .member(member)
-                                .build(),
-                        TeamMember.builder().id(2L)
-                                .team(teamB)
-                                .member(member)
-                                .build()
-                )
-        );
+        teamMemberRepository.save(new TeamMember(null, teamA, member));
 
         // when
         List<TeamResponse> teamResponses = teamService.findTeams(member.getId());
 
         // then
-        Assertions.assertAll(
-                () -> assertThat(teamResponses).hasSize(2),
-                () -> assertThat(teamResponses).extracting("name", "code").containsExactly(
-                        tuple(teamA.getName(), teamA.getCode()),
-                        tuple(teamB.getName(), teamB.getCode())
-                )
-        );
+        assertThat(teamResponses)
+                .usingRecursiveComparison()
+                .isEqualTo(
+                        List.of(new TeamResponse(team.getId(), team.getCode(), team.getName()),
+                                new TeamResponse(teamA.getId(), teamA.getCode(), teamA.getName()))
+                );
+    }
+
+    @Test
+    void 그룹이_없는_멤버인_경우_그룹_조회_시_그룹_목록을_받지_못한다() {
+        // given
+        Member 박성우 = memberRepository.save(Member.builder()
+                .oauthId("19980513")
+                .name("박성우")
+                .profileUrl("https://avatars.githubusercontent.com/u/79205414?v=4")
+                .build());
+
+        // when
+        List<TeamResponse> teamResponses = teamService.findTeams(박성우.getId());
+
+        // then
+        assertThat(teamResponses).hasSize(0);
     }
 
     @Test
     void 그룹에_속한_멤버_목록을_조회한다() {
         // given
-        Member member1 = Member.builder()
-                .id(1L)
-                .oauthId("oauthId1")
-                .name("name1")
-                .profileUrl("http://123-profile.com")
-                .build();
-        Member member2 = Member.builder()
-                .id(2L)
-                .oauthId("oauthId2")
-                .name("name2")
-                .profileUrl("http://234-profile.com")
-                .build();
-        TeamMember teamMember1 = TeamMember.builder().id(1L)
-                .team(team)
-                .member(member1)
-                .build();
-        TeamMember teamMember2 = TeamMember.builder().id(2L)
-                .team(team)
-                .member(member2)
-                .build();
+        Member 박성우 = memberRepository.save(Member.builder()
+                .oauthId("19980513")
+                .name("박성우")
+                .profileUrl("https://avatars.githubusercontent.com/u/79205414?v=4")
+                .build());
+        Member 이찬주 = memberRepository.save(Member.builder()
+                .oauthId("19960000")
+                .name("이찬주")
+                .profileUrl("https://avatars.githubusercontent.com/u/52564093?v=4")
+                .build());
 
-        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
-        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(true);
-        given(teamMemberRepository.findAllByTeamId(anyLong())).willReturn(List.of(teamMember1, teamMember2));
+        teamMemberRepository.save(new TeamMember(null, team, 박성우));
+        teamMemberRepository.save(new TeamMember(null, team, 이찬주));
 
         // when
-        List<MemberResponse> memberResponses = teamService.findMembersInTeam(member1.getId(), team.getCode());
+        List<MemberResponse> memberResponses = teamService.findMembersInTeam(박성우.getId(), team.getCode());
 
         // then
-        assertThat(memberResponses).extracting("id", "name", "profileUrl")
-                .containsExactly(
-                        tuple(member1.getId(), member1.getName(), member1.getProfileUrl()),
-                        tuple(member2.getId(), member2.getName(), member2.getProfileUrl())
+        assertThat(memberResponses)
+                .usingRecursiveComparison()
+                .isEqualTo(
+                        List.of(
+                                new MemberResponse(member.getId(), member.getName(), member.getProfileUrl()),
+                                new MemberResponse(박성우.getId(), 박성우.getName(), 박성우.getProfileUrl()),
+                                new MemberResponse(이찬주.getId(), 이찬주.getName(), 이찬주.getProfileUrl())
+                        )
                 );
+    }
+
+    @Test
+    void 존재하지않는_그룹에_대해_속한_멤버_목록을_조회하면_예외를_던진다() {
+        // given
+        String invalidTeamCode = "invalidTeamCode";
+
+        // when & then
+        assertThatThrownBy(() -> teamService.findMembersInTeam(member.getId(), invalidTeamCode))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
 
     @Test
     void 그룹의_멤버_목록_조회_시_참가한_그룹이_아니라면_예외를_던진다() {
         // given
-        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
-        given(teamMemberRepository.existsByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(false);
+        Member 이찬주 = memberRepository.save(Member.builder()
+                .oauthId("19960000")
+                .name("이찬주")
+                .profileUrl("https://avatars.githubusercontent.com/u/52564093?v=4")
+                .build());
 
         // when & then
-        assertThatThrownBy(() -> teamService.findMembersInTeam(member.getId(), team.getCode()))
-                .isInstanceOf(MismatchedTeamException.class);
+        assertThatThrownBy(() -> teamService.findMembersInTeam(이찬주.getId(), team.getCode()))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
     }
+
 
     @Test
     void 멤버가_그룹에서_탈퇴한다() {
         // given
-        TeamMember teamMember = TeamMember.builder().id(1L)
-                .team(team)
-                .member(member)
-                .build();
-
-        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
-        given(teamMemberRepository.findByTeamIdAndMemberId(anyLong(), anyLong())).willReturn(Optional.of(teamMember));
+        Long memberId = member.getId();
+        String teamCode = team.getCode();
 
         // when
-        teamService.exitMemberFromTeam(member.getId(), team.getCode());
+        teamService.exitMemberFromTeam(memberId, teamCode);
 
         // then
-        verify(teamMemberRepository).delete(any());
+        assertThat(teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId)).isFalse();
     }
 
     @Test
     void 속해있지_않은_그룹에서_탈퇴할시_예외를_던진다() {
         // given
-        given(teamRepository.findByCode(anyString())).willReturn(Optional.of(team));
-        given(teamMemberRepository.findByTeamIdAndMemberId(anyLong(), anyLong()))
-                .willThrow(MismatchedTeamException.class);
+        Team teamA = teamRepository.save(Team.builder()
+                .name("team-A")
+                .code(Code.generate(length -> "abcd1234"))
+                .build());
 
         // when & then
-        assertThatThrownBy(() -> teamService.exitMemberFromTeam(member.getId(), team.getCode()))
-                .isInstanceOf(MismatchedTeamException.class);
+        assertThatThrownBy(() -> teamService.exitMemberFromTeam(member.getId(), teamA.getCode()))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 없는_그룹에서_탈퇴할시_예외를_던진다() {
+        // given
+        String invalidTeamCode = "invalidTeamCode";
+
+        // when & then
+        assertThatThrownBy(() -> teamService.exitMemberFromTeam(member.getId(), invalidTeamCode))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
+    }
+
+    @Test
+    void 없는_멤버가_그룹을_탈퇴할시_예외를_던진다() {
+        // given
+        Long invalidMemberId = member.getId() + 1;
+        // when & then
+        assertThatThrownBy(() -> teamService.exitMemberFromTeam(invalidMemberId, team.getCode()))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
     }
 
     @Test
     void 디폴트_그룹을_찾는다() {
         // given
-        Team teamA = Team.builder()
-                .id(1L)
+        Team teamA = teamRepository.save(Team.builder()
                 .name("team-A")
-                .code(code)
-                .build();
-        Team teamB = Team.builder()
-                .id(2L)
-                .name("team-B")
-                .code(code)
-                .build();
-        TeamMember teamMember1 = TeamMember.builder().id(1L)
-                .team(teamA)
-                .member(member)
-                .build();
-        TeamMember teamMember2 = TeamMember.builder().id(2L)
-                .team(teamB)
-                .member(member)
-                .build();
+                .code(Code.generate(length -> "teamAAAA"))
+                .build());
 
-        given(teamMemberRepository.findAllByMemberId(anyLong())).willReturn(List.of(teamMember1, teamMember2));
+        Team teamB = teamRepository.save(Team.builder()
+                .name("team-B")
+                .code(Code.generate(length -> "teamBBBB"))
+                .build());
+
+        teamMemberRepository.save(new TeamMember(null, teamA, member));
+        teamMemberRepository.save(new TeamMember(null, teamB, member));
 
         // when
         TeamResponse defaultTeamResponse = teamService.findDefaultTeam(member.getId());
+
         // then
-        assertThat(defaultTeamResponse).extracting("code", "name")
-                .containsExactly(teamA.getCode(), teamA.getName());
+        assertThat(defaultTeamResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(new TeamResponse(team.getId(), team.getCode(), team.getName()));
     }
 
     @Test
     void 그룹에_속해있지_않은_경우_예외를_던진다() {
         // given
-        given(teamMemberRepository.findAllByMemberId(anyLong())).willReturn(List.of());
+        Member 박성우 = memberRepository.save(Member.builder()
+                .oauthId("19980513")
+                .name("박성우")
+                .profileUrl("https://avatars.githubusercontent.com/u/79205414?v=4")
+                .build());
 
         // when & then
-        assertThatThrownBy(() -> teamService.findDefaultTeam(member.getId()))
-                .isInstanceOf(ResourceNotFoundException.class);
+        assertThatThrownBy(() -> teamService.findDefaultTeam(박성우.getId()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
 }

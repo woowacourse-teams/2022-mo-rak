@@ -21,10 +21,10 @@ function Sidebar() {
     try {
       if (groupCode) {
         const res = await createInvitationCode(groupCode);
-        const invitationCode = res.headers.get('location').split('/groups/in/')[1];
+        const invitationCode = res.headers.location.split('groups/in')[1];
         const invitationLink = `
         링크를 클릭하거나, 참가 코드를 입력해주세요😀
-        url: ${process.env.BASE_API_URL}invite/${invitationCode}
+        url: ${process.env.CLIENT_URL}/invite/${invitationCode}}
         코드: ${invitationCode}
         `;
 
@@ -40,7 +40,7 @@ function Sidebar() {
     const fetchGroups = async () => {
       try {
         const res = await getGroups();
-        setGroups(res);
+        setGroups(res.data);
         setIsLoading(false);
       } catch (err) {
         alert(err);

@@ -7,7 +7,9 @@
     "start": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --browser chrome"
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "axios": "^0.27.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0"
@@ -41,15 +44,19 @@
     "@storybook/manager-webpack5": "^6.5.9",
     "@storybook/react": "^6.5.9",
     "@storybook/testing-library": "^0.0.13",
+    "@testing-library/cypress": "^8.0.3",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "@typescript-eslint/eslint-plugin": "^5.30.4",
     "@typescript-eslint/parser": "^5.30.4",
     "@webpack-cli/generators": "^2.5.0",
     "babel-loader": "^8.2.5",
+    "cypress": "^10.4.0",
+    "cypress-react-selector": "^3.0.0",
     "dotenv": "^16.0.1",
     "eslint": "^8.19.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.0",
     "eslint-plugin-react": "^7.30.1",

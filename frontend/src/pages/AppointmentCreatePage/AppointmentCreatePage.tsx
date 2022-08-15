@@ -1,37 +1,37 @@
 import styled from '@emotion/styled';
-import React from 'react';
-import Box from '../../components/common/Box/Box';
+import React, { useState } from 'react';
 import AppointmentCreateForm from '../../components/AppointmentCreate/AppointmentCreateForm/AppointmentCreateForm';
+import Calendar from '../../components/@common/Calendar/Calendar';
+import AppointmentCreateHeader from '../../components/AppointmentCreate/AppointmentCreateHeader/AppointmentCreateHeadert';
 
 function AppointmentCreatePage() {
+  const [startDate, setStartDate] = useState(''); // 2022-08-20 과 같은 형식이 들어옴 -> new Date()로 감싸서 사용 가능
+  const [endDate, setEndDate] = useState('');
+
   return (
     <StyledContainer>
       <StyledLeftContainer>
-        <StyledHeader>약속을 생성하세요</StyledHeader>
-        <StyledHeaderContent>여러분이 만날날을 생성해주세요~</StyledHeaderContent>
-        <Box width="45.2rem" minHeight="60rem" />
+        <AppointmentCreateHeader />
+        <Calendar
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+        />
       </StyledLeftContainer>
       <StyledRightContainer>
-        <AppointmentCreateForm />
+        <AppointmentCreateForm startDate={startDate} endDate={endDate} />
       </StyledRightContainer>
     </StyledContainer>
   );
 }
 
 const StyledContainer = styled.div`
-  display: flex;
   width: calc(100% - 36.4rem);
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 6rem;
-`;
-
-const StyledHeader = styled.header`
-  font-size: 4rem;
-`;
-
-const StyledHeaderContent = styled.p`
-  font-size: 2rem;
 `;
 
 const StyledLeftContainer = styled.div`

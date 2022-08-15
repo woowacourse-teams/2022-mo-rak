@@ -14,7 +14,7 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
     List<Appointment> findAllByTeamId(Long teamId);
 
     @Query("select a from Appointment a where a.code.code = :code")
-    Optional<Appointment> findByCode(String code);
+    Optional<Appointment> findByCode(@Param("code") String code);
 
     void deleteById(Long id);
 

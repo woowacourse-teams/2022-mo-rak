@@ -1,5 +1,6 @@
 package com.morak.back.core.domain.slack;
 
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.ExternalException;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,11 @@ public class RestSlackClient implements SlackClient {
     public void notifyClosed(SlackWebhook webhook, String message) {
         NotificationRequest request = createRequest(message);
         try {
-            ResponseEntity<String> response = restTemplate.postForEntity("https://hello.com", request, String.class);
-            validateOK(response);
+            ResponseEntity<String> response = restTemplate.postForEntity(webhook.getUrl(), request, String.class);
+            validateOK(response, webhook.getUrl());
         } catch (ResourceAccessException e) {
-            throw new ExternalException("올바른 주소에대한 요청이 아닙니다. : " + webhook.getUrl());
+            throw new ExternalException(CustomErrorCode.NOTIFICATION_INVALID_URL_ERROR,
+                    "올바른 주소에대한 요청이 아닙니다. : " + webhook.getUrl());
         }
     }
 
@@ -32,9 +34,10 @@ public class RestSlackClient implements SlackClient {
         );
     }
 
-    private void validateOK(ResponseEntity<String> response) {
+    private void validateOK(ResponseEntity<String> response, String url) {
         if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new ExternalException("슬랙 API 요청에 대한 응답이 200대가 아닙니다" + response.getStatusCode());
+            throw new ExternalException(CustomErrorCode.NOTIFICATION_REQUEST_FAILURE_ERROR,
+                    String.format("슬랙 API 요청(%s)에 대한 응답이 %s 입니다.", url, response.getStatusCode()));
         }
     }
 }

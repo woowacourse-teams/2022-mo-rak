@@ -1,11 +1,13 @@
 package com.morak.back.auth.domain;
 
+import com.morak.back.core.support.Generated;
 import com.morak.back.poll.domain.BaseEntity;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ import org.hibernate.validator.constraints.URL;
 @Builder
 public class Member extends BaseEntity {
 
+    @Transient
     private static final Member ANONYMOUS_MEMBER = new Member(
             0L,
             "00000000",
@@ -50,6 +53,7 @@ public class Member extends BaseEntity {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -63,6 +67,7 @@ public class Member extends BaseEntity {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(id, oauthId, name, profileUrl);
     }

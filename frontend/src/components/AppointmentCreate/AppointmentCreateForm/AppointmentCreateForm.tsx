@@ -1,48 +1,66 @@
 import styled from '@emotion/styled';
 import React, { FormEvent } from 'react';
-import Box from '../../common/Box/Box';
+import { useNavigate, useParams } from 'react-router-dom';
+import Box from '../../@common/Box/Box';
 import AppointmentCreateFormButtonGroup from '../AppointmentCreateFormButtonGroup/AppointmentCreateFormButtonGroup';
 import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
 import AppointmentCreateFormDescriptionInput from '../AppointmentCreateFormDescriptionInput/AppointmentCreateFormDescriptionInput';
 import AppointmentCreateFormDurationInput from '../AppointmentCreateFormDurationInput/AppointmentCreateFormDurationInput';
 import AppointmentCreateFormTimeLimitInput from '../AppointmentCreateFormTimeLimitInput/AppointmentCreateFormTimeLimitInput';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import useInput from '../../../hooks/useInput';
 import useInputs from '../../../hooks/useInputs';
-import { Time, CreateAppointmentRequest } from '../../../types/appointment';
+import { Time, createAppointmentData, AppointmentInterface } from '../../../types/appointment';
+import { createAppointment } from '../../../api/appointment';
+import { GroupInterface } from '../../../types/group';
+
+interface Props {
+  startDate: AppointmentInterface['startDate'];
+  endDate: AppointmentInterface['endDate'];
+}
 
 const getFormattedTime = (time: Time) => {
   const { period, hour, minute } = time;
 
-  return `${hour}:${minute}${period}`;
+  return `${hour.padStart(2, '0')}:${minute}${period}`;
 };
 
-function AppointmentCreateForm() {
+function AppointmentCreateForm({ startDate, endDate }: Props) {
+  const navigate = useNavigate();
   const [title, handleTitle] = useInput();
+  // TODO: groupCode 받아오는 게 계속 중복되어서, 중복줄이자
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [description, handleDescription] = useInput();
   const [duration, handleDuration] = useInputs<Omit<Time, 'period'>>({ hour: '', minute: '' });
-  const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '' });
-  const [endTime, handleEndTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '' });
+  const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
+  const [endTime, handleEndTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleCreateAppointment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const appointment: CreateAppointmentRequest = {
+    const appointment: createAppointmentData = {
       title,
       description,
-      startDate: '2022-07-26',
-      endDate: '2022-08-04',
+      startDate,
+      endDate: endDate || startDate,
       startTime: getFormattedTime(startTime),
       endTime: getFormattedTime(endTime),
-      durationHour: Number(duration.hour),
-      durationMinute: Number(duration.minute)
+      durationHours: Number(duration.hour),
+      durationMinutes: Number(duration.minute)
     };
 
-    console.log(appointment);
+    try {
+      const res = await createAppointment(groupCode, appointment);
+      const appointmentCode = res.headers.location.split('appointments/')[1];
+
+      navigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit}>
+    <StyledForm onSubmit={handleCreateAppointment}>
       <Box width="66rem" minHeight="56.4rem" padding="4.8rem">
         <FlexContainer flexDirection="column" gap="1.6rem">
           <AppointmentCreateFormTitleInput title={title} onChange={handleTitle} />
@@ -53,8 +71,8 @@ function AppointmentCreateForm() {
           <AppointmentCreateFormDurationInput duration={duration} onChange={handleDuration} />
           <AppointmentCreateFormTimeLimitInput
             startTime={startTime}
-            onChangeStartTime={handleStartTime}
             endTime={endTime}
+            onChangeStartTime={handleStartTime}
             onChangeEndTime={handleEndTime}
           />
         </FlexContainer>
