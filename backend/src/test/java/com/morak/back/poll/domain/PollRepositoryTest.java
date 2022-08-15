@@ -85,17 +85,4 @@ class PollRepositoryTest {
         // when & then
         assertThat(poll).isEmpty();
     }
-
-    // TODO: 2022/08/11 data.sql 의존
-    @Test
-    void id로_투표를_삭제한다() {
-        // given
-        pollRepository.deleteById(1L);
-
-        // when
-        Optional<Poll> poll = pollRepository.findById(1L);
-
-        // then
-        assertThat(poll).isEmpty();
-    }
 }
