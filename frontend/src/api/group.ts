@@ -17,6 +17,8 @@ const getIsJoinedGroup = (invitationCode: string) => axios.get(`/in/${invitation
 
 const getDefaultGroup = () => axios.get('/default');
 
+const leaveGroup = (groupCode: GroupInterface['code']) => axios.delete(`/out/${groupCode}`);
+
 export {
   getGroups,
   createGroup,
@@ -24,5 +26,6 @@ export {
   createInvitationCode,
   participateGroup,
   getIsJoinedGroup,
-  getDefaultGroup
+  getDefaultGroup,
+  leaveGroup
 };

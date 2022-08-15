@@ -6,7 +6,7 @@ import Menu from '../../assets/menu.svg';
 import Plus from '../../assets/plus.svg';
 import Leave from '../../assets/leave.svg';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
-import { getDefaultGroup } from '../../api/group';
+import { getDefaultGroup, leaveGroup } from '../../api/group';
 import { getLocalStorageItem, removeLocalStorageItem } from '../../utils/storage';
 import { GroupInterface } from '../../types/group';
 
@@ -54,6 +54,18 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
     setIsShowGroupList(!isShowGroupList);
   };
 
+  const handleLeaveGroup = async () => {
+    // TODO: 이후에 모달창으로 변경하기
+    if (window.confirm('그룹을 나가시겠습니까?')) {
+      try {
+        await leaveGroup(groupCode);
+        navigate('/init');
+      } catch (err) {
+        alert(err);
+      }
+    }
+  };
+
   return (
     <StyledGroupContainer>
       <StyledMenuHeader>그룹</StyledMenuHeader>
@@ -94,7 +106,7 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
           <img src={Plus} alt="create-new-group-button" />
           <StyledGroupText>새로운 그룹 생성</StyledGroupText>
         </StyledCreateNewGroup>
-        <StyledLeaveGroup>
+        <StyledLeaveGroup onClick={handleLeaveGroup}>
           <img src={Leave} alt="group-exit-button" />
           <StyledGroupText>그룹 나가기</StyledGroupText>
         </StyledLeaveGroup>
