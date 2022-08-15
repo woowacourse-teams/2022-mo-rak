@@ -18,19 +18,18 @@ class OAuthServiceTest {
 
     private static final String CODE = "test-code";
 
-    private TokenProvider tokenProvider =
-            new JwtTokenProvider("9875a0b4ee6605257509be56c0c0db8ac7657c56e008b2d0087efece6e0accd8", 3600000L);
-
-    private OAuthClient oAuthClient = new FakeOAuthClient();
-
-    @Autowired
+    private OAuthClient oAuthClient;
+    private TokenProvider tokenProvider;
     private MemberRepository memberRepository;
-
     private OAuthService oAuthService;
 
-    @BeforeEach
-    void setUp() {
-        oAuthService = new OAuthService(memberRepository, oAuthClient, tokenProvider);
+    @Autowired
+    public OAuthServiceTest(MemberRepository memberRepository) {
+        this.oAuthClient = new FakeOAuthClient();
+        this.tokenProvider =
+                new JwtTokenProvider("9875a0b4ee6605257509be56c0c0db8ac7657c56e008b2d0087efece6e0accd8", 3600000L);
+        this.memberRepository = memberRepository;
+        this.oAuthService = new OAuthService(memberRepository, oAuthClient, tokenProvider);
     }
 
     @Test
