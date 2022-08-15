@@ -163,7 +163,7 @@ const StyledGuideText = styled.div`
 
 const StyledTop = styled.div`
   position: relative;
-  height: calc(100% / 2);
+  height: 50%;
   padding-top: 2.4rem;
 `;
 
@@ -192,7 +192,7 @@ const StyledTriangle = styled.div`
 
 const StyledBottom = styled.div(({ theme }) => `
   background: ${theme.colors.YELLOW_50};
-  height: calc(100% / 2);
+  height: 50%;
   padding-top: 4.4rem;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
