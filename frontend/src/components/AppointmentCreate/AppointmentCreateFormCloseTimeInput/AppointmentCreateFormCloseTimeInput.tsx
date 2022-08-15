@@ -1,9 +1,9 @@
 import React, { ChangeEventHandler } from 'react';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
-import Input from '../../common/Input/Input';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import TextField from '../../common/TextField/TextField';
+import Input from '../../@common/Input/Input';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import TextField from '../../@common/TextField/TextField';
 
 interface Props {
   closeTime: string;

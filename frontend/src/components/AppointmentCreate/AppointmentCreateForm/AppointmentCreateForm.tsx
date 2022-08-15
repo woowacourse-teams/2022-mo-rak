@@ -8,7 +8,7 @@ import AppointmentCreateFormDescriptionInput from '../AppointmentCreateFormDescr
 import AppointmentCreateFormDurationInput from '../AppointmentCreateFormDurationInput/AppointmentCreateFormDurationInput';
 import AppointmentCreateFormTimeLimitInput from '../AppointmentCreateFormTimeLimitInput/AppointmentCreateFormTimeLimitInput';
 import AppointmentCreateFormCloseTimeInput from '../AppointmentCreateFormCloseTimeInput/AppointmentCreateFormCloseTimeInput';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import useInput from '../../../hooks/useInput';
 import useInputs from '../../../hooks/useInputs';
 import { Time, createAppointmentData, AppointmentInterface } from '../../../types/appointment';
