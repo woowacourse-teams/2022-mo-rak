@@ -104,21 +104,21 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
 }
 
 const StyledMenuHeader = styled.div`
-width: 100%;
-font-size: 2rem;
-text-align: left;
-margin-bottom: 2rem;
+  width: 100%;
+  font-size: 2rem;
+  text-align: left;
+  margin-bottom: 2rem;
 `;
 
 const StyledGroupListBox = styled.div<{isClickedShowGroupList: boolean}>(({ theme, isClickedShowGroupList }) => `
-  visibility: 'hidden';
+  visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.2s ease-in-out;
   width: 24rem;
   background: ${theme.colors.WHITE_100};
   position: absolute;
-  right: -252px;
-  top: 44px;
+  right: -25.2rem;
+  top: 4.4rem;
   border-radius: 12px;
   max-height: 45.2rem;
 

@@ -39,10 +39,10 @@ function SidebarFeatureMenu({ groupCode }: Props) {
 }
 
 const StyledMenuHeader = styled.div`
-width: 100%;
-font-size: 2rem;
-text-align: left;
-margin-bottom: 2rem;
+  width: 100%;
+  font-size: 2rem;
+  text-align: left;
+  margin-bottom: 2rem;
 `;
 
 const StyledFeatureContainer = styled.div`
