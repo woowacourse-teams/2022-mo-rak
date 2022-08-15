@@ -35,7 +35,7 @@ const StyledTimeRange = styled.p`
 `;
 
 const StyledCloseDateTime = styled.p`
-  font-size: 1.8rem;
+  font-size: 1.6rem;
 `;
 
 export default AppointmentProgressDetail;
