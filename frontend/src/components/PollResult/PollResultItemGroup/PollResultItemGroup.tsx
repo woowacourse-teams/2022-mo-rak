@@ -1,4 +1,4 @@
-import React, { useEffect, useState, CSSProperties } from 'react';
+import React, { useState, CSSProperties } from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
@@ -7,7 +7,6 @@ import {
   getPollResultResponse,
   getPollItemsResponse
 } from '../../../types/poll';
-import { getPollItems } from '../../../api/poll';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import Crown from '../../../assets/crown.svg';
 import Check from '../../../assets/check.svg';
@@ -16,13 +15,11 @@ import UserPurple from '../../../assets/user-purple.svg';
 import UserWhite from '../../../assets/user-white.svg';
 import PollParticipantModal from '../PollParticipantModal/PollParticipantModal';
 import TextField from '../../@common/TextField/TextField';
-import { GroupInterface } from '../../../types/group';
 
 interface Props {
-  pollCode: PollInterface['code'];
   status: PollInterface['status'];
-  groupCode: GroupInterface['code'];
   pollResult: getPollResultResponse;
+  pollItems: getPollItemsResponse;
 }
 
 const getWinningPollItemIds = (pollResult: getPollResultResponse) => {
@@ -37,35 +34,16 @@ const getWinningPollItemIds = (pollResult: getPollResultResponse) => {
 const getSelectedPollItemIds = (pollItems: getPollItemsResponse) =>
   pollItems.filter((pollItem) => pollItem.isSelected).map((pollItem) => pollItem.id);
 
-function PollResultItemGroup({ pollCode, status, groupCode, pollResult }: Props) {
+function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
   const theme = useTheme();
   const [activePollItem, setActivePollItem] = useState(0);
-  const [selectedPollItemIds, setSelectedPollItemIds] = useState<Array<PollItemInterface['id']>>(
-    []
-  );
+  const selectedPollItemIds = getSelectedPollItemIds(pollItems);
   const winningPollItemIds = getWinningPollItemIds(pollResult);
 
   // TODO: 뭐지? 살펴보기
   const handleShowParticipant = (pollItemId: PollItemInterface['id']) => () => {
     setActivePollItem(pollItemId);
   };
-
-  useEffect(() => {
-    const fetchPollItems = async (pollCode: PollInterface['code']) => {
-      try {
-        if (groupCode) {
-          const res = await getPollItems(pollCode, groupCode);
-          setSelectedPollItemIds(getSelectedPollItemIds(res.data));
-        }
-      } catch (err) {
-        alert(err);
-      }
-    };
-
-    if (pollCode) {
-      fetchPollItems(pollCode);
-    }
-  }, []);
 
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
