@@ -113,8 +113,7 @@ public class GlobalControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionResponse(CustomErrorCode.API_NOT_FOUND_ERROR.getNumber(), "처리할 수 없는 요청입니다."));
     }
-
-
+    
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e,
                                                              ContentCachingRequestWrapper requestWrapper) {
