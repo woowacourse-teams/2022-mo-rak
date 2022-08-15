@@ -2,7 +2,6 @@ package com.morak.back.team.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.tuple;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
@@ -10,6 +9,7 @@ import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.domain.TeamMember;
@@ -25,11 +25,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.jdbc.Sql;
 
-@DataJpaTest
-@Sql(scripts = "classpath:schema.sql")
+@ServiceTest
 class TeamServiceTest {
 
     @Autowired
