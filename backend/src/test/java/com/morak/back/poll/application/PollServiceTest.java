@@ -185,16 +185,17 @@ class PollServiceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id", "createdAt")
                 .isEqualTo(
-                        List.of(new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
-                                        poll.getIsAnonymous(),
-                                        poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), true),
-                                new PollResponse(null, pollCreateRequest.getTitle(),
+                        List.of(new PollResponse(null, pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
                                         pollCreateRequest.getIsAnonymous(), OPEN.name(), null,
                                         pollCreateRequest.getClosedAt(),
                                         pollCode,
-                                        true))
+                                        true),
+                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), true)
+                        )
                 );
     }
 
@@ -229,16 +230,16 @@ class PollServiceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id", "createdAt")
                 .isEqualTo(
-                        List.of(new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
-                                        poll.getIsAnonymous(),
-                                        poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), true),
-                                new PollResponse(null, pollCreateRequest2.getTitle(),
+                        List.of(new PollResponse(null, pollCreateRequest2.getTitle(),
                                         pollCreateRequest2.getAllowedPollCount(),
                                         pollCreateRequest2.getIsAnonymous(), OPEN.name(), null,
                                         pollCreateRequest2.getClosedAt(),
                                         pollCode2,
                                         true),
+                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), true),
                                 new PollResponse(null, pollCreateRequest1.getTitle(),
                                         pollCreateRequest1.getAllowedPollCount(),
                                         pollCreateRequest1.getIsAnonymous(), CLOSED.name(), null,
@@ -290,27 +291,27 @@ class PollServiceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id", "createdAt")
                 .isEqualTo(
-                        List.of(new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
-                                        poll.getIsAnonymous(),
-                                        poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), true),
-                                new PollResponse(null, pollCreateRequest2.getTitle(),
+                        List.of(new PollResponse(null, pollCreateRequest2.getTitle(),
                                         pollCreateRequest2.getAllowedPollCount(),
                                         pollCreateRequest2.getIsAnonymous(), OPEN.name(), null,
                                         pollCreateRequest2.getClosedAt(),
                                         pollCode2,
+                                        true),
+                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), true),
+                                new PollResponse(null, pollCreateRequest3.getTitle(),
+                                        pollCreateRequest3.getAllowedPollCount(),
+                                        pollCreateRequest3.getIsAnonymous(), CLOSED.name(), null,
+                                        pollCreateRequest3.getClosedAt(),
+                                        pollCode3,
                                         true),
                                 new PollResponse(null, pollCreateRequest1.getTitle(),
                                         pollCreateRequest1.getAllowedPollCount(),
                                         pollCreateRequest1.getIsAnonymous(), CLOSED.name(), null,
                                         pollCreateRequest1.getClosedAt(),
                                         pollCode1,
-                                        true),
-                                new PollResponse(null, pollCreateRequest3.getTitle(),
-                                        pollCreateRequest3.getAllowedPollCount(),
-                                        pollCreateRequest3.getIsAnonymous(), CLOSED.name(), null,
-                                        pollCreateRequest3.getClosedAt(),
-                                        pollCode3,
                                         true)
                         )
                 );
@@ -343,16 +344,17 @@ class PollServiceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id", "createdAt")
                 .isEqualTo(
-                        List.of(new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
-                                        poll.getIsAnonymous(),
-                                        poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), false),
-                                new PollResponse(null, pollCreateRequest.getTitle(),
+                        List.of(new PollResponse(null, pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
                                         pollCreateRequest.getIsAnonymous(), OPEN.name(), null,
                                         pollCreateRequest.getClosedAt(),
                                         pollCode,
-                                        false))
+                                        false),
+                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), false)
+                        )
                 );
     }
 

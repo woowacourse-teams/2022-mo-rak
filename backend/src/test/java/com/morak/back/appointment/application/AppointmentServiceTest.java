@@ -248,8 +248,8 @@ class AppointmentServiceTest {
         // then
         assertThat(appointmentsResponse)
                 .extracting("code")
-                .containsExactly("FEsd23C1", appointment2.getCode(), appointment4.getCode(), appointment5.getCode(),
-                        appointment1.getCode(), appointment3.getCode());
+                .containsExactly(appointment5.getCode(), appointment4.getCode(), appointment2.getCode(), "FEsd23C1",
+                        appointment3.getCode(), appointment1.getCode());
     }
 
     @Test

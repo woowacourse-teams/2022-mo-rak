@@ -45,7 +45,7 @@ public class AppointmentAllResponse implements Comparable<AppointmentAllResponse
     @Override
     public int compareTo(AppointmentAllResponse o) {
         if (this.closed.equals(o.closed)) {
-            return Long.compare(this.id, o.id);
+            return Long.compare(o.id, this.id);
         }
 
         if (!this.closed) {

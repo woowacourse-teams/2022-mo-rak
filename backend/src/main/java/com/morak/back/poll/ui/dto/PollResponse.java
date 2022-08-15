@@ -40,7 +40,7 @@ public class PollResponse implements Comparable<PollResponse>{
     @Override
     public int compareTo(PollResponse o) {
         if (this.status.equalsIgnoreCase(o.status)) {
-            return Long.compare(this.id, o.id);
+            return Long.compare(o.id, this.id);
         }
 
         if (PollStatus.OPEN.name().equalsIgnoreCase(this.status)) {
