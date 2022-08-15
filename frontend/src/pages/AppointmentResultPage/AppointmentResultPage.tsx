@@ -3,7 +3,11 @@ import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 
 import { getAppointment, getAppointmentRecommendation } from '../../api/appointment';
-import { getAppointmentResponse, AppointmentInterface, AppointmentRecommendationInterface } from '../../types/appointment';
+import {
+  getAppointmentResponse,
+  AppointmentInterface,
+  AppointmentRecommendationInterface
+} from '../../types/appointment';
 import { GroupInterface } from '../../types/group';
 import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
 import AppointmentResultRanking from '../../components/AppointmentResult/AppointmentResultRanking/AppointmentResultRanking';
@@ -14,7 +18,7 @@ import AppointmentResultHeader from '../../components/AppointmentResult/Appointm
 function AppointmentResultPage() {
   const [appointment, setAppointment] = useState<getAppointmentResponse>();
   const [appointmentRecommendation, setAppointmentRecommendation] = useState<
-  Array<AppointmentRecommendationInterface>
+    Array<AppointmentRecommendationInterface>
   >([]);
   const [clickedRecommendation, setClickedRecommendation] = useState<number>(-1);
 
@@ -62,8 +66,8 @@ function AppointmentResultPage() {
           <AppointmentResultRanking
             groupCode={groupCode}
             appointmentRecommendation={appointmentRecommendation}
-            onClickRank={handleShowParticipant}
             clickedRecommendation={clickedRecommendation}
+            onClickRank={handleShowParticipant}
           />
           <AppointmentResultAvailableMembers
             appointmentRecommendation={appointmentRecommendation}

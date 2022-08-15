@@ -8,7 +8,9 @@ import { getGroupMembers } from '../../../api/group';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 
 const getDateTime = (
-  recommendationDateTime: AppointmentRecommendationInterface['recommendStartDateTime' | 'recommendEndDateTime']
+  recommendationDateTime: AppointmentRecommendationInterface[
+    | 'recommendStartDateTime'
+    | 'recommendEndDateTime']
 ) => {
   // TODO: 리팩토링
   const period = recommendationDateTime.slice(-2);
@@ -28,17 +30,16 @@ const getDateTime = (
 interface Props {
   groupCode: GroupInterface['code'];
   appointmentRecommendation: Array<AppointmentRecommendationInterface>;
-  onClickRank: (
-    idx: number,
-  ) => MouseEventHandler<HTMLDivElement>;
   clickedRecommendation: number;
+  onClickRank: (idx: number) => MouseEventHandler<HTMLDivElement>;
 }
 
 function AppointmentResultRanking({
   groupCode,
   appointmentRecommendation,
-  onClickRank,
-  clickedRecommendation }: Props) {
+  clickedRecommendation,
+  onClickRank
+}: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
   const totalParticipants = groupMembers.length;
 
@@ -62,6 +63,7 @@ function AppointmentResultRanking({
     <StyledResultBox>
       {appointmentRecommendation.map(
         (
+          // TODO: destructuring에 관하여 일관성 살펴보기
           {
             rank,
             recommendStartDateTime,
@@ -70,28 +72,20 @@ function AppointmentResultRanking({
           }: AppointmentRecommendationInterface,
           idx
         ) => (
-          <StyledRank
-            onClick={onClickRank(idx)}
-            isClicked={idx === clickedRecommendation}
-          >
+          <StyledRank onClick={onClickRank(idx)} isClicked={idx === clickedRecommendation}>
             <FlexContainer justifyContent="space-between">
               {/* TODO: 상수화 */}
               {rank === 1 ? (
                 <StyledCrownIcon src={Crown} alt="crown" />
               ) : (
-              // TODO: Text라는 suffix에 대해서 일관성 살펴보기
+                // TODO: Text라는 suffix에 대해서 일관성 살펴보기
                 <StyledResultText>{rank}</StyledResultText>
               )}
               <StyledResultText>
-                {getDateTime(recommendStartDateTime)}
-                ~
-                {getDateTime(recommendEndDateTime)}
+                {getDateTime(recommendStartDateTime)}~{getDateTime(recommendEndDateTime)}
               </StyledResultText>
               <StyledResultText>
-                {availableMembers.length}
-                /
-                {totalParticipants}
-                명 가능
+                {availableMembers.length}/{totalParticipants}명 가능
               </StyledResultText>
             </FlexContainer>
           </StyledRank>
@@ -111,9 +105,10 @@ const StyledResultBox = styled.div(
   height: 59.6rem;
   overflow-y: auto;
   border-radius: 15px;
+  padding: 2rem 0;
+  
   background-color: ${theme.colors.WHITE_100};
   box-shadow: 0px 4px 4px ${theme.colors.TRANSPARENT_BLACK_100_25};
-  padding: 2rem 0;
 `
 );
 
