@@ -75,7 +75,7 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
       </FlexContainer>
 
       {/* group list */}
-      <StyledGroupListBox isClickedShowGroupList={isClickedGroupList}>
+      <StyledGroupListBox isShowGroupList={isClickedGroupList}>
         <StyledGroupListContainer>
           {groups.map((group) => (
             <StyledGroupList to={`groups/${group.code}`} isDefaultGroup={groupCode === group.code}>
@@ -110,7 +110,7 @@ const StyledMenuHeader = styled.div`
   margin-bottom: 2rem;
 `;
 
-const StyledGroupListBox = styled.div<{isClickedShowGroupList: boolean}>(({ theme, isClickedShowGroupList }) => `
+const StyledGroupListBox = styled.div<{isShowGroupList: boolean}>(({ theme, isShowGroupList }) => `
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.2s ease-in-out;
@@ -122,7 +122,7 @@ const StyledGroupListBox = styled.div<{isClickedShowGroupList: boolean}>(({ them
   border-radius: 12px;
   max-height: 45.2rem;
 
-  ${isClickedShowGroupList && `
+  ${isShowGroupList && `
   visibility: visible;
   opacity: 1;
   `}
