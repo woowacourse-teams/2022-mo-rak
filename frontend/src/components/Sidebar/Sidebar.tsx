@@ -123,6 +123,7 @@ function Sidebar() {
 
 // 팝업 스타일
 const StyledSlackModalContainer = styled.div<{isClickedSlackMenu: boolean}>(({ theme, isClickedSlackMenu }) => `
+  z-index: 10;
   display: ${isClickedSlackMenu ? 'flex' : 'none'};
   background-color: ${theme.colors.TRANSPARENT_BLACK_100_25};
   align-items: center;
