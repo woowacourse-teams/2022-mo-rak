@@ -230,7 +230,7 @@ public class PollService {
         return pollsToBeClosed.stream()
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        poll -> slackWebhookRepository.findByTeamId(poll.getTeam().getId()).orElseThrow()
+                        poll -> slackWebhookRepository.findByTeamId(poll.getTeamId()).orElseThrow()
                 ));
     }
 }

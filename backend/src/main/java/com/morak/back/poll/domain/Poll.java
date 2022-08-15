@@ -177,6 +177,11 @@ public class Poll extends BaseEntity implements Menu {
     }
 
     @Override
+    public Long getTeamId() {
+        return getTeam().getId();
+    }
+
+    @Override
     public String getTeamName() {
         return getTeam().getName();
     }
