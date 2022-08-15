@@ -12,7 +12,6 @@ import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembe
 import SidebarFeatureMenu from '../SidebarFeatureMenu/SidebarFeatureMenu';
 import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
 import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
-import FlexContainer from '../@common/FlexContainer/FlexContainer';
 
 interface Props {
   groupCode: GroupInterface['code'];

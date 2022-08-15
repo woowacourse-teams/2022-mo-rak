@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Setting from '../../assets/setting.svg';
 import Menu from '../../assets/menu.svg';
 import Plus from '../../assets/plus.svg';
+import Leave from '../../assets/leave.svg';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
 import { getDefaultGroup } from '../../api/group';
 import { getLocalStorageItem, removeLocalStorageItem } from '../../utils/storage';
@@ -93,6 +94,10 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
           <img src={Plus} alt="create-new-group-button" />
           <StyledGroupText>새로운 그룹 생성</StyledGroupText>
         </StyledCreateNewGroup>
+        <StyledLeaveGroup>
+          <img src={Leave} alt="group-exit-button" />
+          <StyledGroupText>그룹 나가기</StyledGroupText>
+        </StyledLeaveGroup>
       </StyledGroupListBox>
     </StyledGroupContainer>
   );
@@ -226,6 +231,21 @@ const StyledCreateNewGroup = styled.button`
 
 const StyledGroupText = styled.p`
   font-size: 2rem;
+`;
+
+const StyledLeaveGroup = styled.button`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 1.2rem;
+  font-size: 1.6rem;
+  width: 100%;
+  padding: 2rem;
+
+  &:hover {
+    transform: scale(1.05);
+    transition: all 0.2s linear;
+  }
 `;
 
 export default SidebarGroupMenu;
