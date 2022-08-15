@@ -1,6 +1,6 @@
-import React, { useState, MouseEventHandler, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Logo from '../../assets/logo.svg';
 
 import { getGroups } from '../../api/group';
@@ -13,15 +13,10 @@ import SidebarFeatureMenu from '../SidebarFeatureMenu/SidebarFeatureMenu';
 import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
 import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
 
-interface Props {
-  groupCode: GroupInterface['code'];
-  handleSetClickedMenu: (menu: string) => MouseEventHandler<HTMLDivElement>;
-  clickedMenu: string;
-}
-
-function Sidebar({ groupCode, handleSetClickedMenu, clickedMenu }: Props) {
+function Sidebar() {
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -55,8 +50,7 @@ function Sidebar({ groupCode, handleSetClickedMenu, clickedMenu }: Props) {
 
       {/* 기능 */}
       <Divider />
-      {/* TODO: props drilling 발생!  */}
-      <SidebarFeatureMenu handleSetClickedMenu={handleSetClickedMenu} clickedMenu={clickedMenu} />
+      <SidebarFeatureMenu groupCode={groupCode} />
 
       {/* 멤버 목록 */}
       <Divider />

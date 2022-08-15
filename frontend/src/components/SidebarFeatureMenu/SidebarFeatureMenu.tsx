@@ -1,25 +1,35 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import Poll from '../../assets/person-check.svg';
 import Appointment from '../../assets/calendar-clock.svg';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
+import { useMenuDispatch, useMenuState } from '../../context/MenuProvider';
+import { GroupInterface } from '../../types/group';
 
 interface Props {
-  handleSetClickedMenu: (menu: string) => MouseEventHandler<HTMLDivElement>;
-  clickedMenu: string;
+  groupCode: GroupInterface['code'];
 }
 
-// TODO: props drilling 발생!
-function SidebarFeatureMenu({ handleSetClickedMenu, clickedMenu }: Props) {
+function SidebarFeatureMenu({ groupCode }: Props) {
+  const { clickedMenu } = useMenuState();
+  const dispatch = useMenuDispatch();
+  const navigate = useNavigate();
+
+  const handleMoveToClickedMenu = (menu: string) => () => {
+    dispatch({ type: 'SET_CLICKED_MENU', menu });
+    navigate(`/groups/${groupCode}/${menu}`);
+  };
+
   return (
     <StyledFeatureContainer>
       <StyledMenuHeader>기능</StyledMenuHeader>
       <FlexContainer flexDirection="column">
-        <StyledPollMenu onClick={handleSetClickedMenu('poll')} isClicked={clickedMenu === 'poll'}>
+        <StyledPollMenu onClick={handleMoveToClickedMenu('poll')} isClicked={clickedMenu === 'poll'}>
           <StyledPollIcon src={Poll} />
           <StyledFeatureTitle>투표하기</StyledFeatureTitle>
         </StyledPollMenu>
-        <StyledAppointmentMenu onClick={handleSetClickedMenu('appointment')} isClicked={clickedMenu === 'appointment'}>
+        <StyledAppointmentMenu onClick={handleMoveToClickedMenu('appointment')} isClicked={clickedMenu === 'appointment'}>
           <StyledAppointmentIcon src={Appointment} />
           <StyledFeatureTitle>약속잡기</StyledFeatureTitle>
         </StyledAppointmentMenu>

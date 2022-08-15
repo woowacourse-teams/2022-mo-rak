@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
 import AppointmentMainContainer from '../../components/AppointmentMain/AppointmentMainContainer/AppointmentMainContainer';
 import AppointmentMainHeader from '../../components/AppointmentMain/AppointmentMainHeader/AppointmentMainHeader';
+import { useMenuDispatch } from '../../context/MenuProvider';
 
 function AppointmentMainPage() {
-  const { setClickedMenu }: any = useOutletContext();
-  setClickedMenu('appointment');
+  const dispatch = useMenuDispatch();
+  dispatch({ type: 'SET_CLICKED_MENU', menu: 'appointment' });
 
   return (
     <StyledContainer>
