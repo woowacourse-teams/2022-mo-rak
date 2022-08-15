@@ -9,7 +9,6 @@ import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
 import com.morak.back.support.ServiceTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,10 +17,10 @@ class OAuthServiceTest {
 
     private static final String CODE = "test-code";
 
-    private OAuthClient oAuthClient;
-    private TokenProvider tokenProvider;
-    private MemberRepository memberRepository;
-    private OAuthService oAuthService;
+    private final OAuthClient oAuthClient;
+    private final TokenProvider tokenProvider;
+    private final MemberRepository memberRepository;
+    private final OAuthService oAuthService;
 
     @Autowired
     public OAuthServiceTest(MemberRepository memberRepository) {
