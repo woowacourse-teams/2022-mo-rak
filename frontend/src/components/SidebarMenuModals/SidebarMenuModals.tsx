@@ -13,8 +13,9 @@ import LinkIcon from '../../assets/link.svg';
 import Close from '../../assets/close-button.svg';
 import Logo from '../../assets/logo.svg';
 import { GroupInterface } from '../../types/group';
-import { createGroup } from '../../api/group';
+import { createGroup, participateGroup } from '../../api/group';
 import { useMenuDispatch } from '../../context/MenuProvider';
+import useInput from '../../hooks/useInput';
 
 interface Props {
   activeModalMenu: string | null;
@@ -23,6 +24,7 @@ interface Props {
 
 function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
   const [groupName, setGroupName] = useState<GroupInterface['name']>('');
+  const [invitationCode, handleInvitationCode] = useInput('');
 
   const dispatch = useMenuDispatch();
   const navigate = useNavigate();
@@ -45,6 +47,18 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
 
   const handleGroupName = (e: ChangeEvent<HTMLInputElement>) => {
     setGroupName(e.target.value);
+  };
+
+  // 그룹 참가
+  const handleParticipateGroup = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      await participateGroup(invitationCode);
+      navigate(`/groups/${invitationCode}`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -108,7 +122,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
 
       {/* 그룹 참가 */}
       <Modal isVisible={activeModalMenu === 'participate'} close={closeModal}>
-        <StyledModalContainer>
+        <StyledModalFormContainer onSubmit={handleParticipateGroup}>
           <StyledTop>
             <StyledSmallLogo src={Logo} alt="logo" />
             <StyledHeaderText>그룹 참가</StyledHeaderText>
@@ -125,13 +139,13 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
                 padding="1.6rem 10rem"
                 width="50.4rem"
               >
-                <Input placeholder="그룹 코드를 입력하면 참가 완료!" fontSize="1.6REM" required autoFocus />
+                <StyledNameInput placeholder="그룹 코드를 입력하면 참가 완료!" value={invitationCode} onChange={handleInvitationCode} required autoFocus />
                 <StyledLinkIcon src={Plus} alt="plus-icon" />
               </TextField>
               <StyledButton>참가하기</StyledButton>
             </FlexContainer>
           </StyledBottom>
-        </StyledModalContainer>
+        </StyledModalFormContainer>
       </Modal>
     </>
   );

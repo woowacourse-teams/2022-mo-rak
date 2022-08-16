@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 import React, { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { participateGroup } from '../../../api/group';
 import useInput from '../../../hooks/useInput';
 
@@ -9,12 +11,14 @@ import GroupParticipateFormSubmitButton from '../GroupPariticipateFormSubmitButt
 function GroupParticipateForm() {
   const [invitationCode, handleInvitationCode] = useInput('');
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const res = await participateGroup(invitationCode);
-      console.log(res);
+      await participateGroup(invitationCode);
+      navigate(`/groups/${invitationCode}`);
     } catch (err) {
       console.log(err);
     }
