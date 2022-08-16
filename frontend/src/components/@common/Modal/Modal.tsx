@@ -2,11 +2,11 @@ import React, { MouseEvent, PropsWithChildren, useRef } from 'react';
 import styled from '@emotion/styled';
 
 interface Props extends PropsWithChildren {
-  visible: boolean;
+  isVisible: boolean;
   onClose: () => void;
 }
 
-function Modal({ children, visible, onClose }: Props) {
+function Modal({ children, isVisible, onClose }: Props) {
   const outside = useRef<HTMLDivElement>(null);
 
   const handleCloseModal = (e: MouseEvent<HTMLDivElement>) => {
@@ -18,7 +18,7 @@ function Modal({ children, visible, onClose }: Props) {
   return (
     <StyledModalContainer
       ref={outside}
-      visible={visible}
+      isVisible={isVisible}
       tabIndex={-1}
       onClick={handleCloseModal}
     >
@@ -27,9 +27,9 @@ function Modal({ children, visible, onClose }: Props) {
   );
 }
 
-const StyledModalContainer = styled.div<{visible: boolean}>(({ theme, visible }) => `
+const StyledModalContainer = styled.div<{isVisible: boolean}>(({ theme, isVisible }) => `
   z-index: 10;
-  display: ${visible ? 'flex' : 'none'};
+  display: ${isVisible ? 'flex' : 'none'};
   background-color: ${theme.colors.TRANSPARENT_BLACK_100_25};
   align-items: center;
   justify-content: center;
