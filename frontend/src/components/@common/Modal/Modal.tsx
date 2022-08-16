@@ -3,15 +3,15 @@ import styled from '@emotion/styled';
 
 interface Props extends PropsWithChildren {
   isVisible: boolean;
-  onClose: () => void;
+  close: () => void;
 }
 
-function Modal({ children, isVisible, onClose }: Props) {
+function Modal({ children, isVisible, close }: Props) {
   const outside = useRef<HTMLDivElement>(null);
 
   const handleCloseModal = (e: MouseEvent<HTMLDivElement>) => {
     if (outside.current === e.target) {
-      onClose();
+      close();
     }
   };
 
