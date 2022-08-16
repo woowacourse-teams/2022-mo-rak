@@ -8,10 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
 @NoArgsConstructor
@@ -27,5 +29,7 @@ public class SlackWebhook extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private Team team;
 
+    @NotBlank
+    @URL(regexp = "https://hooks.slack.com/services/.*", message = "웹훅 URL 은 http로 시작해야 합니다.")
     private String url;
 }

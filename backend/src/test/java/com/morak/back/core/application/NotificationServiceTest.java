@@ -68,7 +68,7 @@ class NotificationServiceTest {
     @Test
     void 웹훅_URL을_등록한다() {
         // given
-        String url = "https://hello.world";
+        String url = "https://hooks.slack.com/services/my-url";
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
 
         // when
@@ -84,7 +84,7 @@ class NotificationServiceTest {
     @Test
     void 등록된_웹훅_URL을_변경하면_ID가_바뀐다() {
         // given
-        String url = "https://hello.world";
+        String url = "https://hooks.slack.com/services/my-url";
 
         SlackWebhook savedWebhook = slackWebhookRepository.findByTeamId(team.getId()).orElseThrow();
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);

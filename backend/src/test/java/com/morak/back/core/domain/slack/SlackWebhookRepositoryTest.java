@@ -1,11 +1,13 @@
 package com.morak.back.core.domain.slack;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.core.domain.Code;
 import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamRepository;
+import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,12 +34,34 @@ class SlackWebhookRepositoryTest {
         SlackWebhook webhook = webhookRepository.save(
             SlackWebhook.builder()
                 .team(team)
-                .url("https://testA.com")
+                .url("https://hooks.slack.com/services/test")
                 .build()
         );
 
         // then
         assertThat(webhook.getId()).isNotNull();
+    }
+
+    @Test
+    void 웹훅_URL이_잘못된_경우_예외를_던진다() {
+        // given
+        Team team = teamRepository.save(
+                Team.builder()
+                        .name("teamA")
+                        .code(Code.generate(length -> "AAAAaaaa"))
+                        .build()
+        );
+
+        // when
+        String url = "https://not-started-with-hooks.slack.com";
+
+        // then
+        assertThatThrownBy(() -> webhookRepository.save(
+                SlackWebhook.builder()
+                        .team(team)
+                        .url(url)
+                        .build()
+        )).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
@@ -52,7 +76,7 @@ class SlackWebhookRepositoryTest {
         SlackWebhook webhook = webhookRepository.save(
             SlackWebhook.builder()
                 .team(team)
-                .url("https://testB.com")
+                .url("https://hooks.slack.com/services/testA")
                 .build()
         );
         // when
@@ -73,7 +97,7 @@ class SlackWebhookRepositoryTest {
         SlackWebhook webhook = webhookRepository.save(
             SlackWebhook.builder()
                 .team(team)
-                .url("https://testB.com")
+                .url("https://hooks.slack.com/services/testA")
                 .build()
         );
         // when

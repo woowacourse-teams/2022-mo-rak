@@ -15,7 +15,7 @@ class SlackClientTest {
         FakeApiReceiver receiver = new FakeApiReceiver();
         SlackClient client = new FakeSlackClient(receiver);
         // when
-        SlackWebhook webhook = new SlackWebhook(1L, new Team(), "https://test-url.com");
+        SlackWebhook webhook = new SlackWebhook(1L, new Team(), "https://hooks.slack.com/services/testing");
         // then
         Assertions.assertAll(
                 () -> assertThatNoException().isThrownBy(() -> client.notifyClosed(webhook, "hi")),
