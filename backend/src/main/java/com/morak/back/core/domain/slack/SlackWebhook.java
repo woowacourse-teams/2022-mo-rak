@@ -29,7 +29,7 @@ public class SlackWebhook extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private Team team;
 
-    @NotBlank
+    @NotBlank(message = "URL 은 공백일 수 없습니다.")
     @URL(regexp = "https://hooks.slack.com/services/.*", message = "웹훅 URL 은 http로 시작해야 합니다.")
     private String url;
 }
