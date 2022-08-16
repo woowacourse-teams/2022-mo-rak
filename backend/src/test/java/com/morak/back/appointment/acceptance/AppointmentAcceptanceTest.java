@@ -6,26 +6,26 @@ import static com.morak.back.SimpleRestAssured.get;
 import static com.morak.back.SimpleRestAssured.patch;
 import static com.morak.back.SimpleRestAssured.put;
 import static com.morak.back.SimpleRestAssured.toObjectList;
-import static com.morak.back.appointment.AppointmentFixture.MINUTES_UNIT으로_나눠지지않는_durationMinute_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.durationHour이_25인_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.durationMinute이_60인_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.과거_날짜로_생성_요청된_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.모락_회식_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.모락_회식_첫째날_11시_반부터_00시_선택_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.모락_회식_첫째날_4시반부터_5시_선택_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.모락_회식_첫째날_4시부터_4시반_선택_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.모락_회식_첫째날_5시반부터_6시_선택_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.모락_회식_첫째날_5시부터_5시반_선택_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.범위_16_20_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.범위_16_24_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.범위_하루종일_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.설명이_너무긴_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.약속_잡기_범위_시작과_끝나는_시간이_30분으로_안나눠지는_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.약속_잡기_범위_시작시간이_끝나는_시간과_같은_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.약속_잡기_범위_시작시간이_끝나는_시간보다_이른_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.약속잡기_범위_시작_날짜가_끝나는_날짜보다_나중인_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.제목이_없는_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentFixture.총_진행시간이_1440이상인_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.MINUTES_UNIT으로_나눠지지않는_durationMinute_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.durationHour이_25인_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.durationMinute이_60인_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.과거_날짜로_생성_요청된_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_11시_반부터_00시_선택_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_4시반부터_5시_선택_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_4시부터_4시반_선택_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_5시반부터_6시_선택_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_5시부터_5시반_선택_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.범위_16_20_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.범위_16_24_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.범위_하루종일_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.설명이_너무긴_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.약속_잡기_범위_시작과_끝나는_시간이_30분으로_안나눠지는_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.약속_잡기_범위_시작시간이_끝나는_시간과_같은_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.약속_잡기_범위_시작시간이_끝나는_시간보다_이른_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.약속잡기_범위_시작_날짜가_끝나는_날짜보다_나중인_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.제목이_없는_약속잡기_요청_데이터;
+import static com.morak.back.appointment.AppointmentCreateRequestFixture.총_진행시간이_1440이상인_약속잡기_요청_데이터;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
@@ -37,7 +37,6 @@ import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.core.ui.dto.ExceptionResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDate;
@@ -191,7 +190,6 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
     @CsvSource({
             "1, 15, 30, 1, 16, 0",
             "2, 0, 0, 2, 0, 30",
-            "2, 0, 0, 2, 0, 30",
             "4, 0, 0, 4, 0, 30"
     })
     void 약속잡기가_16시부터_자정까지_선택_가능한_경우_범위를_벗어나면_BAD_REQUEST를_응답한다(
@@ -211,7 +209,8 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(SimpleRestAssured.extractCodeNumber(response))
-                .isEqualTo(CustomErrorCode.AVAILABLETIME_TIME_OUT_OF_RANGE_ERROR.getNumber());
+                .isIn(CustomErrorCode.AVAILABLETIME_TIME_OUT_OF_RANGE_ERROR.getNumber(),
+                        CustomErrorCode.AVAILABLETIME_DATE_OUT_OF_RANGE_ERROR.getNumber());
     }
 
     @ParameterizedTest
@@ -314,7 +313,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 약속잡기_추천_결과를_조회한다() {
-        //given
+        // given
         String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
 
         List<AvailableTimeRequest> requests = List.of(
@@ -331,11 +330,11 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         );
         두번쨰_멤버가_약속잡기_가능_시간_선택을_요청한다(location, requests2, accessToken2);
 
-        //when
+        // when
         ExtractableResponse<Response> response = 약속잡기_가능_시간_추천_결과_조회를_요청한다(location);
         List<RecommendationResponse> recommendationResponses = toObjectList(response, RecommendationResponse.class);
 
-        //then
+        // then
         assertThat(recommendationResponses).hasSize(4);
     }
 
@@ -374,7 +373,7 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
     }
 
     static AppointmentCreateRequest[] getInvalidDomainLogicAppointmentCreateRequest() {
-        return new AppointmentCreateRequest[] {
+        return new AppointmentCreateRequest[]{
                 과거_날짜로_생성_요청된_약속잡기_요청_데이터,
                 약속잡기_범위_시작_날짜가_끝나는_날짜보다_나중인_약속잡기_요청_데이터,
                 약속_잡기_범위_시작과_끝나는_시간이_30분으로_안나눠지는_약속잡기_요청_데이터,
@@ -437,25 +436,25 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 약속잡기를_마감한다() {
-        //given
+        // given
         String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
 
-        //when
+        // when
         ExtractableResponse<Response> response = 약속잡기_마감을_요청한다(location);
 
-        //then
+        // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Test
     void 약속잡기를_삭제한다() {
-        //given
+        // given
         String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
 
-        //when
+        // when
         ExtractableResponse<Response> response = 약속잡기_삭제를_요청한다(location);
 
-        //then
+        // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 

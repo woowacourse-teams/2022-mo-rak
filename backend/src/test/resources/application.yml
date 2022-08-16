@@ -4,7 +4,11 @@ spring:
   sql:
     init:
       mode: always
-
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
 ---
 
 spring:

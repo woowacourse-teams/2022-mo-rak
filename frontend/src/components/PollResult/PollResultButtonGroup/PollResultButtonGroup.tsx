@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import Button from '../../@common/Button/Button';
 import { closePoll, deletePoll } from '../../../api/poll';
-import { PollInterface, getPollResponse } from '../../../types/poll';
+import { PollInterface, getPollResponse, getPollItemsResponse } from '../../../types/poll';
 import { GroupInterface } from '../../../types/group';
 
 interface Props {
@@ -14,11 +14,14 @@ interface Props {
   status: PollInterface['status'];
   isHost: getPollResponse['isHost'];
   groupCode: GroupInterface['code'];
+  pollItems: getPollItemsResponse;
 }
 
-function PollResultButtonGroup({ pollCode, status, isHost, groupCode }: Props) {
+function PollResultButtonGroup({ pollCode, status, isHost, groupCode, pollItems }: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
+  const isProgressedPoll = pollItems.some((pollItem) => pollItem.isSelected);
+  const progressButtonMessage = isProgressedPoll ? '재투표하기' : '투표하기';
 
   const handleDeletePoll = async () => {
     if (window.confirm('투표를 삭제하시겠습니까?')) {
@@ -42,14 +45,14 @@ function PollResultButtonGroup({ pollCode, status, isHost, groupCode }: Props) {
     }
   };
 
-  const handleNavigate = (path: string) => () => {
-    navigate(path);
+  const handleNavigate = (location: string) => () => {
+    navigate(location);
   };
 
   if (isHost) {
     return (
       <>
-        {status === 'OPEN' ? (
+        {status === 'OPEN' && (
           <FlexContainer gap="2rem" justifyContent="center">
             <Button
               type="button"
@@ -82,10 +85,12 @@ function PollResultButtonGroup({ pollCode, status, isHost, groupCode }: Props) {
               colorScheme={theme.colors.PURPLE_100}
               onClick={handleNavigate(`/groups/${groupCode}/poll/${pollCode}/progress`)}
             >
-              재투표하기
+              {progressButtonMessage}
             </Button>
           </FlexContainer>
-        ) : (
+        )}
+
+        {status === 'CLOSED' && (
           <FlexContainer justifyContent="center">
             <Button
               type="button"
@@ -117,7 +122,7 @@ function PollResultButtonGroup({ pollCode, status, isHost, groupCode }: Props) {
             colorScheme={theme.colors.PURPLE_100}
             onClick={handleNavigate(`/groups/${groupCode}/poll/${pollCode}/progress`)}
           >
-            재투표하기
+            {progressButtonMessage}
           </Button>
         </FlexContainer>
       )}

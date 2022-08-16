@@ -17,7 +17,6 @@ import javax.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -25,10 +24,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @RestControllerAdvice
-@Order(0)
 public class GlobalControllerAdvice {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -97,16 +96,25 @@ public class GlobalControllerAdvice {
         logger.warn(e.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ExceptionResponse(CustomErrorCode.RUNTIME_ERROR.getNumber(), "Xxxxx"));
+                .body(new ExceptionResponse(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber(), "잘못된 요청입니다."));
     }
 
     @ExceptionHandler(MorakException.class)
     public ResponseEntity<ExceptionResponse> handleMorak(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ExceptionResponse(CustomErrorCode.MORAK_ERROR.getNumber(), ""));
+                .body(new ExceptionResponse(CustomErrorCode.MORAK_ERROR.getNumber(), "처리하지 못한 예외입니다."));
     }
 
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ExceptionResponse> noHandlerFoundHandle(NoHandlerFoundException e) {
+        logger.warn(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ExceptionResponse(CustomErrorCode.API_NOT_FOUND_ERROR.getNumber(), "처리할 수 없는 요청입니다."));
+    }
+    
+    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e,
                                                              ContentCachingRequestWrapper requestWrapper) {
         String stackTrace = Arrays.stream(e.getStackTrace())
@@ -115,6 +123,6 @@ public class GlobalControllerAdvice {
         logger.error(stackTrace + LogFormatter.toPrettyRequestString(requestWrapper));
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ExceptionResponse(CustomErrorCode.RUNTIME_ERROR.getNumber(), ""));
+                .body(new ExceptionResponse(CustomErrorCode.RUNTIME_ERROR.getNumber(), "알 수 없는 예외입니다."));
     }
 }

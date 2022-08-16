@@ -41,7 +41,7 @@ function PollProgressItemGroup({
   const theme = useTheme();
   const [pollItems, setPollItems] = useState<getPollItemsResponse>([]);
   const getIsSelectedPollItem = (pollId: PollInterface['id']) =>
-    selectedPollItems.some((selectedPollItem) => selectedPollItem.itemId === pollId);
+    selectedPollItems.some((selectedPollItem) => selectedPollItem.id === pollId);
 
   useEffect(() => {
     const fetchPollItems = async (pollCode: PollInterface['code']) => {

@@ -8,10 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum CustomErrorCode {
 
-    EXPIRED_AUTHORIZATION_ERROR("0200", "사용자 인증에 실패했습니다."),
-    INVALID_AUTHORIZATION_ERROR("0201", "사용자 인증에 실패했습니다."),
-    GITHUB_AUTHORIZATION_ERROR("0202", "사용자 인증에 실패했습니다."),
-    EMPTY_AUTHORIZATION_ERROR("0203", "사용자 인증에 실패했습니다."),
+    EXPIRED_AUTHORIZATION_ERROR("0200", "이미 만료된 토큰입니다."),
+    INVALID_AUTHORIZATION_ERROR("0201", "인증되지 않은 토큰입니다."),
+    GITHUB_AUTHORIZATION_ERROR("0202", "깃허브 인증에 실패했습니다."),
+    EMPTY_AUTHORIZATION_ERROR("0203", "인증 토큰이 존재하지 않습니다"),
 
     MEMBER_NOT_FOUND_ERROR("0300", "요청한 멤버를 찾을 수 없습니다."),
 
@@ -24,7 +24,7 @@ public enum CustomErrorCode {
     POLL_ALREADY_CLOSED_ERROR("2100", "이미 마감된 투표입니다."),
     POLL_COUNT_OUT_OF_RANGE_ERROR("2101", "허용된 투표 개수의 범위를 벗어났습니다."),
     POLL_TEAM_MISMATCHED_ERROR("2200", "투표가 그룹에 속해있지 않습니다."),
-    POLL_MEMBER_MISMATCHED_ERROR("2201", "투표의 호스트가 아닙니다."),
+    POLL_HOST_MISMATCHED_ERROR("2201", "투표의 호스트가 아닙니다."),
     POLL_ITEM_MISMATCHED_ERROR("2202", "투표 선택 항목이 투표에 속해있지 않습니다."),
     POLL_NOT_FOUND_ERROR("2300", "요청한 투표를 찾을 수 없습니다."),
     POLL_ITEM_NOT_FOUND_ERROR("2301", "요청한 투표항목을 찾을 수 없습니다."),
@@ -46,16 +46,18 @@ public enum CustomErrorCode {
     AVAILABLETIME_REVERSE_CHRONOLOGY_ERROR("3114", "약속잡기 마지막 날짜&시각은 현재 날짜&시각보다 미래여야 합니다."),
     AVAILABLETIME_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR("3115", "약속잡기 선택 시각은 30분 단위여야 합니다."),
     AVAILABLETIME_DURATION_NOT_MINUTES_UNIT_ERROR("3116", "약속잡기 선택 진행 시간은 30분 단위여야 합니다."),
+    APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR("3117", "약속잡기 마감 시간은 마지막 날짜보다 빨라야 합니다."),
+
     APPOINTMENT_MEMBER_MISMATCHED_ERROR("3200", "멤버가 약속잡기의 호스트가 아닙니다."),
     APPOINTMENT_TEAM_MISMATCHED_ERROR("3201", "약속잡기가 그룹에 속해있지 않습니다."),
     APPOINTMENT_NOT_FOUND_ERROR("3300", "요청한 약속잡기를 찾을 수 없습니다."),
 
     INVALID_PROPERTY_ERROR("4000", "잘못된 값이 입력되었습니다."),
-    CACHED_BODY_ERROR("4100", "캐시바디"),
+    API_NOT_FOUND_ERROR("4300", "요청한 API가 존재하지 않습니다"),
 
     MORAK_ERROR("9901", "처리하지 못한 예외입니다."),
     RUNTIME_ERROR("9902", "예상치 못한 예외입니다.");
-
+    
     private final String number;
     private final String information;
 }

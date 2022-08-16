@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Box from '../../@common/Box/Box';
 import PollMainStatus from '../PollMainStatus/PollMainStatus';
@@ -35,7 +35,7 @@ function PollMainContainer() {
   return (
     <StyledContainer>
       {polls ? (
-        polls.map(({ status, title, id, code, isAnonymous, allowedPollCount }) => (
+        polls.map(({ status, title, code, isAnonymous, allowedPollCount, closedAt, count }) => (
           <Box
             width="26.4rem"
             padding="2rem"
@@ -46,10 +46,14 @@ function PollMainContainer() {
               <PollMainStatus status={status} />
             </FlexContainer>
             <StyledTitle>{title}</StyledTitle>
-            <PollMainProgress pollCode={code} groupCode={groupCode} />
+            <PollMainProgress currentParticipants={count} groupCode={groupCode} />
             <MarginContainer margin="0 0 1.2rem">
               {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
-              <PollMainDetail isAnonymous={isAnonymous} allowedPollCount={allowedPollCount} />
+              <PollMainDetail
+                isAnonymous={isAnonymous}
+                allowedPollCount={allowedPollCount}
+                closedAt={closedAt}
+              />
             </MarginContainer>
             <PollMainButtonGroup pollCode={code} status={status} />
           </Box>

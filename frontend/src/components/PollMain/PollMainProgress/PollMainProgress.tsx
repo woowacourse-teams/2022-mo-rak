@@ -1,45 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Progress from '../../@common/Progress/Progress';
-import { PollInterface, getPollResultResponse } from '../../../types/poll';
+import { getPollResponse } from '../../../types/poll';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
-import { getPollResult } from '../../../api/poll';
 import { GroupInterface, MemberInterface } from '../../../types/group';
 import { getGroupMembers } from '../../../api/group';
 
 interface Props {
-  pollCode: PollInterface['code'];
+  currentParticipants: getPollResponse['count'];
   groupCode: GroupInterface['code'];
 }
 
-// TODO: 재미로 리팩토링 해봐~ 심심할때
-const getCurrentParticipants = (pollResult: getPollResultResponse) => {
-  const allParticipants = pollResult.map((pollItemResult) => pollItemResult.members).flat();
-  const currentParticipants = allParticipants.map((participant) => participant.name);
-
-  return new Set(currentParticipants).size;
-};
-
-function PollMainProgress({ pollCode, groupCode }: Props) {
-  const [pollResult, setPollResult] = useState<getPollResultResponse>([]);
+function PollMainProgress({ currentParticipants, groupCode }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
   const totalParticipants = groupMembers.length;
-  const currentParticipants = getCurrentParticipants(pollResult);
-
-  useEffect(() => {
-    const fetchPollResult = async (pollCode: PollInterface['code']) => {
-      try {
-        if (groupCode) {
-          const res = await getPollResult(pollCode, groupCode);
-          setPollResult(res.data);
-        }
-      } catch (err) {
-        alert(err);
-      }
-    };
-
-    fetchPollResult(pollCode);
-  }, []);
 
   useEffect(() => {
     const fetchGroupMembers = async () => {
@@ -67,7 +41,8 @@ function PollMainProgress({ pollCode, groupCode }: Props) {
       <StyledParticipantsStatus>
         {currentParticipants}
         명/
-        {totalParticipants}명
+        {totalParticipants}
+        명
       </StyledParticipantsStatus>
     </FlexContainer>
   );

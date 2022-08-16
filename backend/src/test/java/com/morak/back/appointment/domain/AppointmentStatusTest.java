@@ -29,22 +29,22 @@ class AppointmentStatusTest {
 
     @Test
     void 상태를_close로_만든다() {
-        //given
+        // given
         AppointmentStatus open = AppointmentStatus.OPEN;
 
-        //when
+        // when
         AppointmentStatus status = open.close();
 
-        //then
+        // then
         assertThat(status).isEqualTo(AppointmentStatus.CLOSED);
     }
 
     @Test
     void 상태가_close일떄_close_하는_경우_예외를_던진다() {
-        //given
+        // given
         AppointmentStatus status = AppointmentStatus.CLOSED;
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> status.close())
                 .isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")

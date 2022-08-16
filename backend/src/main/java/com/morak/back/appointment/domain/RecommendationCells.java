@@ -20,8 +20,8 @@ public class RecommendationCells {
     private List<RecommendationCell> cells;
 
     public static RecommendationCells of(Appointment appointment, List<Member> members) {
-        LocalDateTime firstStartDateTime = appointment.getFirstStartDateTime();
-        LocalDateTime lastEndDateTime = appointment.getLastEndDateTime();
+        LocalDateTime firstStartDateTime = appointment.getStartDateTime();
+        LocalDateTime lastEndDateTime = appointment.getEndDateTime();
         DurationMinutes durationMinutes = appointment.getDurationMinutes();
 
         return new RecommendationCells(Stream.iterate(
