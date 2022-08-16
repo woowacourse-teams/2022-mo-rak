@@ -34,6 +34,7 @@ import com.morak.back.team.exception.TeamNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PollService {
 
     private static final CodeGenerator GENERATOR = new RandomCodeGenerator();
+    private static final String MENU_NAME = "투표";
 
     private final SlackClient slackClient;
     private final PollRepository pollRepository;
@@ -215,24 +217,23 @@ public class PollService {
         validateTeam(team, poll);
 
         poll.close(member);
-        slackWebhookRepository.findByTeamId(team.getId())
-                .ifPresent(webhook -> slackClient.notifyClosed(webhook, MessageFormatter.format(poll)));
+        notificationService.notifyMenuStatus(team, poll, MessageFormatter::formatClosed);
     }
 
     @Scheduled(cron = "0 0/1 * * * ?")
     @Generated
-    void notifyPoll() {
+    void notifyClosedByScheduled() {
         List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.MIN, LocalDateTime.now());
 
-        Map<Menu, SlackWebhook> pollWebhooks = joinPollsWithWebhooks(pollsToBeClosed);
-        notificationService.closeAndNotifyMenus(pollWebhooks);
+        Map<Menu, Optional<SlackWebhook>> pollWebhooks = joinPollsWithWebhooks(pollsToBeClosed);
+        notificationService.closeAndNotifyMenusByScheduled(pollWebhooks);
     }
 
-    private Map<Menu, SlackWebhook> joinPollsWithWebhooks(List<Poll> pollsToBeClosed) {
+    private Map<Menu, Optional<SlackWebhook>> joinPollsWithWebhooks(List<Poll> pollsToBeClosed) {
         return pollsToBeClosed.stream()
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        poll -> slackWebhookRepository.findByTeamId(poll.getTeam().getId()).orElseThrow()
+                        poll -> slackWebhookRepository.findByTeamId(poll.getTeam().getId())
                 ));
     }
 }

@@ -19,7 +19,7 @@ class SlackClientTest {
         // then
         Assertions.assertAll(
                 () -> assertThatNoException().isThrownBy(() -> client.notifyClosed(webhook, "hi")),
-                () -> assertThat(receiver.getMessage()).contains("testing")
+                () -> assertThat(receiver.getMessage()).contains("hi")
         );
     }
 }

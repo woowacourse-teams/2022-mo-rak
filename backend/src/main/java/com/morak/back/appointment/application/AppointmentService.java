@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -71,6 +72,7 @@ public class AppointmentService {
 
         Appointment appointment = request.toAppointment(team, member, Code.generate(CODE_GENERATOR));
         Appointment savedAppointment = appointmentRepository.save(appointment);
+        notificationService.notifyMenuStatus(team, savedAppointment, MessageFormatter::formatOpen);
         return savedAppointment.getCode();
     }
 
@@ -200,8 +202,7 @@ public class AppointmentService {
         validateHost(member, appointment);
         validateAppointmentInTeam(team, appointment);
         appointment.close(member);
-        slackWebhookRepository.findByTeamId(team.getId())
-                .ifPresent(webhook -> slackClient.notifyClosed(webhook, MessageFormatter.format(appointment)));
+        notificationService.notifyMenuStatus(team, appointment, MessageFormatter::formatClosed);
     }
 
     public void deleteAppointment(String teamCode, Long memberId, String appointmentCode) {
@@ -237,19 +238,20 @@ public class AppointmentService {
 
     @Scheduled(cron = "0 0/1 * * * ?")
     @Generated
-    void notifyAppointment() {
+    void notifyClosedBySchedule() {
         List<Appointment> appointmentsToBeClosed =
                 appointmentRepository.findAllToBeClosed(LocalDateTime.MIN, LocalDateTime.now());
 
-        Map<Menu, SlackWebhook> appointmentWebHooks = joinAppointmentsWithWebHooks(appointmentsToBeClosed);
-        notificationService.closeAndNotifyMenus(appointmentWebHooks);
+        Map<Menu, Optional<SlackWebhook>> appointmentWebHooks = joinAppointmentsWithWebHooks(appointmentsToBeClosed);
+        notificationService.closeAndNotifyMenusByScheduled(appointmentWebHooks);
     }
 
-    private Map<Menu, SlackWebhook> joinAppointmentsWithWebHooks(List<Appointment> appointmentsToBeClosed) {
+    private Map<Menu, Optional<SlackWebhook>> joinAppointmentsWithWebHooks(List<Appointment> appointmentsToBeClosed) {
         return appointmentsToBeClosed.stream()
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        appointment -> slackWebhookRepository.findByTeamId(appointment.getTeam().getId()).orElseThrow()
+                        appointment -> slackWebhookRepository.findByTeamId(appointment.getTeam().getId())
                 ));
     }
+
 }

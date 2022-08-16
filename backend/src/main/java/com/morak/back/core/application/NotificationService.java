@@ -16,7 +16,8 @@ import com.morak.back.team.exception.TeamAuthorizationException;
 import com.morak.back.team.exception.TeamNotFoundException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,22 +55,31 @@ public class NotificationService {
         }
     }
 
-    public void closeAndNotifyMenus(Map<Menu, SlackWebhook> menuWebhooks) {
+    public void notifyMenuStatus(Team team, Menu menu, BiFunction<Menu, Team, String> formatter) {
+        slackWebhookRepository.findByTeamId(team.getId())
+                .ifPresent(webhook -> slackClient.notifyClosed(
+                        webhook, formatter.apply(menu, team)
+                ));
+    }
+
+    public void closeAndNotifyMenusByScheduled(Map<Menu, Optional<SlackWebhook>> menuWebhooks) {
         List<ExternalException> exceptions = menuWebhooks.entrySet()
                 .stream()
                 .map(entry -> closeAndNotify(entry.getKey(), entry.getValue()))
-                .filter(Objects::nonNull)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toList());
         throwsIfAnyWebhookFailed(exceptions);
     }
 
-    private ExternalException closeAndNotify(Menu menu, SlackWebhook webhook) {
+    private Optional<ExternalException> closeAndNotify(Menu menu, Optional<SlackWebhook> optionalWebhook) {
         try {
-            slackClient.notifyClosed(webhook, MessageFormatter.format(menu));
+            optionalWebhook.ifPresent(webhook ->
+                    slackClient.notifyClosed(webhook, MessageFormatter.formatClosed(menu, webhook.getTeam())));
             menu.close(menu.getHost());
-            return null;
+            return Optional.empty();
         } catch (ExternalException e) {
-            return e;
+            return Optional.of(e);
         }
     }
 

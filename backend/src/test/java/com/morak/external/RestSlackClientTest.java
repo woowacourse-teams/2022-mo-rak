@@ -20,6 +20,7 @@ public class RestSlackClientTest {
 
         // when
         SlackWebhook webhook = new SlackWebhook(1L, new Team(), url);
+
         // then
         assertThatNoException().isThrownBy(() -> client.notifyClosed(webhook, "test-in-backend-test-code"));
     }

@@ -18,7 +18,8 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
 
     void deleteById(Long id);
 
-    @Query("select a from Appointment a where a.status = 'OPEN' and a.closedAt between :startDateTime and :endDateTime")
+    @Query("select a from Appointment a where a.status = 'OPEN' "
+            + "and a.closedAt between :startDateTime and :endDateTime")
     List<Appointment> findAllToBeClosed(@Param("startDateTime") LocalDateTime startDateTime,
                                         @Param("endDateTime") LocalDateTime endDateTime);
 }

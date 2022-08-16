@@ -24,6 +24,7 @@ import com.morak.back.team.exception.TeamAuthorizationException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
@@ -118,10 +119,10 @@ class NotificationServiceTest {
         // given
         SlackWebhook slackWebhook = slackWebhookRepository.findByTeamId(team.getId()).orElseThrow();
         List<Poll> polls = pollRepository.findAllByTeamId(team.getId());
-        Map<Menu, SlackWebhook> menuWebhooks = toMenuWebhooks(polls, slackWebhook);// from data.sql
+        Map<Menu, Optional<SlackWebhook>> menuWebhooks = toMenuWebhooks(polls, slackWebhook);// from data.sql
 
         // when
-        notificationService.closeAndNotifyMenus(menuWebhooks);
+        notificationService.closeAndNotifyMenusByScheduled(menuWebhooks);
 
         // then
         Assertions.assertAll(
@@ -162,13 +163,13 @@ class NotificationServiceTest {
         );
 
         // when
-        Map<Menu, SlackWebhook> menuWebhooks =
+        Map<Menu, Optional<SlackWebhook>> menuWebhooks =
                 toMenuWebhooks(pollRepository.findAllByTeamId(team.getId()), slackWebhook);
 
         // then
         Assertions.assertAll(
                 () -> assertThatThrownBy(
-                        () -> notificationService.closeAndNotifyMenus(menuWebhooks))
+                        () -> notificationService.closeAndNotifyMenusByScheduled(menuWebhooks))
                         .isInstanceOf(SchedulingException.class)
                         .extracting("exceptions")
                         .asList()
@@ -179,11 +180,11 @@ class NotificationServiceTest {
         );
     }
 
-    private Map<Menu, SlackWebhook> toMenuWebhooks(List<Poll> menus, SlackWebhook slackWebhook) {
+    private Map<Menu, Optional<SlackWebhook>> toMenuWebhooks(List<Poll> menus, SlackWebhook slackWebhook) {
         return menus.stream()
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        menu -> slackWebhook
+                        menu -> Optional.of(slackWebhook)
                 ));
     }
 }
