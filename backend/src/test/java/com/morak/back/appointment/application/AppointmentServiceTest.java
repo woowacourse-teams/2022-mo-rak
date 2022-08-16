@@ -12,6 +12,7 @@ import com.morak.back.appointment.domain.AvailableTime;
 import com.morak.back.appointment.domain.AvailableTimeRepository;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
+import com.morak.back.appointment.exception.AppointmentNotFoundException;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
@@ -20,11 +21,15 @@ import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.CodeGenerator;
+import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
+import com.morak.back.team.exception.TeamAuthorizationException;
+import com.morak.back.team.exception.TeamNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -74,17 +79,24 @@ class AppointmentServiceTest {
         appointmentService = new AppointmentService(
                 appointmentRepository, availableTimeRepository, memberRepository, teamRepository, teamMemberRepository
         );
+        CodeGenerator codeGenerator = new RandomCodeGenerator();
         에덴 = memberRepository.findById(1L).orElseThrow();
         모락 = teamRepository.findByCode("MoraK123").orElseThrow();
         DEFAULT_BUILDER = Appointment.builder()
                 .title("회식 날짜")
                 .description("필참입니다.")
-                .code(Code.generate(length -> "FJn3ND26"))
                 .team(모락)
                 .host(에덴)
+                .startDate(LocalDate.now().plusDays(1))
+                .endDate(LocalDate.now().plusDays(5))
+                .startTime(LocalTime.of(14, 0))
+                .endTime(LocalTime.of(20, 0))
+                .durationHours(2)
+                .durationMinutes(0)
                 .closedAt(LocalDateTime.now().plusDays(1).plusMinutes(30));
 
         약속잡기_중간 = DEFAULT_BUILDER
+                .code(Code.generate(codeGenerator))
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(5))
                 .startTime(LocalTime.of(14, 0))
@@ -92,7 +104,9 @@ class AppointmentServiceTest {
                 .durationHours(2)
                 .durationMinutes(0)
                 .build();
+
         약속잡기_자정까지 = DEFAULT_BUILDER
+                .code(Code.generate(codeGenerator))
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(5))
                 .startTime(LocalTime.of(14, 0))
@@ -100,7 +114,9 @@ class AppointmentServiceTest {
                 .durationHours(2)
                 .durationMinutes(0)
                 .build();
+
         약속잡기_하루동안_30분 = DEFAULT_BUILDER
+                .code(Code.generate(codeGenerator))
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(1))
                 .startTime(LocalTime.of(23, 30))
@@ -110,6 +126,7 @@ class AppointmentServiceTest {
                 .build();
 
         약속잡기_5일동안_하루종일 = DEFAULT_BUILDER
+                .code(Code.generate(codeGenerator))
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(5))
                 .startTime(LocalTime.of(0, 0))
@@ -117,7 +134,9 @@ class AppointmentServiceTest {
                 .durationHours(2)
                 .durationMinutes(0)
                 .build();
+
         약속잡기_하루동안_하루종일 = DEFAULT_BUILDER
+                .code(Code.generate(codeGenerator))
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(1))
                 .startTime(LocalTime.of(0, 0))
@@ -169,12 +188,102 @@ class AppointmentServiceTest {
     }
 
     @Test
+    void 약속잡기_생성_시_멤버가_팀에_속하지_않는_경우_예외를_던진다() {
+        // given
+        Member 차리 = memberRepository.findById(4L).orElseThrow();
+        AppointmentCreateRequest request = new AppointmentCreateRequest(
+                "모락 회식 날짜 및 시간",
+                "필참입니다.",
+                LocalDate.now().plusDays(5),
+                LocalDate.now().plusDays(15),
+                LocalTime.of(16, 0),
+                LocalTime.of(20, 0),
+                2,
+                30,
+                LocalDateTime.now().plusDays(10)
+        );
+
+        // when & then
+        assertThatThrownBy(() -> appointmentService.createAppointment(모락.getCode(), 차리.getId(),
+                request))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 약속잡기_생성_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "morakko";
+
+        // when & then
+        assertThatThrownBy(
+                () -> appointmentService.createAppointment(invalidTeamCode, 에덴.getId(), new AppointmentCreateRequest()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
+    }
+
+    @Test
+    void 약속잡기_목록_조회_시_진행중인_약속잡기가_종료된_약속잡기보다_먼저_조회된다() {
+        // given
+        Appointment appointment1 = appointmentRepository.save(
+                DEFAULT_BUILDER.code(Code.generate((l) -> "appment1")).build());
+        Appointment appointment2 = appointmentRepository.save(
+                DEFAULT_BUILDER.code(Code.generate((l) -> "appment2")).build());
+        Appointment appointment3 = appointmentRepository.save(
+                DEFAULT_BUILDER.code(Code.generate((l) -> "appment3")).build());
+        Appointment appointment4 = appointmentRepository.save(
+                DEFAULT_BUILDER.code(Code.generate((l) -> "appment4")).build());
+        Appointment appointment5 = appointmentRepository.save(
+                DEFAULT_BUILDER.code(Code.generate((l) -> "appment5")).build());
+
+        appointment1.close(에덴);
+        appointment3.close(에덴);
+
+        // when
+        List<AppointmentAllResponse> appointmentsResponse = appointmentService.findAppointments(모락.getCode(),
+                에덴.getId());
+
+        // then
+        assertThat(appointmentsResponse)
+                .extracting("code")
+                .containsExactly(appointment5.getCode(), appointment4.getCode(), appointment2.getCode(), "FEsd23C1",
+                        appointment3.getCode(), appointment1.getCode());
+    }
+
+    @Test
     void 약속잡기_목록을_조회한다() {
         // given & when
         List<AppointmentAllResponse> appointmentsResponse = appointmentService.findAppointments("MoraK123", 1L);
 
         // then
         assertThat(appointmentsResponse).hasSize(1);
+    }
+
+    @Test
+    void 약속잡기_목록_조회_시_멤버가_팀에_속하지_않는_경우_예외를_던진다() {
+        // given
+        Member 차리 = memberRepository.findById(4L).orElseThrow();
+
+        // when & then
+        assertThatThrownBy(() -> appointmentService.findAppointments(모락.getCode(), 차리.getId()))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 약속잡기_목록_조회_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "morakko";
+
+        // when & then
+        assertThatThrownBy(
+                () -> appointmentService.findAppointments(invalidTeamCode, 에덴.getId()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
 
     @Test
@@ -192,6 +301,19 @@ class AppointmentServiceTest {
     }
 
     @Test
+    void 약속잡기_단건_조회_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "morakko";
+
+        // when & then
+        assertThatThrownBy(
+                () -> appointmentService.findAppointment(invalidTeamCode, 에덴.getId(), 약속잡기_중간.getCode()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
+    }
+
+    @Test
     void 투표가_그룹에_속해있지_않다면_예외를_던진다() {
         // given
         Team otherTeam = teamRepository.findByCode("Betrayed").orElseThrow();
@@ -204,6 +326,18 @@ class AppointmentServiceTest {
         )).isInstanceOf(AppointmentAuthorizationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_TEAM_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 약속잡기_단건_조회_시_멤버가_팀에_속하지_않는_경우_예외를_던진다() {
+        // given
+        Member 차리 = memberRepository.findById(4L).orElseThrow();
+
+        // when & then
+        assertThatThrownBy(() -> appointmentService.findAppointment(모락.getCode(), 차리.getId(), 약속잡기_중간.getCode()))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
     }
 
     @Test
@@ -227,6 +361,40 @@ class AppointmentServiceTest {
                         requests
                 )
         );
+    }
+
+    @Test
+    void 약속잡기_가능시간_선택_시_멤버가_팀에_속하지_않는_경우_예외를_던진다() {
+        // given
+        Member 차리 = memberRepository.findById(4L).orElseThrow();
+
+        AvailableTimeRequest availableTimeRequest = new AvailableTimeRequest(
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)),
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30))
+        );
+
+        List<AvailableTimeRequest> requests = List.of(availableTimeRequest);
+
+        // when & then
+        assertThatThrownBy(() -> appointmentService.selectAvailableTimes(모락.getCode(), 차리.getId(), 약속잡기_중간.getCode(),
+                requests))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 약속잡기_가능시간_선택_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "morakko";
+
+        // when & then
+        assertThatThrownBy(
+                () -> appointmentService.selectAvailableTimes(invalidTeamCode, 에덴.getId(), 약속잡기_중간.getCode(),
+                        List.of(new AvailableTimeRequest())))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
 
     @Test
@@ -585,19 +753,98 @@ class AppointmentServiceTest {
     }
 
     @Test
+    void 약속잡기_가능시간_추천_결과_조회_시_멤버가_팀에_속하지_않는_경우_예외를_던진다() {
+        // given
+        Member 차리 = memberRepository.findById(4L).orElseThrow();
+
+        // when & then
+        assertThatThrownBy(
+                () -> appointmentService.recommendAvailableTimes(모락.getCode(), 차리.getId(), 약속잡기_중간.getCode()))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 약속잡기_가능시간_추천_결과_조회_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "morakko";
+
+        // when & then
+        assertThatThrownBy(
+                () -> appointmentService.recommendAvailableTimes(invalidTeamCode, 에덴.getId(), 약속잡기_중간.getCode()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
+    }
+
+    @Test
     void 약속잡기를_마감한다() {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_중간);
 
-        //when
+        // when
         appointmentService.closeAppointment(
                 appointment.getTeam().getCode(),
                 appointment.getHost().getId(),
                 appointment.getCode()
         );
 
-        //then
+        // then
         assertThat(약속잡기_중간.getStatus()).isEqualTo(CLOSED);
+    }
+
+    @Test
+    void 약속잡기_마감_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "morakko";
+
+        // when & then
+        assertThatThrownBy(
+                () -> appointmentService.closeAppointment(invalidTeamCode, 에덴.getId(), 약속잡기_중간.getCode()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
+    }
+
+    @Test
+    void 약속잡기_마감_시_호스트가_아닌_경우_예외를_던진다() {
+        // given
+        Appointment appointment = appointmentRepository.save(약속잡기_중간);
+        Member 엘리 = memberRepository.findById(2L).orElseThrow();
+
+        // when & then
+        assertThatThrownBy(() -> appointmentService.closeAppointment(appointment.getTeam().getCode(), 엘리.getId(),
+                appointment.getCode()))
+                .isInstanceOf(AppointmentAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 약속잡기_마감_시_약속잡기가_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidAppointmentCode = "kingEden";
+
+        // when & then
+        assertThatThrownBy(
+                () -> appointmentService.closeAppointment(모락.getCode(), 에덴.getId(), invalidAppointmentCode))
+                .isInstanceOf(AppointmentNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR);
+    }
+
+    @Test
+    void 약속잡기_마감_시_멤버가_팀에_속하지_않는_경우_예외를_던진다() {
+        // given
+        Member 차리 = memberRepository.findById(4L).orElseThrow();
+
+        // when & then
+        assertThatThrownBy(
+                () -> appointmentService.closeAppointment(모락.getCode(), 차리.getId(), 약속잡기_중간.getCode()))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
     }
 
     @Test
@@ -605,14 +852,54 @@ class AppointmentServiceTest {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_중간);
 
-        //when
+        // when
         appointmentService.deleteAppointment(
                 appointment.getTeam().getCode(),
                 appointment.getHost().getId(),
                 appointment.getCode()
         );
 
-        //then
+        // then
         assertThat(appointmentRepository.findByCode(appointment.getCode())).isEmpty();
+    }
+
+    @Test
+    void 약속잡기_삭제_시_호스트가_아닌_경우_예외를_던진다() {
+        // given
+        Appointment appointment = appointmentRepository.save(약속잡기_중간);
+        Member 엘리 = memberRepository.findById(2L).orElseThrow();
+
+        // when & then
+        assertThatThrownBy(() -> appointmentService.deleteAppointment(appointment.getTeam().getCode(), 엘리.getId(),
+                appointment.getCode()))
+                .isInstanceOf(AppointmentAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 약속잡기_삭제_시_멤버가_팀에_속하지_않는_경우_예외를_던진다() {
+        // given
+        Member 차리 = memberRepository.findById(4L).orElseThrow();
+
+        // when & then
+        assertThatThrownBy(
+                () -> appointmentService.deleteAppointment(모락.getCode(), 차리.getId(), 약속잡기_중간.getCode()))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 약속잡기_삭제_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "morakko";
+
+        // when & then
+        assertThatThrownBy(
+                () -> appointmentService.deleteAppointment(invalidTeamCode, 에덴.getId(), 약속잡기_중간.getCode()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
 }

@@ -11,6 +11,7 @@ interface AppointmentInterface {
   endDate: string;
   startTime: string;
   endTime: string;
+  closedAt: string;
 }
 
 interface AppointmentRecommendationInterface {

@@ -330,11 +330,11 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         );
         두번쨰_멤버가_약속잡기_가능_시간_선택을_요청한다(location, requests2, accessToken2);
 
-        //when
+        // when
         ExtractableResponse<Response> response = 약속잡기_가능_시간_추천_결과_조회를_요청한다(location);
         List<RecommendationResponse> recommendationResponses = toObjectList(response, RecommendationResponse.class);
 
-        //then
+        // then
         assertThat(recommendationResponses).hasSize(4);
     }
 
@@ -439,10 +439,10 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         // given
         String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
 
-        //when
+        // when
         ExtractableResponse<Response> response = 약속잡기_마감을_요청한다(location);
 
-        //then
+        // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
@@ -451,10 +451,10 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         // given
         String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
 
-        //when
+        // when
         ExtractableResponse<Response> response = 약속잡기_삭제를_요청한다(location);
 
-        //then
+        // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 

@@ -7,8 +7,9 @@ import static com.morak.back.SimpleRestAssured.patch;
 import static com.morak.back.SimpleRestAssured.post;
 import static com.morak.back.SimpleRestAssured.put;
 import static com.morak.back.SimpleRestAssured.toObjectList;
+import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_참가를_요청한다;
+import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_초대코드_생성을_요청한다;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.SimpleRestAssured;
@@ -299,7 +300,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
         String pollLocation = 투표_생성을_요청한다(teamLocation, request, token).header("Location");
-        String pollCode = pollLocation.split("/")[5];
+        String pollCode = extractPollCodeFromLocation(pollLocation);
 
         // when
         ExtractableResponse<Response> response = 투표_목록_조회를_요청한다(teamLocation, token);
@@ -314,7 +315,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 List.of(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
                                         request.getIsAnonymous(),
-                                        PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true))
+                                        PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true, 0))
                         )
         );
     }
@@ -343,7 +344,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
         String pollLocation = 투표_생성을_요청한다(teamLocation, request, token).header("Location");
-        String pollCode = pollLocation.split("/")[5];
+        String pollCode = extractPollCodeFromLocation(pollLocation);
 
         // when
         ExtractableResponse<Response> response = 투표_단건_조회를_요청한다(pollLocation, token);
@@ -357,7 +358,45 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .ignoringFields("id", "createdAt")
                         .isEqualTo(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
                                 request.getIsAnonymous(),
-                                PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true))
+                                PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true, 0))
+        );
+    }
+
+    @Test
+    void 투표_진행_후_투표_단건을_조회한다() {
+        // given
+        String 항목1 = "항목1";
+        String 항목2 = "항목2";
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
+                List.of(항목1, 항목2));
+        String pollLocation = 투표_생성을_요청한다(teamLocation, request, token).header("Location");
+        String pollCode = extractPollCodeFromLocation(pollLocation);
+
+        List<PollItemResponse> pollItemResponses = toObjectList(투표_선택항목_조회를_요청한다(pollLocation, token),
+                PollItemResponse.class);
+
+        Long pollItemId = pollItemResponses.get(0).getId();
+        List<PollResultRequest> pollResultRequests = List.of(new PollResultRequest(pollItemId, "눈물이 나기 때문이에요"));
+        투표_진행을_요청한다(pollLocation, pollResultRequests, token);
+
+        String otherMemberToken = tokenProvider.createToken(String.valueOf(2L));
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
+        그룹_참가를_요청한다(teamInvitationLocation, otherMemberToken);
+        투표_진행을_요청한다(pollLocation, pollResultRequests, otherMemberToken);
+
+        // when
+        ExtractableResponse<Response> response = 투표_단건_조회를_요청한다(pollLocation, token);
+        PollResponse pollResponse = response.as(PollResponse.class);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(pollResponse)
+                        .usingRecursiveComparison()
+                        .ignoringFields("id", "createdAt")
+                        .isEqualTo(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
+                                request.getIsAnonymous(),
+                                PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true, 2))
         );
     }
 
@@ -497,8 +536,8 @@ class PollAcceptanceTest extends AcceptanceTest {
         // given
         String subject1 = "subject1";
         String subject2 = "subject2";
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, true, LocalDateTime.now().plusDays(1),
-                List.of(subject1, subject2));
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, true,
+                LocalDateTime.now().plusDays(1), List.of(subject1, subject2));
         String pollLocation = 투표_생성을_요청한다(teamLocation, request, token).header("Location");
 
         List<PollItemResponse> pollItemResponses = toObjectList(투표_선택항목_조회를_요청한다(pollLocation, token),
@@ -638,5 +677,9 @@ class PollAcceptanceTest extends AcceptanceTest {
 
     private ExtractableResponse<Response> 투표_삭제를_요청한다(String location, String token) {
         return delete(location, toHeader(token));
+    }
+
+    private String extractPollCodeFromLocation(String pollLocation) {
+        return pollLocation.split("/")[5];
     }
 }

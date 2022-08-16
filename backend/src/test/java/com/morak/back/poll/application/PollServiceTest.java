@@ -1,5 +1,6 @@
 package com.morak.back.poll.application;
 
+import static com.morak.back.poll.domain.PollStatus.CLOSED;
 import static com.morak.back.poll.domain.PollStatus.OPEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -22,22 +23,22 @@ import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
 import com.morak.back.poll.ui.dto.PollResultRequest;
+import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamAuthorizationException;
+import com.morak.back.team.exception.TeamNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.jdbc.Sql;
 
-@DataJpaTest
-@Sql(scripts = "classpath:schema.sql")
+@ServiceTest
 class PollServiceTest {
 
     private MemberRepository memberRepository;
@@ -144,6 +145,25 @@ class PollServiceTest {
     }
 
     @Test
+    void 투표를_생성_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "kingEden";
+        PollCreateRequest pollCreateRequest = new PollCreateRequest(
+                "title",
+                1,
+                false,
+                LocalDateTime.now().plusDays(1),
+                List.of("item1", "item2")
+        );
+
+        // when & then
+        assertThatThrownBy(() -> pollService.createPoll(invalidTeamCode, member.getId(), pollCreateRequest))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
+    }
+
+    @Test
     void 투표_목록을_조회한다() {
         // given
         PollCreateRequest pollCreateRequest = new PollCreateRequest(
@@ -164,16 +184,142 @@ class PollServiceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id", "createdAt")
                 .isEqualTo(
-                        List.of(new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
-                                        poll.getIsAnonymous(),
-                                        poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), true),
-                                new PollResponse(null, pollCreateRequest.getTitle(),
+                        List.of(new PollResponse(null, pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
                                         pollCreateRequest.getIsAnonymous(), OPEN.name(), null,
                                         pollCreateRequest.getClosedAt(),
                                         pollCode,
-                                        true))
+                                        true,
+                                        0),
+                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), true,
+                                        0)
+                        )
+                );
+    }
+
+    @Test
+    void 투표_목록을_조회할_때_진행중인_투표가_종료된_투표보다_먼저_출력된다() {
+        // given
+        PollCreateRequest pollCreateRequest1 = new PollCreateRequest(
+                "title1",
+                1,
+                false,
+                LocalDateTime.now().plusDays(1),
+                List.of("item1", "item2")
+        );
+
+        PollCreateRequest pollCreateRequest2 = new PollCreateRequest(
+                "title2",
+                1,
+                false,
+                LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2")
+        );
+
+        String pollCode1 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest1);
+        String pollCode2 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest2);
+
+        // when
+        pollService.closePoll(team.getCode(), member.getId(), pollCode1);
+        List<PollResponse> polls = pollService.findPolls(team.getCode(), member.getId());
+
+        // then
+        assertThat(polls)
+                .usingRecursiveComparison()
+                .ignoringFields("id", "createdAt")
+                .isEqualTo(
+                        List.of(new PollResponse(null, pollCreateRequest2.getTitle(),
+                                        pollCreateRequest2.getAllowedPollCount(),
+                                        pollCreateRequest2.getIsAnonymous(), OPEN.name(), null,
+                                        pollCreateRequest2.getClosedAt(),
+                                        pollCode2,
+                                        true,
+                                        0),
+                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), true, 0),
+                                new PollResponse(null, pollCreateRequest1.getTitle(),
+                                        pollCreateRequest1.getAllowedPollCount(),
+                                        pollCreateRequest1.getIsAnonymous(), CLOSED.name(), null,
+                                        pollCreateRequest1.getClosedAt(),
+                                        pollCode1,
+                                        true,
+                                        0)
+                        )
+                );
+    }
+
+    @Test
+    void 투표_목록을_조회할_때_종료_상태가_같으면_생성된_순서대로_출력된다() {
+        // given
+        PollCreateRequest pollCreateRequest1 = new PollCreateRequest(
+                "order2",
+                1,
+                false,
+                LocalDateTime.now().plusDays(1),
+                List.of("item1", "item2")
+        );
+
+        PollCreateRequest pollCreateRequest2 = new PollCreateRequest(
+                "order1",
+                2,
+                true,
+                LocalDateTime.now().plusDays(3),
+                List.of("투표1", "투표2")
+        );
+
+        PollCreateRequest pollCreateRequest3 = new PollCreateRequest(
+                "order3",
+                3,
+                false,
+                LocalDateTime.now().plusDays(4),
+                List.of("항목1", "항목2")
+        );
+
+        String pollCode1 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest1);
+        String pollCode2 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest2);
+        String pollCode3 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest3);
+
+        // when
+        pollService.closePoll(team.getCode(), member.getId(), pollCode1);
+        pollService.closePoll(team.getCode(), member.getId(), pollCode3);
+        List<PollResponse> polls = pollService.findPolls(team.getCode(), member.getId());
+
+        // then
+        assertThat(polls)
+                .usingRecursiveComparison()
+                .ignoringFields("id", "createdAt")
+                .isEqualTo(
+                        List.of(new PollResponse(null, pollCreateRequest2.getTitle(),
+                                        pollCreateRequest2.getAllowedPollCount(),
+                                        pollCreateRequest2.getIsAnonymous(), OPEN.name(), null,
+                                        pollCreateRequest2.getClosedAt(),
+                                        pollCode2,
+                                        true,
+                                        0),
+                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), true, 0),
+                                new PollResponse(null, pollCreateRequest3.getTitle(),
+                                        pollCreateRequest3.getAllowedPollCount(),
+                                        pollCreateRequest3.getIsAnonymous(), CLOSED.name(), null,
+                                        pollCreateRequest3.getClosedAt(),
+                                        pollCode3,
+                                        true,
+                                        0),
+                                new PollResponse(null, pollCreateRequest1.getTitle(),
+                                        pollCreateRequest1.getAllowedPollCount(),
+                                        pollCreateRequest1.getIsAnonymous(), CLOSED.name(), null,
+                                        pollCreateRequest1.getClosedAt(),
+                                        pollCode1,
+                                        true,
+                                        0)
+                        )
                 );
     }
 
@@ -204,17 +350,40 @@ class PollServiceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id", "createdAt")
                 .isEqualTo(
-                        List.of(new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
-                                        poll.getIsAnonymous(),
-                                        poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), false),
-                                new PollResponse(null, pollCreateRequest.getTitle(),
+                        List.of(new PollResponse(null,
+                                        pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
-                                        pollCreateRequest.getIsAnonymous(), OPEN.name(), null,
+                                        pollCreateRequest.getIsAnonymous(),
+                                        OPEN.name(),
+                                        null,
                                         pollCreateRequest.getClosedAt(),
                                         pollCode,
-                                        false))
+                                        false,
+                                        0),
+                                new PollResponse(poll.getId(),
+                                        poll.getTitle(),
+                                        poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(),
+                                        poll.getCreatedAt(),
+                                        poll.getClosedAt(),
+                                        poll.getCode(),
+                                        false,
+                                        0)
+                        )
                 );
+    }
+
+    @Test
+    void 투표_목록_조회_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "kingEden";
+
+        // when & then
+        assertThatThrownBy(() -> pollService.findPolls(invalidTeamCode, member.getId()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
 
     @Test
@@ -426,8 +595,26 @@ class PollServiceTest {
     }
 
     @Test
+    void 투표_진행_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "kingEden";
+
+        PollItem pollItem1 = PollItem.builder()
+                .poll(poll)
+                .subject("sub1")
+                .build();
+
+        // when & then
+        assertThatThrownBy(() -> pollService.doPoll(invalidTeamCode, member.getId(), poll.getCode(),
+                List.of(new PollResultRequest(pollItem1.getId(), "그냥뇨"))))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
+    }
+
+    @Test
     void 투표_단건을_조회한다() {
-        //when
+        // when
         PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), poll.getCode());
 
         // then
@@ -435,18 +622,64 @@ class PollServiceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(new PollResponse(null, poll.getTitle(), poll.getAllowedPollCount(), poll.getIsAnonymous(),
-                        poll.getStatus().name(), poll.getCreatedAt(), poll.getClosedAt(), poll.getCode(), true));
+                        poll.getStatus().name(), poll.getCreatedAt(),
+                        poll.getClosedAt(), poll.getCode(), true, 0));
     }
 
     @Test
-    void 속하지않은_팀의_투표항목을_조회하면_예외를_던진다() {
-        //given
+    void 투표_진행_후_단건_조회_시_count값이_반영된다(@Autowired EntityManager entityManager) {
+        // given
+        List<PollItem> pollItems = pollItemRepository.saveAll(List.of(
+                PollItem.builder()
+                        .poll(poll)
+                        .subject("sub1")
+                        .build(),
+                PollItem.builder()
+                        .poll(poll)
+                        .subject("sub2")
+                        .build()));
+
+        PollItem pollItem1 = pollItems.get(0);
+        PollItem pollItem2 = pollItems.get(1);
+
+        poll.addItem(pollItem1);
+        poll.addItem(pollItem2);
+
+        pollService.doPoll(team.getCode(), member.getId(), poll.getCode(),
+                List.of(new PollResultRequest(pollItem1.getId(), "그냥뇨"),
+                        new PollResultRequest(pollItem2.getId(), "저스트 그냥!")));
+
+        Member 엘리 = memberRepository.save(Member.builder()
+                .oauthId("ellieHan")
+                .name("한해리")
+                .profileUrl("http://han-profile.com")
+                .build());
+        teamMemberRepository.save(new TeamMember(null, team, 엘리));
+
+        pollService.doPoll(team.getCode(), 엘리.getId(), poll.getCode(),
+                List.of(new PollResultRequest(pollItem1.getId(), "그냥그냥그냐앙~")));
+
+        entityManager.flush();
+        entityManager.detach(poll);
+
+        // when
+        PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), poll.getCode());
+
+        // then
+        assertThat(pollResponse)
+                .extracting("id", "count")
+                .containsExactly(poll.getId(), 2);
+    }
+
+    @Test
+    void 속하지않은_팀의_투표를_조회하면_예외를_던진다() {
+        // given
         Team invalidTeam = teamRepository.save(Team.builder()
                 .name("invalidTeam")
                 .code(Code.generate(length -> "12341234"))
                 .build());
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> pollService.findPoll(invalidTeam.getCode(), member.getId(), poll.getCode()))
                 .isInstanceOf(TeamAuthorizationException.class)
                 .extracting("code")
@@ -455,18 +688,29 @@ class PollServiceTest {
 
     @Test
     void 팀에_속하지않은_투표항목을_조회하면_예외를_던진다() {
-        //given
+        // given
         Team invalidTeam = teamRepository.save(Team.builder()
                 .name("invalidTeam")
                 .code(Code.generate(length -> "12341234"))
                 .build());
         teamMemberRepository.save(new TeamMember(null, invalidTeam, member));
 
-        //when & then
+        // when & then
         assertThatThrownBy(() -> pollService.findPoll(invalidTeam.getCode(), member.getId(), poll.getCode()))
                 .isInstanceOf(PollAuthorizationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_TEAM_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 투표_단건_조회_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "kingEden";
+        // when & then
+        assertThatThrownBy(() -> pollService.findPoll(invalidTeamCode, member.getId(), poll.getCode()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
 
     @Test
@@ -529,6 +773,18 @@ class PollServiceTest {
                         List.of(new PollItemResponse(pollItem1.getId(), pollItem1.getSubject(), true, description),
                                 new PollItemResponse(pollItem2.getId(), pollItem2.getSubject(), false, ""))
                 );
+    }
+
+    @Test
+    void 투표_선택_항목_조회_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "kingEden";
+
+        // when & then
+        assertThatThrownBy(() -> pollService.findPollItems(invalidTeamCode, member.getId(), poll.getCode()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
 
     @Test
@@ -621,6 +877,18 @@ class PollServiceTest {
     }
 
     @Test
+    void 투표_결과_조회_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "kingEden";
+
+        // when & then
+        assertThatThrownBy(() -> pollService.findPollItemResults(invalidTeamCode, member.getId(), poll.getCode()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
+    }
+
+    @Test
     void 투표를_삭제한다() {
         // when
         pollService.deletePoll(team.getCode(), member.getId(), poll.getCode());
@@ -634,7 +902,7 @@ class PollServiceTest {
 
     @Test
     void 투표_삭제_시_호스트가_아니면_예외를_던진다() {
-        //given
+        // given
         Member 차리 = memberRepository.save(Member.builder()
                 .oauthId("leechari")
                 .name("이찬주")
@@ -652,7 +920,7 @@ class PollServiceTest {
 
     @Test
     void 투표_삭제_시_팀에_속하지않은_투표를_삭제하면_예외를_던진다() {
-        //given
+        // given
         Team newTeam = teamRepository.save(Team.builder()
                 .name("newTeam")
                 .code(Code.generate(length -> "123xx111"))
@@ -664,6 +932,18 @@ class PollServiceTest {
                 .isInstanceOf(PollAuthorizationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_TEAM_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 투표_삭제_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "kingEden";
+
+        // when & then
+        assertThatThrownBy(() -> pollService.deletePoll(invalidTeamCode, member.getId(), poll.getCode()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
 
     @Test
@@ -687,10 +967,21 @@ class PollServiceTest {
         teamMemberRepository.save(new TeamMember(null, team, 차리));
 
         // when & then
-            assertThatThrownBy(() -> pollService.closePoll(team.getCode(), 차리.getId(), poll.getCode()))
+        assertThatThrownBy(() -> pollService.closePoll(team.getCode(), 차리.getId(), poll.getCode()))
                 .isInstanceOf(PollAuthorizationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_HOST_MISMATCHED_ERROR);
+    }
 
+    @Test
+    void 투표_마감_시_팀이_존재하지_않는_경우_예외를_던진다() {
+        // given
+        String invalidTeamCode = "kingEden";
+
+        // when & then
+        assertThatThrownBy(() -> pollService.closePoll(invalidTeamCode, member.getId(), poll.getCode()))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
 }

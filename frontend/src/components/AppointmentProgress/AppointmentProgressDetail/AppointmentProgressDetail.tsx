@@ -21,6 +21,7 @@ function AppointmentProgressDetail({ durationHours, durationMinutes, startTime, 
       <StyledTimeRange>
         {startTime}~{endTime}
       </StyledTimeRange>
+      <StyledCloseDateTime>마감기한: 2022년 8월 22일 10시까지😀</StyledCloseDateTime>
     </>
   );
 }
@@ -31,6 +32,10 @@ const StyledDuration = styled.p`
 
 const StyledTimeRange = styled.p`
   font-size: 3.2rem;
+`;
+
+const StyledCloseDateTime = styled.p`
+  font-size: 1.6rem;
 `;
 
 export default AppointmentProgressDetail;

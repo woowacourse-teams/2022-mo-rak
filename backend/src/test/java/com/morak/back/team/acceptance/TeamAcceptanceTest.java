@@ -580,27 +580,27 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    public ExtractableResponse<Response> 그룹_생성을_요청한다(TeamCreateRequest request, String token) {
+    private ExtractableResponse<Response> 그룹_생성을_요청한다(TeamCreateRequest request, String token) {
         return post("/api/groups", request, toHeader(token));
     }
 
-    public ExtractableResponse<Response> 그룹_초대코드_생성을_요청한다(String location, String token) {
+    public static ExtractableResponse<Response> 그룹_초대코드_생성을_요청한다(String location, String token) {
         return post(location + "/invitation", "", toHeader(token));
     }
 
-    public ExtractableResponse<Response> 그룹_참가_여부_조회를_요청한다(String teamInvitationLocation, String token) {
+    private ExtractableResponse<Response> 그룹_참가_여부_조회를_요청한다(String teamInvitationLocation, String token) {
         return get(teamInvitationLocation, toHeader(token));
     }
 
-    public ExtractableResponse<Response> 그룹_참가를_요청한다(String teamInvitationLocation, String otherToken) {
+    public static ExtractableResponse<Response> 그룹_참가를_요청한다(String teamInvitationLocation, String otherToken) {
         return post(teamInvitationLocation, "", AuthSupporter.toHeader(otherToken));
     }
 
-    public ExtractableResponse<Response> 그룹_목록_조회를_요청한다(String token) {
+    private ExtractableResponse<Response> 그룹_목록_조회를_요청한다(String token) {
         return get("/api/groups", AuthSupporter.toHeader(token));
     }
 
-    public ExtractableResponse<Response> 그룹_멤버_목록_조회를_요청한다(String token, String teamLocation) {
+    private ExtractableResponse<Response> 그룹_멤버_목록_조회를_요청한다(String token, String teamLocation) {
         return get(teamLocation + "/members", AuthSupporter.toHeader(token));
     }
 
@@ -608,11 +608,11 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         return get("/api/groups/default", toHeader(otherToken));
     }
 
-    public ExtractableResponse<Response> 그룹_탈퇴를_요청한다(String teamCode, String token) {
+    private ExtractableResponse<Response> 그룹_탈퇴를_요청한다(String teamCode, String token) {
         return delete("/api/groups/out/" + teamCode, toHeader(token));
     }
 
-    private static String extractTeamCodeFromLocation(String teamLocation) {
+    private String extractTeamCodeFromLocation(String teamLocation) {
         return teamLocation.split("/")[3];
     }
 }

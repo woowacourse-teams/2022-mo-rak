@@ -7,6 +7,7 @@ import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/
 import AppointmentCreateFormDescriptionInput from '../AppointmentCreateFormDescriptionInput/AppointmentCreateFormDescriptionInput';
 import AppointmentCreateFormDurationInput from '../AppointmentCreateFormDurationInput/AppointmentCreateFormDurationInput';
 import AppointmentCreateFormTimeLimitInput from '../AppointmentCreateFormTimeLimitInput/AppointmentCreateFormTimeLimitInput';
+import AppointmentCreateFormCloseTimeInput from '../AppointmentCreateFormCloseTimeInput/AppointmentCreateFormCloseTimeInput';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import useInput from '../../../hooks/useInput';
 import useInputs from '../../../hooks/useInputs';
@@ -30,10 +31,12 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   const [title, handleTitle] = useInput();
   // TODO: groupCode 받아오는 게 계속 중복되어서, 중복줄이자
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
-  const [description, handleDescription] = useInput();
+  const [description, handleDescription] = useInput('');
   const [duration, handleDuration] = useInputs<Omit<Time, 'period'>>({ hour: '', minute: '' });
   const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
   const [endTime, handleEndTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
+  const [closeDate, handleCloseDate] = useInput('');
+  const [closeTime, handleCloseTime] = useInput('');
 
   const handleCreateAppointment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,7 +49,8 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
       startTime: getFormattedTime(startTime),
       endTime: getFormattedTime(endTime),
       durationHours: Number(duration.hour),
-      durationMinutes: Number(duration.minute)
+      durationMinutes: Number(duration.minute),
+      closedAt: `${closeDate}T${closeTime}`
     };
 
     try {
@@ -74,6 +78,13 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
             endTime={endTime}
             onChangeStartTime={handleStartTime}
             onChangeEndTime={handleEndTime}
+          />
+          <AppointmentCreateFormCloseTimeInput
+            closeTime={closeTime}
+            onChangeTime={handleCloseTime}
+            closeDate={closeDate}
+            onChangeDate={handleCloseDate}
+            maxCloseDate={endDate}
           />
         </FlexContainer>
       </Box>

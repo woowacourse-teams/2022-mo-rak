@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Logo from '../../assets/logo.svg';
 import LinkIcon from '../../assets/link.svg';
 import Close from '../../assets/close-button.svg';
-import { createInvitationCode, getGroups } from '../../api/group';
-import { writeClipboard } from '../../utils/clipboard';
+import { getGroups } from '../../api/group';
 import { GroupInterface } from '../../types/group';
 import Slack from '../../assets/slack.svg';
 import TextField from '../@common/TextField/TextField';
@@ -13,11 +12,20 @@ import Input from '../@common/Input/Input';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
 import theme from '../../styles/theme';
 
+import Divider from '../@common/Divider/Divider';
+import SidebarGroupMenu from '../SidebarGroupMenu/SidebarGroupMenu';
+
+import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembersProfileMenu';
+import SidebarFeatureMenu from '../SidebarFeatureMenu/SidebarFeatureMenu';
+import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
+import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
+
 function Sidebar() {
-  const { groupCode } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
   const [isClickedSlackMenu, setIsClickedSlackMenu] = useState(false);
+
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
 
   const navigate = useNavigate();
 
@@ -27,25 +35,6 @@ function Sidebar() {
 
   const handleSetIsClickedSlackMenu = () => {
     setIsClickedSlackMenu(!isClickedSlackMenu);
-  };
-
-  const handleCopyInviationCode = async () => {
-    try {
-      if (groupCode) {
-        const res = await createInvitationCode(groupCode);
-        const invitationCode = res.headers.location.split('groups/in')[1];
-        const invitationLink = `
-        링크를 클릭하거나, 참가 코드를 입력해주세요😀
-        url: ${process.env.CLIENT_URL}/invite/${invitationCode}}
-        코드: ${invitationCode}
-        `;
-
-        writeClipboard(invitationLink);
-        alert('초대링크가 클립보드에 복사되었습니다💌');
-      }
-    } catch (err) {
-      alert(err);
-    }
   };
 
   useEffect(() => {
@@ -69,26 +58,26 @@ function Sidebar() {
     <>
       <StyledContainer>
         <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
-        <StyledGroupContainer>
-          <StyledGroupHeaderButton type="button">Groups</StyledGroupHeaderButton>
-          <StyledContent>
-            {groups.map((group) => (
-              <StyledGroupButton
-                to={`groups/${group.code}`}
-                isDefaultGroup={groupCode === group.code}
-              >
-                {group.name}
-              </StyledGroupButton>
-            ))}
-          </StyledContent>
-        </StyledGroupContainer>
-        <StyledInvitationLink onClick={handleCopyInviationCode}>
-          <img src={LinkIcon} alt="inivation-link" />
-          <p>초대 링크 복사</p>
-        </StyledInvitationLink>
 
-        {/* TODO: 슬랙 메뉴 임시 (사이드바 pr merge되면, 대체하기) */}
-        <StyledSlackMenu onClick={handleSetIsClickedSlackMenu}>슬랙 메뉴</StyledSlackMenu>
+        {/* 그룹 */}
+        <SidebarGroupMenu groupCode={groupCode} groups={groups} />
+
+        {/* 기능 */}
+        <Divider />
+        <SidebarFeatureMenu groupCode={groupCode} />
+
+        {/* 멤버 목록 */}
+        <Divider />
+        <SidebarMembersProfileMenu groupCode={groupCode} />
+
+        <StyledBottomMenu>
+          {/* 슬랙연동 */}
+          <SidebarSlackMenu onClickMenu={handleSetIsClickedSlackMenu} />
+
+          {/* 초대링크 */}
+          <SidebarInvitationMenu groupCode={groupCode} />
+        </StyledBottomMenu>
+
       </StyledContainer>
 
       <StyledSlackModalContainer isClickedSlackMenu={isClickedSlackMenu}>
@@ -220,11 +209,6 @@ const StyledButton = styled.button`
   }
 `;
 
-// TODO: 슬랙 메뉴 임시 (사이드바 pr merge되면, 대체하기)
-const StyledSlackMenu = styled.div`
-  font-size: 1.6rem;
-`;
-
 const StyledContainer = styled.div(
   ({ theme }) => `
   z-index: 1; 
@@ -234,55 +218,26 @@ const StyledContainer = styled.div(
   top: 0;
   border-right: 0.1rem solid ${theme.colors.GRAY_200};
   background: ${theme.colors.WHITE_100};
-  padding: 4rem;
+  padding-left: 4rem;
   gap: 2rem;
+  border: none;
 `
 );
 
 const StyledLogo = styled.img`
+  display: block;
+  margin: 2rem auto;  
   width: 12rem;
   cursor: pointer;
+  padding-right: 4rem;
 `;
 
-const StyledInvitationLink = styled.button`
+const StyledBottomMenu = styled.div`
   display: flex;
-  align-items: center;
-  cursor: pointer;
+  flex-direction: column;
+  gap: 2rem;
   position: absolute;
-  bottom: 3.6rem;
-  left: 3.6rem;
-  gap: 1.2rem;
-  font-size: 1.6rem;
+  bottom: 4rem;
 `;
-
-const StyledGroupContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 2.8rem;
-`;
-
-const StyledContent = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1.6rem;
-`;
-
-const StyledGroupHeaderButton = styled.button`
-  width: 100%;
-  font-size: 1.6rem;
-  text-align: left;
-`;
-
-const StyledGroupButton = styled(Link)<{ isDefaultGroup: boolean }>(
-  ({ theme, isDefaultGroup }) => `
-  width: 100%;
-  font-size: 1.6rem;
-  color: ${isDefaultGroup ? theme.colors.BLACK_100 : theme.colors.GRAY_400};
-  text-align: left;
-  
-`
-);
 
 export default Sidebar;

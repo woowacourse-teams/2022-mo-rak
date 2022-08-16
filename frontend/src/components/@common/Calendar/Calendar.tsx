@@ -152,6 +152,7 @@ function Calendar({
           ? getNowMonthDays().map((day) => {
               if (isNotInStartAndEndDate(day)) {
                 return (
+                  // TODO: 변수명 생각해보기
                   <StyledNowMonthDayNotInStartAndEndDate>
                     {day}
                   </StyledNowMonthDayNotInStartAndEndDate>
@@ -159,12 +160,12 @@ function Calendar({
               }
 
               return (
-                <StyledNowMonthDayInStartAndEndDate
+                <StyledNowMonthDay
                   onClick={handleSelectedDate(day)}
                   isSelectedDate={isSelectedDate(day)}
                 >
                   {day}
-                </StyledNowMonthDayInStartAndEndDate>
+                </StyledNowMonthDay>
               );
             })
           : getNowMonthDays().map((day) => {
@@ -338,12 +339,6 @@ const StyledNowMonthDayNotInStartAndEndDate = styled(StyledNowMonthDay)(
   &:hover {
     border: none;
   }
-`
-);
-
-const StyledNowMonthDayInStartAndEndDate = styled(StyledNowMonthDay)(
-  ({ theme }) => `
-  color: ${theme.colors.BLACK_100};
 `
 );
 
