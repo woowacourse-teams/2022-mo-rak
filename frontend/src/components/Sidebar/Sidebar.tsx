@@ -9,6 +9,7 @@ import { GroupInterface } from '../../types/group';
 import Slack from '../../assets/slack.svg';
 import TextField from '../@common/TextField/TextField';
 import Input from '../@common/Input/Input';
+import Modal from '../@common/Modal/Modal';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
 import theme from '../../styles/theme';
 
@@ -80,7 +81,7 @@ function Sidebar() {
 
       </StyledContainer>
 
-      <StyledSlackModalContainer isClickedSlackMenu={isClickedSlackMenu}>
+      <Modal isVisible={isClickedSlackMenu} close={handleSetIsClickedSlackMenu}>
         <StyledSlackModal>
           <StyledTop>
             <StyledSlackLogo src={Slack} alt="slack-logo" />
@@ -105,24 +106,10 @@ function Sidebar() {
             </FlexContainer>
           </StyledBottom>
         </StyledSlackModal>
-      </StyledSlackModalContainer>
+      </Modal>
     </>
   );
 }
-
-// 팝업 스타일
-const StyledSlackModalContainer = styled.div<{isClickedSlackMenu: boolean}>(({ theme, isClickedSlackMenu }) => `
-  z-index: 10;
-  display: ${isClickedSlackMenu ? 'flex' : 'none'};
-  background-color: ${theme.colors.TRANSPARENT_BLACK_100_25};
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-`);
 
 const StyledSlackModal = styled.div(({ theme }) => `
   position: relative;
