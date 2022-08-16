@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import styled from '@emotion/styled';
 import Slack from '../../assets/slack.svg';
 
-function SidebarSlackMenu() {
+interface Props {
+  onClickMenu: MouseEventHandler<HTMLButtonElement>;
+}
+
+function SidebarSlackMenu({ onClickMenu }: Props) {
   return (
-    <StyledContainer>
+    <StyledContainer onClick={onClickMenu}>
       <StyledSlackLogo src={Slack} alt="slack-icon" />
       <StyledText>슬랙 채널 연동</StyledText>
     </StyledContainer>
