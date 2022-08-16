@@ -13,9 +13,11 @@ import { GroupInterface } from '../../types/group';
 interface Props {
   groupCode: GroupInterface['code'];
   groups: Array<GroupInterface>;
+  onClickCreateMenu: () => void;
+  onClickParticipateMenu: () => void;
 }
 
-function SidebarGroupMenu({ groupCode, groups }: Props) {
+function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode, groups }: Props) {
   const [isVisible, setIsVisible] = useState(false);
   const [defaultGroup, setDefaultGroup] = useState<GroupInterface>();
 
@@ -98,13 +100,13 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
             </StyledGroupList>
           ))}
         </StyledGroupListContainer>
-        <StyledParticipateNewGroup>
+        <StyledParticipateNewGroup onClick={onClickParticipateMenu}>
           <img src={Plus} alt="participate-new-group-button" />
           <StyledGroupText>새로운 그룹 참가</StyledGroupText>
         </StyledParticipateNewGroup>
         <StyledCreateNewGroup>
           <img src={Plus} alt="create-new-group-button" />
-          <StyledGroupText>새로운 그룹 생성</StyledGroupText>
+          <StyledGroupText onClick={onClickCreateMenu}>새로운 그룹 생성</StyledGroupText>
         </StyledCreateNewGroup>
         <StyledLeaveGroup onClick={handleLeaveGroup}>
           <img src={Leave} alt="group-exit-button" />

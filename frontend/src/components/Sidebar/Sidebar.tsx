@@ -12,6 +12,7 @@ import Input from '../@common/Input/Input';
 import Modal from '../@common/Modal/Modal';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
 import theme from '../../styles/theme';
+import Plus from '../../assets/plus.svg';
 
 import Divider from '../@common/Divider/Divider';
 import SidebarGroupMenu from '../SidebarGroupMenu/SidebarGroupMenu';
@@ -24,7 +25,7 @@ import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
 function Sidebar() {
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
-  const [isClickedSlackMenu, setIsClickedSlackMenu] = useState(false);
+  const [activeGroupMenu, setActiveGroupMenu] = useState<null | string>(null);
 
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
 
@@ -34,8 +35,8 @@ function Sidebar() {
     navigate(location);
   };
 
-  const handleSetIsClickedSlackMenu = () => {
-    setIsClickedSlackMenu(!isClickedSlackMenu);
+  const handleSetActiveGroupMenu = (menu: null | string) => () => {
+    setActiveGroupMenu(menu);
   };
 
   useEffect(() => {
@@ -61,7 +62,13 @@ function Sidebar() {
         <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
 
         {/* 그룹 */}
-        <SidebarGroupMenu groupCode={groupCode} groups={groups} />
+        {/* TODO: handleSetActiveGroupMenu 넘겨주는 방식(하나로 넘겨줄 수는 없을까?) */}
+        <SidebarGroupMenu
+          onClickCreateMenu={handleSetActiveGroupMenu('create')}
+          onClickParticipateMenu={handleSetActiveGroupMenu('participate')}
+          groupCode={groupCode}
+          groups={groups}
+        />
 
         {/* 기능 */}
         <Divider />
@@ -73,7 +80,7 @@ function Sidebar() {
 
         <StyledBottomMenu>
           {/* 슬랙연동 */}
-          <SidebarSlackMenu onClickMenu={handleSetIsClickedSlackMenu} />
+          <SidebarSlackMenu onClickMenu={handleSetActiveGroupMenu('slack')} />
 
           {/* 초대링크 */}
           <SidebarInvitationMenu groupCode={groupCode} />
@@ -81,13 +88,14 @@ function Sidebar() {
 
       </StyledContainer>
 
-      <Modal isVisible={isClickedSlackMenu} close={handleSetIsClickedSlackMenu}>
-        <StyledSlackModal>
+      <Modal isVisible={activeGroupMenu === 'slack'} close={handleSetActiveGroupMenu(null)}>
+        {/* 슬랙 메뉴 */}
+        <StyledModalContainer>
           <StyledTop>
             <StyledSlackLogo src={Slack} alt="slack-logo" />
             <StyledHeaderText>슬랙 채널과 연동해보세요!</StyledHeaderText>
-            <StyledGuideText>슬랙 채널과 연동하면, 그룹의 새소식을 슬랙으로 받아볼 수 있어요.</StyledGuideText>
-            <StyledCloseButton onClick={handleSetIsClickedSlackMenu} src={Close} alt="close-button" />
+            <StyledGuideText>슬랙 채널과 연동하면, 그룹의 새소식을 슬랙으로 받아볼 수 있어요</StyledGuideText>
+            <StyledCloseButton onClick={handleSetActiveGroupMenu(null)} src={Close} alt="close-button" />
             <StyledTriangle />
           </StyledTop>
           <StyledBottom>
@@ -105,13 +113,69 @@ function Sidebar() {
               <StyledButton>확인</StyledButton>
             </FlexContainer>
           </StyledBottom>
-        </StyledSlackModal>
+        </StyledModalContainer>
+      </Modal>
+
+      {/* 그룹 생성 */}
+      <Modal isVisible={activeGroupMenu === 'create'} close={handleSetActiveGroupMenu(null)}>
+        <StyledModalContainer>
+          <StyledTop>
+            <StyledSmallLogo src={Logo} alt="logo" />
+            <StyledHeaderText>그룹 생성</StyledHeaderText>
+            <StyledGuideText>새로운 그룹을 빠르고 쉽게 생성해보세요</StyledGuideText>
+            <StyledCloseButton onClick={handleSetActiveGroupMenu(null)} src={Close} alt="close-button" />
+            <StyledTriangle />
+          </StyledTop>
+          <StyledBottom>
+            <FlexContainer flexDirection="column" alignItems="center" gap="2.4rem">
+              <TextField
+                variant="filled"
+                colorScheme={theme.colors.WHITE_100}
+                borderRadius="10px"
+                padding="1.6rem 10rem"
+                width="50.4rem"
+              >
+                <Input placeholder="그룹 이름을 입력하면 생성 완료!" fontSize="1.6REM" required />
+                <StyledLinkIcon src={Plus} alt="plus-icon" />
+              </TextField>
+              <StyledButton>생성하기</StyledButton>
+            </FlexContainer>
+          </StyledBottom>
+        </StyledModalContainer>
+      </Modal>
+
+      {/* 그룹 참가 */}
+      <Modal isVisible={activeGroupMenu === 'participate'} close={handleSetActiveGroupMenu(null)}>
+        <StyledModalContainer>
+          <StyledTop>
+            <StyledSmallLogo src={Logo} alt="logo" />
+            <StyledHeaderText>그룹 참가</StyledHeaderText>
+            <StyledGuideText>새로운 그룹에도 참가해보세요</StyledGuideText>
+            <StyledCloseButton onClick={handleSetActiveGroupMenu(null)} src={Close} alt="close-button" />
+            <StyledTriangle />
+          </StyledTop>
+          <StyledBottom>
+            <FlexContainer flexDirection="column" alignItems="center" gap="2.4rem">
+              <TextField
+                variant="filled"
+                colorScheme={theme.colors.WHITE_100}
+                borderRadius="10px"
+                padding="1.6rem 10rem"
+                width="50.4rem"
+              >
+                <Input placeholder="그룹 코드를 입력하면 참가 완료!" fontSize="1.6REM" required />
+                <StyledLinkIcon src={Plus} alt="plus-icon" />
+              </TextField>
+              <StyledButton>참가하기</StyledButton>
+            </FlexContainer>
+          </StyledBottom>
+        </StyledModalContainer>
       </Modal>
     </>
   );
 }
 
-const StyledSlackModal = styled.div(({ theme }) => `
+const StyledModalContainer = styled.div(({ theme }) => `
   position: relative;
   background-color: ${theme.colors.WHITE_100};
   border-radius: 12px;
@@ -217,6 +281,13 @@ const StyledLogo = styled.img`
   width: 12rem;
   cursor: pointer;
   padding-right: 4rem;
+`;
+
+const StyledSmallLogo = styled.img`
+  display: block;
+  margin: 2rem auto;  
+  width: 8.8rem;
+  cursor: pointer;
 `;
 
 const StyledBottomMenu = styled.div`
