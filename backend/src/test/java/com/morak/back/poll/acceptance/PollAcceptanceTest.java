@@ -299,7 +299,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
         String pollLocation = 투표_생성을_요청한다(teamLocation, request, token).header("Location");
-        String pollCode = pollLocation.split("/")[5];
+        String pollCode = extractPollCodeFromLocation(pollLocation);
 
         // when
         ExtractableResponse<Response> response = 투표_목록_조회를_요청한다(teamLocation, token);
@@ -343,7 +343,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
         String pollLocation = 투표_생성을_요청한다(teamLocation, request, token).header("Location");
-        String pollCode = pollLocation.split("/")[5];
+        String pollCode = extractPollCodeFromLocation(pollLocation);
 
         // when
         ExtractableResponse<Response> response = 투표_단건_조회를_요청한다(pollLocation, token);
@@ -369,7 +369,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of(항목1, 항목2));
         String pollLocation = 투표_생성을_요청한다(teamLocation, request, token).header("Location");
-        String pollCode = pollLocation.split("/")[5];
+        String pollCode = extractPollCodeFromLocation(pollLocation);
 
         List<PollItemResponse> pollItemResponses = toObjectList(투표_선택항목_조회를_요청한다(pollLocation, token),
                 PollItemResponse.class);
@@ -535,8 +535,8 @@ class PollAcceptanceTest extends AcceptanceTest {
         // given
         String subject1 = "subject1";
         String subject2 = "subject2";
-        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, true, LocalDateTime.now().plusDays(1),
-                List.of(subject1, subject2));
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, true,
+                LocalDateTime.now().plusDays(1), List.of(subject1, subject2));
         String pollLocation = 투표_생성을_요청한다(teamLocation, request, token).header("Location");
 
         List<PollItemResponse> pollItemResponses = toObjectList(투표_선택항목_조회를_요청한다(pollLocation, token),
@@ -682,7 +682,11 @@ class PollAcceptanceTest extends AcceptanceTest {
         return post(location + "/invitation", "", toHeader(token));
     }
 
-    public ExtractableResponse<Response> 그룹_참가를_요청한다(String teamInvitationLocation, String otherToken) {
+    private ExtractableResponse<Response> 그룹_참가를_요청한다(String teamInvitationLocation, String otherToken) {
         return post(teamInvitationLocation, "", AuthSupporter.toHeader(otherToken));
+    }
+
+    private String extractPollCodeFromLocation(String pollLocation) {
+        return pollLocation.split("/")[5];
     }
 }
