@@ -4,8 +4,6 @@ import com.morak.back.auth.domain.Member;
 
 public interface Menu {
 
-    Long getTeamId();
-
     String getTeamName();
 
     String getTitle();

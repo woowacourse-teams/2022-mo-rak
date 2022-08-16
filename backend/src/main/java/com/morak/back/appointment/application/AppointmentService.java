@@ -248,7 +248,7 @@ public class AppointmentService {
         return appointmentsToBeClosed.stream()
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        appointment -> slackWebhookRepository.findByTeamId(appointment.getTeamId()).orElseThrow()
+                        appointment -> slackWebhookRepository.findByTeamId(appointment.getTeam().getId()).orElseThrow()
                 ));
     }
 }
