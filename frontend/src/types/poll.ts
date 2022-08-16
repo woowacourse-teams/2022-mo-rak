@@ -28,6 +28,7 @@ type createPollData = Pick<
 
 type getPollResponse = PollInterface & {
   isHost: boolean;
+  count: number;
 };
 
 type getPollsResponse = Array<getPollResponse>;
