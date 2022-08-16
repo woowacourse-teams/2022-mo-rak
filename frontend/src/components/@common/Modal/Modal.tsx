@@ -9,7 +9,7 @@ interface Props extends PropsWithChildren {
 function Modal({ children, visible, onClose }: Props) {
   const outside = useRef<HTMLDivElement>(null);
 
-  const handleModalClose = (e: MouseEvent<HTMLDivElement>) => {
+  const handleCloseModal = (e: MouseEvent<HTMLDivElement>) => {
     if (outside.current === e.target) {
       onClose();
     }
@@ -20,7 +20,7 @@ function Modal({ children, visible, onClose }: Props) {
       ref={outside}
       visible={visible}
       tabIndex={-1}
-      onClick={handleModalClose}
+      onClick={handleCloseModal}
     >
       {children}
     </StyledModalContainer>
