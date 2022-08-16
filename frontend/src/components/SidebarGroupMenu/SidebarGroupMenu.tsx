@@ -9,6 +9,7 @@ import FlexContainer from '../@common/FlexContainer/FlexContainer';
 import { getDefaultGroup, leaveGroup } from '../../api/group';
 import { getLocalStorageItem, removeLocalStorageItem } from '../../utils/storage';
 import { GroupInterface } from '../../types/group';
+import { useMenuDispatch, useMenuState } from '../../context/MenuProvider';
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -18,10 +19,27 @@ interface Props {
 }
 
 function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode, groups }: Props) {
-  const [isVisible, setIsVisible] = useState(false);
   const [defaultGroup, setDefaultGroup] = useState<GroupInterface>();
 
+  const dispatch = useMenuDispatch();
+  const { isVisibleGroupList } = useMenuState();
   const navigate = useNavigate();
+
+  const handleLeaveGroup = async () => {
+    // TODO: 이후에 모달창으로 변경하기
+    if (window.confirm('그룹을 나가시겠습니까?')) {
+      try {
+        await leaveGroup(groupCode);
+        navigate('/init');
+      } catch (err) {
+        alert(err);
+      }
+    }
+  };
+
+  const handleToggleisVisibleGroupList = () => {
+    dispatch({ type: 'SET_SHOW_GROUP_LIST', isVisible: !isVisibleGroupList });
+  };
 
   useEffect(() => {
     const fetchGetDefaultGroup = async () => {
@@ -52,22 +70,6 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
     }
   }, []);
 
-  const handleShowGroupList = () => {
-    setIsVisible(!isVisible);
-  };
-
-  const handleLeaveGroup = async () => {
-    // TODO: 이후에 모달창으로 변경하기
-    if (window.confirm('그룹을 나가시겠습니까?')) {
-      try {
-        await leaveGroup(groupCode);
-        navigate('/init');
-      } catch (err) {
-        alert(err);
-      }
-    }
-  };
-
   return (
     <StyledGroupContainer>
       <StyledMenuHeader>그룹</StyledMenuHeader>
@@ -84,12 +86,12 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
         <StyledGroupIconGroup>
           {/* TODO: setting 아이콘은, host만 보이도록 해줘야한다. */}
           <StyledSettingIcon src={Setting} />
-          <StyledGroupListIcon src={Menu} onClick={handleShowGroupList} />
+          <StyledGroupListIcon src={Menu} onClick={handleToggleisVisibleGroupList} />
         </StyledGroupIconGroup>
       </FlexContainer>
 
       {/* group list */}
-      <StyledGroupListBox isVisible={isVisible}>
+      <StyledGroupListBox isVisible={isVisibleGroupList}>
         <StyledGroupListContainer>
           {groups.map((group) => (
             <StyledGroupList to={`groups/${group.code}`} isDefaultGroup={groupCode === group.code}>

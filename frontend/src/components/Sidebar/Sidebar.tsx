@@ -18,7 +18,7 @@ import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
 function Sidebar() {
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
-  const [activeGroupMenu, setActiveGroupMenu] = useState<null | string>(null);
+  const [activeModalMenu, setActiveModalMenu] = useState<null | string>(null);
 
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
 
@@ -29,7 +29,7 @@ function Sidebar() {
   };
 
   const handleSetActiveGroupMenu = (menu: null | string) => () => {
-    setActiveGroupMenu(menu);
+    setActiveModalMenu(menu);
   };
 
   useEffect(() => {
@@ -81,7 +81,10 @@ function Sidebar() {
 
       </StyledContainer>
 
-      <SidebarMenuModals activeGroupMenu={activeGroupMenu} close={handleSetActiveGroupMenu(null)} />
+      <SidebarMenuModals
+        activeModalMenu={activeModalMenu}
+        closeModal={handleSetActiveGroupMenu(null)}
+      />
 
     </>
   );

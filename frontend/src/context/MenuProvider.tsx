@@ -2,15 +2,18 @@ import React, { createContext, useContext, useReducer, PropsWithChildren, Dispat
 
 interface MenuState {
   clickedMenu: string;
+  isVisibleGroupList: boolean;
 }
 
 interface MenuAction {
-  type: 'SET_CLICKED_MENU';
-  menu: string;
+  type: 'SET_CLICKED_MENU' | 'SET_SHOW_GROUP_LIST';
+  menu?: string;
+  isVisible?: boolean;
 }
 
 const initialState = {
-  clickedMenu: 'poll'
+  clickedMenu: 'poll',
+  isVisibleGroupList: false
 };
 
 const MenuStateContext = createContext<MenuState | undefined>(undefined);
@@ -21,7 +24,12 @@ function menuReducer(state: MenuState, action: MenuAction) {
     case 'SET_CLICKED_MENU':
       return {
         ...state,
-        clickedMenu: action.menu
+        clickedMenu: action.menu as string
+      };
+    case 'SET_SHOW_GROUP_LIST':
+      return {
+        ...state,
+        isVisibleGroupList: action.isVisible as boolean
       };
     default:
       return state;

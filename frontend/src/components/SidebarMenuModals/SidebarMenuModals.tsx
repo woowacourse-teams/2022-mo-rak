@@ -1,6 +1,7 @@
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 import styled from '@emotion/styled';
-import React from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import TextField from '../@common/TextField/TextField';
 import Input from '../@common/Input/Input';
 import Modal from '../@common/Modal/Modal';
@@ -11,24 +12,52 @@ import Plus from '../../assets/plus.svg';
 import LinkIcon from '../../assets/link.svg';
 import Close from '../../assets/close-button.svg';
 import Logo from '../../assets/logo.svg';
+import { GroupInterface } from '../../types/group';
+import { createGroup } from '../../api/group';
+import { useMenuDispatch } from '../../context/MenuProvider';
 
 interface Props {
-  activeGroupMenu: string | null;
-  close: () => void;
+  activeModalMenu: string | null;
+  closeModal: () => void;
 }
 
-function SidebarMenuModals({ activeGroupMenu, close }:Props) {
+function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
+  const [groupName, setGroupName] = useState<GroupInterface['name']>('');
+
+  const dispatch = useMenuDispatch();
+  const navigate = useNavigate();
+
+  // 그룹 생성
+  const handleCreateGroup = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const res = await createGroup(groupName);
+      const groupCode = res.headers.location.split('groups/')[1];
+
+      navigate(`/groups/${groupCode}`);
+      closeModal();
+      dispatch({ type: 'SET_SHOW_GROUP_LIST', isVisible: false });
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const handleGroupName = (e: ChangeEvent<HTMLInputElement>) => {
+    setGroupName(e.target.value);
+  };
+
   return (
     <>
       {/* 슬랙 연동 */}
-      <Modal isVisible={activeGroupMenu === 'slack'} close={close}>
+      <Modal isVisible={activeModalMenu === 'slack'} close={closeModal}>
         {/* 슬랙 메뉴 */}
         <StyledModalContainer>
           <StyledTop>
             <StyledSlackLogo src={Slack} alt="slack-logo" />
             <StyledHeaderText>슬랙 채널과 연동해보세요!</StyledHeaderText>
             <StyledGuideText>슬랙 채널과 연동하면, 그룹의 새소식을 슬랙으로 받아볼 수 있어요</StyledGuideText>
-            <StyledCloseButton onClick={close} src={Close} alt="close-button" />
+            <StyledCloseButton onClick={closeModal} src={Close} alt="close-button" />
             <StyledTriangle />
           </StyledTop>
           <StyledBottom>
@@ -40,7 +69,7 @@ function SidebarMenuModals({ activeGroupMenu, close }:Props) {
                 padding="1.6rem 10rem"
                 width="50.4rem"
               >
-                <Input placeholder="슬랙 채널 url 입력 후, 확인버튼을 누르면 연동 끝!" fontSize="1.6REM" required />
+                <Input placeholder="슬랙 채널 url 입력 후, 확인버튼을 누르면 연동 끝!" fontSize="1.6REM" required autoFocus />
                 <StyledLinkIcon src={LinkIcon} alt="link-icon" />
               </TextField>
               <StyledButton>확인</StyledButton>
@@ -50,13 +79,13 @@ function SidebarMenuModals({ activeGroupMenu, close }:Props) {
       </Modal>
 
       {/* 그룹 생성 */}
-      <Modal isVisible={activeGroupMenu === 'create'} close={close}>
-        <StyledModalContainer>
+      <Modal isVisible={activeModalMenu === 'create'} close={closeModal}>
+        <StyledModalFormContainer onSubmit={handleCreateGroup}>
           <StyledTop>
             <StyledSmallLogo src={Logo} alt="logo" />
             <StyledHeaderText>그룹 생성</StyledHeaderText>
             <StyledGuideText>새로운 그룹을 빠르고 쉽게 생성해보세요</StyledGuideText>
-            <StyledCloseButton onClick={close} src={Close} alt="close-button" />
+            <StyledCloseButton onClick={closeModal} src={Close} alt="close-button" />
             <StyledTriangle />
           </StyledTop>
           <StyledBottom>
@@ -68,23 +97,23 @@ function SidebarMenuModals({ activeGroupMenu, close }:Props) {
                 padding="1.6rem 10rem"
                 width="50.4rem"
               >
-                <Input placeholder="그룹 이름을 입력하면 생성 완료!" fontSize="1.6REM" required />
+                <StyledNameInput placeholder="그룹 이름을 입력하면 생성 완료!" value={groupName} onChange={handleGroupName} required autoFocus />
                 <StyledLinkIcon src={Plus} alt="plus-icon" />
               </TextField>
               <StyledButton>생성하기</StyledButton>
             </FlexContainer>
           </StyledBottom>
-        </StyledModalContainer>
+        </StyledModalFormContainer>
       </Modal>
 
       {/* 그룹 참가 */}
-      <Modal isVisible={activeGroupMenu === 'participate'} close={close}>
+      <Modal isVisible={activeModalMenu === 'participate'} close={closeModal}>
         <StyledModalContainer>
           <StyledTop>
             <StyledSmallLogo src={Logo} alt="logo" />
             <StyledHeaderText>그룹 참가</StyledHeaderText>
             <StyledGuideText>새로운 그룹에도 참가해보세요</StyledGuideText>
-            <StyledCloseButton onClick={close} src={Close} alt="close-button" />
+            <StyledCloseButton onClick={closeModal} src={Close} alt="close-button" />
             <StyledTriangle />
           </StyledTop>
           <StyledBottom>
@@ -96,7 +125,7 @@ function SidebarMenuModals({ activeGroupMenu, close }:Props) {
                 padding="1.6rem 10rem"
                 width="50.4rem"
               >
-                <Input placeholder="그룹 코드를 입력하면 참가 완료!" fontSize="1.6REM" required />
+                <Input placeholder="그룹 코드를 입력하면 참가 완료!" fontSize="1.6REM" required autoFocus />
                 <StyledLinkIcon src={Plus} alt="plus-icon" />
               </TextField>
               <StyledButton>참가하기</StyledButton>
@@ -109,6 +138,14 @@ function SidebarMenuModals({ activeGroupMenu, close }:Props) {
 }
 
 const StyledModalContainer = styled.div(({ theme }) => `
+  position: relative;
+  background-color: ${theme.colors.WHITE_100};
+  border-radius: 12px;
+  width: 68rem;
+  height: 41.6rem;
+`);
+
+const StyledModalFormContainer = styled.form(({ theme }) => `
   position: relative;
   background-color: ${theme.colors.WHITE_100};
   border-radius: 12px;
@@ -199,5 +236,12 @@ const StyledSmallLogo = styled.img`
   width: 8.8rem;
   cursor: pointer;
 `;
+
+const StyledNameInput = styled.input(({ theme }) => `
+  width: 100%;
+  color: ${theme.colors.BLACK_100};
+  text-align: center;
+  font-size: 1.6rem;
+`);
 
 export default SidebarMenuModals;
