@@ -263,17 +263,17 @@ class PollServiceTest {
 
         PollCreateRequest pollCreateRequest2 = new PollCreateRequest(
                 "order1",
-                1,
-                false,
-                LocalDateTime.now().plusDays(1),
-                List.of("항목1", "항목2")
+                2,
+                true,
+                LocalDateTime.now().plusDays(3),
+                List.of("투표1", "투표2")
         );
 
         PollCreateRequest pollCreateRequest3 = new PollCreateRequest(
                 "order3",
-                1,
+                3,
                 false,
-                LocalDateTime.now().plusDays(1),
+                LocalDateTime.now().plusDays(4),
                 List.of("항목1", "항목2")
         );
 

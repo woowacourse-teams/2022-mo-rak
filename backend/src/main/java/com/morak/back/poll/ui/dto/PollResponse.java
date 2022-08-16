@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PollResponse implements Comparable<PollResponse>{
+public class PollResponse implements Comparable<PollResponse> {
 
     private Long id;
     private String title;
@@ -42,11 +42,9 @@ public class PollResponse implements Comparable<PollResponse>{
         if (this.status.equalsIgnoreCase(o.status)) {
             return Long.compare(o.id, this.id);
         }
-
         if (PollStatus.OPEN.name().equalsIgnoreCase(this.status)) {
             return -1;
         }
-
         return 1;
     }
 }
