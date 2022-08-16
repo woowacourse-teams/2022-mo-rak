@@ -32,6 +32,7 @@ import com.morak.back.team.exception.TeamAuthorizationException;
 import com.morak.back.team.exception.TeamNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,8 @@ class PollServiceTest {
 
     private PollService pollService;
 
+    private EntityManager entityManager;
+
     private Member member;
     private Team team;
     private Poll poll;
@@ -59,7 +62,7 @@ class PollServiceTest {
     @Autowired
     public PollServiceTest(MemberRepository memberRepository, TeamRepository teamRepository,
                            TeamMemberRepository teamMemberRepository, PollRepository pollRepository,
-                           PollItemRepository pollItemRepository) {
+                           PollItemRepository pollItemRepository, EntityManager entityManager) {
         this.memberRepository = memberRepository;
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
@@ -72,6 +75,7 @@ class PollServiceTest {
                 teamMemberRepository,
                 pollItemRepository
         );
+        this.entityManager = entityManager;
     }
 
     @BeforeEach
@@ -188,11 +192,13 @@ class PollServiceTest {
                                         pollCreateRequest.getIsAnonymous(), OPEN.name(), null,
                                         pollCreateRequest.getClosedAt(),
                                         pollCode,
-                                        true),
+                                        true,
+                                        0),
                                 new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
                                         poll.getIsAnonymous(),
                                         poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), true)
+                                        poll.getClosedAt(), poll.getCode(), true,
+                                        0)
                         )
                 );
     }
@@ -233,17 +239,19 @@ class PollServiceTest {
                                         pollCreateRequest2.getIsAnonymous(), OPEN.name(), null,
                                         pollCreateRequest2.getClosedAt(),
                                         pollCode2,
-                                        true),
+                                        true,
+                                        0),
                                 new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
                                         poll.getIsAnonymous(),
                                         poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), true),
+                                        poll.getClosedAt(), poll.getCode(), true, 0),
                                 new PollResponse(null, pollCreateRequest1.getTitle(),
                                         pollCreateRequest1.getAllowedPollCount(),
                                         pollCreateRequest1.getIsAnonymous(), CLOSED.name(), null,
                                         pollCreateRequest1.getClosedAt(),
                                         pollCode1,
-                                        true)
+                                        true,
+                                        0)
                         )
                 );
     }
@@ -294,23 +302,26 @@ class PollServiceTest {
                                         pollCreateRequest2.getIsAnonymous(), OPEN.name(), null,
                                         pollCreateRequest2.getClosedAt(),
                                         pollCode2,
-                                        true),
+                                        true,
+                                        0),
                                 new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
                                         poll.getIsAnonymous(),
                                         poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), true),
+                                        poll.getClosedAt(), poll.getCode(), true, 0),
                                 new PollResponse(null, pollCreateRequest3.getTitle(),
                                         pollCreateRequest3.getAllowedPollCount(),
                                         pollCreateRequest3.getIsAnonymous(), CLOSED.name(), null,
                                         pollCreateRequest3.getClosedAt(),
                                         pollCode3,
-                                        true),
+                                        true,
+                                        0),
                                 new PollResponse(null, pollCreateRequest1.getTitle(),
                                         pollCreateRequest1.getAllowedPollCount(),
                                         pollCreateRequest1.getIsAnonymous(), CLOSED.name(), null,
                                         pollCreateRequest1.getClosedAt(),
                                         pollCode1,
-                                        true)
+                                        true,
+                                        0)
                         )
                 );
     }
@@ -342,16 +353,26 @@ class PollServiceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id", "createdAt")
                 .isEqualTo(
-                        List.of(new PollResponse(null, pollCreateRequest.getTitle(),
+                        List.of(new PollResponse(null,
+                                        pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
-                                        pollCreateRequest.getIsAnonymous(), OPEN.name(), null,
+                                        pollCreateRequest.getIsAnonymous(),
+                                        OPEN.name(),
+                                        null,
                                         pollCreateRequest.getClosedAt(),
                                         pollCode,
-                                        false),
-                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        false,
+                                        0),
+                                new PollResponse(poll.getId(),
+                                        poll.getTitle(),
+                                        poll.getAllowedPollCount(),
                                         poll.getIsAnonymous(),
-                                        poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), false)
+                                        poll.getStatus().name(),
+                                        poll.getCreatedAt(),
+                                        poll.getClosedAt(),
+                                        poll.getCode(),
+                                        false,
+                                        0)
                         )
                 );
     }
@@ -604,11 +625,57 @@ class PollServiceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(new PollResponse(null, poll.getTitle(), poll.getAllowedPollCount(), poll.getIsAnonymous(),
-                        poll.getStatus().name(), poll.getCreatedAt(), poll.getClosedAt(), poll.getCode(), true));
+                        poll.getStatus().name(), poll.getCreatedAt(),
+                        poll.getClosedAt(), poll.getCode(), true, 0));
     }
 
     @Test
-    void 속하지않은_팀의_투표항목을_조회하면_예외를_던진다() {
+    void 투표_진행_후_단건_조회_시_count값이_반영된다() {
+        // given
+        List<PollItem> pollItems = pollItemRepository.saveAll(List.of(
+                PollItem.builder()
+                        .poll(poll)
+                        .subject("sub1")
+                        .build(),
+                PollItem.builder()
+                        .poll(poll)
+                        .subject("sub2")
+                        .build()));
+
+        PollItem pollItem1 = pollItems.get(0);
+        PollItem pollItem2 = pollItems.get(1);
+
+        poll.addItem(pollItem1);
+        poll.addItem(pollItem2);
+
+        pollService.doPoll(team.getCode(), member.getId(), poll.getCode(),
+                List.of(new PollResultRequest(pollItem1.getId(), "그냥뇨"),
+                        new PollResultRequest(pollItem2.getId(), "저스트 그냥!")));
+
+        Member 엘리 = memberRepository.save(Member.builder()
+                .oauthId("ellieHan")
+                .name("한해리")
+                .profileUrl("http://han-profile.com")
+                .build());
+        teamMemberRepository.save(new TeamMember(null, team, 엘리));
+
+        pollService.doPoll(team.getCode(), 엘리.getId(), poll.getCode(),
+                List.of(new PollResultRequest(pollItem1.getId(), "그냥그냥그냐앙~")));
+
+        entityManager.flush();
+        entityManager.detach(poll);
+
+        // when
+        PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), poll.getCode());
+
+        // then
+        assertThat(pollResponse)
+                .extracting("id", "count")
+                .containsExactly(poll.getId(), 2);
+    }
+
+    @Test
+    void 속하지않은_팀의_투표를_조회하면_예외를_던진다() {
         // given
         Team invalidTeam = teamRepository.save(Team.builder()
                 .name("invalidTeam")

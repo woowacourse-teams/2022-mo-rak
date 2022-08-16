@@ -22,6 +22,7 @@ public class PollResponse implements Comparable<PollResponse> {
     private LocalDateTime closedAt;
     private String code;
     private Boolean isHost;
+    private Integer count;
 
     public static PollResponse from(Poll poll, Member member) {
         return new PollResponse(
@@ -33,7 +34,8 @@ public class PollResponse implements Comparable<PollResponse> {
                 poll.getCreatedAt(),
                 poll.getClosedAt(),
                 poll.getCode(),
-                poll.isHost(member)
+                poll.isHost(member),
+                poll.getCount()
         );
     }
 

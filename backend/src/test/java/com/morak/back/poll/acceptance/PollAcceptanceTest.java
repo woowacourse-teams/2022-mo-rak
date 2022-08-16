@@ -8,7 +8,6 @@ import static com.morak.back.SimpleRestAssured.post;
 import static com.morak.back.SimpleRestAssured.put;
 import static com.morak.back.SimpleRestAssured.toObjectList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.SimpleRestAssured;
@@ -314,7 +313,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 List.of(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
                                         request.getIsAnonymous(),
-                                        PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true))
+                                        PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true, 0))
                         )
         );
     }
@@ -357,7 +356,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .ignoringFields("id", "createdAt")
                         .isEqualTo(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
                                 request.getIsAnonymous(),
-                                PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true))
+                                PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true, 0))
         );
     }
 
