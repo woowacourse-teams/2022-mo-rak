@@ -67,6 +67,7 @@ public class AppointmentService {
 
         return appointmentRepository.findAllByTeamId(teamId).stream()
                 .map(AppointmentAllResponse::from)
+                .sorted()
                 .collect(Collectors.toList());
     }
 

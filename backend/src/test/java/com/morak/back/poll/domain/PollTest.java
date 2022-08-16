@@ -70,6 +70,15 @@ class PollTest {
     }
 
     @Test
+    void POJO객체의_count는_항상_0이다() {
+        // when
+        Integer count = poll.getCount();
+
+        // then
+        assertThat(count).isEqualTo(0);
+    }
+
+    @Test
     void 투표를_진행한다() {
         // given
         Map<PollItem, String> mappedItemAndDescription = new HashMap<>();

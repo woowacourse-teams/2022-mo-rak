@@ -9,6 +9,8 @@ import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,15 @@ class PollRepositoryTest {
 
     @Autowired
     private PollRepository pollRepository;
+
+    @Autowired
+    private PollItemRepository pollItemRepository;
+
+    @Autowired
+    private PollResultRepository pollResultRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     // TODO: 2022/08/14 data.sql의존
     @Test
@@ -98,4 +109,53 @@ class PollRepositoryTest {
         // then
         assertThat(poll).isEmpty();
     }
+
+    @Test
+    void 포뮬라를_적용해_count를_불러온다() {
+        // given
+        Team team = Team.builder()
+                .id(1L)
+                .build();
+        Member member = Member.builder()
+                .id(1L)
+                .build();
+
+        Poll poll = Poll.builder()
+                .team(team)
+                .host(member)
+                .title("테스트 투표")
+                .isAnonymous(false)
+                .allowedPollCount(1)
+                .status(PollStatus.OPEN)
+                .closedAt(LocalDateTime.now().plusDays(1L))
+                .code(Code.generate(length -> "unique99"))
+                .build();
+        pollRepository.save(poll);
+
+        PollItem 테스트_선택_항목1 = PollItem.builder()
+                .poll(poll)
+                .subject("테스트 선택 항목1")
+                .build();
+        PollItem 테스트_선택_항목2 = PollItem.builder()
+                .poll(poll)
+                .subject("테스트 선택 항목2")
+                .build();
+        pollItemRepository.saveAll(List.of(테스트_선택_항목1, 테스트_선택_항목2));
+
+        PollResult 테스트_선택_항목1에_대한_이유 = PollResult.builder()
+                .pollItem(테스트_선택_항목1)
+                .member(member)
+                .description("테스트 선택 항목1에 대한 이유")
+                .build();
+        pollResultRepository.saveAll(List.of(테스트_선택_항목1에_대한_이유));
+
+        entityManager.detach(poll);
+
+        // when
+        Poll foundPoll = pollRepository.findByCode(poll.getCode()).orElseThrow();
+
+        // then
+        assertThat(foundPoll.getCount()).isEqualTo(1);
+    }
+
 }
