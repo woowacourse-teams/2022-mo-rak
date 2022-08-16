@@ -3,6 +3,7 @@ import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createGroup } from '../../../api/group';
 import { GroupInterface } from '../../../types/group';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import GroupCreateFormNameInput from '../GroupCreateFormNameInput/GroupCreateFormNameInput';
 import GroupCreateFormSubmitButton from '../GroupCreateFormSubmitButton/GroupCreateFormSubmitButton';
 
@@ -29,9 +30,10 @@ function GroupCreateForm() {
 
   return (
     <StyledForm onSubmit={handleCreateGroup}>
-      <StyledTitle>그룹생성</StyledTitle>
-      <GroupCreateFormNameInput groupName={groupName} onChange={handleGroupName} />
-      <GroupCreateFormSubmitButton />
+      <FlexContainer>
+        <GroupCreateFormNameInput groupName={groupName} onChange={handleGroupName} />
+        <GroupCreateFormSubmitButton />
+      </FlexContainer>
     </StyledForm>
   );
 }
@@ -42,10 +44,6 @@ const StyledForm = styled.form`
   justify-content: center;
   align-items: center;
   gap: 1.2rem;
-`;
-
-const StyledTitle = styled.span`
-  font-size: 2rem;
 `;
 
 export default GroupCreateForm;
