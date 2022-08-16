@@ -40,7 +40,7 @@ function MenuProvider({ children }: PropsWithChildren) {
   );
 }
 
-export function useMenuState() {
+function useMenuState() {
   const context = useContext(MenuStateContext);
 
   if (!context) {
@@ -50,7 +50,7 @@ export function useMenuState() {
   return context;
 }
 
-export function useMenuDispatch() {
+function useMenuDispatch() {
   const context = useContext(MenuDispatchContext);
 
   if (!context) {
@@ -60,4 +60,4 @@ export function useMenuDispatch() {
   return context;
 }
 
-export default MenuProvider;
+export { useMenuState, useMenuDispatch, MenuProvider };
