@@ -132,7 +132,7 @@ const StyledGroupListBox = styled.div<{isVisible: boolean}>(({ theme, isVisible 
   right: -25.2rem;
   top: 4.4rem;
   border-radius: 12px;
-  max-height: 45.2rem;
+  max-height: 55.2rem;
 
   ${isVisible && `
   visibility: visible;
