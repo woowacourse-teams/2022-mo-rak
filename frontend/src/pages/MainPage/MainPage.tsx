@@ -8,7 +8,7 @@ import { useMenuDispatch } from '../../context/MenuProvider';
 
 function MainPage() {
   const dispatch = useMenuDispatch();
-  dispatch({ type: 'SET_CLICKED_MENU', menu: '' });
+  dispatch({ type: 'SET_CLICKED_MENU', menu: 'main' });
 
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
 
