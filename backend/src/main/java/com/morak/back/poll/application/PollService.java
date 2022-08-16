@@ -12,6 +12,7 @@ import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.support.Generated;
 import com.morak.back.core.util.MessageFormatter;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
@@ -219,6 +220,7 @@ public class PollService {
     }
 
     @Scheduled(cron = "0 0/1 * * * ?")
+    @Generated
     void notifyPoll() {
         List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.MIN, LocalDateTime.now());
 

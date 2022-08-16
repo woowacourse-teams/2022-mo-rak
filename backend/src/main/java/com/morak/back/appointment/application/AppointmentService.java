@@ -26,6 +26,7 @@ import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.support.Generated;
 import com.morak.back.core.util.MessageFormatter;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
@@ -235,6 +236,7 @@ public class AppointmentService {
     }
 
     @Scheduled(cron = "0 0/1 * * * ?")
+    @Generated
     void notifyAppointment() {
         List<Appointment> appointmentsToBeClosed =
                 appointmentRepository.findAllToBeClosed(LocalDateTime.MIN, LocalDateTime.now());
