@@ -627,6 +627,14 @@ include::{snippets}/appointment/delete-appointment/http-response.adoc[]
 
 |===
 
+== 슬랙
+
+=== 슬랙 웹훅 URL 등록
+include::{snippets}/slack/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/slack/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/slack/http-response.adoc[]
 
 == 에러 코드 리스트
 include::{snippets}/error-codes/response-fields.adoc[]
