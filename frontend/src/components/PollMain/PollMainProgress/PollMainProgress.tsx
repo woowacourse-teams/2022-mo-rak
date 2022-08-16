@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import Progress from '../../common/Progress/Progress';
-import { PollInterface, PollItemResultType } from '../../../types/poll';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import Progress from '../../@common/Progress/Progress';
+import { PollInterface, getPollResultResponse } from '../../../types/poll';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { getPollResult } from '../../../api/poll';
 import { GroupInterface, MemberInterface } from '../../../types/group';
 import { getGroupMembers } from '../../../api/group';
@@ -13,7 +13,7 @@ interface Props {
 }
 
 // TODO: 재미로 리팩토링 해봐~ 심심할때
-const getCurrentParticipants = (pollResult: Array<PollItemResultType>) => {
+const getCurrentParticipants = (pollResult: getPollResultResponse) => {
   const allParticipants = pollResult.map((pollItemResult) => pollItemResult.members).flat();
   const currentParticipants = allParticipants.map((participant) => participant.name);
 
@@ -21,7 +21,7 @@ const getCurrentParticipants = (pollResult: Array<PollItemResultType>) => {
 };
 
 function PollMainProgress({ pollCode, groupCode }: Props) {
-  const [pollResult, setPollResult] = useState<Array<PollItemResultType>>([]);
+  const [pollResult, setPollResult] = useState<getPollResultResponse>([]);
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
   const totalParticipants = groupMembers.length;
   const currentParticipants = getCurrentParticipants(pollResult);
@@ -31,7 +31,7 @@ function PollMainProgress({ pollCode, groupCode }: Props) {
       try {
         if (groupCode) {
           const res = await getPollResult(pollCode, groupCode);
-          setPollResult(res);
+          setPollResult(res.data);
         }
       } catch (err) {
         alert(err);
@@ -47,7 +47,7 @@ function PollMainProgress({ pollCode, groupCode }: Props) {
         if (groupCode) {
           const res = await getGroupMembers(groupCode);
 
-          setGroupMembers(res);
+          setGroupMembers(res.data);
         }
       } catch (err) {
         if (err instanceof Error) {
@@ -67,8 +67,7 @@ function PollMainProgress({ pollCode, groupCode }: Props) {
       <StyledParticipantsStatus>
         {currentParticipants}
         명/
-        {totalParticipants}
-        명
+        {totalParticipants}명
       </StyledParticipantsStatus>
     </FlexContainer>
   );

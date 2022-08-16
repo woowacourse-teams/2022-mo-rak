@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import Box from '../../common/Box/Box';
+import Box from '../../@common/Box/Box';
 import Logo from '../../../assets/logo.svg';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import InvitationButtonGroup from '../InvitationButtonGroup/InvitationButtonGroup';
 import { getIsJoinedGroup } from '../../../api/group';
 import { GroupInterface } from '../../../types/group';
@@ -23,7 +23,9 @@ function InvitationContainer() {
     // TODO: 인자로 넘겨여할까? 너무 외부에 있는 변수에 의존하고 있다. 인자로 받아서 사용해주는 것이 올바른 코드가 아닐까? ex) invitationCode
     const fetchGetIsJoinedGroup = async () => {
       try {
-        const { groupCode, name, isJoined } = await getIsJoinedGroup(invitationCode);
+        const res = await getIsJoinedGroup(invitationCode);
+        const { groupCode, name, isJoined } = res.data;
+
         setGroupCode(groupCode);
         setName(name);
         setIsJoined(isJoined);
@@ -69,6 +71,8 @@ function InvitationContainer() {
           그룹으로 초대합니다
         </StyledTitle>
         <InvitationButtonGroup
+          // NOTE: useParams으로 code들을 다 내려주고 있는데, navigate만 내려주지 않고 자식 컴포넌트에서
+          // 다시 호출해서 navigate를 만드는 게 맞을까?
           navigate={navigate}
           invitationCode={invitationCode}
           groupCode={groupCode}

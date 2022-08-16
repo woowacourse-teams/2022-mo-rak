@@ -3,9 +3,11 @@ package com.morak.back.poll.ui.dto;
 import com.morak.back.auth.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Getter
+@NoArgsConstructor
 public class MemberResultResponse {
 
     private Long id;

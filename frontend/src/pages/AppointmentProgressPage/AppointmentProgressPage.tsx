@@ -1,11 +1,14 @@
 import styled from '@emotion/styled';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAppointment, progressAppointment } from '../../api/appointment';
-import Button from '../../components/common/Button/Button';
 import { GroupInterface } from '../../types/group';
-import { AppointmentInterface } from '../../types/appointment';
-import Calendar from '../../components/common/Calendar/Calendar';
+import {
+  getAppointmentResponse,
+  AvailableTimes,
+  AppointmentInterface
+} from '../../types/appointment';
+import Calendar from '../../components/@common/Calendar/Calendar';
 import AppointmentProgressHeader from '../../components/AppointmentProgress/AppointmentProgressHeader/AppointmentProgressHeader';
 import AppointmentProgressDetail from '../../components/AppointmentProgress/AppointmentProgressDetail/AppointmentProgressDetail';
 import AppointmentProgressTimePicker from '../../components/AppointmentProgress/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
@@ -17,16 +20,13 @@ function AppointmentProgressPage() {
   const navigate = useNavigate();
   const { groupCode, appointmentCode } = useParams() as {
     groupCode: GroupInterface['code'];
-    // TODO: type 어떻게 할지 정하고 변경
-    appointmentCode: string;
+    appointmentCode: AppointmentInterface['code'];
   };
 
-  const [appointment, setAppointment] = useState<AppointmentInterface>();
+  const [appointment, setAppointment] = useState<getAppointmentResponse>();
   // TODO: 가장 빠른 날짜가 기본값으로 설정되도록 해주자
   const [selectedDate, setSelectedDate] = useState(''); // version="select"에서, 사용자가 선택한 날짜
-  // NOTE: 타입을 Array<{ start: AppointmentInterface['startTime']; end: AppointmentInterface['endTime'] }>로 해주었었는데,
-  // 생각을 해보면 AppointmentInterface는 약속에 대한 인터페이스이고 availableTimes는 아니기(?) 때문에 이렇게 사용하면 안될듯하여 변경
-  const [availableTimes, setAvailableTimes] = useState<Array<{ start: string; end: string }>>([]);
+  const [availableTimes, setAvailableTimes] = useState<AvailableTimes>([]);
 
   // TODO: 로직 효율화
   const handleAvailableTimes = (start: string, end: string) => () => {
@@ -75,12 +75,12 @@ function AppointmentProgressPage() {
     (async () => {
       try {
         const res = await getAppointment(groupCode, appointmentCode);
-        if (res.isClosed) {
+        if (res.data.isClosed) {
           alert('마감된 약속잡기입니다');
 
           return;
         }
-        setAppointment(res);
+        setAppointment(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -128,8 +128,8 @@ function AppointmentProgressPage() {
 }
 
 const StyledContainer = styled.div`
-  display: flex;
   width: calc(100% - 36.4rem);
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 18.4rem;

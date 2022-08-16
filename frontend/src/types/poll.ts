@@ -1,3 +1,5 @@
+import { MemberInterface } from './group';
+
 interface PollInterface {
   id: number;
   title: string;
@@ -7,49 +9,45 @@ interface PollInterface {
   createdAt: string;
   closedAt: string;
   code: string;
-  isHost: boolean;
 }
 
 interface PollItemInterface {
-  // TODO: 다음주 월요일에 이야기해보고 바꾸자
   id: number;
   subject: string;
 }
 
-// TODO: 고민해보자...PollItem에 대한 선택 항목..
-interface SelectedPollItemInterface {
-  itemId: PollItemInterface['id'];
+// TODO: description 분리
+type SelectedPollItem = Pick<PollItemInterface, 'id'> & {
   description: string;
-}
-
-type PollItemResultType = PollItemInterface & {
-  members: Array<PollMembersInterface>;
-  count: number;
 };
 
-interface PollMembersInterface {
-  id: number;
-  name: string;
-  profileUrl: string;
-  description: string;
-}
-
-// TODO: 네이밍
-type PollCreateType = Pick<
+type createPollData = Pick<
   PollInterface,
   'title' | 'allowedPollCount' | 'isAnonymous' | 'closedAt'
-> & { subjects: string[] };
+> & { subjects: Array<PollItemInterface['subject']> };
 
-type PollProgressType = {
-  [key: string]: Array<PollItemInterface['id']>;
+type getPollResponse = PollInterface & {
+  isHost: boolean;
 };
+
+type getPollsResponse = Array<getPollResponse>;
+
+type getPollResultResponse = Array<
+  PollItemInterface & {
+    members: Array<MemberInterface & Pick<SelectedPollItem, 'description'>>;
+    count: number;
+  }
+>;
+
+type getPollItemsResponse = Array<PollItemInterface & { isSelected: boolean; description: string }>;
 
 export {
   PollInterface,
-  PollCreateType,
+  createPollData,
   PollItemInterface,
-  PollProgressType,
-  PollItemResultType,
-  PollMembersInterface,
-  SelectedPollItemInterface
+  getPollResponse,
+  getPollsResponse,
+  getPollResultResponse,
+  getPollItemsResponse,
+  SelectedPollItem
 };

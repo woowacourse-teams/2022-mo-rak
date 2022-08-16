@@ -1,53 +1,36 @@
-import fetcher from '../utils/fetcher';
 import { GroupInterface } from '../types/group';
-import {
-  AppointmentInfoInterface,
-  CreateAppointmentRequest,
-  ProgressAppointmentRequest
-} from '../types/appointment';
+import { groupInstance as axios } from './axios';
+import { AppointmentInterface, createAppointmentData, AvailableTimes } from '../types/appointment';
 
-const createAppointment = (
-  groupCode: GroupInterface['code'],
-  appointment: CreateAppointmentRequest
-) => fetcher({ method: 'POST', path: `groups/${groupCode}/appointments`, body: appointment });
+const createAppointment = (groupCode: GroupInterface['code'], appointment: createAppointmentData) =>
+  axios.post(`/${groupCode}/appointments`, appointment);
+
+const getAppointments = (groupCode: GroupInterface['code']) =>
+  axios.get(`/${groupCode}/appointments`);
 
 const getAppointmentRecommendation = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInfoInterface['code']
-) =>
-  fetcher({
-    method: 'GET',
-    path: `groups/${groupCode}/appointments/${appointmentCode}/recommendation`
-  });
+  appointmentCode: AppointmentInterface['code']
+) => axios.get(`/${groupCode}/appointments/${appointmentCode}/recommendation`);
 
 const getAppointment = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInfoInterface['code']
-) =>
-  fetcher({
-    method: 'GET',
-    path: `groups/${groupCode}/appointments/${appointmentCode}`
-  });
+  appointmentCode: AppointmentInterface['code']
+) => axios.get(`/${groupCode}/appointments/${appointmentCode}`);
 
 const progressAppointment = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInfoInterface['code'],
-  availableTimes: ProgressAppointmentRequest
-) =>
-  fetcher({
-    method: 'PUT',
-    path: `groups/${groupCode}/appointments/${appointmentCode}`,
-    body: availableTimes
-  });
+  appointmentCode: AppointmentInterface['code'],
+  availableTimes: AvailableTimes
+) => axios.put(`/${groupCode}/appointments/${appointmentCode}`, availableTimes);
 
 const closeAppointment = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInfoInterface['code']
-) =>
-  // TODO: appointment, poll, group등 따로 api url을 만들어서 중복을 줄여줄 수도 있겠다. 해보자
-  fetcher({ method: 'PATCH', path: `groups/${groupCode}/appointments/${appointmentCode}/close` });
+  appointmentCode: AppointmentInterface['code']
+) => axios.patch(`/${groupCode}/appointments/${appointmentCode}/close`);
 
 export {
+  getAppointments,
   getAppointment,
   createAppointment,
   progressAppointment,

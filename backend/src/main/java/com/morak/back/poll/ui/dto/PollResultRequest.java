@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class PollResultRequest {
 
     @NotNull(message = "ItemId는 null 일 수 없습니다.")
-    private Long itemId;
+    private Long id;
 
     @NotNull(message = "poll Item description은 null 일 수 없습니다.")
     private String description;
