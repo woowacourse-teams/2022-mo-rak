@@ -10,6 +10,7 @@ import static com.morak.back.SimpleRestAssured.toObjectList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
+import com.morak.back.AuthSupporter;
 import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.domain.Member;
@@ -361,6 +362,44 @@ class PollAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    void 투표_진행_후_투표_단건을_조회한다() {
+        // given
+        String 항목1 = "항목1";
+        String 항목2 = "항목2";
+        PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
+                List.of(항목1, 항목2));
+        String pollLocation = 투표_생성을_요청한다(teamLocation, request, token).header("Location");
+        String pollCode = pollLocation.split("/")[5];
+
+        List<PollItemResponse> pollItemResponses = toObjectList(투표_선택항목_조회를_요청한다(pollLocation, token),
+                PollItemResponse.class);
+
+        Long pollItemId = pollItemResponses.get(0).getId();
+        List<PollResultRequest> pollResultRequests = List.of(new PollResultRequest(pollItemId, "눈물이 나기 때문이에요"));
+        투표_진행을_요청한다(pollLocation, pollResultRequests, token);
+
+        String otherMemberToken = tokenProvider.createToken(String.valueOf(2L));
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
+        그룹_참가를_요청한다(teamInvitationLocation, otherMemberToken);
+        투표_진행을_요청한다(pollLocation, pollResultRequests, otherMemberToken);
+
+        // when
+        ExtractableResponse<Response> response = 투표_단건_조회를_요청한다(pollLocation, token);
+        PollResponse pollResponse = response.as(PollResponse.class);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(pollResponse)
+                        .usingRecursiveComparison()
+                        .ignoringFields("id", "createdAt")
+                        .isEqualTo(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
+                                request.getIsAnonymous(),
+                                PollStatus.OPEN.name(), null, request.getClosedAt(), pollCode, true, 2))
+        );
+    }
+
+    @Test
     void 없는_투표를_단건_조회_시_NOT_FOUND를_반환한다() {
         // given
         PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
@@ -637,5 +676,13 @@ class PollAcceptanceTest extends AcceptanceTest {
 
     private ExtractableResponse<Response> 투표_삭제를_요청한다(String location, String token) {
         return delete(location, toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 그룹_초대코드_생성을_요청한다(String location, String token) {
+        return post(location + "/invitation", "", toHeader(token));
+    }
+
+    public ExtractableResponse<Response> 그룹_참가를_요청한다(String teamInvitationLocation, String otherToken) {
+        return post(teamInvitationLocation, "", AuthSupporter.toHeader(otherToken));
     }
 }
