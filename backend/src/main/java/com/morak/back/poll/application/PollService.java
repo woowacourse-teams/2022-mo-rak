@@ -97,6 +97,7 @@ public class PollService {
 
         return polls.stream()
                 .map(poll -> PollResponse.from(poll, member))
+                .sorted()
                 .collect(Collectors.toList());
     }
 

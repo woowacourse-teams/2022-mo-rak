@@ -58,15 +58,3 @@ VALUES (1, 2, '발표 준비 날짜 정하기', '데모 데이 발표 준비를 
         'FEsd23C1', '2022-07-31T23:59:00', now(), now());
 
 INSERT INTO slack_webhook (team_id, url, created_at, updated_at) VALUES (1L, 'https://slack.webhook.com/', now(), now());
-
--- INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, end_date_time, created_at,
---                                         updated_at)
--- VALUES (1, 2, '2122-08-03T16:00:00', '2122-08-03T17:00:00', now(), now());
---
--- INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, end_date_time, created_at,
---                                         updated_at)
--- VALUES (1, 2, '2122-08-02T16:00:00', '2122-08-02T17:00:00', now(), now());
---
--- INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, end_date_time, created_at,
---                                         updated_at)
--- VALUES (1, 1, '2122-08-03T13:00:00', '2122-08-03T17:00:00', now(), now());

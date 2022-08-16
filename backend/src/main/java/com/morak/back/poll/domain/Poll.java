@@ -33,12 +33,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Poll extends BaseEntity implements Menu {
+
+    private static final int NO_ONE_SELECTED = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,6 +79,13 @@ public class Poll extends BaseEntity implements Menu {
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL)
     private List<PollItem> pollItems = new ArrayList<>();
+
+    @Formula("(SELECT COUNT(DISTINCT pr.member_id) "
+            + "FROM poll_result AS pr "
+            + "LEFT JOIN poll_item AS pi "
+            + "ON pr.poll_item_id = pi.id "
+            + "WHERE pi.poll_id = id)")
+    private Integer count;
 
     @Builder
     private Poll(Long id, Team team, Member host, String title, Integer allowedPollCount, Boolean isAnonymous,
@@ -185,5 +195,12 @@ public class Poll extends BaseEntity implements Menu {
     @Override
     public String getTeamName() {
         return getTeam().getName();
+    }
+
+    public Integer getCount() {
+        if (this.count == null) {
+            return NO_ONE_SELECTED;
+        }
+        return this.count;
     }
 }
