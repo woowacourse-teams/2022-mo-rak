@@ -21,6 +21,8 @@ import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.CodeGenerator;
+import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
@@ -77,17 +79,24 @@ class AppointmentServiceTest {
         appointmentService = new AppointmentService(
                 appointmentRepository, availableTimeRepository, memberRepository, teamRepository, teamMemberRepository
         );
+        CodeGenerator codeGenerator = new RandomCodeGenerator();
         에덴 = memberRepository.findById(1L).orElseThrow();
         모락 = teamRepository.findByCode("MoraK123").orElseThrow();
         DEFAULT_BUILDER = Appointment.builder()
                 .title("회식 날짜")
                 .description("필참입니다.")
-                .code(Code.generate(length -> "FJn3ND26"))
                 .team(모락)
                 .host(에덴)
+                .startDate(LocalDate.now().plusDays(1))
+                .endDate(LocalDate.now().plusDays(5))
+                .startTime(LocalTime.of(14, 0))
+                .endTime(LocalTime.of(20, 0))
+                .durationHours(2)
+                .durationMinutes(0)
                 .closedAt(LocalDateTime.now().plusDays(1).plusMinutes(30));
 
         약속잡기_중간 = DEFAULT_BUILDER
+                .code(Code.generate(codeGenerator))
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(5))
                 .startTime(LocalTime.of(14, 0))
@@ -95,7 +104,9 @@ class AppointmentServiceTest {
                 .durationHours(2)
                 .durationMinutes(0)
                 .build();
+
         약속잡기_자정까지 = DEFAULT_BUILDER
+                .code(Code.generate(codeGenerator))
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(5))
                 .startTime(LocalTime.of(14, 0))
@@ -103,7 +114,9 @@ class AppointmentServiceTest {
                 .durationHours(2)
                 .durationMinutes(0)
                 .build();
+
         약속잡기_하루동안_30분 = DEFAULT_BUILDER
+                .code(Code.generate(codeGenerator))
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(1))
                 .startTime(LocalTime.of(23, 30))
@@ -113,6 +126,7 @@ class AppointmentServiceTest {
                 .build();
 
         약속잡기_5일동안_하루종일 = DEFAULT_BUILDER
+                .code(Code.generate(codeGenerator))
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(5))
                 .startTime(LocalTime.of(0, 0))
@@ -120,7 +134,9 @@ class AppointmentServiceTest {
                 .durationHours(2)
                 .durationMinutes(0)
                 .build();
+
         약속잡기_하루동안_하루종일 = DEFAULT_BUILDER
+                .code(Code.generate(codeGenerator))
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(1))
                 .startTime(LocalTime.of(0, 0))
@@ -206,6 +222,34 @@ class AppointmentServiceTest {
                 .isInstanceOf(TeamNotFoundException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
+    }
+
+    @Test
+    void 약속잡기_목록_조회_시_진행중인_약속잡기가_종료된_약속잡기보다_먼저_조회된다() {
+        // given
+        Appointment appointment1 = appointmentRepository.save(
+                DEFAULT_BUILDER.code(Code.generate((l) -> "appment1")).build());
+        Appointment appointment2 = appointmentRepository.save(
+                DEFAULT_BUILDER.code(Code.generate((l) -> "appment2")).build());
+        Appointment appointment3 = appointmentRepository.save(
+                DEFAULT_BUILDER.code(Code.generate((l) -> "appment3")).build());
+        Appointment appointment4 = appointmentRepository.save(
+                DEFAULT_BUILDER.code(Code.generate((l) -> "appment4")).build());
+        Appointment appointment5 = appointmentRepository.save(
+                DEFAULT_BUILDER.code(Code.generate((l) -> "appment5")).build());
+
+        appointment1.close(에덴);
+        appointment3.close(에덴);
+
+        // when
+        List<AppointmentAllResponse> appointmentsResponse = appointmentService.findAppointments(모락.getCode(),
+                에덴.getId());
+
+        // then
+        assertThat(appointmentsResponse)
+                .extracting("code")
+                .containsExactly(appointment5.getCode(), appointment4.getCode(), appointment2.getCode(), "FEsd23C1",
+                        appointment3.getCode(), appointment1.getCode());
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.morak.back.poll.application;
 
+import static com.morak.back.poll.domain.PollStatus.CLOSED;
 import static com.morak.back.poll.domain.PollStatus.OPEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -182,16 +183,135 @@ class PollServiceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id", "createdAt")
                 .isEqualTo(
-                        List.of(new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
-                                        poll.getIsAnonymous(),
-                                        poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), true),
-                                new PollResponse(null, pollCreateRequest.getTitle(),
+                        List.of(new PollResponse(null, pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
                                         pollCreateRequest.getIsAnonymous(), OPEN.name(), null,
                                         pollCreateRequest.getClosedAt(),
                                         pollCode,
-                                        true))
+                                        true),
+                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), true)
+                        )
+                );
+    }
+
+    @Test
+    void 투표_목록을_조회할_때_진행중인_투표가_종료된_투표보다_먼저_출력된다() {
+        // given
+        PollCreateRequest pollCreateRequest1 = new PollCreateRequest(
+                "title1",
+                1,
+                false,
+                LocalDateTime.now().plusDays(1),
+                List.of("item1", "item2")
+        );
+
+        PollCreateRequest pollCreateRequest2 = new PollCreateRequest(
+                "title2",
+                1,
+                false,
+                LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2")
+        );
+
+        String pollCode1 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest1);
+        String pollCode2 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest2);
+
+        // when
+        pollService.closePoll(team.getCode(), member.getId(), pollCode1);
+        List<PollResponse> polls = pollService.findPolls(team.getCode(), member.getId());
+
+        // then
+        assertThat(polls)
+                .usingRecursiveComparison()
+                .ignoringFields("id", "createdAt")
+                .isEqualTo(
+                        List.of(new PollResponse(null, pollCreateRequest2.getTitle(),
+                                        pollCreateRequest2.getAllowedPollCount(),
+                                        pollCreateRequest2.getIsAnonymous(), OPEN.name(), null,
+                                        pollCreateRequest2.getClosedAt(),
+                                        pollCode2,
+                                        true),
+                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), true),
+                                new PollResponse(null, pollCreateRequest1.getTitle(),
+                                        pollCreateRequest1.getAllowedPollCount(),
+                                        pollCreateRequest1.getIsAnonymous(), CLOSED.name(), null,
+                                        pollCreateRequest1.getClosedAt(),
+                                        pollCode1,
+                                        true)
+                        )
+                );
+    }
+
+    @Test
+    void 투표_목록을_조회할_때_종료_상태가_같으면_생성된_순서대로_출력된다() {
+        // given
+        PollCreateRequest pollCreateRequest1 = new PollCreateRequest(
+                "order2",
+                1,
+                false,
+                LocalDateTime.now().plusDays(1),
+                List.of("item1", "item2")
+        );
+
+        PollCreateRequest pollCreateRequest2 = new PollCreateRequest(
+                "order1",
+                2,
+                true,
+                LocalDateTime.now().plusDays(3),
+                List.of("투표1", "투표2")
+        );
+
+        PollCreateRequest pollCreateRequest3 = new PollCreateRequest(
+                "order3",
+                3,
+                false,
+                LocalDateTime.now().plusDays(4),
+                List.of("항목1", "항목2")
+        );
+
+        String pollCode1 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest1);
+        String pollCode2 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest2);
+        String pollCode3 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest3);
+
+        // when
+        pollService.closePoll(team.getCode(), member.getId(), pollCode1);
+        pollService.closePoll(team.getCode(), member.getId(), pollCode3);
+        List<PollResponse> polls = pollService.findPolls(team.getCode(), member.getId());
+
+        // then
+        assertThat(polls)
+                .usingRecursiveComparison()
+                .ignoringFields("id", "createdAt")
+                .isEqualTo(
+                        List.of(new PollResponse(null, pollCreateRequest2.getTitle(),
+                                        pollCreateRequest2.getAllowedPollCount(),
+                                        pollCreateRequest2.getIsAnonymous(), OPEN.name(), null,
+                                        pollCreateRequest2.getClosedAt(),
+                                        pollCode2,
+                                        true),
+                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), true),
+                                new PollResponse(null, pollCreateRequest3.getTitle(),
+                                        pollCreateRequest3.getAllowedPollCount(),
+                                        pollCreateRequest3.getIsAnonymous(), CLOSED.name(), null,
+                                        pollCreateRequest3.getClosedAt(),
+                                        pollCode3,
+                                        true),
+                                new PollResponse(null, pollCreateRequest1.getTitle(),
+                                        pollCreateRequest1.getAllowedPollCount(),
+                                        pollCreateRequest1.getIsAnonymous(), CLOSED.name(), null,
+                                        pollCreateRequest1.getClosedAt(),
+                                        pollCode1,
+                                        true)
+                        )
                 );
     }
 
@@ -222,16 +342,17 @@ class PollServiceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("id", "createdAt")
                 .isEqualTo(
-                        List.of(new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
-                                        poll.getIsAnonymous(),
-                                        poll.getStatus().name(), poll.getCreatedAt(),
-                                        poll.getClosedAt(), poll.getCode(), false),
-                                new PollResponse(null, pollCreateRequest.getTitle(),
+                        List.of(new PollResponse(null, pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
                                         pollCreateRequest.getIsAnonymous(), OPEN.name(), null,
                                         pollCreateRequest.getClosedAt(),
                                         pollCode,
-                                        false))
+                                        false),
+                                new PollResponse(poll.getId(), poll.getTitle(), poll.getAllowedPollCount(),
+                                        poll.getIsAnonymous(),
+                                        poll.getStatus().name(), poll.getCreatedAt(),
+                                        poll.getClosedAt(), poll.getCode(), false)
+                        )
                 );
     }
 
