@@ -16,6 +16,7 @@ function SidebarFeatureMenu({ groupCode }: Props) {
   const dispatch = useMenuDispatch();
   const navigate = useNavigate();
 
+  // TODO: 함수명 변경
   const handleMoveToClickedMenu = (menu: string) => () => {
     dispatch({ type: 'SET_CLICKED_MENU', menu });
     navigate(`/groups/${groupCode}/${menu}`);

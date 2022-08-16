@@ -16,7 +16,7 @@ interface Props {
 }
 
 function SidebarGroupMenu({ groupCode, groups }: Props) {
-  const [isShowGroupList, setIsShowGroupList] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [defaultGroup, setDefaultGroup] = useState<GroupInterface>();
 
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
   }, []);
 
   const handleShowGroupList = () => {
-    setIsShowGroupList(!isShowGroupList);
+    setIsVisible(!isVisible);
   };
 
   const handleLeaveGroup = async () => {
@@ -87,7 +87,7 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
       </FlexContainer>
 
       {/* group list */}
-      <StyledGroupListBox isShowGroupList={isShowGroupList}>
+      <StyledGroupListBox isVisible={isVisible}>
         <StyledGroupListContainer>
           {groups.map((group) => (
             <StyledGroupList to={`groups/${group.code}`} isDefaultGroup={groupCode === group.code}>
@@ -122,7 +122,7 @@ const StyledMenuHeader = styled.div`
   margin-bottom: 2rem;
 `;
 
-const StyledGroupListBox = styled.div<{isShowGroupList: boolean}>(({ theme, isShowGroupList }) => `
+const StyledGroupListBox = styled.div<{isVisible: boolean}>(({ theme, isVisible }) => `
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.2s ease-in-out;
@@ -134,7 +134,7 @@ const StyledGroupListBox = styled.div<{isShowGroupList: boolean}>(({ theme, isSh
   border-radius: 12px;
   max-height: 45.2rem;
 
-  ${isShowGroupList && `
+  ${isVisible && `
   visibility: visible;
   opacity: 1;
   `}
