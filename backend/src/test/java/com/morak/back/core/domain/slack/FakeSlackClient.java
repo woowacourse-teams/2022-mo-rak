@@ -26,6 +26,6 @@ public class FakeSlackClient implements SlackClient {
 
         receiver.setMessage("슬랙 API를 요청합니다\n" +
                 "url = " + webhook.getUrl() + "\n" +
-            "message = " + message);
+                "message = " + message);
     }
 }

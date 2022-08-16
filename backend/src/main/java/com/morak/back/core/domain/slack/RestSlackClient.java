@@ -30,7 +30,7 @@ public class RestSlackClient implements SlackClient {
 
     private NotificationRequest createRequest(String message) {
         return new NotificationRequest(
-            USERNAME, message, ICON_EMOJI
+                USERNAME, message, ICON_EMOJI
         );
     }
 

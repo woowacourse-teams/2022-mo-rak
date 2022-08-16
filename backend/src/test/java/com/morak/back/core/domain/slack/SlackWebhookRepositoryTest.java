@@ -25,17 +25,17 @@ class SlackWebhookRepositoryTest {
     void 웹훅을_저장한다() {
         // given
         Team team = teamRepository.save(
-            Team.builder()
-                .name("teamA")
-                .code(Code.generate(length -> "AAAAaaaa"))
-                .build()
+                Team.builder()
+                        .name("teamA")
+                        .code(Code.generate(length -> "AAAAaaaa"))
+                        .build()
         );
         // when
         SlackWebhook webhook = webhookRepository.save(
-            SlackWebhook.builder()
-                .team(team)
-                .url("https://hooks.slack.com/services/test")
-                .build()
+                SlackWebhook.builder()
+                        .team(team)
+                        .url("https://hooks.slack.com/services/test")
+                        .build()
         );
 
         // then
@@ -68,16 +68,16 @@ class SlackWebhookRepositoryTest {
     void 팀_아이디_목록으로_웹훅_목록을_가져온다() {
         // given
         Team team = teamRepository.save(
-            Team.builder()
-                .name("teamA?")
-                .code(Code.generate(length -> "AAAAaaaa"))
-                .build()
+                Team.builder()
+                        .name("teamA?")
+                        .code(Code.generate(length -> "AAAAaaaa"))
+                        .build()
         );
         SlackWebhook webhook = webhookRepository.save(
-            SlackWebhook.builder()
-                .team(team)
-                .url("https://hooks.slack.com/services/testA")
-                .build()
+                SlackWebhook.builder()
+                        .team(team)
+                        .url("https://hooks.slack.com/services/testA")
+                        .build()
         );
         // when
         SlackWebhook savedWebhook = webhookRepository.findByTeamId(team.getId()).orElseThrow();
@@ -89,16 +89,16 @@ class SlackWebhookRepositoryTest {
     void 팀_아이디로_웹훅을_지운다() {
         // given
         Team team = teamRepository.save(
-            Team.builder()
-                .name("teamA?")
-                .code(Code.generate(length -> "AAAAaaaa"))
-                .build()
+                Team.builder()
+                        .name("teamA?")
+                        .code(Code.generate(length -> "AAAAaaaa"))
+                        .build()
         );
         SlackWebhook webhook = webhookRepository.save(
-            SlackWebhook.builder()
-                .team(team)
-                .url("https://hooks.slack.com/services/testA")
-                .build()
+                SlackWebhook.builder()
+                        .team(team)
+                        .url("https://hooks.slack.com/services/testA")
+                        .build()
         );
         // when
         webhookRepository.deleteByTeamId(team.getId());

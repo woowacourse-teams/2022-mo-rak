@@ -137,7 +137,7 @@ public class GlobalControllerAdvice {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(e.getCode().getNumber(), "스케줄링 실행 중 실패가 있습니다."));
     }
-    
+
     @ExceptionHandler(RuntimeException.class)
     @Generated
     public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e,
