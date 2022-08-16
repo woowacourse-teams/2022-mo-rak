@@ -8,6 +8,7 @@ import com.morak.back.core.exception.ExternalException;
 import com.morak.back.core.exception.MorakException;
 import com.morak.back.core.exception.ResourceNotFoundException;
 import com.morak.back.core.exception.SchedulingException;
+import com.morak.back.core.support.Generated;
 import com.morak.back.core.support.LogFormatter;
 import com.morak.back.core.ui.dto.ExceptionResponse;
 import java.util.Arrays;
@@ -102,6 +103,7 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(MorakException.class)
+    @Generated
     public ResponseEntity<ExceptionResponse> handleMorak(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -117,6 +119,7 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(ExternalException.class)
+    @Generated
     public ResponseEntity<ExceptionResponse> handleExternalFailure(ExternalException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -124,6 +127,7 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(SchedulingException.class)
+    @Generated
     public ResponseEntity<ExceptionResponse> handleSchedulingFailures(SchedulingException e) {
         List<String> exceptionMessages = e.getExceptions().stream()
                 .map(exception -> exception.getCode() + "," + exception.getMessage())
@@ -135,6 +139,7 @@ public class GlobalControllerAdvice {
     }
     
     @ExceptionHandler(RuntimeException.class)
+    @Generated
     public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e,
                                                              ContentCachingRequestWrapper requestWrapper) {
         String stackTrace = Arrays.stream(e.getStackTrace())
