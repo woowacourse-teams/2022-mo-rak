@@ -21,6 +21,10 @@ function Sidebar() {
 
   const navigate = useNavigate();
 
+  const handleNavigate = (location: string) => () => {
+    navigate(location);
+  };
+
   useEffect(() => {
     const fetchGroups = async () => {
       try {
@@ -35,10 +39,6 @@ function Sidebar() {
 
     fetchGroups();
   }, []);
-
-  const handleNavigate = (location: string) => () => {
-    navigate(location);
-  };
 
   if (isLoading) return <div>로딩중</div>;
 
