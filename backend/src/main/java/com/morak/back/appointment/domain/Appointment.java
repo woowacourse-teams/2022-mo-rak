@@ -190,6 +190,11 @@ public class Appointment extends BaseEntity implements Menu {
     }
 
     @Override
+    public String getName() {
+        return "약속잡기";
+    }
+
+    @Override
     public String getTeamName() {
         return getTeam().getName();
     }
@@ -222,6 +227,7 @@ public class Appointment extends BaseEntity implements Menu {
         return this.timePeriod.getEndTime();
     }
 
+    @Override
     public String getCode() {
         return code.getCode();
     }

@@ -172,8 +172,14 @@ public class Poll extends BaseEntity implements Menu {
         return allowedPollCount.getAllowedPollCount();
     }
 
+    @Override
     public String getCode() {
         return code.getCode();
+    }
+
+    @Override
+    public String getName() {
+        return "투표";
     }
 
     @Override
