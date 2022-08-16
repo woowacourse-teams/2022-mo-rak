@@ -7,10 +7,11 @@ import static com.morak.back.SimpleRestAssured.patch;
 import static com.morak.back.SimpleRestAssured.post;
 import static com.morak.back.SimpleRestAssured.put;
 import static com.morak.back.SimpleRestAssured.toObjectList;
+import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_참가를_요청한다;
+import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_초대코드_생성을_요청한다;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
-import com.morak.back.AuthSupporter;
 import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.domain.Member;
@@ -676,14 +677,6 @@ class PollAcceptanceTest extends AcceptanceTest {
 
     private ExtractableResponse<Response> 투표_삭제를_요청한다(String location, String token) {
         return delete(location, toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 그룹_초대코드_생성을_요청한다(String location, String token) {
-        return post(location + "/invitation", "", toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 그룹_참가를_요청한다(String teamInvitationLocation, String otherToken) {
-        return post(teamInvitationLocation, "", AuthSupporter.toHeader(otherToken));
     }
 
     private String extractPollCodeFromLocation(String pollLocation) {
