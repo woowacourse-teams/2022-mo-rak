@@ -76,7 +76,7 @@ function PollProgressItemGroup({
               >
                 <Input
                   color={theme.colors.BLACK_100}
-                  fontSize="12px"
+                  fontSize="1.2rem"
                   placeholder="선택한 이유는?"
                   value={selectedPollItem?.description}
                   onChange={onChangeText(id)}
