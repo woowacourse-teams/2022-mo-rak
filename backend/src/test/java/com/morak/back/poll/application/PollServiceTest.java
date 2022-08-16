@@ -53,8 +53,6 @@ class PollServiceTest {
 
     private PollService pollService;
 
-    private EntityManager entityManager;
-
     private Member member;
     private Team team;
     private Poll poll;
@@ -62,7 +60,7 @@ class PollServiceTest {
     @Autowired
     public PollServiceTest(MemberRepository memberRepository, TeamRepository teamRepository,
                            TeamMemberRepository teamMemberRepository, PollRepository pollRepository,
-                           PollItemRepository pollItemRepository, EntityManager entityManager) {
+                           PollItemRepository pollItemRepository) {
         this.memberRepository = memberRepository;
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
@@ -75,7 +73,6 @@ class PollServiceTest {
                 teamMemberRepository,
                 pollItemRepository
         );
-        this.entityManager = entityManager;
     }
 
     @BeforeEach
@@ -630,7 +627,7 @@ class PollServiceTest {
     }
 
     @Test
-    void 투표_진행_후_단건_조회_시_count값이_반영된다() {
+    void 투표_진행_후_단건_조회_시_count값이_반영된다(@Autowired EntityManager entityManager) {
         // given
         List<PollItem> pollItems = pollItemRepository.saveAll(List.of(
                 PollItem.builder()
