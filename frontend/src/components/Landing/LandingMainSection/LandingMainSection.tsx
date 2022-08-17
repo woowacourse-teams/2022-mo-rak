@@ -23,9 +23,7 @@ function LandingMainSection({ id }: Props) {
       <StyledLogo src={Logo} alt="logo" />
 
       <FlexContainer flexDirection="column" gap="2rem">
-        <StyledSmallTitle>
-          모락이 해줄게요
-        </StyledSmallTitle>
+        <StyledSmallTitle>모락이 해줄게요</StyledSmallTitle>
         <StyledBigTitle>
           <StyledSmileImage src={Smile} alt="smile" />
           <StyledLineImage src={Line} alt="line" />
@@ -34,7 +32,9 @@ function LandingMainSection({ id }: Props) {
           <br />
           즐겁게, 편하게!
         </StyledBigTitle>
-        <StyledLink href="https://github.com/login/oauth/authorize?client_id=f67a30d27afefe8b241f">
+        <StyledLink
+          href={`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}`}
+        >
           <StyledLoginContainer>
             <StyledGithubLogo src={GithubLogo} alt="github-logo" />
             <StyledLoginText>GITHUB으로 로그인</StyledLoginText>
@@ -60,11 +60,13 @@ const StyledGithubLogo = styled.img`
   width: 3.8rem;
 `;
 
-const StyledLoginText = styled.p(({ theme }) => `
+const StyledLoginText = styled.p(
+  ({ theme }) => `
   color: ${theme.colors.WHITE_100};
   padding: 2rem 0;
   font-size: 2rem;
-`);
+`
+);
 
 const StyledLoginContainer = styled.div(
   ({ theme }) => `
@@ -92,16 +94,18 @@ const StyledNavbar = styled.nav`
 `;
 
 const StyledLogo = styled.img`
-  width: 10rem; 
-  position: absolute; 
-  top: 2rem; 
+  width: 10rem;
+  position: absolute;
+  top: 2rem;
   left: 4rem;
 `;
 
-const StyledMenu = styled.a(({ theme }) => `
+const StyledMenu = styled.a(
+  ({ theme }) => `
   text-decoration: none;
   color: ${theme.colors.BLACK_100};
-`);
+`
+);
 
 // section 1
 // TODO: section태그마다 반복되는 속성들을 공통으로 묶어줄 수 있는 방법은 없을까
@@ -119,16 +123,19 @@ const StyledMainSection = styled.section`
   background-position: bottom 0 right 0;
 `;
 
-const StyledSmallTitle = styled.div(({ theme }) => `
+const StyledSmallTitle = styled.div(
+  ({ theme }) => `
   font-size: 2.4rem;
   margin-bottom: 1.2rem;
   color: ${theme.colors.BLACK_100};
   letter-spacing: 0.4rem;
   margin: 0 auto;
   padding-top: 20rem;
-`);
+`
+);
 
-const StyledBigTitle = styled.h1(({ theme }) => `
+const StyledBigTitle = styled.h1(
+  ({ theme }) => `
   font-size: 10.4rem;
   font-weight: 700;
   text-align: center;
@@ -136,10 +143,11 @@ const StyledBigTitle = styled.h1(({ theme }) => `
   color: ${theme.colors.BLACK_100};
   line-height: 12rem;
   letter-spacing: -0.4rem;
-`);
+`
+);
 
 const StyledSmileImage = styled.img`
-  position: absolute; 
+  position: absolute;
   bottom: 0;
   left: -6.8rem;
   top: 7.6rem;
@@ -147,14 +155,14 @@ const StyledSmileImage = styled.img`
 `;
 
 const StyledLineImage = styled.img`
-  position: absolute; 
+  position: absolute;
   right: 4.4rem;
   bottom: -4.4rem;
   width: 26rem;
 `;
 
 const StyledGlitterImage = styled.img`
-  position: absolute; 
+  position: absolute;
   bottom: 0;
   right: -3.2rem;
   top: 5.2rem;
@@ -162,8 +170,8 @@ const StyledGlitterImage = styled.img`
 `;
 
 const StyledSectionGuideContainer = styled.div`
-  position: absolute; 
-  right: 14rem; 
+  position: absolute;
+  right: 14rem;
   bottom: 6rem;
 `;
 
@@ -171,12 +179,14 @@ const StlyedBlobContainer = styled.div`
   position: relative;
 `;
 
-const StyledGuideText = styled.span(({ theme }) => `
+const StyledGuideText = styled.span(
+  ({ theme }) => `
   position: absolute; 
   top: 7.2rem; 
   left: 4.2rem; 
   font-size: 2.4rem; 
   color: ${theme.colors.BLACK_100};
-`);
+`
+);
 
 export default LandingMainSection;
