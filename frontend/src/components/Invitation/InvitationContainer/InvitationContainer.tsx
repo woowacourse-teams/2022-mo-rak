@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 import Box from '../../@common/Box/Box';
 import Logo from '../../../assets/logo.svg';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
@@ -31,10 +32,9 @@ function InvitationContainer() {
         setIsJoined(isJoined);
         setIsLoading(false);
       } catch (err) {
-        if (err instanceof Error) {
-          const statusCode = err.message;
-
-          if (statusCode === '401') {
+        if (err instanceof AxiosError) {
+          const errCode = err.response?.data.codeNumber;
+          if (errCode === '0201') {
             saveSessionStorageItem('redirectUrl', location.pathname);
             navigate('/');
             alert('로그인이 필요한 서비스입니다!');
