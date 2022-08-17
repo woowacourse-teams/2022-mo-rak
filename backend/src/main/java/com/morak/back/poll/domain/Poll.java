@@ -188,6 +188,11 @@ public class Poll extends BaseEntity implements Menu {
     }
 
     @Override
+    public String getType() {
+        return "poll";
+    }
+
+    @Override
     public String getName() {
         return "투표";
     }

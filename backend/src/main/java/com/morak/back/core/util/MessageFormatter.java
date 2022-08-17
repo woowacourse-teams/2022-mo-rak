@@ -30,8 +30,8 @@ public class MessageFormatter {
 
     private static String formatResultPage(Menu menu, Team team) {
         return String.format(
-                "투표결과 확인하러 가기 ! -> https://mo-rak.com/groups/%s/poll/%s/result",
-                team.getCode(), menu.getCode()
+                "결과 확인하러 가기 ! -> https://mo-rak.com/groups/%s/%s/%s/result",
+                team.getCode(), menu.getType(), menu.getCode()
         );
     }
 
@@ -51,8 +51,8 @@ public class MessageFormatter {
 
     private static String formatProgressPage(Menu menu, Team team) {
         return String.format(
-                "선택하러 가기 ! -> https://mo-rak.com/groups/%s/poll/%s/progress",
-                team.getCode(), menu.getCode()
+                "진행하러 가기 ! -> https://mo-rak.com/groups/%s/%s/%s/progress",
+                team.getCode(), menu.getType(), menu.getCode()
         );
     }
 }

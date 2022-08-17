@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 public interface Menu {
 
+    String getType();
+
     String getName();
 
     String getTeamName();

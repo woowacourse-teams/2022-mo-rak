@@ -112,6 +112,8 @@ class NotificationServiceTest {
         notificationService.notifyMenuStatus(team, poll, MessageFormatter::formatClosed);
 
         // then
-        assertThat(receiver.getMessage()).contains("마감되었습니다");
+        String message = receiver.getMessage();
+        assertThat(message).contains("마감되었습니다");
+        System.out.println("message = " + message); // remained to debug
     }
 }

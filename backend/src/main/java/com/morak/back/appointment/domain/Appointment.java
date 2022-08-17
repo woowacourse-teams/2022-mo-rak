@@ -190,6 +190,11 @@ public class Appointment extends BaseEntity implements Menu {
     }
 
     @Override
+    public String getType() {
+        return "appointment";
+    }
+
+    @Override
     public String getName() {
         return "약속잡기";
     }
