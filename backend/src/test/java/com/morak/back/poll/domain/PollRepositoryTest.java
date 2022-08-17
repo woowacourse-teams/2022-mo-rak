@@ -156,4 +156,17 @@ class PollRepositoryTest {
         // then
         assertThat(pollsToBeClosed).hasSize(1);
     }
+
+    @Test
+    void ID로_투표를_종료한다() {
+        // given
+        Poll poll = pollRepository.findByCode("testcode").orElseThrow();
+
+        // when
+        pollRepository.closeById(poll.getId());
+        entityManager.detach(poll);
+
+        // then
+        assertThat(pollRepository.findByCode("testcode").get().getStatus()).isEqualTo(PollStatus.CLOSED);
+    }
 }

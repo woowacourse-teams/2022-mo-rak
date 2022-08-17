@@ -4,30 +4,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
-import com.morak.back.core.domain.Code;
-import com.morak.back.core.domain.Menu;
 import com.morak.back.core.domain.slack.FakeApiReceiver;
 import com.morak.back.core.domain.slack.FakeSlackClient;
 import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
-import com.morak.back.core.exception.SchedulingException;
 import com.morak.back.core.ui.dto.SlackWebhookCreateRequest;
+import com.morak.back.core.util.MessageFormatter;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollRepository;
-import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamAuthorizationException;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,76 +104,14 @@ class NotificationServiceTest {
     }
 
     @Test
-    void 상태가_OPEN이고_마감시간이_지난_투표를_마감하고_알림을_보낸다(@Autowired PollRepository pollRepository) {
+    void 알림을_전송한다(@Autowired PollRepository pollRepository) {
         // given
-        SlackWebhook slackWebhook = slackWebhookRepository.findByTeamId(team.getId()).orElseThrow();
-        List<Poll> polls = pollRepository.findAllByTeamId(team.getId());
-        Map<Menu, Optional<SlackWebhook>> menuWebhooks = toMenuWebhooks(polls, slackWebhook);// from data.sql
+        Poll poll = pollRepository.findByCode("testcode").orElseThrow();
 
         // when
-        notificationService.closeAndNotifyMenusByScheduled(menuWebhooks);
+        notificationService.notifyMenuStatus(team, poll, MessageFormatter::formatClosed);
 
         // then
-        Assertions.assertAll(
-                () -> assertThat(receiver.getMessage()).contains(team.getName()),
-                () -> assertThat(polls.get(0).getStatus().isClosed()).isTrue()
-        );
-    }
-
-    @Test
-    void 여러개의_알림을_보내다가_중간에_실패해도_알림은_계속된다(@Autowired PollRepository pollRepository) {
-        // given
-        SlackWebhook slackWebhook = slackWebhookRepository.findByTeamId(team.getId()).orElseThrow();
-
-        Poll pollA = pollRepository.findByCode("testcode").orElseThrow();
-        Poll pollB = pollRepository.save(
-                Poll.builder()
-                        .team(team)
-                        .host(member)
-                        .title("invalid")
-                        .allowedPollCount(2)
-                        .isAnonymous(false)
-                        .status(PollStatus.OPEN)
-                        .code(Code.generate(length -> "AAAA1111"))
-                        .closedAt(LocalDateTime.now().plusMinutes(10))
-                        .build()
-        );
-        Poll pollC = pollRepository.save(
-                Poll.builder()
-                        .team(team)
-                        .host(member)
-                        .title("title-2")
-                        .allowedPollCount(2)
-                        .isAnonymous(false)
-                        .status(PollStatus.OPEN)
-                        .code(Code.generate(length -> "BBBB2222"))
-                        .closedAt(LocalDateTime.now().plusMinutes(10))
-                        .build()
-        );
-
-        // when
-        Map<Menu, Optional<SlackWebhook>> menuWebhooks =
-                toMenuWebhooks(pollRepository.findAllByTeamId(team.getId()), slackWebhook);
-
-        // then
-        Assertions.assertAll(
-                () -> assertThatThrownBy(
-                        () -> notificationService.closeAndNotifyMenusByScheduled(menuWebhooks))
-                        .isInstanceOf(SchedulingException.class)
-                        .extracting("exceptions")
-                        .asList()
-                        .hasSize(1),
-                () -> assertThat(pollA.getStatus().isClosed()).isTrue(),
-                () -> assertThat(pollB.getStatus().isClosed()).isFalse(),
-                () -> assertThat(pollC.getStatus().isClosed()).isTrue()
-        );
-    }
-
-    private Map<Menu, Optional<SlackWebhook>> toMenuWebhooks(List<Poll> menus, SlackWebhook slackWebhook) {
-        return menus.stream()
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        menu -> Optional.of(slackWebhook)
-                ));
+        assertThat(receiver.getMessage()).contains("마감되었습니다");
     }
 }

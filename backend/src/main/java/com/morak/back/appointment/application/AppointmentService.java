@@ -20,9 +20,7 @@ import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
-import com.morak.back.core.domain.Menu;
 import com.morak.back.core.domain.RandomCodeGenerator;
-import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
@@ -36,9 +34,6 @@ import com.morak.back.team.exception.TeamNotFoundException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -236,19 +231,11 @@ public class AppointmentService {
 
     @Generated
     void notifyClosedBySchedule() {
-        List<Appointment> appointmentsToBeClosed =
-                appointmentRepository.findAllToBeClosed(LocalDateTime.now());
+        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(LocalDateTime.now());
+        for (Appointment appointment : appointmentsToBeClosed) {
+            appointmentRepository.closeById(appointment.getId());
+            notificationService.notifyMenuStatus(appointment.getTeam(), appointment, MessageFormatter::formatClosed);
+        }
 
-        Map<Menu, Optional<SlackWebhook>> appointmentWebHooks = joinAppointmentsWithWebHooks(appointmentsToBeClosed);
-        notificationService.closeAndNotifyMenusByScheduled(appointmentWebHooks);
     }
-
-    private Map<Menu, Optional<SlackWebhook>> joinAppointmentsWithWebHooks(List<Appointment> appointmentsToBeClosed) {
-        return appointmentsToBeClosed.stream()
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        appointment -> slackWebhookRepository.findByTeamId(appointment.getTeam().getId())
-                ));
-    }
-
 }

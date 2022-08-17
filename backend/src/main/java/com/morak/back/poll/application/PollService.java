@@ -6,9 +6,7 @@ import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
-import com.morak.back.core.domain.Menu;
 import com.morak.back.core.domain.RandomCodeGenerator;
-import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
@@ -33,8 +31,6 @@ import com.morak.back.team.exception.TeamNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -220,16 +216,9 @@ public class PollService {
     @Generated
     void notifyClosedByScheduled() {
         List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.now());
-
-        Map<Menu, Optional<SlackWebhook>> pollWebhooks = joinPollsWithWebhooks(pollsToBeClosed);
-        notificationService.closeAndNotifyMenusByScheduled(pollWebhooks);
-    }
-
-    private Map<Menu, Optional<SlackWebhook>> joinPollsWithWebhooks(List<Poll> pollsToBeClosed) {
-        return pollsToBeClosed.stream()
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        poll -> slackWebhookRepository.findByTeamId(poll.getTeam().getId())
-                ));
+        for (Poll poll : pollsToBeClosed) {
+            pollRepository.closeById(poll.getId());
+            notificationService.notifyMenuStatus(poll.getTeam(), poll, MessageFormatter::formatClosed);
+        }
     }
 }
