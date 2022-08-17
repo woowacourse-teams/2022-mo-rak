@@ -6,7 +6,7 @@ import { useMenuDispatch } from '../../context/MenuProvider';
 
 function PollMainPage() {
   const dispatch = useMenuDispatch();
-  dispatch({ type: 'SET_CLICKED_MENU', menu: 'poll' });
+  dispatch({ type: 'SET_CLICKED_MENU', payload: 'poll' });
 
   return (
     <StyledContainer>

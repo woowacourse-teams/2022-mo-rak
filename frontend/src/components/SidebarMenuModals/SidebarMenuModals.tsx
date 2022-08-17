@@ -39,7 +39,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
 
       navigate(`/groups/${groupCode}`);
       closeModal();
-      dispatch({ type: 'SET_SHOW_GROUP_LIST', isVisible: false });
+      dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: false });
     } catch (err) {
       alert(err);
     }

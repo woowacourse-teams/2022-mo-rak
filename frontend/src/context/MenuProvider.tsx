@@ -7,8 +7,7 @@ interface MenuState {
 
 interface MenuAction {
   type: 'SET_CLICKED_MENU' | 'SET_SHOW_GROUP_LIST';
-  menu?: string;
-  isVisible?: boolean;
+  payload: any; // TODO: any 변경하기
 }
 
 const initialState = {
@@ -24,12 +23,12 @@ function menuReducer(state: MenuState, action: MenuAction) {
     case 'SET_CLICKED_MENU':
       return {
         ...state,
-        clickedMenu: action.menu as string
+        clickedMenu: action.payload
       };
     case 'SET_SHOW_GROUP_LIST':
       return {
         ...state,
-        isVisibleGroupList: action.isVisible as boolean
+        isVisibleGroupList: action.payload
       };
     default:
       return state;
@@ -48,6 +47,7 @@ function MenuProvider({ children }: PropsWithChildren) {
   );
 }
 
+// TODO: hook으로 빼주자
 function useMenuState() {
   const context = useContext(MenuStateContext);
 

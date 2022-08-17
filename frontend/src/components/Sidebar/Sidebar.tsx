@@ -45,7 +45,7 @@ function Sidebar() {
     };
 
     fetchGroups();
-  }, []);
+  }, [groupCode]);
 
   if (isLoading) return <div>로딩중</div>;
 

@@ -37,13 +37,13 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
   };
 
   const handleToggleisVisibleGroupList = () => {
-    dispatch({ type: 'SET_SHOW_GROUP_LIST', isVisible: !isVisibleGroupList });
+    dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: !isVisibleGroupList });
   };
 
   useEffect(() => {
     const nowGroup = groups.find((group) => group.code === groupCode);
     setGroup(nowGroup);
-  }, [groupCode]);
+  }, [groups, groupCode]);
 
   return (
     <StyledGroupContainer>

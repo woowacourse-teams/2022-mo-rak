@@ -6,7 +6,7 @@ import { useMenuDispatch } from '../../context/MenuProvider';
 
 function AppointmentMainPage() {
   const dispatch = useMenuDispatch();
-  dispatch({ type: 'SET_CLICKED_MENU', menu: 'appointment' });
+  dispatch({ type: 'SET_CLICKED_MENU', payload: 'appointment' });
 
   return (
     <StyledContainer>
