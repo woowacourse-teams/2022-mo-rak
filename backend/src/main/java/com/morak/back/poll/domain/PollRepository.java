@@ -13,9 +13,8 @@ public interface PollRepository extends Repository<Poll, Long> {
 
     List<Poll> findAllByTeamId(Long teamId);
 
-    @Query("select p from Poll p where p.status = 'OPEN' and p.closedAt between :startDateTime and :endDateTime")
-    List<Poll> findAllToBeClosed(@Param("startDateTime") LocalDateTime startDateTime,
-                                 @Param("endDateTime") LocalDateTime endDateTime);
+    @Query("select p from Poll p where p.status = 'OPEN' and p.closedAt <= :thresholdDateTime")
+    List<Poll> findAllToBeClosed(@Param("thresholdDateTime") LocalDateTime thresholdDateTime);
 
     @Query("select p from Poll p where p.code.code = :code")
     Optional<Poll> findByCode(@Param("code") String code);

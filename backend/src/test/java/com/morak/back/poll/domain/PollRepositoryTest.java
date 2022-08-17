@@ -144,4 +144,16 @@ class PollRepositoryTest {
         // then
         assertThat(foundPoll.getCount()).isEqualTo(1);
     }
+
+    @Test
+    void 종료할_투표를_가져온다() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+
+        // when
+        List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(now);
+
+        // then
+        assertThat(pollsToBeClosed).hasSize(1);
+    }
 }

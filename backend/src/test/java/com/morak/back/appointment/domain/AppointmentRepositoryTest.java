@@ -224,4 +224,16 @@ class AppointmentRepositoryTest {
         // then
         assertThat(appointmentOptional).isEmpty();
     }
+
+    @Test
+    void 종료할_약속잡기를_가져온다() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+
+        // when
+        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(now);
+
+        // then
+        assertThat(appointmentsToBeClosed).hasSize(1);
+    }
 }

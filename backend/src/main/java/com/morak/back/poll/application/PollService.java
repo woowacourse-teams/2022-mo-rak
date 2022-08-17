@@ -219,7 +219,7 @@ public class PollService {
 
     @Generated
     void notifyClosedByScheduled() {
-        List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.MIN, LocalDateTime.now());
+        List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.now());
 
         Map<Menu, Optional<SlackWebhook>> pollWebhooks = joinPollsWithWebhooks(pollsToBeClosed);
         notificationService.closeAndNotifyMenusByScheduled(pollWebhooks);

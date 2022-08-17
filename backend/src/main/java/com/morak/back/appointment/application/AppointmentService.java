@@ -237,7 +237,7 @@ public class AppointmentService {
     @Generated
     void notifyClosedBySchedule() {
         List<Appointment> appointmentsToBeClosed =
-                appointmentRepository.findAllToBeClosed(LocalDateTime.MIN, LocalDateTime.now());
+                appointmentRepository.findAllToBeClosed(LocalDateTime.now());
 
         Map<Menu, Optional<SlackWebhook>> appointmentWebHooks = joinAppointmentsWithWebHooks(appointmentsToBeClosed);
         notificationService.closeAndNotifyMenusByScheduled(appointmentWebHooks);
