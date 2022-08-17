@@ -7,15 +7,28 @@ import { GroupInterface } from '../../../types/group';
 interface Props {
   pollCode: PollInterface['code'];
   groupCode: GroupInterface['code'];
+  status: PollInterface['status'];
 }
 
-function PollResultShareLink({ groupCode, pollCode }: Props) {
+function PollResultShareLink({ groupCode, pollCode, status }: Props) {
   const handleCopyShareLink = () => {
-    navigator.clipboard
-      .writeText(`${process.env.CLIENT_URL}/groups/${groupCode}/poll/${pollCode}/progress`)
-      .then(() => {
-        alert('투표를 공유할 수 있는 링크가 복사되었습니다 👋');
+    const baseLink = `${process.env.CLIENT_URL}/groups/${groupCode}/poll/${pollCode}`;
+    const progressLink = `${baseLink}/progress`;
+    const progressMessage = '투표를 진행할 수 있는 링크가 복사되었습니다 👋';
+    const resultLink = `${baseLink}/result`;
+    const resultMessage = '투표 결과를 공유할 수 있는 링크가 복사되었습니다 👋';
+
+    if (status === 'OPEN') {
+      navigator.clipboard.writeText(progressLink).then(() => {
+        alert(progressMessage);
       });
+
+      return;
+    }
+
+    navigator.clipboard.writeText(resultLink).then(() => {
+      alert(resultMessage);
+    });
   };
 
   return <StyledLink src={Link} alt="link" onClick={handleCopyShareLink} />;
