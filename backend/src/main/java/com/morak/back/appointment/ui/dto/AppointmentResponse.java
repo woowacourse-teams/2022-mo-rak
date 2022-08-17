@@ -39,7 +39,6 @@ public class AppointmentResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mma", locale = "en_US")
     private LocalTime endTime;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mma", locale = "en_US")
     private LocalDateTime closedAt;
 
     @JsonProperty("isClosed")

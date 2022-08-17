@@ -14,14 +14,23 @@ import lombok.NoArgsConstructor;
 public class PollResponse implements Comparable<PollResponse> {
 
     private Long id;
+
     private String title;
+
     private Integer allowedPollCount;
+
     private Boolean isAnonymous;
+
     private String status;
+
     private LocalDateTime createdAt;
+
     private LocalDateTime closedAt;
+
     private String code;
+
     private Boolean isHost;
+
     private Integer count;
 
     public static PollResponse from(Poll poll, Member member) {
