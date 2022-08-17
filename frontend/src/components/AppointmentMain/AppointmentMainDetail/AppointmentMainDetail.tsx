@@ -30,7 +30,10 @@ function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Pro
 
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
-      <StyledCloseTime>{getFormattedClosedTime(closedAt)}</StyledCloseTime>
+      <StyledCloseTime>
+        {getFormattedClosedTime(closedAt)}
+        까지
+      </StyledCloseTime>
       <TextField
         width="5.2rem"
         borderRadius="20px"
