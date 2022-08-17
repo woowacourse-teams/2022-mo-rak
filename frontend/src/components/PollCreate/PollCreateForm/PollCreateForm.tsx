@@ -2,6 +2,7 @@ import React, { useState, FormEvent, ChangeEvent } from 'react';
 
 // TODO: 자동정렬 설정
 import { useNavigate, useParams } from 'react-router-dom';
+import { AxiosError } from 'axios';
 import Box from '../../@common/Box/Box';
 import Divider from '../../@common/Divider/Divider';
 import MarginContainer from '../../@common/MarginContainer/MarginContainer';
@@ -49,8 +50,15 @@ function PollCreateForm() {
       // TODO: 상수화
       navigate(`/groups/${groupCode}/poll/${pollCode}/progress`);
     } catch (err) {
+      if (err instanceof AxiosError) {
+        // TODO: 타이핑
+        const codeNumber = err.response?.data.codeNumber;
+
+        if (codeNumber === '4000') {
+          alert('투표 마감시간은 현재보다 미래여야합니다');
+        }
+      }
       // TODO: 에러 핸들링 고도화
-      alert(err);
     }
   };
 
