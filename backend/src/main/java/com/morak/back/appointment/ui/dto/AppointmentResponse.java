@@ -3,6 +3,7 @@ package com.morak.back.appointment.ui.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.auth.domain.Member;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -45,7 +46,9 @@ public class AppointmentResponse {
     @JsonProperty("isClosed")
     private Boolean closed;
 
-    public static AppointmentResponse from(Appointment appointment) {
+    private Boolean isHost;
+
+    public static AppointmentResponse from(Appointment appointment, Member member) {
         return new AppointmentResponse(
                 appointment.getId(),
                 appointment.getCode(),
@@ -58,7 +61,8 @@ public class AppointmentResponse {
                 appointment.getStartTime(),
                 appointment.getEndTime(),
                 appointment.getClosedAt(),
-                appointment.isClosed()
+                appointment.isClosed(),
+                appointment.isHost(member)
         );
     }
 }

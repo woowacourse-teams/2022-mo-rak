@@ -73,6 +73,8 @@ public class AppointmentService {
 
     @Transactional(readOnly = true)
     public AppointmentResponse findAppointment(String teamCode, Long memberId, String appointmentCode) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team.getId(), memberId);
@@ -82,7 +84,7 @@ public class AppointmentService {
                         CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR, appointmentCode
                 ));
         validateAppointmentInTeam(team, appointment);
-        return AppointmentResponse.from(appointment);
+        return AppointmentResponse.from(appointment, member);
     }
 
     private void validateAppointmentInTeam(Team findTeam, Appointment appointment) {
