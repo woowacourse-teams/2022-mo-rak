@@ -7,7 +7,7 @@ import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
-import com.morak.back.core.domain.slack.SlackWebhookRepository;
+import com.morak.back.core.domain.slack.FormattableData;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
 import com.morak.back.core.util.MessageFormatter;
@@ -48,7 +48,6 @@ public class PollService {
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final PollItemRepository pollItemRepository;
-    private final SlackWebhookRepository slackWebhookRepository;
 
     private final NotificationService notificationService;
 
@@ -67,7 +66,7 @@ public class PollService {
         }
 
         Poll savedPoll = pollRepository.save(poll);
-        notificationService.notifyMenuStatus(team, poll, MessageFormatter::formatOpen);
+        notificationService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(poll)));
         return savedPoll.getCode();
     }
 
@@ -93,7 +92,6 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
-    // TODO: 2022/08/11 PollResultResponse에 같은 itemId가 들어오는 경우 ?
     public void doPoll(String teamCode, Long memberId, String pollCode, List<PollResultRequest> requests) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
@@ -210,7 +208,7 @@ public class PollService {
         validateTeam(team, poll);
 
         poll.close(member);
-        notificationService.notifyMenuStatus(team, poll, MessageFormatter::formatClosed);
+        notificationService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(poll)));
     }
 
     @Generated
@@ -218,7 +216,9 @@ public class PollService {
         List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.now());
         for (Poll poll : pollsToBeClosed) {
             pollRepository.closeById(poll.getId());
-            notificationService.notifyMenuStatus(poll.getTeam(), poll, MessageFormatter::formatClosed);
+            notificationService.notifyMenuStatus(
+                    poll.getTeam(), MessageFormatter.formatOpen(FormattableData.from(poll))
+            );
         }
     }
 }

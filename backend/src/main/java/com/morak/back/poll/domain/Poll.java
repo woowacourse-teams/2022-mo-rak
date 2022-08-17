@@ -2,7 +2,6 @@ package com.morak.back.poll.domain;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.domain.Menu;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollDomainLogicException;
@@ -39,7 +38,7 @@ import org.hibernate.annotations.Formula;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Poll extends BaseEntity implements Menu {
+public class Poll extends BaseEntity {
 
     private static final int NO_ONE_SELECTED = 0;
 
@@ -178,28 +177,12 @@ public class Poll extends BaseEntity implements Menu {
         }
     }
 
-    public Integer getAllowedPollCount() {
-        return allowedPollCount.getAllowedPollCount();
-    }
-
-    @Override
     public String getCode() {
         return code.getCode();
     }
 
-    @Override
-    public String getType() {
-        return "poll";
-    }
-
-    @Override
-    public String getName() {
-        return "투표";
-    }
-
-    @Override
-    public String getTeamName() {
-        return getTeam().getName();
+    public Integer getAllowedPollCount() {
+        return allowedPollCount.getAllowedPollCount();
     }
 
     public Integer getCount() {

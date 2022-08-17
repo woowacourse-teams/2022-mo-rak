@@ -1,6 +1,6 @@
 package com.morak.back.core.util;
 
-import com.morak.back.core.domain.Menu;
+import com.morak.back.core.domain.slack.FormattableData;
 import com.morak.back.team.domain.Team;
 import java.time.format.DateTimeFormatter;
 
@@ -9,50 +9,50 @@ public class MessageFormatter {
     private MessageFormatter() {
     }
 
-    public static String formatClosed(Menu menu, Team team) {
+    public static String formatClosed(FormattableData data) {
         return String.join("\n",
-                formatClosedAnnouncement(menu),
-                formatTime(menu),
-                formatResultPage(menu, team)
+                formatClosedAnnouncement(data),
+                formatTime(data),
+                formatResultPage(data)
         );
     }
 
-    private static String formatClosedAnnouncement(Menu menu) {
+    private static String formatClosedAnnouncement(FormattableData data) {
         return String.format("%s 팀의 %s %s 이(가) 마감되었습니다 🎉",
-                menu.getTeamName(), menu.getTitle(), menu.getName()
+                data.getTeamName(), data.getTitle(), data.getName()
         );
     }
 
-    private static String formatTime(Menu menu) {
-        return "마감시간 : " + menu.getClosedAt()
+    private static String formatTime(FormattableData data) {
+        return "마감시간 : " + data.getClosedAt()
                 .format(DateTimeFormatter.ofPattern("yyyy년MM월dd일 H시mm분ss초"));
     }
 
-    private static String formatResultPage(Menu menu, Team team) {
+    private static String formatResultPage(FormattableData data) {
         return String.format(
                 "결과 확인하러 가기 ! -> https://mo-rak.com/groups/%s/%s/%s/result",
-                team.getCode(), menu.getType(), menu.getCode()
+                data.getTeamCode(), data.getType(), data.getCode()
         );
     }
 
-    public static String formatOpen(Menu menu, Team team) {
+    public static String formatOpen(FormattableData data) {
         return String.join("\n",
-                formatOpenAnnouncement(menu),
-                formatTime(menu),
-                formatProgressPage(menu, team)
+                formatOpenAnnouncement(data),
+                formatTime(data),
+                formatProgressPage(data)
         );
     }
 
-    private static String formatOpenAnnouncement(Menu menu) {
+    private static String formatOpenAnnouncement(FormattableData data) {
         return String.format("%s 팀의 %s %s 이(가) 생성되었습니다 🎉",
-                menu.getTeamName(), menu.getTitle(), menu.getName()
+                data.getTeamName(), data.getTitle(), data.getName()
         );
     }
 
-    private static String formatProgressPage(Menu menu, Team team) {
+    private static String formatProgressPage(FormattableData data) {
         return String.format(
                 "진행하러 가기 ! -> https://mo-rak.com/groups/%s/%s/%s/progress",
-                team.getCode(), menu.getType(), menu.getCode()
+                data.getTeamCode(), data.getType(), data.getCode()
         );
     }
 }

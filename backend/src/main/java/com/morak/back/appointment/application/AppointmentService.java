@@ -21,7 +21,7 @@ import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
-import com.morak.back.core.domain.slack.SlackWebhookRepository;
+import com.morak.back.core.domain.slack.FormattableData;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
 import com.morak.back.core.util.MessageFormatter;
@@ -51,7 +51,6 @@ public class AppointmentService {
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
-    private final SlackWebhookRepository slackWebhookRepository;
 
     private final NotificationService notificationService;
 
@@ -64,7 +63,7 @@ public class AppointmentService {
 
         Appointment appointment = request.toAppointment(team, member, Code.generate(CODE_GENERATOR));
         Appointment savedAppointment = appointmentRepository.save(appointment);
-        notificationService.notifyMenuStatus(team, savedAppointment, MessageFormatter::formatOpen);
+        notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(appointment)));
         return savedAppointment.getCode();
     }
 
@@ -195,7 +194,7 @@ public class AppointmentService {
         validateHost(member, appointment);
         validateAppointmentInTeam(team, appointment);
         appointment.close(member);
-        notificationService.notifyMenuStatus(team, appointment, MessageFormatter::formatClosed);
+        notificationService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(appointment)));
     }
 
     public void deleteAppointment(String teamCode, Long memberId, String appointmentCode) {
@@ -234,7 +233,10 @@ public class AppointmentService {
         List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(LocalDateTime.now());
         for (Appointment appointment : appointmentsToBeClosed) {
             appointmentRepository.closeById(appointment.getId());
-            notificationService.notifyMenuStatus(appointment.getTeam(), appointment, MessageFormatter::formatClosed);
+            notificationService.notifyMenuStatus(
+                    appointment.getTeam(),
+                    MessageFormatter.formatClosed(FormattableData.from(appointment))
+            );
         }
 
     }

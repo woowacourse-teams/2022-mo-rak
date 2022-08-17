@@ -1,9 +1,11 @@
 package com.morak.back.core.exception;
 
+import com.morak.back.core.support.Generated;
 import java.util.List;
 import lombok.Getter;
 
 @Getter
+@Generated
 public class SchedulingException extends MorakException {
 
     private List<ExternalException> exceptions;

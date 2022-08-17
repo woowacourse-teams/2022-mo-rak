@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.slack.FakeApiReceiver;
 import com.morak.back.core.domain.slack.FakeSlackClient;
+import com.morak.back.core.domain.slack.FormattableData;
 import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
@@ -109,7 +110,7 @@ class NotificationServiceTest {
         Poll poll = pollRepository.findByCode("testcode").orElseThrow();
 
         // when
-        notificationService.notifyMenuStatus(team, poll, MessageFormatter::formatClosed);
+        notificationService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(poll)));
 
         // then
         String message = receiver.getMessage();

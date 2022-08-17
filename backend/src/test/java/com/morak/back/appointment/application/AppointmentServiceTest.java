@@ -49,16 +49,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ServiceTest
 class AppointmentServiceTest {
 
-    private AppointmentRepository appointmentRepository;
-    private AvailableTimeRepository availableTimeRepository;
-    private MemberRepository memberRepository;
-    private TeamRepository teamRepository;
-    private TeamMemberRepository teamMemberRepository;
-    private SlackWebhookRepository slackWebhookRepository;
-    private FakeApiReceiver receiver;
+    private final AppointmentRepository appointmentRepository;
+    private final AvailableTimeRepository availableTimeRepository;
+    private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
+    private final FakeApiReceiver receiver;
 
-    private NotificationService notificationService;
-    private AppointmentService appointmentService;
+    private final NotificationService notificationService;
+    private final AppointmentService appointmentService;
 
     private AppointmentBuilder DEFAULT_BUILDER;
 
@@ -84,15 +82,13 @@ class AppointmentServiceTest {
         this.availableTimeRepository = availableTimeRepository;
         this.memberRepository = memberRepository;
         this.teamRepository = teamRepository;
-        this.teamMemberRepository = teamMemberRepository;
-        this.slackWebhookRepository = slackWebhookRepository;
 
         this.receiver = new FakeApiReceiver();
         SlackClient slackClient = new FakeSlackClient(receiver);
         this.notificationService =
                 new NotificationService(slackClient, teamRepository, teamMemberRepository, slackWebhookRepository);
         appointmentService = new AppointmentService(appointmentRepository, availableTimeRepository,
-                memberRepository, teamRepository, teamMemberRepository, slackWebhookRepository, notificationService);
+                memberRepository, teamRepository, teamMemberRepository, notificationService);
     }
 
     @BeforeEach

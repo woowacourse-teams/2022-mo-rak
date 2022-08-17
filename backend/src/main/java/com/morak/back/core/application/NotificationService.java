@@ -1,6 +1,5 @@
 package com.morak.back.core.application;
 
-import com.morak.back.core.domain.Menu;
 import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
@@ -11,7 +10,6 @@ import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamAuthorizationException;
 import com.morak.back.team.exception.TeamNotFoundException;
-import java.util.function.BiFunction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +46,10 @@ public class NotificationService {
         }
     }
 
-    public void notifyMenuStatus(Team team, Menu menu, BiFunction<Menu, Team, String> formatter) {
+    public void notifyMenuStatus(Team team, String message) {
         slackWebhookRepository.findByTeamId(team.getId())
                 .ifPresent(webhook -> slackClient.notifyMenuStatus(
-                        webhook, formatter.apply(menu, team)
+                        webhook, message
                 ));
     }
 }

@@ -46,17 +46,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ServiceTest
 class PollServiceTest {
 
-    private MemberRepository memberRepository;
-    private TeamRepository teamRepository;
-    private TeamMemberRepository teamMemberRepository;
-    private PollRepository pollRepository;
-    private PollItemRepository pollItemRepository;
-    private SlackWebhookRepository slackWebhookRepository;
-    private FakeApiReceiver receiver;
-    private SlackClient slackClient;
+    private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
+    private final TeamMemberRepository teamMemberRepository;
+    private final PollRepository pollRepository;
+    private final PollItemRepository pollItemRepository;
+    private final FakeApiReceiver receiver;
+    private final SlackClient slackClient;
 
-    private NotificationService notificationService;
-    private PollService pollService;
+    private final NotificationService notificationService;
+    private final PollService pollService;
 
     private Member member;
     private Team team;
@@ -71,7 +70,6 @@ class PollServiceTest {
         this.teamMemberRepository = teamMemberRepository;
         this.pollRepository = pollRepository;
         this.pollItemRepository = pollItemRepository;
-        this.slackWebhookRepository = slackWebhookRepository;
         this.receiver = new FakeApiReceiver();
         this.slackClient = new FakeSlackClient(receiver);
         this.notificationService = new NotificationService(slackClient, teamRepository,
@@ -82,7 +80,6 @@ class PollServiceTest {
                 teamRepository,
                 teamMemberRepository,
                 pollItemRepository,
-                slackWebhookRepository,
                 notificationService
         );
     }

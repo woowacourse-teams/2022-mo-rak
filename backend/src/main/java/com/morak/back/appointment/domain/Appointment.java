@@ -6,7 +6,6 @@ import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.domain.Menu;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.domain.BaseEntity;
 import com.morak.back.team.domain.Team;
@@ -34,7 +33,7 @@ import org.hibernate.annotations.Formula;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Appointment extends BaseEntity implements Menu {
+public class Appointment extends BaseEntity {
 
     public static final int MINUTES_UNIT = 30;
     private static final int NO_ONE_SELECTED = 0;
@@ -189,21 +188,6 @@ public class Appointment extends BaseEntity implements Menu {
         return this.status.isClosed();
     }
 
-    @Override
-    public String getType() {
-        return "appointment";
-    }
-
-    @Override
-    public String getName() {
-        return "약속잡기";
-    }
-
-    @Override
-    public String getTeamName() {
-        return getTeam().getName();
-    }
-
     public LocalDateTime getStartDateTime() {
         return LocalDateTime.of(datePeriod.getStartDate(), timePeriod.getStartTime());
     }
@@ -232,7 +216,6 @@ public class Appointment extends BaseEntity implements Menu {
         return this.timePeriod.getEndTime();
     }
 
-    @Override
     public String getCode() {
         return code.getCode();
     }
