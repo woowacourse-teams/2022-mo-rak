@@ -1,12 +1,8 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import MainFeatureMenuContainer from '../../components/Main/MainFeatureMenuContainer/MainFeatureMenuContainer';
-import { useMenuDispatchContext } from '../../context/MenuProvider';
 
 function MainPage() {
-  const dispatch = useMenuDispatchContext();
-  dispatch({ type: 'SET_CLICKED_MENU', payload: 'main' });
-
   return (
     <StyledContainer>
       <MainFeatureMenuContainer />

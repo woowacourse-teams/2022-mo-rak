@@ -10,6 +10,7 @@ import SidebarLayout from './components/SidebarLayout/SidebarLayout';
 import MainPage from './pages/MainPage/MainPage';
 import InvitationPage from './pages/InvitationPage/InvitationPage';
 import { PrivateRoute } from './routes/PrivateRoute';
+import { MenuRoute } from './routes/MenuRoute';
 import AppointmentMainPage from './pages/AppointmentMainPage/AppointmentMainPage';
 import AppointmentCreatePage from './pages/AppointmentCreatePage/AppointmentCreatePage';
 import AppointmentProgressPage from './pages/AppointmentProgressPage/AppointmentProgressPage';
@@ -27,20 +28,26 @@ function App() {
 
           <Route element={<SidebarLayout />}>
             <Route path="groups/:groupCode">
-              <Route index element={<MainPage />} />
-
-              <Route path="poll">
-                <Route index element={<PollMainPage />} />
-                <Route path="create" element={<PollCreatePage />} />
-                <Route path=":pollCode/progress" element={<PollProgressPage />} />
-                <Route path=":pollCode/result" element={<PollResultPage />} />
+              <Route element={<MenuRoute menu="main" />}>
+                <Route index element={<MainPage />} />
               </Route>
 
-              <Route path="appointment">
-                <Route index element={<AppointmentMainPage />} />
-                <Route path="create" element={<AppointmentCreatePage />} />
-                <Route path=":appointmentCode/progress" element={<AppointmentProgressPage />} />
-                <Route path=":appointmentCode/result" element={<AppointmentResultPage />} />
+              <Route element={<MenuRoute menu="poll" />}>
+                <Route path="poll">
+                  <Route index element={<PollMainPage />} />
+                  <Route path="create" element={<PollCreatePage />} />
+                  <Route path=":pollCode/progress" element={<PollProgressPage />} />
+                  <Route path=":pollCode/result" element={<PollResultPage />} />
+                </Route>
+              </Route>
+
+              <Route element={<MenuRoute menu="appointment" />}>
+                <Route path="appointment">
+                  <Route index element={<AppointmentMainPage />} />
+                  <Route path="create" element={<AppointmentCreatePage />} />
+                  <Route path=":appointmentCode/progress" element={<AppointmentProgressPage />} />
+                  <Route path=":appointmentCode/result" element={<AppointmentResultPage />} />
+                </Route>
               </Route>
             </Route>
           </Route>
