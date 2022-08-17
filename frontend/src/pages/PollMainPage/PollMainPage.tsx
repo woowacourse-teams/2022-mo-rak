@@ -2,10 +2,10 @@ import styled from '@emotion/styled';
 import React from 'react';
 import PollMainContainer from '../../components/PollMain/PollMainContainer/PollMainContainer';
 import PollMainHeader from '../../components/PollMain/PollMainHeader/PollMainHeader';
-import { useMenuDispatch } from '../../context/MenuProvider';
+import { useMenuDispatchContext } from '../../context/MenuProvider';
 
 function PollMainPage() {
-  const dispatch = useMenuDispatch();
+  const dispatch = useMenuDispatchContext();
   dispatch({ type: 'SET_CLICKED_MENU', payload: 'poll' });
 
   return (

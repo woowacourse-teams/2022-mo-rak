@@ -14,7 +14,7 @@ import Close from '../../assets/close-button.svg';
 import Logo from '../../assets/logo.svg';
 import { GroupInterface } from '../../types/group';
 import { createGroup, participateGroup } from '../../api/group';
-import { useMenuDispatch } from '../../context/MenuProvider';
+import { useMenuDispatchContext } from '../../context/MenuProvider';
 import useInput from '../../hooks/useInput';
 
 interface Props {
@@ -26,7 +26,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
   const [groupName, setGroupName] = useState<GroupInterface['name']>('');
   const [invitationCode, handleInvitationCode] = useInput('');
 
-  const dispatch = useMenuDispatch();
+  const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
 
   // 그룹 생성

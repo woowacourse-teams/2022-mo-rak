@@ -48,7 +48,7 @@ function MenuProvider({ children }: PropsWithChildren) {
 }
 
 // TODO: hook으로 빼주자
-function useMenuState() {
+function useMenuContext() {
   const context = useContext(MenuContext);
 
   if (!context) {
@@ -58,7 +58,7 @@ function useMenuState() {
   return context;
 }
 
-function useMenuDispatch() {
+function useMenuDispatchContext() {
   const context = useContext(MenuDispatchContext);
 
   if (!context) {
@@ -68,4 +68,4 @@ function useMenuDispatch() {
   return context;
 }
 
-export { useMenuState, useMenuDispatch, MenuProvider };
+export { useMenuContext, useMenuDispatchContext, MenuProvider };

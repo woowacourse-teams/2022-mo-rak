@@ -8,7 +8,7 @@ import Leave from '../../assets/leave.svg';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
 import { leaveGroup } from '../../api/group';
 import { GroupInterface } from '../../types/group';
-import { useMenuDispatch, useMenuState } from '../../context/MenuProvider';
+import { useMenuDispatchContext, useMenuContext } from '../../context/MenuProvider';
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -20,8 +20,8 @@ interface Props {
 function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode, groups }: Props) {
   const [nowGroup, setGroup] = useState<GroupInterface>();
 
-  const dispatch = useMenuDispatch();
-  const { isVisibleGroups } = useMenuState();
+  const dispatch = useMenuDispatchContext();
+  const { isVisibleGroups } = useMenuContext();
   const navigate = useNavigate();
 
   const handleLeaveGroup = async () => {

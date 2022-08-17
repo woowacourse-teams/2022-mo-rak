@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Poll from '../../assets/person-check.svg';
 import Appointment from '../../assets/calendar-clock.svg';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
-import { useMenuDispatch, useMenuState } from '../../context/MenuProvider';
+import { useMenuDispatchContext, useMenuContext } from '../../context/MenuProvider';
 import { GroupInterface } from '../../types/group';
 
 interface Props {
@@ -12,8 +12,8 @@ interface Props {
 }
 
 function SidebarFeatureMenu({ groupCode }: Props) {
-  const { clickedMenu } = useMenuState();
-  const dispatch = useMenuDispatch();
+  const { clickedMenu } = useMenuContext();
+  const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
 
   // TODO: 함수 역할에 맞게 분리

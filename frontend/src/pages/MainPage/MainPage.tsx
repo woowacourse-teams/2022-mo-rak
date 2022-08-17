@@ -4,10 +4,10 @@ import { useParams } from 'react-router-dom';
 import MembersProfile from '../../components/MembersProfile/MembersProfile';
 import MainFeatureMenuContainer from '../../components/Main/MainFeatureMenuContainer/MainFeatureMenuContainer';
 import { GroupInterface } from '../../types/group';
-import { useMenuDispatch } from '../../context/MenuProvider';
+import { useMenuDispatchContext } from '../../context/MenuProvider';
 
 function MainPage() {
-  const dispatch = useMenuDispatch();
+  const dispatch = useMenuDispatchContext();
   dispatch({ type: 'SET_CLICKED_MENU', payload: 'main' });
 
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
