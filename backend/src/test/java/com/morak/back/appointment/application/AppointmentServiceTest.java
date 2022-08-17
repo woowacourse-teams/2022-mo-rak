@@ -91,7 +91,7 @@ class AppointmentServiceTest {
         SlackClient slackClient = new FakeSlackClient(receiver);
         this.notificationService =
                 new NotificationService(slackClient, teamRepository, teamMemberRepository, slackWebhookRepository);
-        appointmentService = new AppointmentService(slackClient, appointmentRepository, availableTimeRepository,
+        appointmentService = new AppointmentService(appointmentRepository, availableTimeRepository,
                 memberRepository, teamRepository, teamMemberRepository, slackWebhookRepository, notificationService);
     }
 

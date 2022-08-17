@@ -37,7 +37,6 @@ class NotificationServiceTest {
 
     private final FakeApiReceiver receiver;
 
-    private final SlackClient slackClient;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final SlackWebhookRepository slackWebhookRepository;
@@ -55,7 +54,7 @@ class NotificationServiceTest {
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.slackWebhookRepository = slackWebhookRepository;
-        this.slackClient = new FakeSlackClient(receiver);
+        SlackClient slackClient = new FakeSlackClient(receiver);
         this.notificationService =
                 new NotificationService(slackClient, teamRepository, teamMemberRepository, slackWebhookRepository);
     }
@@ -105,8 +104,8 @@ class NotificationServiceTest {
 
         // when
         Member otherMember = teamMemberRepository.findAllByTeamId(
-                teamRepository.findByCode("Betrayed").orElseThrow().getId()).get(0
-        ).getMember();
+                teamRepository.findByCode("Betrayed").orElseThrow().getId()
+        ).get(0).getMember();
 
         // then
         assertThatThrownBy(

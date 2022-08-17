@@ -42,7 +42,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +52,6 @@ public class AppointmentService {
 
     private static final CodeGenerator CODE_GENERATOR = new RandomCodeGenerator();
 
-    private final SlackClient slackClient;
     private final AppointmentRepository appointmentRepository;
     private final AvailableTimeRepository availableTimeRepository;
     private final MemberRepository memberRepository;

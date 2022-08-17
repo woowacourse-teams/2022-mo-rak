@@ -77,7 +77,6 @@ class PollServiceTest {
         this.notificationService = new NotificationService(slackClient, teamRepository,
                 teamMemberRepository, slackWebhookRepository);
         this.pollService = new PollService(
-                slackClient,
                 pollRepository,
                 memberRepository,
                 teamRepository,

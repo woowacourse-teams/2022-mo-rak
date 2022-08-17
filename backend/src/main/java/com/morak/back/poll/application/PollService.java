@@ -38,7 +38,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,9 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PollService {
 
     private static final CodeGenerator GENERATOR = new RandomCodeGenerator();
-    private static final String MENU_NAME = "투표";
 
-    private final SlackClient slackClient;
     private final PollRepository pollRepository;
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
@@ -75,7 +72,7 @@ public class PollService {
         }
 
         Poll savedPoll = pollRepository.save(poll);
-
+        notificationService.notifyMenuStatus(team, poll, MessageFormatter::formatOpen);
         return savedPoll.getCode();
     }
 
