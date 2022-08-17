@@ -51,7 +51,7 @@ public class MessageFormatter {
 
     private static String formatProgressPage(Menu menu, Team team) {
         return String.format(
-                "투표하러 가기 ! -> https://mo-rak.com/groups/%s/poll/%s/progress",
+                "선택하러 가기 ! -> https://mo-rak.com/groups/%s/poll/%s/progress",
                 team.getCode(), menu.getCode()
         );
     }

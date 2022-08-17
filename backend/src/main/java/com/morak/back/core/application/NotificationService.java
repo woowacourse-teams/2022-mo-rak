@@ -57,7 +57,7 @@ public class NotificationService {
 
     public void notifyMenuStatus(Team team, Menu menu, BiFunction<Menu, Team, String> formatter) {
         slackWebhookRepository.findByTeamId(team.getId())
-                .ifPresent(webhook -> slackClient.notifyClosed(
+                .ifPresent(webhook -> slackClient.notifyMenuStatus(
                         webhook, formatter.apply(menu, team)
                 ));
     }
@@ -75,7 +75,7 @@ public class NotificationService {
     private Optional<ExternalException> closeAndNotify(Menu menu, Optional<SlackWebhook> optionalWebhook) {
         try {
             optionalWebhook.ifPresent(webhook ->
-                    slackClient.notifyClosed(webhook, MessageFormatter.formatClosed(menu, webhook.getTeam())));
+                    slackClient.notifyMenuStatus(webhook, MessageFormatter.formatClosed(menu, webhook.getTeam())));
             menu.close(menu.getHost());
             return Optional.empty();
         } catch (ExternalException e) {

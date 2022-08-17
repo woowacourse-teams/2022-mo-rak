@@ -17,7 +17,7 @@ public class RestSlackClient implements SlackClient {
     private static final String ICON_EMOJI = ":oncoming_police_car:";
 
     @Override
-    public void notifyClosed(SlackWebhook webhook, String message) {
+    public void notifyMenuStatus(SlackWebhook webhook, String message) {
         NotificationRequest request = createRequest(message);
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(webhook.getUrl(), request, String.class);
