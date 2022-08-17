@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import React, { RefObject, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   getLocalStorageItem,
@@ -19,10 +19,6 @@ import LandingServiceIntroduceSection from '../../components/Landing/LandingServ
 function LandingPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
-  const firstSection = useRef<HTMLTableSectionElement>(null);
-  const secondSection = useRef<HTMLTableSectionElement>(null);
-  const thirdSection = useRef<HTMLTableSectionElement>(null);
 
   const redirectUrl = getSessionStorageItem('redirectUrl');
   // TODO: 중복 로직해결
@@ -87,15 +83,11 @@ function LandingPage() {
     }
   }, []);
 
-  const handleMoveToSection = (section: RefObject<HTMLTableSectionElement>) => () => {
-    section.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <StyledContainer>
-      <LandingMainSection />
-      <LandingIntroduceSection />
-      <LandingServiceIntroduceSection />
+      <LandingMainSection id="main-section" />
+      <LandingIntroduceSection id="introduce-section" />
+      <LandingServiceIntroduceSection id="service-introduce-section" />
     </StyledContainer>
   );
 }
@@ -106,6 +98,7 @@ const StyledContainer = styled.div`
   height: 100vh;
   width: 100%;
   font-family: 'Nanum Gothic', sans-serif;
+  scroll-behavior: smooth;
 `;
 
 export default LandingPage;

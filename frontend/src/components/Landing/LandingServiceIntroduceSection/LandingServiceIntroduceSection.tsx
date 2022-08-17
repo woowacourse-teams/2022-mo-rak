@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 
 import Glitter from '../../../assets/glitter.svg';
@@ -7,13 +7,15 @@ import Poll from '../../../assets/poll-small.svg';
 import Appointment from '../../../assets/time.svg';
 import Undefined from '../../../assets/question.svg';
 
-function LandingServiceIntroduceSection() {
+interface Props extends HTMLAttributes<HTMLElement> {}
+
+function LandingServiceIntroduceSection({ id }: Props) {
   return (
-    <StyledServiceIntroduceSection>
+    <StyledServiceIntroduceSection id={id}>
       <StyledNavbar>
-        <li>LOGIN</li>
-        <li>ABOUT</li>
-        <li>CONTACT US</li>
+        <StyledMenu href="#main-section">LOGIN</StyledMenu>
+        <StyledMenu href="#introduce-section">ABOUT</StyledMenu>
+        <StyledMenu href="#service-introduce-section">FEATURES</StyledMenu>
       </StyledNavbar>
       <StyledExplanationTextContainer>
         <StyledExplanationBigText>
@@ -149,5 +151,10 @@ const StyledAppointmentImage = styled.img`
 const StyledUndefinedImage = styled.img`
   width: 12rem;
 `;
+
+const StyledMenu = styled.a(({ theme }) => `
+  text-decoration: none;
+  color: ${theme.colors.BLACK_100};
+`);
 
 export default LandingServiceIntroduceSection;

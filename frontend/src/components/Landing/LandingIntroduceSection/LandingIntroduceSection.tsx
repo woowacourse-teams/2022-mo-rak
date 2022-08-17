@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 
 import Services from '../../../assets/service-group.svg';
 import CircleHighlight from '../../../assets/circle-highlight.svg';
 
-function LandingIntroduceSection() {
+interface Props extends HTMLAttributes<HTMLElement> {}
+
+function LandingIntroduceSection({ id }: Props) {
   return (
-    <StyledIntroduceSection>
+    <StyledIntroduceSection id={id}>
       <StyledNavbar>
-        <li>LOGIN</li>
-        <li>ABOUT</li>
-        <li>CONTACT US</li>
+        <StyledMenu href="#main-section">LOGIN</StyledMenu>
+        <StyledMenu href="#introduce-section">ABOUT</StyledMenu>
+        <StyledMenu href="#service-introduce-section">FEATURES</StyledMenu>
       </StyledNavbar>
       <div>
         <StyledMainIntroduceText>
@@ -83,5 +85,10 @@ const StyledDetailIntroduceText = styled.span(({ theme }) => `
 const StyledImageWrapper = styled.div`
   position: relative;
 `;
+
+const StyledMenu = styled.a(({ theme }) => `
+  text-decoration: none;
+  color: ${theme.colors.BLACK_100};
+`);
 
 export default LandingIntroduceSection;

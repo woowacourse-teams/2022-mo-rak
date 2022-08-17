@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 
 import Logo from '../../../assets/logo.svg';
@@ -8,47 +8,52 @@ import Blob from '../../../assets/blob.svg';
 import GithubLogo from '../../../assets/github-logo.svg';
 import Circle from '../../../assets/half-circle.svg';
 import Glitter from '../../../assets/glitter.svg';
+import FlexContainer from '../../common/FlexContainer/FlexContainer';
 
-function LandingMainSection() {
+interface Props extends HTMLAttributes<HTMLElement> {}
+
+function LandingMainSection({ id }: Props) {
   return (
-    <StyledMainSection>
+    <StyledMainSection id={id}>
       <StyledNavbar>
-        <li>LOGIN</li>
-        <li>ABOUT</li>
-        <li>CONTACT US</li>
+        <StyledMenu href="#main-section">LOGIN</StyledMenu>
+        <StyledMenu href="#introduce-section">ABOUT</StyledMenu>
+        <StyledMenu href="#service-introduce-section">FEATURES</StyledMenu>
       </StyledNavbar>
       <StyledLogo src={Logo} alt="logo" />
-      <StyledSmallTitle>
-        모락이 해줄게요
-      </StyledSmallTitle>
-      <StyledBigTitle>
-        <StyledSmileImage src={Smile} alt="smile" />
-        <StyledLineImage src={Line} alt="line" />
-        <StyledGlitterImage src={Glitter} alt="glitter" />
-        모임을
-        <br />
-        즐겁게, 편하게!
-      </StyledBigTitle>
-      <StyledLink href="https://github.com/login/oauth/authorize?client_id=f67a30d27afefe8b241f">
-        <StyledLoginContainer>
-          <StyledGithubLogo src={GithubLogo} alt="github-logo" />
-          <StyledLoginText>GITHUB으로 로그인</StyledLoginText>
-        </StyledLoginContainer>
-      </StyledLink>
-      <StlyedSectionGuideContainer>
+
+      <FlexContainer flexDirection="column" gap="2rem">
+        <StyledSmallTitle>
+          모락이 해줄게요
+        </StyledSmallTitle>
+        <StyledBigTitle>
+          <StyledSmileImage src={Smile} alt="smile" />
+          <StyledLineImage src={Line} alt="line" />
+          <StyledGlitterImage src={Glitter} alt="glitter" />
+          모임을
+          <br />
+          즐겁게, 편하게!
+        </StyledBigTitle>
+        <StyledLink href="https://github.com/login/oauth/authorize?client_id=f67a30d27afefe8b241f">
+          <StyledLoginContainer>
+            <StyledGithubLogo src={GithubLogo} alt="github-logo" />
+            <StyledLoginText>GITHUB으로 로그인</StyledLoginText>
+          </StyledLoginContainer>
+        </StyledLink>
+      </FlexContainer>
+      <StyledSectionGuideContainer>
         <StlyedBlobContainer>
           <img src={Blob} alt="blob" />
           <StyledGuideText>모락 소개</StyledGuideText>
         </StlyedBlobContainer>
-      </StlyedSectionGuideContainer>
+      </StyledSectionGuideContainer>
     </StyledMainSection>
   );
 }
 
 const StyledLink = styled.a`
-  position: absolute;
-  bottom: 20rem;
   text-decoration: none;
+  margin-top: 8rem;
 `;
 
 const StyledGithubLogo = styled.img`
@@ -71,6 +76,7 @@ const StyledLoginContainer = styled.div(
   background-color: ${theme.colors.BLACK_100};
   border-radius: 15px;
   padding: 1.2rem;
+  margin: 0 auto;
 `
 );
 
@@ -91,6 +97,11 @@ const StyledLogo = styled.img`
   top: 2rem; 
   left: 4rem;
 `;
+
+const StyledMenu = styled.a(({ theme }) => `
+  text-decoration: none;
+  color: ${theme.colors.BLACK_100};
+`);
 
 // section 1
 // TODO: section태그마다 반복되는 속성들을 공통으로 묶어줄 수 있는 방법은 없을까
@@ -113,6 +124,8 @@ const StyledSmallTitle = styled.div(({ theme }) => `
   margin-bottom: 1.2rem;
   color: ${theme.colors.BLACK_100};
   letter-spacing: 0.4rem;
+  margin: 0 auto;
+  padding-top: 20rem;
 `);
 
 const StyledBigTitle = styled.h1(({ theme }) => `
@@ -148,7 +161,7 @@ const StyledGlitterImage = styled.img`
   width: 6rem;
 `;
 
-const StlyedSectionGuideContainer = styled.div`
+const StyledSectionGuideContainer = styled.div`
   position: absolute; 
   right: 14rem; 
   bottom: 6rem;
