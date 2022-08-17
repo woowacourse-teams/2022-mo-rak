@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { GroupInterface } from '../../../types/group';
-import { AppointmentInterface } from '../../../types/appointment';
+import { AppointmentInterface, getAppointmentResponse } from '../../../types/appointment';
 import { closeAppointment, deleteAppointment } from '../../../api/appointment';
 import Button from '../../@common/Button/Button';
 
@@ -14,9 +14,10 @@ interface Props {
   groupCode: GroupInterface['code'];
   appointmentCode: AppointmentInterface['code'];
   isClosed: AppointmentInterface['isClosed'];
+  isHost: getAppointmentResponse['isHost'];
 }
 
-function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed }: Props) {
+function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, isHost }: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -24,11 +25,10 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed }: 
     navigate(location);
   };
 
-  const handleCloseAppointment = async () => {
+  const handleCloseAppointment = () => {
     try {
       if (window.confirm('약속잡기를 마감하시겠습니까?')) {
-        await closeAppointment(groupCode, appointmentCode);
-        navigate(`/groups/${groupCode}/appointment`);
+        closeAppointment(groupCode, appointmentCode);
       }
     } catch (err) {
       console.log(err);
@@ -55,26 +55,33 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed }: 
 
   return (
     <FlexContainer gap="4rem" justifyContent="center">
-      <Button
-        variant="filled"
-        colorScheme={theme.colors.GRAY_300}
-        width="24rem"
-        padding="2rem"
-        fontSize="3.6rem"
-        onClick={handleCloseAppointment}
-      >
-        마감
-      </Button>
-      <Button
-        variant="filled"
-        colorScheme={theme.colors.GRAY_300}
-        width="24rem"
-        padding="2rem"
-        fontSize="3.6rem"
-        onClick={handleDeleteAppointment}
-      >
-        삭제
-      </Button>
+      {isHost && (
+        <>
+          {!isClosed && (
+            <Button
+              variant="filled"
+              colorScheme={theme.colors.GRAY_400}
+              width="24rem"
+              padding="2rem"
+              fontSize="3.6rem"
+              onClick={handleCloseAppointment}
+            >
+              마감
+            </Button>
+          )}
+          <Button
+            variant="filled"
+            colorScheme={theme.colors.GRAY_400}
+            width="24rem"
+            padding="2rem"
+            fontSize="3.6rem"
+            onClick={handleDeleteAppointment}
+          >
+            삭제
+          </Button>
+        </>
+      )}
+
       {!isClosed && (
         <Button
           variant="filled"

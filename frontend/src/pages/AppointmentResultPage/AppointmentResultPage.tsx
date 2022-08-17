@@ -3,7 +3,11 @@ import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 
 import { getAppointment, getAppointmentRecommendation } from '../../api/appointment';
-import { AppointmentInterface, AppointmentRecommendationInterface } from '../../types/appointment';
+import {
+  AppointmentInterface,
+  AppointmentRecommendationInterface,
+  getAppointmentResponse
+} from '../../types/appointment';
 import { GroupInterface } from '../../types/group';
 import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
 import AppointmentResultRanking from '../../components/AppointmentResult/AppointmentResultRanking/AppointmentResultRanking';
@@ -12,7 +16,7 @@ import AppointmentResultButtonGroup from '../../components/AppointmentResult/App
 import AppointmentResultHeader from '../../components/AppointmentResult/AppointmentResultHeader/AppointmentResultHeader';
 
 function AppointmentResultPage() {
-  const [appointment, setAppointment] = useState<AppointmentInterface>();
+  const [appointment, setAppointment] = useState<getAppointmentResponse>();
   const [appointmentRecommendation, setAppointmentRecommendation] = useState<
     Array<AppointmentRecommendationInterface>
   >([]);
@@ -57,7 +61,7 @@ function AppointmentResultPage() {
   return (
     <StyledContainer>
       <FlexContainer flexDirection="column" gap="4rem">
-        <AppointmentResultHeader title={appointment.title} />
+        <AppointmentResultHeader title={appointment.title} isClosed={appointment.isClosed} />
         <FlexContainer gap="4rem">
           <AppointmentResultRanking
             groupCode={groupCode}
@@ -74,6 +78,7 @@ function AppointmentResultPage() {
           groupCode={groupCode}
           appointmentCode={appointmentCode}
           isClosed={appointment.isClosed}
+          isHost={appointment.isHost}
         />
       </FlexContainer>
     </StyledContainer>

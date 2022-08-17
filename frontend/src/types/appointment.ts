@@ -33,6 +33,10 @@ type AvailableTimes = Array<{ start: string; end: string }>;
 
 type createAppointmentData = Omit<AppointmentInterface, 'id' | 'code' | 'isClosed'>;
 
+type getAppointmentResponse = AppointmentInterface & {
+  isHost: boolean;
+};
+
 type getAppointmentsResponse = Array<
   Omit<AppointmentInterface, 'startDate' | 'endDate' | 'startTime' | 'endTime'> & {
     count: number;
@@ -43,6 +47,7 @@ export {
   Time,
   createAppointmentData,
   getAppointmentsResponse,
+  getAppointmentResponse,
   AvailableTimes,
   AppointmentRecommendationInterface,
   AppointmentInterface
