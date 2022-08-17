@@ -5,7 +5,7 @@ import { useTheme } from '@emotion/react';
 import Input from '../../@common/Input/Input';
 import TextField from '../../@common/TextField/TextField';
 import { GroupInterface } from '../../../types/group';
-import Participate from '../../../assets/participate.svg';
+import Create from '../../../assets/create-plus.svg';
 
 interface Props {
   groupName: GroupInterface['name'];
@@ -23,7 +23,7 @@ function GroupCreateFormNameInput({ groupName, onChange }: Props) {
       borderRadius="10px 0 0 10px"
       padding="2.8rem 8rem"
     >
-      <StyledParticipateIcon src={Participate} alt="participate-group-icon" />
+      <StyledCreateIcon src={Create} alt="create-group-icon" />
       <Input
         placeholder="그룹이름을 입력해주세요!"
         value={groupName}
@@ -35,9 +35,10 @@ function GroupCreateFormNameInput({ groupName, onChange }: Props) {
   );
 }
 
-const StyledParticipateIcon = styled.img`
+const StyledCreateIcon = styled.img`
+  width: 2.8rem;
   position: absolute;
-  top: 2rem;
+  top: 2.8rem;
   left: 2.4rem;
 `;
 
