@@ -1,6 +1,6 @@
 package com.morak.back.core.support;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
@@ -34,7 +34,7 @@ public class LogFormatter {
     private static StringBuilder getBody(ContentCachingRequestWrapper requestWrapper) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("body: ").append(NEWLINE);
-        stringBuilder.append(Arrays.toString(requestWrapper.getContentAsByteArray()));
+        stringBuilder.append(new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8));
         return stringBuilder;
     }
 }
