@@ -66,6 +66,7 @@ function AppointmentResultPage() {
           appointmentCode={appointmentCode}
           title={appointment.title}
           isClosed={appointment.isClosed}
+          closedAt={appointment.closedAt}
         />
         <FlexContainer gap="4rem">
           <AppointmentResultRanking

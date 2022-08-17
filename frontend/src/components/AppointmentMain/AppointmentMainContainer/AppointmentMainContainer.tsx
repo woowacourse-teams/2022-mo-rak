@@ -33,14 +33,8 @@ function AppointmentMainContainer() {
   return (
     <StyledContainer>
       {appointments ? (
-        appointments.map(({
-          code,
-          title,
-          description,
-          durationHours,
-          durationMinutes,
-          count,
-          isClosed }) => (
+        appointments.map(
+          ({ code, title, durationHours, durationMinutes, count, isClosed, closedAt }) => (
             <Box
               width="26.4rem"
               padding="2rem"
@@ -51,17 +45,20 @@ function AppointmentMainContainer() {
                 <AppointmentMainStatus isClosed={isClosed} />
               </FlexContainer>
               <StyledTitle>{title}</StyledTitle>
-              <StyledDescription>{description}</StyledDescription>
-              <AppointmentMainProgress count={count} groupCode={groupCode} />
+              <MarginContainer margin="0 0 0.4rem">
+                <AppointmentMainProgress count={count} groupCode={groupCode} />
+              </MarginContainer>
               <MarginContainer margin="0 0 1.2rem">
                 <AppointmentMainDetail
                   durationHours={durationHours}
                   durationMinutes={durationMinutes}
+                  closedAt={closedAt}
                 />
               </MarginContainer>
               <AppointmentMainButtonGroup appointmentCode={code} isClosed={isClosed} />
             </Box>
-        ))
+          )
+        )
       ) : (
         <div>없습니다</div>
       )}
@@ -78,14 +75,6 @@ const StyledContainer = styled.div`
 const StyledTitle = styled.h1`
   font-size: 1.6rem;
   text-align: center;
-`;
-
-const StyledDescription = styled.div`
-  font-size: 0.8rem;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 export default AppointmentMainContainer;
