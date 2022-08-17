@@ -5,20 +5,29 @@ import LinkIcon from '../../../assets/link.svg';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { writeClipboard } from '../../../utils/clipboard';
 import AppointmentResultStatus from '../AppointmentResultStatus/AppointmentResultStatus';
+import { GroupInterface } from '../../../types/group';
 
 interface Props {
+  groupCode: GroupInterface['code'];
+  appointmentCode: AppointmentInterface['code'];
   title: AppointmentInterface['title'];
   isClosed: AppointmentInterface['isClosed'];
 }
 
-function AppointmentResultHeader({ title, isClosed }: Props) {
+function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed }: Props) {
   const handleCopyInviationLink = () => {
-    const progressLink = `${process.env.CLIENT_URL}${
-      window.location.pathname.split('/result')[0]
-    }/progress`;
+    const baseLink = `${process.env.CLIENT_URL}/groups/${groupCode}/appointment/${appointmentCode}`;
 
-    writeClipboard(progressLink).then(() => {
-      alert('약속잡기 진행 링크가 클립보드에 복사되었습니다📆');
+    if (isClosed) {
+      writeClipboard(`${baseLink}/result`).then(() => {
+        alert('약속잡기 결과를 공유할 수 있는 링크가 클립보드에 복사되었습니다📆');
+      });
+
+      return;
+    }
+
+    writeClipboard(`${baseLink}/progress`).then(() => {
+      alert('약속잡기 결과를 공유할 수 있는 링크가 클립보드에 복사되었습니다📆');
     });
   };
 
