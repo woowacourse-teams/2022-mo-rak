@@ -167,7 +167,6 @@ const StyledGroupProfile = styled.div<{backgroundColor: string}>(({ backgroundCo
 const StyledGroupFirstName = styled.div(({ theme }) => `
   color: ${theme.colors.WHITE_100};
   font-size: 4.8rem;
-  font-family: 'no';
 `);
 
 const StyledGroupListImage = styled.img`
