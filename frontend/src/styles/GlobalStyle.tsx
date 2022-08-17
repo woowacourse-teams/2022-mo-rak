@@ -3,7 +3,7 @@ import { Global, css } from '@emotion/react';
 import theme from './theme';
 
 const style = css`
-  @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic:wght@400;700&display=swap');
 
 
   html, body, div, span, applet, object, iframe,
