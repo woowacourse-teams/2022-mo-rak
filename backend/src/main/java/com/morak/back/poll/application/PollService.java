@@ -221,7 +221,6 @@ public class PollService {
         notificationService.notifyMenuStatus(team, poll, MessageFormatter::formatClosed);
     }
 
-    @Scheduled(cron = "0 0/1 * * * ?")
     @Generated
     void notifyClosedByScheduled() {
         List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.MIN, LocalDateTime.now());

@@ -237,7 +237,6 @@ public class AppointmentService {
         }
     }
 
-    @Scheduled(cron = "0 0/1 * * * ?")
     @Generated
     void notifyClosedBySchedule() {
         List<Appointment> appointmentsToBeClosed =
