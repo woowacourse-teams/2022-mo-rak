@@ -22,6 +22,7 @@ function AppointmentCreateFormCloseTimeInput({
 }: Props) {
   const theme = useTheme();
   const [today] = new Date().toISOString().split('T');
+  console.log(maxCloseDate, 'maxclose');
 
   return (
     <>

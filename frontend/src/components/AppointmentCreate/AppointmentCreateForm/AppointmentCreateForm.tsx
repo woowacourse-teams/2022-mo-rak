@@ -26,6 +26,13 @@ const getFormattedTime = (time: Time) => {
   return `${hour.padStart(2, '0')}:${minute}${period}`;
 };
 
+const getPlusOneDate = (date: string) => {
+  const currentDate = new Date(date);
+  currentDate.setDate(currentDate.getDate() + 1);
+
+  return currentDate.toISOString().split('T')[0];
+};
+
 function AppointmentCreateForm({ startDate, endDate }: Props) {
   const navigate = useNavigate();
   const [title, handleTitle] = useInput();
@@ -41,13 +48,16 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   const handleCreateAppointment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const formattedStartTime = getFormattedTime(startTime);
+    const formattedEndTime = getFormattedTime(endTime);
+
     const appointment: createAppointmentData = {
       title,
       description,
       startDate,
-      endDate: endDate || startDate,
-      startTime: getFormattedTime(startTime),
-      endTime: getFormattedTime(endTime),
+      endDate: (formattedEndTime === '12:00AM' ? getPlusOneDate(endDate) : endDate) || startDate,
+      startTime: formattedStartTime,
+      endTime: formattedEndTime,
       durationHours: Number(duration.hour),
       durationMinutes: Number(duration.minute),
       closedAt: `${closeDate}T${closeTime}`
@@ -81,10 +91,13 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
           />
           <AppointmentCreateFormCloseTimeInput
             closeTime={closeTime}
-            onChangeTime={handleCloseTime}
             closeDate={closeDate}
+            maxCloseDate={
+              // TODO: 너무 복잡하다, getFormattedTime이 계속 중복되어서 사용된다.ㅠㅠ
+              endDate && getFormattedTime(endTime) === '12:00AM' ? getPlusOneDate(endDate) : endDate
+            }
+            onChangeTime={handleCloseTime}
             onChangeDate={handleCloseDate}
-            maxCloseDate={endDate}
           />
         </FlexContainer>
       </Box>
