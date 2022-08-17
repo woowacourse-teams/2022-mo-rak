@@ -29,7 +29,6 @@ interface Props {
 }
 
 function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, closedAt }: Props) {
-
   const handleCopyInviationLink = () => {
     const baseLink = `${process.env.CLIENT_URL}/groups/${groupCode}/appointment/${appointmentCode}`;
 
@@ -42,7 +41,7 @@ function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, 
     }
 
     writeClipboard(`${baseLink}/progress`).then(() => {
-      alert('약속잡기 결과를 공유할 수 있는 링크가 클립보드에 복사되었습니다📆');
+      alert('약속잡기를 진행할 수 있는 링크가 클립보드에 복사되었습니다📆');
     });
   };
 
