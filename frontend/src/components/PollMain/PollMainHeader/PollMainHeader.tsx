@@ -1,17 +1,14 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import Button from '../../@common/Button/Button';
-import MembersProfile from '../../MembersProfile/MembersProfile';
-import { GroupInterface } from '../../../types/group';
 import Divider from '../../@common/Divider/Divider';
 
 function PollMainHeader() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
 
   const handleNavigate = (location: string) => () => {
     navigate(location);
@@ -19,7 +16,6 @@ function PollMainHeader() {
 
   return (
     <>
-      <MembersProfile groupCode={groupCode} />
       <FlexContainer justifyContent="space-between">
         <StyledTitle>투표 목록</StyledTitle>
         <Button

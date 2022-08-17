@@ -1,18 +1,15 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { GroupInterface } from '../../../types/group';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '../../@common/Button/Button';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
-import MembersProfile from '../../MembersProfile/MembersProfile';
 import Divider from '../../@common/Divider/Divider';
 
 function AppointmentMainHeader() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
 
   const handleNavigate = (location: string) => () => {
     navigate(location);
@@ -20,7 +17,6 @@ function AppointmentMainHeader() {
 
   return (
     <>
-      <MembersProfile groupCode={groupCode} />
       <FlexContainer justifyContent="space-between">
         <StyledTitle>약속잡기 목록</StyledTitle>
         <Button
