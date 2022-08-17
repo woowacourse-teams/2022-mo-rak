@@ -21,7 +21,7 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
   const [nowGroup, setGroup] = useState<GroupInterface>();
 
   const dispatch = useMenuDispatch();
-  const { isVisibleGroupList } = useMenuState();
+  const { isVisibleGroups } = useMenuState();
   const navigate = useNavigate();
 
   const handleLeaveGroup = async () => {
@@ -36,8 +36,8 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
     }
   };
 
-  const handleToggleisVisibleGroupList = () => {
-    dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: !isVisibleGroupList });
+  const handleToggleisVisibleGroups = () => {
+    dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: !isVisibleGroups });
   };
 
   useEffect(() => {
@@ -60,12 +60,12 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
         <StyledGroupIconGroup>
           {/* TODO: setting 아이콘은, host만 보이도록 해줘야한다. */}
           <StyledSettingIcon src={Setting} />
-          <StyledGroupListIcon src={Menu} onClick={handleToggleisVisibleGroupList} />
+          <StyledGroupListIcon src={Menu} onClick={handleToggleisVisibleGroups} />
         </StyledGroupIconGroup>
       </FlexContainer>
 
       {/* group list */}
-      <StyledGroupListBox isVisible={isVisibleGroupList}>
+      <StyledGroupListBox isVisible={isVisibleGroups}>
         <StyledGroupListContainer>
           {groups.map((group) => (
             <StyledGroupList to={`groups/${group.code}`} isNowGroup={groupCode === group.code}>

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer, PropsWithChildren, Dispat
 
 interface MenuState {
   clickedMenu: string;
-  isVisibleGroupList: boolean;
+  isVisibleGroups: boolean;
 }
 
 interface MenuAction {
@@ -12,7 +12,7 @@ interface MenuAction {
 
 const initialState = {
   clickedMenu: 'poll',
-  isVisibleGroupList: false
+  isVisibleGroups: false
 };
 
 const MenuStateContext = createContext<MenuState | undefined>(undefined);
@@ -28,7 +28,7 @@ function menuReducer(state: MenuState, action: MenuAction) {
     case 'SET_SHOW_GROUP_LIST':
       return {
         ...state,
-        isVisibleGroupList: action.payload
+        isVisibleGroups: action.payload
       };
     default:
       return state;
