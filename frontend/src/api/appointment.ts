@@ -29,11 +29,17 @@ const closeAppointment = (
   appointmentCode: AppointmentInterface['code']
 ) => axios.patch(`/${groupCode}/appointments/${appointmentCode}/close`);
 
+const deleteAppointment = (
+  groupCode: GroupInterface['code'],
+  appointmentCode: AppointmentInterface['code']
+) => axios.delete(`/${groupCode}/appointments/${appointmentCode}`);
+
 export {
   getAppointments,
   getAppointment,
   createAppointment,
   progressAppointment,
   getAppointmentRecommendation,
-  closeAppointment
+  closeAppointment,
+  deleteAppointment
 };
