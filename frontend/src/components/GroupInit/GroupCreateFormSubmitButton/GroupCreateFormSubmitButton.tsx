@@ -1,12 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { useTheme } from '@emotion/react';
 
 function GroupCreateFormSubmitButton() {
-  const theme = useTheme();
-
   return (
-    // TODO: colorScheme 바꿔줘야함
     <StyledButton type="submit">
       생성하기
     </StyledButton>
@@ -14,7 +10,7 @@ function GroupCreateFormSubmitButton() {
 }
 
 const StyledButton = styled.button(({ theme }) => `
-  background-color: #ECB22E;
+  background: ${theme.colors.YELLOW_200};
   color: ${theme.colors.WHITE_100};
   border-radius: 0 10px 10px 0;
   fontSize: 1.6rem;
@@ -23,7 +19,7 @@ const StyledButton = styled.button(({ theme }) => `
   font-size: 2.4rem;
 
   &: hover {
-    background-color: #eaa917; // TODO: theme 으로 수정 
+    background-color: ${theme.colors.YELLOW_300}; 
     transition: all 0.2s linear;
   }
 `);

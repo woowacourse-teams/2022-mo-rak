@@ -4,9 +4,9 @@ import { useParams } from 'react-router-dom';
 
 import { getAppointment, getAppointmentRecommendation } from '../../api/appointment';
 import {
-  getAppointmentResponse,
   AppointmentInterface,
-  AppointmentRecommendationInterface
+  AppointmentRecommendationInterface,
+  getAppointmentResponse
 } from '../../types/appointment';
 import { GroupInterface } from '../../types/group';
 import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
@@ -61,7 +61,8 @@ function AppointmentResultPage() {
   return (
     <StyledContainer>
       <FlexContainer flexDirection="column" gap="4rem">
-        <AppointmentResultHeader title={appointment.title} closedAt={appointment.closedAt} />
+        <AppointmentResultHeader title={appointment.title} closedAt={appointment.closedAt} isClosed={appointment.isClosed}/>
+        <AppointmentResultHeader title={appointment.title} isClosed={appointment.isClosed} />
         <FlexContainer gap="4rem">
           <AppointmentResultRanking
             groupCode={groupCode}
@@ -74,7 +75,12 @@ function AppointmentResultPage() {
             clickedRecommendation={clickedRecommendation}
           />
         </FlexContainer>
-        <AppointmentResultButtonGroup groupCode={groupCode} appointmentCode={appointmentCode} />
+        <AppointmentResultButtonGroup
+          groupCode={groupCode}
+          appointmentCode={appointmentCode}
+          isClosed={appointment.isClosed}
+          isHost={appointment.isHost}
+        />
       </FlexContainer>
     </StyledContainer>
   );

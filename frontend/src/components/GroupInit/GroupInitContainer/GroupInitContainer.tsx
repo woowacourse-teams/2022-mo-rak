@@ -36,15 +36,15 @@ const StyledTopContainer = styled.div`
   align-items: center;
 `;
 
-const StyledBottomContainer = styled.div`
+const StyledBottomContainer = styled.div(({ theme }) => `
   display: flex;
   justify-content: center;
   align-items: center;
   height: 50%;
-  background: #FADE90; // TODO: 임시
+  background: ${theme.colors.YELLOW_50};
   flex-direction: column;
   gap: 6.8rem;
-`;
+`);
 
 const StyledLogo = styled.img`
   width: 22rem;

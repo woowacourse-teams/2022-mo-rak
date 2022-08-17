@@ -4,9 +4,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getAppointment, progressAppointment } from '../../api/appointment';
 import { GroupInterface } from '../../types/group';
 import {
-  getAppointmentResponse,
   AvailableTimes,
-  AppointmentInterface
+  AppointmentInterface,
+  getAppointmentResponse
 } from '../../types/appointment';
 import Calendar from '../../components/@common/Calendar/Calendar';
 import AppointmentProgressHeader from '../../components/AppointmentProgress/AppointmentProgressHeader/AppointmentProgressHeader';
@@ -95,6 +95,7 @@ function AppointmentProgressPage() {
         const res = await getAppointment(groupCode, appointmentCode);
         if (res.data.isClosed) {
           alert('마감된 약속잡기입니다');
+          navigate(`/groups/${groupCode}/appointment`);
 
           return;
         }

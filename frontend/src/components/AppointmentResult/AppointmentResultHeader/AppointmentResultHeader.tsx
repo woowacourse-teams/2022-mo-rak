@@ -4,6 +4,7 @@ import { AppointmentInterface } from '../../../types/appointment';
 import LinkIcon from '../../../assets/link.svg';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { writeClipboard } from '../../../utils/clipboard';
+import AppointmentResultStatus from '../AppointmentResultStatus/AppointmentResultStatus';
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);
@@ -20,9 +21,10 @@ const getFormattedClosedTime = (value: string) => {
 interface Props {
   title: AppointmentInterface['title'];
   closedAt: AppointmentInterface['closedAt'];
+  isClosed: AppointmentInterface['isClosed'];
 }
 
-function AppointmentResultHeader({ title, closedAt }: Props) {
+function AppointmentResultHeader({ title, closedAt, isClosed }: Props) {
   const handleCopyInviationLink = () => {
     const progressLink = `${process.env.CLIENT_URL}${
       window.location.pathname.split('/result')[0]
@@ -48,6 +50,8 @@ function AppointmentResultHeader({ title, closedAt }: Props) {
           {getFormattedClosedTime(closedAt)}
           까지😀
         </StyledContent>
+      <FlexContainer justifyContent="space-between">
+        <AppointmentResultStatus isClosed={isClosed} />
       </FlexContainer>
     </>
   );
