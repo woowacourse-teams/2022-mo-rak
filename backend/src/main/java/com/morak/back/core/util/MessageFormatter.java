@@ -2,6 +2,7 @@ package com.morak.back.core.util;
 
 import com.morak.back.core.domain.Menu;
 import com.morak.back.team.domain.Team;
+import java.time.format.DateTimeFormatter;
 
 public class MessageFormatter {
 
@@ -23,7 +24,8 @@ public class MessageFormatter {
     }
 
     private static String formatTime(Menu menu) {
-        return "마감시간 : " + menu.getClosedAt();
+        return "마감시간 : " + menu.getClosedAt()
+                .format(DateTimeFormatter.ofPattern("yyyy년MM월dd일 H시mm분ss초"));
     }
 
     private static String formatResultPage(Menu menu, Team team) {
