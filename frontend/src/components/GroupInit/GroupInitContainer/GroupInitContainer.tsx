@@ -3,26 +3,21 @@ import styled from '@emotion/styled';
 
 import Logo from '../../../assets/logo.svg';
 
-import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import GroupCreateForm from '../GroupCreateForm/GroupCreateForm';
 import GroupParticipateForm from '../GroupParticipateForm/GroupParticipateForm';
 
 function GroupInitContainer() {
   return (
     <StyledContainer>
-      <StyledTop>
-        <FlexContainer flexDirection="column" alignItems="center">
-          <StyledLogo src={Logo} alt="logo" />
-          <StyledBigText>새로운 그룹에 참여해볼까요?</StyledBigText>
-          <StyledSmallText>아직 그룹이 없네요. 새로운 그룹을 생성하거나, 초대받은 그룹에 참가해서 모락을 시작해보세요</StyledSmallText>
-        </FlexContainer>
-      </StyledTop>
-      <StyledBottom>
-        <FlexContainer flexDirection="column" gap="6.8rem">
-          <GroupCreateForm />
-          <GroupParticipateForm />
-        </FlexContainer>
-      </StyledBottom>
+      <StyledTopContainer>
+        <StyledLogo src={Logo} alt="logo" />
+        <StyledBigText>새로운 그룹에 참여해볼까요?</StyledBigText>
+        <StyledSmallText>아직 그룹이 없네요. 새로운 그룹을 생성하거나, 초대받은 그룹에 참가해서 모락을 시작해보세요</StyledSmallText>
+      </StyledTopContainer>
+      <StyledBottomContainer>
+        <GroupCreateForm />
+        <GroupParticipateForm />
+      </StyledBottomContainer>
     </StyledContainer>
   );
 }
@@ -32,19 +27,23 @@ const StyledContainer = styled.div`
   width: 100vw;
 `;
 
-const StyledTop = styled.div`
+const StyledTopContainer = styled.div`
   height: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  align-items: center;
 `;
 
-const StyledBottom = styled.div`: center;
+const StyledBottomContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 50%;
   background: #FADE90; // TODO: 임시
+  flex-direction: column;
+  gap: 6.8rem;
 `;
 
 const StyledLogo = styled.img`
