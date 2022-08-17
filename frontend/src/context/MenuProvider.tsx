@@ -5,7 +5,7 @@ interface MenuState {
   isVisibleGroups: boolean;
 }
 
-interface MenuAction {
+interface Menu {
   type: 'SET_CLICKED_MENU' | 'SET_SHOW_GROUP_LIST';
   payload: any; // TODO: any 변경하기
 }
@@ -16,9 +16,9 @@ const initialState = {
 };
 
 const MenuStateContext = createContext<MenuState | undefined>(undefined);
-const MenuDispatchContext = createContext<Dispatch<MenuAction> | undefined>(undefined);
+const MenuDispatchContext = createContext<Dispatch<Menu> | undefined>(undefined);
 
-function menuReducer(state: MenuState, action: MenuAction) {
+function menuReducer(state: MenuState, action: Menu) {
   switch (action.type) {
     case 'SET_CLICKED_MENU':
       return {
