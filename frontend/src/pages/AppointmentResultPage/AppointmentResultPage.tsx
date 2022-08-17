@@ -3,11 +3,7 @@ import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 
 import { getAppointment, getAppointmentRecommendation } from '../../api/appointment';
-import {
-  getAppointmentResponse,
-  AppointmentInterface,
-  AppointmentRecommendationInterface
-} from '../../types/appointment';
+import { AppointmentInterface, AppointmentRecommendationInterface } from '../../types/appointment';
 import { GroupInterface } from '../../types/group';
 import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
 import AppointmentResultRanking from '../../components/AppointmentResult/AppointmentResultRanking/AppointmentResultRanking';
@@ -16,7 +12,7 @@ import AppointmentResultButtonGroup from '../../components/AppointmentResult/App
 import AppointmentResultHeader from '../../components/AppointmentResult/AppointmentResultHeader/AppointmentResultHeader';
 
 function AppointmentResultPage() {
-  const [appointment, setAppointment] = useState<getAppointmentResponse>();
+  const [appointment, setAppointment] = useState<AppointmentInterface>();
   const [appointmentRecommendation, setAppointmentRecommendation] = useState<
     Array<AppointmentRecommendationInterface>
   >([]);
@@ -74,7 +70,11 @@ function AppointmentResultPage() {
             clickedRecommendation={clickedRecommendation}
           />
         </FlexContainer>
-        <AppointmentResultButtonGroup groupCode={groupCode} appointmentCode={appointmentCode} />
+        <AppointmentResultButtonGroup
+          groupCode={groupCode}
+          appointmentCode={appointmentCode}
+          isClosed={appointment.isClosed}
+        />
       </FlexContainer>
     </StyledContainer>
   );

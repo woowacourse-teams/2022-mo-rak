@@ -3,11 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAppointment, progressAppointment } from '../../api/appointment';
 import { GroupInterface } from '../../types/group';
-import {
-  getAppointmentResponse,
-  AvailableTimes,
-  AppointmentInterface
-} from '../../types/appointment';
+import { AvailableTimes, AppointmentInterface } from '../../types/appointment';
 import Calendar from '../../components/@common/Calendar/Calendar';
 import AppointmentProgressHeader from '../../components/AppointmentProgress/AppointmentProgressHeader/AppointmentProgressHeader';
 import AppointmentProgressDetail from '../../components/AppointmentProgress/AppointmentProgressDetail/AppointmentProgressDetail';
@@ -23,7 +19,7 @@ function AppointmentProgressPage() {
     appointmentCode: AppointmentInterface['code'];
   };
 
-  const [appointment, setAppointment] = useState<getAppointmentResponse>();
+  const [appointment, setAppointment] = useState<AppointmentInterface>();
   // TODO: 가장 빠른 날짜가 기본값으로 설정되도록 해주자
   const [selectedDate, setSelectedDate] = useState(''); // version="select"에서, 사용자가 선택한 날짜
   const [availableTimes, setAvailableTimes] = useState<AvailableTimes>([]);

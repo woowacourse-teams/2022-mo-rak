@@ -13,9 +13,10 @@ import Button from '../../@common/Button/Button';
 interface Props {
   groupCode: GroupInterface['code'];
   appointmentCode: AppointmentInterface['code'];
+  isClosed: AppointmentInterface['isClosed'];
 }
 
-function AppointmentResultButtonGroup({ groupCode, appointmentCode }: Props) {
+function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed }: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -74,16 +75,18 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode }: Props) {
       >
         삭제
       </Button>
-      <Button
-        variant="filled"
-        colorScheme={theme.colors.PURPLE_100}
-        width="24rem"
-        padding="2rem"
-        fontSize="3.6rem"
-        onClick={handleNavigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`)}
-      >
-        가능시간수정
-      </Button>
+      {!isClosed && (
+        <Button
+          variant="filled"
+          colorScheme={theme.colors.PURPLE_100}
+          width="24rem"
+          padding="2rem"
+          fontSize="3.6rem"
+          onClick={handleNavigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`)}
+        >
+          가능시간수정
+        </Button>
+      )}
     </FlexContainer>
   );
 }
