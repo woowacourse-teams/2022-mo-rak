@@ -54,8 +54,13 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
     e.preventDefault();
 
     try {
-      await participateGroup(invitationCode);
-      navigate(`/groups/${invitationCode}`);
+      const res = await participateGroup(invitationCode);
+      const groupCode = res.headers.location.split('/groups/')[1];
+
+      // TODO: 중복 제거
+      navigate(`/groups/${groupCode}`);
+      closeModal();
+      dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: false });
     } catch (err) {
       console.log(err);
     }

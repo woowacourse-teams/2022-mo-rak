@@ -17,8 +17,9 @@ function GroupParticipateForm() {
     e.preventDefault();
 
     try {
-      await participateGroup(invitationCode);
-      navigate(`/groups/${invitationCode}`);
+      const res = await participateGroup(invitationCode);
+      const groupCode = res.headers.location.split('/groups/')[1];
+      navigate(`/groups/${groupCode}`);
     } catch (err) {
       console.log(err);
     }
