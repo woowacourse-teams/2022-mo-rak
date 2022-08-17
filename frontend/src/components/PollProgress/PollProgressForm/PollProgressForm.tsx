@@ -37,9 +37,14 @@ function PollProgressForm() {
   const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItem>>([]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    if (!poll) return;
-
     e.preventDefault();
+
+    if (!poll) return;
+    if (selectedPollItems.length <= 0) {
+      alert('최소 1개의 선택항목을 선택해주세요!');
+
+      return;
+    }
 
     try {
       await progressPoll(pollCode, selectedPollItems, groupCode);
