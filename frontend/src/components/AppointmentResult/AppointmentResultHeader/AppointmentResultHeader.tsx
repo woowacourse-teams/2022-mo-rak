@@ -18,6 +18,7 @@ const getFormattedClosedTime = (value: string) => {
     hour12: true
   });
 };
+
 interface Props {
   title: AppointmentInterface['title'];
   closedAt: AppointmentInterface['closedAt'];
@@ -43,14 +44,15 @@ function AppointmentResultHeader({ title, closedAt, isClosed }: Props) {
         <input type="image" src={LinkIcon} alt="link" onClick={handleCopyInviationLink} />
         <StyledTitle>{title}</StyledTitle>
       </FlexContainer>
-      <FlexContainer flexDirection="column" gap="0.4rem">
-        <StyledContent>모락은 가장 많이 겹치는 시간을 추천해드립니다🦔</StyledContent>
-        <StyledContent>
-          마감기한:
-          {getFormattedClosedTime(closedAt)}
-          까지😀
-        </StyledContent>
       <FlexContainer justifyContent="space-between">
+        <FlexContainer flexDirection="column" gap="0.4rem">
+          <StyledContent>모락은 가장 많이 겹치는 시간을 추천해드립니다🦔</StyledContent>
+          <StyledContent>
+            마감기한:
+            {getFormattedClosedTime(closedAt)}
+            까지😀
+          </StyledContent>
+        </FlexContainer>
         <AppointmentResultStatus isClosed={isClosed} />
       </FlexContainer>
     </>
