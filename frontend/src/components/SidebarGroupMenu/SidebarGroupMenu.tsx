@@ -6,53 +6,23 @@ import Menu from '../../assets/menu.svg';
 import Plus from '../../assets/plus.svg';
 import Leave from '../../assets/leave.svg';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
-import { getDefaultGroup, leaveGroup } from '../../api/group';
-import { getLocalStorageItem, removeLocalStorageItem } from '../../utils/storage';
+import { leaveGroup } from '../../api/group';
 import { GroupInterface } from '../../types/group';
+import { useMenuDispatchContext, useMenuContext } from '../../context/MenuProvider';
 
 interface Props {
   groupCode: GroupInterface['code'];
   groups: Array<GroupInterface>;
+  onClickCreateMenu: () => void;
+  onClickParticipateMenu: () => void;
 }
 
-function SidebarGroupMenu({ groupCode, groups }: Props) {
-  const [isVisible, setIsVisible] = useState(false);
-  const [defaultGroup, setDefaultGroup] = useState<GroupInterface>();
+function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode, groups }: Props) {
+  const [nowGroup, setGroup] = useState<GroupInterface>();
 
+  const dispatch = useMenuDispatchContext();
+  const { isVisibleGroups } = useMenuContext();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchGetDefaultGroup = async () => {
-      try {
-        const res = await getDefaultGroup();
-        setDefaultGroup(res.data);
-      } catch (err) {
-        if (err instanceof Error) {
-          const statusCode = err.message;
-          if (statusCode === '401') {
-            removeLocalStorageItem('token');
-            navigate('/');
-
-            return;
-          }
-
-          if (statusCode === '404') {
-            navigate('/init');
-            console.log('속해있는 그룹이 없습니다.');
-          }
-        }
-      }
-    };
-    const token = getLocalStorageItem('token');
-
-    if (token) {
-      fetchGetDefaultGroup();
-    }
-  }, []);
-
-  const handleShowGroupList = () => {
-    setIsVisible(!isVisible);
-  };
 
   const handleLeaveGroup = async () => {
     // TODO: 이후에 모달창으로 변경하기
@@ -66,31 +36,39 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
     }
   };
 
+  const handleToggleisVisibleGroups = () => {
+    dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: !isVisibleGroups });
+  };
+
+  useEffect(() => {
+    const nowGroup = groups.find((group) => group.code === groupCode);
+    setGroup(nowGroup);
+  }, [groups, groupCode]);
+
   return (
     <StyledGroupContainer>
       <StyledMenuHeader>그룹</StyledMenuHeader>
 
-      {/* default group */}
       <FlexContainer justifyContent="space-between">
         <FlexContainer gap="2rem">
           <StyledGroupImage src="https://us.123rf.com/450wm/zoomzoom/zoomzoom1803/zoomzoom180300055/97726350-%EB%B9%9B-%EA%B5%AC%EB%A6%84%EA%B3%BC-%ED%91%B8%EB%A5%B8-%EB%B4%84-%ED%95%98%EB%8A%98.jpg?ver=6" />
           <FlexContainer flexDirection="column">
-            <StyledGroupTitle>{defaultGroup && defaultGroup.name}</StyledGroupTitle>
+            <StyledGroupTitle>{nowGroup && nowGroup.name}</StyledGroupTitle>
           </FlexContainer>
         </FlexContainer>
 
         <StyledGroupIconGroup>
           {/* TODO: setting 아이콘은, host만 보이도록 해줘야한다. */}
           <StyledSettingIcon src={Setting} />
-          <StyledGroupListIcon src={Menu} onClick={handleShowGroupList} />
+          <StyledGroupListIcon src={Menu} onClick={handleToggleisVisibleGroups} />
         </StyledGroupIconGroup>
       </FlexContainer>
 
       {/* group list */}
-      <StyledGroupListBox isVisible={isVisible}>
+      <StyledGroupListBox isVisible={isVisibleGroups}>
         <StyledGroupListContainer>
           {groups.map((group) => (
-            <StyledGroupList to={`groups/${group.code}`} isDefaultGroup={groupCode === group.code}>
+            <StyledGroupList to={`groups/${group.code}`} isNowGroup={groupCode === group.code}>
               <StyledGroupListImage src="https://us.123rf.com/450wm/zoomzoom/zoomzoom1803/zoomzoom180300055/97726350-%EB%B9%9B-%EA%B5%AC%EB%A6%84%EA%B3%BC-%ED%91%B8%EB%A5%B8-%EB%B4%84-%ED%95%98%EB%8A%98.jpg?ver=6" />
               <FlexContainer flexDirection="column">
                 <StyledGroupTitle>{group.name}</StyledGroupTitle>
@@ -98,13 +76,13 @@ function SidebarGroupMenu({ groupCode, groups }: Props) {
             </StyledGroupList>
           ))}
         </StyledGroupListContainer>
-        <StyledParticipateNewGroup>
+        <StyledParticipateNewGroup onClick={onClickParticipateMenu}>
           <img src={Plus} alt="participate-new-group-button" />
           <StyledGroupText>새로운 그룹 참가</StyledGroupText>
         </StyledParticipateNewGroup>
         <StyledCreateNewGroup>
           <img src={Plus} alt="create-new-group-button" />
-          <StyledGroupText>새로운 그룹 생성</StyledGroupText>
+          <StyledGroupText onClick={onClickCreateMenu}>새로운 그룹 생성</StyledGroupText>
         </StyledCreateNewGroup>
         <StyledLeaveGroup onClick={handleLeaveGroup}>
           <img src={Leave} alt="group-exit-button" />
@@ -187,8 +165,8 @@ position: relative;
   margin-bottom: 2.8rem;
 `;
 
-const StyledGroupList = styled(Link)<{ isDefaultGroup: boolean }>(
-  ({ theme, isDefaultGroup }) => `
+const StyledGroupList = styled(Link)<{ isNowGroup: boolean }>(
+  ({ theme, isNowGroup }) => `
   display: flex;
   gap: 2rem;
   padding: 2rem;
@@ -196,7 +174,7 @@ const StyledGroupList = styled(Link)<{ isDefaultGroup: boolean }>(
   margin: 1.2rem;
   color: ${theme.colors.BLACK_100};
 
-  ${isDefaultGroup
+  ${isNowGroup
     && `
     background: ${theme.colors.GRAY_100}; 
     border-radius: 10px;

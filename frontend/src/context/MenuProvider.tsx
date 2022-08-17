@@ -2,26 +2,33 @@ import React, { createContext, useContext, useReducer, PropsWithChildren, Dispat
 
 interface MenuState {
   clickedMenu: string;
+  isVisibleGroups: boolean;
 }
 
-interface MenuAction {
-  type: 'SET_CLICKED_MENU';
-  menu: string;
+interface Menu {
+  type: 'SET_CLICKED_MENU' | 'SET_SHOW_GROUP_LIST';
+  payload: any; // TODO: any 변경하기
 }
 
 const initialState = {
-  clickedMenu: 'poll'
+  clickedMenu: 'poll',
+  isVisibleGroups: false
 };
 
-const MenuStateContext = createContext<MenuState | undefined>(undefined);
-const MenuDispatchContext = createContext<Dispatch<MenuAction> | undefined>(undefined);
+const MenuContext = createContext<MenuState | undefined>(undefined);
+const MenuDispatchContext = createContext<Dispatch<Menu> | undefined>(undefined);
 
-function menuReducer(state: MenuState, action: MenuAction) {
+function menuReducer(state: MenuState, action: Menu) {
   switch (action.type) {
     case 'SET_CLICKED_MENU':
       return {
         ...state,
-        clickedMenu: action.menu
+        clickedMenu: action.payload
+      };
+    case 'SET_SHOW_GROUP_LIST':
+      return {
+        ...state,
+        isVisibleGroups: action.payload
       };
     default:
       return state;
@@ -32,16 +39,17 @@ function MenuProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(menuReducer, initialState);
 
   return (
-    <MenuStateContext.Provider value={state}>
+    <MenuContext.Provider value={state}>
       <MenuDispatchContext.Provider value={dispatch}>
         {children}
       </MenuDispatchContext.Provider>
-    </MenuStateContext.Provider>
+    </MenuContext.Provider>
   );
 }
 
-function useMenuState() {
-  const context = useContext(MenuStateContext);
+// TODO: hook으로 빼주자
+function useMenuContext() {
+  const context = useContext(MenuContext);
 
   if (!context) {
     throw new Error('MenuProvider를 찾을 수 없습니다.');
@@ -50,7 +58,7 @@ function useMenuState() {
   return context;
 }
 
-function useMenuDispatch() {
+function useMenuDispatchContext() {
   const context = useContext(MenuDispatchContext);
 
   if (!context) {
@@ -60,4 +68,4 @@ function useMenuDispatch() {
   return context;
 }
 
-export { useMenuState, useMenuDispatch, MenuProvider };
+export { useMenuContext, useMenuDispatchContext, MenuProvider };

@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 import React, { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { participateGroup } from '../../../api/group';
 import useInput from '../../../hooks/useInput';
 
@@ -10,12 +12,15 @@ import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 function GroupParticipateForm() {
   const [invitationCode, handleInvitationCode] = useInput('');
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const res = await participateGroup(invitationCode);
-      console.log(res);
+      const groupCode = res.headers.location.split('/groups/')[1];
+      navigate(`/groups/${groupCode}`);
     } catch (err) {
       console.log(err);
     }
