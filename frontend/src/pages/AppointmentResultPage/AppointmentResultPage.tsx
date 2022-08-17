@@ -62,11 +62,12 @@ function AppointmentResultPage() {
     <StyledContainer>
       <FlexContainer flexDirection="column" gap="4rem">
         <AppointmentResultHeader
+          groupCode={groupCode}
+          appointmentCode={appointmentCode}
           title={appointment.title}
-          closedAt={appointment.closedAt}
           isClosed={appointment.isClosed}
+          closedAt={appointment.closedAt}
         />
-
         <FlexContainer gap="4rem">
           <AppointmentResultRanking
             groupCode={groupCode}
