@@ -88,7 +88,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
                 padding="1.6rem 10rem"
                 width="50.4rem"
               >
-                <Input placeholder="슬랙 채널 url 입력 후, 확인버튼을 누르면 연동 끝!" fontSize="1.6REM" required autoFocus />
+                <Input placeholder="슬랙 채널 url 입력 후, 확인버튼을 누르면 연동 끝!" fontSize="1.6rem" required autoFocus />
                 <StyledLinkIcon src={LinkIcon} alt="link-icon" />
               </TextField>
               <StyledButton>확인</StyledButton>
@@ -116,7 +116,16 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
                 padding="1.6rem 10rem"
                 width="50.4rem"
               >
-                <StyledNameInput placeholder="그룹 이름을 입력하면 생성 완료!" value={groupName} onChange={handleGroupName} required autoFocus />
+                <Input
+                  placeholder="그룹 이름을 입력하면 생성 완료!"
+                  value={groupName}
+                  onChange={handleGroupName}
+                  color={theme.colors.BLACK_100}
+                  textAlign="center"
+                  fontSize="1.6rem"
+                  required
+                  autoFocus
+                />
                 <StyledLinkIcon src={Plus} alt="plus-icon" />
               </TextField>
               <StyledButton>생성하기</StyledButton>
@@ -144,7 +153,16 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
                 padding="1.6rem 10rem"
                 width="50.4rem"
               >
-                <StyledNameInput placeholder="그룹 코드를 입력하면 참가 완료!" value={invitationCode} onChange={handleInvitationCode} required autoFocus />
+                <Input
+                  placeholder="그룹 코드를 입력하면 참가 완료!"
+                  value={invitationCode}
+                  onChange={handleInvitationCode}
+                  color={theme.colors.BLACK_100}
+                  textAlign="center"
+                  fontSize="1.6rem"
+                  required
+                  autoFocus
+                />
                 <StyledLinkIcon src={Plus} alt="plus-icon" />
               </TextField>
               <StyledButton>참가하기</StyledButton>
@@ -255,12 +273,5 @@ const StyledSmallLogo = styled.img`
   width: 8.8rem;
   cursor: pointer;
 `;
-
-const StyledNameInput = styled.input(({ theme }) => `
-  width: 100%;
-  color: ${theme.colors.BLACK_100};
-  text-align: center;
-  font-size: 1.6rem;
-`);
 
 export default SidebarMenuModals;
