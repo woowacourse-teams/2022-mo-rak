@@ -6,8 +6,7 @@ import Menu from '../../assets/menu.svg';
 import Plus from '../../assets/plus.svg';
 import Leave from '../../assets/leave.svg';
 import FlexContainer from '../@common/FlexContainer/FlexContainer';
-import { getDefaultGroup, leaveGroup } from '../../api/group';
-import { getLocalStorageItem, removeLocalStorageItem } from '../../utils/storage';
+import { leaveGroup } from '../../api/group';
 import { GroupInterface } from '../../types/group';
 import { useMenuDispatch, useMenuState } from '../../context/MenuProvider';
 
@@ -19,7 +18,7 @@ interface Props {
 }
 
 function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode, groups }: Props) {
-  const [defaultGroup, setDefaultGroup] = useState<GroupInterface>();
+  const [nowGroup, setGroup] = useState<GroupInterface>();
 
   const dispatch = useMenuDispatch();
   const { isVisibleGroupList } = useMenuState();
@@ -42,44 +41,19 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
   };
 
   useEffect(() => {
-    const fetchGetDefaultGroup = async () => {
-      try {
-        const res = await getDefaultGroup();
-        setDefaultGroup(res.data);
-      } catch (err) {
-        if (err instanceof Error) {
-          const statusCode = err.message;
-          if (statusCode === '401') {
-            removeLocalStorageItem('token');
-            navigate('/');
-
-            return;
-          }
-
-          if (statusCode === '404') {
-            navigate('/init');
-            console.log('속해있는 그룹이 없습니다.');
-          }
-        }
-      }
-    };
-    const token = getLocalStorageItem('token');
-
-    if (token) {
-      fetchGetDefaultGroup();
-    }
-  }, []);
+    const nowGroup = groups.find((group) => group.code === groupCode);
+    setGroup(nowGroup);
+  }, [groupCode]);
 
   return (
     <StyledGroupContainer>
       <StyledMenuHeader>그룹</StyledMenuHeader>
 
-      {/* default group */}
       <FlexContainer justifyContent="space-between">
         <FlexContainer gap="2rem">
           <StyledGroupImage src="https://us.123rf.com/450wm/zoomzoom/zoomzoom1803/zoomzoom180300055/97726350-%EB%B9%9B-%EA%B5%AC%EB%A6%84%EA%B3%BC-%ED%91%B8%EB%A5%B8-%EB%B4%84-%ED%95%98%EB%8A%98.jpg?ver=6" />
           <FlexContainer flexDirection="column">
-            <StyledGroupTitle>{defaultGroup && defaultGroup.name}</StyledGroupTitle>
+            <StyledGroupTitle>{nowGroup && nowGroup.name}</StyledGroupTitle>
           </FlexContainer>
         </FlexContainer>
 
@@ -94,7 +68,7 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
       <StyledGroupListBox isVisible={isVisibleGroupList}>
         <StyledGroupListContainer>
           {groups.map((group) => (
-            <StyledGroupList to={`groups/${group.code}`} isDefaultGroup={groupCode === group.code}>
+            <StyledGroupList to={`groups/${group.code}`} isNowGroup={groupCode === group.code}>
               <StyledGroupListImage src="https://us.123rf.com/450wm/zoomzoom/zoomzoom1803/zoomzoom180300055/97726350-%EB%B9%9B-%EA%B5%AC%EB%A6%84%EA%B3%BC-%ED%91%B8%EB%A5%B8-%EB%B4%84-%ED%95%98%EB%8A%98.jpg?ver=6" />
               <FlexContainer flexDirection="column">
                 <StyledGroupTitle>{group.name}</StyledGroupTitle>
@@ -191,8 +165,8 @@ position: relative;
   margin-bottom: 2.8rem;
 `;
 
-const StyledGroupList = styled(Link)<{ isDefaultGroup: boolean }>(
-  ({ theme, isDefaultGroup }) => `
+const StyledGroupList = styled(Link)<{ isNowGroup: boolean }>(
+  ({ theme, isNowGroup }) => `
   display: flex;
   gap: 2rem;
   padding: 2rem;
@@ -200,7 +174,7 @@ const StyledGroupList = styled(Link)<{ isDefaultGroup: boolean }>(
   margin: 1.2rem;
   color: ${theme.colors.BLACK_100};
 
-  ${isDefaultGroup
+  ${isNowGroup
     && `
     background: ${theme.colors.GRAY_100}; 
     border-radius: 10px;
