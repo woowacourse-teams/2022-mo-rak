@@ -22,7 +22,6 @@ function App() {
       <Route path="/">
         <Route index element={<LandingPage />} />
         <Route path="invite/:invitationCode" element={<InvitationPage />} />
-
         <Route element={<PrivateRoute />}>
           <Route path="init" element={<GroupInitPage />} />
 

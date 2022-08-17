@@ -7,6 +7,7 @@ import useInput from '../../../hooks/useInput';
 
 import GroupParticipateInvitationCodeInput from '../GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';
 import GroupParticipateFormSubmitButton from '../GroupPariticipateFormSubmitButton/GroupParticipateFormSubmitButton';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 
 function GroupParticipateForm() {
   const [invitationCode, handleInvitationCode] = useInput('');
@@ -27,12 +28,13 @@ function GroupParticipateForm() {
 
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <StyledTitle>그룹참가</StyledTitle>
-      <GroupParticipateInvitationCodeInput
-        invitationCode={invitationCode}
-        handleInvitationCode={handleInvitationCode}
-      />
-      <GroupParticipateFormSubmitButton />
+      <FlexContainer>
+        <GroupParticipateInvitationCodeInput
+          invitationCode={invitationCode}
+          handleInvitationCode={handleInvitationCode}
+        />
+        <GroupParticipateFormSubmitButton />
+      </FlexContainer>
     </StyledForm>
   );
 }
@@ -43,10 +45,6 @@ const StyledForm = styled.form`
   justify-content: center;
   align-items: center;
   gap: 1.2rem;
-`;
-
-const StyledTitle = styled.span`
-  font-size: 2rem;
 `;
 
 export default GroupParticipateForm;

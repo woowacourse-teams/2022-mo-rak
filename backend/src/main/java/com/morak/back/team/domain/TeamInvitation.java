@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TeamInvitation extends BaseEntity {
 
-    private static final long EXPIRED_MINUTES = 30L;
+    private static final long DEFAULT_EXPIRED_MINUTES = 2 * 24 * 60L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,10 +44,14 @@ public class TeamInvitation extends BaseEntity {
         this.id = id;
         this.team = team;
         this.code = code;
-        this.expiredAt = expiredAt;
+        this.expiredAt = initializeExpiredAt(expiredAt);
+    }
+
+    private ExpiredTime initializeExpiredAt(ExpiredTime expiredAt) {
         if (expiredAt == null) {
-            this.expiredAt = ExpiredTime.withMinute(EXPIRED_MINUTES);
+            return ExpiredTime.withMinute(DEFAULT_EXPIRED_MINUTES);
         }
+        return expiredAt;
     }
 
     public boolean isExpired() {
@@ -56,5 +60,9 @@ public class TeamInvitation extends BaseEntity {
 
     public String getCode() {
         return code.getCode();
+    }
+
+    public LocalDateTime getExpiredAt() {
+        return expiredAt.getExpiredAt();
     }
 }

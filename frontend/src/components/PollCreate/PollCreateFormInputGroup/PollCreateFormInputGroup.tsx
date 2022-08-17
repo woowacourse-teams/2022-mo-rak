@@ -75,7 +75,7 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
               aria-label={`poll-input${idx}`}
               required
             />
-            <DeleteIcon src={Bin} alt="bin" onClick={handleDeletePollItem(idx)} />
+            <StyledDeleteIcon src={Bin} alt="bin" onClick={handleDeletePollItem(idx)} />
           </FlexContainer>
         </TextField>
       ))}
@@ -92,7 +92,7 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
   );
 }
 
-const DeleteIcon = styled.img`
+const StyledDeleteIcon = styled.img`
   position: absolute;
   right: 1rem;
   cursor: pointer;
