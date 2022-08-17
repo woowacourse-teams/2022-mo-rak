@@ -15,7 +15,7 @@ const initialState = {
   isVisibleGroups: false
 };
 
-const MenuStateContext = createContext<MenuState | undefined>(undefined);
+const MenuContext = createContext<MenuState | undefined>(undefined);
 const MenuDispatchContext = createContext<Dispatch<Menu> | undefined>(undefined);
 
 function menuReducer(state: MenuState, action: Menu) {
@@ -39,17 +39,17 @@ function MenuProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(menuReducer, initialState);
 
   return (
-    <MenuStateContext.Provider value={state}>
+    <MenuContext.Provider value={state}>
       <MenuDispatchContext.Provider value={dispatch}>
         {children}
       </MenuDispatchContext.Provider>
-    </MenuStateContext.Provider>
+    </MenuContext.Provider>
   );
 }
 
 // TODO: hook으로 빼주자
 function useMenuState() {
-  const context = useContext(MenuStateContext);
+  const context = useContext(MenuContext);
 
   if (!context) {
     throw new Error('MenuProvider를 찾을 수 없습니다.');
