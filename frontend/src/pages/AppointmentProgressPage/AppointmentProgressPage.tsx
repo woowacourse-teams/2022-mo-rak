@@ -77,6 +77,7 @@ function AppointmentProgressPage() {
         const res = await getAppointment(groupCode, appointmentCode);
         if (res.data.isClosed) {
           alert('마감된 약속잡기입니다');
+          navigate(`/groups/${groupCode}/appointment`);
 
           return;
         }
