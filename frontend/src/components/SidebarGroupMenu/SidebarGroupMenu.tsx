@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, CSSProperties } from 'react';
 import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
 import Setting from '../../assets/setting.svg';
@@ -153,7 +153,7 @@ const StyledGroupListIcon = styled.img`
   }
 `;
 
-const StyledGroupProfile = styled.div<{backgroundColor: string}>(({ backgroundColor }) => `
+const StyledGroupProfile = styled.div<CSSProperties>(({ backgroundColor }) => `
   font-family: 'Nanum Gothic', sans-serif;
   width: 8rem;
   height: 8rem;
