@@ -132,7 +132,8 @@ class AppointmentControllerTest extends ControllerTest {
                 LocalTime.of(16, 0),
                 LocalTime.of(20, 0),
                 LocalDateTime.now().plusMinutes(30),
-                false
+                false,
+                true
         );
 
         given(appointmentService.findAppointment(anyString(), anyLong(), anyString())).willReturn(findResponse);
