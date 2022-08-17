@@ -15,7 +15,6 @@ import Logo from '../../assets/logo.svg';
 import { GroupInterface } from '../../types/group';
 import { createGroup, participateGroup } from '../../api/group';
 import { useMenuDispatchContext } from '../../context/MenuProvider';
-import useInput from '../../hooks/useInput';
 
 interface Props {
   activeModalMenu: string | null;
@@ -24,7 +23,7 @@ interface Props {
 
 function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
   const [groupName, setGroupName] = useState<GroupInterface['name']>('');
-  const [invitationCode, handleInvitationCode] = useInput('');
+  const [invitationCode, setInvitationCode] = useState('');
 
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
@@ -38,8 +37,9 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
       const groupCode = res.headers.location.split('groups/')[1];
 
       navigate(`/groups/${groupCode}`);
-      closeModal();
       dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: false });
+      setGroupName('');
+      closeModal();
     } catch (err) {
       alert(err);
     }
@@ -47,6 +47,10 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
 
   const handleGroupName = (e: ChangeEvent<HTMLInputElement>) => {
     setGroupName(e.target.value);
+  };
+
+  const handleInvitationCode = (e: ChangeEvent<HTMLInputElement>) => {
+    setInvitationCode(e.target.value);
   };
 
   // 그룹 참가
@@ -59,8 +63,9 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
 
       // TODO: 중복 제거
       navigate(`/groups/${groupCode}`);
-      closeModal();
       dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: false });
+      setInvitationCode('');
+      closeModal();
     } catch (err) {
       console.log(err);
     }
