@@ -76,6 +76,10 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
     }
   };
 
+  const handleNavigateAppointmentMain = () => {
+    navigate(`/groups/${groupCode}/appointment`);
+  };
+
   return (
     <StyledForm onSubmit={handleCreateAppointment}>
       <Box width="66rem" minHeight="56.4rem" padding="4.8rem">
@@ -104,7 +108,8 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
           />
         </FlexContainer>
       </Box>
-      <AppointmentCreateFormButtonGroup />
+      {/* NOTE: onCancel로 받아주는 게 맞을까? */}
+      <AppointmentCreateFormButtonGroup onCancel={handleNavigateAppointmentMain} />
     </StyledForm>
   );
 }
