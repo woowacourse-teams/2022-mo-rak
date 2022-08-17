@@ -8,7 +8,7 @@ import Blob from '../../../assets/blob.svg';
 import GithubLogo from '../../../assets/github-logo.svg';
 import Circle from '../../../assets/half-circle.svg';
 import Glitter from '../../../assets/glitter.svg';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
