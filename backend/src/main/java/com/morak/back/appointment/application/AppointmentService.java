@@ -203,6 +203,7 @@ public class AppointmentService {
                 ));
         validateHost(member, appointment);
         validateAppointmentInTeam(team, appointment);
+        availableTimeRepository.deleteAllByAppointmentId(appointment.getId());
         appointmentRepository.deleteById(appointment.getId());
     }
 
