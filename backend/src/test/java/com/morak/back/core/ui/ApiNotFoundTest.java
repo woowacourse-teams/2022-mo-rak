@@ -30,18 +30,6 @@ public class ApiNotFoundTest extends AcceptanceTest {
     }
 
     @Test
-    void rest_docs_문서가_요청되면_OK를_응답한다() {
-        // given
-        String resourceApi = "/docs/index.html";
-
-        // when
-        ExtractableResponse<Response> response = SimpleRestAssured.get(resourceApi);
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    @Test
     void rest_docs_문서가_아닌_정적파일이_요청되면_NOT_FOUND를_응답한다() {
         // given
         String invalidResourceApi = "/docs/index.htm";
