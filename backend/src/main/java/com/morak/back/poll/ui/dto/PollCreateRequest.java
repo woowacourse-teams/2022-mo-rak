@@ -1,5 +1,6 @@
 package com.morak.back.poll.ui.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.poll.domain.Poll;

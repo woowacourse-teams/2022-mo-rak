@@ -81,6 +81,7 @@ class AppointmentControllerTest extends ControllerTest {
                 "필참입니다.",
                 2,
                 30,
+                LocalDateTime.now().plusMinutes(30),
                 false,
                 2
         );
@@ -92,6 +93,7 @@ class AppointmentControllerTest extends ControllerTest {
                 "스터디 진행과 관련된 회의입니다.",
                 2,
                 0,
+                LocalDateTime.now().plusMinutes(30),
                 true,
                 5
         );
@@ -125,10 +127,11 @@ class AppointmentControllerTest extends ControllerTest {
                 "필참입니다.",
                 2,
                 30,
-                LocalDate.of(2022, 8, 5),
-                LocalDate.of(2022, 8, 20),
+                LocalDate.now().plusDays(1),
+                LocalDate.now().plusDays(2),
                 LocalTime.of(16, 0),
                 LocalTime.of(20, 0),
+                LocalDateTime.now().plusMinutes(30),
                 false
         );
 
