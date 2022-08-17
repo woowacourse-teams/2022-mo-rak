@@ -55,7 +55,10 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
       title,
       description,
       startDate,
-      endDate: (formattedEndTime === '12:00AM' ? getPlusOneDate(endDate) : endDate) || startDate,
+      endDate:
+        formattedEndTime === '12:00AM'
+          ? getPlusOneDate(endDate || startDate)
+          : endDate || startDate,
       startTime: formattedStartTime,
       endTime: formattedEndTime,
       durationHours: Number(duration.hour),
