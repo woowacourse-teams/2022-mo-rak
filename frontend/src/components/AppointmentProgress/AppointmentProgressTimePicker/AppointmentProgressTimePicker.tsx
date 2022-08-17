@@ -26,11 +26,10 @@ const getTimes = (
   const [endHour, endMinute] = endTime.slice(0, -2).split(':');
 
   const startHM = new Date();
-  if (
-    (Number(startHour) !== 12 && startPeriod === 'PM') ||
-    (Number(startHour) === 12 && startPeriod === 'AM')
-  ) {
+  if (Number(startHour) !== 12 && startPeriod === 'PM') {
     startHM.setHours(Number(startHour) + 12);
+  } else if (Number(startHour) === 12 && startPeriod === 'AM') {
+    startHM.setHours(Number(startHour) - 12);
   } else {
     startHM.setHours(Number(startHour));
   }
@@ -46,22 +45,31 @@ const getTimes = (
   } else {
     endHM.setHours(Number(endHour));
   }
+
   endHM.setMinutes(Number(endMinute));
 
   const timetables = [];
 
   while (startHM.getTime() !== endHM.getTime()) {
-    const [startHour, startMinute] = [startHM.getHours(), startHM.getMinutes()];
+    const [SH, SM] = [startHM.getHours(), startHM.getMinutes()];
     startHM.setMinutes(startHM.getMinutes() + 30);
-    const [endHour, endMinute] = [startHM.getHours(), startHM.getMinutes()];
+    const [EH, EM] = [startHM.getHours(), startHM.getMinutes()];
 
     timetables.push({
-      start: formatHM(startHour, startMinute),
-      end: formatHM(endHour, endMinute)
+      start: formatHM(SH, SM),
+      end: formatHM(EH, EM)
     });
   }
 
   return timetables;
+};
+
+// TODO: 중복됨 제거
+const getPlusOneDate = (date: string) => {
+  const currentDate = new Date(date);
+  currentDate.setDate(currentDate.getDate() + 1);
+
+  return currentDate.toISOString().split('T')[0];
 };
 
 interface Props {
@@ -93,18 +101,24 @@ function AppointmentProgressTimePicker({
           <StyledGuideText>왼쪽에서 날짜를 선택해주세요~</StyledGuideText>
         ) : (
           <>
-            {times.map(({ start, end }) => (
-              <StyledTime
-                onClick={onClickTime(start, end)}
-                isSelected={availableTimes.some(
-                  (availableTime) =>
-                    availableTime.start === `${selectedDate}T${start}` &&
-                    availableTime.end === `${selectedDate}T${end}`
-                )}
-              >
-                {start}~{end}
-              </StyledTime>
-            ))}
+            {times.map(({ start, end }) => {
+              // TODO: 리팩토링
+              const endSelectedDate =
+                end === '12:00AM' ? getPlusOneDate(selectedDate) : selectedDate;
+
+              return (
+                <StyledTime
+                  onClick={onClickTime(start, end)}
+                  isSelected={availableTimes.some(
+                    (availableTime) =>
+                      availableTime.start === `${selectedDate}T${start}` &&
+                      availableTime.end === `${endSelectedDate}T${end}`
+                  )}
+                >
+                  {start}~{end}
+                </StyledTime>
+              );
+            })}
           </>
         )}
       </FlexContainer>
