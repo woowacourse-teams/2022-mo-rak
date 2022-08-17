@@ -4,12 +4,14 @@ import { AppointmentInterface } from '../../../types/appointment';
 import LinkIcon from '../../../assets/link.svg';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { writeClipboard } from '../../../utils/clipboard';
+import AppointmentResultStatus from '../AppointmentResultStatus/AppointmentResultStatus';
 
 interface Props {
   title: AppointmentInterface['title'];
+  isClosed: AppointmentInterface['isClosed'];
 }
 
-function AppointmentResultHeader({ title }: Props) {
+function AppointmentResultHeader({ title, isClosed }: Props) {
   const handleCopyInviationLink = () => {
     const progressLink = `${process.env.CLIENT_URL}${
       window.location.pathname.split('/result')[0]
@@ -27,7 +29,10 @@ function AppointmentResultHeader({ title }: Props) {
         <input type="image" src={LinkIcon} alt="link" onClick={handleCopyInviationLink} />
         <StyledTitle>{title}</StyledTitle>
       </FlexContainer>
-      <StyledContent>모락은 가장 많이 겹치는 시간을 추천해드립니다🦔</StyledContent>
+      <FlexContainer justifyContent="space-between">
+        <StyledContent>모락은 가장 많이 겹치는 시간을 추천해드립니다🦔</StyledContent>
+        <AppointmentResultStatus isClosed={isClosed} />
+      </FlexContainer>
     </>
   );
 }
