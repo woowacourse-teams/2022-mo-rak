@@ -20,10 +20,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.morak.back.poll.application.PollService;
 import com.morak.back.poll.ui.dto.MemberResultResponse;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -99,9 +99,9 @@ class PollControllerTest extends ControllerTest {
         given(pollService.findPolls(anyString(), anyLong()))
                 .willReturn(List.of(
                         new PollResponse(1L, "회식_메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
-                                LocalDateTime.now().plusDays(3), groupCode, true),
+                                LocalDateTime.now().plusDays(3), groupCode, true, 0),
                         new PollResponse(2L, "좋아하는_색상", 1, true, "OPEN", LocalDateTime.now().minusDays(1),
-                                LocalDateTime.now().plusDays(3), "SZ72Yofx", false)
+                                LocalDateTime.now().plusDays(3), "SZ72Yofx", false, 0)
                 ));
 
         // when
@@ -125,7 +125,7 @@ class PollControllerTest extends ControllerTest {
         // given
         given(pollService.findPoll(anyString(), anyLong(), anyString()))
                 .willReturn(new PollResponse(1L, "회식_메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
-                        LocalDateTime.now().plusDays(3), groupCode, true));
+                        LocalDateTime.now().plusDays(3), groupCode, true, 0));
 
         // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{pollCode}", groupCode, pollCode)

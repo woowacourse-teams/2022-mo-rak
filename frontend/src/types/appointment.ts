@@ -1,44 +1,54 @@
-interface AppointmentInfoInterface {
-  code: string;
-}
+import { MemberInterface } from './group';
 
 interface AppointmentInterface {
   id: number;
+  code: string;
   title: string;
   description: string;
+  durationHours: number;
+  durationMinutes: number;
   startDate: string;
   endDate: string;
   startTime: string;
   endTime: string;
-  durationHour: number;
-  durationMinute: number;
-  isClosed: boolean;
-}
-interface AppointmentMemberInterface {
-  id: number;
-  name: string;
-  profileUrl: string;
+  closedAt: string;
 }
 
-interface AppointmentResultInterface {
+interface AppointmentRecommendationInterface {
   rank: number;
   recommendStartDateTime: string;
   recommendEndDateTime: string;
-  availableMembers: Array<AppointmentMemberInterface>;
-  unavailableMembers: Array<AppointmentMemberInterface>;
+  availableMembers: Array<MemberInterface>;
+  unavailableMembers: Array<MemberInterface>;
 }
-
-type CreateAppointmentRequest = Omit<AppointmentInterface, 'id' | 'isClosed'>;
 
 interface Time {
   period: 'AM' | 'PM';
   hour: string;
   minute: string;
 }
+
+type AvailableTimes = Array<{ start: string; end: string }>;
+
+type createAppointmentData = Omit<AppointmentInterface, 'id' | 'code'>;
+
+type getAppointmentResponse = AppointmentInterface & {
+  isClosed: boolean;
+};
+
+type getAppointmentsResponse = Array<
+  Omit<AppointmentInterface, 'startDate' | 'endDate' | 'startTime' | 'endTime'> & {
+    isClosed: boolean;
+    count: number;
+  }
+>;
+
 export {
   Time,
-  CreateAppointmentRequest,
-  AppointmentInfoInterface,
-  AppointmentResultInterface,
+  createAppointmentData,
+  getAppointmentResponse,
+  getAppointmentsResponse,
+  AvailableTimes,
+  AppointmentRecommendationInterface,
   AppointmentInterface
 };

@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import Box from '../../common/Box/Box';
+import Box from '../../@common/Box/Box';
 import PollMainStatus from '../PollMainStatus/PollMainStatus';
 import PollMainDetail from '../PollMainDetail/PollMainDetail';
 import PollMainProgress from '../PollMainProgress/PollMainProgress';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import MarginContainer from '../../common/MarginContainer/MarginContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import MarginContainer from '../../@common/MarginContainer/MarginContainer';
 
 import { getPolls } from '../../../api/poll';
-import { PollInterface } from '../../../types/poll';
+import { getPollsResponse } from '../../../types/poll';
+import { GroupInterface } from '../../../types/group';
+
 import PollMainButtonGroup from '../PollMainButtonGroup/PollMainButtonGroup';
 
 function PollMainContainer() {
-  const navigate = useNavigate();
-  const { groupCode } = useParams() as { groupCode: string };
-  const [polls, setPolls] = useState<Array<PollInterface>>([]);
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const [polls, setPolls] = useState<getPollsResponse>([]);
 
   useEffect(() => {
     const fetchPolls = async () => {
       const res = await getPolls(groupCode);
-      setPolls(res);
+      setPolls(res.data);
     };
 
     try {
@@ -31,15 +32,10 @@ function PollMainContainer() {
     }
   }, []);
 
-  // TODO: hook으로 뺄까?
-  const handleNavigate = (location: string) => () => {
-    navigate(location);
-  };
-
   return (
     <StyledContainer>
       {polls ? (
-        polls.map(({ status, title, id, isAnonymous, allowedPollCount }) => (
+        polls.map(({ status, title, code, isAnonymous, allowedPollCount, closedAt, count }) => (
           <Box
             width="26.4rem"
             padding="2rem"
@@ -50,12 +46,16 @@ function PollMainContainer() {
               <PollMainStatus status={status} />
             </FlexContainer>
             <StyledTitle>{title}</StyledTitle>
-            <PollMainProgress pollId={id} groupCode={groupCode} />
+            <PollMainProgress currentParticipants={count} groupCode={groupCode} />
             <MarginContainer margin="0 0 1.2rem">
               {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
-              <PollMainDetail isAnonymous={isAnonymous} allowedPollCount={allowedPollCount} />
+              <PollMainDetail
+                isAnonymous={isAnonymous}
+                allowedPollCount={allowedPollCount}
+                closedAt={closedAt}
+              />
             </MarginContainer>
-            <PollMainButtonGroup pollId={id} handleNavigate={handleNavigate} status={status} />
+            <PollMainButtonGroup pollCode={code} status={status} />
           </Box>
         ))
       ) : (
@@ -68,8 +68,7 @@ function PollMainContainer() {
 const StyledContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  column-gap: 3.2rem;
-  row-gap: 3.2rem;
+  gap: 2.4rem;
 `;
 
 const StyledTitle = styled.h1`

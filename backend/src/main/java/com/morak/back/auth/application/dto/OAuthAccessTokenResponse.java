@@ -12,10 +12,4 @@ public class OAuthAccessTokenResponse {
 
     @JsonProperty("access_token")
     private String accessToken;
-
-    @JsonProperty("scope")
-    private String scope;
-
-    @JsonProperty("token_type")
-    private String tokenType;
 }

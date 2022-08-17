@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 
 import Poll from '../../../assets/poll.svg';
 import Appointment from '../../../assets/appointment.svg';
@@ -15,7 +15,7 @@ function MainFeatureMenuContainer() {
 
   return (
     <FlexContainer flexDirection="column">
-      <StyledTitle>사용s할 기능을 선택하세요!</StyledTitle>
+      <StyledTitle>사용할 기능을 선택하세요!</StyledTitle>
 
       <FlexContainer justifyContent="center" gap="8rem">
         {/* TODO: 네이밍 고민 */}
@@ -54,8 +54,7 @@ const StlyedImageWrapper = styled.div(
   font-size: 3.2rem;
   border-radius: 100%;
   background: ${theme.colors.GRAY_200};
-  width: 50rem;
-  padding: 10rem;
+  padding: 8rem;
 
   &:hover {
     background: ${theme.colors.GRAY_300};
@@ -64,7 +63,7 @@ const StlyedImageWrapper = styled.div(
 );
 
 const StyledImage = styled.img`
-  width: 32rem;
+  width: 24rem;
 `;
 
 const StyledFeatureMenuName = styled.div`

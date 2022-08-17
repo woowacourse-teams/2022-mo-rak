@@ -3,10 +3,10 @@ import React, { Dispatch, SetStateAction, MouseEvent, ChangeEvent } from 'react'
 import { useTheme } from '@emotion/react';
 
 import styled from '@emotion/styled';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import Input from '../../common/Input/Input';
-import TextField from '../../common/TextField/TextField';
-import Button from '../../common/Button/Button';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import Input from '../../@common/Input/Input';
+import TextField from '../../@common/TextField/TextField';
+import Button from '../../@common/Button/Button';
 
 import Bin from '../../../assets/bin.svg';
 import { PollItemInterface } from '../../../types/poll';
@@ -72,6 +72,7 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
               fontSize="1.2rem"
               placeholder="선택항목을 입력해주세요!"
               onChange={handleChange(idx)}
+              aria-label={`poll-input${idx}`}
               required
             />
             <StyledDeleteIcon src={Bin} alt="bin" onClick={handleDeletePollItem(idx)} />

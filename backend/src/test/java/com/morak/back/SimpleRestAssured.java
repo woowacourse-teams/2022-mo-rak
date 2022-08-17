@@ -1,5 +1,9 @@
 package com.morak.back;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.ui.dto.ExceptionResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -84,5 +88,9 @@ public class SimpleRestAssured {
 
     public static <T> List<T> toObjectList(ExtractableResponse<Response> response, Class<T> clazz) {
         return response.body().jsonPath().getList(".", clazz);
+    }
+
+    public static String extractCodeNumber(ExtractableResponse<Response> response) {
+        return response.as(ExceptionResponse.class).getCodeNumber();
     }
 }

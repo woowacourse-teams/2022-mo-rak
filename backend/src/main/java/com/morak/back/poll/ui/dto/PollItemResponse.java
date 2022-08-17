@@ -3,21 +3,24 @@ package com.morak.back.poll.ui.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.domain.PollItem;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
+
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PollItemResponse {
 
-    private final Long id;
+    private Long id;
 
-    private final String subject;
+    private String subject;
 
     @JsonProperty("isSelected")
-    private final Boolean selected;
+    private Boolean selected;
 
-    private final String description;
+    private String description;
 
     public static PollItemResponse of(PollItem pollItem, Member member) {
         return new PollItemResponse(

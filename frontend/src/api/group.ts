@@ -1,49 +1,23 @@
-import fetcher from '../utils/fetcher';
+import { groupInstance as axios } from './axios';
 import { GroupInterface } from '../types/group';
 
-const getGroups = () =>
-  fetcher({
-    method: 'GET',
-    path: 'groups'
-  });
+const getGroups = () => axios.get('');
 
-const getGroupMembers = (groupCode: GroupInterface['code']) =>
-  fetcher({
-    method: 'GET',
-    path: `groups/${groupCode}/members`
-  });
+const getGroupMembers = (groupCode: GroupInterface['code']) => axios.get(`/${groupCode}/members`);
 
-const createGroup = (name: GroupInterface['name']) =>
-  fetcher({
-    method: 'POST',
-    path: 'groups',
-    body: { name }
-  });
+// TODO: '' 해결해야할듯
+const createGroup = (name: GroupInterface['name']) => axios.post('', { name });
 
 const createInvitationCode = (groupCode: GroupInterface['code']) =>
-  fetcher({
-    method: 'POST',
-    path: `groups/${groupCode}/invitation`
-  });
+  axios.post(`/${groupCode}/invitation`);
 
-const participateGroup = (invitationCode: string) =>
-  fetcher({
-    method: 'POST',
-    path: `groups/in/${invitationCode}`
-  });
+const participateGroup = (invitationCode: string) => axios.post(`/in/${invitationCode}`);
 
-// 그룹 가입 여부 확인
-const getIsJoinedGroup = (invitationCode: string) =>
-  fetcher({
-    method: 'GET',
-    path: `groups/in/${invitationCode}`
-  });
+const getIsJoinedGroup = (invitationCode: string) => axios.get(`/in/${invitationCode}`);
 
-const getDefaultGroup = () =>
-  fetcher({
-    method: 'GET',
-    path: 'groups/default'
-  });
+const getDefaultGroup = () => axios.get('/default');
+
+const leaveGroup = (groupCode: GroupInterface['code']) => axios.delete(`/out/${groupCode}`);
 
 export {
   getGroups,
@@ -52,5 +26,6 @@ export {
   createInvitationCode,
   participateGroup,
   getIsJoinedGroup,
-  getDefaultGroup
+  getDefaultGroup,
+  leaveGroup
 };

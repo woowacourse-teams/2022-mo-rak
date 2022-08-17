@@ -9,6 +9,8 @@ import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,16 @@ class PollRepositoryTest {
     @Autowired
     private PollRepository pollRepository;
 
+    @Autowired
+    private PollItemRepository pollItemRepository;
+
+    @Autowired
+    private PollResultRepository pollResultRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    // TODO: 2022/08/14 data.sql의존
     @Test
     void 투표를_저장한다() {
         // given
@@ -43,15 +55,13 @@ class PollRepositoryTest {
         Poll savedPoll = pollRepository.save(poll);
 
         // then
-        Assertions.assertAll(
-                () -> assertThat(savedPoll).isNotNull(),
-                () -> assertThat(savedPoll.getId()).isNotNull(),
-                () -> assertThat(savedPoll.getTitle()).isEqualTo(savedPoll.getTitle()),
-                () -> assertThat(savedPoll.getTeam()).isNotNull(),
-                () -> assertThat(savedPoll.getHost()).isNotNull()
-        );
+        assertThat(savedPoll)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(poll);
     }
 
+    // TODO: 2022/08/11 data.sql 의존 제거
     @Test
     void 팀ID로_투표_목록을_조회한다() {
         // given
@@ -64,11 +74,11 @@ class PollRepositoryTest {
         assertThat(polls).hasSize(1);
     }
 
-
+    // TODO: 2022/08/11 data.sql 의존
     @Test
     void 투표_단건을_조회한다() {
         // given
-        Poll poll = pollRepository.findByCodeAndTeamId("testcode", 1L).orElseThrow();
+        Poll poll = pollRepository.findByCode("testcode").orElseThrow();
 
         // when & then
         Assertions.assertAll(
@@ -77,15 +87,17 @@ class PollRepositoryTest {
         );
     }
 
+    // TODO: 2022/08/11 data.sql 의존
     @Test
     void 잘못된_팀_code로_조회할_경우_null을_반환한다() {
         // given
-        Optional<Poll> poll = pollRepository.findByCodeAndTeamId("chaleeleeeee", 999L);
+        Optional<Poll> poll = pollRepository.findByCode("chaleeleeeee");
 
         // when & then
         assertThat(poll).isEmpty();
     }
 
+    // TODO: 2022/08/11 data.sql 의존
     @Test
     void id로_투표를_삭제한다() {
         // given
@@ -97,4 +109,53 @@ class PollRepositoryTest {
         // then
         assertThat(poll).isEmpty();
     }
+
+    @Test
+    void 포뮬라를_적용해_count를_불러온다() {
+        // given
+        Team team = Team.builder()
+                .id(1L)
+                .build();
+        Member member = Member.builder()
+                .id(1L)
+                .build();
+
+        Poll poll = Poll.builder()
+                .team(team)
+                .host(member)
+                .title("테스트 투표")
+                .isAnonymous(false)
+                .allowedPollCount(1)
+                .status(PollStatus.OPEN)
+                .closedAt(LocalDateTime.now().plusDays(1L))
+                .code(Code.generate(length -> "unique99"))
+                .build();
+        pollRepository.save(poll);
+
+        PollItem 테스트_선택_항목1 = PollItem.builder()
+                .poll(poll)
+                .subject("테스트 선택 항목1")
+                .build();
+        PollItem 테스트_선택_항목2 = PollItem.builder()
+                .poll(poll)
+                .subject("테스트 선택 항목2")
+                .build();
+        pollItemRepository.saveAll(List.of(테스트_선택_항목1, 테스트_선택_항목2));
+
+        PollResult 테스트_선택_항목1에_대한_이유 = PollResult.builder()
+                .pollItem(테스트_선택_항목1)
+                .member(member)
+                .description("테스트 선택 항목1에 대한 이유")
+                .build();
+        pollResultRepository.saveAll(List.of(테스트_선택_항목1에_대한_이유));
+
+        entityManager.detach(poll);
+
+        // when
+        Poll foundPoll = pollRepository.findByCode(poll.getCode()).orElseThrow();
+
+        // then
+        assertThat(foundPoll.getCount()).isEqualTo(1);
+    }
+
 }

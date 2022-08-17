@@ -3,6 +3,7 @@
 
     <property name="LOGS_ABSOLUTE_PATH" value="./logs"/>
     <property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="MAX_HISTORY" value="30"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -26,7 +27,7 @@
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>180</maxHistory>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
         </rollingPolicy>
     </appender>
 
@@ -46,7 +47,7 @@
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>180</maxHistory>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
         </rollingPolicy>
     </appender>
 
@@ -66,7 +67,7 @@
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>180</maxHistory>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
         </rollingPolicy>
     </appender>
 

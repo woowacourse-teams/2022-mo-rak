@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme } from '@emotion/react';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import Button from '../../common/Button/Button';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import Button from '../../@common/Button/Button';
 
 function AppointmentCreateFormButtonGroup() {
   const theme = useTheme();

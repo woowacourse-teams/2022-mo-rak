@@ -1,45 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import Progress from '../../common/Progress/Progress';
-import { PollInterface, PollItemResultType } from '../../../types/poll';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import { getPollResult } from '../../../api/poll';
+import Progress from '../../@common/Progress/Progress';
+import { getPollResponse } from '../../../types/poll';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { GroupInterface, MemberInterface } from '../../../types/group';
 import { getGroupMembers } from '../../../api/group';
 
 interface Props {
-  pollId: PollInterface['id'];
+  currentParticipants: getPollResponse['count'];
   groupCode: GroupInterface['code'];
 }
 
-// TODO: 재미로 리팩토링 해봐~ 심심할때
-const getCurrentParticipants = (pollResult: Array<PollItemResultType>) => {
-  const allParticipants = pollResult.map((pollItemResult) => pollItemResult.members).flat();
-  const currentParticipants = allParticipants.map((participant) => participant.name);
-
-  return new Set(currentParticipants).size;
-};
-
-function PollMainProgress({ pollId, groupCode }: Props) {
-  const [pollResult, setPollResult] = useState<Array<PollItemResultType>>([]);
+function PollMainProgress({ currentParticipants, groupCode }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
   const totalParticipants = groupMembers.length;
-  const currentParticipants = getCurrentParticipants(pollResult);
-
-  useEffect(() => {
-    const fetchPollResult = async (pollId: PollInterface['id']) => {
-      try {
-        if (groupCode) {
-          const res = await getPollResult(pollId, groupCode);
-          setPollResult(res);
-        }
-      } catch (err) {
-        alert(err);
-      }
-    };
-
-    fetchPollResult(pollId);
-  }, []);
 
   useEffect(() => {
     const fetchGroupMembers = async () => {
@@ -47,7 +21,7 @@ function PollMainProgress({ pollId, groupCode }: Props) {
         if (groupCode) {
           const res = await getGroupMembers(groupCode);
 
-          setGroupMembers(res);
+          setGroupMembers(res.data);
         }
       } catch (err) {
         if (err instanceof Error) {
@@ -67,7 +41,8 @@ function PollMainProgress({ pollId, groupCode }: Props) {
       <StyledParticipantsStatus>
         {currentParticipants}
         명/
-        {totalParticipants}명
+        {totalParticipants}
+        명
       </StyledParticipantsStatus>
     </FlexContainer>
   );

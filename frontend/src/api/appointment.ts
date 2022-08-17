@@ -1,28 +1,39 @@
-import fetcher from '../utils/fetcher';
 import { GroupInterface } from '../types/group';
-import { CreateAppointmentRequest, AppointmentInfoInterface } from '../types/appointment';
+import { groupInstance as axios } from './axios';
+import { AppointmentInterface, createAppointmentData, AvailableTimes } from '../types/appointment';
 
-const createAppointment = (
-  groupCode: GroupInterface['code'],
-  appointment: CreateAppointmentRequest
-) => fetcher({ method: 'POST', path: `groups/${groupCode}/appointments`, body: appointment });
+const createAppointment = (groupCode: GroupInterface['code'], appointment: createAppointmentData) =>
+  axios.post(`/${groupCode}/appointments`, appointment);
 
-const getAppointmentResult = (
+const getAppointments = (groupCode: GroupInterface['code']) =>
+  axios.get(`/${groupCode}/appointments`);
+
+const getAppointmentRecommendation = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInfoInterface['code']
-) =>
-  fetcher({
-    method: 'GET',
-    path: `groups/${groupCode}/appointments/${appointmentCode}/recommendation`
-  });
+  appointmentCode: AppointmentInterface['code']
+) => axios.get(`/${groupCode}/appointments/${appointmentCode}/recommendation`);
 
 const getAppointment = (
   groupCode: GroupInterface['code'],
-  appointmentCode: AppointmentInfoInterface['code']
-) =>
-  fetcher({
-    method: 'GET',
-    path: `groups/${groupCode}/appointments/${appointmentCode}`
-  });
+  appointmentCode: AppointmentInterface['code']
+) => axios.get(`/${groupCode}/appointments/${appointmentCode}`);
 
-export { getAppointmentResult, getAppointment, createAppointment };
+const progressAppointment = (
+  groupCode: GroupInterface['code'],
+  appointmentCode: AppointmentInterface['code'],
+  availableTimes: AvailableTimes
+) => axios.put(`/${groupCode}/appointments/${appointmentCode}`, availableTimes);
+
+const closeAppointment = (
+  groupCode: GroupInterface['code'],
+  appointmentCode: AppointmentInterface['code']
+) => axios.patch(`/${groupCode}/appointments/${appointmentCode}/close`);
+
+export {
+  getAppointments,
+  getAppointment,
+  createAppointment,
+  progressAppointment,
+  getAppointmentRecommendation,
+  closeAppointment
+};

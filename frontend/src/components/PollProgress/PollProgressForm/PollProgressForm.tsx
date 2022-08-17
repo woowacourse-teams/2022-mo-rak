@@ -2,96 +2,136 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import Box from '../../common/Box/Box';
-import Divider from '../../common/Divider/Divider';
-import MarginContainer from '../../common/MarginContainer/MarginContainer';
-
-import PollProgressSubmitButton from '../PollProgressSubmitButton/PollProgressSubmitButton';
-import { getPoll, progressPoll } from '../../../api/poll';
+import Box from '../../@common/Box/Box';
+import Divider from '../../@common/Divider/Divider';
+import MarginContainer from '../../@common/MarginContainer/MarginContainer';
+import PollProgressButtonGroup from '../PollProgressButtonGroup/PollProgressButtonGroup';
+import { getPoll, progressPoll, getPollItems } from '../../../api/poll';
 import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGroup';
-import { PollInterface, SelectedPollItemInterface } from '../../../types/poll';
+import {
+  PollInterface,
+  SelectedPollItem,
+  getPollResponse,
+  getPollItemsResponse,
+  PollItemInterface
+} from '../../../types/poll';
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
+import { GroupInterface } from '../../../types/group';
+
+const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
+  pollItems
+    .filter((pollItem) => pollItem.isSelected)
+    .map((pollItem) => ({
+      id: pollItem.id,
+      description: pollItem.description
+    }));
 
 function PollProgressForm() {
   const navigate = useNavigate();
-  const { groupCode, pollId } = useParams() as {
-    groupCode: string;
-    pollId: string;
+  const { groupCode, pollCode } = useParams() as {
+    groupCode: GroupInterface['code'];
+    pollCode: PollInterface['code'];
   };
-  // TODO: 기본 객체를 줘야할까? undefined로 놓는 것이 위험한가?
-  const [poll, setPoll] = useState<PollInterface>();
-  const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItemInterface>>([]);
+  const [poll, setPoll] = useState<getPollResponse>();
+  const [pollItems, setPollItems] = useState<getPollItemsResponse>([]);
+  const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItem>>([]);
 
-  // TODO: 객체로 state를 관리하는 것에 단점이 분명히 있다. 리팩토링 필요 usereducer 찾아보자
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    if (!poll) return;
+
     e.preventDefault();
 
     try {
-      if (poll) {
-        await progressPoll(poll.id, selectedPollItems, groupCode);
-        navigate(`/groups/${groupCode}/poll/${pollId}/result`);
-      }
+      await progressPoll(pollCode, selectedPollItems, groupCode);
+      navigate(`/groups/${groupCode}/poll/${pollCode}/result`);
     } catch (err) {
       alert(err);
     }
   };
 
-  // TODO: 두 가지 역할을 하는 걸까? 나중에 시간 있을 때 하기~
-  const handleSelectPollItems = (mode: string) => (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSelectPollItems = (e: ChangeEvent<HTMLInputElement>) => {
     const id = Number(e.target.id);
+    const isSelected = e.target.checked;
     // TODO: 깊은 복사 함수 만들어보기!
-    const newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
+    const copiedSelectedPollItems: Array<SelectedPollItem> = JSON.parse(
+      JSON.stringify(selectedPollItems)
+    );
 
-    if (mode === 'single') {
-      setSelectedPollItems([{ itemId: id, description: '' }]);
-
-      return;
-    }
-
-    if (mode === 'multiple' && e.target.checked) {
-      setSelectedPollItems([...newSelectedPollItems, { itemId: id, description: '' }]);
+    if (isSelected) {
+      // NOTE: EMPTY_STRING 상수화 어떤가요?
+      setSelectedPollItems([...copiedSelectedPollItems, { id, description: '' }]);
 
       return;
     }
 
     setSelectedPollItems(
-      [...newSelectedPollItems].filter((selectedPollItem) => selectedPollItem.itemId !== id)
+      copiedSelectedPollItems.filter((selectedPollItem) => selectedPollItem.id !== id)
     );
   };
 
-  const handleDescription = (pollId: PollInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
-    const newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
-    // TODO: for문 개선, 에러 해결
-    for (const newSelectedPollItem of newSelectedPollItems) {
-      if (newSelectedPollItem.itemId === pollId) {
-        newSelectedPollItem.description = e.target.value;
-        setSelectedPollItems(newSelectedPollItems);
+  const handleSelectPollItem = (e: ChangeEvent<HTMLInputElement>) => {
+    const id = Number(e.target.id);
 
-        return;
-      }
-    }
+    setSelectedPollItems([{ id, description: '' }]);
   };
 
-  useEffect(() => {
-    const fetchPoll = async (pollId: PollInterface['id']) => {
-      try {
-        const res = await getPoll(pollId, groupCode);
+  const handleDescription =
+    (pollItemId: PollItemInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
+      // TODO: 깊은 복사 함수 만들기
+      const copiedSelectedPollItems: Array<SelectedPollItem> = JSON.parse(
+        JSON.stringify(selectedPollItems)
+      );
 
-        if (res.status === 'CLOSED') {
+      const targetPollItem = copiedSelectedPollItems.find(
+        (copiedSelectedPollItem) => copiedSelectedPollItem.id === pollItemId
+      );
+
+      if (targetPollItem) {
+        targetPollItem.description = e.target.value;
+        setSelectedPollItems(copiedSelectedPollItems);
+      }
+    };
+
+  useEffect(() => {
+    const fetchPoll = async (pollCode: PollInterface['code']) => {
+      try {
+        const res = await getPoll(pollCode, groupCode);
+
+        // TODO: res.data vs poll => 이후에 통일해줘야함
+        if (res.data.status === 'CLOSED') {
           navigate(`/groups/${groupCode}/poll`);
 
           return;
         }
 
-        setPoll(res);
+        setPoll(res.data);
       } catch (err) {
         alert('poll 없어~~');
         navigate(`/groups/${groupCode}/poll`);
       }
     };
 
-    fetchPoll(Number(pollId));
+    fetchPoll(pollCode);
   }, []);
+
+  useEffect(() => {
+    const fetchPollItems = async (pollCode: PollInterface['code']) => {
+      try {
+        const res = await getPollItems(pollCode, groupCode);
+        setPollItems(res.data);
+      } catch (err) {
+        alert(err);
+      }
+    };
+
+    fetchPollItems(pollCode);
+  }, []);
+
+  useEffect(() => {
+    const initialSelectedPollItems = getInitialSelectedPollItems(pollItems);
+
+    setSelectedPollItems(initialSelectedPollItems);
+  }, [pollItems]);
 
   return (
     <Box width="84.4rem" padding="6.4rem 4.8rem 5.4rem 4.8rem">
@@ -109,19 +149,15 @@ function PollProgressForm() {
           </MarginContainer>
           <MarginContainer margin="0 0 8.4rem 0">
             <PollProgressItemGroup
-              pollId={poll.id}
+              pollItems={pollItems}
               selectedPollItems={selectedPollItems}
               allowedPollCount={poll.allowedPollCount}
-              handleSelectPollItems={handleSelectPollItems}
-              handleDescription={handleDescription}
-              groupCode={groupCode}
+              onChangeCheckbox={handleSelectPollItems}
+              onChangeRadio={handleSelectPollItem}
+              onChangeText={handleDescription}
             />
           </MarginContainer>
-          <PollProgressSubmitButton
-            pollId={Number(pollId)}
-            isHost={poll.isHost}
-            groupCode={groupCode}
-          />
+          <PollProgressButtonGroup pollCode={pollCode} isHost={poll.isHost} groupCode={groupCode} />
         </form>
       ) : (
         <div>로딩중</div>

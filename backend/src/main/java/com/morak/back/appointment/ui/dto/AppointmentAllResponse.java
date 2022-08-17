@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppointmentAllResponse {
+public class AppointmentAllResponse implements Comparable<AppointmentAllResponse> {
 
     private Long id;
 
@@ -39,5 +39,16 @@ public class AppointmentAllResponse {
                 appointment.isClosed(),
                 appointment.getCount()
         );
+    }
+
+    @Override
+    public int compareTo(AppointmentAllResponse o) {
+        if (this.closed.equals(o.closed)) {
+            return Long.compare(o.id, this.id);
+        }
+        if (Boolean.FALSE.equals(this.closed)) {
+            return -1;
+        }
+        return 1;
     }
 }

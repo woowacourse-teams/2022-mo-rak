@@ -1,62 +1,55 @@
 package com.morak.back.appointment.ui.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Locale;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AppointmentCreateRequest {
 
     @NotBlank
-    private final String title;
+    private String title;
 
     @NotNull
-    private final String description;
-
-    @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private final LocalDate startDate;
+    private String description;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private final LocalDate endDate;
+    private LocalDate startDate;
+
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mma", locale = "en_US")
-    private final LocalTime startTime;
+    private LocalTime startTime;
 
     @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mma", locale = "en_US")
-    private final LocalTime endTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mma", locale = "en_US")
+    private LocalTime endTime;
 
     @NotNull
-    private final Integer durationHour;
+    private Integer durationHours;
 
     @NotNull
-    private final Integer durationMinute;
+    private Integer durationMinutes;
 
-    @JsonCreator
-    public AppointmentCreateRequest(String title, String description, LocalDate startDate, LocalDate endDate,
-                                    LocalTime startTime, LocalTime endTime, Integer durationHour,
-                                    Integer durationMinute) {
-        this.title = title;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.durationHour = durationHour;
-        this.durationMinute = durationMinute;
-    }
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime closedAt;
 
     public Appointment toAppointment(Team team, Member member, Code code) {
         return Appointment.builder()
@@ -68,8 +61,9 @@ public class AppointmentCreateRequest {
                 .endDate(this.endDate)
                 .startTime(this.startTime)
                 .endTime(this.endTime)
-                .durationHours(durationHour)
-                .durationMinutes(durationMinute)
+                .durationHours(this.durationHours)
+                .durationMinutes(this.durationMinutes)
+                .closedAt(this.closedAt)
                 .code(code)
                 .build();
     }

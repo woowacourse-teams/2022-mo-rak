@@ -1,27 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import Progress from '../../common/Progress/Progress';
-import { PollItemResultType } from '../../../types/poll';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
+import Progress from '../../@common/Progress/Progress';
+import { getPollResponse } from '../../../types/poll';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { GroupInterface, MemberInterface } from '../../../types/group';
 import { getGroupMembers } from '../../../api/group';
 
 interface Props {
-  pollResult: Array<PollItemResultType>;
+  currentParticipants: getPollResponse['count'];
   groupCode: GroupInterface['code'];
 }
 
-const getCurrentParticipants = (pollResult: Array<PollItemResultType>) => {
-  const allParticipants = pollResult.map((pollItemResult) => pollItemResult.members).flat();
-  const currentParticipants = allParticipants.map((participant) => participant.name);
-
-  return new Set(currentParticipants).size;
-};
-
-function PollResultProgress({ pollResult, groupCode }: Props) {
+function PollResultProgress({ currentParticipants, groupCode }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
   const totalParticipants = groupMembers.length;
-  const currentParticipants = getCurrentParticipants(pollResult);
 
   useEffect(() => {
     const fetchGroupMembers = async () => {
@@ -29,7 +21,7 @@ function PollResultProgress({ pollResult, groupCode }: Props) {
         if (groupCode) {
           const res = await getGroupMembers(groupCode);
 
-          setGroupMembers(res);
+          setGroupMembers(res.data);
         }
       } catch (err) {
         if (err instanceof Error) {
@@ -52,7 +44,8 @@ function PollResultProgress({ pollResult, groupCode }: Props) {
       <StyledParticipantsStatus>
         {currentParticipants}
         명/
-        {totalParticipants}명
+        {totalParticipants}
+        명
       </StyledParticipantsStatus>
     </FlexContainer>
   );

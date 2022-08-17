@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { NavigateFunction } from 'react-router-dom';
-import Button from '../../common/Button/Button';
-import FlexContainer from '../../common/FlexContainer/FlexContainer';
-import theme from '../../../styles/theme';
+import { useTheme } from '@emotion/react';
+import Button from '../../@common/Button/Button';
+import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+
 import { participateGroup } from '../../../api/group';
 import { GroupInterface } from '../../../types/group';
 
@@ -14,6 +15,8 @@ interface Props {
 }
 
 function InvitationButtonGroup({ navigate, invitationCode, groupCode }: Props) {
+  const theme = useTheme();
+
   const handleParticipateGroup = async () => {
     try {
       await participateGroup(invitationCode);

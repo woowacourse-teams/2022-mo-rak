@@ -1,9 +1,10 @@
 package com.morak.back.auth.ui;
 
 import com.morak.back.auth.application.TokenProvider;
-import com.morak.back.auth.exception.AuthorizationException;
+import com.morak.back.auth.exception.AuthenticationException;
 import com.morak.back.auth.support.Auth;
 import com.morak.back.auth.support.AuthorizationExtractor;
+import com.morak.back.core.exception.CustomErrorCode;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -42,7 +43,7 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
         try {
             return AuthorizationExtractor.extractOrThrow(request);
         } catch (IllegalArgumentException e) {
-            throw new AuthorizationException("요청에서 토큰을 추출하는데 실패했습니다.");
+            throw new AuthenticationException(CustomErrorCode.EMPTY_AUTHORIZATION_ERROR, "요청에서 토큰을 추출하는데 실패했습니다.");
         }
     }
 }

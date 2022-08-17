@@ -7,6 +7,10 @@ spring:
       mode: always
   mvc:
     log-resolved-exception: off
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
 
 ---
 
@@ -16,7 +20,7 @@ spring:
       on-profile: prd
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DATABASE_HOST}:3306/${DATABASE_NAME}?serverTimezone=Asia/Seoul&characterEncoding=utf8mb4
+    url: jdbc:mysql://${DATABASE_HOST}:3306/${DATABASE_NAME}?serverTimezone=Asia/Seoul&character_set_server=utf8mb4
     username: ${USERNAME}
     password: ${PASSWORD}
 
@@ -28,7 +32,7 @@ spring:
       on-profile: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DATABASE_HOST}:3306/${DATABASE_NAME}?serverTimezone=Asia/Seoul&characterEncoding=utf8mb4
+    url: jdbc:mysql://${DATABASE_HOST}:3306/${DATABASE_NAME}?serverTimezone=Asia/Seoul&character_set_server=utf8mb4
     username: ${USERNAME}
     password: ${PASSWORD}
   jpa:

@@ -50,8 +50,8 @@ class AppointmentControllerTest extends ControllerTest {
                 LocalTime.of(16, 0),
                 LocalTime.of(20, 0),
                 2,
-                30
-        );
+                30,
+                LocalDateTime.now().plusDays(1));
 
         given(appointmentService.createAppointment(anyString(), anyLong(), any())).willReturn("KDIs23K3");
 
@@ -134,7 +134,6 @@ class AppointmentControllerTest extends ControllerTest {
 
         given(appointmentService.findAppointment(anyString(), anyLong(), anyString())).willReturn(findResponse);
 
-
         // when
         ResultActions response = get(path, GROUP_CODE, APPOINTMENT_CODE);
 
@@ -197,7 +196,7 @@ class AppointmentControllerTest extends ControllerTest {
                         pathParameters(
                                 parameterWithName("groupCode").description("그룹_코드"),
                                 parameterWithName("appointmentCode").description("약속잡기_코드")
-                                )
+                        )
                 ));
     }
 

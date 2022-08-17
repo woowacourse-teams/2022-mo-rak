@@ -1,11 +1,5 @@
-import fetcher from '../utils/fetcher';
+import { authInstance as axios } from './axios';
 
-const signin = (code: string) =>
-  fetcher({
-    method: 'POST',
-    path: 'auth/signin',
-    body: { code },
-    isTokenNeeded: false
-  });
+const signin = (code: string) => axios.post('/signin', code);
 
 export { signin };
