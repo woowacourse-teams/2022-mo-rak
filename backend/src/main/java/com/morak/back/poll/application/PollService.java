@@ -66,7 +66,7 @@ public class PollService {
         }
 
         Poll savedPoll = pollRepository.save(poll);
-        notificationService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(poll)));
+        notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(poll)));
         return savedPoll.getCode();
     }
 
@@ -217,7 +217,7 @@ public class PollService {
         for (Poll poll : pollsToBeClosed) {
             pollRepository.closeById(poll.getId());
             notificationService.notifyMenuStatus(
-                    poll.getTeam(), MessageFormatter.formatOpen(FormattableData.from(poll))
+                    poll.getTeam(), MessageFormatter.formatClosed(FormattableData.from(poll))
             );
         }
     }
