@@ -80,7 +80,11 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
         <StyledGroupListContainer>
           {groups.map((group) => (
             <StyledGroupList to={`groups/${group.code}`} isNowGroup={groupCode === group.code}>
-              <StyledGroupListImage src="https://us.123rf.com/450wm/zoomzoom/zoomzoom1803/zoomzoom180300055/97726350-%EB%B9%9B-%EA%B5%AC%EB%A6%84%EA%B3%BC-%ED%91%B8%EB%A5%B8-%EB%B4%84-%ED%95%98%EB%8A%98.jpg?ver=6" />
+              <StyledGroupProfile
+                backgroundColor={groupCode === group.code ? profileColor : getRandomPastelColor()}
+              >
+                <StyledGroupFirstName>{group && group.name[0]}</StyledGroupFirstName>
+              </StyledGroupProfile>
               <FlexContainer flexDirection="column">
                 <StyledGroupTitle>{group.name}</StyledGroupTitle>
               </FlexContainer>
