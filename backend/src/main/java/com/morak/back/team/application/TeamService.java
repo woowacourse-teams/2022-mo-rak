@@ -128,7 +128,6 @@ public class TeamService {
         }
     }
 
-    // TODO: 2022/08/18 TeamDomainLogicException이 맞을까? 권한 에러 아닐까?
     private void validateNotJoined(Long teamId, Long memberId) {
         if (teamMemberRepository.existsByTeamIdAndMemberId(teamId, memberId)) {
             throw new TeamDomainLogicException(
