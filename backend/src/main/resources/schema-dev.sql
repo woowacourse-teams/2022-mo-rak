@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS team_member;
 DROP TABLE IF EXISTS team_invitation;
 DROP TABLE IF EXISTS appointment_available_time;
 DROP TABLE IF EXISTS appointment;
+DROP TABLE IF EXISTS slack_webhook;
 DROP TABLE IF EXISTS team;
 DROP TABLE IF EXISTS member;
 
