@@ -347,6 +347,30 @@ include::{snippets}/group-isJoined/http-response.adoc[]
 
 |===
 
+=== 그룹에 가입
+
+include::{snippets}/group-joinTeam/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/group-joinTeam/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/group-joinTeam/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
 
 === 그룹 목록 조회
 
