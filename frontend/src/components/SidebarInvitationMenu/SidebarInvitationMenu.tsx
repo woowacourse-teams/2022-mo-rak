@@ -47,7 +47,7 @@ const StyledInvitationLink = styled.button`
 `;
 
 const StyledInviteText = styled.p`
-  font-size: 2rem;
+  font-size: 1.7rem; 
 `;
 
 export default SidebarInvitationMenu;

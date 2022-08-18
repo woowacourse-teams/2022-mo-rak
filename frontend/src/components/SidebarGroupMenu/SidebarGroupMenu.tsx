@@ -119,7 +119,7 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
 
 const StyledMenuHeader = styled.div`
   width: 100%;
-  font-size: 2rem;
+  font-size: 1.7rem;
   text-align: left;
   margin-bottom: 2rem;
 `;
