@@ -302,15 +302,6 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    @ParameterizedTest
-    @CsvSource({
-            "0, 0, 0, 30",
-            "15, 0, 15, 30",
-            "15, 30, 16, 0",
-            "20, 0, 20, 30",
-            "23, 30, 0, 0"
-    })
-
     @Test
     void 약속잡기_추천_결과를_조회한다() {
         // given

@@ -4,8 +4,11 @@ import com.morak.back.auth.exception.AuthenticationException;
 import com.morak.back.core.exception.AuthorizationException;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.DomainLogicException;
+import com.morak.back.core.exception.ExternalException;
 import com.morak.back.core.exception.MorakException;
 import com.morak.back.core.exception.ResourceNotFoundException;
+import com.morak.back.core.exception.SchedulingException;
+import com.morak.back.core.support.Generated;
 import com.morak.back.core.support.LogFormatter;
 import com.morak.back.core.ui.dto.ExceptionResponse;
 import java.util.Arrays;
@@ -100,6 +103,7 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(MorakException.class)
+    @Generated
     public ResponseEntity<ExceptionResponse> handleMorak(MorakException e) {
         logger.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -113,8 +117,29 @@ public class GlobalControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionResponse(CustomErrorCode.API_NOT_FOUND_ERROR.getNumber(), "처리할 수 없는 요청입니다."));
     }
-    
+
+    @ExceptionHandler(ExternalException.class)
+    @Generated
+    public ResponseEntity<ExceptionResponse> handleExternalFailure(ExternalException e) {
+        logger.warn(e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ExceptionResponse(e.getCode().getNumber(), "외부 API 요청을 실패했습니다."));
+    }
+
+    @ExceptionHandler(SchedulingException.class)
+    @Generated
+    public ResponseEntity<ExceptionResponse> handleSchedulingFailures(SchedulingException e) {
+        List<String> exceptionMessages = e.getExceptions().stream()
+                .map(exception -> exception.getCode() + "," + exception.getMessage())
+                .collect(Collectors.toList());
+        logger.error(exceptionMessages.toString());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ExceptionResponse(e.getCode().getNumber(), "스케줄링 실행 중 실패가 있습니다."));
+    }
+
     @ExceptionHandler(RuntimeException.class)
+    @Generated
     public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e,
                                                              ContentCachingRequestWrapper requestWrapper) {
         String stackTrace = Arrays.stream(e.getStackTrace())

@@ -88,7 +88,7 @@ public class Poll extends BaseEntity {
 
     @Builder
     private Poll(Long id, Team team, Member host, String title, Integer allowedPollCount, Boolean isAnonymous,
-                PollStatus status, LocalDateTime closedAt, Code code) {
+                 PollStatus status, LocalDateTime closedAt, Code code) {
 
         this.id = id;
         this.team = team;
@@ -117,8 +117,8 @@ public class Poll extends BaseEntity {
     private void validateStatus() {
         if (status.isClosed()) {
             throw new PollDomainLogicException(
-                CustomErrorCode.POLL_ALREADY_CLOSED_ERROR,
-                getCode() + " 코드의 투표는 종료되었습니다."
+                    CustomErrorCode.POLL_ALREADY_CLOSED_ERROR,
+                    getCode() + " 코드의 투표는 종료되었습니다."
             );
         }
     }
@@ -126,8 +126,8 @@ public class Poll extends BaseEntity {
     private void validateCounts(Integer pollItemCount) {
         if (!allowedPollCount.isAllowed(pollItemCount)) {
             throw new PollDomainLogicException(
-                CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR,
-                getCode() + "번 투표에 " + pollItemCount + "개의 투표 항목을 선택할 수 없습니다."
+                    CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR,
+                    getCode() + "번 투표에 " + pollItemCount + "개의 투표 항목을 선택할 수 없습니다."
             );
         }
     }
@@ -135,11 +135,11 @@ public class Poll extends BaseEntity {
     private void validateNewItemsBelongsTo(Set<PollItem> newItems) {
         if (!this.pollItems.containsAll(newItems)) {
             throw new PollAuthorizationException(
-                CustomErrorCode.POLL_ITEM_MISMATCHED_ERROR,
-                id + "번 투표에 " +
-                    newItems.stream()
-                        .map(pollItem -> pollItem.getId().toString())
-                        .collect(Collectors.joining(", ")) + "번 항목들은 투표할 수 없습니다.");
+                    CustomErrorCode.POLL_ITEM_MISMATCHED_ERROR,
+                    id + "번 투표에 " +
+                            newItems.stream()
+                                    .map(pollItem -> pollItem.getId().toString())
+                                    .collect(Collectors.joining(", ")) + "번 항목들은 투표할 수 없습니다.");
         }
     }
 
@@ -155,6 +155,10 @@ public class Poll extends BaseEntity {
         }
     }
 
+    public boolean isBelongedTo(Team otherTeam) {
+        return this.team.equals(otherTeam);
+    }
+
     public boolean isHost(Member member) {
         return host.equals(member);
     }
@@ -167,22 +171,18 @@ public class Poll extends BaseEntity {
     private void validateHost(Member member) {
         if (!isHost(member)) {
             throw new PollAuthorizationException(
-                CustomErrorCode.POLL_HOST_MISMATCHED_ERROR,
-                member.getId() + "번 멤버는 " + getCode() + " 코드 투표의 호스트가 아닙니다."
+                    CustomErrorCode.POLL_HOST_MISMATCHED_ERROR,
+                    member.getId() + "번 멤버는 " + getCode() + " 코드 투표의 호스트가 아닙니다."
             );
         }
-    }
-
-    public Integer getAllowedPollCount() {
-        return allowedPollCount.getAllowedPollCount();
     }
 
     public String getCode() {
         return code.getCode();
     }
 
-    public boolean isBelongedTo(Team otherTeam) {
-        return this.team.equals(otherTeam);
+    public Integer getAllowedPollCount() {
+        return allowedPollCount.getAllowedPollCount();
     }
 
     public Integer getCount() {

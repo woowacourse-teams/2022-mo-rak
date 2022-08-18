@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,9 +38,6 @@ class AppointmentRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     private Member member;
     private Team team;
@@ -171,7 +167,7 @@ class AppointmentRepositoryTest {
     }
 
     @Test
-    void 포뮬라를_적용해_count를_불러온다() {
+    void 포뮬라를_적용해_count를_불러온다(@Autowired EntityManager entityManager) {
         // given
         Member member = memberRepository.findById(1L).orElseThrow();
         Appointment appointment = DEFAULT_BUILDER.build();
@@ -227,5 +223,17 @@ class AppointmentRepositoryTest {
 
         // then
         assertThat(appointmentOptional).isEmpty();
+    }
+
+    @Test
+    void 종료할_약속잡기를_가져온다() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+
+        // when
+        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(now);
+
+        // then
+        assertThat(appointmentsToBeClosed).hasSize(1);
     }
 }
