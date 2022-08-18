@@ -864,6 +864,19 @@ class AppointmentServiceTest {
     }
 
     @Test
+    void 선택된_가능시간이_있는_약속잡기를_삭제한다() {
+        // given
+        Appointment appointment = appointmentRepository.save(약속잡기_중간);
+        availableTimeRepository.save(회식_가능_시간_4시부터_4시반까지);
+
+        // when
+        appointmentService.deleteAppointment(모락.getCode(), 에덴.getId(), 약속잡기_중간.getCode());
+
+        // then
+        assertThat(availableTimeRepository.findAllByAppointmentId(appointment.getId())).isEmpty();
+    }
+
+    @Test
     void 약속잡기_삭제_시_호스트가_아닌_경우_예외를_던진다() {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_중간);
