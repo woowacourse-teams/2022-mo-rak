@@ -16,4 +16,6 @@ public interface AvailableTimeRepository extends Repository<AvailableTime, Long>
     List<AvailableTime> findAllByAppointmentId(Long appointmentId);
 
     void flush();
+
+    void deleteAllByAppointmentId(Long appointmentId);
 }

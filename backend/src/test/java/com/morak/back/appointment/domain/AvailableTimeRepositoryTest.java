@@ -146,6 +146,33 @@ class AvailableTimeRepositoryTest {
         // then
         List<AvailableTime> availableTimes = availableTimeRepository.findAllByMemberIdAndAppointmentId(
                 member.getId(), appointment.getId());
-        assertThat(availableTimes).hasSize(0);
+        assertThat(availableTimes).isEmpty();
+    }
+
+    @Test
+    void 약속잡기_id로_약속잡기_가능_시간을_모두_삭제한다() {
+        // given
+        AvailableTime availableTime1 = AvailableTime.builder()
+                .member(member)
+                .appointment(appointment)
+                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
+                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
+                .build();
+
+        AvailableTime availableTime2 = AvailableTime.builder()
+                .member(member)
+                .appointment(appointment)
+                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
+                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 0)))
+                .build();
+
+        availableTimeRepository.saveAll(List.of(availableTime1, availableTime2));
+
+        // when
+        availableTimeRepository.deleteAllByAppointmentId(appointment.getId());
+
+        // then
+        List<AvailableTime> availableTimes = availableTimeRepository.findAllByAppointmentId(appointment.getId());
+        assertThat(availableTimes).isEmpty();
     }
 }
