@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, CSSProperties } from 'react';
 import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
 import Setting from '../../assets/setting.svg';
@@ -19,6 +19,7 @@ interface Props {
 
 function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode, groups }: Props) {
   const [nowGroup, setGroup] = useState<GroupInterface>();
+  const [profileColor, setProfileColor] = useState('');
 
   const dispatch = useMenuDispatchContext();
   const { isVisibleGroups } = useMenuContext();
@@ -40,10 +41,18 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
     dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: !isVisibleGroups });
   };
 
+  const getRandomPastelColor = () => `hsl(${360 * Math.random()},${
+    25 + 70 * Math.random()}%,${
+    85 + 10 * Math.random()}%)`;
+
   useEffect(() => {
     const nowGroup = groups.find((group) => group.code === groupCode);
     setGroup(nowGroup);
   }, [groups, groupCode]);
+
+  useEffect(() => {
+    setProfileColor(getRandomPastelColor());
+  }, [nowGroup]);
 
   return (
     <StyledGroupContainer>
@@ -51,7 +60,9 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
 
       <FlexContainer justifyContent="space-between">
         <FlexContainer gap="2rem">
-          <StyledGroupImage src="https://us.123rf.com/450wm/zoomzoom/zoomzoom1803/zoomzoom180300055/97726350-%EB%B9%9B-%EA%B5%AC%EB%A6%84%EA%B3%BC-%ED%91%B8%EB%A5%B8-%EB%B4%84-%ED%95%98%EB%8A%98.jpg?ver=6" />
+          <StyledGroupProfile backgroundColor={profileColor}>
+            <StyledGroupFirstName>{nowGroup && nowGroup.name[0]}</StyledGroupFirstName>
+          </StyledGroupProfile>
           <FlexContainer flexDirection="column">
             <StyledGroupTitle>{nowGroup && nowGroup.name}</StyledGroupTitle>
           </FlexContainer>
@@ -142,11 +153,21 @@ const StyledGroupListIcon = styled.img`
   }
 `;
 
-const StyledGroupImage = styled.img`
+const StyledGroupProfile = styled.div<CSSProperties>(({ backgroundColor }) => `
+  font-family: 'Nanum Gothic', sans-serif;
   width: 8rem;
   height: 8rem;
   border-radius: 1.2rem;
-`;
+  background: ${backgroundColor};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`);
+
+const StyledGroupFirstName = styled.div(({ theme }) => `
+  color: ${theme.colors.WHITE_100};
+  font-size: 4.8rem;
+`);
 
 const StyledGroupListImage = styled.img`
   width: 5.2rem;

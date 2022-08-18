@@ -2,6 +2,7 @@ import React, { useState, FormEvent, ChangeEvent } from 'react';
 import styled from '@emotion/styled';
 
 import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 import TextField from '../@common/TextField/TextField';
 import Input from '../@common/Input/Input';
 import Modal from '../@common/Modal/Modal';
@@ -15,16 +16,16 @@ import Logo from '../../assets/logo.svg';
 import { GroupInterface } from '../../types/group';
 import { createGroup, participateGroup } from '../../api/group';
 import { useMenuDispatchContext } from '../../context/MenuProvider';
-import useInput from '../../hooks/useInput';
 
 interface Props {
   activeModalMenu: string | null;
   closeModal: () => void;
 }
 
-function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
+function SidebarMenuModals({ activeModalMenu, closeModal }: Props) {
   const [groupName, setGroupName] = useState<GroupInterface['name']>('');
-  const [invitationCode, handleInvitationCode] = useInput('');
+  // useInput 사용해서 관리
+  const [invitationCode, setInvitationCode] = useState('');
 
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
@@ -38,8 +39,9 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
       const groupCode = res.headers.location.split('groups/')[1];
 
       navigate(`/groups/${groupCode}`);
-      closeModal();
       dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: false });
+      setGroupName('');
+      closeModal();
     } catch (err) {
       alert(err);
     }
@@ -47,6 +49,10 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
 
   const handleGroupName = (e: ChangeEvent<HTMLInputElement>) => {
     setGroupName(e.target.value);
+  };
+
+  const handleInvitationCode = (e: ChangeEvent<HTMLInputElement>) => {
+    setInvitationCode(e.target.value);
   };
 
   // 그룹 참가
@@ -59,10 +65,18 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
 
       // TODO: 중복 제거
       navigate(`/groups/${groupCode}`);
-      closeModal();
       dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: false });
+      setInvitationCode('');
+      closeModal();
     } catch (err) {
-      console.log(err);
+      if (err instanceof AxiosError) {
+        const errCode = err.response?.data.codeNumber;
+
+        if (errCode === '1101') {
+          alert('이미 참여하고 있는 그룹입니다!');
+          setInvitationCode('');
+        }
+      }
     }
   };
 
@@ -75,7 +89,9 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
           <StyledTop>
             <StyledSlackLogo src={Slack} alt="slack-logo" />
             <StyledHeaderText>슬랙 채널과 연동해보세요!</StyledHeaderText>
-            <StyledGuideText>슬랙 채널과 연동하면, 그룹의 새소식을 슬랙으로 받아볼 수 있어요</StyledGuideText>
+            <StyledGuideText>
+              슬랙 채널과 연동하면, 그룹의 새소식을 슬랙으로 받아볼 수 있어요
+            </StyledGuideText>
             <StyledCloseButton onClick={closeModal} src={Close} alt="close-button" />
             <StyledTriangle />
           </StyledTop>
@@ -88,7 +104,12 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
                 padding="1.6rem 10rem"
                 width="50.4rem"
               >
-                <Input placeholder="슬랙 채널 url 입력 후, 확인버튼을 누르면 연동 끝!" fontSize="1.6rem" required autoFocus />
+                <Input
+                  placeholder="슬랙 채널 url 입력 후, 확인버튼을 누르면 연동 끝!"
+                  fontSize="1.6rem"
+                  required
+                  autoFocus
+                />
                 <StyledLinkIcon src={LinkIcon} alt="link-icon" />
               </TextField>
               <StyledButton>확인</StyledButton>
@@ -174,26 +195,30 @@ function SidebarMenuModals({ activeModalMenu, closeModal }:Props) {
   );
 }
 
-const StyledModalContainer = styled.div(({ theme }) => `
+const StyledModalContainer = styled.div(
+  ({ theme }) => `
   position: relative;
   background-color: ${theme.colors.WHITE_100};
   border-radius: 12px;
   width: 68rem;
   height: 41.6rem;
-`);
+`
+);
 
-const StyledModalFormContainer = styled.form(({ theme }) => `
+const StyledModalFormContainer = styled.form(
+  ({ theme }) => `
   position: relative;
   background-color: ${theme.colors.WHITE_100};
   border-radius: 12px;
   width: 68rem;
   height: 41.6rem;
-`);
+`
+);
 
 const StyledSlackLogo = styled.img`
   width: 8rem;
   display: block;
-  margin: 0 auto ;
+  margin: 0 auto;
   margin-bottom: 2rem;
 `;
 
@@ -234,16 +259,18 @@ const StyledTriangle = styled.div`
   width: 0;
   bottom: -2.8rem;
   right: 50%;
-  transform: translate(50%,-50%);
+  transform: translate(50%, -50%);
 `;
 
-const StyledBottom = styled.div(({ theme }) => `
+const StyledBottom = styled.div(
+  ({ theme }) => `
   background: ${theme.colors.YELLOW_50};
   height: 50%;
   padding-top: 4.4rem;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
-`);
+`
+);
 
 const StyledLinkIcon = styled.img`
   position: absolute;
@@ -254,7 +281,7 @@ const StyledLinkIcon = styled.img`
 const StyledButton = styled.button`
   background-color: ${theme.colors.YELLOW_200};
   color: ${theme.colors.WHITE_100};
-  width: 14rem; 
+  width: 14rem;
   padding: 1.6rem 4rem;
   font-size: 1.6rem;
   position: relative;
@@ -269,7 +296,7 @@ const StyledButton = styled.button`
 
 const StyledSmallLogo = styled.img`
   display: block;
-  margin: 2rem auto;  
+  margin: 2rem auto;
   width: 8.8rem;
   cursor: pointer;
 `;

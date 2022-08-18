@@ -3,7 +3,9 @@ package com.morak.back.appointment.ui.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.auth.domain.Member;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,10 +40,15 @@ public class AppointmentResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mma", locale = "en_US")
     private LocalTime endTime;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime closedAt;
+
     @JsonProperty("isClosed")
     private Boolean closed;
 
-    public static AppointmentResponse from(Appointment appointment) {
+    private Boolean isHost;
+
+    public static AppointmentResponse from(Appointment appointment, Member member) {
         return new AppointmentResponse(
                 appointment.getId(),
                 appointment.getCode(),
@@ -53,7 +60,9 @@ public class AppointmentResponse {
                 appointment.getEndDate(),
                 appointment.getStartTime(),
                 appointment.getEndTime(),
-                appointment.isClosed()
+                appointment.getClosedAt(),
+                appointment.isClosed(),
+                appointment.isHost(member)
         );
     }
 }

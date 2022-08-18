@@ -56,3 +56,5 @@ INSERT INTO appointment (team_id, host_id, title, description, start_date, end_d
                          duration_minutes, status, code, closed_at, created_at, updated_at)
 VALUES (1, 2, '발표 준비 날짜 정하기', '데모 데이 발표 준비를 위한..', '2122-08-01', '2122-08-04', '13:00:00', '22:00:00', 60, 'OPEN',
         'FEsd23C1', '2022-07-31T23:59:00', now(), now());
+
+INSERT INTO slack_webhook (team_id, url, created_at, updated_at) VALUES (1L, 'https://slack.webhook.com/', now(), now());

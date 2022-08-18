@@ -44,3 +44,10 @@ security:
     github:
       client-id: "ellie"
       client-secret: "goflWkd123"
+
+logging:
+  level:
+    org:
+      springframework:
+        test.context.cache: DEBUG
+        transaction.interceptor: TRACE

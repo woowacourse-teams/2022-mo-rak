@@ -20,9 +20,14 @@ import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
+import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.core.domain.slack.FakeApiReceiver;
+import com.morak.back.core.domain.slack.FakeSlackClient;
+import com.morak.back.core.domain.slack.SlackClient;
+import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
@@ -44,27 +49,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ServiceTest
 class AppointmentServiceTest {
 
+    private final AppointmentRepository appointmentRepository;
+    private final AvailableTimeRepository availableTimeRepository;
+    private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
+    private final FakeApiReceiver receiver;
+
+    private final NotificationService notificationService;
+    private final AppointmentService appointmentService;
+
     private AppointmentBuilder DEFAULT_BUILDER;
-
-    @Autowired
-    private AppointmentRepository appointmentRepository;
-
-    @Autowired
-    private AvailableTimeRepository availableTimeRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private TeamRepository teamRepository;
-
-    @Autowired
-    private TeamMemberRepository teamMemberRepository;
-
-    private AppointmentService appointmentService;
 
     private Member 에덴;
     private Team 모락;
+
     private Appointment 약속잡기_중간;
     private Appointment 약속잡기_자정까지;
     private Appointment 약속잡기_하루동안_30분;
@@ -74,12 +72,29 @@ class AppointmentServiceTest {
     private AvailableTime 회식_가능_시간_4시반부터_5시까지;
     private AvailableTime 회식_가능_시간_5시부터_5시반까지;
 
+    @Autowired
+    public AppointmentServiceTest(AppointmentRepository appointmentRepository,
+                                  AvailableTimeRepository availableTimeRepository,
+                                  MemberRepository memberRepository, TeamRepository teamRepository,
+                                  TeamMemberRepository teamMemberRepository,
+                                  SlackWebhookRepository slackWebhookRepository) {
+        this.appointmentRepository = appointmentRepository;
+        this.availableTimeRepository = availableTimeRepository;
+        this.memberRepository = memberRepository;
+        this.teamRepository = teamRepository;
+
+        this.receiver = new FakeApiReceiver();
+        SlackClient slackClient = new FakeSlackClient(receiver);
+        this.notificationService =
+                new NotificationService(slackClient, teamRepository, teamMemberRepository, slackWebhookRepository);
+        appointmentService = new AppointmentService(appointmentRepository, availableTimeRepository,
+                memberRepository, teamRepository, teamMemberRepository, notificationService);
+    }
+
     @BeforeEach
     void setUp() {
-        appointmentService = new AppointmentService(
-                appointmentRepository, availableTimeRepository, memberRepository, teamRepository, teamMemberRepository
-        );
         CodeGenerator codeGenerator = new RandomCodeGenerator();
+
         에덴 = memberRepository.findById(1L).orElseThrow();
         모락 = teamRepository.findByCode("MoraK123").orElseThrow();
         DEFAULT_BUILDER = Appointment.builder()

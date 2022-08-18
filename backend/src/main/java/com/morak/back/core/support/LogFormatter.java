@@ -2,8 +2,11 @@ package com.morak.back.core.support;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LogFormatter {
 
     private static final String NEWLINE = System.getProperty("line.separator");

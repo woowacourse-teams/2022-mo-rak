@@ -28,4 +28,20 @@ public class ApiNotFoundTest extends AcceptanceTest {
                         .isEqualTo(CustomErrorCode.API_NOT_FOUND_ERROR.getNumber())
         );
     }
+
+    @Test
+    void rest_docs_문서가_아닌_정적파일이_요청되면_NOT_FOUND를_응답한다() {
+        // given
+        String invalidResourceApi = "/docs/index.htm";
+
+        // when
+        ExtractableResponse<Response> response = SimpleRestAssured.get(invalidResourceApi);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.API_NOT_FOUND_ERROR.getNumber())
+        );
+    }
 }

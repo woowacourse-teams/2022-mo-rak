@@ -302,15 +302,6 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    @ParameterizedTest
-    @CsvSource({
-            "0, 0, 0, 30",
-            "15, 0, 15, 30",
-            "15, 30, 16, 0",
-            "20, 0, 20, 30",
-            "23, 30, 0, 0"
-    })
-
     @Test
     void 약속잡기_추천_결과를_조회한다() {
         // given
@@ -450,6 +441,26 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
     void 약속잡기를_삭제한다() {
         // given
         String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
+
+        // when
+        ExtractableResponse<Response> response = 약속잡기_삭제를_요청한다(location);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    void 선택된_가능시간이_있는_약속잡기를_삭제한다() {
+        // given
+        String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
+
+        // when
+        List<AvailableTimeRequest> requests = List.of(
+                모락_회식_첫째날_4시부터_4시반_선택_요청_데이터,
+                모락_회식_첫째날_4시반부터_5시_선택_요청_데이터,
+                모락_회식_첫째날_5시부터_5시반_선택_요청_데이터
+        );
+        약속잡기_가능_시간_선택을_요청한다(location, requests);
 
         // when
         ExtractableResponse<Response> response = 약속잡기_삭제를_요청한다(location);
