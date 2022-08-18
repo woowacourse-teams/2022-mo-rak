@@ -33,6 +33,8 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 @RestControllerAdvice
 public class GlobalControllerAdvice {
 
+    private static final String LEFT_ARROW = " <- ";
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @ExceptionHandler(DomainLogicException.class)
@@ -142,12 +144,23 @@ public class GlobalControllerAdvice {
     @Generated
     public ResponseEntity<ExceptionResponse> handleUndefined(RuntimeException e,
                                                              ContentCachingRequestWrapper requestWrapper) {
-        String stackTrace = Arrays.stream(e.getStackTrace())
-                .map(StackTraceElement::toString)
-                .collect(Collectors.joining(" <- "));
-        logger.error(stackTrace + LogFormatter.toPrettyRequestString(requestWrapper));
+        logUndefinedError(e, requestWrapper);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(CustomErrorCode.RUNTIME_ERROR.getNumber(), "알 수 없는 예외입니다."));
+    }
+
+    private void logUndefinedError(RuntimeException e, ContentCachingRequestWrapper requestWrapper) {
+        String message = e.getMessage()
+                + LEFT_ARROW
+                + makeStackTraceMessage(e)
+                + LogFormatter.toPrettyRequestString(requestWrapper);
+        logger.error(message);
+    }
+
+    private String makeStackTraceMessage(RuntimeException e) {
+        return Arrays.stream(e.getStackTrace())
+                .map(StackTraceElement::toString)
+                .collect(Collectors.joining(LEFT_ARROW));
     }
 }
