@@ -1,6 +1,6 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
 import styled from '@emotion/styled';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Setting from '../../assets/setting.svg';
 import Menu from '../../assets/menu.svg';
 import Plus from '../../assets/plus.svg';
@@ -41,6 +41,12 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
     dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: !isVisibleGroups });
   };
 
+  const handleMoveToGroup = (groupCode: GroupInterface['code'], groupName: GroupInterface['name']) => () => {
+    if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
+      navigate(`groups/${groupCode}`);
+      handleToggleisVisibleGroups();
+    }
+  };
   const getRandomPastelColor = () => `hsl(${360 * Math.random()},${
     25 + 70 * Math.random()}%,${
     85 + 10 * Math.random()}%)`;
@@ -79,8 +85,15 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
       <StyledGroupListBox isVisible={isVisibleGroups}>
         <StyledGroupListContainer>
           {groups.map((group) => (
-            <StyledGroupList to={`groups/${group.code}`} isNowGroup={groupCode === group.code}>
-              <StyledGroupListImage src="https://us.123rf.com/450wm/zoomzoom/zoomzoom1803/zoomzoom180300055/97726350-%EB%B9%9B-%EA%B5%AC%EB%A6%84%EA%B3%BC-%ED%91%B8%EB%A5%B8-%EB%B4%84-%ED%95%98%EB%8A%98.jpg?ver=6" />
+            <StyledGroupList
+              onClick={handleMoveToGroup(group.code, group.name)}
+              isNowGroup={groupCode === group.code}
+            >
+              <StyledGroupProfile
+                backgroundColor={groupCode === group.code ? profileColor : getRandomPastelColor()}
+              >
+                <StyledGroupFirstName>{group && group.name[0]}</StyledGroupFirstName>
+              </StyledGroupProfile>
               <FlexContainer flexDirection="column">
                 <StyledGroupTitle>{group.name}</StyledGroupTitle>
               </FlexContainer>
@@ -169,12 +182,6 @@ const StyledGroupFirstName = styled.div(({ theme }) => `
   font-size: 4.8rem;
 `);
 
-const StyledGroupListImage = styled.img`
-  width: 5.2rem;
-  height: 5.2rem;
-  border-radius: 0.8rem;
-`;
-
 const StyledGroupTitle = styled.div`
   font-size: 1.6rem;
   margin-bottom: 1.2rem;
@@ -186,7 +193,7 @@ position: relative;
   margin-bottom: 2.8rem;
 `;
 
-const StyledGroupList = styled(Link)<{ isNowGroup: boolean }>(
+const StyledGroupList = styled.div<{ isNowGroup: boolean }>(
   ({ theme, isNowGroup }) => `
   display: flex;
   gap: 2rem;
@@ -194,12 +201,20 @@ const StyledGroupList = styled(Link)<{ isNowGroup: boolean }>(
   text-decoration: none;
   margin: 1.2rem;
   color: ${theme.colors.BLACK_100};
+  cursor: pointer;
+
+  &:hover {
+    background: ${theme.colors.TRANSPARENT_GRAY_100_80};
+    border-radius: 10px;
+    transition: all 0.2s linear;
+  }
 
   ${isNowGroup
     && `
     background: ${theme.colors.GRAY_100}; 
     border-radius: 10px;
     `
+
 }
 `
 );
