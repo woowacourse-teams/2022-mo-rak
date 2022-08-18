@@ -36,10 +36,10 @@ const getPlusOneDate = (date: string) => {
 
 function AppointmentCreateForm({ startDate, endDate }: Props) {
   const navigate = useNavigate();
-  const [title, handleTitle] = useInput('temp');
+  const [title, handleTitle] = useInput('');
   // TODO: groupCode 받아오는 게 계속 중복되어서, 중복줄이자
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
-  const [description, handleDescription] = useInput('temp');
+  const [description, handleDescription] = useInput('');
   const [duration, handleDuration] = useInputs<Omit<Time, 'period'>>({ hour: '', minute: '' });
   const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
   const [endTime, handleEndTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
