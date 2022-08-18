@@ -1,9 +1,12 @@
 package com.morak.back.core.support;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LogFormatter {
 
     private static final String NEWLINE = System.getProperty("line.separator");
@@ -34,7 +37,7 @@ public class LogFormatter {
     private static StringBuilder getBody(ContentCachingRequestWrapper requestWrapper) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("body: ").append(NEWLINE);
-        stringBuilder.append(Arrays.toString(requestWrapper.getContentAsByteArray()));
+        stringBuilder.append(new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8));
         return stringBuilder;
     }
 }

@@ -6,7 +6,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.snippet.Attributes.key;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.ui.ControllerTest;
@@ -26,19 +25,19 @@ public class ErrorCodesControllerTest extends ControllerTest {
         ResultActions response = mockMvc.perform(get("/error-codes"));
 
         response.andDo(
-            document("error-codes",
-                getDocumentRequest(),
-                getDocumentResponse(),
-                responseFields(
-                    create()
+                document("error-codes",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        responseFields(
+                                create()
+                        )
                 )
-            )
         );
     }
 
     private List<FieldDescriptor> create() {
         return Arrays.stream(CustomErrorCode.values())
-            .map(code -> fieldWithPath("code").description(code.getInformation()).type(code.getNumber()))
+                .map(code -> fieldWithPath("code").description(code.getInformation()).type(code.getNumber()))
                 .collect(Collectors.toList());
     }
 }

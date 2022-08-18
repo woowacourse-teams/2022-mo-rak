@@ -6,11 +6,25 @@ import Box from '../../@common/Box/Box';
 import Divider from '../../@common/Divider/Divider';
 import MarginContainer from '../../@common/MarginContainer/MarginContainer';
 import PollProgressButtonGroup from '../PollProgressButtonGroup/PollProgressButtonGroup';
-import { getPoll, progressPoll } from '../../../api/poll';
+import { getPoll, progressPoll, getPollItems } from '../../../api/poll';
 import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGroup';
-import { PollInterface, SelectedPollItem, getPollResponse } from '../../../types/poll';
+import {
+  PollInterface,
+  SelectedPollItem,
+  getPollResponse,
+  getPollItemsResponse,
+  PollItemInterface
+} from '../../../types/poll';
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 import { GroupInterface } from '../../../types/group';
+
+const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
+  pollItems
+    .filter((pollItem) => pollItem.isSelected)
+    .map((pollItem) => ({
+      id: pollItem.id,
+      description: pollItem.description
+    }));
 
 function PollProgressForm() {
   const navigate = useNavigate();
@@ -19,12 +33,18 @@ function PollProgressForm() {
     pollCode: PollInterface['code'];
   };
   const [poll, setPoll] = useState<getPollResponse>();
+  const [pollItems, setPollItems] = useState<getPollItemsResponse>([]);
   const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItem>>([]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    if (!poll) return;
-
     e.preventDefault();
+
+    if (!poll) return;
+    if (selectedPollItems.length <= 0) {
+      alert('최소 1개의 선택항목을 선택해주세요!');
+
+      return;
+    }
 
     try {
       await progressPoll(pollCode, selectedPollItems, groupCode);
@@ -36,17 +56,21 @@ function PollProgressForm() {
 
   const handleSelectPollItems = (e: ChangeEvent<HTMLInputElement>) => {
     const id = Number(e.target.id);
+    const isSelected = e.target.checked;
     // TODO: 깊은 복사 함수 만들어보기!
-    const newSelectedPollItems = JSON.parse(JSON.stringify(selectedPollItems));
+    const copiedSelectedPollItems: Array<SelectedPollItem> = JSON.parse(
+      JSON.stringify(selectedPollItems)
+    );
 
-    if (e.target.checked) {
-      setSelectedPollItems([...newSelectedPollItems, { id, description: '' }]);
+    if (isSelected) {
+      // NOTE: EMPTY_STRING 상수화 어떤가요?
+      setSelectedPollItems([...copiedSelectedPollItems, { id, description: '' }]);
 
       return;
     }
 
     setSelectedPollItems(
-      [...newSelectedPollItems].filter((selectedPollItem) => selectedPollItem.id !== id)
+      copiedSelectedPollItems.filter((selectedPollItem) => selectedPollItem.id !== id)
     );
   };
 
@@ -56,21 +80,22 @@ function PollProgressForm() {
     setSelectedPollItems([{ id, description: '' }]);
   };
 
-  const handleDescription = (pollId: PollInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
-    // TODO: 깊은 복사 함수 만들기
-    const newSelectedPollItems: Array<SelectedPollItem> = JSON.parse(
-      JSON.stringify(selectedPollItems)
-    );
+  const handleDescription =
+    (pollItemId: PollItemInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
+      // TODO: 깊은 복사 함수 만들기
+      const copiedSelectedPollItems: Array<SelectedPollItem> = JSON.parse(
+        JSON.stringify(selectedPollItems)
+      );
 
-    const targetPollItem = newSelectedPollItems.find(
-      (newSelectedPollItem) => newSelectedPollItem.id === pollId
-    );
+      const targetPollItem = copiedSelectedPollItems.find(
+        (copiedSelectedPollItem) => copiedSelectedPollItem.id === pollItemId
+      );
 
-    if (targetPollItem) {
-      targetPollItem.description = e.target.value;
-      setSelectedPollItems(newSelectedPollItems);
-    }
-  };
+      if (targetPollItem) {
+        targetPollItem.description = e.target.value;
+        setSelectedPollItems(copiedSelectedPollItems);
+      }
+    };
 
   useEffect(() => {
     const fetchPoll = async (pollCode: PollInterface['code']) => {
@@ -94,6 +119,25 @@ function PollProgressForm() {
     fetchPoll(pollCode);
   }, []);
 
+  useEffect(() => {
+    const fetchPollItems = async (pollCode: PollInterface['code']) => {
+      try {
+        const res = await getPollItems(pollCode, groupCode);
+        setPollItems(res.data);
+      } catch (err) {
+        alert(err);
+      }
+    };
+
+    fetchPollItems(pollCode);
+  }, []);
+
+  useEffect(() => {
+    const initialSelectedPollItems = getInitialSelectedPollItems(pollItems);
+
+    setSelectedPollItems(initialSelectedPollItems);
+  }, [pollItems]);
+
   return (
     <Box width="84.4rem" padding="6.4rem 4.8rem 5.4rem 4.8rem">
       {poll ? (
@@ -110,13 +154,12 @@ function PollProgressForm() {
           </MarginContainer>
           <MarginContainer margin="0 0 8.4rem 0">
             <PollProgressItemGroup
-              pollCode={poll.code}
+              pollItems={pollItems}
               selectedPollItems={selectedPollItems}
               allowedPollCount={poll.allowedPollCount}
               onChangeCheckbox={handleSelectPollItems}
               onChangeRadio={handleSelectPollItem}
               onChangeText={handleDescription}
-              groupCode={groupCode}
             />
           </MarginContainer>
           <PollProgressButtonGroup pollCode={pollCode} isHost={poll.isHost} groupCode={groupCode} />

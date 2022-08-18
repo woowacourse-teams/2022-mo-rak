@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
-
+import { useLottie } from 'lottie-react';
 import Box from '../../@common/Box/Box';
 import PollMainStatus from '../PollMainStatus/PollMainStatus';
 import PollMainDetail from '../PollMainDetail/PollMainDetail';
@@ -14,15 +14,16 @@ import { getPollsResponse } from '../../../types/poll';
 import { GroupInterface } from '../../../types/group';
 
 import PollMainButtonGroup from '../PollMainButtonGroup/PollMainButtonGroup';
+import emptyAnimation from '../../../assets/empty-animation.json';
 
 function PollMainContainer() {
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [polls, setPolls] = useState<getPollsResponse>([]);
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
 
   useEffect(() => {
     const fetchPolls = async () => {
       const res = await getPolls(groupCode);
-      console.log(res);
       setPolls(res.data);
     };
 
@@ -33,9 +34,19 @@ function PollMainContainer() {
     }
   }, []);
 
+  if (polls.length <= 0) {
+    return (
+      <>
+        {/* TODO: 재사용 가능하지 않을까한다! */}
+        <LottieWrapper>{emptyLottie.View}</LottieWrapper>
+        <StyledGuide>첫 투표를 만들어보세요!</StyledGuide>
+      </>
+    );
+  }
+
   return (
     <StyledContainer>
-      {polls ? (
+      {polls.length > 0 &&
         polls.map(({ status, title, code, isAnonymous, allowedPollCount, closedAt, count }) => (
           <Box
             width="26.4rem"
@@ -58,10 +69,7 @@ function PollMainContainer() {
             </MarginContainer>
             <PollMainButtonGroup pollCode={code} status={status} />
           </Box>
-        ))
-      ) : (
-        <div>없습니다</div>
-      )}
+        ))}
     </StyledContainer>
   );
 }
@@ -76,5 +84,20 @@ const StyledTitle = styled.h1`
   font-size: 1.6rem;
   text-align: center;
 `;
+
+const LottieWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledGuide = styled.p(
+  ({ theme }) => `
+  text-align: center;
+  font-size: 2.8rem;
+
+  color: ${theme.colors.GRAY_400}
+`
+);
 
 export default PollMainContainer;

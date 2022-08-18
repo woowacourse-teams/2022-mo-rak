@@ -46,7 +46,7 @@ public enum CustomErrorCode {
     AVAILABLETIME_REVERSE_CHRONOLOGY_ERROR("3114", "약속잡기 마지막 날짜&시각은 현재 날짜&시각보다 미래여야 합니다."),
     AVAILABLETIME_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR("3115", "약속잡기 선택 시각은 30분 단위여야 합니다."),
     AVAILABLETIME_DURATION_NOT_MINUTES_UNIT_ERROR("3116", "약속잡기 선택 진행 시간은 30분 단위여야 합니다."),
-    APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR("3117", "약속잡기 마감 시간은 마지막 날짜보다 빨라야 합니다."),
+    APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR("3117", "약속잡기 마감 시간은 현재 시간과 마지막 날짜/시간 사이여야 합니다."),
 
     APPOINTMENT_MEMBER_MISMATCHED_ERROR("3200", "멤버가 약속잡기의 호스트가 아닙니다."),
     APPOINTMENT_TEAM_MISMATCHED_ERROR("3201", "약속잡기가 그룹에 속해있지 않습니다."),
@@ -54,10 +54,13 @@ public enum CustomErrorCode {
 
     INVALID_PROPERTY_ERROR("4000", "잘못된 값이 입력되었습니다."),
     API_NOT_FOUND_ERROR("4300", "요청한 API가 존재하지 않습니다"),
+    NOTIFICATION_INVALID_URL_ERROR("4400", "알림 요청 URL이 잘못되었습니다."),
+    NOTIFICATION_REQUEST_FAILURE_ERROR("4401", "요청 결과에 실패했습니다."),
+    NOTIFICATION_SCHEDULING_FAILURE_ERROR("4402", "스케줄링 실행 중 실패했습니다."),
 
     MORAK_ERROR("9901", "처리하지 못한 예외입니다."),
     RUNTIME_ERROR("9902", "예상치 못한 예외입니다.");
-    
+
     private final String number;
     private final String information;
 }

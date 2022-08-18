@@ -1,40 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Logo from '../../assets/logo.svg';
-import LinkIcon from '../../assets/link.svg';
-import { createInvitationCode, getGroups } from '../../api/group';
-import { writeClipboard } from '../../utils/clipboard';
+
+import { getGroups } from '../../api/group';
 import { GroupInterface } from '../../types/group';
 
+import Divider from '../@common/Divider/Divider';
+import SidebarGroupMenu from '../SidebarGroupMenu/SidebarGroupMenu';
+import SidebarMenuModals from '../SidebarMenuModals/SidebarMenuModals';
+
+import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembersProfileMenu';
+import SidebarFeatureMenu from '../SidebarFeatureMenu/SidebarFeatureMenu';
+import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
+import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
+
 function Sidebar() {
-  const { groupCode } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
+  const [activeModalMenu, setActiveModalMenu] = useState<null | string>(null);
+
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+
   const navigate = useNavigate();
 
   const handleNavigate = (location: string) => () => {
     navigate(location);
   };
 
-  const handleCopyInviationCode = async () => {
-    try {
-      if (groupCode) {
-        const res = await createInvitationCode(groupCode);
-        const [_, invitationCode] = res.headers.location.split('groups/in/');
-        const invitationLink = `
-        링크를 클릭하거나, 참가 코드를 입력해주세요😀
-        url: ${process.env.CLIENT_URL}/invite/${invitationCode}
-        코드: ${invitationCode}
-        `;
-
-        writeClipboard(invitationLink).then(() => {
-          alert('초대링크가 클립보드에 복사되었습니다💌');
-        });
-      }
-    } catch (err) {
-      alert(err);
-    }
+  const handleSetActiveGroupMenu = (menu: null | string) => () => {
+    setActiveModalMenu(menu);
   };
 
   useEffect(() => {
@@ -50,31 +45,49 @@ function Sidebar() {
     };
 
     fetchGroups();
-  }, []);
+  }, [groupCode]);
 
   if (isLoading) return <div>로딩중</div>;
 
   return (
-    <StyledContainer>
-      <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
-      <StyledGroupContainer>
-        <StyledGroupHeaderButton type="button">Groups</StyledGroupHeaderButton>
-        <StyledContent>
-          {groups.map((group) => (
-            <StyledGroupButton
-              to={`groups/${group.code}`}
-              isDefaultGroup={groupCode === group.code}
-            >
-              {group.name}
-            </StyledGroupButton>
-          ))}
-        </StyledContent>
-      </StyledGroupContainer>
-      <StyledInvitationLink onClick={handleCopyInviationCode}>
-        <img src={LinkIcon} alt="inivation-link" />
-        <p>초대 링크 복사</p>
-      </StyledInvitationLink>
-    </StyledContainer>
+    <>
+      <StyledContainer>
+        <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+
+        {/* 그룹 */}
+        {/* TODO: handleSetActiveGroupMenu 넘겨주는 방식(하나로 넘겨줄 수는 없을까?) */}
+        <SidebarGroupMenu
+          onClickCreateMenu={handleSetActiveGroupMenu('create')}
+          onClickParticipateMenu={handleSetActiveGroupMenu('participate')}
+          groupCode={groupCode}
+          groups={groups}
+        />
+
+        {/* 기능 */}
+        <Divider />
+        <SidebarFeatureMenu groupCode={groupCode} />
+
+        {/* 멤버 목록 */}
+        <Divider />
+        <SidebarMembersProfileMenu groupCode={groupCode} />
+
+        <StyledBottomMenu>
+          {/* 슬랙연동 */}
+          <SidebarSlackMenu onClickMenu={handleSetActiveGroupMenu('slack')} />
+
+          {/* 초대링크 */}
+          <SidebarInvitationMenu groupCode={groupCode} />
+        </StyledBottomMenu>
+
+      </StyledContainer>
+
+      <SidebarMenuModals
+        activeModalMenu={activeModalMenu}
+        closeModal={handleSetActiveGroupMenu(null)}
+        groupCode={groupCode}
+      />
+
+    </>
   );
 }
 
@@ -87,55 +100,26 @@ const StyledContainer = styled.div(
   top: 0;
   border-right: 0.1rem solid ${theme.colors.GRAY_200};
   background: ${theme.colors.WHITE_100};
-  padding: 4rem;
+  padding-left: 4rem;
   gap: 2rem;
+  border: none;
 `
 );
 
 const StyledLogo = styled.img`
-  width: 12rem;
+  display: block;
+  margin: 2rem auto;  
+  width: 16rem;
   cursor: pointer;
+  padding-right: 4rem;
 `;
 
-const StyledInvitationLink = styled.button`
+const StyledBottomMenu = styled.div`
   display: flex;
-  align-items: center;
-  cursor: pointer;
+  flex-direction: column;
+  gap: 2rem;
   position: absolute;
-  bottom: 3.6rem;
-  left: 3.6rem;
-  gap: 1.2rem;
-  font-size: 1.6rem;
+  bottom: 4rem;
 `;
-
-const StyledGroupContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 2.8rem;
-`;
-
-const StyledContent = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1.6rem;
-`;
-
-const StyledGroupHeaderButton = styled.button`
-  width: 100%;
-  font-size: 1.6rem;
-  text-align: left;
-`;
-
-const StyledGroupButton = styled(Link)<{ isDefaultGroup: boolean }>(
-  ({ theme, isDefaultGroup }) => `
-  width: 100%;
-  font-size: 1.6rem;
-  color: ${isDefaultGroup ? theme.colors.BLACK_100 : theme.colors.GRAY_400};
-  text-align: left;
-  
-`
-);
 
 export default Sidebar;

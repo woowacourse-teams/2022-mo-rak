@@ -1,120 +1,99 @@
-import React, { useEffect, useState, ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler } from 'react';
 
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 
-import {
-  PollInterface,
-  PollItemInterface,
-  SelectedPollItem,
-  getPollItemsResponse
-} from '../../../types/poll';
+import { PollInterface, SelectedPollItem, getPollItemsResponse } from '../../../types/poll';
 
-import { GroupInterface } from '../../../types/group';
-
-import { getPollItems } from '../../../api/poll';
 import TextField from '../../@common/TextField/TextField';
 import Radio from '../../@common/Radio/Radio';
 import Checkbox from '../../@common/Checkbox/Checkbox';
 import Input from '../../@common/Input/Input';
 
 interface Props {
-  pollCode: PollInterface['code'];
+  pollItems: getPollItemsResponse;
   selectedPollItems: Array<SelectedPollItem>;
   allowedPollCount: PollInterface['allowedPollCount'];
-  groupCode: GroupInterface['code'];
   onChangeCheckbox: ChangeEventHandler<HTMLInputElement>;
   onChangeRadio: ChangeEventHandler<HTMLInputElement>;
   onChangeText: (pollId: number) => ChangeEventHandler<HTMLInputElement>;
 }
 
+const getSelectedPollItem = (
+  pollId: PollInterface['id'],
+  selectedPollItems: Array<SelectedPollItem>
+) => selectedPollItems.find((selectedPollItem) => selectedPollItem.id === pollId);
+
 function PollProgressItemGroup({
-  pollCode,
+  pollItems,
   selectedPollItems,
   onChangeCheckbox,
   onChangeRadio,
   onChangeText,
-  allowedPollCount,
-  groupCode
+  allowedPollCount
 }: Props) {
   const theme = useTheme();
-  const [pollItems, setPollItems] = useState<getPollItemsResponse>([]);
-  const getIsSelectedPollItem = (pollId: PollInterface['id']) =>
-    selectedPollItems.some((selectedPollItem) => selectedPollItem.id === pollId);
-
-  useEffect(() => {
-    const fetchPollItems = async (pollCode: PollInterface['code']) => {
-      try {
-        const res = await getPollItems(pollCode, groupCode);
-        setPollItems(res.data);
-      } catch (err) {
-        alert(err);
-      }
-    };
-
-    if (pollCode) {
-      fetchPollItems(pollCode);
-    }
-  }, []);
 
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
-      {pollItems.map(({ id, subject }: PollItemInterface) => (
-        <>
-          <TextField
-            colorScheme={theme.colors.PURPLE_100}
-            padding="1.2rem 0"
-            width="74.4rem"
-            variant="outlined"
-            borderRadius="10px"
-          >
-            {allowedPollCount >= 2 ? (
-              <Checkbox
-                id={String(id)}
-                checked={getIsSelectedPollItem(id)}
-                onChange={onChangeCheckbox}
-              >
-                {subject}
-              </Checkbox>
-            ) : (
-              <Radio
-                id={String(id)}
-                name={subject}
-                checked={getIsSelectedPollItem(id)}
-                onChange={onChangeRadio}
-              >
-                {subject}
-              </Radio>
-            )}
-          </TextField>
+      {pollItems.map(({ id, subject }) => {
+        const selectedPollItem = getSelectedPollItem(id, selectedPollItems);
+        const isSelectedPollItem = !!selectedPollItem;
 
-          <StyledDescription isSelected={getIsSelectedPollItem(id)}>
+        return (
+          <>
             <TextField
               colorScheme={theme.colors.PURPLE_100}
+              padding="1.2rem 0"
               width="74.4rem"
               variant="outlined"
               borderRadius="10px"
-              padding="1.2rem 0"
             >
-              <Input
-                color={theme.colors.BLACK_100}
-                fontSize="12px"
-                placeholder="선택한 이유는?"
-                onChange={onChangeText(id)}
-                aria-label={subject}
-              />
+              {allowedPollCount >= 2 ? (
+                <Checkbox id={String(id)} checked={isSelectedPollItem} onChange={onChangeCheckbox}>
+                  {subject}
+                </Checkbox>
+              ) : (
+                <Radio
+                  id={String(id)}
+                  name={subject}
+                  checked={isSelectedPollItem}
+                  onChange={onChangeRadio}
+                >
+                  {subject}
+                </Radio>
+              )}
             </TextField>
-          </StyledDescription>
-        </>
-      ))}
+
+            <StyledDescription isVisible={isSelectedPollItem}>
+              <TextField
+                colorScheme={theme.colors.PURPLE_100}
+                width="74.4rem"
+                variant="outlined"
+                borderRadius="10px"
+                padding="1.2rem 0"
+              >
+                <Input
+                  color={theme.colors.BLACK_100}
+                  fontSize="1.2rem"
+                  placeholder="선택한 이유는?"
+                  value={selectedPollItem?.description}
+                  onChange={onChangeText(id)}
+                  aria-label={subject}
+                />
+              </TextField>
+            </StyledDescription>
+          </>
+        );
+      })}
     </FlexContainer>
   );
 }
 
-const StyledDescription = styled.div<{ isSelected: boolean }>(
-  ({ isSelected }) => `
-  display: ${isSelected ? 'block' : 'none'};
+const StyledDescription = styled.div<{ isVisible: boolean }>(
+  ({ isVisible }) => `
+  display: ${isVisible ? 'block' : 'none'};
 `
 );
 

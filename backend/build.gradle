@@ -132,12 +132,14 @@ tasks.named('jacocoTestCoverageVerification') {
             }
 
             excludes = [
-                    '**.LogFormatter*',
+                    '**.*Formatter*',
                     '**.*BaseEntity*',
                     '**.*GithubOAuthClient*',
                     '**.*MorakBackApplication*',
                     '**.*Interceptor*',
-                    '**.*Extractor*'
+                    '**.*Extractor*',
+                    '**.RestSlackClient',
+                    '**.*Config'
             ]
         }
 

@@ -4,15 +4,31 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getAppointment, progressAppointment } from '../../api/appointment';
 import { GroupInterface } from '../../types/group';
 import {
-  getAppointmentResponse,
   AvailableTimes,
-  AppointmentInterface
+  AppointmentInterface,
+  getAppointmentResponse
 } from '../../types/appointment';
 import Calendar from '../../components/@common/Calendar/Calendar';
 import AppointmentProgressHeader from '../../components/AppointmentProgress/AppointmentProgressHeader/AppointmentProgressHeader';
 import AppointmentProgressDetail from '../../components/AppointmentProgress/AppointmentProgressDetail/AppointmentProgressDetail';
 import AppointmentProgressTimePicker from '../../components/AppointmentProgress/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
 import AppointmentProgressButtonGroup from '../../components/AppointmentProgress/AppointmentProgressButtonGroup/AppointmentProgressButtonGroup';
+
+// TODO: 중복됨 제거
+const getPlusOneDate = (date: string) => {
+  const currentDate = new Date(date);
+  currentDate.setDate(currentDate.getDate() + 1);
+
+  return currentDate.toISOString().split('T')[0];
+};
+
+// TODO: getPlusOneDate랑 합쳐도 좋을듯?
+const getMinusOneDate = (date: string) => {
+  const currentDate = new Date(date);
+  currentDate.setDate(currentDate.getDate() - 1);
+
+  return currentDate.toISOString().split('T')[0];
+};
 
 // TODO: 리팩토링 (데모데이때문에 급하게 함)
 // TODO: 페이지 추상화
@@ -36,10 +52,12 @@ function AppointmentProgressPage() {
       return;
     }
 
+    const endSelectedDate = end === '12:00AM' ? getPlusOneDate(selectedDate) : selectedDate;
+
     const isSelected = availableTimes.find(
       (availableTime) =>
         availableTime.start === `${selectedDate}T${start}` &&
-        availableTime.end === `${selectedDate}T${end}`
+        availableTime.end === `${endSelectedDate}T${end}`
     );
 
     if (isSelected) {
@@ -56,7 +74,7 @@ function AppointmentProgressPage() {
       ...availableTimes,
       {
         start: `${selectedDate}T${start}`,
-        end: `${selectedDate}T${end}`
+        end: `${endSelectedDate}T${end}`
       }
     ]);
   };
@@ -77,6 +95,7 @@ function AppointmentProgressPage() {
         const res = await getAppointment(groupCode, appointmentCode);
         if (res.data.isClosed) {
           alert('마감된 약속잡기입니다');
+          navigate(`/groups/${groupCode}/appointment`);
 
           return;
         }
@@ -100,7 +119,11 @@ function AppointmentProgressPage() {
         <Calendar
           version="select"
           startDate={appointment.startDate}
-          endDate={appointment.endDate}
+          endDate={
+            appointment.endTime === '12:00AM'
+              ? getMinusOneDate(appointment.endDate)
+              : appointment.endDate
+          }
           selectedDate={selectedDate}
           // TODO: setSelectedDate를 넘겨주는 것이 아니라 onClickDay 같이 해주는 게 어떨까? props를 받는 Calendar 컴포넌트에서는
           // 위에서 어떤 함수가 내려오는 지 정확한 이름을 알 필요가 없다. 바깥에는 onClickDay 같이 소통할 수 있는 인터페이스만 제공해주면 될뿐

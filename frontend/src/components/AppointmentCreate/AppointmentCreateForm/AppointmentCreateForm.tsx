@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React, { FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { AxiosError } from 'axios';
 import Box from '../../@common/Box/Box';
 import AppointmentCreateFormButtonGroup from '../AppointmentCreateFormButtonGroup/AppointmentCreateFormButtonGroup';
 import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
@@ -26,9 +27,16 @@ const getFormattedTime = (time: Time) => {
   return `${hour.padStart(2, '0')}:${minute}${period}`;
 };
 
+const getPlusOneDate = (date: string) => {
+  const currentDate = new Date(date);
+  currentDate.setDate(currentDate.getDate() + 1);
+
+  return currentDate.toISOString().split('T')[0];
+};
+
 function AppointmentCreateForm({ startDate, endDate }: Props) {
   const navigate = useNavigate();
-  const [title, handleTitle] = useInput();
+  const [title, handleTitle] = useInput('');
   // TODO: groupCode 받아오는 게 계속 중복되어서, 중복줄이자
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [description, handleDescription] = useInput('');
@@ -41,13 +49,25 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   const handleCreateAppointment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!startDate) {
+      alert('달력을 활용하여 약속잡기 날짜를 지정해주세요');
+
+      return;
+    }
+
+    const formattedStartTime = getFormattedTime(startTime);
+    const formattedEndTime = getFormattedTime(endTime);
+
     const appointment: createAppointmentData = {
       title,
       description,
       startDate,
-      endDate: endDate || startDate,
-      startTime: getFormattedTime(startTime),
-      endTime: getFormattedTime(endTime),
+      endDate:
+        formattedEndTime === '12:00AM'
+          ? getPlusOneDate(endDate || startDate)
+          : endDate || startDate,
+      startTime: formattedStartTime,
+      endTime: formattedEndTime,
       durationHours: Number(duration.hour),
       durationMinutes: Number(duration.minute),
       closedAt: `${closeDate}T${closeTime}`
@@ -58,9 +78,37 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
       const appointmentCode = res.headers.location.split('appointments/')[1];
 
       navigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        const errCode = err.response?.data.codeNumber;
+
+        if (errCode === '3103') {
+          alert('진행 시간은 약속잡기 시간(가능시간제한)보다 짧아야 합니다.');
+
+          return;
+        }
+
+        if (errCode === '3117') {
+          alert('마감 시간은 현재 시간과 마지막 날짜의 최대 가능 시간사이여야합니다');
+
+          return;
+        }
+
+        if (errCode === '3102') {
+          alert('약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다..');
+
+          return;
+        }
+
+        if (errCode === '3107') {
+          alert('약속잡기 진행시간은 30분에서 24시간 사이여야 합니다.');
+        }
+      }
     }
+  };
+
+  const handleNavigateAppointmentMain = () => {
+    navigate(`/groups/${groupCode}/appointment`);
   };
 
   return (
@@ -81,14 +129,18 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
           />
           <AppointmentCreateFormCloseTimeInput
             closeTime={closeTime}
-            onChangeTime={handleCloseTime}
             closeDate={closeDate}
+            maxCloseDate={
+              // TODO: 너무 복잡하다, getFormattedTime이 계속 중복되어서 사용된다.ㅠㅠ
+              endDate && getFormattedTime(endTime) === '12:00AM' ? getPlusOneDate(endDate) : endDate
+            }
+            onChangeTime={handleCloseTime}
             onChangeDate={handleCloseDate}
-            maxCloseDate={endDate}
           />
         </FlexContainer>
       </Box>
-      <AppointmentCreateFormButtonGroup />
+      {/* NOTE: onCancel로 받아주는 게 맞을까? */}
+      <AppointmentCreateFormButtonGroup onCancel={handleNavigateAppointmentMain} />
     </StyledForm>
   );
 }

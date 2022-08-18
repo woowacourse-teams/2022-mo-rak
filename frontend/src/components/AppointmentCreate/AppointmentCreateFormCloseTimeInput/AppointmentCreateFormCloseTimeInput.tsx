@@ -41,8 +41,9 @@ function AppointmentCreateFormCloseTimeInput({
             onChange={onChangeDate}
             value={closeDate}
             fontSize="2rem"
+            required
           />
-          <Input type="time" onChange={onChangeTime} value={closeTime} fontSize="2rem" />
+          <Input type="time" onChange={onChangeTime} value={closeTime} fontSize="2rem" required />
         </FlexContainer>
       </TextField>
     </>

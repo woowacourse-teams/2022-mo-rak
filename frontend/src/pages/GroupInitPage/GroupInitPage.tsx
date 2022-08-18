@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 
-import Logo from '../../assets/logo.svg';
-
 import GroupInitContainer from '../../components/GroupInit/GroupInitContainer/GroupInitContainer';
 import { getDefaultGroup } from '../../api/group';
 import { getLocalStorageItem, removeLocalStorageItem } from '../../utils/storage';
@@ -45,7 +43,6 @@ function GroupInitPage() {
 
   return (
     <StyledContainer>
-      <StyledLogo src={Logo} alt="logo" />
       <GroupInitContainer />
     </StyledContainer>
   );
@@ -59,10 +56,6 @@ const StyledContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 100vh;
-`;
-
-const StyledLogo = styled.img`
-  width: 35.6rem;
 `;
 
 export default GroupInitPage;

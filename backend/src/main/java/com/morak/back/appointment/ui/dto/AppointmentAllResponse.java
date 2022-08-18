@@ -1,7 +1,9 @@
 package com.morak.back.appointment.ui.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.appointment.domain.Appointment;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,9 @@ public class AppointmentAllResponse implements Comparable<AppointmentAllResponse
 
     private Integer durationMinutes;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime closedAt;
+
     @JsonProperty("isClosed")
     private Boolean closed;
 
@@ -36,6 +41,7 @@ public class AppointmentAllResponse implements Comparable<AppointmentAllResponse
                 appointment.getDescription(),
                 appointment.parseHours(),
                 appointment.parseMinutes(),
+                appointment.getClosedAt(),
                 appointment.isClosed(),
                 appointment.getCount()
         );

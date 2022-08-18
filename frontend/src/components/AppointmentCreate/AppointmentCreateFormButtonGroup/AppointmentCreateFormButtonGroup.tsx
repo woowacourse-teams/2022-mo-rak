@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import { useTheme } from '@emotion/react';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import Button from '../../@common/Button/Button';
 
-function AppointmentCreateFormButtonGroup() {
+interface Props {
+  onCancel: MouseEventHandler<HTMLButtonElement>;
+}
+
+function AppointmentCreateFormButtonGroup({ onCancel }: Props) {
   const theme = useTheme();
 
   return (
     <FlexContainer justifyContent="center" gap="0.8rem">
-      <Button variant="filled" colorScheme={theme.colors.GRAY_400} width="31.6rem" fontSize="4rem">
+      <Button
+        variant="filled"
+        colorScheme={theme.colors.GRAY_400}
+        width="31.6rem"
+        fontSize="4rem"
+        onClick={onCancel}
+      >
         취소
       </Button>
       <Button

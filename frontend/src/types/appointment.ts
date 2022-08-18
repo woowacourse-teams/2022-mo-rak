@@ -12,6 +12,7 @@ interface AppointmentInterface {
   startTime: string;
   endTime: string;
   closedAt: string;
+  isClosed: boolean;
 }
 
 interface AppointmentRecommendationInterface {
@@ -30,15 +31,14 @@ interface Time {
 
 type AvailableTimes = Array<{ start: string; end: string }>;
 
-type createAppointmentData = Omit<AppointmentInterface, 'id' | 'code'>;
+type createAppointmentData = Omit<AppointmentInterface, 'id' | 'code' | 'isClosed'>;
 
 type getAppointmentResponse = AppointmentInterface & {
-  isClosed: boolean;
+  isHost: boolean;
 };
 
 type getAppointmentsResponse = Array<
   Omit<AppointmentInterface, 'startDate' | 'endDate' | 'startTime' | 'endTime'> & {
-    isClosed: boolean;
     count: number;
   }
 >;
@@ -46,8 +46,8 @@ type getAppointmentsResponse = Array<
 export {
   Time,
   createAppointmentData,
-  getAppointmentResponse,
   getAppointmentsResponse,
+  getAppointmentResponse,
   AvailableTimes,
   AppointmentRecommendationInterface,
   AppointmentInterface

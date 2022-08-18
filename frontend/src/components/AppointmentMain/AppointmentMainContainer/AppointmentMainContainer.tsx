@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
-
+import { useLottie } from 'lottie-react';
 import Box from '../../@common/Box/Box';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import MarginContainer from '../../@common/MarginContainer/MarginContainer';
@@ -12,8 +12,10 @@ import AppointmentMainStatus from '../AppointmentMainStatus/AppointmentMainStatu
 import AppointmentMainProgress from '../AppointmentMainProgress/AppointmentMainProgress';
 import AppointmentMainDetail from '../AppointmentMainDetail/AppointmentMainDetail';
 import AppointmentMainButtonGroup from '../AppointmentMainButtonGroup/AppointmentMainButtonGroup';
+import emptyAnimation from '../../../assets/empty-animation.json';
 
 function AppointmentMainContainer() {
+  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [appointments, setAppointments] = useState<getAppointmentsResponse>([]);
 
@@ -30,17 +32,21 @@ function AppointmentMainContainer() {
     }
   }, []);
 
+  if (appointments.length <= 0) {
+    return (
+      <>
+        {/* TODO: 재사용 가능하지 않을까한다! */}
+        <LottieWrapper>{emptyLottie.View}</LottieWrapper>
+        <StyledGuide>첫 약속잡기를 만들어보세요!</StyledGuide>
+      </>
+    );
+  }
+
   return (
     <StyledContainer>
-      {appointments ? (
-        appointments.map(({
-          code,
-          title,
-          description,
-          durationHours,
-          durationMinutes,
-          count,
-          isClosed }) => (
+      {appointments.length > 0
+        && appointments.map(
+          ({ code, title, durationHours, durationMinutes, count, isClosed, closedAt }) => (
             <Box
               width="26.4rem"
               padding="2rem"
@@ -51,20 +57,20 @@ function AppointmentMainContainer() {
                 <AppointmentMainStatus isClosed={isClosed} />
               </FlexContainer>
               <StyledTitle>{title}</StyledTitle>
-              <StyledDescription>{description}</StyledDescription>
-              <AppointmentMainProgress count={count} groupCode={groupCode} />
+              <MarginContainer margin="0 0 0.4rem">
+                <AppointmentMainProgress count={count} groupCode={groupCode} />
+              </MarginContainer>
               <MarginContainer margin="0 0 1.2rem">
                 <AppointmentMainDetail
                   durationHours={durationHours}
                   durationMinutes={durationMinutes}
+                  closedAt={closedAt}
                 />
               </MarginContainer>
               <AppointmentMainButtonGroup appointmentCode={code} isClosed={isClosed} />
             </Box>
-        ))
-      ) : (
-        <div>없습니다</div>
-      )}
+          )
+        )}
     </StyledContainer>
   );
 }
@@ -80,12 +86,18 @@ const StyledTitle = styled.h1`
   text-align: center;
 `;
 
-const StyledDescription = styled.div`
-  font-size: 0.8rem;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+const LottieWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
+const StyledGuide = styled.p(
+  ({ theme }) => `
+  text-align: center;
+  font-size: 2.8rem;
+
+  color: ${theme.colors.GRAY_400}
+`
+);
 export default AppointmentMainContainer;

@@ -17,16 +17,21 @@ import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
+import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.core.domain.slack.FormattableData;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.support.Generated;
+import com.morak.back.core.util.MessageFormatter;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamAuthorizationException;
 import com.morak.back.team.exception.TeamNotFoundException;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +52,8 @@ public class AppointmentService {
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
 
+    private final NotificationService notificationService;
+
     public String createAppointment(String teamCode, Long memberId, AppointmentCreateRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
@@ -56,6 +63,7 @@ public class AppointmentService {
 
         Appointment appointment = request.toAppointment(team, member, Code.generate(CODE_GENERATOR));
         Appointment savedAppointment = appointmentRepository.save(appointment);
+        notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(appointment)));
         return savedAppointment.getCode();
     }
 
@@ -73,6 +81,8 @@ public class AppointmentService {
 
     @Transactional(readOnly = true)
     public AppointmentResponse findAppointment(String teamCode, Long memberId, String appointmentCode) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team.getId(), memberId);
@@ -82,7 +92,7 @@ public class AppointmentService {
                         CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR, appointmentCode
                 ));
         validateAppointmentInTeam(team, appointment);
-        return AppointmentResponse.from(appointment);
+        return AppointmentResponse.from(appointment, member);
     }
 
     private void validateAppointmentInTeam(Team findTeam, Appointment appointment) {
@@ -186,6 +196,7 @@ public class AppointmentService {
         validateHost(member, appointment);
         validateAppointmentInTeam(team, appointment);
         appointment.close(member);
+        notificationService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(appointment)));
     }
 
     public void deleteAppointment(String teamCode, Long memberId, String appointmentCode) {
@@ -201,6 +212,7 @@ public class AppointmentService {
                 ));
         validateHost(member, appointment);
         validateAppointmentInTeam(team, appointment);
+        availableTimeRepository.deleteAllByAppointmentId(appointment.getId());
         appointmentRepository.deleteById(appointment.getId());
     }
 
@@ -217,5 +229,18 @@ public class AppointmentService {
         if (!teamMemberRepository.existsByTeamIdAndMemberId(teamId, memberId)) {
             throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, teamId, memberId);
         }
+    }
+
+    @Generated
+    void notifyClosedBySchedule() {
+        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(LocalDateTime.now());
+        for (Appointment appointment : appointmentsToBeClosed) {
+            appointmentRepository.closeById(appointment.getId());
+            notificationService.notifyMenuStatus(
+                    appointment.getTeam(),
+                    MessageFormatter.formatClosed(FormattableData.from(appointment))
+            );
+        }
+
     }
 }

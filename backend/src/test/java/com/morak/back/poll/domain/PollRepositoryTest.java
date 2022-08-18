@@ -97,19 +97,6 @@ class PollRepositoryTest {
         assertThat(poll).isEmpty();
     }
 
-    // TODO: 2022/08/11 data.sql 의존
-    @Test
-    void id로_투표를_삭제한다() {
-        // given
-        pollRepository.deleteById(1L);
-
-        // when
-        Optional<Poll> poll = pollRepository.findById(1L);
-
-        // then
-        assertThat(poll).isEmpty();
-    }
-
     @Test
     void 포뮬라를_적용해_count를_불러온다() {
         // given
@@ -158,4 +145,28 @@ class PollRepositoryTest {
         assertThat(foundPoll.getCount()).isEqualTo(1);
     }
 
+    @Test
+    void 종료할_투표를_가져온다() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+
+        // when
+        List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(now);
+
+        // then
+        assertThat(pollsToBeClosed).hasSize(1);
+    }
+
+    @Test
+    void ID로_투표를_종료한다() {
+        // given
+        Poll poll = pollRepository.findByCode("testcode").orElseThrow();
+
+        // when
+        pollRepository.closeById(poll.getId());
+        entityManager.detach(poll);
+
+        // then
+        assertThat(pollRepository.findByCode("testcode").get().getStatus()).isEqualTo(PollStatus.CLOSED);
+    }
 }
