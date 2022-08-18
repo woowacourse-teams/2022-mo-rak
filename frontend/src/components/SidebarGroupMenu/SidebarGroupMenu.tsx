@@ -41,9 +41,11 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
     dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: !isVisibleGroups });
   };
 
-  const handleMoveToGroup = (groupCode: GroupInterface['code']) => () => {
-    navigate(`groups/${groupCode}`);
-    handleToggleisVisibleGroups();
+  const handleMoveToGroup = (groupCode: GroupInterface['code'], groupName: GroupInterface['name']) => () => {
+    if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
+      navigate(`groups/${groupCode}`);
+      handleToggleisVisibleGroups();
+    }
   };
   const getRandomPastelColor = () => `hsl(${360 * Math.random()},${
     25 + 70 * Math.random()}%,${
@@ -84,7 +86,7 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
         <StyledGroupListContainer>
           {groups.map((group) => (
             <StyledGroupList
-              onClick={handleMoveToGroup(group.code)}
+              onClick={handleMoveToGroup(group.code, group.name)}
               isNowGroup={groupCode === group.code}
             >
               <StyledGroupProfile
