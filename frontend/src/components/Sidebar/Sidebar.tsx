@@ -84,6 +84,7 @@ function Sidebar() {
       <SidebarMenuModals
         activeModalMenu={activeModalMenu}
         closeModal={handleSetActiveGroupMenu(null)}
+        groupCode={groupCode}
       />
 
     </>
