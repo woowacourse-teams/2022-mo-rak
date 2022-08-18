@@ -180,6 +180,7 @@ const StyledGroupProfile = styled.div<CSSProperties>(({ backgroundColor }) => `
 const StyledGroupFirstName = styled.div(({ theme }) => `
   color: ${theme.colors.WHITE_100};
   font-size: 4.8rem;
+  
 `);
 
 const StyledGroupTitle = styled.div`
@@ -197,6 +198,7 @@ const StyledGroupList = styled.div<{ isNowGroup: boolean }>(
   ({ theme, isNowGroup }) => `
   display: flex;
   gap: 2rem;
+  align-items: center;
   padding: 2rem;
   text-decoration: none;
   margin: 1.2rem;
@@ -204,7 +206,7 @@ const StyledGroupList = styled.div<{ isNowGroup: boolean }>(
   cursor: pointer;
 
   &:hover {
-    background: ${theme.colors.TRANSPARENT_GRAY_100_80};
+    background: ${theme.colors.GRAY_100};
     border-radius: 10px;
     transition: all 0.2s linear;
   }

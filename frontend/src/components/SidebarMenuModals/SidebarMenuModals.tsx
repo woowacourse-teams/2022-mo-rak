@@ -127,7 +127,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
                 variant="filled"
                 colorScheme={theme.colors.WHITE_100}
                 borderRadius="10px"
-                padding="1.6rem 10rem"
+                padding="1.6rem 6rem"
                 width="50.4rem"
               >
                 <Input
@@ -310,11 +310,11 @@ const StyledButton = styled.button`
   background-color: ${theme.colors.YELLOW_200};
   color: ${theme.colors.WHITE_100};
   width: 14rem;
-  padding: 1.6rem 4rem;
+  padding: 1.6rem 3.2rem;
+  border-radius: 10px;
   font-size: 1.6rem;
   position: relative;
   text-align: center;
-  border-radius: 15px;
 
   &:hover {
     transform: scale(1.1);
