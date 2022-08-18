@@ -61,9 +61,9 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
             <Button
               variant="filled"
               colorScheme={theme.colors.GRAY_400}
-              width="24rem"
-              padding="2rem"
-              fontSize="3.6rem"
+              width="22rem"
+              padding="2rem 0"
+              fontSize="3.2rem"
               onClick={handleCloseAppointment}
             >
               마감
@@ -72,9 +72,9 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
           <Button
             variant="filled"
             colorScheme={theme.colors.GRAY_400}
-            width="24rem"
-            padding="2rem"
-            fontSize="3.6rem"
+            width="22rem"
+            padding="2rem 0"
+            fontSize="3.2rem"
             onClick={handleDeleteAppointment}
           >
             삭제
@@ -86,9 +86,9 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
         <Button
           variant="filled"
           colorScheme={theme.colors.PURPLE_100}
-          width="24rem"
-          padding="2rem"
-          fontSize="3.6rem"
+          width="22rem"
+          padding="2rem 0"
+          fontSize="3.2rem"
           onClick={handleNavigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`)}
         >
           가능시간수정
