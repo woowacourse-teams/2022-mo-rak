@@ -15,7 +15,7 @@ import AppointmentMainButtonGroup from '../AppointmentMainButtonGroup/Appointmen
 import emptyAnimation from '../../../assets/empty-animation.json';
 
 function AppointmentMainContainer() {
-  const { View: EmptyView } = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
+  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [appointments, setAppointments] = useState<getAppointmentsResponse>([]);
 
@@ -36,7 +36,7 @@ function AppointmentMainContainer() {
     return (
       <>
         {/* TODO: 재사용 가능하지 않을까한다! */}
-        <LottieWrapper>{EmptyView}</LottieWrapper>
+        <LottieWrapper>{emptyLottie.View}</LottieWrapper>
         <StyledGuide>첫 약속잡기를 만들어보세요!</StyledGuide>
       </>
     );
@@ -44,8 +44,8 @@ function AppointmentMainContainer() {
 
   return (
     <StyledContainer>
-      {appointments.length > 0 &&
-        appointments.map(
+      {appointments.length > 0
+        && appointments.map(
           ({ code, title, durationHours, durationMinutes, count, isClosed, closedAt }) => (
             <Box
               width="26.4rem"
