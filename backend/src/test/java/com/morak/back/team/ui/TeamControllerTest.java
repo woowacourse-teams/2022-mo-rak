@@ -116,6 +116,30 @@ class TeamControllerTest extends ControllerTest {
     }
 
     @Test
+    void 그룹에_가입한다() throws Exception {
+        // given
+        given(teamService.join(anyLong(), anyString())).willReturn("teamCode");
+
+        // when & then
+        mockMvc.perform(
+                post("/api/groups/in/{invitation-code}", "asdasd12")
+                        .header("Authorization", "Bearer access-token")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpectAll(
+                status().isCreated()
+        ).andDo(
+                document(
+                        "group-joinTeam",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("invitation-code").description("그룹_초대_코드")
+                        )
+                )
+        );
+    }
+
+    @Test
     void 그룹_목록을_조회한다() throws Exception {
         // given
         given(teamService.findTeams(anyLong())).willReturn(
