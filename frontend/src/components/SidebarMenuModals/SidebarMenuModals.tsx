@@ -98,6 +98,9 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
 
     try {
       await resisterSlackUrl(slackUrlData, groupCode);
+      alert('슬랙 채널과 연동이 완료되었습니다 🎉');
+      setSlackUrl('');
+      closeModal();
     } catch (err) {
       console.log(err);
     }
