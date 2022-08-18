@@ -22,6 +22,6 @@ public class RestSlackClientTest {
         SlackWebhook webhook = new SlackWebhook(1L, new Team(), url);
 
         // then
-        assertThatNoException().isThrownBy(() -> client.notifyMenuStatus(webhook, "test-in-backend-test-code"));
+        assertThatNoException().isThrownBy(() -> client.notifyMessage(webhook, "test-in-backend-test-code"));
     }
 }

@@ -2,6 +2,7 @@ package com.morak.back.core.domain.slack;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.ExternalException;
+import com.morak.back.core.support.Generated;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @NoArgsConstructor
 @Component
+@Generated
 public class RestSlackClient implements SlackClient {
 
     private static final RestTemplate restTemplate = new RestTemplate();
@@ -17,7 +19,7 @@ public class RestSlackClient implements SlackClient {
     private static final String ICON_EMOJI = ":oncoming_police_car:";
 
     @Override
-    public void notifyMenuStatus(SlackWebhook webhook, String message) {
+    public void notifyMessage(SlackWebhook webhook, String message) {
         NotificationRequest request = createRequest(message);
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(webhook.getUrl(), request, String.class);

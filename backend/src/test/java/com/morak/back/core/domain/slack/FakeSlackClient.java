@@ -16,7 +16,7 @@ public class FakeSlackClient implements SlackClient {
     }
 
     @Override
-    public void notifyMenuStatus(SlackWebhook webhook, String message) {
+    public void notifyMessage(SlackWebhook webhook, String message) {
         if (message.contains("invalid")) {
             throw new ExternalException(
                     CustomErrorCode.NOTIFICATION_REQUEST_FAILURE_ERROR,

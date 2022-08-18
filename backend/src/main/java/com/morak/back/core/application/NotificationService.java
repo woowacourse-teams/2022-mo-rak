@@ -48,7 +48,7 @@ public class NotificationService {
 
     public void notifyMenuStatus(Team team, String message) {
         slackWebhookRepository.findByTeamId(team.getId())
-                .ifPresent(webhook -> slackClient.notifyMenuStatus(
+                .ifPresent(webhook -> slackClient.notifyMessage(
                         webhook, message
                 ));
     }

@@ -2,5 +2,5 @@ package com.morak.back.core.domain.slack;
 
 public interface SlackClient {
 
-    void notifyMenuStatus(SlackWebhook webhook, String message);
+    void notifyMessage(SlackWebhook webhook, String message);
 }

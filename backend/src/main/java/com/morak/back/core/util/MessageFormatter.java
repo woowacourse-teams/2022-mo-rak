@@ -1,13 +1,14 @@
 package com.morak.back.core.util;
 
 import com.morak.back.core.domain.slack.FormattableData;
-import com.morak.back.team.domain.Team;
+import com.morak.back.core.support.Generated;
 import java.time.format.DateTimeFormatter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Generated
 public class MessageFormatter {
-
-    private MessageFormatter() {
-    }
 
     public static String formatClosed(FormattableData data) {
         return String.join("\n",

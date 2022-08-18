@@ -18,7 +18,7 @@ class SlackClientTest {
         SlackWebhook webhook = new SlackWebhook(1L, new Team(), "https://hooks.slack.com/services/testing");
         // then
         Assertions.assertAll(
-                () -> assertThatNoException().isThrownBy(() -> client.notifyMenuStatus(webhook, "hi")),
+                () -> assertThatNoException().isThrownBy(() -> client.notifyMessage(webhook, "hi")),
                 () -> assertThat(receiver.getMessage()).contains("hi")
         );
     }
