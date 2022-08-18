@@ -16,16 +16,20 @@ import Logo from '../../assets/logo.svg';
 import { GroupInterface } from '../../types/group';
 import { createGroup, participateGroup } from '../../api/group';
 import { useMenuDispatchContext } from '../../context/MenuProvider';
+import { resisterSlackUrl } from '../../api/slack';
+import { SlackInterface } from '../../types/slack';
 
 interface Props {
   activeModalMenu: string | null;
   closeModal: () => void;
+  groupCode: GroupInterface['code'];
 }
 
-function SidebarMenuModals({ activeModalMenu, closeModal }: Props) {
+function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
   const [groupName, setGroupName] = useState<GroupInterface['name']>('');
   // useInput 사용해서 관리
   const [invitationCode, setInvitationCode] = useState('');
+  const [slackUrl, setSlackUrl] = useState('');
 
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
@@ -55,6 +59,10 @@ function SidebarMenuModals({ activeModalMenu, closeModal }: Props) {
     setInvitationCode(e.target.value);
   };
 
+  const handleSlackUrl = (e: ChangeEvent<HTMLInputElement>) => {
+    setSlackUrl(e.target.value);
+  };
+
   // 그룹 참가
   const handleParticipateGroup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -80,12 +88,27 @@ function SidebarMenuModals({ activeModalMenu, closeModal }: Props) {
     }
   };
 
+  // slack url 등록
+  const handleResisterSlackUrl = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const slackUrlData: SlackInterface = {
+      url: slackUrl
+    };
+
+    try {
+      await resisterSlackUrl(slackUrlData, groupCode);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       {/* 슬랙 연동 */}
       <Modal isVisible={activeModalMenu === 'slack'} close={closeModal}>
         {/* 슬랙 메뉴 */}
-        <StyledModalContainer>
+        <StyledModalFormContainer onSubmit={handleResisterSlackUrl}>
           <StyledTop>
             <StyledSlackLogo src={Slack} alt="slack-logo" />
             <StyledHeaderText>슬랙 채널과 연동해보세요!</StyledHeaderText>
@@ -105,6 +128,8 @@ function SidebarMenuModals({ activeModalMenu, closeModal }: Props) {
                 width="50.4rem"
               >
                 <Input
+                  value={slackUrl}
+                  onChange={handleSlackUrl}
                   placeholder="슬랙 채널 url 입력 후, 확인버튼을 누르면 연동 끝!"
                   fontSize="1.6rem"
                   required
@@ -115,7 +140,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal }: Props) {
               <StyledButton>확인</StyledButton>
             </FlexContainer>
           </StyledBottom>
-        </StyledModalContainer>
+        </StyledModalFormContainer>
       </Modal>
 
       {/* 그룹 생성 */}
