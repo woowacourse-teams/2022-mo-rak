@@ -108,7 +108,7 @@ const StyledContainer = styled.div(
 const StyledLogo = styled.img`
   display: block;
   margin: 2rem auto;  
-  width: 12rem;
+  width: 16rem;
   cursor: pointer;
   padding-right: 4rem;
 `;
