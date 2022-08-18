@@ -47,7 +47,7 @@ const StyledInvitationLink = styled.button`
 `;
 
 const StyledInviteText = styled.p`
-  font-size: 1.7rem; 
+  font-size: 1.7rem; // TODO: 4단위로 변경 
 `;
 
 export default SidebarInvitationMenu;

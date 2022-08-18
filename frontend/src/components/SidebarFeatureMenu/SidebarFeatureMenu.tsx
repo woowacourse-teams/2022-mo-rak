@@ -40,8 +40,8 @@ function SidebarFeatureMenu({ groupCode }: Props) {
 }
 
 const StyledMenuHeader = styled.div`
-  width: 100%;
-  font-size: 1.7rem;
+  width: 100%; 
+  font-size: 1.7rem; // TODO: 4단위로 변경 
   text-align: left;
   margin-bottom: 2rem;
 `;
