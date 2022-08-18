@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
-
+import { useLottie } from 'lottie-react';
 import Box from '../../@common/Box/Box';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import MarginContainer from '../../@common/MarginContainer/MarginContainer';
@@ -12,8 +12,10 @@ import AppointmentMainStatus from '../AppointmentMainStatus/AppointmentMainStatu
 import AppointmentMainProgress from '../AppointmentMainProgress/AppointmentMainProgress';
 import AppointmentMainDetail from '../AppointmentMainDetail/AppointmentMainDetail';
 import AppointmentMainButtonGroup from '../AppointmentMainButtonGroup/AppointmentMainButtonGroup';
+import emptyAnimation from '../../../assets/empty-animation.json';
 
 function AppointmentMainContainer() {
+  const { View: EmptyView } = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [appointments, setAppointments] = useState<getAppointmentsResponse>([]);
 
@@ -30,9 +32,19 @@ function AppointmentMainContainer() {
     }
   }, []);
 
+  if (appointments.length <= 0) {
+    return (
+      <>
+        {/* TODO: 재사용 가능하지 않을까한다! */}
+        <LottieWrapper>{EmptyView}</LottieWrapper>
+        <StyledGuide>첫 약속잡기를 만들어보세요!</StyledGuide>
+      </>
+    );
+  }
+
   return (
     <StyledContainer>
-      {appointments ? (
+      {appointments.length > 0 &&
         appointments.map(
           ({ code, title, durationHours, durationMinutes, count, isClosed, closedAt }) => (
             <Box
@@ -58,10 +70,7 @@ function AppointmentMainContainer() {
               <AppointmentMainButtonGroup appointmentCode={code} isClosed={isClosed} />
             </Box>
           )
-        )
-      ) : (
-        <div>없습니다</div>
-      )}
+        )}
     </StyledContainer>
   );
 }
@@ -77,4 +86,18 @@ const StyledTitle = styled.h1`
   text-align: center;
 `;
 
+const LottieWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledGuide = styled.p(
+  ({ theme }) => `
+  text-align: center;
+  font-size: 2.8rem;
+
+  color: ${theme.colors.GRAY_400}
+`
+);
 export default AppointmentMainContainer;
