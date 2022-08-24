@@ -241,6 +241,9 @@ public class AppointmentService {
                     MessageFormatter.formatClosed(FormattableData.from(appointment))
             );
         }
+    }
 
+    public void test() {
+        System.out.println("jenkins test");
     }
 }
