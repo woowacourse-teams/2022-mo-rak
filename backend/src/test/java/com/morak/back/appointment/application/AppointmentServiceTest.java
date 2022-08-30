@@ -108,7 +108,7 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1).plusMinutes(30));
+                .closedAt(LocalDateTime.now().plusMinutes(30));
 
         약속잡기_중간 = DEFAULT_BUILDER
                 .code(Code.generate(codeGenerator))
