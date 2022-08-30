@@ -246,9 +246,12 @@ class PollTest {
     @Test
     void 투표에_속하지_않은_선택항목을_투표하는_경우_예외를_던진다() {
         // given
+        Poll otherPoll = Poll.builder().build();
+
         PollItem itemD = PollItem.builder()
                 .id(4L)
                 .subject("sub4")
+                .poll(otherPoll)
                 .build();
         Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
         mappedItemAndDescription.put(itemA, "빨강_프링글스는_별로야");

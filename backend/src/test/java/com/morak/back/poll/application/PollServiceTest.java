@@ -411,9 +411,6 @@ class PollServiceTest {
         PollItem pollItem1 = pollItems.get(0);
         PollItem pollItem2 = pollItems.get(1);
 
-        poll.addItem(pollItem1);
-        poll.addItem(pollItem2);
-
         // when
         pollService.doPoll(team.getCode(), member.getId(), poll.getCode(),
                 List.of(new PollResultRequest(pollItem1.getId(), "그냥뇨"),
@@ -450,10 +447,6 @@ class PollServiceTest {
         PollItem pollItem1 = pollItems.get(0);
         PollItem pollItem2 = pollItems.get(1);
         PollItem pollItem3 = pollItems.get(2);
-
-        poll.addItem(pollItem1);
-        poll.addItem(pollItem2);
-        poll.addItem(pollItem3);
 
         // when
         pollService.doPoll(team.getCode(), member.getId(), poll.getCode(),
@@ -493,9 +486,6 @@ class PollServiceTest {
         PollItem pollItem1 = pollItems.get(0);
         PollItem pollItem2 = pollItems.get(1);
 
-        poll.addItem(pollItem1);
-        poll.addItem(pollItem2);
-
         Member 차리 = memberRepository.save(Member.builder()
                 .oauthId("leechari")
                 .name("이찬주")
@@ -527,9 +517,6 @@ class PollServiceTest {
         PollItem pollItem1 = pollItems.get(0);
         PollItem pollItem2 = pollItems.get(1);
 
-        poll.addItem(pollItem1);
-        poll.addItem(pollItem2);
-
         Team invalidTeam = teamRepository.save(Team.builder()
                 .name("invalidTeam")
                 .code(Code.generate(length -> "12341234"))
@@ -555,7 +542,6 @@ class PollServiceTest {
                         .build()));
 
         PollItem pollItem1 = pollItems.get(0);
-        poll.addItem(pollItem1);
         poll.close(member);
 
         // when & then
@@ -569,9 +555,22 @@ class PollServiceTest {
     @Test
     void 투표를_진행_시_투표항목이_투표소속이_아니면_예외를_던진다() {
         // given
+        Poll otherPoll = pollRepository.save(
+                Poll.builder()
+                        .allowedPollCount(1)
+                        .closedAt(LocalDateTime.now().plusDays(1L))
+                        .host(member)
+                        .team(team)
+                        .code(Code.generate(ignored -> "ABAB1313"))
+                        .isAnonymous(true)
+                        .title("test-title")
+                        .status(OPEN)
+                        .build()
+        );
+
         List<PollItem> pollItems = pollItemRepository.saveAll(List.of(
                 PollItem.builder()
-                        .poll(poll)
+                        .poll(otherPoll)
                         .subject("sub1")
                         .build()));
 
@@ -650,9 +649,6 @@ class PollServiceTest {
 
         PollItem pollItem1 = pollItems.get(0);
         PollItem pollItem2 = pollItems.get(1);
-
-        poll.addItem(pollItem1);
-        poll.addItem(pollItem2);
 
         pollService.doPoll(team.getCode(), member.getId(), poll.getCode(),
                 List.of(new PollResultRequest(pollItem1.getId(), "그냥뇨"),
@@ -738,9 +734,6 @@ class PollServiceTest {
         PollItem pollItem1 = pollItems.get(0);
         PollItem pollItem2 = pollItems.get(1);
 
-        poll.addItem(pollItem1);
-        poll.addItem(pollItem2);
-
         // when
         List<PollItemResponse> pollItemResponses = pollService.findPollItems(team.getCode(), member.getId(),
                 poll.getCode());
@@ -767,9 +760,6 @@ class PollServiceTest {
                 .poll(poll)
                 .subject("항목2")
                 .build();
-
-        poll.addItem(pollItem1);
-        poll.addItem(pollItem2);
 
         // when
         List<PollItemResponse> pollItemResponses = pollService.findPollItems(team.getCode(), member.getId(),
@@ -822,9 +812,6 @@ class PollServiceTest {
         String description2 = "집에_가고_싶어요!";
         pollItem2.addPollResult(member, description2);
 
-        anonymousPoll.addItem(pollItem1);
-        anonymousPoll.addItem(pollItem2);
-
         Poll testPoll = pollRepository.save(anonymousPoll);
 
         Member anonymous = Member.getAnonymous();
@@ -865,8 +852,6 @@ class PollServiceTest {
         pollItem2.addPollResult(member, description2);
 
         List<PollItem> pollItems = pollItemRepository.saveAll(List.of(pollItem1, pollItem2));
-        poll.addItem(pollItems.get(0));
-        poll.addItem(pollItems.get(1));
 
         // when
         List<PollItemResultResponse> pollItemResultResponses = pollService.findPollItemResults(team.getCode(),

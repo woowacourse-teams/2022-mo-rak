@@ -15,7 +15,6 @@ import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItemRepository;
 import com.morak.back.poll.domain.PollRepository;
-import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollNotFoundException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
@@ -58,15 +57,8 @@ public class PollService {
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team.getId(), memberId);
 
-        Poll poll = request.toPoll(member, team, PollStatus.OPEN, Code.generate(GENERATOR));
-        List<PollItem> items = request.toPollItems(poll);
-
-        for (PollItem item : items) {
-            poll.addItem(item);
-        }
-
-        Poll savedPoll = pollRepository.save(poll);
-        notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(poll)));
+        Poll savedPoll = pollRepository.save(request.toPoll(member, team, Code.generate(GENERATOR)));
+        notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(savedPoll)));
         return savedPoll.getCode();
     }
 

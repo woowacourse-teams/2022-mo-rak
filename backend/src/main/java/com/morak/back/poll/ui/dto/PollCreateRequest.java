@@ -1,6 +1,5 @@
 package com.morak.back.poll.ui.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.poll.domain.Poll;
@@ -37,20 +36,13 @@ public class PollCreateRequest {
     @NotNull(message = "subjects 는 null 일 수 없습니다.")
     private List<String> subjects;
 
-    public Poll toPoll(Member member, Team team, PollStatus status, Code code) {
-        return Poll.builder()
-                .team(team)
-                .host(member)
-                .title(title)
-                .allowedPollCount(allowedPollCount)
-                .isAnonymous(isAnonymous)
-                .status(status)
-                .closedAt(closedAt)
-                .code(code)
-                .build();
+    public Poll toPoll(Member member, Team team, Code code) {
+        Poll poll = buildPoll(member, team, code);
+        List<PollItem> pollItems = buildPollItems(poll);
+        return poll;
     }
 
-    public List<PollItem> toPollItems(Poll poll) {
+    private List<PollItem> buildPollItems(Poll poll) {
         return subjects.stream()
                 .map(
                         subject -> PollItem.builder()
@@ -59,5 +51,18 @@ public class PollCreateRequest {
                                 .build()
                 )
                 .collect(Collectors.toList());
+    }
+
+    private Poll buildPoll(Member member, Team team, Code code) {
+        return Poll.builder()
+                .team(team)
+                .host(member)
+                .title(title)
+                .allowedPollCount(allowedPollCount)
+                .isAnonymous(isAnonymous)
+                .status(PollStatus.OPEN)
+                .closedAt(closedAt)
+                .code(code)
+                .build();
     }
 }
