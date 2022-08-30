@@ -34,8 +34,7 @@ public class NotificationService {
                 .orElseThrow(() -> new TeamNotFoundException(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team.getId(), memberId);
 
-        slackWebhookRepository.deleteByTeamId(team.getId());
-        slackWebhookRepository.flush();
+        deleteOldWebhook(team);
         SlackWebhook savedWebhook = slackWebhookRepository.save(
                 SlackWebhook.builder()
                         .team(team)
@@ -43,6 +42,11 @@ public class NotificationService {
                         .build()
         );
         return savedWebhook.getId();
+    }
+
+    private void deleteOldWebhook(Team team) {
+        slackWebhookRepository.deleteByTeam(team);
+        slackWebhookRepository.flush();
     }
 
     private void validateMemberInTeam(Long teamId, Long memberId) {
@@ -53,7 +57,7 @@ public class NotificationService {
 
     @Transactional(readOnly = true)
     public void notifyMenuStatus(Team team, String message) {
-        slackWebhookRepository.findByTeamId(team.getId())
+        slackWebhookRepository.findByTeam(team)
                 .ifPresent(webhook -> slackClient.notifyMessage(webhook, message));
     }
 

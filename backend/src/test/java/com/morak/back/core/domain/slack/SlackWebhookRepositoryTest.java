@@ -67,7 +67,7 @@ class SlackWebhookRepositoryTest {
     }
 
     @Test
-    void 팀_아이디_목록으로_웹훅_목록을_가져온다() {
+    void 팀으로_웹훅_목록을_가져온다() {
         // given
         Team team = teamRepository.save(
                 Team.builder()
@@ -82,7 +82,7 @@ class SlackWebhookRepositoryTest {
                         .build()
         );
         // when
-        SlackWebhook savedWebhook = webhookRepository.findByTeamId(team.getId()).orElseThrow();
+        SlackWebhook savedWebhook = webhookRepository.findByTeam(team).orElseThrow();
         // then
         assertThat(savedWebhook).isEqualTo(webhook);
     }
@@ -118,7 +118,7 @@ class SlackWebhookRepositoryTest {
     }
 
     @Test
-    void 팀_아이디로_웹훅을_지운다() {
+    void 팀으로_웹훅을_지운다() {
         // given
         Team team = teamRepository.save(
                 Team.builder()
@@ -133,9 +133,9 @@ class SlackWebhookRepositoryTest {
                         .build()
         );
         // when
-        webhookRepository.deleteByTeamId(team.getId());
+        webhookRepository.deleteByTeam(team);
         // then
 
-        assertThat(webhookRepository.findByTeamId(team.getId())).isEmpty();
+        assertThat(webhookRepository.findByTeam(team)).isEmpty();
     }
 }

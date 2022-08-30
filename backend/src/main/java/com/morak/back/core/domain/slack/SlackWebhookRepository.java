@@ -11,9 +11,9 @@ public interface SlackWebhookRepository extends Repository<SlackWebhook, Long> {
 
     SlackWebhook save(SlackWebhook slackWebhook);
 
-    Optional<SlackWebhook> findByTeamId(Long teamId);
+    Optional<SlackWebhook> findByTeam(Team team);
 
-    void deleteByTeamId(Long teamId);
+    void deleteByTeam(Team team);
 
     void flush();
 

@@ -77,7 +77,7 @@ class NotificationServiceTest {
         // given
         String url = "https://hooks.slack.com/services/my-url";
 
-        SlackWebhook savedWebhook = slackWebhookRepository.findByTeamId(team.getId()).orElseThrow();
+        SlackWebhook savedWebhook = slackWebhookRepository.findByTeam(team).orElseThrow();
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
 
         // when
