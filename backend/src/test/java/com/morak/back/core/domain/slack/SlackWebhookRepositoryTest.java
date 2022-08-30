@@ -7,6 +7,8 @@ import com.morak.back.core.domain.Code;
 import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamRepository;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +85,36 @@ class SlackWebhookRepositoryTest {
         SlackWebhook savedWebhook = webhookRepository.findByTeamId(team.getId()).orElseThrow();
         // then
         assertThat(savedWebhook).isEqualTo(webhook);
+    }
+
+    @Test
+    void 팀_목록으로_웹훅_목록을_조회한다() {
+        // given
+        List<Team> teams = new ArrayList<>();
+        int iterationCount = 10;
+
+        for (int i = 0; i < iterationCount; i++) {
+            String code = "AAAAaaa" + i;
+            Team savedTeam = teamRepository.save(
+                    Team.builder()
+                            .name("team" + i)
+                            .code(Code.generate(length -> code))
+                            .build()
+            );
+            webhookRepository.save(
+                    SlackWebhook.builder()
+                            .team(savedTeam)
+                            .url("https://hooks.slack.com/services/testA")
+                            .build()
+            );
+            teams.add(savedTeam);
+        }
+
+        // when
+        List<SlackWebhook> webhooks = webhookRepository.findAllByTeams(teams);
+
+        // then
+        assertThat(webhooks).hasSize(iterationCount);
     }
 
     @Test

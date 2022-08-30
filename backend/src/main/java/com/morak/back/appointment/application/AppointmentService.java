@@ -34,6 +34,7 @@ import com.morak.back.team.exception.TeamNotFoundException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -232,15 +233,27 @@ public class AppointmentService {
     }
 
     @Generated
-    void notifyClosedBySchedule() {
+    public void notifyClosedBySchedule() {
         List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(LocalDateTime.now());
-        for (Appointment appointment : appointmentsToBeClosed) {
-            appointmentRepository.closeById(appointment.getId());
-            notificationService.notifyMenuStatus(
-                    appointment.getTeam(),
-                    MessageFormatter.formatClosed(FormattableData.from(appointment))
-            );
-        }
 
+        closeAll(appointmentsToBeClosed);
+        notifyStatusAll(appointmentsToBeClosed);
+    }
+
+    private void closeAll(List<Appointment> appointmentsToBeClosed) {
+        appointmentRepository.closeAllByIds(
+                appointmentsToBeClosed.stream()
+                        .map(Appointment::getId)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    private void notifyStatusAll(List<Appointment> appointmentsToBeClosed) {
+        Map<Team, String> teamMessages = appointmentsToBeClosed.stream()
+                .collect(Collectors.toMap(
+                        Appointment::getTeam,
+                        appointment -> MessageFormatter.formatClosed(FormattableData.from(appointment))
+                ));
+        notificationService.notifyAllMenuStatus(teamMessages);
     }
 }

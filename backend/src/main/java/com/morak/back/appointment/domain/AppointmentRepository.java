@@ -25,6 +25,6 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Appointment a set a.status = 'CLOSED' where a.id = :id")
-    void closeById(@Param("id") Long id);
+    @Query("update Appointment a set a.status = 'CLOSED' where a.id in :ids")
+    void closeAllByIds(@Param("ids") Iterable<Long> ids);
 }
