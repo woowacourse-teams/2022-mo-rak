@@ -1,5 +1,8 @@
 package com.morak.back.core.application;
 
+import com.morak.back.auth.domain.Member;
+import com.morak.back.auth.domain.MemberRepository;
+import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
@@ -28,11 +31,14 @@ public class NotificationService {
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final SlackWebhookRepository slackWebhookRepository;
+    private final MemberRepository memberRepository;
 
     public Long saveSlackWebhook(String teamCode, Long memberId, SlackWebhookCreateRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> new TeamNotFoundException(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team.getId(), memberId);
+        validateMemberInTeam(team, member);
 
         deleteOldWebhook(team);
         SlackWebhook savedWebhook = slackWebhookRepository.save(
@@ -49,9 +55,9 @@ public class NotificationService {
         slackWebhookRepository.flush();
     }
 
-    private void validateMemberInTeam(Long teamId, Long memberId) {
-        if (!teamMemberRepository.existsByTeamIdAndMemberId(teamId, memberId)) {
-            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, teamId, memberId);
+    private void validateMemberInTeam(Team team, Member member) {
+        if (!teamMemberRepository.existsByTeamAndMember(team, member)) {
+            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, team.getId(), member.getId());
         }
     }
 

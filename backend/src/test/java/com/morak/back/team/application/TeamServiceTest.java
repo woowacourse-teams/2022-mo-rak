@@ -368,7 +368,7 @@ class TeamServiceTest {
         teamService.exitMemberFromTeam(memberId, teamCode);
 
         // then
-        assertThat(teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId)).isFalse();
+        assertThat(teamMemberRepository.existsByTeamAndMember(team, member)).isFalse();
     }
 
     @Test

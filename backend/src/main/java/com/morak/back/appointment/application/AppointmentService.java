@@ -60,7 +60,7 @@ public class AppointmentService {
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team.getId(), memberId);
+        validateMemberInTeam(team, member);
 
         Appointment appointment = request.toAppointment(team, member, Code.generate(CODE_GENERATOR));
         Appointment savedAppointment = appointmentRepository.save(appointment);
@@ -70,9 +70,11 @@ public class AppointmentService {
 
     @Transactional(readOnly = true)
     public List<AppointmentAllResponse> findAppointments(String teamCode, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team.getId(), memberId);
+        validateMemberInTeam(team, member);
 
         return appointmentRepository.findAllByTeam(team).stream()
                 .map(AppointmentAllResponse::from)
@@ -86,7 +88,7 @@ public class AppointmentService {
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team.getId(), memberId);
+        validateMemberInTeam(team, member);
 
         Appointment appointment = appointmentRepository.findByCode(appointmentCode)
                 .orElseThrow(() -> AppointmentNotFoundException.ofAppointment(
@@ -113,7 +115,7 @@ public class AppointmentService {
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team.getId(), memberId);
+        validateMemberInTeam(team, member);
 
         Appointment appointment = appointmentRepository.findByCode(appointmentCode)
                 .orElseThrow(() -> AppointmentNotFoundException.ofAppointment(
@@ -159,9 +161,11 @@ public class AppointmentService {
     @Transactional(readOnly = true)
     public List<RecommendationResponse> recommendAvailableTimes(String teamCode, Long memberId,
                                                                 String appointmentCode) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team.getId(), memberId);
+        validateMemberInTeam(team, member);
 
         Appointment appointment = appointmentRepository.findByCode(appointmentCode)
                 .orElseThrow(() -> AppointmentNotFoundException.ofAppointment(
@@ -188,7 +192,7 @@ public class AppointmentService {
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team.getId(), memberId);
+        validateMemberInTeam(team, member);
 
         Appointment appointment = appointmentRepository.findByCode(appointmentCode)
                 .orElseThrow(() -> AppointmentNotFoundException.ofAppointment(
@@ -205,7 +209,7 @@ public class AppointmentService {
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team.getId(), memberId);
+        validateMemberInTeam(team, member);
 
         Appointment appointment = appointmentRepository.findByCode(appointmentCode)
                 .orElseThrow(() -> AppointmentNotFoundException.ofAppointment(
@@ -226,9 +230,13 @@ public class AppointmentService {
         }
     }
 
-    private void validateMemberInTeam(Long teamId, Long memberId) {
-        if (!teamMemberRepository.existsByTeamIdAndMemberId(teamId, memberId)) {
-            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, teamId, memberId);
+    private void validateMemberInTeam(Team team, Member member) {
+        if (!teamMemberRepository.existsByTeamAndMember(team, member)) {
+            throw TeamAuthorizationException.of(
+                    CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR,
+                    team.getId(),
+                    member.getId()
+            );
         }
     }
 

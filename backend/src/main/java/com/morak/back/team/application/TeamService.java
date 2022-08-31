@@ -58,9 +58,11 @@ public class TeamService {
     }
 
     public String createInvitationCode(Long memberId, String teamCode) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateJoined(team.getId(), memberId);
+        validateJoined(team, member);
 
         TeamInvitation savedTeamInvitation = teamInvitationRepository.save(
                 TeamInvitation.builder()
@@ -71,14 +73,20 @@ public class TeamService {
         return savedTeamInvitation.getCode();
     }
 
-    private void validateJoined(Long teamId, Long memberId) {
-        if (!teamMemberRepository.existsByTeamIdAndMemberId(teamId, memberId)) {
-            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, teamId, memberId);
+    private void validateJoined(Team team, Member member) {
+        if (!teamMemberRepository.existsByTeamAndMember(team, member)) {
+            throw TeamAuthorizationException.of(
+                    CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR,
+                    team.getId(),
+                    member.getId()
+            );
         }
     }
 
     @Transactional(readOnly = true)
     public InvitationJoinedResponse isJoined(Long memberId, String invitationCode) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         TeamInvitation teamInvitation = teamInvitationRepository
                 .findByCode(invitationCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeamInvitation(
@@ -90,7 +98,7 @@ public class TeamService {
 
         Team team = teamInvitation.getTeam();
 
-        boolean isJoined = teamMemberRepository.existsByTeamIdAndMemberId(team.getId(), memberId);
+        boolean isJoined = teamMemberRepository.existsByTeamAndMember(team, member);
         return new InvitationJoinedResponse(team.getCode(), team.getName(), isJoined);
     }
 
@@ -105,11 +113,11 @@ public class TeamService {
                 );
         validateNotExpired(teamInvitation);
 
-        Team team = teamInvitation.getTeam();
-        validateNotJoined(team.getId(), memberId);
-
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
+        Team team = teamInvitation.getTeam();
+        validateNotJoined(team, member);
+
         teamMemberRepository.save(
                 TeamMember.builder()
                         .team(team)
@@ -128,11 +136,11 @@ public class TeamService {
         }
     }
 
-    private void validateNotJoined(Long teamId, Long memberId) {
-        if (teamMemberRepository.existsByTeamIdAndMemberId(teamId, memberId)) {
+    private void validateNotJoined(Team team, Member member) {
+        if (teamMemberRepository.existsByTeamAndMember(team, member)) {
             throw new TeamDomainLogicException(
                     CustomErrorCode.TEAM_ALREADY_JOINED_ERROR,
-                    memberId + " 번의 멤버는 " + teamId + " 번의 그룹에 이미 속해있습니다."
+                    member.getId() + " 번의 멤버는 " + team.getId() + " 번의 그룹에 이미 속해있습니다."
             );
         }
     }
@@ -149,9 +157,11 @@ public class TeamService {
 
     @Transactional(readOnly = true)
     public List<MemberResponse> findMembersInTeam(Long memberId, String teamCode) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateJoined(team.getId(), memberId);
+        validateJoined(team, member);
 
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(team.getId());
         return teamMembers.stream()

@@ -7,8 +7,6 @@ import org.springframework.data.repository.Repository;
 
 public interface TeamMemberRepository extends Repository<TeamMember, Long> {
 
-    boolean existsByTeamIdAndMemberId(Long teamId, Long memberId);
-
     boolean existsByTeamAndMember(Team team, Member member);
 
     List<TeamMember> findAllByMemberId(Long memberId);

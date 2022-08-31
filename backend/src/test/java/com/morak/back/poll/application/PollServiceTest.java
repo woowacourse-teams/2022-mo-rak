@@ -72,8 +72,8 @@ class PollServiceTest {
         this.pollItemRepository = pollItemRepository;
         this.receiver = new FakeApiReceiver();
         this.slackClient = new FakeSlackClient(receiver);
-        this.notificationService = new NotificationService(slackClient, teamRepository,
-                teamMemberRepository, slackWebhookRepository);
+        this.notificationService = new NotificationService(slackClient, teamRepository, teamMemberRepository,
+                slackWebhookRepository, memberRepository);
         this.pollService = new PollService(
                 pollRepository,
                 memberRepository,

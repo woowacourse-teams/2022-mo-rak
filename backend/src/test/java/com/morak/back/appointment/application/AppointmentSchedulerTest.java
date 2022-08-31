@@ -40,7 +40,8 @@ class AppointmentSchedulerTest {
                 slackClient,
                 teamRepository,
                 teamMemberRepository,
-                slackWebhookRepository
+                slackWebhookRepository,
+                memberRepository
         );
         this.appointmentScheduler = new AppointmentScheduler(
                 new AppointmentService(
