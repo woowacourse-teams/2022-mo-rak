@@ -1,5 +1,6 @@
 package com.morak.back.team.domain;
 
+import com.morak.back.auth.domain.Member;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.repository.Repository;
@@ -7,6 +8,8 @@ import org.springframework.data.repository.Repository;
 public interface TeamMemberRepository extends Repository<TeamMember, Long> {
 
     boolean existsByTeamIdAndMemberId(Long teamId, Long memberId);
+
+    boolean existsByTeamAndMember(Team team, Member member);
 
     List<TeamMember> findAllByMemberId(Long memberId);
 

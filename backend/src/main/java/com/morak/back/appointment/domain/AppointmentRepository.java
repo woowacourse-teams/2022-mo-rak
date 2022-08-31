@@ -1,5 +1,6 @@
 package com.morak.back.appointment.domain;
 
+import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,7 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
 
     Appointment save(Appointment appointment);
 
-    List<Appointment> findAllByTeamId(Long teamId);
+    List<Appointment> findAllByTeam(Team team);
 
     @Query("select a from Appointment a where a.code.code = :code")
     Optional<Appointment> findByCode(@Param("code") String code);

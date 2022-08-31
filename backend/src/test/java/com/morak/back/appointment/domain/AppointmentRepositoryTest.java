@@ -87,7 +87,7 @@ class AppointmentRepositoryTest {
         appointmentRepository.save(appointment);
 
         // when
-        List<Appointment> appointments = appointmentRepository.findAllByTeamId(team.getId());
+        List<Appointment> appointments = appointmentRepository.findAllByTeam(team);
 
         // then
         Assertions.assertAll(

@@ -70,11 +70,11 @@ public class AppointmentService {
 
     @Transactional(readOnly = true)
     public List<AppointmentAllResponse> findAppointments(String teamCode, Long memberId) {
-        Long teamId = teamRepository.findIdByCode(teamCode)
+        Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(teamId, memberId);
+        validateMemberInTeam(team.getId(), memberId);
 
-        return appointmentRepository.findAllByTeamId(teamId).stream()
+        return appointmentRepository.findAllByTeam(team).stream()
                 .map(AppointmentAllResponse::from)
                 .sorted()
                 .collect(Collectors.toList());
