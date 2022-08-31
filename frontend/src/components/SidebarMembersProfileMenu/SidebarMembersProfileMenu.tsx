@@ -46,15 +46,11 @@ function SidebarMembersProfileMenu({ groupCode }: Props) {
 
   return (
     <StyledMemberListContainer>
-      <StyledMenuHeader>
-        멤버 목록 (
-        {groupMembersCount}
-        )
-      </StyledMenuHeader>
+      <StyledMenuHeader>멤버 목록 ({groupMembersCount})</StyledMenuHeader>
       <StyledContainer>
         <FlexContainer flexDirection="column" gap="1.6rem">
           {groupMembers.map(({ profileUrl, name }) => (
-            <FlexContainer alignItems="center" gap="2rem">
+            <FlexContainer key={`${name}-${profileUrl}`} alignItems="center" gap="2rem">
               <Avatar profileUrl={profileUrl} name="" width="4rem" gap="0" />
               <StyledName>{name}</StyledName>
             </FlexContainer>
@@ -71,7 +67,7 @@ const StyledMemberListContainer = styled.div`
 
 const StyledMenuHeader = styled.div`
   width: 100%;
-  font-size: 1.7rem; // TODO: 4단위로 변경 
+  font-size: 1.7rem; // TODO: 4단위로 변경
   text-align: left;
   margin-bottom: 2rem;
 `;
@@ -83,7 +79,6 @@ const StyledName = styled.div`
 const StyledContainer = styled.div`
   overflow-y: auto;
   height: 36rem;
-  
 `;
 
 export default SidebarMembersProfileMenu;

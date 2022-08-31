@@ -35,7 +35,9 @@ function AppointmentCreateFormTimeInput({ time, onChange }: Props) {
             size: 12,
             startNumber: 1
           }).map((hour: number) => (
-            <option value={hour}>{hour}</option>
+            <option key={hour} value={hour}>
+              {hour}
+            </option>
           ))}
         </Select>
         <StyledContent>:</StyledContent>

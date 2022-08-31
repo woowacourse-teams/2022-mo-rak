@@ -44,10 +44,11 @@ function AppointmentMainContainer() {
 
   return (
     <StyledContainer>
-      {appointments.length > 0
-        && appointments.map(
+      {appointments.length > 0 &&
+        appointments.map(
           ({ code, title, durationHours, durationMinutes, count, isClosed, closedAt }) => (
             <Box
+              key={code}
               width="26.4rem"
               padding="2rem"
               minHeight="16.8rem"

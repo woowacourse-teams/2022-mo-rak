@@ -136,13 +136,13 @@ function Calendar({
       </StyledMonth>
       <StyledWeekends>
         {weeks.map((day) => (
-          <StyledWeekDay>{day}</StyledWeekDay>
+          <StyledWeekDay key={day}>{day}</StyledWeekDay>
         ))}
       </StyledWeekends>
       <StyledDays>
         {/* 지난 달 일부 날짜 */}
         {getPrevMonthDays().map((day) => (
-          <StyledPrevMonthDay onClick={handleShowPrevMonth} isHidden={isThisMonth()}>
+          <StyledPrevMonthDay key={day} onClick={handleShowPrevMonth} isHidden={isThisMonth()}>
             {day}
           </StyledPrevMonthDay>
         ))}
@@ -161,6 +161,7 @@ function Calendar({
 
               return (
                 <StyledNowMonthDay
+                  key={day}
                   onClick={handleSelectedDate(day)}
                   isSelectedDate={isSelectedDate(day)}
                 >
@@ -188,6 +189,7 @@ function Calendar({
 
               return (
                 <StyledNowMonthDay
+                  key={day}
                   onClick={handleStartOrEndDate(day)}
                   isBetweenStartEndDate={isBetweenStartEndDate(day)}
                   isStartOrEndDate={isStartOrEndDate(day)}
@@ -199,7 +201,9 @@ function Calendar({
 
         {/* 다음 달 일부 날짜  */}
         {getNextMonthDays().map((day) => (
-          <StyledNextMonthDay onClick={handleShowNextMonth}>{day}</StyledNextMonthDay>
+          <StyledNextMonthDay key={day} onClick={handleShowNextMonth}>
+            {day}
+          </StyledNextMonthDay>
         ))}
       </StyledDays>
     </StyledCalendar>

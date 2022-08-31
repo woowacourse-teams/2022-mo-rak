@@ -49,6 +49,7 @@ function PollMainContainer() {
       {polls.length > 0 &&
         polls.map(({ status, title, code, isAnonymous, allowedPollCount, closedAt, count }) => (
           <Box
+            key={code}
             width="26.4rem"
             padding="2rem"
             minHeight="16.8rem"

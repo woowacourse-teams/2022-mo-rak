@@ -58,6 +58,7 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
     <FlexContainer flexDirection="column" gap="1.2rem">
       {pollItems.map((pollItem, idx) => (
         <TextField
+          key={pollItem}
           variant="outlined"
           borderRadius="10px"
           padding="1.2rem 10rem"

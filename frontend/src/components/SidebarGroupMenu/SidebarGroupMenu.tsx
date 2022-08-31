@@ -41,15 +41,15 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
     dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: !isVisibleGroups });
   };
 
-  const handleMoveToGroup = (groupCode: GroupInterface['code'], groupName: GroupInterface['name']) => () => {
-    if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
-      navigate(`groups/${groupCode}`);
-      handleToggleisVisibleGroups();
-    }
-  };
-  const getRandomPastelColor = () => `hsl(${360 * Math.random()},${
-    25 + 70 * Math.random()}%,${
-    85 + 10 * Math.random()}%)`;
+  const handleMoveToGroup =
+    (groupCode: GroupInterface['code'], groupName: GroupInterface['name']) => () => {
+      if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
+        navigate(`groups/${groupCode}`);
+        handleToggleisVisibleGroups();
+      }
+    };
+  const getRandomPastelColor = () =>
+    `hsl(${360 * Math.random()},${25 + 70 * Math.random()}%,${85 + 10 * Math.random()}%)`;
 
   useEffect(() => {
     const nowGroup = groups.find((group) => group.code === groupCode);
@@ -86,6 +86,7 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
         <StyledGroupListContainer>
           {groups.map((group) => (
             <StyledGroupList
+              key={group.code}
               onClick={handleMoveToGroup(group.code, group.name)}
               isNowGroup={groupCode === group.code}
             >
@@ -119,12 +120,13 @@ function SidebarGroupMenu({ onClickCreateMenu, onClickParticipateMenu, groupCode
 
 const StyledMenuHeader = styled.div`
   width: 100%;
-  font-size: 1.7rem; // TODO: 4단위로 변경 
+  font-size: 1.7rem; // TODO: 4단위로 변경
   text-align: left;
   margin-bottom: 2rem;
 `;
 
-const StyledGroupListBox = styled.div<{isVisible: boolean}>(({ theme, isVisible }) => `
+const StyledGroupListBox = styled.div<{ isVisible: boolean }>(
+  ({ theme, isVisible }) => `
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.2s ease-in-out;
@@ -136,11 +138,15 @@ const StyledGroupListBox = styled.div<{isVisible: boolean}>(({ theme, isVisible 
   border-radius: 12px;
   max-height: 55.2rem;
 
-  ${isVisible && `
+  ${
+    isVisible &&
+    `
   visibility: visible;
   opacity: 1;
-  `}
-`);
+  `
+  }
+`
+);
 
 const StyledGroupListContainer = styled.div`
   overflow-y: auto;
@@ -166,7 +172,8 @@ const StyledGroupListIcon = styled.img`
   }
 `;
 
-const StyledGroupProfile = styled.div<CSSProperties>(({ backgroundColor }) => `
+const StyledGroupProfile = styled.div<CSSProperties>(
+  ({ backgroundColor }) => `
   font-family: 'Nanum Gothic', sans-serif;
   width: 8rem;
   height: 8rem;
@@ -175,13 +182,16 @@ const StyledGroupProfile = styled.div<CSSProperties>(({ backgroundColor }) => `
   display: flex;
   justify-content: center;
   align-items: center;
-`);
+`
+);
 
-const StyledGroupFirstName = styled.div(({ theme }) => `
+const StyledGroupFirstName = styled.div(
+  ({ theme }) => `
   color: ${theme.colors.WHITE_100};
   font-size: 4.8rem;
   
-`);
+`
+);
 
 const StyledGroupTitle = styled.div`
   font-size: 1.6rem;
@@ -189,7 +199,7 @@ const StyledGroupTitle = styled.div`
 `;
 
 const StyledGroupContainer = styled.div`
-position: relative;
+  position: relative;
   width: 100%;
   margin-bottom: 2.8rem;
 `;
@@ -211,13 +221,13 @@ const StyledGroupList = styled.div<{ isNowGroup: boolean }>(
     transition: all 0.2s linear;
   }
 
-  ${isNowGroup
-    && `
+  ${
+    isNowGroup &&
+    `
     background: ${theme.colors.GRAY_100}; 
     border-radius: 10px;
     `
-
-}
+  }
 `
 );
 

@@ -108,6 +108,7 @@ function AppointmentProgressTimePicker({
 
               return (
                 <StyledTime
+                  key={`${start}-${end}`}
                   onClick={onClickTime(start, end)}
                   isSelected={availableTimes.some(
                     (availableTime) =>
