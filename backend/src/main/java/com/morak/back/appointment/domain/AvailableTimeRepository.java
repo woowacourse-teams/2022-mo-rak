@@ -1,5 +1,6 @@
 package com.morak.back.appointment.domain;
 
+import com.morak.back.auth.domain.Member;
 import java.util.List;
 import org.springframework.data.repository.Repository;
 
@@ -9,13 +10,13 @@ public interface AvailableTimeRepository extends Repository<AvailableTime, Long>
 
     List<AvailableTime> saveAll(Iterable<AvailableTime> availableTimes);
 
-    List<AvailableTime> findAllByMemberIdAndAppointmentId(Long memberId, Long appointmentId);
+    List<AvailableTime> findAllByMemberAndAppointment(Member member, Appointment appointment); // 사용하지 않음
 
-    void deleteAllByMemberIdAndAppointmentId(Long memberId, Long appointmentId);
+    void deleteAllByMemberAndAppointment(Member member, Appointment appointment);
 
-    List<AvailableTime> findAllByAppointmentId(Long appointmentId);
+    List<AvailableTime> findAllByAppointment(Appointment appointment);
 
     void flush();
 
-    void deleteAllByAppointmentId(Long appointmentId);
+    void deleteAllByAppointment(Appointment appointment);
 }

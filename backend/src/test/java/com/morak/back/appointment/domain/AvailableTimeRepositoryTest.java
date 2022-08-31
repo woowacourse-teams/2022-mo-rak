@@ -141,11 +141,10 @@ class AvailableTimeRepositoryTest {
         availableTimeRepository.saveAll(List.of(availableTime1, availableTime2));
 
         // when
-        availableTimeRepository.deleteAllByMemberIdAndAppointmentId(member.getId(), appointment.getId());
+        availableTimeRepository.deleteAllByMemberAndAppointment(member, appointment);
 
         // then
-        List<AvailableTime> availableTimes = availableTimeRepository.findAllByMemberIdAndAppointmentId(
-                member.getId(), appointment.getId());
+        List<AvailableTime> availableTimes = availableTimeRepository.findAllByMemberAndAppointment(member, appointment);
         assertThat(availableTimes).isEmpty();
     }
 
@@ -169,10 +168,10 @@ class AvailableTimeRepositoryTest {
         availableTimeRepository.saveAll(List.of(availableTime1, availableTime2));
 
         // when
-        availableTimeRepository.deleteAllByAppointmentId(appointment.getId());
+        availableTimeRepository.deleteAllByAppointment(appointment);
 
         // then
-        List<AvailableTime> availableTimes = availableTimeRepository.findAllByAppointmentId(appointment.getId());
+        List<AvailableTime> availableTimes = availableTimeRepository.findAllByAppointment(appointment);
         assertThat(availableTimes).isEmpty();
     }
 }

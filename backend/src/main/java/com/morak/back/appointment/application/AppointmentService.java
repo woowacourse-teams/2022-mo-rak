@@ -123,7 +123,7 @@ public class AppointmentService {
         validateDuplicatedRequest(requests);
         validateAppointmentInTeam(team, appointment);
         validateAppointmentStatus(appointment);
-        deleteOldAvailableTimes(memberId, appointment);
+        deleteOldAvailableTimes(member, appointment);
 
         List<AvailableTime> availableTimes = requests.stream()
                 .map(request -> request.toAvailableTime(member, appointment))
@@ -151,8 +151,8 @@ public class AppointmentService {
         }
     }
 
-    private void deleteOldAvailableTimes(Long memberId, Appointment appointment) {
-        availableTimeRepository.deleteAllByMemberIdAndAppointmentId(memberId, appointment.getId());
+    private void deleteOldAvailableTimes(Member member, Appointment appointment) {
+        availableTimeRepository.deleteAllByMemberAndAppointment(member, appointment);
         availableTimeRepository.flush();
     }
 
@@ -175,7 +175,7 @@ public class AppointmentService {
 
         RecommendationCells recommendationCells = RecommendationCells.of(appointment, members);
 
-        List<AvailableTime> availableTimes = availableTimeRepository.findAllByAppointmentId(appointment.getId());
+        List<AvailableTime> availableTimes = availableTimeRepository.findAllByAppointment(appointment);
         List<RankRecommendation> rankRecommendations = recommendationCells.recommend(availableTimes);
 
         return rankRecommendations.stream()
@@ -213,7 +213,7 @@ public class AppointmentService {
                 ));
         validateHost(member, appointment);
         validateAppointmentInTeam(team, appointment);
-        availableTimeRepository.deleteAllByAppointmentId(appointment.getId());
+        availableTimeRepository.deleteAllByAppointment(appointment);
         appointmentRepository.deleteById(appointment.getId());
     }
 

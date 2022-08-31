@@ -888,7 +888,7 @@ class AppointmentServiceTest {
         appointmentService.deleteAppointment(모락.getCode(), 에덴.getId(), 약속잡기_중간.getCode());
 
         // then
-        assertThat(availableTimeRepository.findAllByAppointmentId(appointment.getId())).isEmpty();
+        assertThat(availableTimeRepository.findAllByAppointment(appointment)).isEmpty();
     }
 
     @Test
