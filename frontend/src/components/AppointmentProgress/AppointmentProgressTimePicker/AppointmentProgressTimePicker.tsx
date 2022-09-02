@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { MouseEventHandler, useMemo } from 'react';
+import { MouseEventHandler, useMemo } from 'react';
 import Box from '../../@common/Box/Box';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { AppointmentInterface, AvailableTimes } from '../../../types/appointment';

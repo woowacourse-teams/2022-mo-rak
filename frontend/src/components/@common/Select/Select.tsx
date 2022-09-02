@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { PropsWithChildren, CSSProperties, SelectHTMLAttributes } from 'react';
+import { PropsWithChildren, CSSProperties, SelectHTMLAttributes } from 'react';
 
 interface Props extends PropsWithChildren<SelectHTMLAttributes<HTMLSelectElement>> {}
 

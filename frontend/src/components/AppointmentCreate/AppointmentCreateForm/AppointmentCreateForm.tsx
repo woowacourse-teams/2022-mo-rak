@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { FormEvent } from 'react';
+import { FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import Box from '../../@common/Box/Box';

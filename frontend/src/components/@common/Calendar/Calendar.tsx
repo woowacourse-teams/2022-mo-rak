@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState, Dispatch } from 'react';
+import { SetStateAction, useState, Dispatch } from 'react';
 import styled from '@emotion/styled';
 
 interface Props {

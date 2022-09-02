@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import { useTheme } from '@emotion/react';
 
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import Button from '../../@common/Button/Button';

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, MouseEvent, ChangeEvent } from 'react';
+import { Dispatch, SetStateAction, MouseEvent, ChangeEvent } from 'react';
 
 import { useTheme } from '@emotion/react';
 
@@ -54,11 +54,14 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
     setPollItems(newPollItems);
   };
 
+  console.log(pollItems);
+
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
       {pollItems.map((pollItem, idx) => (
+        // TODO: key를 넣어줘야한다.
+        // eslint-disable-next-line react/jsx-key
         <TextField
-          key={pollItem}
           variant="outlined"
           borderRadius="10px"
           padding="1.2rem 10rem"

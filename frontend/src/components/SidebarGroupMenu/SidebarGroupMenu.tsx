@@ -1,4 +1,4 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
+import { useState, useEffect, CSSProperties } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import Setting from '../../assets/setting.svg';

@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import React, { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes } from 'react';
 import Input from '../../@common/Input/Input';
 import TextField from '../../@common/TextField/TextField';
 import { PollInterface } from '../../../types/poll';

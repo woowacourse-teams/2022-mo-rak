@@ -1,4 +1,4 @@
-import React, { MouseEvent, PropsWithChildren, useRef } from 'react';
+import { MouseEvent, PropsWithChildren, useRef } from 'react';
 import styled from '@emotion/styled';
 
 interface Props extends PropsWithChildren {
@@ -27,7 +27,8 @@ function Modal({ children, isVisible, close }: Props) {
   );
 }
 
-const StyledModalContainer = styled.div<{isVisible: boolean}>(({ theme, isVisible }) => `
+const StyledModalContainer = styled.div<{ isVisible: boolean }>(
+  ({ theme, isVisible }) => `
   z-index: 10;
   display: ${isVisible ? 'flex' : 'none'};
   background-color: ${theme.colors.TRANSPARENT_BLACK_100_25};
@@ -38,6 +39,7 @@ const StyledModalContainer = styled.div<{isVisible: boolean}>(({ theme, isVisibl
   left: 0;
   height: 100vh;
   width: 100vw;
-`);
+`
+);
 
 export default Modal;

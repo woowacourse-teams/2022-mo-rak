@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { CSSProperties, ProgressHTMLAttributes } from 'react';
+import { CSSProperties, ProgressHTMLAttributes } from 'react';
 
 interface Props extends ProgressHTMLAttributes<HTMLProgressElement> {
   accentColor?: string | undefined;

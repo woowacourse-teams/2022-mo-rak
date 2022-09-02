@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createGroup } from '../../../api/group';
 import { GroupInterface } from '../../../types/group';

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import { MouseEventHandler } from 'react';
 import styled from '@emotion/styled';
 import Slack from '../../assets/slack.svg';
 

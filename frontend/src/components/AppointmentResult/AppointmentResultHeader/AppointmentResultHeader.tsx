@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React from 'react';
+
 import { AppointmentInterface } from '../../../types/appointment';
 import LinkIcon from '../../../assets/link.svg';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';

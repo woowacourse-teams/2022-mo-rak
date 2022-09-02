@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 
 import Logo from '../../../assets/logo.svg';
@@ -12,7 +11,9 @@ function GroupInitContainer() {
       <StyledTopContainer>
         <StyledLogo src={Logo} alt="logo" />
         <StyledBigText>새로운 그룹에 참여해볼까요?</StyledBigText>
-        <StyledSmallText>아직 그룹이 없네요. 새로운 그룹을 생성하거나, 초대받은 그룹에 참가해서 모락을 시작해보세요</StyledSmallText>
+        <StyledSmallText>
+          아직 그룹이 없네요. 새로운 그룹을 생성하거나, 초대받은 그룹에 참가해서 모락을 시작해보세요
+        </StyledSmallText>
       </StyledTopContainer>
       <StyledBottomContainer>
         <GroupCreateForm />
@@ -36,7 +37,8 @@ const StyledTopContainer = styled.div`
   align-items: center;
 `;
 
-const StyledBottomContainer = styled.div(({ theme }) => `
+const StyledBottomContainer = styled.div(
+  ({ theme }) => `
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,11 +46,12 @@ const StyledBottomContainer = styled.div(({ theme }) => `
   background: ${theme.colors.YELLOW_50};
   flex-direction: column;
   gap: 6.8rem;
-`);
+`
+);
 
 const StyledLogo = styled.img`
   width: 22rem;
-  margin-bottom: 4rem; 
+  margin-bottom: 4rem;
 `;
 
 const StyledBigText = styled.div`

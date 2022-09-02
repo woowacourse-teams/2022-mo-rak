@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { CSSProperties } from 'react';
+import { CSSProperties } from 'react';
 import { MemberInterface } from '../../../types/group';
 
 interface Props extends CSSProperties {

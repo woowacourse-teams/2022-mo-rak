@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, PropsWithChildren, CSSProperties } from 'react';
+import { ButtonHTMLAttributes, PropsWithChildren, CSSProperties } from 'react';
 
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';

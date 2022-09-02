@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getGroupMembers } from '../../api/group';
 import { GroupInterface, MemberInterface } from '../../types/group';

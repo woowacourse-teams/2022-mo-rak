@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { FormEvent } from 'react';
+import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { participateGroup } from '../../../api/group';

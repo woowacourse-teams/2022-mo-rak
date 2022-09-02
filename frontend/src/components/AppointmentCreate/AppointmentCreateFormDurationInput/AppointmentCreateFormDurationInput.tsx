@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import React, { SelectHTMLAttributes } from 'react';
+import { SelectHTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import TextField from '../../@common/TextField/TextField';

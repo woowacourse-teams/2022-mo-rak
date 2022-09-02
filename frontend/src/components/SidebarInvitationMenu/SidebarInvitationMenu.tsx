@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { GroupInterface } from '../../types/group';
 import Plus from '../../assets/plus.svg';

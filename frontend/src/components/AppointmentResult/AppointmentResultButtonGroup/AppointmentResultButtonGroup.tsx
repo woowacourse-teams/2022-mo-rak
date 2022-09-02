@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTheme } from '@emotion/react';
 
 import { useNavigate } from 'react-router-dom';

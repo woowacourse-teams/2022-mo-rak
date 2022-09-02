@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 import Input from '../../@common/Input/Input';
 import { AppointmentInterface } from '../../../types/appointment';

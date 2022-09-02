@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState, useEffect } from 'react';
+import { MouseEventHandler, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 
 import Crown from '../../../assets/crown.svg';

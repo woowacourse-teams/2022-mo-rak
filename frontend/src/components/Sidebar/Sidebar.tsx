@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
 import Logo from '../../assets/logo.svg';
@@ -78,7 +78,6 @@ function Sidebar() {
           {/* 초대링크 */}
           <SidebarInvitationMenu groupCode={groupCode} />
         </StyledBottomMenu>
-
       </StyledContainer>
 
       <SidebarMenuModals
@@ -86,7 +85,6 @@ function Sidebar() {
         closeModal={handleSetActiveGroupMenu(null)}
         groupCode={groupCode}
       />
-
     </>
   );
 }
@@ -108,7 +106,7 @@ const StyledContainer = styled.div(
 
 const StyledLogo = styled.img`
   display: block;
-  margin: 2rem auto;  
+  margin: 2rem auto;
   width: 16rem;
   cursor: pointer;
   padding-right: 4rem;
