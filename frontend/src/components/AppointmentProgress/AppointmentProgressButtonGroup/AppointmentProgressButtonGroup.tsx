@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import React, { MouseEventHandler } from 'react';
+import { MouseEventHandler } from 'react';
 import Button from '../../@common/Button/Button';
 
 interface Props {

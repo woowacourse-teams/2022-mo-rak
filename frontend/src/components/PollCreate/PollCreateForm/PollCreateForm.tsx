@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 
 // TODO: 자동정렬 설정
 import { useNavigate, useParams } from 'react-router-dom';

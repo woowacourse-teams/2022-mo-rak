@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
@@ -7,11 +6,14 @@ import { AppointmentRecommendationInterface } from '../../../types/appointment';
 import Avatar from '../../@common/Avatar/Avatar';
 
 interface Props {
-  appointmentRecommendation: Array<AppointmentRecommendationInterface>,
-  clickedRecommendation: number
+  appointmentRecommendation: Array<AppointmentRecommendationInterface>;
+  clickedRecommendation: number;
 }
 
-function AppointmentResultAvailableMembers({ appointmentRecommendation, clickedRecommendation } : Props) {
+function AppointmentResultAvailableMembers({
+  appointmentRecommendation,
+  clickedRecommendation
+}: Props) {
   return (
     <FlexContainer flexDirection="column" gap="3.6rem">
       <Box width="42rem" minHeight="28rem" padding="4rem" overflow="auto">
@@ -22,7 +24,9 @@ function AppointmentResultAvailableMembers({ appointmentRecommendation, clickedR
               <StyledGuideText>왼쪽에서 보고싶은 결과를 클릭하세요!</StyledGuideText>
             ) : (
               appointmentRecommendation[clickedRecommendation].availableMembers.map(
-                ({ name, profileUrl }) => <Avatar profileUrl={profileUrl} name={name} />
+                ({ name, profileUrl }) => (
+                  <Avatar key={`${name}-${profileUrl}`} profileUrl={profileUrl} name={name} />
+                )
               )
             )}
           </FlexContainer>
@@ -36,7 +40,9 @@ function AppointmentResultAvailableMembers({ appointmentRecommendation, clickedR
               <StyledGuideText>왼쪽에서 보고싶은 결과를 클릭하세요!</StyledGuideText>
             ) : (
               appointmentRecommendation[clickedRecommendation].unavailableMembers.map(
-                ({ name, profileUrl }) => <Avatar profileUrl={profileUrl} name={name} />
+                ({ name, profileUrl }) => (
+                  <Avatar key={`${name}-${profileUrl}`} profileUrl={profileUrl} name={name} />
+                )
               )
             )}
           </FlexContainer>

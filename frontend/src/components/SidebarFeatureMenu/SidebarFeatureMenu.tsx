@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import Poll from '../../assets/person-check.svg';
@@ -26,11 +25,17 @@ function SidebarFeatureMenu({ groupCode }: Props) {
     <StyledFeatureContainer>
       <StyledMenuHeader>기능</StyledMenuHeader>
       <FlexContainer flexDirection="column">
-        <StyledPollMenu onClick={handleMoveToClickedMenu('poll')} isClicked={clickedMenu === 'poll'}>
+        <StyledPollMenu
+          onClick={handleMoveToClickedMenu('poll')}
+          isClicked={clickedMenu === 'poll'}
+        >
           <StyledPollIcon src={Poll} />
           <StyledFeatureTitle>투표하기</StyledFeatureTitle>
         </StyledPollMenu>
-        <StyledAppointmentMenu onClick={handleMoveToClickedMenu('appointment')} isClicked={clickedMenu === 'appointment'}>
+        <StyledAppointmentMenu
+          onClick={handleMoveToClickedMenu('appointment')}
+          isClicked={clickedMenu === 'appointment'}
+        >
           <StyledAppointmentIcon src={Appointment} />
           <StyledFeatureTitle>약속잡기</StyledFeatureTitle>
         </StyledAppointmentMenu>
@@ -40,8 +45,8 @@ function SidebarFeatureMenu({ groupCode }: Props) {
 }
 
 const StyledMenuHeader = styled.div`
-  width: 100%; 
-  font-size: 1.7rem; // TODO: 4단위로 변경 
+  width: 100%;
+  font-size: 1.7rem; // TODO: 4단위로 변경
   text-align: left;
   margin-bottom: 2rem;
 `;
@@ -63,7 +68,7 @@ const StyledFeatureTitle = styled.div`
 `;
 
 const StyledPollMenu = styled.div<{
-  isClicked: boolean
+  isClicked: boolean;
 }>(
   ({ isClicked, theme }) => `
   display: flex;
@@ -71,10 +76,13 @@ const StyledPollMenu = styled.div<{
   cursor: pointer;
   padding: 2rem;
 
-  ${isClicked && `
+  ${
+    isClicked &&
+    `
     background: ${theme.colors.GRAY_100}; 
     border-top-left-radius: 4rem; 
-    border-bottom-left-radius: 4rem;`};
+    border-bottom-left-radius: 4rem;`
+  };
 
   &:hover {
     background: ${!isClicked && theme.colors.TRANSPARENT_GRAY_100_80};
@@ -85,7 +93,7 @@ const StyledPollMenu = styled.div<{
 );
 
 const StyledAppointmentMenu = styled.div<{
-  isClicked: boolean
+  isClicked: boolean;
 }>(
   ({ isClicked, theme }) => `
   display: flex;
@@ -93,11 +101,14 @@ const StyledAppointmentMenu = styled.div<{
   cursor: pointer;
   padding: 2rem;
   
-  ${isClicked && `
+  ${
+    isClicked &&
+    `
   background: ${theme.colors.GRAY_100}; 
   border-top-left-radius: 4rem; 
   border-bottom-left-radius: 4rem;
-  `};
+  `
+  };
 
   &:hover {
     background: ${!isClicked && theme.colors.TRANSPARENT_GRAY_100_80};

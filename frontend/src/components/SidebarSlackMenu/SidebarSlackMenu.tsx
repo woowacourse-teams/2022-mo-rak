@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import { MouseEventHandler } from 'react';
 import styled from '@emotion/styled';
 import Slack from '../../assets/slack.svg';
 
@@ -28,7 +28,7 @@ const StyledSlackLogo = styled.img`
 `;
 
 const StyledText = styled.p`
-  font-size: 1.7rem; // TODO: 4단위로 변경 
+  font-size: 1.7rem; // TODO: 4단위로 변경
 `;
 
 export default SidebarSlackMenu;

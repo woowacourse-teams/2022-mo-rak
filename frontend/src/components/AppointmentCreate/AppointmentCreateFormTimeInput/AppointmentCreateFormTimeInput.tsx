@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from 'react';
+import { ChangeEventHandler } from 'react';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import TextField from '../../@common/TextField/TextField';
@@ -35,7 +35,9 @@ function AppointmentCreateFormTimeInput({ time, onChange }: Props) {
             size: 12,
             startNumber: 1
           }).map((hour: number) => (
-            <option value={hour}>{hour}</option>
+            <option key={hour} value={hour}>
+              {hour}
+            </option>
           ))}
         </Select>
         <StyledContent>:</StyledContent>

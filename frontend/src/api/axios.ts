@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getLocalStorageItem } from '../utils/storage';
 
-const axiosInstanceGenerator = (path: string, isAuthRequired: boolean = true) => {
+const axiosInstanceGenerator = (path: string, isAuthRequired = true) => {
   const instance = axios.create({
     baseURL: `${process.env.BASE_API_URL}/${path}`,
     headers: { 'Content-Type': 'application/json' }

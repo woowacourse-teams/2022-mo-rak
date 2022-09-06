@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState, useEffect } from 'react';
+import { MouseEventHandler, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 
 import Crown from '../../../assets/crown.svg';
@@ -72,7 +72,11 @@ function AppointmentResultRanking({
           }: AppointmentRecommendationInterface,
           idx
         ) => (
-          <StyledRank onClick={onClickRank(idx)} isClicked={idx === clickedRecommendation}>
+          <StyledRank
+            key={`${recommendStartDateTime}-${recommendEndDateTime}`}
+            onClick={onClickRank(idx)}
+            isClicked={idx === clickedRecommendation}
+          >
             <FlexContainer justifyContent="space-between">
               {/* TODO: 상수화 */}
               {rank === 1 ? (

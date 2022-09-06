@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 import { useLottie } from 'lottie-react';
@@ -49,6 +49,7 @@ function PollMainContainer() {
       {polls.length > 0 &&
         polls.map(({ status, title, code, isAnonymous, allowedPollCount, closedAt, count }) => (
           <Box
+            key={code}
             width="26.4rem"
             padding="2rem"
             minHeight="16.8rem"

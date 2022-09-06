@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { ChangeEventHandler } from 'react';
+import { ChangeEventHandler } from 'react';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import Input from '../../@common/Input/Input';
 

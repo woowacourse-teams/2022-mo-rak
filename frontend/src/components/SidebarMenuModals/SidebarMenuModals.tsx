@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 import styled from '@emotion/styled';
 
 import { useNavigate } from 'react-router-dom';
@@ -222,16 +222,6 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
     </>
   );
 }
-
-const StyledModalContainer = styled.div(
-  ({ theme }) => `
-  position: relative;
-  background-color: ${theme.colors.WHITE_100};
-  border-radius: 12px;
-  width: 68rem;
-  height: 41.6rem;
-`
-);
 
 const StyledModalFormContainer = styled.form(
   ({ theme }) => `

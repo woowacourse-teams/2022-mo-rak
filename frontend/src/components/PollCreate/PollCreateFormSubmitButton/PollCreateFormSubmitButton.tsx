@@ -1,5 +1,4 @@
 import { useTheme } from '@emotion/react';
-import React from 'react';
 
 import Button from '../../@common/Button/Button';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';

@@ -1,4 +1,4 @@
-import React, { useState, CSSProperties } from 'react';
+import { useState, CSSProperties } from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
@@ -52,6 +52,7 @@ function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
 
         return (
           <TextField
+            key={id}
             variant={status === 'CLOSED' && isWinningPollItem ? 'filled' : 'outlined'}
             padding="1.2rem 0"
             borderRadius="15px"

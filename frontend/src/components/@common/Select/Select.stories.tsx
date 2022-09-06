@@ -1,4 +1,3 @@
-import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import Select from './Select';
 import TextField from '../TextField/TextField';

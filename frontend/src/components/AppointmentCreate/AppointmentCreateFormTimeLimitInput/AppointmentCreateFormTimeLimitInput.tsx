@@ -1,10 +1,6 @@
-import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import React, { ChangeEventHandler } from 'react';
+import { ChangeEventHandler } from 'react';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
-import TextField from '../../@common/TextField/TextField';
-import { createRange } from '../../../utils/number';
-import Select from '../../@common/Select/Select';
 import { Time } from '../../../types/appointment';
 import AppointmentCreateFormTimeInput from '../AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput';
 

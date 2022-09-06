@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import { MouseEventHandler } from 'react';
 import { useTheme } from '@emotion/react';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import Button from '../../@common/Button/Button';

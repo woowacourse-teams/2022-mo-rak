@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import React, { ChangeEventHandler } from 'react';
+import { ChangeEventHandler } from 'react';
 import styled from '@emotion/styled';
 import TextField from '../../@common/TextField/TextField';
 import Input from '../../@common/Input/Input';

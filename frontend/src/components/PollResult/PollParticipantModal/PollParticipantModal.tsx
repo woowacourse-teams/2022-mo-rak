@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-useless-fragment */
-import React from 'react';
 import styled from '@emotion/styled';
 import { MemberInterface } from '../../../types/group';
 import { SelectedPollItem } from '../../../types/poll';
@@ -14,7 +12,8 @@ function PollParticipantModal({ participants }: Props) {
       {participants.length > 0 && (
         <StyledContainer>
           {participants.map(({ profileUrl, name, description }) => (
-            <StyledUserProfile>
+            // TODO: AVATAR로 바꾸기
+            <StyledUserProfile key={`${name}-${profileUrl}`}>
               <StyledUserImage src={profileUrl} />
               <StyledUserName>{name === '' ? '익명' : name}</StyledUserName>
               {/* TODO: 컴포넌트로 변경하기 */}

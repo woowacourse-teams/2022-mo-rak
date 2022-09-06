@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import Link from '../../../assets/link.svg';
 import { PollInterface } from '../../../types/poll';

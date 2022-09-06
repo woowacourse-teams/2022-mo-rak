@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 
 import Logo from '../../../assets/logo.svg';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { NavigateFunction } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import Button from '../../@common/Button/Button';

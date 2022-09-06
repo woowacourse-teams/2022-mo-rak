@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, PropsWithChildren, Dispatch } from 'react';
+import { createContext, useContext, useReducer, PropsWithChildren, Dispatch } from 'react';
 
 interface MenuState {
   clickedMenu: string;
@@ -40,9 +40,7 @@ function MenuProvider({ children }: PropsWithChildren) {
 
   return (
     <MenuContext.Provider value={state}>
-      <MenuDispatchContext.Provider value={dispatch}>
-        {children}
-      </MenuDispatchContext.Provider>
+      <MenuDispatchContext.Provider value={dispatch}>{children}</MenuDispatchContext.Provider>
     </MenuContext.Provider>
   );
 }

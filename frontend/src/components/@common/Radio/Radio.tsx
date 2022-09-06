@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { InputHTMLAttributes, PropsWithChildren } from 'react';
+import { InputHTMLAttributes, PropsWithChildren } from 'react';
 import FlexContainer from '../FlexContainer/FlexContainer';
 import Check from '../../../assets/check.svg';
 import NotCheck from '../../../assets/not-check.svg';

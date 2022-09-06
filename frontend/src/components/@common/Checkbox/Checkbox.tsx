@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, PropsWithChildren } from 'react';
+import { InputHTMLAttributes, PropsWithChildren } from 'react';
 import styled from '@emotion/styled';
 import FlexContainer from '../FlexContainer/FlexContainer';
 import Check from '../../../assets/check.svg';
