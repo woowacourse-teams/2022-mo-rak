@@ -61,7 +61,7 @@ public class NotificationService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public void notifyMenuStatus(Team team, String message) {
         slackWebhookRepository.findByTeam(team)
                 .ifPresent(webhook -> slackClient.notifyMessage(webhook, message));
@@ -70,7 +70,7 @@ public class NotificationService {
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public void notifyAllMenuStatus(Map<Team, String> teamMessages) {
         Map<SlackWebhook, String> webHookMessages = mapWebhookToMessage(teamMessages);
-        webHookMessages.forEach(slackClient::notifyMessage);
+        webHookMessages.forEach((webhook, message) -> notifyMenuStatus(webhook.getTeam(), message));
     }
 
     private Map<SlackWebhook, String> mapWebhookToMessage(Map<Team, String> teamMessages) {
