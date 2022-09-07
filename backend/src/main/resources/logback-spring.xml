@@ -92,7 +92,7 @@
     <appender name="PERFORMANCE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOGS_ABSOLUTE_PATH}/performance.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOGS_ABSOLUTE_PATH}/performance-%d{yyyyMMdd}-%i.log</fileNamePattern>
+            <fileNamePattern>${LOGS_ABSOLUTE_PATH}/performance.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>15MB</maxFileSize>
@@ -101,9 +101,7 @@
         </rollingPolicy>
         <encoder>
             <charset>utf8</charset>
-            <Pattern>
-                ${LOG_PATTERN}
-            </Pattern>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %msg%n</Pattern>
         </encoder>
     </appender>
 

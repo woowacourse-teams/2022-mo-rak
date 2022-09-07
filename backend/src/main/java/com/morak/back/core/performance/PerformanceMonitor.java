@@ -15,7 +15,6 @@ public class PerformanceMonitor {
 
     private String uri;
     private String method;
-    private int status;
     private double requestTime;
     private int queryCount;
     private double queryTime;
@@ -31,10 +30,9 @@ public class PerformanceMonitor {
     @Override
     public String toString() {
         return String.format(
-                "uri: '%s' method: '%s' status: %d 요청처리시간: %f ms 쿼리개수: %d 쿼리시간: %f ms",
+                "uri: '%s', method: '%s', 요청 처리 시간: %f ms, 쿼리 개수: %d, 쿼리 시간: %f ms",
                 uri,
                 method,
-                status,
                 requestTime / 1_000_000.0,
                 queryCount,
                 queryTime / 1_000_000.0

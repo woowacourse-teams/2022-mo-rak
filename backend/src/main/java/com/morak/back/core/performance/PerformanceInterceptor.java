@@ -35,7 +35,6 @@ public class PerformanceInterceptor implements HandlerInterceptor {
             return;
         }
         performanceMonitor.setRequestTime(System.nanoTime() - performanceMonitor.getRequestTime());
-        performanceMonitor.setStatus(response.getStatus());
 
         log.info(performanceMonitor.toString());
     }
