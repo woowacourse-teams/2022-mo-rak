@@ -33,6 +33,14 @@ public class PerformanceInterceptor implements HandlerInterceptor {
             return;
         }
         performanceMonitor.end();
+        logResultOfPerformanceMonitoring();
+    }
+
+    private void logResultOfPerformanceMonitoring() {
+        if (performanceMonitor.isWarning()) {
+            log.warn(performanceMonitor.toString());
+            return;
+        }
         log.info(performanceMonitor.toString());
     }
 

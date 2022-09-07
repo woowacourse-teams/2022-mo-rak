@@ -12,6 +12,10 @@ import org.springframework.web.context.annotation.RequestScope;
 @Profile("test")
 public class PerformanceMonitor {
 
+    private static final double WARNING_REQUEST_TIME = 200 * 1_000_000;
+    private static final double WARNING_QUERY_COUNT = 5;
+    private static final double WARNING_QUERY_TIME = 100 * 1_000_000;
+
     private String uri;
     private String method;
     private double requestTime;
@@ -41,6 +45,11 @@ public class PerformanceMonitor {
     public void end() {
         requestTime = System.nanoTime() - requestTime;
         activate = false;
+    }
+
+    public boolean isWarning() {
+        return requestTime >= WARNING_REQUEST_TIME
+                || queryCount >= WARNING_QUERY_COUNT || queryTime >= WARNING_QUERY_TIME;
     }
 
     private double convertNanoToMilli(double nano) {
