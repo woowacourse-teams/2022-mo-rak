@@ -7,7 +7,7 @@ import { getGroups } from '../../api/group';
 import { GroupInterface } from '../../types/group';
 
 import Divider from '../@common/Divider/Divider';
-import SidebarGroupMenu from '../SidebarGroupMenu/SidebarGroupMenu';
+import SidebarGroupsModal from '../SidebarGroupsModal/SidebarGroupsModal';
 import SidebarMenuModals from '../SidebarMenuModals/SidebarMenuModals';
 
 import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembersProfileMenu';
@@ -56,7 +56,7 @@ function Sidebar() {
 
         {/* 그룹 */}
         {/* TODO: handleSetActiveGroupMenu 넘겨주는 방식(하나로 넘겨줄 수는 없을까?) */}
-        <SidebarGroupMenu
+        <SidebarGroupsModal
           onClickCreateMenu={handleSetActiveGroupMenu('create')}
           onClickParticipateMenu={handleSetActiveGroupMenu('participate')}
           groupCode={groupCode}
