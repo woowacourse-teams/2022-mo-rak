@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 public class ProxyConnectionHandler implements InvocationHandler {
 
     private final Object connection;
-    private final QueryMonitor queryMonitor;
+    private final PerformanceMonitor performanceMonitor;
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -18,7 +18,7 @@ public class ProxyConnectionHandler implements InvocationHandler {
             return Proxy.newProxyInstance(
                     returnValue.getClass().getClassLoader(),
                     returnValue.getClass().getInterfaces(),
-                    new ProxyPreparedStatementHandler(returnValue, queryMonitor)
+                    new ProxyPreparedStatementHandler(returnValue, performanceMonitor)
             );
         }
         return returnValue;

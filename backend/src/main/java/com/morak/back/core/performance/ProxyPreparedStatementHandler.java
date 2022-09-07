@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public class ProxyPreparedStatementHandler implements InvocationHandler {
 
     private final Object preparedStatement;
-    private final QueryMonitor queryMonitor;
+    private final PerformanceMonitor performanceMonitor;
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -25,8 +25,8 @@ public class ProxyPreparedStatementHandler implements InvocationHandler {
     private Object measureQueryPerformance(Method method, Object[] args) throws Throwable {
         long startTime = System.currentTimeMillis();
         Object returnValue = method.invoke(preparedStatement, args);
-        queryMonitor.addTime(System.currentTimeMillis() - startTime);
-        queryMonitor.countUp();
+        performanceMonitor.addQueryTime(System.currentTimeMillis() - startTime);
+        performanceMonitor.increaseQueryCount();
         return returnValue;
     }
 }

@@ -35,4 +35,13 @@ public class QueryMonitor {
     public void end() {
         activate = false;
     }
+
+    @Override
+    public String toString() {
+        return "QueryMonitor{" +
+                "count=" + count +
+                ", time=" + time +
+                ", activate=" + activate +
+                '}';
+    }
 }
