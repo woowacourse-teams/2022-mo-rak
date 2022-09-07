@@ -1,4 +1,4 @@
-package com.morak.performance;
+package com.morak.back.performance;
 
 import static com.morak.back.AuthSupporter.toHeader;
 import static com.morak.back.SimpleRestAssured.delete;
@@ -8,7 +8,6 @@ import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_4시부터_4시반_선택_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_5시부터_5시반_선택_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.범위_16_20_약속잡기_요청_데이터;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.SimpleRestAssured;
@@ -30,16 +29,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("local")
@@ -62,16 +57,6 @@ public class AppointmentPerformanceTest extends AcceptanceTest {
     private Team team;
     private Member member;
 
-    @BeforeAll
-    public static void logStart() {
-        log.info("======================== 약속잡기 성능 테스트 Start ========================");
-    }
-
-    @AfterAll
-    public static void logEnd() {
-        log.info("======================== 약속잡기 성능 테스트 End ========================");
-    }
-
     @BeforeEach
     public void setUp() {
         super.setUp();
@@ -85,93 +70,26 @@ public class AppointmentPerformanceTest extends AcceptanceTest {
                 .build();
     }
 
-    @Test
-    void 약속잡기_생성_성능을_테스트한다() {
-        // when
-        log.info("[약속잡기 생성]");
-        ExtractableResponse<Response> response = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터);
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-    }
-
     @ParameterizedTest
-    @ValueSource(ints = {1, 100, 1000, 5000, 10_000, 50_000, 100_000})
+    @ValueSource(ints = {1, 100, 1000, 5000, 10_000})
     void 더미데이터를_추가하고_약속잡기_성능을_테스트한다(int size) {
         // given
         insertDummyAppointments(size);
-
-        // when
-        log.info(String.format("[약속잡기 목록 조회] 더미 데이터 개수: %d", size));
-        ExtractableResponse<Response> response = 약속잡기_목록_조회를_요청한다();
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {1, 100, 1000, 5000, 10_000, 50_000, 100_000})
-    void 더미데이터를_추가하고_약속잡기_단건_조회_성능을_테스트한다(int size) {
-        // given
-        insertDummyAppointments(size);
         String location = insertDummyAppointment();
 
         // when
-        log.info(String.format("[약속잡기 단건 조회] 더미 데이터 개수: %d", size));
-        ExtractableResponse<Response> response = 약속잡기_단건_조회를_요청한다(location);
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {1, 100, 1000, 5000, 10_000, 50_000, 100_000})
-    void 약속잡기_가능시간_선택_성능을_테스트한다(int size) {
-        // given
-        insertDummyAppointments(size);
-        String location = insertDummyAppointment();
-
-        // when
-        log.info(String.format("[약속잡기 가능 시간 선택] 더미 데이터 개수: %d", size));
+        log.info(String.format("[약속잡기] 더미 데이터 개수: %d", size));
+        약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터);
+        약속잡기_목록_조회를_요청한다();
+        약속잡기_단건_조회를_요청한다(location);
         List<AvailableTimeRequest> requests = List.of(
                 모락_회식_첫째날_4시부터_4시반_선택_요청_데이터,
                 모락_회식_첫째날_4시반부터_5시_선택_요청_데이터,
                 모락_회식_첫째날_5시부터_5시반_선택_요청_데이터
         );
-        ExtractableResponse<Response> response = 약속잡기_가능_시간_선택을_요청한다(location, requests);
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {1, 100, 1000, 5000, 10_000, 50_000, 100_000})
-    void 약속잡기_마감_성능을_테스트한다(int size) {
-        // given
-        insertDummyAppointments(size);
-        String location = insertDummyAppointment();
-
-        // when
-        log.info(String.format("[약속잡기 마감] 더미 데이터 개수: %d", size));
-        ExtractableResponse<Response> response = 약속잡기_마감을_요청한다(location);
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {1, 100, 1000, 5000, 10_000, 50_000, 100_000})
-    void 약속잡기_삭제_성능을_테스트한다(int size) {
-        // given
-        insertDummyAppointments(size);
-        String location = insertDummyAppointment();
-
-        // when
-        log.info(String.format("[약속잡기 삭제] 더미 데이터 개수: %d", size));
-        ExtractableResponse<Response> response = 약속잡기_삭제를_요청한다(location);
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        약속잡기_가능_시간_선택을_요청한다(location, requests);
+        약속잡기_마감을_요청한다(location);
+        약속잡기_삭제를_요청한다(location);
     }
 
     private void insertDummyAppointments(int size) {
