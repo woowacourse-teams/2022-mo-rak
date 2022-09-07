@@ -5,10 +5,12 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 @RequiredArgsConstructor
+@Profile("test")
 public class PerformanceInterceptor implements HandlerInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger("PERFORMANCE");

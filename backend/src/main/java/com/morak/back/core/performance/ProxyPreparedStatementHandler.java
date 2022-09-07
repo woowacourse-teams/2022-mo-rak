@@ -3,8 +3,10 @@ package com.morak.back.core.performance;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 
 @RequiredArgsConstructor
+@Profile("test")
 public class ProxyPreparedStatementHandler implements InvocationHandler {
 
     private final Object preparedStatement;

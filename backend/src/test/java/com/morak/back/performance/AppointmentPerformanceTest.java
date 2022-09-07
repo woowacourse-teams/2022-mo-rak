@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("local")
+@ActiveProfiles("test")
 public class AppointmentPerformanceTest extends AcceptanceTest {
 
     private static final String APPOINTMENT_BASE_PATH = "/api/groups/MoraK123/appointments";
