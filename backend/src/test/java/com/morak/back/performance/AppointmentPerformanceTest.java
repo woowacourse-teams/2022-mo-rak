@@ -41,8 +41,7 @@ import org.springframework.test.context.ActiveProfiles;
 public class AppointmentPerformanceTest extends AcceptanceTest {
 
     private static final String APPOINTMENT_BASE_PATH = "/api/groups/MoraK123/appointments";
-
-    private static final Logger log = LoggerFactory.getLogger("PERFORMANCE");
+    private static final Logger LOG = LoggerFactory.getLogger("PERFORMANCE");
 
     @Autowired
     private TokenProvider tokenProvider;
@@ -53,21 +52,20 @@ public class AppointmentPerformanceTest extends AcceptanceTest {
     @Autowired
     private AvailableTimeRepository availableTimeRepository;
 
-    private String accessToken;
     private Team team;
     private Member member;
+    private String accessToken;
 
     @BeforeEach
     public void setUp() {
         super.setUp();
-        accessToken = tokenProvider.createToken(String.valueOf(1L));
-
         team = Team.builder()
                 .id(1L)
                 .build();
         member = Member.builder()
                 .id(1L)
                 .build();
+        accessToken = tokenProvider.createToken(String.valueOf(member.getId()));
     }
 
     @ParameterizedTest
@@ -78,16 +76,18 @@ public class AppointmentPerformanceTest extends AcceptanceTest {
         String location = insertDummyAppointment();
 
         // when
-        log.info(String.format("[약속잡기] 더미 데이터 개수: %d", size));
+        LOG.info(String.format("[약속잡기] 더미 데이터 개수: %d", size));
         약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터);
         약속잡기_목록_조회를_요청한다();
         약속잡기_단건_조회를_요청한다(location);
-        List<AvailableTimeRequest> requests = List.of(
-                모락_회식_첫째날_4시부터_4시반_선택_요청_데이터,
-                모락_회식_첫째날_4시반부터_5시_선택_요청_데이터,
-                모락_회식_첫째날_5시부터_5시반_선택_요청_데이터
+        약속잡기_가능_시간_선택을_요청한다(
+                location,
+                List.of(
+                        모락_회식_첫째날_4시부터_4시반_선택_요청_데이터,
+                        모락_회식_첫째날_4시반부터_5시_선택_요청_데이터,
+                        모락_회식_첫째날_5시부터_5시반_선택_요청_데이터
+                )
         );
-        약속잡기_가능_시간_선택을_요청한다(location, requests);
         약속잡기_마감을_요청한다(location);
         약속잡기_삭제를_요청한다(location);
     }
@@ -113,11 +113,8 @@ public class AppointmentPerformanceTest extends AcceptanceTest {
                 .code(Code.generate(new RandomCodeGenerator()))
                 .closedAt(LocalDateTime.now().plusDays(1))
                 .build();
-
         appointmentRepository.save(dummyAppointment);
-
         insertDummyAvailableTimes(dummyAppointment);
-
         return APPOINTMENT_BASE_PATH + "/" + dummyAppointment.getCode();
     }
 
@@ -143,7 +140,6 @@ public class AppointmentPerformanceTest extends AcceptanceTest {
                 );
             }
         }
-
         availableTimeRepository.saveAll(dummyAvailableTimes);
     }
 
