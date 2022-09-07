@@ -1,4 +1,4 @@
-package com.morak.back.core.performance;
+package com.morak.back.performance;
 
 import java.lang.reflect.Proxy;
 import lombok.RequiredArgsConstructor;
