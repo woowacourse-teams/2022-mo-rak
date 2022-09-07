@@ -25,9 +25,9 @@ public class ProxyPreparedStatementHandler implements InvocationHandler {
     }
 
     private Object measureQueryPerformance(Method method, Object[] args) throws Throwable {
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
         Object returnValue = method.invoke(preparedStatement, args);
-        performanceMonitor.addQueryTime(System.currentTimeMillis() - startTime);
+        performanceMonitor.addQueryTime(System.nanoTime() - startTime);
         performanceMonitor.increaseQueryCount();
         return returnValue;
     }

@@ -24,7 +24,7 @@ public class PerformanceInterceptor implements HandlerInterceptor {
         }
         performanceMonitor.setUri(request.getRequestURI());
         performanceMonitor.setMethod(request.getMethod());
-        performanceMonitor.setRequestTime(System.currentTimeMillis());
+        performanceMonitor.setRequestTime(System.nanoTime());
         return true;
     }
 
@@ -34,7 +34,7 @@ public class PerformanceInterceptor implements HandlerInterceptor {
         if (isPreflight(request) || performanceMonitor.getUri() == null) {
             return;
         }
-        performanceMonitor.setRequestTime(System.currentTimeMillis() - performanceMonitor.getRequestTime());
+        performanceMonitor.setRequestTime(System.nanoTime() - performanceMonitor.getRequestTime());
         performanceMonitor.setStatus(response.getStatus());
 
         log.info(performanceMonitor.toString());
