@@ -1,4 +1,3 @@
- 
 import { Global, css } from '@emotion/react';
 import theme from './theme';
 

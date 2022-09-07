@@ -1,34 +1,50 @@
-import { createContext, useContext, useReducer, PropsWithChildren, Dispatch } from 'react';
-
+import { createContext, useReducer, PropsWithChildren, Dispatch } from 'react';
+import { Menu } from '../types/menu';
 interface MenuState {
-  clickedMenu: string;
-  isVisibleGroups: boolean;
+  activeMenu: Menu;
+  isVisibleGroupsModal: boolean;
 }
 
-interface Menu {
-  type: 'SET_CLICKED_MENU' | 'SET_SHOW_GROUP_LIST';
-  payload: any; // TODO: any 변경하기
+interface SetActiveMenuAction {
+  type : 'SET_ACTIVE_MENU';
+  payload: Menu
 }
+
+interface SetIsVisibleGroupsModalAction {
+  type: 'SET_IS_VISIBLE_GROUPS_MODAL';
+  payload: boolean
+}
+
+interface ToggleGroupsModalAction {
+  type: 'TOGGLE_GROUPS_MODAL';
+}
+
+type MenuAction = SetActiveMenuAction | SetIsVisibleGroupsModalAction | ToggleGroupsModalAction
 
 const initialState = {
-  clickedMenu: 'poll',
-  isVisibleGroups: false
-};
+  activeMenu: 'poll',
+  isVisibleGroupsModal: false
+} as const
 
-const MenuContext = createContext<MenuState | undefined>(undefined);
-const MenuDispatchContext = createContext<Dispatch<Menu> | undefined>(undefined);
+const MenuContext = createContext<MenuState | null>(null);
+const MenuDispatchContext = createContext<Dispatch<MenuAction> | null>(null);  
 
-function menuReducer(state: MenuState, action: Menu) {
+function menuReducer(state: MenuState, action: MenuAction): MenuState {
   switch (action.type) {
-    case 'SET_CLICKED_MENU':
+    case 'SET_ACTIVE_MENU':
       return {
         ...state,
-        clickedMenu: action.payload
+        activeMenu: action.payload
       };
-    case 'SET_SHOW_GROUP_LIST':
+    case 'SET_IS_VISIBLE_GROUPS_MODAL':
       return {
         ...state,
-        isVisibleGroups: action.payload
+        isVisibleGroupsModal: action.payload
+      };
+    case 'TOGGLE_GROUPS_MODAL':
+      return {
+        ...state,
+        isVisibleGroupsModal: !state.isVisibleGroupsModal
       };
     default:
       return state;
@@ -45,25 +61,6 @@ function MenuProvider({ children }: PropsWithChildren) {
   );
 }
 
-// TODO: hook으로 빼주자
-function useMenuContext() {
-  const context = useContext(MenuContext);
 
-  if (!context) {
-    throw new Error('MenuProvider를 찾을 수 없습니다.');
-  }
 
-  return context;
-}
-
-function useMenuDispatchContext() {
-  const context = useContext(MenuDispatchContext);
-
-  if (!context) {
-    throw new Error('MenuProvider를 찾을 수 없습니다.');
-  }
-
-  return context;
-}
-
-export { useMenuContext, useMenuDispatchContext, MenuProvider };
+export { MenuContext, MenuDispatchContext, MenuProvider };

@@ -15,7 +15,7 @@ import Close from '../../assets/close-button.svg';
 import Logo from '../../assets/logo.svg';
 import { GroupInterface } from '../../types/group';
 import { createGroup, participateGroup } from '../../api/group';
-import { useMenuDispatchContext } from '../../context/MenuProvider';
+import useMenuDispatchContext from '../../hooks/useMenuDispatchContext';
 import { resisterSlackUrl } from '../../api/slack';
 import { SlackInterface } from '../../types/slack';
 
@@ -43,7 +43,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
       const groupCode = res.headers.location.split('groups/')[1];
 
       navigate(`/groups/${groupCode}`);
-      dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: false });
+      dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
       setGroupName('');
       closeModal();
     } catch (err) {
@@ -73,7 +73,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
 
       // TODO: 중복 제거
       navigate(`/groups/${groupCode}`);
-      dispatch({ type: 'SET_SHOW_GROUP_LIST', payload: false });
+      dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
       setInvitationCode('');
       closeModal();
     } catch (err) {
