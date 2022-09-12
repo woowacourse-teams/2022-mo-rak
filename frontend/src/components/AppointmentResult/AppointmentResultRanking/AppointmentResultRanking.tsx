@@ -77,7 +77,7 @@ function AppointmentResultRanking({
             onClick={onClickRank(idx)}
             isClicked={idx === clickedRecommendation}
           >
-            <FlexContainer justifyContent="space-between">
+            <FlexContainer justifyContent="space-between" alignItems="center">
               {/* TODO: 상수화 */}
               {rank === 1 ? (
                 <StyledCrownIcon src={Crown} alt="crown" />
@@ -86,7 +86,7 @@ function AppointmentResultRanking({
                 <StyledResultText>{rank}</StyledResultText>
               )}
               <StyledResultText>
-                {getDateTime(recommendStartDateTime)}~{getDateTime(recommendEndDateTime)}
+                {getDateTime(recommendStartDateTime)}<br/>~{getDateTime(recommendEndDateTime)}
               </StyledResultText>
               <StyledResultText>
                 {availableMembers.length}/{totalParticipants}명 가능
