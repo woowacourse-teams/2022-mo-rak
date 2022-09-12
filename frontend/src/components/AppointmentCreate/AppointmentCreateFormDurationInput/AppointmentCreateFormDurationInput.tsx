@@ -43,7 +43,7 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
         padding="0.4rem 0.8rem"
         width="9.2rem"
       >
-        <Select id="minute" onChange={onChange} value={minute} name="minute" required>
+        <Select id="minute" onChange={onChange} value={minute} name="minute" fontSize="2.4rem" required>
           <option value="00">00</option>
           <option value="30">30</option>
         </Select>
@@ -55,11 +55,11 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
 }
 
 const StyledContent = styled.p`
-  font-size: 3.2rem;
+  font-size: 2.8rem;
 `;
 
 const StyledLabel = styled.label`
-  font-size: 3.2rem;
+  font-size: 2.8rem;
 `;
 
 export default AppointmentCreateFormDurationInput;

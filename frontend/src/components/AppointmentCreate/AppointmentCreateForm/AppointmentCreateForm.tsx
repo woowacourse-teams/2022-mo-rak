@@ -114,7 +114,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   return (
     <StyledForm onSubmit={handleCreateAppointment}>
       <Box width="66rem" minHeight="56.4rem" padding="4.8rem">
-        <FlexContainer flexDirection="column" gap="1.6rem">
+        <FlexContainer flexDirection="column" gap="2rem">
           <AppointmentCreateFormTitleInput title={title} onChange={handleTitle} />
           <AppointmentCreateFormDescriptionInput
             description={description}
