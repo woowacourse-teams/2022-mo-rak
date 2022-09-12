@@ -11,11 +11,6 @@ interface Props {
   setSelectedDate?: Dispatch<SetStateAction<string>>;
 }
 
-const formatDate = (date: Date, day: number) =>
-  `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-    .toString()
-    .padStart(2, '0')}`;
-
 const weeks = ['일', '월', '화', '수', '목', '금', '토'];
 
 // version "default"는 약속 잡기 생성에서 사용된다. 기본 version이 default로 설정되어있기 때문에,
@@ -34,104 +29,113 @@ function Calendar({
   selectedDate,
   setSelectedDate
 }: Props) {
-  const [date, setDate] = useState<Date>(new Date()); // 현재 날짜
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const isCurrentMonth = new Date().getMonth() === currentMonth;
+
+  const formatDate = (day: number) =>
+    `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${day
+      .toString()
+      .padStart(2, '0')}`;
 
   // NOTE: UI - 여기 있어도 될듯, date에 의존적이다 - start
   const getPrevMonthDays = () => {
-    const prevLastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate(); // 지난달 말일
-    date.setDate(1);
-    const firstDayIndex = date.getDay(); // 1일의 요일
+    const copiedCurrentDate = new Date(currentDate.getTime());
+    copiedCurrentDate.setDate(1);
+    const firstDayIndex = copiedCurrentDate.getDay(); // 1일의 요일
 
-    return Array.from({ length: firstDayIndex }, (v, i) => prevLastDay - (firstDayIndex - i) + 1);
+    const prevMonthLastDay = new Date(currentYear, currentMonth, 0).getDate();
+
+    return Array.from(
+      { length: firstDayIndex },
+      (v, i) => prevMonthLastDay - (firstDayIndex - i) + 1
+    );
   };
 
-  const getNowMonthDays = () => {
-    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate(); // 이번달 말일
+  const getCurrentMonthDays = () => {
+    const currentMonthLastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-    return Array.from({ length: lastDay }, (v, i) => i + 1);
+    return Array.from({ length: currentMonthLastDay }, (v, i) => i + 1);
   };
 
   const getNextMonthDays = () => {
-    const lastDayIndex = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay(); // 막날의 요일
+    const lastDayIndex = new Date(currentYear, currentMonth + 1, 0).getDay(); // 막날의 요일
     const nextDays = 7 - lastDayIndex - 1; // 다음달 날짜
 
     return Array.from({ length: nextDays }, (v, i) => i + 1);
   };
-  // NOTE: UI - 여기 있어도 될듯, date에 의존적이다 - end
+  // NOTE: UI - 여기 있어도 될듯, currentDate에 의존적이다 - end
 
   const handleShowPrevMonth = () => {
-    setDate(new Date(date.getFullYear(), date.getMonth() - 1, 1));
+    setCurrentDate(new Date(currentYear, currentMonth - 1, 1));
   };
 
   const handleShowNextMonth = () => {
-    setDate(new Date(date.getFullYear(), date.getMonth() + 1, 1));
+    setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
   };
 
   const handleStartOrEndDate = (day: number) => () => {
     // TODO: 약속잡기 진행페이지에서는 사용되지 않기 때문에, 분기처리를 해줌
-    if (setStartDate && setEndDate) {
-      if (!startDate) {
-        setStartDate(formatDate(date, day));
+    if (!startDate) {
+      setStartDate?.(formatDate(day));
 
-        return;
-      }
-
-      if (endDate || isBeforeStartDate(day)) {
-        setEndDate('');
-        setStartDate(formatDate(date, day));
-
-        return;
-      }
-
-      setEndDate(formatDate(date, day));
+      return;
     }
+
+    if (endDate || isBeforeStartDate(day)) {
+      setEndDate?.('');
+      setStartDate?.(formatDate(day));
+
+      return;
+    }
+
+    setEndDate?.(formatDate(day));
   };
 
   const handleSelectedDate = (day: number) => () => {
-    // TODO: 임시로 분기문 작성 -> 변경 필요
-    if (setSelectedDate) {
-      setSelectedDate(formatDate(date, day));
-    }
+    setSelectedDate?.(formatDate(day));
   };
 
   const isPrevToday = (day: number) =>
-    new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) <
-    new Date(`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`);
+    new Date(`${currentYear}-${currentMonth}-${day}`) <
+    new Date(`${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`);
 
   const isToday = (day: number) =>
-    date.getFullYear() === new Date().getFullYear() &&
-    date.getMonth() === new Date().getMonth() &&
+    currentYear === new Date().getFullYear() &&
+    currentMonth === new Date().getMonth() &&
     day === new Date().getDate();
 
-  const isBetweenStartEndDate = (day: number) =>
-    new Date(startDate) < new Date(formatDate(date, day)) &&
-    new Date(formatDate(date, day)) < new Date(endDate);
+  const isBetweenStartEndDate = (day: number) => {
+    const targetDate = new Date(formatDate(day));
+
+    return new Date(startDate) < targetDate && targetDate < new Date(endDate);
+  };
 
   const isStartOrEndDate = (day: number) =>
-    startDate === formatDate(date, day) || endDate === formatDate(date, day);
+    startDate === formatDate(day) || endDate === formatDate(day);
 
   const isBeforeStartDate = (day: number) =>
-    new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${day}`) < new Date(startDate);
+    new Date(`${currentYear}-${currentMonth + 1}-${day}`) < new Date(startDate);
 
-  const isNotInStartAndEndDate = (day: number) =>
-    new Date(startDate) > new Date(formatDate(date, day)) ||
-    new Date(formatDate(date, day)) > new Date(endDate);
+  const isNotBetweenStartAndEndDate = (day: number) => {
+    const targetDate = new Date(formatDate(day));
 
-  const isSelectedDate = (day: number) =>
-    `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${day
-      .toString()
-      .padStart(2, '0')}` === selectedDate;
+    return new Date(startDate) > targetDate || targetDate > new Date(endDate);
+  };
 
-  const isThisMonth = () => new Date().getMonth() === date.getMonth();
+  const isSelectedDate = (day: number) => formatDate(day) === selectedDate;
 
   return (
     <StyledCalendar>
       <StyledMonth>
-        <StyledPrevButton onClick={handleShowPrevMonth} disabled={isThisMonth()}>
+        <StyledPrevButton onClick={handleShowPrevMonth} disabled={isCurrentMonth}>
           {/* TODO: 이런 방식이 괜찮은 방법인지 고민하기 */}
           &#8249;
         </StyledPrevButton>
-        <StyledMonthTitle>{`${date.getFullYear()}년 ${date.getMonth() + 1}월`}</StyledMonthTitle>
+        <StyledMonthTitle>{`${currentDate.getFullYear()}년 ${
+          currentMonth + 1
+        }월`}</StyledMonthTitle>
         <StyledNextButton onClick={handleShowNextMonth}>&#8250;</StyledNextButton>
       </StyledMonth>
       <StyledWeekends>
@@ -140,66 +144,66 @@ function Calendar({
         ))}
       </StyledWeekends>
       <StyledDays>
-        {/* 지난 달 일부 날짜 */}
         {getPrevMonthDays().map((day) => (
-          <StyledPrevMonthDay key={day} onClick={handleShowPrevMonth} isHidden={isThisMonth()}>
+          <StyledPrevMonthDay key={day} onClick={handleShowPrevMonth} isHidden={isCurrentMonth}>
             {day}
           </StyledPrevMonthDay>
         ))}
 
-        {/* 이번 달 날짜  */}
         {version === 'select'
-          ? getNowMonthDays().map((day) => {
-              if (isNotInStartAndEndDate(day)) {
+          ? getCurrentMonthDays().map((day) => {
+              if (isNotBetweenStartAndEndDate(day)) {
                 return (
                   // TODO: 변수명 생각해보기
-                  <StyledNowMonthDayNotInStartAndEndDate>
+                  <StyledCurrentMonthDayNotInStartAndEndDate key={day}>
                     {day}
-                  </StyledNowMonthDayNotInStartAndEndDate>
+                  </StyledCurrentMonthDayNotInStartAndEndDate>
                 );
               }
 
               return (
-                <StyledNowMonthDay
+                <StyledCurrentMonthDay
                   key={day}
                   onClick={handleSelectedDate(day)}
                   isSelectedDate={isSelectedDate(day)}
                 >
                   {day}
-                </StyledNowMonthDay>
+                </StyledCurrentMonthDay>
               );
             })
-          : getNowMonthDays().map((day) => {
+          : getCurrentMonthDays().map((day) => {
               if (isPrevToday(day)) {
-                return <StyledNowMonthDayPrevToday>{day}</StyledNowMonthDayPrevToday>;
+                return (
+                  <StyledCurrentMonthDayPrevToday key={day}>{day}</StyledCurrentMonthDayPrevToday>
+                );
               }
 
               if (isToday(day)) {
                 return (
-                  <StyledNowMonthDayToday
+                  <StyledCurrentMonthDayToday
                     // TODO: 약속잡기 진행페이지에서는 사용되지 않기 때문에, 분기처리를 해줌
+                    key={day}
                     onClick={setStartDate && setEndDate && handleStartOrEndDate(day)}
                     isBetweenStartEndDate={isBetweenStartEndDate(day)}
                     isStartOrEndDate={isStartOrEndDate(day)}
                   >
                     {day}
-                  </StyledNowMonthDayToday>
+                  </StyledCurrentMonthDayToday>
                 );
               }
 
               return (
-                <StyledNowMonthDay
+                <StyledCurrentMonthDay
                   key={day}
                   onClick={handleStartOrEndDate(day)}
                   isBetweenStartEndDate={isBetweenStartEndDate(day)}
                   isStartOrEndDate={isStartOrEndDate(day)}
                 >
                   {day}
-                </StyledNowMonthDay>
+                </StyledCurrentMonthDay>
               );
             })}
 
-        {/* 다음 달 일부 날짜  */}
         {getNextMonthDays().map((day) => (
           <StyledNextMonthDay key={day} onClick={handleShowNextMonth}>
             {day}
@@ -214,8 +218,9 @@ const StyledCalendar = styled.div(
   ({ theme }) => `
   width: 45.2rem;
   height: 60rem;
-  background: ${theme.colors.WHITE_100};
   border-radius: 2rem;
+
+  background: ${theme.colors.WHITE_100};
 `
 );
 
@@ -290,7 +295,8 @@ const StyledNextMonthDay = styled(StyledMonthDay)(
 `
 );
 
-const StyledNowMonthDay = styled(StyledMonthDay)<{
+// NOTE: version이 default, select에 따라 분기가 일어나므로 복잡
+const StyledCurrentMonthDay = styled(StyledMonthDay)<{
   isBetweenStartEndDate?: boolean;
   isStartOrEndDate?: boolean;
   isSelectedDate?: boolean;
@@ -329,20 +335,21 @@ const StyledNowMonthDay = styled(StyledMonthDay)<{
 `
 );
 
-const StyledNowMonthDayPrevToday = styled(StyledNowMonthDay)(
+const StyledCurrentMonthDayPrevToday = styled(StyledCurrentMonthDay)(
   ({ theme }) => `
   color: ${theme.colors.GRAY_200};
 `
 );
 
-const StyledNowMonthDayToday = styled(StyledNowMonthDay)``;
+const StyledCurrentMonthDayToday = styled(StyledCurrentMonthDay)``;
 
-const StyledNowMonthDayNotInStartAndEndDate = styled(StyledNowMonthDay)(
+const StyledCurrentMonthDayNotInStartAndEndDate = styled(StyledCurrentMonthDay)(
   ({ theme }) => `
-  color: ${theme.colors.GRAY_200};
   &:hover {
     border: none;
   }
+
+  color: ${theme.colors.GRAY_200};
 `
 );
 
