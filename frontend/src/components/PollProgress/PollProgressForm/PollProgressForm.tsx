@@ -139,7 +139,7 @@ function PollProgressForm() {
   }, [pollItems]);
 
   return (
-    <Box width="84.4rem" padding="6.4rem 4.8rem 5.4rem 4.8rem">
+    <Box width="84.4rem" padding="6.4rem 4.8rem">
       {poll ? (
         <form onSubmit={handleSubmit}>
           <MarginContainer margin="0 0 4rem 0">
@@ -152,7 +152,7 @@ function PollProgressForm() {
               allowedPollCount={poll.allowedPollCount}
             />
           </MarginContainer>
-          <MarginContainer margin="0 0 8.4rem 0">
+          <MarginContainer margin="0 0 23.6rem 0">
             <PollProgressItemGroup
               pollItems={pollItems}
               selectedPollItems={selectedPollItems}
