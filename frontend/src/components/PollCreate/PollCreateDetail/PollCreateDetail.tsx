@@ -26,7 +26,7 @@ function PollCreateDetail({
           width="6.4rem"
           borderRadius="20px"
           variant="outlined"
-          fontSize="0.8rem"
+          fontSize="1.2rem"
           colorScheme={isAnonymous ? theme.colors.GRAY_400 : theme.colors.PURPLE_100}
           onClick={handleAnonymous(false)}
         >
@@ -36,7 +36,7 @@ function PollCreateDetail({
           width="6.4rem"
           borderRadius="20px"
           variant="outlined"
-          fontSize="0.8rem"
+          fontSize="1.2rem"
           colorScheme={isAnonymous ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
           onClick={handleAnonymous(true)}
         >
@@ -45,20 +45,20 @@ function PollCreateDetail({
       </FlexContainer>
       <FlexContainer gap="1.2rem">
         <Button
-          width="9.2rem"
+          width="11.2rem"
           borderRadius="20px"
           variant="outlined"
-          fontSize="0.8rem"
+          fontSize="1.2rem"
           colorScheme={isAllowedMultiplePollCount ? theme.colors.GRAY_400 : theme.colors.PURPLE_100}
           onClick={handleAllowedMultiplePollCount(false)}
         >
           하나만 투표 가능
         </Button>
         <Button
-          width="9.2rem"
+          width="11.2rem"
           borderRadius="20px"
           variant="outlined"
-          fontSize="0.8rem"
+          fontSize="1.2rem"
           colorScheme={isAllowedMultiplePollCount ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
           onClick={handleAllowedMultiplePollCount(true)}
         >

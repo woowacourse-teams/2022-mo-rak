@@ -41,7 +41,7 @@ function PollResultDetail({ isAnonymous, allowedPollCount, closedAt }: Props) {
         <StyledDetail>{isAnonymous ? '익명' : '기명'}</StyledDetail>
       </TextField>
       <TextField
-        width="9.2rem"
+        width="11.2rem"
         borderRadius="20px"
         padding="1.2rem 0"
         variant="outlined"
@@ -70,7 +70,7 @@ const StyledCloseTime = styled.p`
 const StyledDetail = styled.span(
   ({ theme }) => `
   color: ${theme.colors.PURPLE_100};
-  font-size: 0.8rem;
+  font-size: 1.2rem;
 `
 );
 
