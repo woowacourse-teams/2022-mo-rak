@@ -35,8 +35,7 @@ function PollCreateCloseTimeInput({ closingTime, closingDate, onChangeTime, onCh
 const StyledLabel = styled.label(
   ({ theme }) => `
   font-size: 1.6rem;
-
-  color: ${theme.colors.GRAY_400}
+  color: ${theme.colors.GRAY_400};
 `
 );
 export default PollCreateCloseTimeInput;
