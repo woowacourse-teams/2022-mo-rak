@@ -3,6 +3,7 @@ import { useState } from 'react';
 import AppointmentCreateForm from '../../components/AppointmentCreate/AppointmentCreateForm/AppointmentCreateForm';
 import Calendar from '../../components/@common/Calendar/Calendar';
 import AppointmentCreateHeader from '../../components/AppointmentCreate/AppointmentCreateHeader/AppointmentCreateHeadert';
+import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
 
 function AppointmentCreatePage() {
   const [startDate, setStartDate] = useState(''); // 2022-08-20 과 같은 형식이 들어옴 -> new Date()로 감싸서 사용 가능
@@ -10,18 +11,22 @@ function AppointmentCreatePage() {
 
   return (
     <StyledContainer>
-      <StyledLeftContainer>
-        <AppointmentCreateHeader />
-        <Calendar
-          startDate={startDate}
-          endDate={endDate}
-          setStartDate={setStartDate}
-          setEndDate={setEndDate}
-        />
-      </StyledLeftContainer>
-      <StyledRightContainer>
-        <AppointmentCreateForm startDate={startDate} endDate={endDate} />
-      </StyledRightContainer>
+      <FlexContainer flexDirection='column' gap="2rem">
+        <AppointmentCreateHeader /> 
+        <FlexContainer gap="4rem">
+          <StyledLeftContainer>
+            <Calendar
+              startDate={startDate}
+              endDate={endDate}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+            />
+          </StyledLeftContainer>
+          <StyledRightContainer>
+            <AppointmentCreateForm startDate={startDate} endDate={endDate} />
+          </StyledRightContainer>
+        </FlexContainer>
+      </FlexContainer>
     </StyledContainer>
   );
 }

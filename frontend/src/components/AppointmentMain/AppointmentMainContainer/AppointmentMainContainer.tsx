@@ -49,9 +49,9 @@ function AppointmentMainContainer() {
           ({ code, title, durationHours, durationMinutes, count, isClosed, closedAt }) => (
             <Box
               key={code}
-              width="26.4rem"
-              padding="2rem"
-              minHeight="16.8rem"
+              width="36.4rem"
+              padding="2.8rem"
+              minHeight="23.2rem"
               filter={isClosed ? 'grayscale(1)' : 'none'}
             >
               <FlexContainer justifyContent="end">
@@ -61,7 +61,7 @@ function AppointmentMainContainer() {
               <MarginContainer margin="0 0 0.4rem">
                 <AppointmentMainProgress count={count} groupCode={groupCode} />
               </MarginContainer>
-              <MarginContainer margin="0 0 1.2rem">
+              <MarginContainer margin="0 0 1.6rem">
                 <AppointmentMainDetail
                   durationHours={durationHours}
                   durationMinutes={durationMinutes}
@@ -77,13 +77,13 @@ function AppointmentMainContainer() {
 }
 
 const StyledContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3.2rem;
 `;
 
 const StyledTitle = styled.h1`
-  font-size: 1.6rem;
+  font-size: 2.2rem;
   text-align: center;
 `;
 
@@ -96,7 +96,7 @@ const LottieWrapper = styled.div`
 const StyledGuide = styled.p(
   ({ theme }) => `
   text-align: center;
-  font-size: 2.8rem;
+  font-size: 4rem;
 
   color: ${theme.colors.GRAY_400}
 `

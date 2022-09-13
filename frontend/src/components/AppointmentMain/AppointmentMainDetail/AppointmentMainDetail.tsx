@@ -29,16 +29,16 @@ function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Pro
   const theme = useTheme();
 
   return (
-    <FlexContainer flexDirection="column" gap="1.2rem">
+    <FlexContainer flexDirection="column" gap="1.6rem">
       <StyledCloseTime>
         {getFormattedClosedTime(closedAt)}
         까지
       </StyledCloseTime>
       <TextField
-        width="5.2rem"
+        width="7.2rem"
         borderRadius="20px"
         variant="outlined"
-        padding="0.4rem 0"
+        padding="0.8rem 0"
         colorScheme={theme.colors.PURPLE_100}
       >
         <StyledDetail>
@@ -52,14 +52,14 @@ function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Pro
 }
 
 const StyledCloseTime = styled.p`
-  font-size: 0.8rem;
+  font-size: 1.4rem;
   align-self: end;
 `;
 
 const StyledDetail = styled.span(
   ({ theme }) => `
   color: ${theme.colors.PURPLE_100};
-  font-size: 0.8rem;
+  font-size: 1.2rem;
 `
 );
 

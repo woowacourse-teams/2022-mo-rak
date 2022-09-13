@@ -95,10 +95,10 @@ function AppointmentProgressTimePicker({
 
   return (
     // TODO: box minheight 없애야할듯
-    <Box width="30rem" minHeight="52rem" height="52rem" padding="3.6rem 2rem" overflow="auto">
+    <Box width="30rem" minHeight="52rem" height="60rem" padding="3.6rem 2rem" overflow="auto">
       <FlexContainer flexDirection="column" gap="1.2rem">
         {!selectedDate ? (
-          <StyledGuideText>왼쪽에서 날짜를 선택해주세요~</StyledGuideText>
+          <StyledGuideText>왼쪽에서 날짜를 선택해주세요</StyledGuideText>
         ) : (
           <>
             {times.map(({ start, end }) => {
@@ -130,9 +130,9 @@ function AppointmentProgressTimePicker({
 const StyledTime = styled.div<{ isSelected: boolean }>(
   ({ theme, isSelected }) => `
   width: 25.6rem;
-  font-size: 1.6rem;
+  font-size: 2rem;
   text-align: center;
-  padding: 0.8rem 0;
+  padding: 1.2rem 0;
   border-radius: 10px;
   cursor: pointer;
 

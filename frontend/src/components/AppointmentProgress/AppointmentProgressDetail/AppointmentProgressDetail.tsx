@@ -11,26 +11,15 @@ interface Props {
 
 function AppointmentProgressDetail({ durationHours, durationMinutes, startTime, endTime }: Props) {
   return (
-    <>
       <StyledDuration>
-        {durationHours}
-        시간
-        {durationMinutes}
-        분동안 진행
+        약속시간은 {durationHours}시간 {durationMinutes}분동안 진행 
+        <br/>({startTime}~{endTime})
       </StyledDuration>
-      <StyledTimeRange>
-        {startTime}~{endTime}
-      </StyledTimeRange>
-    </>
   );
 }
 
 const StyledDuration = styled.p`
-  font-size: 4rem;
-`;
-
-const StyledTimeRange = styled.p`
-  font-size: 3.2rem;
+  font-size: 2.4rem;
 `;
 
 export default AppointmentProgressDetail;

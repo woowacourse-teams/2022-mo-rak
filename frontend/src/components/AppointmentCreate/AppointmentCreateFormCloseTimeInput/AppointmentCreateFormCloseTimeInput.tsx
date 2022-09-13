@@ -25,7 +25,7 @@ function AppointmentCreateFormCloseTimeInput({
 
   return (
     <>
-      <StyledLabel>마감 시간 설정</StyledLabel>
+      <StyledTitle>마감 시간 설정</StyledTitle>
       <TextField
         variant="outlined"
         colorScheme={theme.colors.PURPLE_100}
@@ -40,19 +40,19 @@ function AppointmentCreateFormCloseTimeInput({
             max={maxCloseDate}
             onChange={onChangeDate}
             value={closeDate}
-            fontSize="2rem"
+            fontSize="2.4rem"
             required
           />
-          <Input type="time" onChange={onChangeTime} value={closeTime} fontSize="2rem" required />
+          <Input type="time" onChange={onChangeTime} value={closeTime} fontSize="2.4rem" required />
         </FlexContainer>
       </TextField>
     </>
   );
 }
 
-const StyledLabel = styled.label(
+const StyledTitle = styled.div(
   ({ theme }) => `
-  font-size: 4rem;
+  font-size: 2.8rem;
   color: ${theme.colors.PURPLE_100};
 `
 );
