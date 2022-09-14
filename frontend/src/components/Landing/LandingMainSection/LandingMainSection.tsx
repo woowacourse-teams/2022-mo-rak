@@ -43,7 +43,7 @@ function LandingMainSection({ id }: Props) {
       </FlexContainer>
       <StyledSectionGuideContainer>
         <StlyedBlobContainer>
-          <img src={Blob} alt="blob" />
+          <StyledBlobImage src={Blob} alt="blob"/>
           <StyledGuideText>모락 소개</StyledGuideText>
         </StlyedBlobContainer>
       </StyledSectionGuideContainer>
@@ -177,6 +177,11 @@ const StyledSectionGuideContainer = styled.div`
 
 const StlyedBlobContainer = styled.div`
   position: relative;
+`;
+
+const StyledBlobImage = styled.img`
+  width: 18rem;
+  height: 17.4rem;
 `;
 
 const StyledGuideText = styled.span(
