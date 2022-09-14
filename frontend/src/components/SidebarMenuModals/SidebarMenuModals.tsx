@@ -16,7 +16,7 @@ import Logo from '../../assets/logo.svg';
 import { GroupInterface } from '../../types/group';
 import { createGroup, participateGroup } from '../../api/group';
 import useMenuDispatchContext from '../../hooks/useMenuDispatchContext';
-import { resisterSlackUrl } from '../../api/slack';
+import { linkSlack } from '../../api/slack';
 import { SlackInterface } from '../../types/slack';
 
 interface Props {
@@ -89,7 +89,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
   };
 
   // slack url 등록
-  const handleResisterSlackUrl = async (e: FormEvent<HTMLFormElement>) => {
+  const handleLinkSlack = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const slackUrlData: SlackInterface = {
@@ -97,7 +97,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
     };
 
     try {
-      await resisterSlackUrl(slackUrlData, groupCode);
+      await linkSlack(slackUrlData, groupCode);
       alert('슬랙 채널과 연동이 완료되었습니다 🎉');
       setSlackUrl('');
       closeModal();
@@ -111,7 +111,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
       {/* 슬랙 연동 */}
       <Modal isVisible={activeModalMenu === 'slack'} close={closeModal}>
         {/* 슬랙 메뉴 */}
-        <StyledModalFormContainer onSubmit={handleResisterSlackUrl}>
+        <StyledModalFormContainer onSubmit={handleLinkSlack}>
           <StyledTop>
             <StyledSlackLogo src={Slack} alt="slack-logo" />
             <StyledHeaderText>슬랙 채널과 연동해보세요!</StyledHeaderText>
@@ -262,6 +262,8 @@ const StyledCloseButton = styled.img`
   right: 2.4rem;
   top: 2.4rem;
   cursor: pointer;
+  width: 1.6rem;
+  height: 1.6rem;
 
   &:hover {
     transform: scale(1.1);
@@ -294,6 +296,8 @@ const StyledLinkIcon = styled.img`
   position: absolute;
   left: 1.2rem;
   top: 1.2rem;
+  width: 2.4rem;
+  height: 2.4rem;
 `;
 
 const StyledButton = styled.button`
