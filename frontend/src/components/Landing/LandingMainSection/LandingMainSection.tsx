@@ -42,10 +42,10 @@ function LandingMainSection({ id }: Props) {
         </StyledLink>
       </FlexContainer>
       <StyledSectionGuideContainer>
-        <StlyedBlobContainer>
+        <StyledBlobContainer>
           <StyledBlobImage src={Blob} alt="blob"/>
           <StyledGuideText>모락 소개</StyledGuideText>
-        </StlyedBlobContainer>
+        </StyledBlobContainer>
       </StyledSectionGuideContainer>
     </StyledMainSection>
   );
@@ -175,7 +175,7 @@ const StyledSectionGuideContainer = styled.div`
   bottom: 6rem;
 `;
 
-const StlyedBlobContainer = styled.div`
+const StyledBlobContainer = styled.div`
   position: relative;
 `;
 
