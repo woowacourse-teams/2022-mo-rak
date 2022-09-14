@@ -19,7 +19,7 @@ import emptyAnimation from '../../../assets/empty-animation.json';
 function PollMainContainer() {
   const [polls, setPolls] = useState<getPollsResponse>([]);
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
-  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
+  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' }); 
 
   useEffect(() => {
     const fetchPolls = async () => {
