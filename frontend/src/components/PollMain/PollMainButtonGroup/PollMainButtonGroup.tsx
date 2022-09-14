@@ -23,8 +23,8 @@ function PollMainButtonGroup({ pollCode, status }: Props) {
         <Button
           type="button"
           variant="filled"
-          width="6rem"
-          padding="0.4rem 0"
+          width="8.4rem"
+          padding="0.8rem 0"
           fontSize="1.2rem"
           borderRadius="5px"
           colorScheme={theme.colors.PURPLE_100}
@@ -36,8 +36,8 @@ function PollMainButtonGroup({ pollCode, status }: Props) {
       <Button
         type="button"
         variant="outlined"
-        width="6rem"
-        padding="0.4rem 0"
+        width="8.4rem"
+        padding="0.8rem 0"
         fontSize="1.2rem"
         borderRadius="5px"
         colorScheme={theme.colors.PURPLE_100}

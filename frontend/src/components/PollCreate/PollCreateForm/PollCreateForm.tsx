@@ -75,7 +75,7 @@ function PollCreateForm() {
   };
 
   return (
-    <Box width="84.4rem" padding="4.8rem 4.8rem 14rem">
+    <Box width="84.4rem" padding="6.4rem 4.8rem">
       <form onSubmit={handleSubmit}>
         <PollCreateCloseTimeInput
           closingDate={closingDate}
@@ -83,7 +83,7 @@ function PollCreateForm() {
           onChangeDate={handleCloseDate}
           onChangeTime={handleCloseTime}
         />
-        <MarginContainer margin="0 0 4rem 0">
+        <MarginContainer margin="0 0 4.4rem 0">
           <PollCreateFormTitleInput title={title} onChange={handleTitle} />
           <Divider />
         </MarginContainer>

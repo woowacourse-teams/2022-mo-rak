@@ -52,11 +52,11 @@ function PollResultButtonGroup({ pollCode, status, isHost, groupCode, pollItems 
     return (
       <>
         {status === 'OPEN' && (
-          <FlexContainer gap="2rem" justifyContent="center">
+          <FlexContainer gap="2rem" justifyContent="space-between">
             <Button
               type="button"
               variant="filled"
-              width="15.4rem"
+              width="22.8rem"
               padding="2rem 0"
               fontSize="2rem"
               colorScheme={theme.colors.GRAY_400}
@@ -67,7 +67,7 @@ function PollResultButtonGroup({ pollCode, status, isHost, groupCode, pollItems 
             <Button
               type="button"
               variant="filled"
-              width="15.4rem"
+              width="22.8rem"
               padding="2rem 0"
               fontSize="2rem"
               colorScheme={theme.colors.GRAY_400}
@@ -78,7 +78,7 @@ function PollResultButtonGroup({ pollCode, status, isHost, groupCode, pollItems 
             <Button
               type="button"
               variant="filled"
-              width="15.4rem"
+              width="22.8rem"
               padding="2rem 0"
               fontSize="2rem"
               colorScheme={theme.colors.PURPLE_100}
@@ -94,7 +94,7 @@ function PollResultButtonGroup({ pollCode, status, isHost, groupCode, pollItems 
             <Button
               type="button"
               variant="filled"
-              width="32.4rem"
+              width="22.8rem"
               padding="2rem 0"
               fontSize="2rem"
               colorScheme={theme.colors.GRAY_400}
@@ -115,7 +115,7 @@ function PollResultButtonGroup({ pollCode, status, isHost, groupCode, pollItems 
           <Button
             type="button"
             variant="filled"
-            width="15.4rem"
+            width="22.8rem"
             padding="2rem 0"
             fontSize="2rem"
             colorScheme={theme.colors.PURPLE_100}

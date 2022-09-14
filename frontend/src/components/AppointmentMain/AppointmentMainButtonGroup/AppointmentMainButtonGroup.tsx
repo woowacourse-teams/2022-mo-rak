@@ -22,8 +22,8 @@ function AppointmentMainButtonGroup({ appointmentCode, isClosed }: Props) {
       {!isClosed && (
         <Button
           variant="filled"
-          width="6rem"
-          padding="0.4rem 0"
+          width="8.4rem"
+          padding="0.8rem 0"
           fontSize="1.2rem"
           borderRadius="5px"
           colorScheme={theme.colors.PURPLE_100}
@@ -34,8 +34,8 @@ function AppointmentMainButtonGroup({ appointmentCode, isClosed }: Props) {
       )}
       <Button
         variant="outlined"
-        width="6rem"
-        padding="0.4rem 0"
+        width="8.4rem"
+        padding="0.8rem 0"
         fontSize="1.2rem"
         borderRadius="5px"
         colorScheme={theme.colors.PURPLE_100}

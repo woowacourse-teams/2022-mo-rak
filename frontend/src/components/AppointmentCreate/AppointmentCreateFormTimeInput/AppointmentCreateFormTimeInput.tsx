@@ -25,11 +25,11 @@ function AppointmentCreateFormTimeInput({ time, onChange }: Props) {
     >
       <FlexContainer alignItems="center">
         {/* TODO: label을 어떻게 넣을것인가? 빈값으로? */}
-        <Select name="period" value={time.period} onChange={onChange} required>
+        <Select name="period" value={time.period} onChange={onChange} fontSize="2.4rem" required>
           <option value="AM">AM</option>
           <option value="PM">PM</option>
         </Select>
-        <Select name="hour" value={time.hour} onChange={onChange} required>
+        <Select name="hour" value={time.hour} onChange={onChange} fontSize="2.4rem" required>
           <option value="">--</option>
           {createRange({
             size: 12,
@@ -41,7 +41,7 @@ function AppointmentCreateFormTimeInput({ time, onChange }: Props) {
           ))}
         </Select>
         <StyledContent>:</StyledContent>
-        <Select name="minute" value={time.minute} onChange={onChange} required>
+        <Select name="minute" value={time.minute} onChange={onChange} fontSize="2.4rem" required>
           <option value="00">00</option>
           <option value="30">30</option>
         </Select>
@@ -51,7 +51,7 @@ function AppointmentCreateFormTimeInput({ time, onChange }: Props) {
 }
 
 const StyledContent = styled.p`
-  font-size: 3.2rem;
+  font-size: 2.4rem;
 `;
 
 export default AppointmentCreateFormTimeInput;

@@ -48,7 +48,7 @@ function PollMainProgress({ currentParticipants, groupCode }: Props) {
 }
 
 const StyledParticipantsStatus = styled.p`
-  font-size: 0.8rem;
+  font-size: 1.6rem;
 `;
 
 export default PollMainProgress;

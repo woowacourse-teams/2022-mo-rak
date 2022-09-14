@@ -25,26 +25,26 @@ function PollMainDetail({ isAnonymous, allowedPollCount, closedAt }: Props) {
   const theme = useTheme();
 
   return (
-    <FlexContainer flexDirection="column" gap="1.2rem">
+    <FlexContainer flexDirection="column" gap="1.6rem">
       <StyledCloseTime>
         {getFormattedClosedTime(closedAt)}
         까지
       </StyledCloseTime>
-      <FlexContainer gap="1.2rem">
+      <FlexContainer gap="1.6rem">
         <TextField
-          width="3.6rem"
+          width="5.2rem"
           borderRadius="20px"
           variant="outlined"
-          padding="0.4rem 0"
+          padding="0.8rem 0"
           colorScheme={theme.colors.PURPLE_100}
         >
           <StyledDetail>{isAnonymous ? '익명' : '기명'}</StyledDetail>
         </TextField>
         <TextField
-          width="7.6rem"
+          width="10.4rem"
           borderRadius="20px"
           variant="outlined"
-          padding="0.4rem 0"
+          padding="0.8rem 0"
           colorScheme={theme.colors.PURPLE_100}
         >
           <StyledDetail>
@@ -57,14 +57,14 @@ function PollMainDetail({ isAnonymous, allowedPollCount, closedAt }: Props) {
 }
 
 const StyledCloseTime = styled.p`
-  font-size: 0.8rem;
+  font-size: 1.4rem;
   align-self: end;
 `;
 
 const StyledDetail = styled.span(
   ({ theme }) => `
   color: ${theme.colors.PURPLE_100};
-  font-size: 0.8rem;
+  font-size: 1.2rem;
 `
 );
 

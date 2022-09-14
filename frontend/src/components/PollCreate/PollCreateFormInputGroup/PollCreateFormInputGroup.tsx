@@ -73,7 +73,7 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
               id={pollItem}
               value={pollItem}
               color={theme.colors.BLACK_100}
-              fontSize="1.2rem"
+              fontSize="1.6rem"
               placeholder="선택항목을 입력해주세요!"
               onChange={handleChange(idx)}
               aria-label={`poll-input${idx}`}
