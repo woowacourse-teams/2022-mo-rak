@@ -69,7 +69,8 @@ CREATE TABLE `poll`
     `code`               varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id),
     FOREIGN KEY (team_id) REFERENCES team (id),
-    FOREIGN KEY (host_id) REFERENCES member (id)
+    FOREIGN KEY (host_id) REFERENCES member (id),
+    INDEX `index_poll` (`closed_at`)
 );
 
 CREATE TABLE `poll_item`
@@ -115,7 +116,8 @@ CREATE TABLE appointment
     `updated_at`       DATETIME     NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (team_id) REFERENCES team (id),
-    FOREIGN KEY (host_id) REFERENCES member (id)
+    FOREIGN KEY (host_id) REFERENCES member (id),
+    INDEX `index_appointment` (`closed_at`)
 );
 
 CREATE TABLE appointment_available_time
@@ -129,7 +131,7 @@ CREATE TABLE appointment_available_time
     `updated_at`      DATETIME NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (appointment_id) REFERENCES appointment (id),
-    FOREIGN KEY (member_id) REFERENCES member (id)
+    FOREIGN KEY (member_id) REFERENCES member (id),
 );
 
 ALTER TABLE appointment_available_time
