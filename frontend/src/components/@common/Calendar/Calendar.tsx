@@ -133,9 +133,9 @@ function Calendar({
           {/* TODO: 이런 방식이 괜찮은 방법인지 고민하기 */}
           &#8249;
         </StyledPrevButton>
-        <StyledMonthTitle>{`${currentDate.getFullYear()}년 ${
-          currentMonth + 1
-        }월`}</StyledMonthTitle>
+        <StyledMonthTitle>
+          {currentDate.getFullYear()}년 {currentMonth + 1}월
+        </StyledMonthTitle>
         <StyledNextButton onClick={handleShowNextMonth}>&#8250;</StyledNextButton>
       </StyledMonth>
       <StyledWeekends>
