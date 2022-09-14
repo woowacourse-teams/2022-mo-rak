@@ -264,7 +264,7 @@ class AppointmentRepositoryTest {
             entityManager.refresh(appointment);
         }
         // then
-        assertThat(appointments).allMatch(appointment -> appointment.getStatus() == AppointmentStatus.CLOSED);
+        assertThat(appointments).allMatch(Appointment::isClosed);
 
     }
 }
