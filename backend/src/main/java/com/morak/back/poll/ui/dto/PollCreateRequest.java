@@ -4,6 +4,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
+import com.morak.back.poll.domain.PollItem.PollItemBuilder;
 import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
@@ -38,15 +39,15 @@ public class PollCreateRequest {
 
     public Poll toPoll(Member member, Team team, Code code) {
         Poll poll = buildPoll(member, team, code);
-        List<PollItem> pollItems = buildPollItems(poll);
+        List<PollItem> ignored = buildPollItems(poll);
         return poll;
     }
 
     private List<PollItem> buildPollItems(Poll poll) {
+        PollItemBuilder builder = PollItem.builder().poll(poll);
         return subjects.stream()
                 .map(
-                        subject -> PollItem.builder()
-                                .poll(poll)
+                        subject -> builder
                                 .subject(subject)
                                 .build()
                 )
