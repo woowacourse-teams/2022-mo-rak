@@ -56,7 +56,7 @@ const StyledButton = styled.button<
   ({ width, padding, borderRadius, fontSize, variantStyle, disabled }) => `
   position: relative;
   text-align: center;
-  border-radius: ${borderRadius || '15px'};
+  border-radius: ${borderRadius || '1.6rem'};
   width: ${width || 'auto'};
   padding: ${padding || '1.2rem 0'};
   ${disabled && 'cursor: default'};
