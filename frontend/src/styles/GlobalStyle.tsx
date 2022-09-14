@@ -14,7 +14,7 @@ const style = css`
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/TmoneyRoundWindExtraBold.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-}
+  }
 
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -83,6 +83,13 @@ const style = css`
   input:focus {
     outline: none;
   }
+
+  @media screen and (1366px <= width < 1920px) {
+    html {
+      font-size: 7px;
+    }
+  }
+}
 `;
 
 function GlobalStyle() {
