@@ -7,6 +7,7 @@ import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhook;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.exception.ExternalException;
 import com.morak.back.core.ui.dto.SlackWebhookCreateRequest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMemberRepository;
@@ -18,14 +19,17 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class NotificationService {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     private final SlackClient slackClient;
     private final TeamRepository teamRepository;
@@ -57,17 +61,22 @@ public class NotificationService {
 
     private void validateMemberInTeam(Team team, Member member) {
         if (!teamMemberRepository.existsByTeamAndMember(team, member)) {
-            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, team.getId(), member.getId());
+            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, team.getId(),
+                    member.getId());
         }
     }
 
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(readOnly = true)
     public void notifyMenuStatus(Team team, String message) {
-        slackWebhookRepository.findByTeam(team)
-                .ifPresent(webhook -> slackClient.notifyMessage(webhook, message));
+        try {
+            slackWebhookRepository.findByTeam(team)
+                    .ifPresent(webhook -> slackClient.notifyMessage(webhook, message));
+        } catch (ExternalException e) {
+            logger.warn("슬랙 알림 요청 중 에러가 발생했습니다 : " + e.getMessage());
+        }
     }
 
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(readOnly = true)
     public void notifyAllMenuStatus(Map<Team, String> teamMessages) {
         Map<SlackWebhook, String> webHookMessages = mapWebhookToMessage(teamMessages);
         webHookMessages.forEach((webhook, message) -> notifyMenuStatus(webhook.getTeam(), message));
