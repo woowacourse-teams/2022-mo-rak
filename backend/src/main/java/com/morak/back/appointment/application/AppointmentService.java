@@ -218,7 +218,7 @@ public class AppointmentService {
         validateHost(member, appointment);
         validateAppointmentInTeam(team, appointment);
         availableTimeRepository.deleteAllByAppointment(appointment);
-        appointmentRepository.deleteById(appointment.getId());
+        appointmentRepository.delete(appointment);
     }
 
     private void validateHost(Member member, Appointment appointment) {

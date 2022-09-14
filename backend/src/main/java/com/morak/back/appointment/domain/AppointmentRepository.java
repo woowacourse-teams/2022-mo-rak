@@ -18,7 +18,7 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
     @Query("select a from Appointment a where a.code.code = :code")
     Optional<Appointment> findByCode(@Param("code") String code);
 
-    void deleteById(Long id);
+    void delete(Appointment appointment);
 
     @Query("select a from Appointment a join fetch a.team where a.status = 'OPEN' and a.closedAt <= :thresholdDateTime")
     List<Appointment> findAllToBeClosed(@Param("thresholdDateTime") LocalDateTime thresholdDateTime);

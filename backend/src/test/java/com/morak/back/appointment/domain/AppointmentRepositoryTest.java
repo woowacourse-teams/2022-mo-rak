@@ -218,7 +218,7 @@ class AppointmentRepositoryTest {
                 .build();
 
         Appointment savedAppointment = appointmentRepository.save(appointment);
-        appointmentRepository.deleteById(savedAppointment.getId());
+        appointmentRepository.delete(savedAppointment);
 
         // when
         Optional<Appointment> appointmentOptional = appointmentRepository.findByCode(savedAppointment.getCode());
