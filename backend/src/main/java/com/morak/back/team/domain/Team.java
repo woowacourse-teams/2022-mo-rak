@@ -53,7 +53,7 @@ public class Team extends BaseEntity {
         }
         Team team = (Team) o;
         return Objects.equals(getId(), team.getId()) && Objects.equals(getName(), team.getName())
-            && Objects.equals(getCode(), team.getCode());
+                && Objects.equals(getCode(), team.getCode());
     }
 
     @Override

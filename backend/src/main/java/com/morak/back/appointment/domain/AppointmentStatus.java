@@ -14,8 +14,8 @@ public enum AppointmentStatus {
     public AppointmentStatus close() {
         if (this == CLOSED) {
             throw new AppointmentDomainLogicException(
-                CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR,
-                "이미 close 상태의 약속잡기입니다."
+                    CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR,
+                    "이미 close 상태의 약속잡기입니다."
             );
         }
         return CLOSED;

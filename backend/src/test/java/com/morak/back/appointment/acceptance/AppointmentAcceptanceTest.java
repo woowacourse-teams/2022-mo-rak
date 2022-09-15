@@ -62,6 +62,70 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
     @Autowired
     private TokenProvider tokenProvider;
 
+    private static List<Arguments> getAvailableTimeRequest() {
+        return List.of(
+                Arguments.of(모락_회식_첫째날_4시부터_4시반_선택_요청_데이터),
+                Arguments.of(모락_회식_첫째날_4시반부터_5시_선택_요청_데이터),
+                Arguments.of(모락_회식_첫째날_5시부터_5시반_선택_요청_데이터),
+                Arguments.of(모락_회식_첫째날_11시_반부터_00시_선택_요청_데이터),
+                Arguments.of(new AvailableTimeRequest(
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getStartDate(), LocalTime.of(0, 0)),
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getStartDate(), LocalTime.of(0, 30))
+                )),
+                Arguments.of(new AvailableTimeRequest(
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().minusDays(1), LocalTime.of(23, 30)),
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate(), LocalTime.of(0, 0))
+                ))
+        );
+    }
+
+    private static List<Arguments> getUnavailableTimeRequest() {
+        return List.of(
+                Arguments.of(new AvailableTimeRequest(
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(10), LocalTime.of(23, 30)),
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(11), LocalTime.of(0, 0)))
+                ),
+                Arguments.of(new AvailableTimeRequest(
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getStartDate().minusDays(1), LocalTime.of(23, 30)),
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getStartDate(), LocalTime.of(0, 0))
+                ))
+                /*
+                TODO 아래 테스트는 400으로 떨어져야 하는데 200이 떨어진다.
+                생성된 데이터는 7일 24시(==8일 0시)이고, 8일00시00분 ~ 8일00시30분 으로 요청을 보내면 실패해야 하는데, 성공한다
+                -> 테스트가 깨진다.
+                Arguments.of(new AvailableTimeRequest(
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(0, 0)),
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(0, 30))
+                )),
+                Arguments.of(new AvailableTimeRequest(
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(16, 0)),
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(16, 30))
+                ))
+                */
+        );
+    }
+
+    static AppointmentCreateRequest[] getInvalidPropertyAppointmentCreateRequest() {
+        return new AppointmentCreateRequest[]{
+                설명이_너무긴_약속잡기_요청_데이터,
+                제목이_없는_약속잡기_요청_데이터
+        };
+    }
+
+    static AppointmentCreateRequest[] getInvalidDomainLogicAppointmentCreateRequest() {
+        return new AppointmentCreateRequest[]{
+                과거_날짜로_생성_요청된_약속잡기_요청_데이터,
+                약속잡기_범위_시작_날짜가_끝나는_날짜보다_나중인_약속잡기_요청_데이터,
+                약속_잡기_범위_시작과_끝나는_시간이_30분으로_안나눠지는_약속잡기_요청_데이터,
+                약속_잡기_범위_시작시간이_끝나는_시간보다_이른_약속잡기_요청_데이터,
+                약속_잡기_범위_시작시간이_끝나는_시간과_같은_약속잡기_요청_데이터,
+                MINUTES_UNIT으로_나눠지지않는_durationMinute_약속잡기_요청_데이터,
+                durationHour이_25인_약속잡기_요청_데이터,
+                durationMinute이_60인_약속잡기_요청_데이터,
+                총_진행시간이_1440이상인_약속잡기_요청_데이터
+        };
+    }
+
     @BeforeEach
     public void setUp() {
         super.setUp();
@@ -156,9 +220,11 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 약속잡기_가능_시간_선택을_요청한다(location, requests);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(SimpleRestAssured.extractCodeNumber(response))
-                .isEqualTo(CustomErrorCode.AVAILABLETIME_TIME_OUT_OF_RANGE_ERROR.getNumber());
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.AVAILABLETIME_TIME_OUT_OF_RANGE_ERROR.getNumber())
+        );
     }
 
     @ParameterizedTest
@@ -227,23 +293,6 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    private static List<Arguments> getAvailableTimeRequest() {
-        return List.of(
-                Arguments.of(모락_회식_첫째날_4시부터_4시반_선택_요청_데이터),
-                Arguments.of(모락_회식_첫째날_4시반부터_5시_선택_요청_데이터),
-                Arguments.of(모락_회식_첫째날_5시부터_5시반_선택_요청_데이터),
-                Arguments.of(모락_회식_첫째날_11시_반부터_00시_선택_요청_데이터),
-                Arguments.of(new AvailableTimeRequest(
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getStartDate(), LocalTime.of(0, 0)),
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getStartDate(), LocalTime.of(0, 30))
-                )),
-                Arguments.of(new AvailableTimeRequest(
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().minusDays(1), LocalTime.of(23, 30)),
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate(), LocalTime.of(0, 0))
-                ))
-        );
-    }
-
     @ParameterizedTest
     @MethodSource("getUnavailableTimeRequest")
     void 범위가_하루종일일때_벗어나는_약속잡기_가능시간을_선택하면_BAD_REQUEST를_던진다(AvailableTimeRequest request) {
@@ -256,32 +305,6 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-    }
-
-    private static List<Arguments> getUnavailableTimeRequest() {
-        return List.of(
-                Arguments.of(new AvailableTimeRequest(
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(10), LocalTime.of(23, 30)),
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(11), LocalTime.of(0, 0)))
-                ),
-                Arguments.of(new AvailableTimeRequest(
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getStartDate().minusDays(1), LocalTime.of(23, 30)),
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getStartDate(), LocalTime.of(0, 0))
-                ))
-                /*
-                TODO 아래 테스트는 400으로 떨어져야 하는데 200이 떨어진다.
-                생성된 데이터는 7일 24시(==8일 0시)이고, 8일00시00분 ~ 8일00시30분 으로 요청을 보내면 실패해야 하는데, 성공한다
-                -> 테스트가 깨진다.
-                Arguments.of(new AvailableTimeRequest(
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(0, 0)),
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(0, 30))
-                )),
-                Arguments.of(new AvailableTimeRequest(
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(16, 0)),
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(16, 30))
-                ))
-                */
-        );
     }
 
     @Test
@@ -343,13 +366,6 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    static AppointmentCreateRequest[] getInvalidPropertyAppointmentCreateRequest() {
-        return new AppointmentCreateRequest[]{
-                설명이_너무긴_약속잡기_요청_데이터,
-                제목이_없는_약속잡기_요청_데이터
-        };
-    }
-
     @ParameterizedTest()
     @MethodSource("getInvalidDomainLogicAppointmentCreateRequest")
     void 약속잡기를_생성_시_도메인_로직상_잘못된_경우_BAD_REQUEST를_반환한다(AppointmentCreateRequest appointmentCreateRequest) {
@@ -361,20 +377,6 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
                 () -> assertThat(SimpleRestAssured.extractCodeNumber(response)).startsWith("31")
         );
-    }
-
-    static AppointmentCreateRequest[] getInvalidDomainLogicAppointmentCreateRequest() {
-        return new AppointmentCreateRequest[]{
-                과거_날짜로_생성_요청된_약속잡기_요청_데이터,
-                약속잡기_범위_시작_날짜가_끝나는_날짜보다_나중인_약속잡기_요청_데이터,
-                약속_잡기_범위_시작과_끝나는_시간이_30분으로_안나눠지는_약속잡기_요청_데이터,
-                약속_잡기_범위_시작시간이_끝나는_시간보다_이른_약속잡기_요청_데이터,
-                약속_잡기_범위_시작시간이_끝나는_시간과_같은_약속잡기_요청_데이터,
-                MINUTES_UNIT으로_나눠지지않는_durationMinute_약속잡기_요청_데이터,
-                durationHour이_25인_약속잡기_요청_데이터,
-                durationMinute이_60인_약속잡기_요청_데이터,
-                총_진행시간이_1440이상인_약속잡기_요청_데이터
-        };
     }
 
     @Test

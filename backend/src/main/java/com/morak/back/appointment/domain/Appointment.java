@@ -2,10 +2,13 @@ package com.morak.back.appointment.domain;
 
 import static com.morak.back.appointment.domain.AppointmentStatus.OPEN;
 
+import com.morak.back.appointment.domain.availabletime.AvailableTimeDateTimePeriod;
+import com.morak.back.appointment.domain.timeconditions.ClosedAt;
+import com.morak.back.appointment.domain.timeconditions.TimeConditions;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
-import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.times.Times;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.domain.BaseEntity;
 import com.morak.back.team.domain.Team;
@@ -35,7 +38,6 @@ import org.hibernate.annotations.Formula;
 @NoArgsConstructor
 public class Appointment extends BaseEntity {
 
-    public static final int MINUTES_UNIT = 30;
     private static final int NO_ONE_SELECTED = 0;
 
     @Id
@@ -59,16 +61,7 @@ public class Appointment extends BaseEntity {
     private String description;
 
     @Embedded
-    @Valid
-    private DatePeriod datePeriod;
-
-    @Embedded
-    @Valid
-    private TimePeriod timePeriod;
-
-    @Embedded
-    @Valid
-    private DurationMinutes durationMinutes;
+    private TimeConditions timeConditions;
 
     @NotNull(message = "약속잡기 상태는 null일 수 없습니다.")
     @Enumerated(value = EnumType.STRING)
@@ -79,7 +72,7 @@ public class Appointment extends BaseEntity {
     private Code code;
 
     @NotNull
-    private LocalDateTime closedAt;
+    private ClosedAt closedAt;
 
     @Formula("(SELECT COUNT(DISTINCT aat.member_id) FROM appointment_available_time as aat WHERE aat.appointment_id = id)")
     private Integer count;
@@ -87,79 +80,22 @@ public class Appointment extends BaseEntity {
     @Builder
     private Appointment(Long id, Team team, Member host, String title, String description, LocalDate startDate,
                         LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer durationHours,
-                        Integer durationMinutes, Code code, LocalDateTime closedAt) {
-        LocalDate validationDate = endDate;
-        if (endTime.equals(LocalTime.MIDNIGHT)) {
-            validationDate = validationDate.plusDays(1);
-        }
-        LocalDateTime validationEndDateTime = LocalDateTime.of(validationDate, endTime);
-        validateLastDatetime(validationEndDateTime);
-        validateClosedAtBeforeEndDate(closedAt, validationEndDateTime);
+                        Integer durationMinutes, Code code, LocalDateTime closedAt, Times times) {
 
         this.id = id;
         this.team = team;
         this.host = host;
         this.title = title;
-        this.description = description;
-        this.datePeriod = DatePeriod.of(startDate, endDate, endTime);
-        this.timePeriod = TimePeriod.of(startTime, endTime);
-        this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
-        validateDurationMinutesLessThanTimePeriod(this.durationMinutes, this.timePeriod);
         this.status = OPEN;
         this.code = code;
-        this.closedAt = closedAt;
+        this.description = description;
+        this.timeConditions = TimeConditions.of(startDate, endDate, startTime, endTime,
+                durationHours, durationMinutes, times.dateOfNow());
+        this.closedAt = ClosedAt.of(closedAt, timeConditions.getEndDateTime(), times.dateTimeOfNow());
     }
 
-    private void validateLastDatetime(LocalDateTime validationEndDateTime) {
-        if (validationEndDateTime.isBefore(LocalDateTime.now())) {
-            throw new AppointmentDomainLogicException(
-                    CustomErrorCode.APPOINTMENT_PAST_CREATE_ERROR,
-                    String.format("약속잡기의 마지막 날짜와 시간(%s)은 현재보다 과거일 수 없습니다.", validationEndDateTime)
-            );
-        }
-    }
-
-    private void validateClosedAtBeforeEndDate(LocalDateTime closedAt, LocalDateTime endDateTime) {
-        if (closedAt.isBefore(LocalDateTime.now()) || closedAt.isAfter(endDateTime)) {
-            throw new AppointmentDomainLogicException(
-                    CustomErrorCode.APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR,
-                    String.format(
-                            "약속잡기의 마감 날짜/시각(%s)은 지금(%s)과 마지막 날짜/시각(%s) 사이여야 합니다.",
-                            closedAt, LocalDateTime.now(), endDateTime
-                    )
-            );
-        }
-    }
-
-    private void validateDurationMinutesLessThanTimePeriod(DurationMinutes durationMinutes, TimePeriod timePeriod) {
-        if (timePeriod.isLessThanDurationMinutes(durationMinutes.getDurationMinutes())) {
-            throw new AppointmentDomainLogicException(
-                    CustomErrorCode.APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR,
-                    String.format(
-                            "진행시간(%d)은 약속잡기의 시작시간~마지막시간(%s ~ %s) 보다 짧아야 합니다.",
-                            durationMinutes.getDurationMinutes(), timePeriod.getStartTime(), timePeriod.getEndTime()
-                    )
-            );
-        }
-    }
-
-    public Integer parseHours() {
-        return this.durationMinutes.parseHours();
-    }
-
-    public Integer parseMinutes() {
-        return this.durationMinutes.parseMinutes();
-    }
-
-    /*
-    DatePeriod를 직접 사용하면 getEndDate()의 minusDay 를 호출할 수 없습니다.
-     */
-    public boolean isAvailableDateRange(DatePeriod otherDatePeriod) {
-        return new DatePeriod(getStartDate(), getEndDate()).isAvailableRange(otherDatePeriod);
-    }
-
-    public boolean isAvailableTimeRange(TimePeriod timePeriod) {
-        return this.timePeriod.isAvailableRange(timePeriod);
+    public void validateDateTimePeriod(AvailableTimeDateTimePeriod availableTimeDateTimePeriod) {
+        timeConditions.validateDateTimePeriod(availableTimeDateTimePeriod);
     }
 
     public void close(Member member) {
@@ -188,32 +124,16 @@ public class Appointment extends BaseEntity {
         return this.status.isClosed();
     }
 
-    public LocalDateTime getStartDateTime() {
-        return LocalDateTime.of(datePeriod.getStartDate(), timePeriod.getStartTime());
+    public int parseDurationHours() {
+        return this.timeConditions.getDurationHours();
     }
 
-    public LocalDateTime getEndDateTime() {
-        return LocalDateTime.of(datePeriod.getEndDate(), timePeriod.getEndTime());
+    public int parseDurationMinutes() {
+        return this.timeConditions.parseDurationMinutes();
     }
 
-    public LocalDate getStartDate() {
-        return this.datePeriod.getStartDate();
-    }
-
-    public LocalDate getEndDate() {
-        LocalDate endDate = this.datePeriod.getEndDate();
-        if (this.timePeriod.getEndTime().equals(LocalTime.MIDNIGHT)) {
-            endDate = endDate.minusDays(1);
-        }
-        return endDate;
-    }
-
-    public LocalTime getStartTime() {
-        return this.timePeriod.getStartTime();
-    }
-
-    public LocalTime getEndTime() {
-        return this.timePeriod.getEndTime();
+    public LocalDateTime getClosedAt() {
+        return closedAt.getClosedAt();
     }
 
     public String getCode() {
@@ -225,5 +145,37 @@ public class Appointment extends BaseEntity {
             return NO_ONE_SELECTED;
         }
         return this.count;
+    }
+
+    public LocalDate getStartDate() {
+        return this.timeConditions.getStartDate();
+    }
+
+    public LocalDate getEndDate() {
+        return this.timeConditions.getEndDate();
+    }
+
+    public LocalTime getStartTime() {
+        return this.timeConditions.getStartTime();
+    }
+
+    public LocalTime getEndTime() {
+        return this.timeConditions.getEndTime();
+    }
+
+    public LocalDateTime getStartDateTime() {
+        return this.timeConditions.getStartDateTime();
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return this.timeConditions.getEndDateTime();
+    }
+
+    public int getDurationTime() {
+        return this.timeConditions.getDurationTime();
+    }
+
+    public int getMinuteUnit() {
+        return TimeConditions.MINUTE_UNIT;
     }
 }

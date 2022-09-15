@@ -2,9 +2,11 @@ package com.morak.back.appointment.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.appointment.domain.availabletime.AvailableTime;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.times.LocalTimes;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
@@ -30,6 +32,7 @@ class AvailableTimeTest {
                 .durationHours(1)
                 .durationMinutes(0)
                 .closedAt(LocalDateTime.now().plusDays(1))
+                .times(new LocalTimes())
                 .build();
 
         // when & then
@@ -39,10 +42,11 @@ class AvailableTimeTest {
                 .member(new Member())
                 .startDateTime(LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(14, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(14, 30)))
+                .now(LocalDateTime.now())
                 .build()
         ).isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.AVAILABLETIME_DATE_OUT_OF_RANGE_ERROR);
+                .isEqualTo(CustomErrorCode.AVAILABLETIME_TIME_PAST_ERROR);
     }
 
     @Test
@@ -61,6 +65,7 @@ class AvailableTimeTest {
                 .durationHours(1)
                 .durationMinutes(0)
                 .closedAt(LocalDateTime.now().plusDays(1))
+                .times(new LocalTimes())
                 .build();
 
         // when & then
@@ -70,6 +75,7 @@ class AvailableTimeTest {
                 .member(new Member())
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(12, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(12, 30)))
+                .now(LocalDateTime.now())
                 .build()
         ).isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")

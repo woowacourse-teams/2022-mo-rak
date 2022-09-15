@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GlobalController {
 
+    @GetMapping("/error-codes")
+    public ResponseEntity<CodeDescriptor> toDocumentation() {
+        return ResponseEntity.ok(new CodeDescriptor("code"));
+    }
+
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     static class CodeDescriptor {
         private String code;
-    }
-
-    @GetMapping("/error-codes")
-    public ResponseEntity<CodeDescriptor> toDocumentation() {
-        return ResponseEntity.ok(new CodeDescriptor("code"));
     }
 }

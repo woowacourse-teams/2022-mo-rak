@@ -8,7 +8,7 @@ import lombok.Getter;
 @Generated
 public class SchedulingException extends MorakException {
 
-    private List<ExternalException> exceptions;
+    private final List<ExternalException> exceptions;
 
     public SchedulingException(CustomErrorCode code, String logMessage, List<ExternalException> exceptions) {
         super(code, logMessage);

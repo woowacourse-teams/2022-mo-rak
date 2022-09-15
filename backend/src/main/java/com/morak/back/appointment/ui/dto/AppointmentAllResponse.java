@@ -39,8 +39,8 @@ public class AppointmentAllResponse implements Comparable<AppointmentAllResponse
                 appointment.getCode(),
                 appointment.getTitle(),
                 appointment.getDescription(),
-                appointment.parseHours(),
-                appointment.parseMinutes(),
+                appointment.parseDurationHours(),
+                appointment.parseDurationMinutes(),
                 appointment.getClosedAt(),
                 appointment.isClosed(),
                 appointment.getCount()

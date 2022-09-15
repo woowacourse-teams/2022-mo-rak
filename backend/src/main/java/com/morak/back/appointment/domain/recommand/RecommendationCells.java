@@ -1,10 +1,11 @@
-package com.morak.back.appointment.domain;
+package com.morak.back.appointment.domain.recommand;
 
+import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.appointment.domain.availabletime.AvailableTime;
 import com.morak.back.auth.domain.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AccessLevel;
@@ -18,23 +19,25 @@ public class RecommendationCells {
     private static final long MAX_SIZE = 10;
 
     private List<RecommendationCell> cells;
+    private int minuteUnit;
 
     public static RecommendationCells of(Appointment appointment, List<Member> members) {
+
         LocalDateTime firstStartDateTime = appointment.getStartDateTime();
         LocalDateTime lastEndDateTime = appointment.getEndDateTime();
-        DurationMinutes durationMinutes = appointment.getDurationMinutes();
+        int minuteUnit = appointment.getMinuteUnit();
+
+        RecommendationDateTimePeriod recommendationLimitDateTimePeriod =
+                new RecommendationDateTimePeriod(firstStartDateTime, lastEndDateTime);
+
+        int durationMinute = appointment.getDurationTime();
 
         return new RecommendationCells(Stream.iterate(
-                        firstStartDateTime,
-                        isStartTimeWithDurationNotOverEndTime(durationMinutes, lastEndDateTime),
-                        s -> s.plusMinutes(Appointment.MINUTES_UNIT))
-                .map(s -> RecommendationCell.of(s, durationMinutes, members))
-                .collect(Collectors.toList()));
-    }
-
-    private static Predicate<LocalDateTime> isStartTimeWithDurationNotOverEndTime(DurationMinutes durationMinutes,
-                                                                                  LocalDateTime endDateTime) {
-        return startDateTime -> !startDateTime.plusMinutes(durationMinutes.getDurationMinutes()).isAfter(endDateTime);
+                        new RecommendationDateTimePeriod(firstStartDateTime, firstStartDateTime.plusMinutes(durationMinute)),
+                        recommendationLimitDateTimePeriod::contains,
+                        recommendationDateTimePeriod -> recommendationDateTimePeriod.getNextPeriod(minuteUnit))
+                .map(dateTimePeriod -> RecommendationCell.of(dateTimePeriod, members))
+                .collect(Collectors.toList()), minuteUnit);
     }
 
     public List<RankRecommendation> recommend(List<AvailableTime> availableTimes) {
@@ -51,13 +54,12 @@ public class RecommendationCells {
                 rank = index;
                 currentScore = cellScore;
             }
-            rankRecommendations.add(RankRecommendation.from(rank, recommendationCell));
+            rankRecommendations.add(RankRecommendation.from(rank, recommendationCell, minuteUnit));
         }
         return rankRecommendations;
     }
 
     private List<RecommendationCell> calculate(List<AvailableTime> availableTimes) {
-        // TODO: 2022/08/03 이름 바꾸기! 
         for (RecommendationCell cell : cells) {
             cell.calculate(availableTimes);
         }

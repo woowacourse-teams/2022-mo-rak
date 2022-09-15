@@ -4,8 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
+import com.morak.back.appointment.domain.availabletime.AvailableTime;
+import com.morak.back.appointment.domain.recommand.RankRecommendation;
+import com.morak.back.appointment.domain.recommand.RecommendationCells;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.times.LocalTimes;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -33,7 +37,8 @@ class RecommendationCellsTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1));
+                .closedAt(LocalDateTime.now().plusDays(1))
+                .times(new LocalTimes());
         memberA = Member.builder()
                 .id(1L)
                 .name("멤버A")
@@ -86,6 +91,7 @@ class RecommendationCellsTest {
                 .appointment(appointment)
                 .startDateTime(appointment.getStartDateTime().plusHours(3))
                 .endDateTime(appointment.getStartDateTime().plusHours(3).plusMinutes(30))
+                .now(LocalDateTime.now())
                 .build();
 
         List<RankRecommendation> recommend = cells.recommend(List.of(availableTime));

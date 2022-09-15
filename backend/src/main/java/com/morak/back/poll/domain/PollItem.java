@@ -39,7 +39,7 @@ public class PollItem extends BaseEntity {
     private String subject;
 
     @OneToMany(mappedBy = "pollItem", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PollResult> pollResults = new ArrayList<>();
+    private final List<PollResult> pollResults = new ArrayList<>();
 
     @Builder
     private PollItem(Long id, Poll poll, String subject) {

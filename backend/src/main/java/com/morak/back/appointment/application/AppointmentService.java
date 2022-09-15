@@ -2,10 +2,10 @@ package com.morak.back.appointment.application;
 
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
-import com.morak.back.appointment.domain.AvailableTime;
-import com.morak.back.appointment.domain.AvailableTimeRepository;
-import com.morak.back.appointment.domain.RankRecommendation;
-import com.morak.back.appointment.domain.RecommendationCells;
+import com.morak.back.appointment.domain.availabletime.AvailableTime;
+import com.morak.back.appointment.domain.availabletime.AvailableTimeRepository;
+import com.morak.back.appointment.domain.recommand.RankRecommendation;
+import com.morak.back.appointment.domain.recommand.RecommendationCells;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.appointment.exception.AppointmentNotFoundException;
@@ -22,6 +22,7 @@ import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.domain.slack.FormattableData;
+import com.morak.back.core.domain.times.Times;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
 import com.morak.back.core.util.MessageFormatter;
@@ -54,6 +55,8 @@ public class AppointmentService {
 
     private final NotificationService notificationService;
 
+    private final Times times;
+
     public String createAppointment(String teamCode, Long memberId, AppointmentCreateRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
@@ -61,7 +64,7 @@ public class AppointmentService {
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team.getId(), memberId);
 
-        Appointment appointment = request.toAppointment(team, member, Code.generate(CODE_GENERATOR));
+        Appointment appointment = request.toAppointment(team, member, Code.generate(CODE_GENERATOR), times);
         Appointment savedAppointment = appointmentRepository.save(appointment);
         notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(appointment)));
         return savedAppointment.getCode();
@@ -122,22 +125,13 @@ public class AppointmentService {
         validateDuplicatedRequest(requests);
         validateAppointmentInTeam(team, appointment);
         validateAppointmentStatus(appointment);
-        deleteOldAvailableTimes(memberId, appointment);
+        deleteOldAvailableTimes(member, appointment);
 
         List<AvailableTime> availableTimes = requests.stream()
-                .map(request -> request.toAvailableTime(member, appointment))
+                .map(request -> request.toAvailableTime(member, appointment, times.dateTimeOfNow()))
                 .collect(Collectors.toList());
 
         availableTimeRepository.saveAll(availableTimes);
-    }
-
-    private void validateAppointmentStatus(Appointment appointment) {
-        if (appointment.isClosed()) {
-            throw new AppointmentDomainLogicException(
-                    CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR,
-                    appointment.getCode() + "코드의 약속잡기는 마감되었습니다."
-            );
-        }
     }
 
     private void validateDuplicatedRequest(List<AvailableTimeRequest> availableTimeRequest) {
@@ -150,8 +144,17 @@ public class AppointmentService {
         }
     }
 
-    private void deleteOldAvailableTimes(Long memberId, Appointment appointment) {
-        availableTimeRepository.deleteAllByMemberIdAndAppointmentId(memberId, appointment.getId());
+    private void validateAppointmentStatus(Appointment appointment) {
+        if (appointment.isClosed()) {
+            throw new AppointmentDomainLogicException(
+                    CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR,
+                    appointment.getCode() + "코드의 약속잡기는 마감되었습니다."
+            );
+        }
+    }
+
+    private void deleteOldAvailableTimes(Member member, Appointment appointment) {
+        availableTimeRepository.deleteAllByMemberAndAppointment(member, appointment);
         availableTimeRepository.flush();
     }
 
@@ -174,7 +177,7 @@ public class AppointmentService {
 
         RecommendationCells recommendationCells = RecommendationCells.of(appointment, members);
 
-        List<AvailableTime> availableTimes = availableTimeRepository.findAllByAppointmentId(appointment.getId());
+        List<AvailableTime> availableTimes = availableTimeRepository.findAllByAppointment(appointment);
         List<RankRecommendation> rankRecommendations = recommendationCells.recommend(availableTimes);
 
         return rankRecommendations.stream()
@@ -212,7 +215,7 @@ public class AppointmentService {
                 ));
         validateHost(member, appointment);
         validateAppointmentInTeam(team, appointment);
-        availableTimeRepository.deleteAllByAppointmentId(appointment.getId());
+        availableTimeRepository.deleteAllByAppointment(appointment);
         appointmentRepository.deleteById(appointment.getId());
     }
 
@@ -241,6 +244,5 @@ public class AppointmentService {
                     MessageFormatter.formatClosed(FormattableData.from(appointment))
             );
         }
-
     }
 }

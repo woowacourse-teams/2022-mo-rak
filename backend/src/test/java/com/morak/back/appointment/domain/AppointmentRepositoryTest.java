@@ -4,9 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
+import com.morak.back.appointment.domain.availabletime.AvailableTime;
+import com.morak.back.appointment.domain.availabletime.AvailableTimeRepository;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.times.LocalTimes;
 import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
@@ -42,6 +45,24 @@ class AppointmentRepositoryTest {
     private Member member;
     private Team team;
 
+    static List<Arguments> getAppointmentWithEachNull() {
+        Function<AppointmentBuilder, AppointmentBuilder> hostNull =
+                (AppointmentBuilder builder) -> builder.host(null);
+        Function<AppointmentBuilder, AppointmentBuilder> teamNull =
+                (AppointmentBuilder builder) -> builder.team(null);
+        Function<AppointmentBuilder, AppointmentBuilder> titleNull =
+                (AppointmentBuilder builder) -> builder.title(null);
+        Function<AppointmentBuilder, AppointmentBuilder> descriptionNull =
+                (AppointmentBuilder builder) -> builder.description(null);
+
+        return List.of(
+                Arguments.of(hostNull),
+                Arguments.of(teamNull),
+                Arguments.of(titleNull),
+                Arguments.of(descriptionNull)
+        );
+    }
+
     @BeforeEach
     void setUp() {
         member = Member.builder()
@@ -63,7 +84,8 @@ class AppointmentRepositoryTest {
                 .code(Code.generate(length -> "FJn3ND26"))
                 .closedAt(LocalDateTime.now().plusDays(1))
                 .host(member)
-                .team(team);
+                .team(team)
+                .times(new LocalTimes());
     }
 
     @Test
@@ -148,24 +170,6 @@ class AppointmentRepositoryTest {
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
-    static List<Arguments> getAppointmentWithEachNull() {
-        Function<AppointmentBuilder, AppointmentBuilder> hostNull =
-                (AppointmentBuilder builder) -> builder.host(null);
-        Function<AppointmentBuilder, AppointmentBuilder> teamNull =
-                (AppointmentBuilder builder) -> builder.team(null);
-        Function<AppointmentBuilder, AppointmentBuilder> titleNull =
-                (AppointmentBuilder builder) -> builder.title(null);
-        Function<AppointmentBuilder, AppointmentBuilder> descriptionNull =
-                (AppointmentBuilder builder) -> builder.description(null);
-
-        return List.of(
-                Arguments.of(hostNull),
-                Arguments.of(teamNull),
-                Arguments.of(titleNull),
-                Arguments.of(descriptionNull)
-        );
-    }
-
     @Test
     void 포뮬라를_적용해_count를_불러온다(@Autowired EntityManager entityManager) {
         // given
@@ -178,6 +182,7 @@ class AppointmentRepositoryTest {
                 .member(member)
                 .startDateTime(appointment.getStartDateTime().plusHours(1))
                 .endDateTime(appointment.getStartDateTime().plusHours(1).plusMinutes(30))
+                .now(LocalDateTime.now())
                 .build();
 
         AvailableTime availableTime2 = AvailableTime.builder()
@@ -185,6 +190,7 @@ class AppointmentRepositoryTest {
                 .member(member)
                 .startDateTime(appointment.getStartDateTime().plusHours(1).plusMinutes(30))
                 .endDateTime(appointment.getStartDateTime().plusHours(2))
+                .now(LocalDateTime.now())
                 .build();
         availableTimeRepository.saveAll(List.of(availableTime, availableTime2));
         entityManager.detach(appointment);
@@ -199,22 +205,7 @@ class AppointmentRepositoryTest {
     @Test
     void 약속잡기를_삭제한다() {
         // given
-        Appointment appointment = Appointment.builder()
-                .host(member)
-                .team(team)
-                .title("스터디 회의 날짜 정하기")
-                .description("필참!!")
-                .startDate(LocalDate.now().plusDays(1))
-                .endDate(LocalDate.now().plusDays(5))
-                .startTime(LocalTime.of(14, 0))
-                .endTime(LocalTime.of(18, 30))
-                .durationHours(1)
-                .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1))
-                .code(Code.generate(length -> "FJn3ND26"))
-                .closedAt(LocalDateTime.now().plusDays(1))
-                .build();
-
+        Appointment appointment = DEFAULT_BUILDER.build();
         Appointment savedAppointment = appointmentRepository.save(appointment);
         appointmentRepository.deleteById(savedAppointment.getId());
 

@@ -8,8 +8,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.appointment.domain.AppointmentRepository;
-import com.morak.back.appointment.domain.AvailableTime;
-import com.morak.back.appointment.domain.AvailableTimeRepository;
+import com.morak.back.appointment.domain.availabletime.AvailableTime;
+import com.morak.back.appointment.domain.availabletime.AvailableTimeRepository;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.appointment.exception.AppointmentNotFoundException;
@@ -28,6 +28,8 @@ import com.morak.back.core.domain.slack.FakeApiReceiver;
 import com.morak.back.core.domain.slack.FakeSlackClient;
 import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
+import com.morak.back.core.domain.times.LocalTimes;
+import com.morak.back.core.domain.times.Times;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
@@ -62,7 +64,7 @@ class AppointmentServiceTest {
 
     private Member 에덴;
     private Team 모락;
-
+    private final Times times;
     private Appointment 약속잡기_중간;
     private Appointment 약속잡기_자정까지;
     private Appointment 약속잡기_하루동안_30분;
@@ -87,8 +89,9 @@ class AppointmentServiceTest {
         SlackClient slackClient = new FakeSlackClient(receiver);
         this.notificationService =
                 new NotificationService(slackClient, teamRepository, teamMemberRepository, slackWebhookRepository);
+        times = new LocalTimes();
         appointmentService = new AppointmentService(appointmentRepository, availableTimeRepository,
-                memberRepository, teamRepository, teamMemberRepository, notificationService);
+                memberRepository, teamRepository, teamMemberRepository, notificationService, times);
     }
 
     @BeforeEach
@@ -108,7 +111,8 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1).plusMinutes(30));
+                .closedAt(LocalDateTime.now().plusDays(1).plusMinutes(30))
+                .times(times);
 
         약속잡기_중간 = DEFAULT_BUILDER
                 .code(Code.generate(codeGenerator))
@@ -165,18 +169,21 @@ class AppointmentServiceTest {
                 .appointment(약속잡기_중간)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30)))
+                .now(times.dateTimeOfNow())
                 .build();
         회식_가능_시간_4시반부터_5시까지 = AvailableTime.builder()
                 .member(에덴)
                 .appointment(약속잡기_중간)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 0)))
+                .now(times.dateTimeOfNow())
                 .build();
         회식_가능_시간_5시부터_5시반까지 = AvailableTime.builder()
                 .member(에덴)
                 .appointment(약속잡기_중간)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 30)))
+                .now(times.dateTimeOfNow())
                 .build();
     }
 
@@ -882,13 +889,13 @@ class AppointmentServiceTest {
     void 선택된_가능시간이_있는_약속잡기를_삭제한다() {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_중간);
-        availableTimeRepository.save(회식_가능_시간_4시부터_4시반까지);
+        availableTimeRepository.saveAll(List.of(회식_가능_시간_4시부터_4시반까지));
 
         // when
         appointmentService.deleteAppointment(모락.getCode(), 에덴.getId(), 약속잡기_중간.getCode());
 
         // then
-        assertThat(availableTimeRepository.findAllByAppointmentId(appointment.getId())).isEmpty();
+        assertThat(availableTimeRepository.findAllByAppointment(appointment)).isEmpty();
     }
 
     @Test

@@ -3,9 +3,12 @@ package com.morak.back.appointment.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.appointment.domain.availabletime.AvailableTime;
+import com.morak.back.appointment.domain.availabletime.AvailableTimeRepository;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.times.LocalTimes;
 import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamRepository;
@@ -51,6 +54,7 @@ class AvailableTimeRepositoryTest {
                         .closedAt(LocalDateTime.now().plusDays(1))
                         .code(Code.generate(length -> "FJn3ND26"))
                         .closedAt(LocalDateTime.now().plusDays(1))
+                        .times(new LocalTimes())
                         .build()
         );
     }
@@ -63,13 +67,14 @@ class AvailableTimeRepositoryTest {
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
+                .now(LocalDateTime.now())
                 .build();
 
         // when
-        AvailableTime savedAvailableTime = availableTimeRepository.save(availableTime);
+        List<AvailableTime> availableTimes = availableTimeRepository.saveAll(List.of(availableTime));
 
         // then
-        assertThat(savedAvailableTime.getId()).isNotNull();
+        assertThat(availableTimes).hasSize(1);
     }
 
     @Test
@@ -80,6 +85,7 @@ class AvailableTimeRepositoryTest {
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
+                .now(LocalDateTime.now())
                 .build();
 
         AvailableTime availableTime2 = AvailableTime.builder()
@@ -87,6 +93,7 @@ class AvailableTimeRepositoryTest {
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 0)))
+                .now(LocalDateTime.now())
                 .build();
 
         // when
@@ -107,6 +114,7 @@ class AvailableTimeRepositoryTest {
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
+                .now(LocalDateTime.now())
                 .build();
 
         AvailableTime availableTime2 = AvailableTime.builder()
@@ -114,6 +122,7 @@ class AvailableTimeRepositoryTest {
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
+                .now(LocalDateTime.now())
                 .build();
 
         // when & then
@@ -122,13 +131,14 @@ class AvailableTimeRepositoryTest {
     }
 
     @Test
-    void 멤버_id와_약속잡기_id로_약속잡기_가능_시간을_모두_삭제한다() {
+    void 약속잡기로_약속잡기_가능_시간을_모두_삭제한다() {
         // given
         AvailableTime availableTime1 = AvailableTime.builder()
                 .member(member)
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
+                .now(LocalDateTime.now())
                 .build();
 
         AvailableTime availableTime2 = AvailableTime.builder()
@@ -136,43 +146,16 @@ class AvailableTimeRepositoryTest {
                 .appointment(appointment)
                 .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
                 .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 0)))
+                .now(LocalDateTime.now())
                 .build();
 
         availableTimeRepository.saveAll(List.of(availableTime1, availableTime2));
 
         // when
-        availableTimeRepository.deleteAllByMemberIdAndAppointmentId(member.getId(), appointment.getId());
+        availableTimeRepository.deleteAllByMemberAndAppointment(member, appointment);
 
         // then
-        List<AvailableTime> availableTimes = availableTimeRepository.findAllByMemberIdAndAppointmentId(
-                member.getId(), appointment.getId());
-        assertThat(availableTimes).isEmpty();
-    }
-
-    @Test
-    void 약속잡기_id로_약속잡기_가능_시간을_모두_삭제한다() {
-        // given
-        AvailableTime availableTime1 = AvailableTime.builder()
-                .member(member)
-                .appointment(appointment)
-                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 0)))
-                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
-                .build();
-
-        AvailableTime availableTime2 = AvailableTime.builder()
-                .member(member)
-                .appointment(appointment)
-                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(14, 30)))
-                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 0)))
-                .build();
-
-        availableTimeRepository.saveAll(List.of(availableTime1, availableTime2));
-
-        // when
-        availableTimeRepository.deleteAllByAppointmentId(appointment.getId());
-
-        // then
-        List<AvailableTime> availableTimes = availableTimeRepository.findAllByAppointmentId(appointment.getId());
+        List<AvailableTime> availableTimes = availableTimeRepository.findAllByAppointment(appointment);
         assertThat(availableTimes).isEmpty();
     }
 }

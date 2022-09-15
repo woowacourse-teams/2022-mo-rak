@@ -2,7 +2,7 @@ package com.morak.back.appointment.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.morak.back.appointment.domain.Appointment;
-import com.morak.back.appointment.domain.AvailableTime;
+import com.morak.back.appointment.domain.availabletime.AvailableTime;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.support.Generated;
 import java.time.LocalDateTime;
@@ -27,12 +27,13 @@ public class AvailableTimeRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mma", locale = "en_US")
     private LocalDateTime end;
 
-    public AvailableTime toAvailableTime(Member member, Appointment appointment) {
+    public AvailableTime toAvailableTime(Member member, Appointment appointment, LocalDateTime now) {
         return AvailableTime.builder()
                 .member(member)
                 .appointment(appointment)
                 .startDateTime(this.start)
                 .endDateTime(this.end)
+                .now(now)
                 .build();
     }
 

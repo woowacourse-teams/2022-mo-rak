@@ -2,14 +2,16 @@ package com.morak.back.appointment.domain;
 
 import static com.morak.back.appointment.domain.AppointmentStatus.CLOSED;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
+import com.morak.back.appointment.domain.availabletime.AvailableTimeDateTimePeriod;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.times.LocalTimes;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
@@ -33,19 +35,13 @@ class AppointmentTest {
                 .title("스터디 회의 날짜 정하기")
                 .description("필참!!")
                 .code(Code.generate(length -> "MoraK123"))
-                .startDate(LocalDate.now().plusDays(1))
-                .endDate(LocalDate.now().plusDays(5))
-                .startTime(LocalTime.of(14, 0))
-                .endTime(LocalTime.of(18, 30))
-                .durationHours(1)
-                .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1));
+                .times(new LocalTimes());
     }
 
     @Test
     void POJO객체의_count는_항상_0이다() {
         // when
-        Appointment appointment = DEFAULT_BUILDER.build();
+        Appointment appointment = 정상적인_약속_생성();
 
         // then
         assertThat(appointment.getCount()).isEqualTo(0);
@@ -54,35 +50,51 @@ class AppointmentTest {
     @Test
     void 약속잡기_생성시_마지막_날짜와_시간이_현재보다_과거이면_예외를_던진다() {
         // given
-        LocalDate startDate = LocalDate.now().minusDays(2L);
-        LocalDate endDate = LocalDate.now().minusDays(1L);
+        LocalDate startDate = LocalDate.now().minusDays(2);
+        LocalDate endDate = LocalDate.now().minusDays(1);
+        LocalTime startTime = LocalTime.of(14, 0);
+        LocalTime endTime = LocalTime.of(18, 30);
+        int durationHours = 1;
+        int durationMinutes = 0;
+        LocalDateTime closedAt = LocalDateTime.now().plusDays(1);
 
-        // then & when
-        assertThatThrownBy(
-                () -> DEFAULT_BUILDER
+        // when & then
+        assertThatThrownBy(() ->
+                DEFAULT_BUILDER
                         .startDate(startDate)
                         .endDate(endDate)
-                        .startTime(LocalTime.of(0, 0))
-                        .endTime(LocalTime.of(1, 30))
-                        .durationHours(1)
-                        .durationMinutes(0)
-                        .closedAt(LocalDateTime.now().plusDays(1))
+                        .startTime(startTime)
+                        .endTime(endTime)
+                        .durationHours(durationHours)
+                        .durationMinutes(durationMinutes)
+                        .closedAt(closedAt)
                         .build()
         ).isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.APPOINTMENT_PAST_CREATE_ERROR);
+                .isEqualTo(CustomErrorCode.APPOINTMENT_PAST_DATE_CREATE_ERROR);
     }
 
     @Test
     void 약속잡기_생성시_약속잡기_시간이_진행_시간보다_짧으면_예외를_던진다() {
-        // then & when
+        // given
+        LocalDate startDate = LocalDate.now().minusDays(2L);
+        LocalDate endDate = LocalDate.now().minusDays(1L);
+        LocalTime startTime = LocalTime.of(10, 0);
+        LocalTime endTime = LocalTime.of(11, 0);
+        int durationHours = 2;
+        int durationMinutes = 0;
+        LocalDateTime closedAt = LocalDateTime.now().plusDays(1);
+
+        // when & then
         assertThatThrownBy(
                 () -> DEFAULT_BUILDER
-                        .startTime(LocalTime.of(10, 0))
-                        .endTime(LocalTime.of(11, 0))
-                        .durationHours(2)
-                        .durationMinutes(0)
-                        .closedAt(LocalDateTime.now().plusDays(1))
+                        .startDate(startDate)
+                        .endDate(endDate)
+                        .startTime(startTime)
+                        .endTime(endTime)
+                        .durationHours(durationHours)
+                        .durationMinutes(durationMinutes)
+                        .closedAt(closedAt)
                         .build()
         ).isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
@@ -92,32 +104,52 @@ class AppointmentTest {
     @Test
     void 마감시간이_마지막날짜보다_빠를수있다() {
         // given
-        LocalDateTime closedAt = LocalDateTime.now().plusDays(5);
         LocalDate startDate = LocalDate.now().plusDays(1);
         LocalDate endDate = LocalDate.now().plusDays(10);
+        LocalTime startTime = LocalTime.of(10, 0);
+        LocalTime endTime = LocalTime.of(11, 0);
+        int durationHours = 1;
+        int durationMinutes = 0;
+        LocalDateTime closedAt = LocalDateTime.now().plusDays(5);
 
         // when & then
-        assertThatNoException().isThrownBy(
-                () -> DEFAULT_BUILDER.closedAt(closedAt).
-                        startDate(startDate)
+        assertThatCode(
+                () -> DEFAULT_BUILDER
+                        .startDate(startDate)
                         .endDate(endDate)
+                        .startTime(startTime)
+                        .endTime(endTime)
+                        .durationHours(durationHours)
+                        .durationMinutes(durationMinutes)
+                        .closedAt(closedAt)
                         .build()
-        );
+        ).doesNotThrowAnyException();
     }
 
     @ParameterizedTest
     @ValueSource(longs = {-1L, 11L, 15L})
     void 마감시간이_오늘과_마지막의_날짜를_벗어나면_예외를_던진다(long plusDays) {
         // given
-        LocalDateTime closedAt = LocalDateTime.now().plusDays(plusDays);
         LocalDate startDate = LocalDate.now().plusDays(1);
         LocalDate endDate = LocalDate.now().plusDays(10);
+        LocalTime startTime = LocalTime.of(10, 0);
+        LocalTime endTime = LocalTime.of(11, 0);
+        int durationHours = 1;
+        int durationMinutes = 0;
+
+        LocalDateTime closedAt = LocalDateTime.now().plusDays(plusDays);
 
         // when & then
-        assertThatThrownBy(() -> DEFAULT_BUILDER.closedAt(closedAt).
-                startDate(startDate)
-                .endDate(endDate)
-                .build()
+        assertThatThrownBy(
+                () -> DEFAULT_BUILDER
+                        .startDate(startDate)
+                        .endDate(endDate)
+                        .startTime(startTime)
+                        .endTime(endTime)
+                        .durationHours(durationHours)
+                        .durationMinutes(durationMinutes)
+                        .closedAt(closedAt)
+                        .build()
         ).isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR);
@@ -132,13 +164,23 @@ class AppointmentTest {
         // given
         LocalDate startDate = LocalDate.now().plusDays(1);
         LocalDate endDate = LocalDate.now().plusDays(10);
+        LocalTime startTime = LocalTime.of(14, 0);
+        LocalTime endTime = LocalTime.of(18, 30);
+        int durationHours = 1;
+        int durationMinutes = 0;
         LocalDateTime closedAt = LocalDateTime.now().plusDays(plusDays).plusMinutes(plusMinutes);
 
         // when & then
-        assertThatThrownBy(() -> DEFAULT_BUILDER.closedAt(closedAt).
-                startDate(startDate)
-                .endDate(endDate)
-                .build()
+        assertThatThrownBy(
+                () -> DEFAULT_BUILDER
+                        .startDate(startDate)
+                        .endDate(endDate)
+                        .startTime(startTime)
+                        .endTime(endTime)
+                        .durationHours(durationHours)
+                        .durationMinutes(durationMinutes)
+                        .closedAt(closedAt)
+                        .build()
         ).isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR);
@@ -146,30 +188,36 @@ class AppointmentTest {
 
     @Test
     void 약속잡기_생성시_약속잡기_시간이_진행_시간과_같으면_예외를_던지지_않는다() {
-        // then & when
-        assertThatNoException().isThrownBy(
+        // given
+        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(10);
+        LocalTime startTime = LocalTime.of(10, 0);
+        LocalTime endTime = LocalTime.of(11, 0);
+        int durationHours = 1;
+        int durationMinutes = 0;
+        LocalDateTime closedAt = LocalDateTime.now().plusDays(5);
+
+        // when & then
+        assertThatCode(
                 () -> DEFAULT_BUILDER
-                        .startTime(LocalTime.of(10, 0))
-                        .endTime(LocalTime.of(11, 0))
-                        .durationHours(1)
-                        .durationMinutes(0)
-                        .closedAt(LocalDateTime.now().plusDays(1))
+                        .startDate(startDate)
+                        .endDate(endDate)
+                        .startTime(startTime)
+                        .endTime(endTime)
+                        .durationHours(durationHours)
+                        .durationMinutes(durationMinutes)
+                        .closedAt(closedAt)
                         .build()
-        );
+        ).doesNotThrowAnyException();
     }
 
     @Test
     void 약속잡기를_마감한다() {
         // given
-        Member eden = Member.builder()
-                .id(1L)
-                .build();
-        Appointment appointment = DEFAULT_BUILDER
-                .host(eden)
-                .build();
+        Appointment appointment = 정상적인_약속_생성();
 
         // when
-        appointment.close(eden);
+        appointment.close(appointment.getHost());
 
         // then
         assertThat(appointment.getStatus()).isEqualTo(CLOSED);
@@ -178,19 +226,10 @@ class AppointmentTest {
     @Test
     void 약속잡기_마감_시_호스트가_아닐_경우_예외를_반환한다() {
         // given
-        Member eden = Member.builder()
-                .id(1L)
-                .build();
-        Appointment appointment = DEFAULT_BUILDER
-                .host(eden)
-                .build();
-
-        Member ellie = Member.builder()
-                .id(2L)
-                .build();
+        Appointment appointment = 정상적인_약속_생성();
 
         // when & then
-        assertThatThrownBy(() -> appointment.close(ellie))
+        assertThatThrownBy(() -> appointment.close(new Member()))
                 .isInstanceOf(AppointmentAuthorizationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR);
@@ -199,10 +238,10 @@ class AppointmentTest {
     @Test
     void durationMinutes객체의_시간의_시를_얻어온다() {
         // given
-        Appointment appointment = DEFAULT_BUILDER.build();
+        Appointment appointment = 정상적인_약속_생성();
 
         // when
-        Integer hours = appointment.parseHours();
+        Integer hours = appointment.parseDurationHours();
 
         // then
         assertThat(hours).isEqualTo(1);
@@ -211,10 +250,10 @@ class AppointmentTest {
     @Test
     void durationMinutes객체의_시간의_분을_얻어온다() {
         // given
-        Appointment appointment = DEFAULT_BUILDER.build();
+        Appointment appointment = 정상적인_약속_생성();
 
         // when
-        Integer minutes = appointment.parseMinutes();
+        Integer minutes = appointment.parseDurationMinutes();
 
         // then
         assertThat(minutes).isEqualTo(0);
@@ -223,60 +262,55 @@ class AppointmentTest {
     @Test
     void 약속잡기의_기간이_포함되는지_확인한다() {
         // given
-        Appointment appointment = DEFAULT_BUILDER.build();
-        DatePeriod datePeriod = DatePeriod.of(
-                LocalDate.now().plusDays(1),
-                LocalDate.now().plusDays(3),
-                LocalTime.of(16, 0)
-        );
+        Appointment appointment = 정상적인_약속_생성();
+        LocalDateTime startDateTime = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(10, 0));
+        LocalDateTime endDateTime = startDateTime.plusMinutes(30);
 
-        // when
-        boolean isAvailable = appointment.isAvailableDateRange(datePeriod);
+        AvailableTimeDateTimePeriod availableTimeDateTimePeriod =
+                AvailableTimeDateTimePeriod.of(startDateTime, endDateTime, LocalDateTime.now());
 
-        // then
-        assertThat(isAvailable).isTrue();
+        // when & then
+        assertThatCode(() -> appointment.validateDateTimePeriod(availableTimeDateTimePeriod))
+                .doesNotThrowAnyException();
     }
 
     @Test
-    void 약속잡기의_기간이_포함되지_않으면_False를_반환한다() {
+    void 약속잡기의_기간이_포함되지_않으면_예외를_던진다() {
         // given
-        Appointment appointment = DEFAULT_BUILDER.build();
-        DatePeriod datePeriod = DatePeriod.of(
-                LocalDate.now().plusDays(5),
-                LocalDate.now().plusDays(6),
-                LocalTime.of(16, 0)
-        );
+        Appointment appointment = 정상적인_약속_생성();
+        LocalDateTime startDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(22, 0));
+        LocalDateTime endDateTime = startDateTime.plusMinutes(30);
 
-        // when
-        boolean isAvailable = appointment.isAvailableDateRange(datePeriod);
+        AvailableTimeDateTimePeriod availableTimeDateTimePeriod =
+                AvailableTimeDateTimePeriod.of(startDateTime, endDateTime, LocalDateTime.now());
 
-        // then
-        assertThat(isAvailable).isFalse();
+        // when & then
+        assertThatThrownBy(() -> appointment.validateDateTimePeriod(availableTimeDateTimePeriod))
+                .isInstanceOf(AppointmentDomainLogicException.class);
     }
 
-    @Test
-    void 약속잡기의_시간이_포함되는지_확인한다() {
-        // given
-        Appointment appointment = DEFAULT_BUILDER.build();
-        TimePeriod timePeriod = TimePeriod.of(LocalTime.of(15, 0), LocalTime.of(15, 30));
+    private Appointment 정상적인_약속_생성() {
+        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(10);
+        LocalTime startTime = LocalTime.of(10, 0);
+        LocalTime endTime = LocalTime.of(11, 0);
+        int durationHours = 1;
+        int durationMinutes = 0;
+        LocalDateTime closedAt = LocalDateTime.now().plusDays(5);
 
-        // when
-        boolean isAvailable = appointment.isAvailableTimeRange(timePeriod);
+        Member eden = Member.builder()
+                .id(1L)
+                .build();
 
-        // then
-        assertThat(isAvailable).isTrue();
-    }
-
-    @Test
-    void 약속잡기의_시간이_포함되지_않으면_False를_반환한다() {
-        // given
-        Appointment appointment = DEFAULT_BUILDER.build();
-        TimePeriod timePeriod = TimePeriod.of(LocalTime.of(18, 30), LocalTime.of(19, 0));
-
-        // when
-        boolean isAvailable = appointment.isAvailableTimeRange(timePeriod);
-
-        // then
-        assertThat(isAvailable).isFalse();
+        return DEFAULT_BUILDER
+                .host(eden)
+                .startDate(startDate)
+                .endDate(endDate)
+                .startTime(startTime)
+                .endTime(endTime)
+                .durationHours(durationHours)
+                .durationMinutes(durationMinutes)
+                .closedAt(closedAt)
+                .build();
     }
 }

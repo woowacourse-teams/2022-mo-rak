@@ -17,7 +17,7 @@ public class AllowedPollCount {
     private static final int MAX_COUNT = 10;
 
     /**
-    @note MAX는 특정 투표 항목이 아닌 도메인 정책 상 생성할 수 있는 최대 item 개수 입니다.
+     * @note MAX는 특정 투표 항목이 아닌 도메인 정책 상 생성할 수 있는 최대 item 개수 입니다.
      */
     @Min(value = MIN_COUNT, message = "가능한 투표 항목 수는 최소 1개입니다.")
     @Max(value = MAX_COUNT, message = "가능한 투표 항목 수는 최대 10개입니다.")

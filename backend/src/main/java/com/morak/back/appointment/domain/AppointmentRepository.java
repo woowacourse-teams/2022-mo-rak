@@ -20,7 +20,7 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
 
     void deleteById(Long id);
 
-    @Query("select a from Appointment a join fetch a.team where a.status = 'OPEN' and a.closedAt <= :thresholdDateTime")
+    @Query("select a from Appointment a join fetch a.team where a.status = 'OPEN' and a.closedAt.closedAt <= :thresholdDateTime")
     List<Appointment> findAllToBeClosed(@Param("thresholdDateTime") LocalDateTime thresholdDateTime);
 
     @Transactional
