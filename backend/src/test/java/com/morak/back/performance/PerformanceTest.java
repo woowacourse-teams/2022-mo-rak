@@ -4,11 +4,14 @@ import static com.morak.back.AuthSupporter.toHeader;
 import static com.morak.back.SimpleRestAssured.delete;
 import static com.morak.back.SimpleRestAssured.get;
 import static com.morak.back.SimpleRestAssured.patch;
+import static com.morak.back.SimpleRestAssured.post;
 import static com.morak.back.SimpleRestAssured.put;
+import static com.morak.back.SimpleRestAssured.toObjectList;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_4시반부터_5시_선택_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_4시부터_4시반_선택_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_5시부터_5시반_선택_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.범위_16_20_약속잡기_요청_데이터;
+import static com.morak.back.poll.domain.PollStatus.OPEN;
 import static com.morak.back.team.acceptance.TeamAcceptanceTest.extractTeamCodeFromLocation;
 import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_멤버_목록_조회를_요청한다;
 import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_목록_조회를_요청한다;
@@ -28,6 +31,12 @@ import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.poll.domain.Poll;
+import com.morak.back.poll.domain.PollItem;
+import com.morak.back.poll.domain.PollResult;
+import com.morak.back.poll.ui.dto.PollCreateRequest;
+import com.morak.back.poll.ui.dto.PollItemResponse;
+import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
@@ -62,6 +71,7 @@ import org.springframework.test.context.jdbc.Sql;
 public class PerformanceTest {
 
     private static final String APPOINTMENT_BASE_PATH = "/api/groups/code1/appointments";
+    private static final String POLL_BASE_PATH = "/api/groups/code1";
     private static final Logger LOG = LoggerFactory.getLogger("PERFORMANCE");
 
     private final RandomCodeGenerator randomCodeGenerator = new RandomCodeGenerator();
@@ -103,20 +113,34 @@ public class PerformanceTest {
                     .build());
         }
         batchInsertTeamMember(teamMembers1);
-
         // 멤버 당 네개의 팀에 속하게 한다. (어떤 팀에 들어갈지는 랜덤이다!)
         List<TeamMember> teamMembers = makeDummyTeamMembers();
         batchInsertTeamMember(teamMembers);
+
         // 팀 당 30개의 약속잡기를 저장한다.
         List<Appointment> appointments = makeDummyAppointments(1000, 30);
         batchInsertAppointment(appointments);
         // 약속잡기 당 00개의 가능 시간을 저장한다.
         List<AvailableTime> availableTimes = makeDummyAvailableTime(1000, 30);
         batchInsertAvailableTime(availableTimes);
+
+        // 팀 당 30개의 투표를 저장한다.
+        List<Poll> polls = makeDummyPolls(1000, 30);
+        batchInsertPolls(polls);
+        // 투표 당 3개의 선택 항목을 저장한다.
+        List<PollItem> pollItems = makeDummyPollItems();
+        batchInsertPollItems(pollItems);
+        // 멤버1이 모든 선택 항목을 선택한다.
+        List<PollResult> pollResults1 = makeDummyPollResult(member);
+        // 멤버2가 모든 선택 항목을 선택한다.
+        List<PollResult> pollResults2 = makeDummyPollResult(Member.builder().id(1L).build());
+        pollResults1.addAll(pollResults2);
+        batchInsertPollResults(pollResults1);
     }
 
     @Test
     void 성능을_테스트한다() {
+        LOG.info("====== 성능 테스트 start ======");
         LOG.info("[팀 & 멤버 성능 테스트]");
         TeamCreateRequest request = new TeamCreateRequest("모락팀");
         String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
@@ -154,6 +178,20 @@ public class PerformanceTest {
         약속잡기_가능_시간_추천_결과_조회를_요청한다(location);
         약속잡기_마감을_요청한다(location);
         약속잡기_삭제를_요청한다(location);
+
+        LOG.info("[투표 성능 테스트]");
+        투표_목록_조회를_요청한다("/api/groups/code2", token);
+        PollCreateRequest pollCreateRequest = new PollCreateRequest("투표_제목", 2, false, LocalDateTime.now().plusDays(1), List.of("항목1", "항목2"));
+        String pollLocation = 투표_생성을_요청한다("/api/groups/code2", pollCreateRequest, token).header("Location");
+        투표_단건_조회를_요청한다(pollLocation, token);
+        List<PollItemResponse> pollItemResponses = toObjectList(투표_선택항목_조회를_요청한다(pollLocation, token), PollItemResponse.class);
+        Long pollItemId1 = pollItemResponses.get(0).getId();
+        Long pollItemId2 = pollItemResponses.get(1).getId();
+        투표_진행을_요청한다(pollLocation, List.of(new PollResultRequest(pollItemId1, "눈물이_나기_때문이에요"), new PollResultRequest(pollItemId2, "그냥녀~")), token);
+        // 재투표
+        투표_진행을_요청한다(pollLocation, List.of(new PollResultRequest(pollItemId1, "눈물이_나기_때문이에요"), new PollResultRequest(pollItemId2, "그냥녀~")), token);
+        투표_마감을_요청한다(pollLocation, token);
+        투표_삭제를_요청한다(pollLocation, token);
     }
 
     private List<Member> makeDummyMembers(int size) {
@@ -173,6 +211,56 @@ public class PerformanceTest {
                         .code(Code.generate((l) -> "code" + (i + 1)))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    private List<Poll> makeDummyPolls(int teamSize, int pollSize) {
+        List<Poll> polls = new ArrayList<>();
+        for (long i = 1; i <= teamSize; i++) {
+            for (int j = 1; j <= pollSize; j++) {
+                polls.add(
+                        Poll.builder()
+                                .team(Team.builder().id(i).build())
+                                .host(member)
+                                .title("더미 투표 + j")
+                                .allowedPollCount(3)
+                                .isAnonymous(false)
+                                .status(OPEN)
+                                .closedAt(LocalDateTime.now().plusDays(1L))
+                                .code(Code.generate(new RandomCodeGenerator()))
+                                .build()
+                );
+            }
+        }
+        return polls;
+    }
+
+    private List<PollItem> makeDummyPollItems() {
+        List<PollItem> pollItems = new ArrayList<>();
+        for (long i = 1; i <= 30_000; i++) {
+            for (int j = 1; j <= 3; j++) {
+                pollItems.add(
+                        PollItem.builder()
+                                .poll(Poll.builder().id(i).build())
+                                .subject("더미 투표 선택 항목" + j)
+                                .build()
+                );
+            }
+        }
+        return pollItems;
+    }
+
+    private List<PollResult> makeDummyPollResult(Member member) {
+        List<PollResult> pollResults = new ArrayList<>();
+        for (long i = 1; i <= 90_000; i++) {
+            pollResults.add(
+                    PollResult.builder()
+                            .pollItem(PollItem.builder().id(i).build())
+                            .member(member)
+                            .description("더미 투표 선택 항목 선택 결과")
+                            .build()
+            );
+        }
+        return pollResults;
     }
 
     private List<Appointment> makeDummyAppointments(int teamSize, int appointmentSize) {
@@ -377,6 +465,67 @@ public class PerformanceTest {
         );
     }
 
+    private void batchInsertPolls(List<Poll> polls) {
+        jdbcTemplate.batchUpdate(
+                "INSERT INTO poll (team_id, host_id, title, allowed_poll_count, is_anonymous, status, created_at, updated_at, closed_at, code) VALUES (?, ?, ?, ?, ?, ?, now(), now(), ?, ?);",
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setLong(1, polls.get(i).getTeam().getId());
+                        ps.setLong(2, polls.get(i).getHost().getId());
+                        ps.setString(3, polls.get(i).getTitle());
+                        ps.setInt(4, polls.get(i).getAllowedPollCount());
+                        ps.setBoolean(5, polls.get(i).getIsAnonymous());
+                        ps.setString(6, polls.get(i).getStatus().name());
+                        ps.setObject(7, polls.get(i).getClosedAt());
+                        ps.setString(8, polls.get(i).getCode());
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return polls.size();
+                    }
+                }
+        );
+    }
+
+    private void batchInsertPollItems(List<PollItem> pollItems) {
+        jdbcTemplate.batchUpdate(
+                "INSERT INTO poll_item (poll_id, subject, created_at, updated_at) VALUES (?, ?, now(), now());",
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setLong(1, pollItems.get(i).getPoll().getId());
+                        ps.setString(2, pollItems.get(i).getSubject());
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return pollItems.size();
+                    }
+                }
+        );
+    }
+
+    private void batchInsertPollResults(List<PollResult> pollResults) {
+        jdbcTemplate.batchUpdate(
+                "INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at) VALUES (?, ?, ?, now(), now());",
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setLong(1, pollResults.get(i).getPollItem().getId());
+                        ps.setLong(2, pollResults.get(i).getMember().getId());
+                        ps.setString(3, pollResults.get(i).getDescription());
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return pollResults.size();
+                    }
+                }
+        );
+    }
+
     private ExtractableResponse<Response> 약속잡기_생성을_요청한다(AppointmentCreateRequest request) {
         return SimpleRestAssured.post(APPOINTMENT_BASE_PATH, request,
                 toHeader(token));
@@ -403,6 +552,39 @@ public class PerformanceTest {
     }
 
     private ExtractableResponse<Response> 약속잡기_삭제를_요청한다(String location) {
+        return delete(location, toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 투표_생성을_요청한다(String teamLocation, PollCreateRequest request,
+                                                      String accessToken) {
+        return post(teamLocation + "/polls", request, toHeader(accessToken));
+    }
+
+    private ExtractableResponse<Response> 투표_선택항목_조회를_요청한다(String pollLocation, String token) {
+        return get(pollLocation + "/items", toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 투표_진행을_요청한다(String location, List<PollResultRequest> requests, String token) {
+        return put(location, requests, toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 투표_목록_조회를_요청한다(String teamLocation, String token) {
+        return get(teamLocation + "/polls", toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 투표_마감을_요청한다(String location, String accessToken) {
+        return patch(location + "/close", toHeader(accessToken));
+    }
+
+    private ExtractableResponse<Response> 투표_단건_조회를_요청한다(String location, String token) {
+        return get(location, toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 투표_결과_조회를_요청한다(String location, String token) {
+        return get(location + "/result", toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 투표_삭제를_요청한다(String location, String token) {
         return delete(location, toHeader(token));
     }
 }
