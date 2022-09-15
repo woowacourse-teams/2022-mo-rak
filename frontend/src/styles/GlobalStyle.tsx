@@ -84,7 +84,7 @@ const style = css`
     outline: none;
   }
 
-  @media screen and (1366px <= width < 1920px) {
+  @media screen and (1024px <= width < 1920px) {
     html {
       font-size: 7px;
     }
