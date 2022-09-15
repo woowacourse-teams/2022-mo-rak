@@ -257,72 +257,35 @@ public class PerformanceTest {
     }
 
     private List<Member> makeDummyMembers(int size) {
-        return IntStream.range(0, size)
+        return IntStream.rangeClosed(1, size)
                 .mapToObj(i -> Member.builder()
                         .oauthId(randomCodeGenerator.generate(8))
-                        .name("더미 멤버" + (i + 1))
+                        .name("더미 멤버" + i)
                         .profileUrl("http://" + "테스트 멤버" + "-profile.com")
                         .build())
                 .collect(Collectors.toList());
     }
 
     private List<Team> makeDummyTeams(int size) {
-        return IntStream.range(0, size)
+        return IntStream.rangeClosed(1, size)
                 .mapToObj(i -> Team.builder()
-                        .name("더미 팀" + (i + 1))
-                        .code(Code.generate((l) -> "code" + (i + 1)))
+                        .name("더미 팀" + i)
+                        .code(Code.generate((l) -> "code" + i))
                         .build())
                 .collect(Collectors.toList());
     }
 
-    private List<Poll> makeDummyPolls(int teamSize, int pollSize) {
-        List<Poll> polls = new ArrayList<>();
-        for (long i = 1; i <= teamSize; i++) {
-            for (int j = 1; j <= pollSize; j++) {
-                polls.add(
-                        Poll.builder()
-                                .team(Team.builder().id(i).build())
-                                .host(member1)
-                                .title("더미 투표 + j")
-                                .allowedPollCount(3)
-                                .isAnonymous(false)
-                                .status(OPEN)
-                                .closedAt(LocalDateTime.now().plusDays(1L))
-                                .code(Code.generate(new RandomCodeGenerator()))
-                                .build()
-                );
+    private List<TeamMember> makeDummyTeamMembers() {
+        List<TeamMember> teamMembers = new ArrayList<>();
+        for (long i = 1; i <= 500; i++) {
+            for (int j = 0; j < 4; j++) {
+                teamMembers.add(TeamMember.builder()
+                        .team(Team.builder().id(ThreadLocalRandom.current().nextLong(1000) + 1).build())
+                        .member(Member.builder().id(i).build())
+                        .build());
             }
         }
-        return polls;
-    }
-
-    private List<PollItem> makeDummyPollItems() {
-        List<PollItem> pollItems = new ArrayList<>();
-        for (long i = 1; i <= 30_000; i++) {
-            for (int j = 1; j <= 3; j++) {
-                pollItems.add(
-                        PollItem.builder()
-                                .poll(Poll.builder().id(i).build())
-                                .subject("더미 투표 선택 항목" + j)
-                                .build()
-                );
-            }
-        }
-        return pollItems;
-    }
-
-    private List<PollResult> makeDummyPollResult(Member member) {
-        List<PollResult> pollResults = new ArrayList<>();
-        for (long i = 1; i <= 90_000; i++) {
-            pollResults.add(
-                    PollResult.builder()
-                            .pollItem(PollItem.builder().id(i).build())
-                            .member(member)
-                            .description("더미 투표 선택 항목 선택 결과")
-                            .build()
-            );
-        }
-        return pollResults;
+        return teamMembers;
     }
 
     private List<Appointment> makeDummyAppointments(int teamSize, int appointmentSize) {
@@ -393,16 +356,53 @@ public class PerformanceTest {
         return availableTimes;
     }
 
-    private List<TeamMember> makeDummyTeamMembers() {
-        List<TeamMember> teamMembers = new ArrayList<>();
-        for (long i = 1; i <= 500; i++) {
-            for (int j = 0; j < 4; j++) {
-                teamMembers.add(TeamMember.builder()
-                        .team(Team.builder().id(ThreadLocalRandom.current().nextLong(1000) + 1).build())
-                        .member(Member.builder().id(i).build())
-                        .build());
+    private List<Poll> makeDummyPolls(int teamSize, int pollSize) {
+        List<Poll> polls = new ArrayList<>();
+        for (long i = 1; i <= teamSize; i++) {
+            for (int j = 1; j <= pollSize; j++) {
+                polls.add(
+                        Poll.builder()
+                                .team(Team.builder().id(i).build())
+                                .host(member1)
+                                .title("더미 투표" + j)
+                                .allowedPollCount(3)
+                                .isAnonymous(false)
+                                .status(OPEN)
+                                .closedAt(LocalDateTime.now().plusDays(1L))
+                                .code(Code.generate(new RandomCodeGenerator()))
+                                .build()
+                );
             }
         }
-        return teamMembers;
+        return polls;
+    }
+
+    private List<PollItem> makeDummyPollItems() {
+        List<PollItem> pollItems = new ArrayList<>();
+        for (long i = 1; i <= 30_000; i++) {
+            for (int j = 1; j <= 3; j++) {
+                pollItems.add(
+                        PollItem.builder()
+                                .poll(Poll.builder().id(i).build())
+                                .subject("더미 투표 선택 항목" + j)
+                                .build()
+                );
+            }
+        }
+        return pollItems;
+    }
+
+    private List<PollResult> makeDummyPollResult(Member member) {
+        List<PollResult> pollResults = new ArrayList<>();
+        for (long i = 1; i <= 90_000; i++) {
+            pollResults.add(
+                    PollResult.builder()
+                            .pollItem(PollItem.builder().id(i).build())
+                            .member(member)
+                            .description("더미 투표 선택 결과")
+                            .build()
+            );
+        }
+        return pollResults;
     }
 }
