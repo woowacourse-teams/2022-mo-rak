@@ -14,14 +14,14 @@ public class ProxyPreparedStatementHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (isExecuteQuery(method)) {
+        if (isExecute(method)) {
             return measureQueryPerformance(method, args);
         }
         return method.invoke(preparedStatement, args);
     }
 
-    private boolean isExecuteQuery(Method method) {
-        return method.getName().equals("executeQuery");
+    private boolean isExecute(Method method) {
+        return method.getName().contains("execute");
     }
 
     private Object measureQueryPerformance(Method method, Object[] args) throws Throwable {
