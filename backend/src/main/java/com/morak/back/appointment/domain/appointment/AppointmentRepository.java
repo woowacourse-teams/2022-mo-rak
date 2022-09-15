@@ -1,4 +1,4 @@
-package com.morak.back.appointment.domain;
+package com.morak.back.appointment.domain.appointment;
 
 import java.time.LocalDateTime;
 import java.util.List;

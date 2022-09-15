@@ -1,7 +1,7 @@
-package com.morak.back.appointment.domain.timeconditions.appointmenttimeperiod;
+package com.morak.back.appointment.domain.appointment.timeconditions.appointmenttimeperiod;
 
-import com.morak.back.appointment.domain.timeconditions.durationtime.DurationTime;
-import com.morak.back.appointment.domain.timeconditions.period.TimePeriod;
+import com.morak.back.appointment.domain.appointment.timeconditions.durationtime.DurationTime;
+import com.morak.back.appointment.domain.appointment.timeconditions.period.TimePeriod;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalTime;

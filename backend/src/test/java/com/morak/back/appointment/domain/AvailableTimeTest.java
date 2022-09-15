@@ -2,6 +2,7 @@ package com.morak.back.appointment.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.appointment.domain.appointment.Appointment;
 import com.morak.back.appointment.domain.availabletime.AvailableTime;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;

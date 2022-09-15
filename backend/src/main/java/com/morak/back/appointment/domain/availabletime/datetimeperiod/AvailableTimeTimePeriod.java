@@ -1,6 +1,6 @@
-package com.morak.back.appointment.domain.availabletime;
+package com.morak.back.appointment.domain.availabletime.datetimeperiod;
 
-import com.morak.back.appointment.domain.timeconditions.period.TimePeriod;
+import com.morak.back.appointment.domain.appointment.timeconditions.period.TimePeriod;
 import java.time.LocalTime;
 
 public class AvailableTimeTimePeriod extends TimePeriod {

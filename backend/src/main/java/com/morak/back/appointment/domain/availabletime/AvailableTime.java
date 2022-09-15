@@ -1,6 +1,7 @@
 package com.morak.back.appointment.domain.availabletime;
 
-import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.appointment.domain.appointment.Appointment;
+import com.morak.back.appointment.domain.availabletime.datetimeperiod.AvailableTimeDateTimePeriod;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.domain.BaseEntity;
 import java.time.LocalDateTime;

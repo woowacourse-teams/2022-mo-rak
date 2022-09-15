@@ -1,11 +1,11 @@
-package com.morak.back.appointment.domain.timeconditions;
+package com.morak.back.appointment.domain.appointment.timeconditions;
 
-import com.morak.back.appointment.domain.availabletime.AvailableTimeDateTimePeriod;
-import com.morak.back.appointment.domain.timeconditions.appointmentdateperiod.AppointmentDatePeriod;
-import com.morak.back.appointment.domain.timeconditions.appointmenttimeperiod.AppointmentTimePeriod;
-import com.morak.back.appointment.domain.timeconditions.durationtime.DurationTime;
-import com.morak.back.appointment.domain.timeconditions.period.DatePeriod;
-import com.morak.back.appointment.domain.timeconditions.period.TimePeriod;
+import com.morak.back.appointment.domain.appointment.timeconditions.appointmentdateperiod.AppointmentDatePeriod;
+import com.morak.back.appointment.domain.appointment.timeconditions.appointmenttimeperiod.AppointmentTimePeriod;
+import com.morak.back.appointment.domain.appointment.timeconditions.durationtime.DurationTime;
+import com.morak.back.appointment.domain.appointment.timeconditions.period.DatePeriod;
+import com.morak.back.appointment.domain.appointment.timeconditions.period.TimePeriod;
+import com.morak.back.appointment.domain.availabletime.datetimeperiod.AvailableTimeDateTimePeriod;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalDate;

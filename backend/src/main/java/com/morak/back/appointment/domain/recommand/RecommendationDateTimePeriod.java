@@ -1,6 +1,6 @@
 package com.morak.back.appointment.domain.recommand;
 
-import com.morak.back.appointment.domain.timeconditions.period.DateTimePeriod;
+import com.morak.back.appointment.domain.appointment.timeconditions.period.DateTimePeriod;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import lombok.Getter;

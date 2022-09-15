@@ -1,6 +1,6 @@
 package com.morak.back.appointment.domain.availabletime;
 
-import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.appointment.domain.appointment.Appointment;
 import com.morak.back.auth.domain.Member;
 import java.util.List;
 import org.springframework.data.jpa.repository.Modifying;

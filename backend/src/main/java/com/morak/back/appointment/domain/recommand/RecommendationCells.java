@@ -1,6 +1,6 @@
 package com.morak.back.appointment.domain.recommand;
 
-import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.appointment.domain.appointment.Appointment;
 import com.morak.back.appointment.domain.availabletime.AvailableTime;
 import com.morak.back.auth.domain.Member;
 import java.time.LocalDateTime;

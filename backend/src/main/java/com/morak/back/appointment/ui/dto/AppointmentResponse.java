@@ -2,7 +2,7 @@ package com.morak.back.appointment.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.appointment.domain.appointment.Appointment;
 import com.morak.back.auth.domain.Member;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

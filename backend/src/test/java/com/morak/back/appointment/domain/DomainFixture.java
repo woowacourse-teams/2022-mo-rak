@@ -1,6 +1,7 @@
 package com.morak.back.appointment.domain;
 
-import com.morak.back.appointment.domain.timeconditions.durationtime.DurationTime;
+import com.morak.back.appointment.domain.appointment.Appointment;
+import com.morak.back.appointment.domain.appointment.timeconditions.durationtime.DurationTime;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.times.LocalTimes;

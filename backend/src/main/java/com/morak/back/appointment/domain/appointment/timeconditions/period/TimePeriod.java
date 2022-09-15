@@ -1,4 +1,4 @@
-package com.morak.back.appointment.domain.timeconditions.period;
+package com.morak.back.appointment.domain.appointment.timeconditions.period;
 
 import java.time.LocalTime;
 

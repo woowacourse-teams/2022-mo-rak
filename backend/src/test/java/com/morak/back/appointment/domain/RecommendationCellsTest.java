@@ -3,7 +3,8 @@ package com.morak.back.appointment.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
+import com.morak.back.appointment.domain.appointment.Appointment;
+import com.morak.back.appointment.domain.appointment.Appointment.AppointmentBuilder;
 import com.morak.back.appointment.domain.availabletime.AvailableTime;
 import com.morak.back.appointment.domain.recommand.RankRecommendation;
 import com.morak.back.appointment.domain.recommand.RecommendationCells;

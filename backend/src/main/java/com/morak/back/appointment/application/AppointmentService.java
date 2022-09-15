@@ -1,7 +1,7 @@
 package com.morak.back.appointment.application;
 
-import com.morak.back.appointment.domain.Appointment;
-import com.morak.back.appointment.domain.AppointmentRepository;
+import com.morak.back.appointment.domain.appointment.Appointment;
+import com.morak.back.appointment.domain.appointment.AppointmentRepository;
 import com.morak.back.appointment.domain.availabletime.AvailableTime;
 import com.morak.back.appointment.domain.availabletime.AvailableTimeRepository;
 import com.morak.back.appointment.domain.recommand.RankRecommendation;

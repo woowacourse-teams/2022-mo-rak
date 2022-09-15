@@ -1,12 +1,13 @@
 package com.morak.back.appointment.domain;
 
-import static com.morak.back.appointment.domain.AppointmentStatus.CLOSED;
+import static com.morak.back.appointment.domain.appointment.AppointmentStatus.CLOSED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
-import com.morak.back.appointment.domain.availabletime.AvailableTimeDateTimePeriod;
+import com.morak.back.appointment.domain.appointment.Appointment;
+import com.morak.back.appointment.domain.appointment.Appointment.AppointmentBuilder;
+import com.morak.back.appointment.domain.availabletime.datetimeperiod.AvailableTimeDateTimePeriod;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.auth.domain.Member;

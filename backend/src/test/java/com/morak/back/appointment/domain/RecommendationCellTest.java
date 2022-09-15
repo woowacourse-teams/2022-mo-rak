@@ -5,6 +5,7 @@ import static com.morak.back.appointment.domain.DomainFixture.끝_시간;
 import static com.morak.back.appointment.domain.DomainFixture.시작_시간;
 import static com.morak.back.appointment.domain.DomainFixture.약속잡기_회식_날짜;
 import static com.morak.back.appointment.domain.DomainFixture.에덴;
+import static com.morak.back.appointment.domain.DomainFixture.자정_시간;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.appointment.domain.availabletime.AvailableTime;
@@ -149,7 +150,7 @@ class RecommendationCellTest {
     void 마지막_시간에_자정이_포함된_recommendationCell을_계산한다() {
         // given
         RecommendationCell recommendationCell = RecommendationCell.of(
-                new RecommendationDateTimePeriod(시작_시간, 끝_시간), List.of(에덴, 까라));
+                new RecommendationDateTimePeriod(시작_시간, 자정_시간), List.of(에덴, 까라));
 
         // when
         AvailableTime edenAvailableTime = AvailableTime.builder()

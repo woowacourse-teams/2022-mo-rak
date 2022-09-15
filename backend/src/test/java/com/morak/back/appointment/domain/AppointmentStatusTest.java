@@ -3,6 +3,7 @@ package com.morak.back.appointment.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.appointment.domain.appointment.AppointmentStatus;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ class AppointmentStatusTest {
         AppointmentStatus status = AppointmentStatus.CLOSED;
 
         // when & then
-        assertThatThrownBy(() -> status.close())
+        assertThatThrownBy(status::close)
                 .isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR);

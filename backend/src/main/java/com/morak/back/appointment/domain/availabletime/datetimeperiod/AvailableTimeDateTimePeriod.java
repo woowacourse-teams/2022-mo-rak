@@ -1,8 +1,8 @@
-package com.morak.back.appointment.domain.availabletime;
+package com.morak.back.appointment.domain.availabletime.datetimeperiod;
 
-import com.morak.back.appointment.domain.timeconditions.period.DatePeriod;
-import com.morak.back.appointment.domain.timeconditions.period.DateTimePeriod;
-import com.morak.back.appointment.domain.timeconditions.period.TimePeriod;
+import com.morak.back.appointment.domain.appointment.timeconditions.period.DatePeriod;
+import com.morak.back.appointment.domain.appointment.timeconditions.period.DateTimePeriod;
+import com.morak.back.appointment.domain.appointment.timeconditions.period.TimePeriod;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.AttributeOverride;

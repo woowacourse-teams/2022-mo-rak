@@ -1,10 +1,10 @@
-package com.morak.back.appointment.domain;
+package com.morak.back.appointment.domain.appointment;
 
-import static com.morak.back.appointment.domain.AppointmentStatus.OPEN;
+import static com.morak.back.appointment.domain.appointment.AppointmentStatus.OPEN;
 
-import com.morak.back.appointment.domain.availabletime.AvailableTimeDateTimePeriod;
-import com.morak.back.appointment.domain.timeconditions.ClosedAt;
-import com.morak.back.appointment.domain.timeconditions.TimeConditions;
+import com.morak.back.appointment.domain.appointment.timeconditions.ClosedAt;
+import com.morak.back.appointment.domain.appointment.timeconditions.TimeConditions;
+import com.morak.back.appointment.domain.availabletime.datetimeperiod.AvailableTimeDateTimePeriod;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;

@@ -1,4 +1,4 @@
-package com.morak.back.appointment.domain.timeconditions.durationtime;
+package com.morak.back.appointment.domain.appointment.timeconditions.durationtime;
 
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
