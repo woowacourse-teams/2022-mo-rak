@@ -1,4 +1,4 @@
-package com.morak.back.performance;
+package com.morak.back.performance.support;
 
 import static com.morak.back.AuthSupporter.toHeader;
 import static com.morak.back.SimpleRestAssured.delete;
@@ -16,7 +16,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
 
-public class PerformanceTestRequestFixture {
+public class RequestSupport {
 
     public static ExtractableResponse<Response> 약속잡기_생성을_요청한다(String teamLocation, AppointmentCreateRequest request,
                                                               String token) {
