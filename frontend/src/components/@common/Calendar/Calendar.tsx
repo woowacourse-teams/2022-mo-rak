@@ -118,7 +118,7 @@ function Calendar({
   const isBeforeStartDate = (day: number) =>
     new Date(`${currentYear}-${currentMonth + 1}-${day}`) < new Date(startDate);
 
-  const isNotBetweenStartAndEndDate = (day: number) => {
+  const isNotInStartAndEndDate = (day: number) => {
     const targetDate = new Date(formatDate(day));
 
     return new Date(startDate) > targetDate || targetDate > new Date(endDate);
@@ -152,7 +152,7 @@ function Calendar({
 
         {version === 'select'
           ? getCurrentMonthDays().map((day) => {
-              if (isNotBetweenStartAndEndDate(day)) {
+              if (isNotInStartAndEndDate(day)) {
                 return (
                   // TODO: 변수명 생각해보기
                   <StyledCurrentMonthDayNotInStartAndEndDate key={day}>
