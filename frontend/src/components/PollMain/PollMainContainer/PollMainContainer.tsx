@@ -84,6 +84,10 @@ const StyledContainer = styled.div`
 const StyledTitle = styled.h1`
   font-size: 2.2rem;
   text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 1.2rem;
 `;
 
 const LottieWrapper = styled.div`
