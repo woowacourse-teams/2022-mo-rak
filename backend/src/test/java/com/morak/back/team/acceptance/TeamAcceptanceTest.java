@@ -580,7 +580,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    private ExtractableResponse<Response> 그룹_생성을_요청한다(TeamCreateRequest request, String token) {
+    public static ExtractableResponse<Response> 그룹_생성을_요청한다(TeamCreateRequest request, String token) {
         return post("/api/groups", request, toHeader(token));
     }
 
@@ -588,7 +588,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         return post(location + "/invitation", "", toHeader(token));
     }
 
-    private ExtractableResponse<Response> 그룹_참가_여부_조회를_요청한다(String teamInvitationLocation, String token) {
+    public static ExtractableResponse<Response> 그룹_참가_여부_조회를_요청한다(String teamInvitationLocation, String token) {
         return get(teamInvitationLocation, toHeader(token));
     }
 
@@ -596,11 +596,11 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         return post(teamInvitationLocation, "", AuthSupporter.toHeader(otherToken));
     }
 
-    private ExtractableResponse<Response> 그룹_목록_조회를_요청한다(String token) {
+    public static ExtractableResponse<Response> 그룹_목록_조회를_요청한다(String token) {
         return get("/api/groups", AuthSupporter.toHeader(token));
     }
 
-    private ExtractableResponse<Response> 그룹_멤버_목록_조회를_요청한다(String token, String teamLocation) {
+    public static ExtractableResponse<Response> 그룹_멤버_목록_조회를_요청한다(String token, String teamLocation) {
         return get(teamLocation + "/members", AuthSupporter.toHeader(token));
     }
 
@@ -608,11 +608,11 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         return get("/api/groups/default", toHeader(otherToken));
     }
 
-    private ExtractableResponse<Response> 그룹_탈퇴를_요청한다(String teamCode, String token) {
+    public static ExtractableResponse<Response> 그룹_탈퇴를_요청한다(String teamCode, String token) {
         return delete("/api/groups/out/" + teamCode, toHeader(token));
     }
 
-    private String extractTeamCodeFromLocation(String teamLocation) {
+    public static String extractTeamCodeFromLocation(String teamLocation) {
         return teamLocation.split("/")[3];
     }
 }
