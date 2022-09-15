@@ -12,6 +12,7 @@ import static com.morak.back.performance.support.RequestSupport.약속잡기_마
 import static com.morak.back.performance.support.RequestSupport.약속잡기_목록_조회를_요청한다;
 import static com.morak.back.performance.support.RequestSupport.약속잡기_삭제를_요청한다;
 import static com.morak.back.performance.support.RequestSupport.약속잡기_생성을_요청한다;
+import static com.morak.back.performance.support.RequestSupport.투표_결과_조회를_요청한다;
 import static com.morak.back.performance.support.RequestSupport.투표_단건_조회를_요청한다;
 import static com.morak.back.performance.support.RequestSupport.투표_마감을_요청한다;
 import static com.morak.back.performance.support.RequestSupport.투표_목록_조회를_요청한다;
@@ -179,6 +180,10 @@ public class PerformanceTest {
         투표_진행을_요청한다(pollLocation,
                 List.of(new PollResultRequest(pollItemId1, "눈물이_나기_때문이에요"), new PollResultRequest(pollItemId2, "그냥녀~")),
                 tokenOfMember1);
+        투표_진행을_요청한다(pollLocation,
+                List.of(new PollResultRequest(pollItemId1, "눈물이_나기_때문이에요"), new PollResultRequest(pollItemId2, "그냥녀~")),
+                tokenOfMember2);
+        투표_결과_조회를_요청한다(pollLocation, tokenOfMember1);
         투표_마감을_요청한다(pollLocation, tokenOfMember1);
         투표_삭제를_요청한다(pollLocation, tokenOfMember1);
     }

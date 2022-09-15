@@ -1,6 +1,7 @@
 package com.morak.back.performance.support;
 
 import static com.morak.back.performance.Fixture.MEMBER_ID1;
+import static com.morak.back.performance.Fixture.MEMBER_ID2;
 import static com.morak.back.performance.Fixture.TEAM_ID1;
 
 import com.morak.back.auth.domain.Member;
@@ -37,7 +38,9 @@ public class TeamMemberDummySupport {
 
     public void 팀_멤버_더미데이터를_추가한다(int memberSize, int teamSize, int joinSize) {
         // 멤버1을 모든 팀에 속하게 한다.
-        List<TeamMember> teamMembers = makeDummyTeamMembersJoinAllTeams(MEMBER_ID1, teamSize);
+        List<TeamMember> teamMembers = makeDummyTeamMembersJoinTeams(MEMBER_ID1, teamSize);
+        // 멤버2를 5개 팀에 속하게 한다.
+        teamMembers.addAll(makeDummyTeamMembersJoinTeams(MEMBER_ID2, 5));
         // 팀1에 9개의 멤버를 속하게 한다.
         teamMembers.addAll(makeDummyTeamMembersJoinOneTeam(TEAM_ID1, 9));
         // 멤버 당 4개의 팀에 속하게 한다. (어떤 팀에 들어갈지는 랜덤)
@@ -85,7 +88,7 @@ public class TeamMemberDummySupport {
                 .collect(Collectors.toList());
     }
 
-    public List<TeamMember> makeDummyTeamMembersJoinAllTeams(Member member, int teamSize) {
+    public List<TeamMember> makeDummyTeamMembersJoinTeams(Member member, int teamSize) {
         return LongStream.rangeClosed(1, teamSize)
                 .mapToObj(teamIndex -> TeamMember.builder()
                         .team(Team.builder().id(teamIndex).build())
