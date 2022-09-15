@@ -234,7 +234,7 @@ const StyledModalFormContainer = styled.form(
 );
 
 const StyledSlackLogo = styled.img`
-  width: 8rem;
+  width: 6.8rem;
   display: block;
   margin: 0 auto;
   margin-bottom: 2rem;
