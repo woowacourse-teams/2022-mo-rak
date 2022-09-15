@@ -57,6 +57,8 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -73,8 +75,6 @@ import org.springframework.test.context.jdbc.Sql;
 public class PerformanceTest {
 
     private static final Logger LOG = LoggerFactory.getLogger("PERFORMANCE");
-
-    private final RandomCodeGenerator randomCodeGenerator = new RandomCodeGenerator();
 
     @Autowired
     private TokenProvider tokenProvider;
@@ -106,7 +106,11 @@ public class PerformanceTest {
         tokenOfMember1 = tokenProvider.createToken(String.valueOf(1L));
         tokenOfMember2 = tokenProvider.createToken(String.valueOf(2L));
 
+        LOG.info("====== 더미 데이터 추가 start ======");
+        long startTime = System.currentTimeMillis();
         더미데이터를_추가한다();
+        double timeOfInsultingDummies = (System.currentTimeMillis() - startTime) / 1_000.0;
+        LOG.info(String.format("더미 데이터 추가 시간: %f", timeOfInsultingDummies));
     }
 
     @Test
@@ -121,19 +125,24 @@ public class PerformanceTest {
     private void 더미데이터를_추가한다() {
         int memberSize = 500;
         int teamSize = 1000;
+        int joinSize = 4;
         int appointmentSizePerTeam = 30;
+        int appointmentSize = teamSize * appointmentSizePerTeam;
         int pollSizePerTeam = 30;
+        int pollSize = teamSize * pollSizePerTeam;
+        int pollItemSizePerPoll = 3;
+        int pollItemSize = pollSize * pollItemSizePerPoll;
 
         멤버_더미데이터를_추가한다(memberSize);
         팀_더미데이터를_추가한다(teamSize);
-        팀_멤버_더미데이터를_추가한다(teamSize);
+        팀_멤버_더미데이터를_추가한다(memberSize, teamSize, joinSize);
 
         약속잡기_더미데이터를_추가한다(teamSize, appointmentSizePerTeam);
-        약속잡기_선택가능시간_더미데이터를_추가한다(teamSize, appointmentSizePerTeam);
+        약속잡기_선택가능시간_더미데이터를_추가한다(appointmentSize);
 
         투표_더미데이터를_추가한다(teamSize, pollSizePerTeam);
-        투표_선택항목_더미데이터를_추가한다();
-        투표_선택결과_더미데이터를_추가한다();
+        투표_선택항목_더미데이터를_추가한다(pollSize, pollItemSizePerPoll);
+        투표_선택결과_더미데이터를_추가한다(pollItemSize);
     }
 
     private void 팀_멤버_API의_성능을_테스트한다() {
@@ -209,20 +218,13 @@ public class PerformanceTest {
         teamMemberDao.batchInsertTeams(teams);
     }
 
-    private void 팀_멤버_더미데이터를_추가한다(int teamSize) {
+    private void 팀_멤버_더미데이터를_추가한다(int memberSize, int teamSize, int joinSize) {
         // 멤버1을 모든 팀에 속하게 한다.
-        teamMemberDao.batchInsertTeamMembersMain(teamSize);
+        List<TeamMember> teamMembers = makeDummyTeamMembersJoinAllTeams(member1, teamSize);
         // 팀1에 9개의 멤버를 속하게 한다.
-        List<TeamMember> teamMembers1 = new ArrayList<>();
-        for (long i = 2; i <= 10; i++) {
-            teamMembers1.add(TeamMember.builder()
-                    .team(Team.builder().id(1L).build())
-                    .member(Member.builder().id(i).build())
-                    .build());
-        }
-        teamMemberDao.batchInsertTeamMember(teamMembers1);
-        // 멤버 당 네개의 팀에 속하게 한다. (어떤 팀에 들어갈지는 랜덤이다!)
-        List<TeamMember> teamMembers = makeDummyTeamMembers();
+        teamMembers.addAll(makeDummyTeamMembersJoinOneTeam(1L, 9));
+        // 멤버 당 4개의 팀에 속하게 한다. (어떤 팀에 들어갈지는 랜덤)
+        teamMembers.addAll(makeDummyTeamMembers(memberSize, teamSize, joinSize));
         teamMemberDao.batchInsertTeamMember(teamMembers);
     }
 
@@ -231,8 +233,8 @@ public class PerformanceTest {
         appointmentDao.batchInsertAppointment(appointments);
     }
 
-    private void 약속잡기_선택가능시간_더미데이터를_추가한다(int teamSize, int appointmentSizePerTeam) {
-        List<AvailableTime> availableTimes = makeDummyAvailableTime(teamSize, appointmentSizePerTeam);
+    private void 약속잡기_선택가능시간_더미데이터를_추가한다(int appointmentSize) {
+        List<AvailableTime> availableTimes = makeDummyAvailableTime(appointmentSize);
         appointmentDao.batchInsertAvailableTime(availableTimes);
     }
 
@@ -241,62 +243,74 @@ public class PerformanceTest {
         pollDao.batchInsertPolls(polls);
     }
 
-    private void 투표_선택항목_더미데이터를_추가한다() {
-        // 투표 당 3개의 선택 항목을 저장한다.
-        List<PollItem> pollItems = makeDummyPollItems();
+    private void 투표_선택항목_더미데이터를_추가한다(int pollSize, int pollItemSizePerPoll) {
+        List<PollItem> pollItems = makeDummyPollItems(pollSize, pollItemSizePerPoll);
         pollDao.batchInsertPollItems(pollItems);
     }
 
-    private void 투표_선택결과_더미데이터를_추가한다() {
-        // 멤버1이 모든 선택 항목을 선택한다.
-        List<PollResult> pollResults1 = makeDummyPollResult(member1);
-        // 멤버2가 모든 선택 항목을 선택한다.
-        List<PollResult> pollResults2 = makeDummyPollResult(member2);
+    private void 투표_선택결과_더미데이터를_추가한다(int pollItemSize) {
+        List<PollResult> pollResults1 = makeDummyPollResult(member1, pollItemSize);
+        List<PollResult> pollResults2 = makeDummyPollResult(member2, pollItemSize);
         pollResults1.addAll(pollResults2);
         pollDao.batchInsertPollResults(pollResults1);
     }
 
-    private List<Member> makeDummyMembers(int size) {
-        return IntStream.rangeClosed(1, size)
-                .mapToObj(i -> Member.builder()
-                        .oauthId(randomCodeGenerator.generate(8))
-                        .name("더미 멤버" + i)
-                        .profileUrl("http://" + "테스트 멤버" + "-profile.com")
+    private List<Member> makeDummyMembers(int memberSize) {
+        return IntStream.rangeClosed(1, memberSize)
+                .mapToObj(memberIndex -> Member.builder()
+                        .oauthId("oauth-id" + memberIndex)
+                        .name("더미 멤버" + memberIndex)
+                        .profileUrl("http://" + "더미 멤버" + memberIndex + "-profile.com")
                         .build())
                 .collect(Collectors.toList());
     }
 
-    private List<Team> makeDummyTeams(int size) {
-        return IntStream.rangeClosed(1, size)
-                .mapToObj(i -> Team.builder()
-                        .name("더미 팀" + i)
-                        .code(Code.generate((l) -> "code" + i))
+    private List<Team> makeDummyTeams(int teamSize) {
+        return IntStream.rangeClosed(1, teamSize)
+                .mapToObj(teamIndex -> Team.builder()
+                        .name("더미 팀" + teamIndex)
+                        .code(Code.generate((l) -> "code" + teamIndex))
                         .build())
                 .collect(Collectors.toList());
     }
 
-    private List<TeamMember> makeDummyTeamMembers() {
-        List<TeamMember> teamMembers = new ArrayList<>();
-        for (long i = 1; i <= 500; i++) {
-            for (int j = 0; j < 4; j++) {
-                teamMembers.add(TeamMember.builder()
-                        .team(Team.builder().id(ThreadLocalRandom.current().nextLong(1000) + 1).build())
-                        .member(Member.builder().id(i).build())
-                        .build());
-            }
-        }
-        return teamMembers;
+    private List<TeamMember> makeDummyTeamMembers(int memberSize, int teamSize, int joinSize) {
+        return Stream.iterate(1L, i -> i <= memberSize, i -> i + 1)
+                .flatMap(memberIndex -> IntStream.range(0, joinSize)
+                        .mapToObj(i -> TeamMember.builder()
+                                .team(Team.builder().id(ThreadLocalRandom.current().nextLong(teamSize) + 1).build())
+                                .member(Member.builder().id(memberIndex).build())
+                                .build())
+                        .collect(Collectors.toList())
+                        .stream())
+                .collect(Collectors.toList());
     }
 
-    private List<Appointment> makeDummyAppointments(int teamSize, int appointmentSize) {
-        List<Appointment> appointments = new ArrayList<>();
-        for (long i = 1; i <= teamSize; i++) {
-            for (int j = 1; j <= appointmentSize; j++) {
-                appointments.add(
-                        Appointment.builder()
-                                .team(Team.builder().id(i).build())
+    private List<TeamMember> makeDummyTeamMembersJoinOneTeam(long teamId, int memberSize) {
+        return LongStream.rangeClosed(2, memberSize + 1)
+                .mapToObj(memberIndex -> TeamMember.builder()
+                        .team(Team.builder().id(teamId).build())
+                        .member(Member.builder().id(memberIndex).build())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<TeamMember> makeDummyTeamMembersJoinAllTeams(Member member, int teamSize) {
+        return LongStream.rangeClosed(1, teamSize)
+                .mapToObj(teamIndex -> TeamMember.builder()
+                        .team(Team.builder().id(teamIndex).build())
+                        .member(member)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<Appointment> makeDummyAppointments(int teamSize, int appointmentSizePerTeam) {
+        return Stream.iterate(1L, i -> i <= teamSize, i -> i + 1)
+                .flatMap(teamIndex -> IntStream.rangeClosed(1, appointmentSizePerTeam)
+                        .mapToObj(appointmentIndex -> Appointment.builder()
+                                .team(Team.builder().id(teamIndex).build())
                                 .host(member1)
-                                .title("더미 약속잡기" + j)
+                                .title("더미 약속잡기" + appointmentIndex)
                                 .description("더미 약속잡기 설명")
                                 .startDate(LocalDate.now().plusDays(1))
                                 .endDate(LocalDate.now().plusDays(8))
@@ -306,19 +320,17 @@ public class PerformanceTest {
                                 .durationMinutes(0)
                                 .code(Code.generate(new RandomCodeGenerator()))
                                 .closedAt(LocalDateTime.now().plusDays(1))
-                                .build()
-                );
-            }
-        }
-        return appointments;
+                                .build())
+                        .collect(Collectors.toList())
+                        .stream())
+                .collect(Collectors.toList());
     }
 
-    private List<AvailableTime> makeDummyAvailableTime(int teamSize, int appointmentSize) {
+    private List<AvailableTime> makeDummyAvailableTime(int appointmentSize) {
         List<AvailableTime> availableTimes = new ArrayList<>();
-        for (long i = 1; i <= teamSize; i++) {
-            for (long j = 1; j <= appointmentSize; j++) {
+        for (long appointmentIndex = 1; appointmentIndex <= appointmentSize; appointmentIndex++) {
                 Appointment appointment = Appointment.builder()
-                        .id(((i - 1) * appointmentSize) + j)
+                        .id(appointmentIndex)
                         .startDate(LocalDate.now().plusDays(1))
                         .endDate(LocalDate.now().plusDays(8))
                         .startTime(LocalTime.of(16, 0))
@@ -339,70 +351,49 @@ public class PerformanceTest {
                                                 LocalDateTime.of(LocalDate.now().plusDays(day), LocalTime.of(hour, 30)))
                                         .build()
                         );
-                        availableTimes.add(
-                                AvailableTime.builder()
-                                        .appointment(appointment)
-                                        .member(member1)
-                                        .startDateTime(
-                                                LocalDateTime.of(LocalDate.now().plusDays(day), LocalTime.of(hour, 30)))
-                                        .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(day),
-                                                LocalTime.of(hour + 1, 0)))
-                                        .build()
-                        );
                     }
                 }
-            }
         }
         return availableTimes;
     }
 
-    private List<Poll> makeDummyPolls(int teamSize, int pollSize) {
-        List<Poll> polls = new ArrayList<>();
-        for (long i = 1; i <= teamSize; i++) {
-            for (int j = 1; j <= pollSize; j++) {
-                polls.add(
-                        Poll.builder()
-                                .team(Team.builder().id(i).build())
+    private List<Poll> makeDummyPolls(int teamSize, int pollSizePerTeam) {
+        return Stream.iterate(1L, i -> i <= teamSize, i -> i + 1)
+                .flatMap(teamIndex -> IntStream.rangeClosed(1, pollSizePerTeam)
+                        .mapToObj(pollIndex -> Poll.builder()
+                                .team(Team.builder().id(teamIndex).build())
                                 .host(member1)
-                                .title("더미 투표" + j)
+                                .title("더미 투표" + pollIndex)
                                 .allowedPollCount(3)
                                 .isAnonymous(false)
                                 .status(OPEN)
                                 .closedAt(LocalDateTime.now().plusDays(1L))
                                 .code(Code.generate(new RandomCodeGenerator()))
-                                .build()
-                );
-            }
-        }
-        return polls;
+                                .build())
+                        .collect(Collectors.toList())
+                        .stream())
+                .collect(Collectors.toList());
     }
 
-    private List<PollItem> makeDummyPollItems() {
-        List<PollItem> pollItems = new ArrayList<>();
-        for (long i = 1; i <= 30_000; i++) {
-            for (int j = 1; j <= 3; j++) {
-                pollItems.add(
-                        PollItem.builder()
-                                .poll(Poll.builder().id(i).build())
-                                .subject("더미 투표 선택 항목" + j)
-                                .build()
-                );
-            }
-        }
-        return pollItems;
+    private List<PollItem> makeDummyPollItems(int pollSize, int pollItemSizePerPoll) {
+        return Stream.iterate(1L, i -> i <= pollSize, i -> i + 1)
+                .flatMap(pollIndex -> IntStream.rangeClosed(1, pollItemSizePerPoll)
+                        .mapToObj(pollItemIndex -> PollItem.builder()
+                                .poll(Poll.builder().id(pollIndex).build())
+                                .subject("더미 투표 선택 항목" + pollItemIndex)
+                                .build())
+                        .collect(Collectors.toList())
+                        .stream())
+                .collect(Collectors.toList());
     }
 
-    private List<PollResult> makeDummyPollResult(Member member) {
-        List<PollResult> pollResults = new ArrayList<>();
-        for (long i = 1; i <= 90_000; i++) {
-            pollResults.add(
-                    PollResult.builder()
-                            .pollItem(PollItem.builder().id(i).build())
-                            .member(member)
-                            .description("더미 투표 선택 결과")
-                            .build()
-            );
-        }
-        return pollResults;
+    private List<PollResult> makeDummyPollResult(Member member, int pollItemSize) {
+        return LongStream.rangeClosed(1L, pollItemSize)
+                .mapToObj(pollItemIndex -> PollResult.builder()
+                        .pollItem(PollItem.builder().id(pollItemIndex).build())
+                        .member(member)
+                        .description("더미 투표 선택 결과")
+                        .build())
+                .collect(Collectors.toList());
     }
 }
