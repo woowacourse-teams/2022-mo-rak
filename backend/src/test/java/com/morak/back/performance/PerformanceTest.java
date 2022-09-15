@@ -1,16 +1,24 @@
 package com.morak.back.performance;
 
-import static com.morak.back.AuthSupporter.toHeader;
-import static com.morak.back.SimpleRestAssured.delete;
-import static com.morak.back.SimpleRestAssured.get;
-import static com.morak.back.SimpleRestAssured.patch;
-import static com.morak.back.SimpleRestAssured.post;
-import static com.morak.back.SimpleRestAssured.put;
 import static com.morak.back.SimpleRestAssured.toObjectList;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_4시반부터_5시_선택_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_4시부터_4시반_선택_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_5시부터_5시반_선택_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.범위_16_20_약속잡기_요청_데이터;
+import static com.morak.back.performance.PerformanceTestRequestFixture.약속잡기_가능_시간_선택을_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.약속잡기_가능_시간_추천_결과_조회를_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.약속잡기_단건_조회를_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.약속잡기_마감을_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.약속잡기_목록_조회를_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.약속잡기_삭제를_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.약속잡기_생성을_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.투표_단건_조회를_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.투표_마감을_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.투표_목록_조회를_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.투표_삭제를_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.투표_생성을_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.투표_선택항목_조회를_요청한다;
+import static com.morak.back.performance.PerformanceTestRequestFixture.투표_진행을_요청한다;
 import static com.morak.back.poll.domain.PollStatus.OPEN;
 import static com.morak.back.team.acceptance.TeamAcceptanceTest.extractTeamCodeFromLocation;
 import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_멤버_목록_조회를_요청한다;
@@ -22,15 +30,15 @@ import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_초대코
 import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_탈퇴를_요청한다;
 import static com.morak.back.team.acceptance.TeamAcceptanceTest.기본_그룹_조회를_요청한다;
 
-import com.morak.back.SimpleRestAssured;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AvailableTime;
-import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
-import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.performance.dao.AppointmentDao;
+import com.morak.back.performance.dao.PollDao;
+import com.morak.back.performance.dao.TeamMemberDao;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollResult;
@@ -41,10 +49,6 @@ import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -61,8 +65,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 @Disabled
@@ -70,8 +72,6 @@ import org.springframework.test.context.jdbc.Sql;
 @Sql(scripts = {"classpath:schema.sql"})
 public class PerformanceTest {
 
-    private static final String APPOINTMENT_BASE_PATH = "/api/groups/code1/appointments";
-    private static final String POLL_BASE_PATH = "/api/groups/code1";
     private static final Logger LOG = LoggerFactory.getLogger("PERFORMANCE");
 
     private final RandomCodeGenerator randomCodeGenerator = new RandomCodeGenerator();
@@ -80,91 +80,88 @@ public class PerformanceTest {
     private TokenProvider tokenProvider;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private TeamMemberDao teamMemberDao;
+
+    @Autowired
+    private AppointmentDao appointmentDao;
+
+    @Autowired
+    private PollDao pollDao;
 
     @LocalServerPort
     int port;
 
-    private String token;
-    private String otherToken;
-    private Member member;
+    private Member member1;
+    private Member member2;
+    private String tokenOfMember1;
+    private String tokenOfMember2;
 
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
-        token = tokenProvider.createToken(String.valueOf(1L));
-        otherToken = tokenProvider.createToken(String.valueOf(2L));
-        member = Member.builder().id(1L).build();
 
-        // 500개의 멤버를 저장한다.
-        List<Member> members = makeDummyMembers(500);
-        batchInsertMembers(members);
-        // 1000개의 팀을 저장한다.
-        List<Team> teams = makeDummyTeams(1000);
-        batchInsertTeams(teams);
-        // 멤버1을 모든 팀에 속하게 한다.
-        batchInsertTeamMembersMain(1000);
-        // 팀1에 9개의 멤버를 속하게 한다.
-        List<TeamMember> teamMembers1 = new ArrayList<>();
-        for (long i = 2; i <= 10; i++) {
-            teamMembers1.add(TeamMember.builder()
-                    .team(Team.builder().id(1L).build())
-                    .member(Member.builder().id(i).build())
-                    .build());
-        }
-        batchInsertTeamMember(teamMembers1);
-        // 멤버 당 네개의 팀에 속하게 한다. (어떤 팀에 들어갈지는 랜덤이다!)
-        List<TeamMember> teamMembers = makeDummyTeamMembers();
-        batchInsertTeamMember(teamMembers);
+        member1 = Member.builder().id(1L).build();
+        member2 = Member.builder().id(2L).build();
 
-        // 팀 당 30개의 약속잡기를 저장한다.
-        List<Appointment> appointments = makeDummyAppointments(1000, 30);
-        batchInsertAppointment(appointments);
-        // 약속잡기 당 00개의 가능 시간을 저장한다.
-        List<AvailableTime> availableTimes = makeDummyAvailableTime(1000, 30);
-        batchInsertAvailableTime(availableTimes);
+        tokenOfMember1 = tokenProvider.createToken(String.valueOf(1L));
+        tokenOfMember2 = tokenProvider.createToken(String.valueOf(2L));
 
-        // 팀 당 30개의 투표를 저장한다.
-        List<Poll> polls = makeDummyPolls(1000, 30);
-        batchInsertPolls(polls);
-        // 투표 당 3개의 선택 항목을 저장한다.
-        List<PollItem> pollItems = makeDummyPollItems();
-        batchInsertPollItems(pollItems);
-        // 멤버1이 모든 선택 항목을 선택한다.
-        List<PollResult> pollResults1 = makeDummyPollResult(member);
-        // 멤버2가 모든 선택 항목을 선택한다.
-        List<PollResult> pollResults2 = makeDummyPollResult(Member.builder().id(1L).build());
-        pollResults1.addAll(pollResults2);
-        batchInsertPollResults(pollResults1);
+        더미데이터를_추가한다();
     }
 
     @Test
     void 성능을_테스트한다() {
         LOG.info("====== 성능 테스트 start ======");
+
+        팀_멤버_API의_성능을_테스트한다();
+        약속잡기_API의_성능을_테스트한다();
+        투표_API의_성능을_테스트한다();
+    }
+
+    private void 더미데이터를_추가한다() {
+        int memberSize = 500;
+        int teamSize = 1000;
+        int appointmentSizePerTeam = 30;
+        int pollSizePerTeam = 30;
+
+        멤버_더미데이터를_추가한다(memberSize);
+        팀_더미데이터를_추가한다(teamSize);
+        팀_멤버_더미데이터를_추가한다(teamSize);
+
+        약속잡기_더미데이터를_추가한다(teamSize, appointmentSizePerTeam);
+        약속잡기_선택가능시간_더미데이터를_추가한다(teamSize, appointmentSizePerTeam);
+
+        투표_더미데이터를_추가한다(teamSize, pollSizePerTeam);
+        투표_선택항목_더미데이터를_추가한다();
+        투표_선택결과_더미데이터를_추가한다();
+    }
+
+    private void 팀_멤버_API의_성능을_테스트한다() {
         LOG.info("[팀 & 멤버 성능 테스트]");
         TeamCreateRequest request = new TeamCreateRequest("모락팀");
-        String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
-        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
-        그룹_참가_여부_조회를_요청한다(teamInvitationLocation, token);
-        그룹_참가를_요청한다(teamInvitationLocation, otherToken);
-        그룹_목록_조회를_요청한다(token);
-        그룹_멤버_목록_조회를_요청한다(token, teamLocation);
-        기본_그룹_조회를_요청한다(otherToken);
+        String teamLocation = 그룹_생성을_요청한다(request, tokenOfMember1).header("Location");
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, tokenOfMember1).header("Location");
+        그룹_참가_여부_조회를_요청한다(teamInvitationLocation, tokenOfMember1);
+        그룹_참가를_요청한다(teamInvitationLocation, tokenOfMember2);
+        그룹_목록_조회를_요청한다(tokenOfMember1);
+        그룹_멤버_목록_조회를_요청한다(tokenOfMember1, teamLocation);
+        기본_그룹_조회를_요청한다(tokenOfMember2);
         String teamCode = extractTeamCodeFromLocation(teamLocation);
-        그룹_탈퇴를_요청한다(teamCode, otherToken);
+        그룹_탈퇴를_요청한다(teamCode, tokenOfMember2);
+    }
 
+    private void 약속잡기_API의_성능을_테스트한다() {
         LOG.info("[약속잡기 성능 테스트]");
-        String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
-        System.out.println("location = " + location);
-        약속잡기_목록_조회를_요청한다();
-        약속잡기_단건_조회를_요청한다(location);
+        String location = 약속잡기_생성을_요청한다("/api/groups/code1", 범위_16_20_약속잡기_요청_데이터, tokenOfMember1).header("Location");
+        약속잡기_목록_조회를_요청한다("/api/groups/code1", tokenOfMember1);
+        약속잡기_단건_조회를_요청한다(location, tokenOfMember1);
         약속잡기_가능_시간_선택을_요청한다(
                 location,
                 List.of(
                         모락_회식_첫째날_4시부터_4시반_선택_요청_데이터,
                         모락_회식_첫째날_4시반부터_5시_선택_요청_데이터,
                         모락_회식_첫째날_5시부터_5시반_선택_요청_데이터
-                )
+                ), tokenOfMember1
         );
         // 재선택!
         약속잡기_가능_시간_선택을_요청한다(
@@ -173,25 +170,90 @@ public class PerformanceTest {
                         모락_회식_첫째날_4시부터_4시반_선택_요청_데이터,
                         모락_회식_첫째날_4시반부터_5시_선택_요청_데이터,
                         모락_회식_첫째날_5시부터_5시반_선택_요청_데이터
-                )
+                ), tokenOfMember1
         );
-        약속잡기_가능_시간_추천_결과_조회를_요청한다(location);
-        약속잡기_마감을_요청한다(location);
-        약속잡기_삭제를_요청한다(location);
+        약속잡기_가능_시간_추천_결과_조회를_요청한다(location, tokenOfMember1);
+        약속잡기_마감을_요청한다(location, tokenOfMember1);
+        약속잡기_삭제를_요청한다(location, tokenOfMember1);
+    }
 
+    private void 투표_API의_성능을_테스트한다() {
         LOG.info("[투표 성능 테스트]");
-        투표_목록_조회를_요청한다("/api/groups/code2", token);
-        PollCreateRequest pollCreateRequest = new PollCreateRequest("투표_제목", 2, false, LocalDateTime.now().plusDays(1), List.of("항목1", "항목2"));
-        String pollLocation = 투표_생성을_요청한다("/api/groups/code2", pollCreateRequest, token).header("Location");
-        투표_단건_조회를_요청한다(pollLocation, token);
-        List<PollItemResponse> pollItemResponses = toObjectList(투표_선택항목_조회를_요청한다(pollLocation, token), PollItemResponse.class);
+        투표_목록_조회를_요청한다("/api/groups/code2", tokenOfMember1);
+        PollCreateRequest pollCreateRequest = new PollCreateRequest("투표_제목", 2, false, LocalDateTime.now().plusDays(1),
+                List.of("항목1", "항목2"));
+        String pollLocation = 투표_생성을_요청한다("/api/groups/code2", pollCreateRequest, tokenOfMember1).header("Location");
+        투표_단건_조회를_요청한다(pollLocation, tokenOfMember1);
+        List<PollItemResponse> pollItemResponses = toObjectList(투표_선택항목_조회를_요청한다(pollLocation, tokenOfMember1),
+                PollItemResponse.class);
         Long pollItemId1 = pollItemResponses.get(0).getId();
         Long pollItemId2 = pollItemResponses.get(1).getId();
-        투표_진행을_요청한다(pollLocation, List.of(new PollResultRequest(pollItemId1, "눈물이_나기_때문이에요"), new PollResultRequest(pollItemId2, "그냥녀~")), token);
-        // 재투표
-        투표_진행을_요청한다(pollLocation, List.of(new PollResultRequest(pollItemId1, "눈물이_나기_때문이에요"), new PollResultRequest(pollItemId2, "그냥녀~")), token);
-        투표_마감을_요청한다(pollLocation, token);
-        투표_삭제를_요청한다(pollLocation, token);
+        투표_진행을_요청한다(pollLocation,
+                List.of(new PollResultRequest(pollItemId1, "눈물이_나기_때문이에요"), new PollResultRequest(pollItemId2, "그냥녀~")),
+                tokenOfMember1);
+        // 재투표!
+        투표_진행을_요청한다(pollLocation,
+                List.of(new PollResultRequest(pollItemId1, "눈물이_나기_때문이에요"), new PollResultRequest(pollItemId2, "그냥녀~")),
+                tokenOfMember1);
+        투표_마감을_요청한다(pollLocation, tokenOfMember1);
+        투표_삭제를_요청한다(pollLocation, tokenOfMember1);
+    }
+
+    private void 멤버_더미데이터를_추가한다(int memberSize) {
+        List<Member> members = makeDummyMembers(memberSize);
+        teamMemberDao.batchInsertMembers(members);
+    }
+
+    private void 팀_더미데이터를_추가한다(int teamSize) {
+        List<Team> teams = makeDummyTeams(teamSize);
+        teamMemberDao.batchInsertTeams(teams);
+    }
+
+    private void 팀_멤버_더미데이터를_추가한다(int teamSize) {
+        // 멤버1을 모든 팀에 속하게 한다.
+        teamMemberDao.batchInsertTeamMembersMain(teamSize);
+        // 팀1에 9개의 멤버를 속하게 한다.
+        List<TeamMember> teamMembers1 = new ArrayList<>();
+        for (long i = 2; i <= 10; i++) {
+            teamMembers1.add(TeamMember.builder()
+                    .team(Team.builder().id(1L).build())
+                    .member(Member.builder().id(i).build())
+                    .build());
+        }
+        teamMemberDao.batchInsertTeamMember(teamMembers1);
+        // 멤버 당 네개의 팀에 속하게 한다. (어떤 팀에 들어갈지는 랜덤이다!)
+        List<TeamMember> teamMembers = makeDummyTeamMembers();
+        teamMemberDao.batchInsertTeamMember(teamMembers);
+    }
+
+    private void 약속잡기_더미데이터를_추가한다(int teamSize, int appointmentSizePerTeam) {
+        List<Appointment> appointments = makeDummyAppointments(teamSize, appointmentSizePerTeam);
+        appointmentDao.batchInsertAppointment(appointments);
+    }
+
+    private void 약속잡기_선택가능시간_더미데이터를_추가한다(int teamSize, int appointmentSizePerTeam) {
+        List<AvailableTime> availableTimes = makeDummyAvailableTime(teamSize, appointmentSizePerTeam);
+        appointmentDao.batchInsertAvailableTime(availableTimes);
+    }
+
+    private void 투표_더미데이터를_추가한다(int teamSize, int pollSizePerTeam) {
+        List<Poll> polls = makeDummyPolls(teamSize, pollSizePerTeam);
+        pollDao.batchInsertPolls(polls);
+    }
+
+    private void 투표_선택항목_더미데이터를_추가한다() {
+        // 투표 당 3개의 선택 항목을 저장한다.
+        List<PollItem> pollItems = makeDummyPollItems();
+        pollDao.batchInsertPollItems(pollItems);
+    }
+
+    private void 투표_선택결과_더미데이터를_추가한다() {
+        // 멤버1이 모든 선택 항목을 선택한다.
+        List<PollResult> pollResults1 = makeDummyPollResult(member1);
+        // 멤버2가 모든 선택 항목을 선택한다.
+        List<PollResult> pollResults2 = makeDummyPollResult(member2);
+        pollResults1.addAll(pollResults2);
+        pollDao.batchInsertPollResults(pollResults1);
     }
 
     private List<Member> makeDummyMembers(int size) {
@@ -220,7 +282,7 @@ public class PerformanceTest {
                 polls.add(
                         Poll.builder()
                                 .team(Team.builder().id(i).build())
-                                .host(member)
+                                .host(member1)
                                 .title("더미 투표 + j")
                                 .allowedPollCount(3)
                                 .isAnonymous(false)
@@ -270,7 +332,7 @@ public class PerformanceTest {
                 appointments.add(
                         Appointment.builder()
                                 .team(Team.builder().id(i).build())
-                                .host(member)
+                                .host(member1)
                                 .title("더미 약속잡기" + j)
                                 .description("더미 약속잡기 설명")
                                 .startDate(LocalDate.now().plusDays(1))
@@ -307,7 +369,7 @@ public class PerformanceTest {
                         availableTimes.add(
                                 AvailableTime.builder()
                                         .appointment(appointment)
-                                        .member(member)
+                                        .member(member1)
                                         .startDateTime(
                                                 LocalDateTime.of(LocalDate.now().plusDays(day), LocalTime.of(hour, 0)))
                                         .endDateTime(
@@ -317,7 +379,7 @@ public class PerformanceTest {
                         availableTimes.add(
                                 AvailableTime.builder()
                                         .appointment(appointment)
-                                        .member(member)
+                                        .member(member1)
                                         .startDateTime(
                                                 LocalDateTime.of(LocalDate.now().plusDays(day), LocalTime.of(hour, 30)))
                                         .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(day),
@@ -342,249 +404,5 @@ public class PerformanceTest {
             }
         }
         return teamMembers;
-    }
-
-    private void batchInsertMembers(List<Member> members) {
-        jdbcTemplate.batchUpdate(
-                "INSERT INTO member (oauth_id, name, profile_url, created_at, updated_at) VALUES (?, ?, ?, now(), now());",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1, members.get(i).getOauthId());
-                        ps.setString(2, members.get(i).getName());
-                        ps.setString(3, members.get(i).getProfileUrl());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return members.size();
-                    }
-                }
-        );
-    }
-
-    private void batchInsertTeams(List<Team> teams) {
-        jdbcTemplate.batchUpdate(
-                "INSERT INTO team (name, code, created_at, updated_at) VALUES (?, ?, now(), now());",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1, teams.get(i).getName());
-                        ps.setString(2, teams.get(i).getCode());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return teams.size();
-                    }
-                }
-        );
-    }
-
-    private void batchInsertTeamMembersMain(int size) {
-        jdbcTemplate.batchUpdate(
-                "INSERT INTO team_member (team_id, member_id, created_at, updated_at) VALUES (?, ?, now(), now());",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1, i + 1);
-                        ps.setLong(2, 1);
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return size;
-                    }
-                }
-        );
-    }
-
-    private void batchInsertTeamMember(List<TeamMember> teamMembers) {
-        jdbcTemplate.batchUpdate(
-                "INSERT INTO team_member (team_id, member_id, created_at, updated_at) VALUES (?, ?, now(), now());",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1, teamMembers.get(i).getTeam().getId());
-                        ps.setLong(2, teamMembers.get(i).getMember().getId());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return teamMembers.size();
-                    }
-                }
-        );
-    }
-
-    private void batchInsertAppointment(List<Appointment> appointments) {
-        jdbcTemplate.batchUpdate(
-                "INSERT INTO appointment (team_id, host_id, title, description, start_date, end_date, start_time, end_time, duration_minutes, status, code, closed_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now());",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1, appointments.get(i).getTeam().getId());
-                        ps.setLong(2, appointments.get(i).getHost().getId());
-                        ps.setString(3, appointments.get(i).getTitle());
-                        ps.setString(4, appointments.get(i).getDescription());
-                        ps.setObject(5, appointments.get(i).getStartDate());
-                        ps.setObject(6, appointments.get(i).getEndDate());
-                        ps.setObject(7, appointments.get(i).getStartTime());
-                        ps.setObject(8, appointments.get(i).getEndTime());
-                        ps.setInt(9, appointments.get(i).getDurationMinutes().getDurationMinutes());
-                        ps.setString(10, appointments.get(i).getStatus().name());
-                        ps.setString(11, appointments.get(i).getCode());
-                        ps.setObject(12, appointments.get(i).getClosedAt());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return appointments.size();
-                    }
-                }
-        );
-    }
-
-    private void batchInsertAvailableTime(List<AvailableTime> availableTimes) {
-        jdbcTemplate.batchUpdate(
-                "INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, end_date_time, created_at, updated_at) VALUES (?, ?, ?, ?, now(), now());",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1, availableTimes.get(i).getAppointment().getId());
-                        ps.setLong(2, availableTimes.get(i).getMember().getId());
-                        ps.setObject(3, availableTimes.get(i).getDateTimePeriod().getStartDateTime());
-                        ps.setObject(4, availableTimes.get(i).getDateTimePeriod().getEndDateTime());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return availableTimes.size();
-                    }
-                }
-        );
-    }
-
-    private void batchInsertPolls(List<Poll> polls) {
-        jdbcTemplate.batchUpdate(
-                "INSERT INTO poll (team_id, host_id, title, allowed_poll_count, is_anonymous, status, created_at, updated_at, closed_at, code) VALUES (?, ?, ?, ?, ?, ?, now(), now(), ?, ?);",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1, polls.get(i).getTeam().getId());
-                        ps.setLong(2, polls.get(i).getHost().getId());
-                        ps.setString(3, polls.get(i).getTitle());
-                        ps.setInt(4, polls.get(i).getAllowedPollCount());
-                        ps.setBoolean(5, polls.get(i).getIsAnonymous());
-                        ps.setString(6, polls.get(i).getStatus().name());
-                        ps.setObject(7, polls.get(i).getClosedAt());
-                        ps.setString(8, polls.get(i).getCode());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return polls.size();
-                    }
-                }
-        );
-    }
-
-    private void batchInsertPollItems(List<PollItem> pollItems) {
-        jdbcTemplate.batchUpdate(
-                "INSERT INTO poll_item (poll_id, subject, created_at, updated_at) VALUES (?, ?, now(), now());",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1, pollItems.get(i).getPoll().getId());
-                        ps.setString(2, pollItems.get(i).getSubject());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return pollItems.size();
-                    }
-                }
-        );
-    }
-
-    private void batchInsertPollResults(List<PollResult> pollResults) {
-        jdbcTemplate.batchUpdate(
-                "INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at) VALUES (?, ?, ?, now(), now());",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1, pollResults.get(i).getPollItem().getId());
-                        ps.setLong(2, pollResults.get(i).getMember().getId());
-                        ps.setString(3, pollResults.get(i).getDescription());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return pollResults.size();
-                    }
-                }
-        );
-    }
-
-    private ExtractableResponse<Response> 약속잡기_생성을_요청한다(AppointmentCreateRequest request) {
-        return SimpleRestAssured.post(APPOINTMENT_BASE_PATH, request,
-                toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 약속잡기_목록_조회를_요청한다() {
-        return SimpleRestAssured.get(APPOINTMENT_BASE_PATH, toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 약속잡기_단건_조회를_요청한다(String location) {
-        return SimpleRestAssured.get(location, toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 약속잡기_가능_시간_선택을_요청한다(String location, List<AvailableTimeRequest> requests) {
-        return put(location, requests, toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 약속잡기_가능_시간_추천_결과_조회를_요청한다(String location) {
-        return get(location + "/recommendation", toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 약속잡기_마감을_요청한다(String location) {
-        return patch(location + "/close", toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 약속잡기_삭제를_요청한다(String location) {
-        return delete(location, toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 투표_생성을_요청한다(String teamLocation, PollCreateRequest request,
-                                                      String accessToken) {
-        return post(teamLocation + "/polls", request, toHeader(accessToken));
-    }
-
-    private ExtractableResponse<Response> 투표_선택항목_조회를_요청한다(String pollLocation, String token) {
-        return get(pollLocation + "/items", toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 투표_진행을_요청한다(String location, List<PollResultRequest> requests, String token) {
-        return put(location, requests, toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 투표_목록_조회를_요청한다(String teamLocation, String token) {
-        return get(teamLocation + "/polls", toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 투표_마감을_요청한다(String location, String accessToken) {
-        return patch(location + "/close", toHeader(accessToken));
-    }
-
-    private ExtractableResponse<Response> 투표_단건_조회를_요청한다(String location, String token) {
-        return get(location, toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 투표_결과_조회를_요청한다(String location, String token) {
-        return get(location + "/result", toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 투표_삭제를_요청한다(String location, String token) {
-        return delete(location, toHeader(token));
     }
 }
