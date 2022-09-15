@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 
-import Services from '../../../assets/service-group.svg';
+import Services from '../../../assets/services.svg';
 import CircleHighlight from '../../../assets/circle-highlight.svg';
 
 interface Props extends HTMLAttributes<HTMLElement> {}
@@ -27,10 +27,7 @@ function LandingIntroduceSection({ id }: Props) {
           모락에 모두 모여있어요!
         </StyledDetailIntroduceText>
       </div>
-
-      <StyledImageWrapper>
-        <img src={Services} alt="services" />
-      </StyledImageWrapper>
+      <StyledServicesImage src={Services} alt="services" />
     </StyledIntroduceSection>
   );
 }
@@ -73,6 +70,8 @@ const StyledHighlightImage = styled.img`
   position: absolute;
   left: -1.2rem;
   top: 3.2rem;
+  width: 10.4rem;
+  height: 6.8rem;
 `;
 
 const StyledDetailIntroduceText = styled.span(
@@ -85,8 +84,9 @@ const StyledDetailIntroduceText = styled.span(
 `
 );
 
-const StyledImageWrapper = styled.div`
-  position: relative;
+const StyledServicesImage = styled.img`
+  width: 67.6rem;
+  height: 63.6rem;
 `;
 
 const StyledMenu = styled.a(

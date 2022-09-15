@@ -12,8 +12,8 @@ import {
 import { signin } from '../../api/auth';
 import { getDefaultGroup } from '../../api/group';
 import LandingMainSection from '../../components/Landing/LandingMainSection/LandingMainSection';
-import LandingIntroduceSection from '../../components/Landing/LandingIntroduceSection/LandingIntroduceSection';
-import LandingServiceIntroduceSection from '../../components/Landing/LandingServiceIntroduceSection/LandingServiceIntroduceSection';
+import LandingIntroduceSection from '../../components/Landing/LandingServiceIntroductionSection/LandingServiceIntroductionSection';
+import LandingServiceIntroduceSection from '../../components/Landing/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';
 
 // TODO: 페이지 추상화
 function LandingPage() {

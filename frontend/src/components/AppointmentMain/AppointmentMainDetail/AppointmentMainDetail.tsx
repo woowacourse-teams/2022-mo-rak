@@ -34,19 +34,21 @@ function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Pro
         {getFormattedClosedTime(closedAt)}
         까지
       </StyledCloseTime>
-      <TextField
-        width="7.2rem"
-        borderRadius="20px"
-        variant="outlined"
-        padding="0.8rem 0"
-        colorScheme={theme.colors.PURPLE_100}
-      >
-        <StyledDetail>
-          {durationHours}
-          시간
-          {durationMinutes.toString().padStart(2, '0')}분
-        </StyledDetail>
-      </TextField>
+      {/* TODO: flex 쓰지 않고 padding을 줄 수 있도록 만들어보기 */}
+      <FlexContainer>
+        <TextField
+          padding="0.8rem 1.6rem" 
+          borderRadius="20px"
+          variant="outlined"
+          colorScheme={theme.colors.PURPLE_100}
+        >
+          <StyledDetail>
+            {durationHours}
+            시간
+            {durationMinutes.toString().padStart(2, '0')}분
+          </StyledDetail>
+        </TextField>
+      </FlexContainer>
     </FlexContainer>
   );
 }

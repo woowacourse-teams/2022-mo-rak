@@ -20,7 +20,7 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
       <TextField
         variant="outlined"
         colorScheme={theme.colors.PURPLE_100}
-        borderRadius="10px"
+        borderRadius="1.2rem"
         padding="0.4rem 0.8rem"
         width="6rem"
       >
@@ -39,7 +39,7 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
       <TextField
         variant="outlined"
         colorScheme={theme.colors.PURPLE_100}
-        borderRadius="10px"
+        borderRadius="1.2rem"
         padding="0.4rem 0.8rem"
         width="9.2rem"
       >
