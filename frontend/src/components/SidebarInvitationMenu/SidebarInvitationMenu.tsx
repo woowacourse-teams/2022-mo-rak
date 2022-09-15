@@ -9,7 +9,7 @@ interface Props {
 }
 
 function SidebarInvitationMenu({ groupCode }: Props) {
-  const handleCopyInviationCode = async () => {
+  const handleCopyInvitationCode = async () => {
     try {
       const res = await createInvitationCode(groupCode);
       const invitationCode = res.headers.location.split('groups/in/')[1];
@@ -27,8 +27,8 @@ function SidebarInvitationMenu({ groupCode }: Props) {
     }
   };
   return (
-    <StyledInvitationLink onClick={handleCopyInviationCode}>
-      <img src={Plus} alt="inivation-link" />
+    <StyledInvitationLink onClick={handleCopyInvitationCode}>
+      <StyledPlusIcon src={Plus} alt="invitation-link" />
       <StyledInviteText>새로운 멤버 초대</StyledInviteText>
     </StyledInvitationLink>
   );
@@ -44,6 +44,10 @@ const StyledInvitationLink = styled.button`
 
 const StyledInviteText = styled.p`
   font-size: 1.7rem; // TODO: 4단위로 변경
+`;
+
+const StyledPlusIcon = styled.img`
+  width: 2.4rem;
 `;
 
 export default SidebarInvitationMenu;

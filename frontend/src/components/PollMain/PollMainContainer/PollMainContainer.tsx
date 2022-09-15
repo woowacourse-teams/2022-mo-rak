@@ -19,7 +19,7 @@ import emptyAnimation from '../../../assets/empty-animation.json';
 function PollMainContainer() {
   const [polls, setPolls] = useState<getPollsResponse>([]);
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
-  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
+  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' }); 
 
   useEffect(() => {
     const fetchPolls = async () => {
@@ -84,6 +84,10 @@ const StyledContainer = styled.div`
 const StyledTitle = styled.h1`
   font-size: 2.2rem;
   text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 1.2rem;
 `;
 
 const LottieWrapper = styled.div`

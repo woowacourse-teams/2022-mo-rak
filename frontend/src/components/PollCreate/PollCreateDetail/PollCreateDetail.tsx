@@ -23,7 +23,7 @@ function PollCreateDetail({
     <FlexContainer flexDirection="column" gap="1.2rem">
       <FlexContainer gap="1.2rem">
         <Button
-          width="6.4rem"
+          padding="1.2rem 2rem"
           borderRadius="20px"
           variant="outlined"
           fontSize="1.2rem"
@@ -33,7 +33,7 @@ function PollCreateDetail({
           기명
         </Button>
         <Button
-          width="6.4rem"
+          padding="1.2rem 2rem"
           borderRadius="20px"
           variant="outlined"
           fontSize="1.2rem"
@@ -45,7 +45,7 @@ function PollCreateDetail({
       </FlexContainer>
       <FlexContainer gap="1.2rem">
         <Button
-          width="11.2rem"
+          padding="1.2rem"
           borderRadius="20px"
           variant="outlined"
           fontSize="1.2rem"
@@ -55,7 +55,7 @@ function PollCreateDetail({
           하나만 투표 가능
         </Button>
         <Button
-          width="11.2rem"
+          padding="1.2rem"
           borderRadius="20px"
           variant="outlined"
           fontSize="1.2rem"

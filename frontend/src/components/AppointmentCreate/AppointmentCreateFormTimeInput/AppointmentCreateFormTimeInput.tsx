@@ -19,15 +19,15 @@ function AppointmentCreateFormTimeInput({ time, onChange }: Props) {
     <TextField
       variant="outlined"
       colorScheme={theme.colors.PURPLE_100}
-      borderRadius="10px"
+      borderRadius="1.2rem"
       padding="0.4rem 0.8rem"
-      width="21.6rem"
+      width="18rem"
     >
       <FlexContainer alignItems="center">
         {/* TODO: label을 어떻게 넣을것인가? 빈값으로? */}
         <Select name="period" value={time.period} onChange={onChange} fontSize="2.4rem" required>
-          <option value="AM">AM</option>
-          <option value="PM">PM</option>
+          <option value="AM">오전</option>
+          <option value="PM">오후</option>
         </Select>
         <Select name="hour" value={time.hour} onChange={onChange} fontSize="2.4rem" required>
           <option value="">--</option>
