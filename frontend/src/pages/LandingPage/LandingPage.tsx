@@ -88,6 +88,7 @@ function LandingPage() {
 
   return (
     <StyledContainer>
+      {/* TODO: section 네이밍 인관성 */}
       <LandingMainSection id="main-section" />
       <LandingIntroduceSection id="introduce-section" />
       <LandingServiceIntroduceSection id="service-introduce-section" />
