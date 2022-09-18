@@ -12,17 +12,17 @@ function LandingServiceIntroductionSection({ id }: Props) {
     <StyledServiceIntroductionSection id={id}>
       <LandingNavbar />
       <div>
-        <StyledMainServiceIntroductionText>
+        <StyledIntroductionTitle>
           분산된 서비스...
           <br />
           불편하지 않으셨나요?
           <StyledHighlightImage src={CircleHighlight} alt="highlight" />
-        </StyledMainServiceIntroductionText>
-        <StyledDetailServiceIntroductionText>
+        </StyledIntroductionTitle>
+        <StyledIntroductionSubTitle>
           투표 하기, 일정 정하기... 분산 되어있는 서비스에 불편함을 느끼지 않으셨나요?
           <br />
           모락에 모두 모여있어요!
-        </StyledDetailServiceIntroductionText>
+        </StyledIntroductionSubTitle>
       </div>
       <StyledServicesImage src={Services} alt="services" />
     </StyledServiceIntroductionSection>
@@ -40,16 +40,16 @@ const StyledServiceIntroductionSection = styled.section`
   justify-content: space-evenly;
 `;
 
-const StyledMainServiceIntroductionText = styled.h1(
+const StyledIntroductionTitle = styled.h1(
   ({ theme }) => `
-  font-size: 4rem;
-  text-align: left;
-  color: ${theme.colors.BLACK_100};
-  margin-bottom: 2rem;
   position: relative;
+  text-align: left;
+  font-size: 4rem;
+  margin-bottom: 2rem;
   font-weight: 700;
   line-height: 4.4rem;
   letter-spacing: 0.4rem;
+  color: ${theme.colors.BLACK_100};
 `
 );
 
@@ -61,13 +61,13 @@ const StyledHighlightImage = styled.img`
   height: 6.8rem;
 `;
 
-const StyledDetailServiceIntroductionText = styled.span(
+const StyledIntroductionSubTitle = styled.span(
   ({ theme }) => `
   font-size: 2rem;
   text-align: left;
-  color: ${theme.colors.BLACK_100};
-  letter-spacing: 0.1rem; // TODO: 4단위
+  letter-spacing: 0.1rem; // TODO: 4단위 (4단위하면 UI 깨짐)
   line-height: 2.4rem;
+  color: ${theme.colors.BLACK_100};
 `
 );
 
