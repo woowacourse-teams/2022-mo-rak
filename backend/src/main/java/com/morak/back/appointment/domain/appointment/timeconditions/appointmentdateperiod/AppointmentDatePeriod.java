@@ -68,8 +68,8 @@ public class AppointmentDatePeriod extends DatePeriod {
         return false;
     }
 
-    public LocalDateTime toEndDateTime(AppointmentTime endTime) {
-        return LocalDateTime.of(endDate.getDate(), endTime.getTime());
+    public LocalDateTime toEndDateTime(AppointmentTime time) {
+        return LocalDateTime.of(endDate.getDate(), time.getTime());
     }
 
     @Override
@@ -77,9 +77,9 @@ public class AppointmentDatePeriod extends DatePeriod {
 
         boolean isValidStartDate = !startDate.isAfter(other.getLocalStartDate());
         boolean isValidStartDateWhenIsMidNight = isMidNight && endDate.isAfter(other.getLocalStartDate());
-        boolean isValidStartDateWhenIsNotMidNight = !isMidNight && !endDate.isBefore(other.getLocalEndDate());
+        boolean isValidEndDateWhenIsNotMidNight = !isMidNight && !endDate.isBefore(other.getLocalEndDate());
 
-        boolean isValidEndDate = isValidStartDateWhenIsMidNight || isValidStartDateWhenIsNotMidNight;
+        boolean isValidEndDate = isValidStartDateWhenIsMidNight || isValidEndDateWhenIsNotMidNight;
 
         return isValidStartDate && isValidEndDate;
     }

@@ -281,9 +281,10 @@ class AppointmentTest {
         Appointment appointment = 정상적인_약속_생성();
         LocalDateTime startDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(22, 0));
         LocalDateTime endDateTime = startDateTime.plusMinutes(30);
+        LocalDateTime now = LocalDateTime.of(LocalDate.now(), LocalTime.of(21, 0));
 
         AvailableTimeDateTimePeriod availableTimeDateTimePeriod =
-                AvailableTimeDateTimePeriod.of(startDateTime, endDateTime, LocalDateTime.now());
+                AvailableTimeDateTimePeriod.of(startDateTime, endDateTime, now);
 
         // when & then
         assertThatThrownBy(() -> appointment.validateDateTimePeriod(availableTimeDateTimePeriod))
