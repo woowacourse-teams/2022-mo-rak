@@ -12,10 +12,9 @@ import {
 import { signin } from '../../api/auth';
 import { getDefaultGroup } from '../../api/group';
 import LandingMainSection from '../../components/Landing/LandingMainSection/LandingMainSection';
-import LandingIntroduceSection from '../../components/Landing/LandingServiceIntroductionSection/LandingServiceIntroductionSection';
-import LandingServiceIntroduceSection from '../../components/Landing/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';
+import LandingServiceIntroductionSection from '../../components/Landing/LandingServiceIntroductionSection/LandingServiceIntroductionSection';
+import LandingFeatureIntroductionSection from '../../components/Landing/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';
 
-// TODO: 페이지 추상화
 function LandingPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -89,8 +88,8 @@ function LandingPage() {
   return (
     <StyledContainer>
       <LandingMainSection id="main-section" />
-      <LandingIntroduceSection id="introduce-section" />
-      <LandingServiceIntroduceSection id="service-introduce-section" />
+      <LandingServiceIntroductionSection id="service-introduction-section" />
+      <LandingFeatureIntroductionSection id="feature-introduction-section" />
     </StyledContainer>
   );
 }

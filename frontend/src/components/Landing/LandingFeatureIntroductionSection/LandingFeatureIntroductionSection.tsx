@@ -9,13 +9,13 @@ import Undefined from '../../../assets/question.svg';
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
-function LandingServiceIntroduceSection({ id }: Props) {
+function LandingFeatureIntroductionSection({ id }: Props) {
   return (
-    <StyledServiceIntroduceSection id={id}>
+    <StyledFeatureIntroductionSection id={id}>
       <StyledNavbar>
         <StyledMenu href="#main-section">LOGIN</StyledMenu>
-        <StyledMenu href="#introduce-section">ABOUT</StyledMenu>
-        <StyledMenu href="#service-introduce-section">FEATURES</StyledMenu>
+        <StyledMenu href="#service-introduction-section">ABOUT</StyledMenu>
+        <StyledMenu href="#feature-introduction-section">FEATURES</StyledMenu>
       </StyledNavbar>
       <StyledExplanationTextContainer>
         <StyledExplanationBigText>모락을 통해서 할 수 있어요!</StyledExplanationBigText>
@@ -24,38 +24,38 @@ function LandingServiceIntroduceSection({ id }: Props) {
         </StyledExplanationSmallText>
       </StyledExplanationTextContainer>
 
-      <StyledServiceContainer>
+      <StyledFeatureContainer>
         <div>
-          <StyledServiceCircle>
+          <StyledFeatureCircle>
             <StyledPollImage src={Poll} alt="poll" />
-            <StyledServieHighlightImage src={Highlight} alt="highlight" />
-          </StyledServiceCircle>
-          <StyledServiceName>투표하기</StyledServiceName>
+            <StyledHighlightImage src={Highlight} alt="highlight" />
+          </StyledFeatureCircle>
+          <StyledFeatureName>투표하기</StyledFeatureName>
         </div>
 
         <div>
-          <StyledServiceCircle>
+          <StyledFeatureCircle>
             <StyledAppointmentImage src={Appointment} alt="appointment" />
-          </StyledServiceCircle>
-          <StyledServiceName>약속잡기</StyledServiceName>
+          </StyledFeatureCircle>
+          <StyledFeatureName>약속잡기</StyledFeatureName>
         </div>
 
         <div>
-          <StyledServiceCircle>
+          <StyledFeatureCircle>
             <StyledUndefinedImage src={Undefined} alt="undefined" />
-            <StyledServieGlitterImage src={Glitter} alt="glitter" />
-          </StyledServiceCircle>
-          <StyledServiceName>coming soon!</StyledServiceName>
+            <StyledGlitterImage src={Glitter} alt="glitter" />
+          </StyledFeatureCircle>
+          <StyledFeatureName>coming soon!</StyledFeatureName>
         </div>
 
         <div>
-          <StyledServiceCircle>
+          <StyledFeatureCircle>
             <StyledUndefinedImage src={Undefined} alt="undefined" />
-          </StyledServiceCircle>
-          <StyledServiceName>coming soon!</StyledServiceName>
+          </StyledFeatureCircle>
+          <StyledFeatureName>coming soon!</StyledFeatureName>
         </div>
-      </StyledServiceContainer>
-    </StyledServiceIntroduceSection>
+      </StyledFeatureContainer>
+    </StyledFeatureIntroductionSection>
   );
 }
 
@@ -71,7 +71,7 @@ const StyledNavbar = styled.nav`
 `;
 
 // section3
-const StyledServiceIntroduceSection = styled.section`
+const StyledFeatureIntroductionSection = styled.section`
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -108,12 +108,12 @@ const StyledExplanationSmallText = styled.div(
 `
 );
 
-const StyledServiceContainer = styled.div`
+const StyledFeatureContainer = styled.div`
   display: flex;
   gap: 4rem;
 `;
 
-const StyledServiceCircle = styled.div(
+const StyledFeatureCircle = styled.div(
   ({ theme }) => `
   position: relative;
   border-radius: 100%;
@@ -126,7 +126,7 @@ const StyledServiceCircle = styled.div(
 `
 );
 
-const StyledServieHighlightImage = styled.img`
+const StyledHighlightImage = styled.img`
   position: absolute;
   top: 1.2rem;
   left: -4rem;
@@ -134,12 +134,12 @@ const StyledServieHighlightImage = styled.img`
   height: 5.6rem;
 `;
 
-const StyledServiceName = styled.div`
+const StyledFeatureName = styled.div`
   text-align: center;
   font-size: 2rem;
 `;
 
-const StyledServieGlitterImage = styled.img`
+const StyledGlitterImage = styled.img`
   position: absolute;
   bottom: -2rem;
   right: -1.2rem;
@@ -165,4 +165,4 @@ const StyledMenu = styled.a(
 `
 );
 
-export default LandingServiceIntroduceSection;
+export default LandingFeatureIntroductionSection;

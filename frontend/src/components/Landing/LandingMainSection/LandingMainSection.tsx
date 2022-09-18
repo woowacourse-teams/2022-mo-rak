@@ -17,8 +17,8 @@ function LandingMainSection({ id }: Props) {
     <StyledMainSection id={id}>
       <StyledNavbar>
         <StyledMenu href="#main-section">LOGIN</StyledMenu>
-        <StyledMenu href="#introduce-section">ABOUT</StyledMenu>
-        <StyledMenu href="#service-introduce-section">FEATURES</StyledMenu>
+        <StyledMenu href="#service-introduction-section">ABOUT</StyledMenu>
+        <StyledMenu href="#feature-introduction-section">FEATURES</StyledMenu>
       </StyledNavbar>
       <StyledLogo src={Logo} alt="logo" />
 

@@ -6,29 +6,29 @@ import CircleHighlight from '../../../assets/circle-highlight.svg';
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
-function LandingIntroduceSection({ id }: Props) {
+function LandingServiceIntroductionSection({ id }: Props) {
   return (
-    <StyledIntroduceSection id={id}>
+    <StyledServiceIntroductionSection id={id}>
       <StyledNavbar>
         <StyledMenu href="#main-section">LOGIN</StyledMenu>
-        <StyledMenu href="#introduce-section">ABOUT</StyledMenu>
-        <StyledMenu href="#service-introduce-section">FEATURES</StyledMenu>
+        <StyledMenu href="#service-introduction-section">ABOUT</StyledMenu>
+        <StyledMenu href="#feature-introduction-section">FEATURES</StyledMenu>
       </StyledNavbar>
       <div>
-        <StyledMainIntroduceText>
+        <StyledMainServiceIntroductionText>
           분산된 서비스...
           <br />
           불편하지 않으셨나요?
           <StyledHighlightImage src={CircleHighlight} alt="highlight" />
-        </StyledMainIntroduceText>
-        <StyledDetailIntroduceText>
+        </StyledMainServiceIntroductionText>
+        <StyledDetailServiceIntroductionText>
           투표 하기, 일정 정하기... 분산 되어있는 서비스에 불편함을 느끼지 않으셨나요?
           <br />
           모락에 모두 모여있어요!
-        </StyledDetailIntroduceText>
+        </StyledDetailServiceIntroductionText>
       </div>
       <StyledServicesImage src={Services} alt="services" />
-    </StyledIntroduceSection>
+    </StyledServiceIntroductionSection>
   );
 }
 
@@ -43,7 +43,7 @@ const StyledNavbar = styled.nav`
   cursor: pointer;
 `;
 
-const StyledIntroduceSection = styled.section`
+const StyledServiceIntroductionSection = styled.section`
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -53,7 +53,7 @@ const StyledIntroduceSection = styled.section`
   justify-content: space-evenly;
 `;
 
-const StyledMainIntroduceText = styled.h1(
+const StyledMainServiceIntroductionText = styled.h1(
   ({ theme }) => `
   font-size: 4rem;
   text-align: left;
@@ -74,7 +74,7 @@ const StyledHighlightImage = styled.img`
   height: 6.8rem;
 `;
 
-const StyledDetailIntroduceText = styled.span(
+const StyledDetailServiceIntroductionText = styled.span(
   ({ theme }) => `
   font-size: 2rem;
   text-align: left;
@@ -96,4 +96,4 @@ const StyledMenu = styled.a(
 `
 );
 
-export default LandingIntroduceSection;
+export default LandingServiceIntroductionSection;
