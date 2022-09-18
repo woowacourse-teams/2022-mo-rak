@@ -47,7 +47,7 @@ function SidebarFeatureMenu({ groupCode }: Props) {
 }
 
 const StyledMenuHeader = styled.div`
-  font-size: 1.7rem; // TODO: 4단위로 변경
+  font-size: 1.6rem; 
   text-align: left;
   margin-bottom: 2rem;
 `;
@@ -72,17 +72,19 @@ const StyledPollMenu = styled.div<{
   isActive: boolean;
 }>(
   ({ isActive, theme }) => `
-  display: flex;
-  gap: 2rem;
-  cursor: pointer;
-  padding: 2rem;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    cursor: pointer;
+    padding: 2rem;
 
   ${
     isActive &&
     `
-    background: ${theme.colors.GRAY_100}; 
-    border-top-left-radius: 4rem; 
-    border-bottom-left-radius: 4rem;`
+      background: ${theme.colors.GRAY_100}; 
+      border-top-left-radius: 4rem; 
+      border-bottom-left-radius: 4rem;
+    `
   };
 
   &:hover {
@@ -97,17 +99,18 @@ const StyledAppointmentMenu = styled.div<{
   isActive: boolean;
 }>(
   ({ isActive, theme }) => `
-  display: flex;
-  gap: 2rem;
-  cursor: pointer;
-  padding: 2rem;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    cursor: pointer;
+    padding: 2rem;
   
   ${
     isActive &&
     `
-  background: ${theme.colors.GRAY_100}; 
-  border-top-left-radius: 4rem; 
-  border-bottom-left-radius: 4rem;
+      background: ${theme.colors.GRAY_100}; 
+      border-top-left-radius: 4rem; 
+      border-bottom-left-radius: 4rem;
   `
   };
 
