@@ -14,12 +14,13 @@ function LandingFeatureIntroductionSection({ id }: Props) {
   return (
     <StyledFeatureIntroductionSection id={id}>
       <LandingNavbar />
-      <StyledExplanationTextContainer>
-        <StyledExplanationBigText>모락을 통해서 할 수 있어요!</StyledExplanationBigText>
-        <StyledExplanationSmallText>
+      
+      <StyledIntroductionTitleContainer>
+        <StyledTitle>모락을 통해서 할 수 있어요!</StyledTitle>
+        <StyledSubTitle>
           모락이 모임을 더 편하고, 즐겁게 할 수 있도록 도와줄게요
-        </StyledExplanationSmallText>
-      </StyledExplanationTextContainer>
+        </StyledSubTitle>
+      </StyledIntroductionTitleContainer>
 
       <StyledFeatureContainer>
         <div>
@@ -56,22 +57,21 @@ function LandingFeatureIntroductionSection({ id }: Props) {
   );
 }
 
-// section3
 const StyledFeatureIntroductionSection = styled.section`
-  height: 100vh;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  scroll-snap-align: start;
-  position: relative;
   flex-direction: column;
+  height: 100vh;
+  scroll-snap-align: start;
 `;
 
-const StyledExplanationTextContainer = styled.div`
+const StyledIntroductionTitleContainer = styled.div`
   margin-bottom: 8rem;
 `;
 
-const StyledExplanationBigText = styled.h1(
+const StyledTitle = styled.h1(
   ({ theme }) => `
   font-size: 4rem;
   text-align: left;
@@ -84,12 +84,12 @@ const StyledExplanationBigText = styled.h1(
 `
 );
 
-const StyledExplanationSmallText = styled.div(
+const StyledSubTitle = styled.div(
   ({ theme }) => `
   font-size: 2rem;
   text-align: left;
   color: ${theme.colors.BLACK_100};
-  letter-spacing: 0.1rem; // TODO: 4단위
+  letter-spacing: 0.1rem; // TODO: 4단위 (UI 깨짐)
   line-height: 2.4rem;
 `
 );
