@@ -4,7 +4,6 @@ import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.Objects;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import lombok.AccessLevel;
@@ -63,22 +62,5 @@ public class AppointmentTime {
             return Duration.between(other.time, this.time).plusDays(1).toMinutes();
         }
         return Duration.between(other.time, this.time).toMinutes();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null) {
-            return false;
-        }
-        AppointmentTime that = (AppointmentTime) o;
-        return Objects.equals(time, that.time);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(time);
     }
 }

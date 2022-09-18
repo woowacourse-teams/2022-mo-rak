@@ -2,7 +2,6 @@ package com.morak.back.appointment.domain.appointment.timeconditions.durationtim
 
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
-import java.util.Objects;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -90,24 +89,6 @@ public class DurationTime {
 
     public int parseMinutes() {
         return this.durationMinutes % HOUR_MINUTES;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null) {
-            return false;
-        }
-        DurationTime that = (DurationTime) o;
-        return Objects.equals(durationMinutes, that.durationMinutes);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(durationMinutes);
-
     }
 }
 

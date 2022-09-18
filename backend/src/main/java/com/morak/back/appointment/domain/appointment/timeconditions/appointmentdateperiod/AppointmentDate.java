@@ -3,7 +3,6 @@ package com.morak.back.appointment.domain.appointment.timeconditions.appointment
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalDate;
-import java.util.Objects;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -49,22 +48,5 @@ public class AppointmentDate {
 
     public void plusDays(long oneDay) {
         date = date.plusDays(oneDay);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null) {
-            return false;
-        }
-        AppointmentDate that = (AppointmentDate) o;
-        return Objects.equals(date, that.date);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(date);
     }
 }

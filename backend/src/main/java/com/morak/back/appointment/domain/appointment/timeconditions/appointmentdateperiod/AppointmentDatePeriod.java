@@ -6,7 +6,6 @@ import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -93,23 +92,6 @@ public class AppointmentDatePeriod extends DatePeriod {
     @Override
     public LocalDate getLocalEndDate() {
         return endDate.getDate();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null) {
-            return false;
-        }
-        AppointmentDatePeriod that = (AppointmentDatePeriod) o;
-        return Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(startDate, endDate);
     }
 }
 

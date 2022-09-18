@@ -5,7 +5,6 @@ import com.morak.back.appointment.domain.appointment.timeconditions.period.TimeP
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalTime;
-import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -99,23 +98,6 @@ public class AppointmentTimePeriod extends TimePeriod {
     @Override
     public LocalTime getLocalEndTime() {
         return endTime.getTime();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null) {
-            return false;
-        }
-        AppointmentTimePeriod that = (AppointmentTimePeriod) o;
-        return Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(startTime, endTime);
     }
 }
 

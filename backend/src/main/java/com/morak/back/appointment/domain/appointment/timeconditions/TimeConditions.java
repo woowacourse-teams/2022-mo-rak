@@ -11,7 +11,6 @@ import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Objects;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import lombok.AccessLevel;
@@ -144,23 +143,5 @@ public class TimeConditions {
 
     public int getDurationTime() {
         return durationTime.getDurationMinutes();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null) {
-            return false;
-        }
-        TimeConditions that = (TimeConditions) o;
-        return Objects.equals(durationTime, that.durationTime) && Objects.equals(timePeriod,
-                that.timePeriod) && Objects.equals(datePeriod, that.datePeriod);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(durationTime, timePeriod, datePeriod);
     }
 }

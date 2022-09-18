@@ -4,7 +4,6 @@ import com.morak.back.appointment.domain.appointment.timeconditions.period.DateP
 import com.morak.back.appointment.domain.appointment.timeconditions.period.DateTimePeriod;
 import com.morak.back.appointment.domain.appointment.timeconditions.period.TimePeriod;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -82,23 +81,5 @@ public class AvailableTimeDateTimePeriod extends DateTimePeriod {
 
     public TimePeriod toTimePeriod() {
         return new AvailableTimeTimePeriod(startDateTime.toLocalTime(), endDateTime.toLocalTime());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null) {
-            return false;
-        }
-        AvailableTimeDateTimePeriod that = (AvailableTimeDateTimePeriod) o;
-        return Objects.equals(startDateTime, that.startDateTime) && Objects.equals(endDateTime,
-                that.endDateTime);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(startDateTime, endDateTime);
     }
 }

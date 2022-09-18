@@ -5,7 +5,6 @@ import com.morak.back.appointment.domain.availabletime.datetimeperiod.AvailableT
 import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.domain.BaseEntity;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -54,24 +53,5 @@ public class AvailableTime extends BaseEntity {
         this.id = id;
         this.appointment = appointment;
         this.member = member;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null) {
-            return false;
-        }
-        AvailableTime that = (AvailableTime) o;
-        return Objects.equals(id, that.id) && Objects.equals(appointment, that.appointment)
-                && Objects.equals(member, that.member) && Objects.equals(availableTimeDateTimePeriod,
-                that.availableTimeDateTimePeriod);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, appointment, member, availableTimeDateTimePeriod);
     }
 }
