@@ -28,7 +28,7 @@ function SidebarInvitationMenu({ groupCode }: Props) {
   };
   return (
     <StyledInvitationLink onClick={handleCopyInvitationCode}>
-      <img src={Plus} alt="invitation-link" />
+      <StyledPlusImage src={Plus} alt="invitation-link" />
       <StyledInviteText>새로운 멤버 초대</StyledInviteText>
     </StyledInvitationLink>
   );
@@ -44,6 +44,10 @@ const StyledInvitationLink = styled.button`
 
 const StyledInviteText = styled.p`
   font-size: 1.6rem; 
+`;
+
+const StyledPlusImage = styled.img`
+  width: 2.4rem;
 `;
 
 export default SidebarInvitationMenu;
