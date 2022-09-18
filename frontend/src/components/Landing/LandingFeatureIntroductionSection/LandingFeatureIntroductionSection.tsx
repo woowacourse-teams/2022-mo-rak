@@ -130,6 +130,8 @@ const StyledServieHighlightImage = styled.img`
   position: absolute;
   top: 1.2rem;
   left: -4rem;
+  width: 5.2rem;
+  height: 5.6rem;
 `;
 
 const StyledServiceName = styled.div`

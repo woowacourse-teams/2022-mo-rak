@@ -34,6 +34,9 @@ const StyledUserName = styled.p<CSSProperties>(
   ({ fontSize }) => `
   text-align: center;
   font-size: ${fontSize || '1.6rem'};
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `
 );
 

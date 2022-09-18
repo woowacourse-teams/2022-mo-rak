@@ -29,9 +29,9 @@ function AppointmentCreateFormCloseTimeInput({
       <TextField
         variant="outlined"
         colorScheme={theme.colors.PURPLE_100}
-        width="36rem"
-        padding="0.8rem"
-        borderRadius="10px"
+        width="42rem"
+        padding="0.4rem 0.8rem"
+        borderRadius="1.2rem"
       >
         <FlexContainer alignItems="center">
           <Input

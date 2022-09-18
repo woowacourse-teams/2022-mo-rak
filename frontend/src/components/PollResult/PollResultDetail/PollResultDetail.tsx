@@ -32,18 +32,16 @@ function PollResultDetail({ isAnonymous, allowedPollCount, closedAt }: Props) {
         까지
       </StyledCloseTime>
       <TextField
-        width="6.4rem"
         borderRadius="20px"
-        padding="1.2rem 0"
+        padding="1.2rem 2rem"
         variant="outlined"
         colorScheme={theme.colors.PURPLE_100}
       >
         <StyledDetail>{isAnonymous ? '익명' : '기명'}</StyledDetail>
       </TextField>
       <TextField
-        width="11.2rem"
         borderRadius="20px"
-        padding="1.2rem 0"
+        padding="1.2rem"
         variant="outlined"
         colorScheme={theme.colors.PURPLE_100}
       >

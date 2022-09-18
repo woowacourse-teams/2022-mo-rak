@@ -25,7 +25,7 @@ function AppointmentResultAvailableMembers({
             ) : (
               appointmentRecommendation[clickedRecommendation].availableMembers.map(
                 ({ name, profileUrl }) => (
-                  <Avatar key={`${name}-${profileUrl}`} profileUrl={profileUrl} name={name} />
+                  <Avatar key={`${name}-${profileUrl}`} profileUrl={profileUrl} name={name} width="7rem" />
                 )
               )
             )}
@@ -41,7 +41,7 @@ function AppointmentResultAvailableMembers({
             ) : (
               appointmentRecommendation[clickedRecommendation].unavailableMembers.map(
                 ({ name, profileUrl }) => (
-                  <Avatar key={`${name}-${profileUrl}`} profileUrl={profileUrl} name={name} />
+                  <Avatar key={`${name}-${profileUrl}`} profileUrl={profileUrl} name={name} width="7rem" />
                 )
               )
             )}
