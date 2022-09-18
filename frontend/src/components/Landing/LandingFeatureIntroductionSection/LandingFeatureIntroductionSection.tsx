@@ -6,17 +6,14 @@ import Highlight from '../../../assets/highlight.svg';
 import Poll from '../../../assets/poll-small.svg';
 import Appointment from '../../../assets/time.svg';
 import Undefined from '../../../assets/question.svg';
+import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
 function LandingFeatureIntroductionSection({ id }: Props) {
   return (
     <StyledFeatureIntroductionSection id={id}>
-      <StyledNavbar>
-        <StyledMenu href="#main-section">LOGIN</StyledMenu>
-        <StyledMenu href="#service-introduction-section">ABOUT</StyledMenu>
-        <StyledMenu href="#feature-introduction-section">FEATURES</StyledMenu>
-      </StyledNavbar>
+      <LandingNavbar />
       <StyledExplanationTextContainer>
         <StyledExplanationBigText>모락을 통해서 할 수 있어요!</StyledExplanationBigText>
         <StyledExplanationSmallText>
@@ -58,17 +55,6 @@ function LandingFeatureIntroductionSection({ id }: Props) {
     </StyledFeatureIntroductionSection>
   );
 }
-
-const StyledNavbar = styled.nav`
-  position: absolute;
-  right: 12rem;
-  top: 6rem;
-  display: flex;
-  list-style: none;
-  gap: 4rem;
-  font-size: 2rem;
-  cursor: pointer;
-`;
 
 // section3
 const StyledFeatureIntroductionSection = styled.section`
@@ -157,12 +143,5 @@ const StyledAppointmentImage = styled.img`
 const StyledUndefinedImage = styled.img`
   width: 12rem;
 `;
-
-const StyledMenu = styled.a(
-  ({ theme }) => `
-  text-decoration: none;
-  color: ${theme.colors.BLACK_100};
-`
-);
 
 export default LandingFeatureIntroductionSection;

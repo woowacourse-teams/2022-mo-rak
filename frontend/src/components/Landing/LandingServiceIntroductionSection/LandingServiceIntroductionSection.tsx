@@ -3,17 +3,14 @@ import styled from '@emotion/styled';
 
 import Services from '../../../assets/services.svg';
 import CircleHighlight from '../../../assets/circle-highlight.svg';
+import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
 function LandingServiceIntroductionSection({ id }: Props) {
   return (
     <StyledServiceIntroductionSection id={id}>
-      <StyledNavbar>
-        <StyledMenu href="#main-section">LOGIN</StyledMenu>
-        <StyledMenu href="#service-introduction-section">ABOUT</StyledMenu>
-        <StyledMenu href="#feature-introduction-section">FEATURES</StyledMenu>
-      </StyledNavbar>
+      <LandingNavbar />
       <div>
         <StyledMainServiceIntroductionText>
           분산된 서비스...
@@ -32,16 +29,6 @@ function LandingServiceIntroductionSection({ id }: Props) {
   );
 }
 
-const StyledNavbar = styled.nav`
-  position: absolute;
-  right: 12rem;
-  top: 6rem;
-  display: flex;
-  list-style: none;
-  gap: 4rem;
-  font-size: 2rem;
-  cursor: pointer;
-`;
 
 const StyledServiceIntroductionSection = styled.section`
   height: 100vh;
@@ -88,12 +75,5 @@ const StyledServicesImage = styled.img`
   width: 67.6rem;
   height: 63.6rem;
 `;
-
-const StyledMenu = styled.a(
-  ({ theme }) => `
-  text-decoration: none;
-  color: ${theme.colors.BLACK_100};
-`
-);
 
 export default LandingServiceIntroductionSection;

@@ -44,7 +44,7 @@ function LandingPage() {
       }
     };
     // TODO: 중복 로직해결
-    // TODO: 다시 한 번 token을 가져오는
+    // TODO: 다시 한 번 token을 가져오는 중복 로직해결
     const token = getLocalStorageItem('token');
 
     if (token) {
@@ -95,12 +95,11 @@ function LandingPage() {
 }
 
 const StyledContainer = styled.div`
-  scroll-snap-type: y mandatory;
+  height: 100vh;  
   overflow-y: scroll;
-  height: 100vh;
-  width: 100%;
-  font-family: 'Nanum Gothic', sans-serif;
+  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
+  font-family: 'Nanum Gothic', sans-serif;
 `;
 
 export default LandingPage;

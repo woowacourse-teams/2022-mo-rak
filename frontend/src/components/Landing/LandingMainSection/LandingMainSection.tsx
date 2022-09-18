@@ -9,17 +9,14 @@ import GithubLogo from '../../../assets/github-logo.svg';
 import Circle from '../../../assets/half-circle.svg';
 import Glitter from '../../../assets/glitter.svg';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
 function LandingMainSection({ id }: Props) {
   return (
     <StyledMainSection id={id}>
-      <StyledNavbar>
-        <StyledMenu href="#main-section">LOGIN</StyledMenu>
-        <StyledMenu href="#service-introduction-section">ABOUT</StyledMenu>
-        <StyledMenu href="#feature-introduction-section">FEATURES</StyledMenu>
-      </StyledNavbar>
+      <LandingNavbar />
       <StyledLogo src={Logo} alt="logo" />
 
       <FlexContainer flexDirection="column" gap="2rem">
@@ -82,16 +79,7 @@ const StyledLoginContainer = styled.div(
 `
 );
 
-const StyledNavbar = styled.nav`
-  position: absolute;
-  right: 12rem;
-  top: 6rem;
-  display: flex;
-  list-style: none;
-  gap: 4rem;
-  font-size: 2rem;
-  cursor: pointer;
-`;
+
 
 const StyledLogo = styled.img`
   width: 10rem;
@@ -100,12 +88,7 @@ const StyledLogo = styled.img`
   left: 4rem;
 `;
 
-const StyledMenu = styled.a(
-  ({ theme }) => `
-  text-decoration: none;
-  color: ${theme.colors.BLACK_100};
-`
-);
+
 
 // section 1
 // TODO: section태그마다 반복되는 속성들을 공통으로 묶어줄 수 있는 방법은 없을까
