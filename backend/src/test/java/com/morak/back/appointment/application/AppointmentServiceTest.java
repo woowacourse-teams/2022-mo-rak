@@ -111,27 +111,28 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1).plusMinutes(30))
                 .times(times);
 
         약속잡기_중간 = DEFAULT_BUILDER
                 .code(Code.generate(codeGenerator))
-                .startDate(LocalDate.now().plusDays(1))
-                .endDate(LocalDate.now().plusDays(5))
+                .startDate(LocalDate.now().plusDays(2))
+                .endDate(LocalDate.now().plusDays(6))
                 .startTime(LocalTime.of(14, 0))
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.of(LocalDate.now().plusDays(6), LocalTime.of(20,  0)))
                 .build();
 
         약속잡기_자정까지 = DEFAULT_BUILDER
                 .code(Code.generate(codeGenerator))
-                .startDate(LocalDate.now().plusDays(1))
+                .startDate(LocalDate.now().plusDays(2))
                 .endDate(LocalDate.now().plusDays(5))
                 .startTime(LocalTime.of(14, 0))
                 .endTime(LocalTime.of(0, 0))
                 .durationHours(2)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.of(LocalDate.now().plusDays(5), LocalTime.of(20,  0)))
                 .build();
 
         약속잡기_하루동안_30분 = DEFAULT_BUILDER
@@ -142,16 +143,18 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(0, 0))
                 .durationHours(0)
                 .durationMinutes(30)
+                .closedAt(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0,  0)))
                 .build();
 
         약속잡기_5일동안_하루종일 = DEFAULT_BUILDER
                 .code(Code.generate(codeGenerator))
-                .startDate(LocalDate.now().plusDays(1))
-                .endDate(LocalDate.now().plusDays(5))
+                .startDate(LocalDate.now().plusDays(2))
+                .endDate(LocalDate.now().plusDays(6))
                 .startTime(LocalTime.of(0, 0))
                 .endTime(LocalTime.of(0, 0))
                 .durationHours(2)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.of(LocalDate.now().plusDays(6), LocalTime.of(20,  0)))
                 .build();
 
         약속잡기_하루동안_하루종일 = DEFAULT_BUILDER
@@ -162,27 +165,29 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(0, 0))
                 .durationHours(2)
                 .durationMinutes(0)
+                .closedAt(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(20,  0)))
                 .build();
 
         회식_가능_시간_4시부터_4시반까지 = AvailableTime.builder()
                 .member(에덴)
                 .appointment(약속잡기_중간)
-                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)))
-                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30)))
+                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.of(16, 0)))
+                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.of(16, 30)))
                 .now(times.dateTimeOfNow())
                 .build();
+
         회식_가능_시간_4시반부터_5시까지 = AvailableTime.builder()
                 .member(에덴)
                 .appointment(약속잡기_중간)
-                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30)))
-                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 0)))
+                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.of(16, 30)))
+                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.of(17, 0)))
                 .now(times.dateTimeOfNow())
                 .build();
         회식_가능_시간_5시부터_5시반까지 = AvailableTime.builder()
                 .member(에덴)
                 .appointment(약속잡기_중간)
-                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 0)))
-                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 30)))
+                .startDateTime(LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.of(17, 0)))
+                .endDateTime(LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.of(17, 30)))
                 .now(times.dateTimeOfNow())
                 .build();
     }
@@ -367,8 +372,8 @@ class AppointmentServiceTest {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_중간);
         AvailableTimeRequest availableTimeRequest = new AvailableTimeRequest(
-                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)),
-                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30))
+                LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.of(16, 0)),
+                LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.of(16, 30))
         );
 
         // when
@@ -477,7 +482,7 @@ class AppointmentServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(longs = {0L, 6L})
+    @ValueSource(longs = {1L, 7L})
     void 중간_약속잡기_가능시간을_선택할_때_약속잡기의_기간을_벗어나면_예외를_던진다(long plusDay) {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_중간);
@@ -530,15 +535,15 @@ class AppointmentServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(longs = {0L, 6L})
+    @ValueSource(longs = {1L, 6L})
     void 자정까지_약속잡기_가능시간을_선택할_때_약속잡기의_기간을_벗어나면_예외를_던진다(long plusDay) {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_자정까지);
 
         // when
         AvailableTimeRequest availableTimeRequest = new AvailableTimeRequest(
-                LocalDateTime.of(LocalDate.now().plusDays(plusDay), LocalTime.of(16, 0)),
-                LocalDateTime.of(LocalDate.now().plusDays(plusDay), LocalTime.of(16, 30))
+                LocalDateTime.of(LocalDate.now().plusDays(plusDay), LocalTime.of(14, 0)),
+                LocalDateTime.of(LocalDate.now().plusDays(plusDay), LocalTime.of(14, 30))
         );
         List<AvailableTimeRequest> requests = List.of(availableTimeRequest);
 
@@ -583,7 +588,7 @@ class AppointmentServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(longs = {0L, 6L})
+    @ValueSource(longs = {1L, 7L})
     void 하루종일_5일동안_약속잡기_가능시간을_선택할_때_약속잡기의_기간을_벗어나면_예외를_던진다(long plusDay) {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_5일동안_하루종일);
@@ -609,8 +614,8 @@ class AppointmentServiceTest {
 
     @ParameterizedTest
     @CsvSource({
-            "1, 0, 0, 1, 0, 30",
-            "5, 23, 30, 6, 0, 0"
+            "2, 0, 0, 2, 0, 30",
+            "6, 23, 30, 7, 0, 0"
     })
     void 하루종일_5일동안_약속잡기_가능시간을_선택할_때_약속잡기의_경계값_안쪽에_들어올_수_있다(
             int startPlusDay, int startHour, int startMinute, int endPlusDay, int endHour, int endMinute) {
@@ -638,7 +643,7 @@ class AppointmentServiceTest {
     @ParameterizedTest
     @CsvSource({
             "0, 23, 30, 1, 0, 0",
-            "6, 0, 0, 6, 0, 30"
+            "7, 0, 0, 7, 0, 30"
     })
     void 하루종일_5일동안_약속잡기_가능시간을_선택할_때_약속잡기의_경계값을_벗어나면_예외를_던진다(
             int startPlusDay, int startHour, int startMinute, int endPlusDay, int endHour, int endMinute) {
