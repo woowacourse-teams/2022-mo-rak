@@ -15,13 +15,13 @@ import useMenuContext from '../../hooks/useMenuContext';
 interface Props {
   groupCode: GroupInterface['code'];
   groups: Array<GroupInterface>;
-  onClick: (menu: string) => () => void; 
+  onClickMenu: (menu: string) => () => void; 
 } 
 
 const getRandomPastelColor = () =>
 `hsl(${360 * Math.random()},${25 + 70 * Math.random()}%,${85 + 10 * Math.random()}%)`;
 
-function SidebarGroupsMenu({ onClick, groupCode, groups }: Props) {
+function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
   const navigate = useNavigate();
   const dispatch = useMenuDispatchContext();
   const { isVisibleGroupsModal } = useMenuContext();
@@ -92,11 +92,11 @@ function SidebarGroupsMenu({ onClick, groupCode, groups }: Props) {
           )})}
         </StyledGroupsModalBox>
 
-        <StyledParticipateNewGroupButton onClick={onClick('participate')}>
+        <StyledParticipateNewGroupButton onClick={onClickMenu('participate')}>
           <StyledPlusImage src={Plus} alt="participate-new-group-button" />
           <StyledButtonText>새로운 그룹 참가</StyledButtonText>
         </StyledParticipateNewGroupButton>
-        <StyledCreateNewGroupButton onClick={onClick('create')}>
+        <StyledCreateNewGroupButton onClick={onClickMenu('create')}>
           <StyledPlusImage src={Plus} alt="create-new-group-button" />
           <StyledButtonText>새로운 그룹 생성</StyledButtonText>
         </StyledCreateNewGroupButton>

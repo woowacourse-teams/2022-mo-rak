@@ -55,7 +55,7 @@ function Sidebar() {
         <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
         
         <SidebarGroupsMenu
-          onClick={handleActiveGroupMenu}
+          onClickMenu={handleActiveGroupMenu}
           groupCode={groupCode}
           groups={groups}
         />
