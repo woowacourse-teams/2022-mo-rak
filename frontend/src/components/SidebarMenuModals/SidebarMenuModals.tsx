@@ -1,4 +1,4 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { FormEvent } from 'react';
 import styled from '@emotion/styled';
 
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +18,7 @@ import { createGroup, participateGroup } from '../../api/group';
 import useMenuDispatchContext from '../../hooks/useMenuDispatchContext';
 import { linkSlack } from '../../api/slack';
 import { SlackInterface } from '../../types/slack';
+import useInput from '../../hooks/useInput';
 
 interface Props {
   activeModalMenu: string | null;
@@ -26,9 +27,9 @@ interface Props {
 }
 
 function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
-  const [groupName, setGroupName] = useState<GroupInterface['name']>('');
-  const [invitationCode, setInvitationCode] = useState('');
-  const [slackUrl, setSlackUrl] = useState('');
+  const [groupName, handleGroupName, resetGroupName] = useInput('');
+  const [invitationCode, handleInvitationCode, resetInvitationCode] = useInput('');
+  const [slackUrl, handleSlackUrl, resetSlackUrl] = useInput('');
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
 
@@ -42,23 +43,11 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
 
       navigate(`/groups/${groupCode}`);
       dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
-      setGroupName('');
+      resetGroupName();
       closeModal();
     } catch (err) {
       alert(err);
     }
-  };
-
-  const handleGroupName = (e: ChangeEvent<HTMLInputElement>) => {
-    setGroupName(e.target.value);
-  };
-
-  const handleInvitationCode = (e: ChangeEvent<HTMLInputElement>) => {
-    setInvitationCode(e.target.value);
-  };
-
-  const handleSlackUrl = (e: ChangeEvent<HTMLInputElement>) => {
-    setSlackUrl(e.target.value);
   };
 
   // 그룹 참가
@@ -71,7 +60,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
 
       navigate(`/groups/${groupCode}`);
       dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
-      setInvitationCode('');
+      resetInvitationCode();
       closeModal();
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -79,7 +68,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
 
         if (errCode === '1101') {
           alert('이미 참여하고 있는 그룹입니다!');
-          setInvitationCode('');
+          resetInvitationCode();
         }
       }
     }
@@ -96,7 +85,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
     try {
       await linkSlack(slackUrlData, groupCode);
       alert('슬랙 채널과 연동이 완료되었습니다 🎉');
-      setSlackUrl('');
+      resetSlackUrl();
       closeModal();
     } catch (err) {
       console.log(err);
