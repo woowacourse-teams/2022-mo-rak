@@ -283,12 +283,10 @@ const StyledLeaveGroupButton = styled.button`
 
 const StyledPlusImage = styled.img`
   width: 2.4rem;
-  height: 2.4rem;
 `;
 
 const StyledLeaveImage = styled.img`
   width: 2.4rem;
-  height: 2.4rem;
 `;
 
 export default SidebarGroupsMenu;
