@@ -125,12 +125,11 @@ public class AppointmentService {
         validateDuplicatedRequest(requests);
         validateAppointmentInTeam(team, appointment);
         validateAppointmentStatus(appointment);
-        deleteOldAvailableTimes(member, appointment);
 
+        availableTimeRepository.deleteAllByMemberAndAppointment(member, appointment);
         List<AvailableTime> availableTimes = requests.stream()
                 .map(request -> request.toAvailableTime(member, appointment))
                 .collect(Collectors.toList());
-
         availableTimeRepository.saveAll(availableTimes);
     }
 
@@ -151,11 +150,6 @@ public class AppointmentService {
                     availableTimeRequest + " 요청된 시간에 중복된 시간이 있습니다."
             );
         }
-    }
-
-    private void deleteOldAvailableTimes(Member member, Appointment appointment) {
-        availableTimeRepository.deleteAllByMemberAndAppointment(member, appointment);
-        availableTimeRepository.flush();
     }
 
     @Transactional(readOnly = true)
