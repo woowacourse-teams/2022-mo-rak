@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 public abstract class DateTimePeriod {
 
-    public abstract boolean contains(DateTimePeriod other);
-
     public abstract LocalDateTime getLocalStartDateTime();
 
     public abstract LocalDateTime getLocalEndDateTime();

@@ -4,8 +4,6 @@ import java.time.LocalTime;
 
 public abstract class TimePeriod {
 
-    public abstract boolean contains(TimePeriod other);
-
     public abstract LocalTime getLocalStartTime();
 
     public abstract LocalTime getLocalEndTime();

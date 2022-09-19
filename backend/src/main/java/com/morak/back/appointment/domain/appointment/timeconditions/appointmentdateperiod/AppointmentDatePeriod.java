@@ -72,7 +72,6 @@ public class AppointmentDatePeriod extends DatePeriod {
         return LocalDateTime.of(endDate.getDate(), time.getTime());
     }
 
-    @Override
     public boolean contains(DatePeriod other) {
 
         boolean isValidStartDate = !startDate.isAfter(other.getLocalStartDate());

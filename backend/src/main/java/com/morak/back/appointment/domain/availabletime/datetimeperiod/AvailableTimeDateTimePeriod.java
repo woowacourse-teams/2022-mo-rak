@@ -49,7 +49,6 @@ public class AvailableTimeDateTimePeriod extends DateTimePeriod {
         }
     }
 
-    @Override
     public boolean contains(DateTimePeriod other) {
         return !startDateTime.isAfter(other.getLocalStartDateTime())
                 && !endDateTime.isBefore(other.getLocalEndDateTime());

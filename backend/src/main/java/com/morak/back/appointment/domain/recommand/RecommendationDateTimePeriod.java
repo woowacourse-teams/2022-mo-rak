@@ -16,7 +16,6 @@ public class RecommendationDateTimePeriod extends DateTimePeriod {
         this.endDateTime = endDateTime;
     }
 
-    @Override
     public boolean contains(DateTimePeriod other) {
         return !startDateTime.isAfter(other.getLocalStartDateTime())
                 && !endDateTime.isBefore(other.getLocalEndDateTime());

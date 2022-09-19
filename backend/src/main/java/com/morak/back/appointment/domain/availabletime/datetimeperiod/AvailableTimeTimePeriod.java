@@ -14,11 +14,6 @@ public class AvailableTimeTimePeriod extends TimePeriod {
     }
 
     @Override
-    public boolean contains(TimePeriod other) {
-        return false;
-    }
-
-    @Override
     public LocalTime getLocalStartTime() {
         return startTime;
     }

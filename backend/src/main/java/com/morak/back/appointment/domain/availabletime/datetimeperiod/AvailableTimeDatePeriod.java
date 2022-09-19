@@ -14,11 +14,6 @@ public class AvailableTimeDatePeriod extends DatePeriod {
     }
 
     @Override
-    public boolean contains(DatePeriod other) {
-        return false;
-    }
-
-    @Override
     public LocalDate getLocalStartDate() {
         return startDate;
     }

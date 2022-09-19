@@ -79,7 +79,6 @@ public class AppointmentTimePeriod extends TimePeriod {
         }
     }
 
-    @Override
     public boolean contains(TimePeriod other) {
         boolean isValidStartTime = !startTime.isAfter(other.getLocalStartTime());
 
