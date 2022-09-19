@@ -11,17 +11,17 @@ import { GroupInterface } from '../../types/group';
 import useMenuDispatchContext from '../../hooks/useMenuDispatchContext';
 import useMenuContext from '../../hooks/useMenuContext';
 
+
 interface Props {
   groupCode: GroupInterface['code'];
   groups: Array<GroupInterface>;
-  onClickCreateMenu: () => void;
-  onClickParticipateMenu: () => void;
-}
+  onClickMenu: (menu: string) => () => void; 
+} 
 
 const getRandomPastelColor = () =>
 `hsl(${360 * Math.random()},${25 + 70 * Math.random()}%,${85 + 10 * Math.random()}%)`;
 
-function SidebarGroupsModal({ onClickCreateMenu, onClickParticipateMenu, groupCode, groups }: Props) {
+function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
   const navigate = useNavigate();
   const dispatch = useMenuDispatchContext();
   const { isVisibleGroupsModal } = useMenuContext();
@@ -58,7 +58,6 @@ function SidebarGroupsModal({ onClickCreateMenu, onClickParticipateMenu, groupCo
   return (
     <StyledGroupContainer>
       <StyledMenuHeader>그룹</StyledMenuHeader>
-
       <FlexContainer justifyContent="space-between">
         <FlexContainer gap="2rem">
           <StyledGroupProfile backgroundColor={profileColor}>
@@ -66,9 +65,7 @@ function SidebarGroupsModal({ onClickCreateMenu, onClickParticipateMenu, groupCo
           </StyledGroupProfile>
           <StyledGroupName>{currentGroup?.name}</StyledGroupName>
         </FlexContainer>
-
         <StyledGroupIconGroup>
-          {/* TODO: setting 아이콘은, host만 보이도록 해줘야한다. */}
           <StyledSettingIcon src={Setting} />
           <StyledGroupsModalIcon src={Menu} onClick={handleToggleGroupsModal} />
         </StyledGroupIconGroup>
@@ -94,16 +91,17 @@ function SidebarGroupsModal({ onClickCreateMenu, onClickParticipateMenu, groupCo
             </StyledGroup>
           )})}
         </StyledGroupsModalBox>
-        <StyledParticipateNewGroupButton onClick={onClickParticipateMenu}>
-          <img src={Plus} alt="participate-new-group-button" />
+
+        <StyledParticipateNewGroupButton onClick={onClickMenu('participate')}>
+          <StyledPlusImage src={Plus} alt="participate-new-group-button" />
           <StyledButtonText>새로운 그룹 참가</StyledButtonText>
         </StyledParticipateNewGroupButton>
-        <StyledCreateNewGroupButton>
-          <img src={Plus} alt="create-new-group-button" />
-          <StyledButtonText onClick={onClickCreateMenu}>새로운 그룹 생성</StyledButtonText>
+        <StyledCreateNewGroupButton onClick={onClickMenu('create')}>
+          <StyledPlusImage src={Plus} alt="create-new-group-button" />
+          <StyledButtonText>새로운 그룹 생성</StyledButtonText>
         </StyledCreateNewGroupButton>
         <StyledLeaveGroupButton onClick={handleLeaveGroup}>
-          <img src={Leave} alt="group-exit-button" />
+          <StyledLeaveImage src={Leave} alt="group-leave-button" />
           <StyledButtonText>그룹 나가기</StyledButtonText>
         </StyledLeaveGroupButton>
       </StyledGroupsModalContainer>
@@ -112,31 +110,30 @@ function SidebarGroupsModal({ onClickCreateMenu, onClickParticipateMenu, groupCo
 }
 
 const StyledMenuHeader = styled.div`
-  width: 100%;
-  font-size: 1.7rem; // TODO: 4단위로 변경
+  font-size: 1.6rem;
   text-align: left;
   margin-bottom: 2rem;
 `;
 
 const StyledGroupsModalContainer = styled.div<{ isVisible: boolean }>(
   ({ theme, isVisible }) => `
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s, opacity 0.2s ease-in-out;
-  width: 24rem;
-  background: ${theme.colors.WHITE_100};
   position: absolute;
   right: -25.2rem;
   top: 4.4rem;
-  border-radius: 12px;
+  visibility: hidden;
+  width: 24rem;
   max-height: 55.2rem;
+  border-radius: 1.2rem;
+  background: ${theme.colors.WHITE_100};
+  opacity: 0;
+  transition: visibility 0s, opacity 0.2s ease-in-out;
 
   ${
     isVisible &&
     `
-  visibility: visible;
-  opacity: 1;
-  `
+      visibility: visible;
+      opacity: 1;
+    `
   }
 `
 );
@@ -159,6 +156,7 @@ const StyledSettingIcon = styled.img`
 const StyledGroupsModalIcon = styled.img`
   width: 2.4rem;
   cursor: pointer;
+
   &:hover {
     transform: scale(1.1, 1.1);
     transition: all 0.3s linear;
@@ -167,14 +165,14 @@ const StyledGroupsModalIcon = styled.img`
 
 const StyledGroupProfile = styled.div<CSSProperties>(
   ({ backgroundColor }) => `
-  font-family: 'Nanum Gothic', sans-serif;
-  width: 8rem;
-  height: 8rem;
-  border-radius: 1.2rem;
-  background: ${backgroundColor};
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 1.2rem;
+  font-family: 'Nanum Gothic', sans-serif;
+  background: ${backgroundColor};
 `
 );
 
@@ -209,15 +207,15 @@ const StyledGroup = styled.div<{ isActive: boolean }>(
 
   &:hover {
     background: ${theme.colors.GRAY_100};
-    border-radius: 10px;
+    border-radius: 1.2rem;
     transition: all 0.2s linear;
   }
 
   ${
     isActive &&
     `
-    background: ${theme.colors.GRAY_100}; 
-    border-radius: 10px;
+      background: ${theme.colors.GRAY_100}; 
+      border-radius: 1.2rem;
     `
   }
 `
@@ -278,4 +276,12 @@ const StyledLeaveGroupButton = styled.button`
   }
 `;
 
-export default SidebarGroupsModal;
+const StyledPlusImage = styled.img`
+  width: 2.4rem;
+`;
+
+const StyledLeaveImage = styled.img`
+  width: 2.4rem;
+`;
+
+export default SidebarGroupsMenu;
