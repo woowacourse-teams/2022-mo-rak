@@ -12,17 +12,17 @@ function LandingServiceIntroductionSection({ id }: Props) {
     <StyledServiceIntroductionSection id={id}>
       <LandingNavbar />
       <div>
-        <StyledIntroductionTitle>
+        <StyledTitle>
           분산된 서비스...
           <br />
           불편하지 않으셨나요?
           <StyledHighlightImage src={CircleHighlight} alt="highlight" />
-        </StyledIntroductionTitle>
-        <StyledIntroductionSubTitle>
+        </StyledTitle>
+        <StyledSubTitle>
           투표 하기, 일정 정하기... 분산 되어있는 서비스에 불편함을 느끼지 않으셨나요?
           <br />
           모락에 모두 모여있어요!
-        </StyledIntroductionSubTitle>
+        </StyledSubTitle>
       </div>
       <StyledServicesImage src={Services} alt="services" />
     </StyledServiceIntroductionSection>
@@ -40,7 +40,7 @@ const StyledServiceIntroductionSection = styled.section`
   justify-content: space-evenly;
 `;
 
-const StyledIntroductionTitle = styled.h1(
+const StyledTitle = styled.h1(
   ({ theme }) => `
   position: relative;
   text-align: left;
@@ -61,7 +61,7 @@ const StyledHighlightImage = styled.img`
   height: 6.8rem;
 `;
 
-const StyledIntroductionSubTitle = styled.span(
+const StyledSubTitle = styled.span(
   ({ theme }) => `
   font-size: 2rem;
   text-align: left;
