@@ -4,6 +4,7 @@ import static com.morak.back.core.exception.CustomErrorCode.APPOINTMENT_DURATION
 import static com.morak.back.core.exception.CustomErrorCode.APPOINTMENT_DURATION_MINUTE_OUT_OF_RANGE_ERROR;
 import static com.morak.back.core.exception.CustomErrorCode.APPOINTMENT_DURATION_MINUTE_RANGE_ERROR;
 import static com.morak.back.core.exception.CustomErrorCode.APPOINTMENT_DURATION_NOT_MINUTES_UNIT_ERROR;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -66,5 +67,57 @@ class DurationTimeTest {
     void 분_범위에_들어가는_경우_생성할_수_있다(int minutes) {
         assertThatCode(() -> DurationTime.of(1, minutes, 30))
                 .doesNotThrowAnyException();
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {30, 60})
+    void 입력받은_minutes보다_큰_durtaionMinute를_가지고있는지_확인한다(long minutes) {
+        // given
+        DurationTime durationTime = DurationTime.of(1, 30, 30);
+
+        // when
+        boolean actual = durationTime.isBiggerThan(minutes);
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {90, 120})
+    void 입력받은_minutes보다_같거나_작은_durtaionMinute를_가지고있는지_확인한다(long minutes) {
+        // given
+        DurationTime durationTime = DurationTime.of(1, 30, 30);
+
+        // when
+        boolean actual = durationTime.isBiggerThan(minutes);
+
+        // then
+        assertThat(actual).isFalse();
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"1,30,1", "23,30,23"})
+    void durationTime이_몇_시간인지_확인한다(int hours, int minutes, int expected) {
+        // given
+        DurationTime durationTime = DurationTime.of(hours, minutes, 30);
+
+        // when
+        int actual = durationTime.parseHours();
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"1,30,30", "23,30,30"})
+    void durationTime에서_시간을_제외하면_몇_분이_남는지_확인한다(int hours, int minutes, int expected) {
+        // given
+        DurationTime durationTime = DurationTime.of(hours, minutes, 30);
+
+        // when
+        int actual = durationTime.parseMinutes();
+
+        // then
+        assertThat(actual).isEqualTo(expected);
     }
 }
