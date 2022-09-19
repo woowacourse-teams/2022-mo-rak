@@ -59,7 +59,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
     <StyledGroupContainer>
       <StyledMenuHeader>그룹</StyledMenuHeader>
       <StyledGroupProfileAndGroupIcon>
-        <FlexContainer gap="3rem">
+        <FlexContainer gap="2rem">
           <StyledGroupProfile backgroundColor={profileColor}>
             <StyledGroupFirstCharacter>{currentGroup?.name[0]}</StyledGroupFirstCharacter>
           </StyledGroupProfile>
