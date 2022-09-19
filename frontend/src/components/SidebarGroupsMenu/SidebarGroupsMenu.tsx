@@ -58,7 +58,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
   return (
     <StyledGroupContainer>
       <StyledMenuHeader>그룹</StyledMenuHeader>
-      <StyledGroupProfileAndGroupIcon>
+      <FlexContainer justifyContent="space-between">
         <FlexContainer gap="2rem">
           <StyledGroupProfile backgroundColor={profileColor}>
             <StyledGroupFirstCharacter>{currentGroup?.name[0]}</StyledGroupFirstCharacter>
@@ -69,7 +69,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
           <StyledSettingIcon src={Setting} />
           <StyledGroupsModalIcon src={Menu} onClick={handleToggleGroupsModal} />
         </StyledGroupIconGroup>
-      </StyledGroupProfileAndGroupIcon>
+      </FlexContainer>
 
       <StyledGroupsModalContainer isVisible={isVisibleGroupsModal}>
         <StyledGroupsModalBox>
@@ -113,11 +113,6 @@ const StyledMenuHeader = styled.div`
   font-size: 1.6rem;
   text-align: left;
   margin-bottom: 2rem;
-`;
-
-const StyledGroupProfileAndGroupIcon = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 const StyledGroupsModalContainer = styled.div<{ isVisible: boolean }>(
