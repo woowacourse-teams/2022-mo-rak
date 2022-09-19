@@ -89,7 +89,7 @@ const StyledSubTitle = styled.div(
   font-size: 2rem;
   text-align: left;
   color: ${theme.colors.BLACK_100};
-  letter-spacing: 0.1rem; // TODO: 4단위 (UI 깨짐)
+  letter-spacing: 0.1rem; 
   line-height: 2.4rem;
 `
 );

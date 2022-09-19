@@ -65,7 +65,7 @@ const StyledIntroductionSubTitle = styled.span(
   ({ theme }) => `
   font-size: 2rem;
   text-align: left;
-  letter-spacing: 0.1rem; // TODO: 4단위 (4단위하면 UI 깨짐)
+  letter-spacing: 0.1rem; 
   line-height: 2.4rem;
   color: ${theme.colors.BLACK_100};
 `
