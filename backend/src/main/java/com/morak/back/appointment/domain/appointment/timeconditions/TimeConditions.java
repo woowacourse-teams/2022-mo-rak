@@ -50,27 +50,10 @@ public class TimeConditions {
     }
 
     public void validateDateTimePeriod(AvailableTimeDateTimePeriod availableTimeDateTimePeriod) {
-        validateMinutesUnit(availableTimeDateTimePeriod);
+        validateAvailableTimeRange(availableTimeDateTimePeriod);
+        validateDividedByMinuteUnit(availableTimeDateTimePeriod);
         validateDateRange(availableTimeDateTimePeriod.toDatePeriod());
         validateTimeRange(availableTimeDateTimePeriod.toTimePeriod());
-    }
-
-    private void validateMinutesUnit(AvailableTimeDateTimePeriod availableTimeDateTimePeriod) {
-        validateDividedByMinuteUnit(availableTimeDateTimePeriod);
-        validateAvailableTimeRange(availableTimeDateTimePeriod);
-    }
-
-    private void validateDividedByMinuteUnit(AvailableTimeDateTimePeriod availableTimeDateTimePeriod) {
-        if (availableTimeDateTimePeriod.isNotDividedBy(MINUTE_UNIT)) {
-            throw new AppointmentDomainLogicException(
-                    CustomErrorCode.AVAILABLETIME_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR,
-                    String.format(
-                            "약속잡기 가능 시간(%s, %s)은 %d 분 단위여야 합니다.",
-                            availableTimeDateTimePeriod.getStartDateTime(),
-                            availableTimeDateTimePeriod.getEndDateTime(), MINUTE_UNIT
-                    )
-            );
-        }
     }
 
     private void validateAvailableTimeRange(AvailableTimeDateTimePeriod availableTimeDateTimePeriod) {
@@ -81,6 +64,19 @@ public class TimeConditions {
                             "약속잡기 가능 시간(%s~%s)은 %d 분이어야 합니다.",
                             availableTimeDateTimePeriod.getStartDateTime().getDateTime(),
                             availableTimeDateTimePeriod.getEndDateTime().toLocalDate(), MINUTE_UNIT
+                    )
+            );
+        }
+    }
+
+    private void validateDividedByMinuteUnit(AvailableTimeDateTimePeriod availableTimeDateTimePeriod) {
+        if (availableTimeDateTimePeriod.isNotDividedBy(MINUTE_UNIT)) {
+            throw new AppointmentDomainLogicException(
+                    CustomErrorCode.AVAILABLETIME_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR,
+                    String.format(
+                            "약속잡기 가능 시간(%s, %s)은 %d 분 단위여야 합니다.",
+                            availableTimeDateTimePeriod.getStartDateTime(),
+                            availableTimeDateTimePeriod.getEndDateTime(), MINUTE_UNIT
                     )
             );
         }
