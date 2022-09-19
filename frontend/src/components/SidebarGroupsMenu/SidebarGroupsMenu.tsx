@@ -101,7 +101,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
           <StyledButtonText>새로운 그룹 생성</StyledButtonText>
         </StyledCreateNewGroupButton>
         <StyledLeaveGroupButton onClick={handleLeaveGroup}>
-          <StyledLeaveImage src={Leave} alt="group-exit-button" />
+          <StyledLeaveImage src={Leave} alt="group-leave-button" />
           <StyledButtonText>그룹 나가기</StyledButtonText>
         </StyledLeaveGroupButton>
       </StyledGroupsModalContainer>
