@@ -28,7 +28,7 @@ function Sidebar() {
     navigate(location);
   };
 
-  const handleSetActiveGroupMenu = (menu: null | string) => () => {
+  const handleActiveGroupMenu = (menu: null | string) => () => {
     setActiveModalMenu(menu);
   };
 
@@ -55,7 +55,7 @@ function Sidebar() {
         <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
         
         <SidebarGroupsMenu
-          onClick={handleSetActiveGroupMenu}
+          onClick={handleActiveGroupMenu}
           groupCode={groupCode}
           groups={groups}
         />
@@ -67,7 +67,7 @@ function Sidebar() {
         <SidebarMembersProfileMenu groupCode={groupCode} />
 
         <StyledBottomMenu>
-          <SidebarSlackMenu onClick={handleSetActiveGroupMenu('slack')} /> 
+          <SidebarSlackMenu onClick={handleActiveGroupMenu('slack')} /> 
           <SidebarInvitationMenu groupCode={groupCode} />
         </StyledBottomMenu>
       </StyledContainer>
@@ -75,7 +75,7 @@ function Sidebar() {
       {/* TODO: 모달이 모여있음  */}
       <SidebarMenuModals
         activeModalMenu={activeModalMenu}
-        closeModal={handleSetActiveGroupMenu(null)}
+        closeModal={handleActiveGroupMenu(null)}
         groupCode={groupCode}
       />
     </>
