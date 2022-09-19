@@ -6,86 +6,72 @@ import Highlight from '../../../assets/highlight.svg';
 import Poll from '../../../assets/poll-small.svg';
 import Appointment from '../../../assets/time.svg';
 import Undefined from '../../../assets/question.svg';
+import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
-function LandingServiceIntroduceSection({ id }: Props) {
+function LandingFeatureIntroductionSection({ id }: Props) {
   return (
-    <StyledServiceIntroduceSection id={id}>
-      <StyledNavbar>
-        <StyledMenu href="#main-section">LOGIN</StyledMenu>
-        <StyledMenu href="#introduce-section">ABOUT</StyledMenu>
-        <StyledMenu href="#service-introduce-section">FEATURES</StyledMenu>
-      </StyledNavbar>
-      <StyledExplanationTextContainer>
-        <StyledExplanationBigText>모락을 통해서 할 수 있어요!</StyledExplanationBigText>
-        <StyledExplanationSmallText>
+    <StyledFeatureIntroductionSection id={id}>
+      <LandingNavbar />
+      
+      <StyledIntroductionTitleContainer>
+        <StyledTitle>모락을 통해서 할 수 있어요!</StyledTitle>
+        <StyledSubTitle>
           모락이 모임을 더 편하고, 즐겁게 할 수 있도록 도와줄게요
-        </StyledExplanationSmallText>
-      </StyledExplanationTextContainer>
+        </StyledSubTitle>
+      </StyledIntroductionTitleContainer>
 
-      <StyledServiceContainer>
+      <StyledFeatureContainer>
         <div>
-          <StyledServiceCircle>
+          <StyledFeatureCircle>
             <StyledPollImage src={Poll} alt="poll" />
-            <StyledServieHighlightImage src={Highlight} alt="highlight" />
-          </StyledServiceCircle>
-          <StyledServiceName>투표하기</StyledServiceName>
+            <StyledHighlightImage src={Highlight} alt="highlight" />
+          </StyledFeatureCircle>
+          <StyledFeatureName>투표하기</StyledFeatureName>
         </div>
 
         <div>
-          <StyledServiceCircle>
+          <StyledFeatureCircle>
             <StyledAppointmentImage src={Appointment} alt="appointment" />
-          </StyledServiceCircle>
-          <StyledServiceName>약속잡기</StyledServiceName>
+          </StyledFeatureCircle>
+          <StyledFeatureName>약속잡기</StyledFeatureName>
         </div>
 
         <div>
-          <StyledServiceCircle>
+          <StyledFeatureCircle>
             <StyledUndefinedImage src={Undefined} alt="undefined" />
-            <StyledServieGlitterImage src={Glitter} alt="glitter" />
-          </StyledServiceCircle>
-          <StyledServiceName>coming soon!</StyledServiceName>
+            <StyledGlitterImage src={Glitter} alt="glitter" />
+          </StyledFeatureCircle>
+          <StyledFeatureName>coming soon!</StyledFeatureName>
         </div>
 
         <div>
-          <StyledServiceCircle>
+          <StyledFeatureCircle>
             <StyledUndefinedImage src={Undefined} alt="undefined" />
-          </StyledServiceCircle>
-          <StyledServiceName>coming soon!</StyledServiceName>
+          </StyledFeatureCircle>
+          <StyledFeatureName>coming soon!</StyledFeatureName>
         </div>
-      </StyledServiceContainer>
-    </StyledServiceIntroduceSection>
+      </StyledFeatureContainer>
+    </StyledFeatureIntroductionSection>
   );
 }
 
-const StyledNavbar = styled.nav`
-  position: absolute;
-  right: 12rem;
-  top: 6rem;
-  display: flex;
-  list-style: none;
-  gap: 4rem;
-  font-size: 2rem;
-  cursor: pointer;
-`;
-
-// section3
-const StyledServiceIntroduceSection = styled.section`
-  height: 100vh;
+const StyledFeatureIntroductionSection = styled.section`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  scroll-snap-align: start;
-  position: relative;
   flex-direction: column;
+  height: 100vh;
+  scroll-snap-align: start;
 `;
 
-const StyledExplanationTextContainer = styled.div`
+const StyledIntroductionTitleContainer = styled.div`
   margin-bottom: 8rem;
 `;
 
-const StyledExplanationBigText = styled.h1(
+const StyledTitle = styled.h1(
   ({ theme }) => `
   font-size: 4rem;
   text-align: left;
@@ -98,22 +84,22 @@ const StyledExplanationBigText = styled.h1(
 `
 );
 
-const StyledExplanationSmallText = styled.div(
+const StyledSubTitle = styled.div(
   ({ theme }) => `
   font-size: 2rem;
   text-align: left;
   color: ${theme.colors.BLACK_100};
-  letter-spacing: 0.1rem; // TODO: 4단위
+  letter-spacing: 0.1rem; 
   line-height: 2.4rem;
 `
 );
 
-const StyledServiceContainer = styled.div`
+const StyledFeatureContainer = styled.div`
   display: flex;
   gap: 4rem;
 `;
 
-const StyledServiceCircle = styled.div(
+const StyledFeatureCircle = styled.div(
   ({ theme }) => `
   position: relative;
   border-radius: 100%;
@@ -126,7 +112,7 @@ const StyledServiceCircle = styled.div(
 `
 );
 
-const StyledServieHighlightImage = styled.img`
+const StyledHighlightImage = styled.img`
   position: absolute;
   top: 1.2rem;
   left: -4rem;
@@ -134,12 +120,12 @@ const StyledServieHighlightImage = styled.img`
   height: 5.6rem;
 `;
 
-const StyledServiceName = styled.div`
+const StyledFeatureName = styled.div`
   text-align: center;
   font-size: 2rem;
 `;
 
-const StyledServieGlitterImage = styled.img`
+const StyledGlitterImage = styled.img`
   position: absolute;
   bottom: -2rem;
   right: -1.2rem;
@@ -158,11 +144,4 @@ const StyledUndefinedImage = styled.img`
   width: 12rem;
 `;
 
-const StyledMenu = styled.a(
-  ({ theme }) => `
-  text-decoration: none;
-  color: ${theme.colors.BLACK_100};
-`
-);
-
-export default LandingServiceIntroduceSection;
+export default LandingFeatureIntroductionSection;
