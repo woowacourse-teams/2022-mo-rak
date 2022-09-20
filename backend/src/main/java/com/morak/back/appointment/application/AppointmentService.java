@@ -12,6 +12,7 @@ import com.morak.back.appointment.exception.AppointmentNotFoundException;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
+import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
@@ -242,5 +243,21 @@ public class AppointmentService {
             );
         }
 
+    }
+
+    public AppointmentStatusResponse findAppointmentStatus(String teamCode, Long memberId, String appointmentCode) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
+        Team team = teamRepository.findByCode(teamCode)
+                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
+        validateMemberInTeam(team.getId(), memberId);
+
+        Appointment appointment = appointmentRepository.findByCode(appointmentCode)
+                .orElseThrow(() -> AppointmentNotFoundException.ofAppointment(
+                        CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR, appointmentCode
+                ));
+        validateAppointmentInTeam(team, appointment);
+
+        return new AppointmentStatusResponse(appointment.getStatus());
     }
 }

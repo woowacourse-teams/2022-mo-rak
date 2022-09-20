@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.appointment.domain.AppointmentRepository;
+import com.morak.back.appointment.domain.AppointmentStatus;
 import com.morak.back.appointment.domain.AvailableTime;
 import com.morak.back.appointment.domain.AvailableTimeRepository;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
@@ -16,6 +17,7 @@ import com.morak.back.appointment.exception.AppointmentNotFoundException;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
+import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
@@ -929,5 +931,32 @@ class AppointmentServiceTest {
                 .isInstanceOf(TeamNotFoundException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
+    }
+
+    @Test
+    void 약속잡기가_진행중인지_확인한다() {
+        // given
+        appointmentRepository.save(약속잡기_중간);
+
+        // when
+        AppointmentStatusResponse status = appointmentService.findAppointmentStatus(모락.getCode(), 에덴.getId(),
+                약속잡기_중간.getCode());
+
+        // then
+        assertThat(status.getStatus()).isEqualTo(AppointmentStatus.OPEN);
+    }
+
+    @Test
+    void 약속잡기가_마감되었는지_확인한다() {
+        // given
+        약속잡기_중간.close(약속잡기_중간.getHost());
+        appointmentRepository.save(약속잡기_중간);
+
+        // when
+        AppointmentStatusResponse status = appointmentService.findAppointmentStatus(모락.getCode(), 에덴.getId(),
+                약속잡기_중간.getCode());
+
+        // then
+        assertThat(status.getStatus()).isEqualTo(AppointmentStatus.CLOSED);
     }
 }
