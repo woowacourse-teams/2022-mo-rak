@@ -33,6 +33,7 @@ import com.morak.back.SimpleRestAssured;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
+import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.application.TokenProvider;
@@ -467,6 +468,22 @@ public class AppointmentAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    void 약속잡기가_마감인지_확인한다() {
+        // given
+        String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
+
+        // when
+        ExtractableResponse<Response> response = 약속잡기_마감확인을_요청한다(location);
+
+        // then
+        SimpleRestAssured.toObject(response, AppointmentStatusResponse.class);
+    }
+
+    private ExtractableResponse<Response> 약속잡기_마감확인을_요청한다(String location) {
+        return SimpleRestAssured.get(location + "/status", toHeader(accessToken));
     }
 
     private ExtractableResponse<Response> 약속잡기_생성을_요청한다(AppointmentCreateRequest request) {

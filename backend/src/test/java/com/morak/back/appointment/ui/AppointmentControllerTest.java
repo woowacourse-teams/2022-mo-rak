@@ -246,6 +246,26 @@ class AppointmentControllerTest extends ControllerTest {
                 ));
     }
 
+    @Test
+    void 약속잡기가_진행중인지_확인한다() throws Exception {
+        // given
+        String path = "/api/groups/{groupCode}/appointments/{appointmentCode}/status";
+
+        // when
+        ResultActions response = get(path, GROUP_CODE, APPOINTMENT_CODE);
+
+        // then
+        response.andExpect(status().isOk())
+                .andDo(document("appointment/get-appointment-status",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("groupCode").description("그룹_코드"),
+                                parameterWithName("appointmentCode").description("약속잡기_코드")
+                        )
+                ));
+    }
+
     // TODO: 2022/07/27 범용적이게 변형 후 상속한 ControllerTest로 이전해야함!
     private ResultActions get(String path, String groupCode) throws Exception {
         return mockMvc.perform(RestDocumentationRequestBuilders.get(path, groupCode)
