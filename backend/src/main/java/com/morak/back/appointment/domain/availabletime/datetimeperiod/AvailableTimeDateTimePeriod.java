@@ -3,6 +3,8 @@ package com.morak.back.appointment.domain.availabletime.datetimeperiod;
 import com.morak.back.appointment.domain.appointment.timeconditions.period.DatePeriod;
 import com.morak.back.appointment.domain.appointment.timeconditions.period.DateTimePeriod;
 import com.morak.back.appointment.domain.appointment.timeconditions.period.TimePeriod;
+import com.morak.back.appointment.exception.AppointmentDomainLogicException;
+import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -44,14 +46,11 @@ public class AvailableTimeDateTimePeriod extends DateTimePeriod {
 
     private static void validateChronology(AvailableTImeDateTime startDateTime, AvailableTImeDateTime endDateTime) {
         if (!endDateTime.isAfter(startDateTime)) {
-            throw new IllegalArgumentException(
-                    String.format("약속잡기 마지막 시점(%s)는 시작 시점(%s) 이후여야 합니다.", endDateTime, startDateTime));
+            throw new AppointmentDomainLogicException(
+                    CustomErrorCode.AVAILABLETIME_REVERSE_CHRONOLOGY_ERROR,
+                    String.format("약속잡기 마지막 시점(%s)는 시작 시점(%s) 이후여야 합니다.", endDateTime, startDateTime)
+            );
         }
-    }
-
-    public boolean contains(DateTimePeriod other) {
-        return !startDateTime.isAfter(other.getLocalStartDateTime())
-                && !endDateTime.isBefore(other.getLocalEndDateTime());
     }
 
     @Override
