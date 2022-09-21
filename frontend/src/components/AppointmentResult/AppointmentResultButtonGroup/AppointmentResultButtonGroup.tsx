@@ -5,18 +5,21 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { GroupInterface } from '../../../types/group';
-import { AppointmentInterface, getAppointmentResponse } from '../../../types/appointment';
-import { closeAppointment, deleteAppointment, getAppointmentRecommendation, getAppointmentStatus } from '../../../api/appointment';
+import { AppointmentInterface, getAppointmentResponse, AppointmentRecommendationInterface } from '../../../types/appointment';
+import { closeAppointment, deleteAppointment } from '../../../api/appointment';
 import Button from '../../@common/Button/Button';
+import { getFormattedDateTime } from '../../../utils/date';
 
 interface Props {
   groupCode: GroupInterface['code'];
   appointmentCode: AppointmentInterface['code'];
   isClosed: AppointmentInterface['isClosed'];
   isHost: getAppointmentResponse['isHost'];
+  title: getAppointmentResponse['title'];
+  appointmentRecommendation: Array<AppointmentRecommendationInterface>; 
 }
 
-function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, isHost }: Props) {
+function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, isHost, title, appointmentRecommendation }: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -34,14 +37,20 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
     }
   };
 
+  const firstRankAppointmentRecommendation = appointmentRecommendation
+  .filter((appointment) => appointment.rank === 1)
+  .map(({recommendStartDateTime, recommendEndDateTime}) => {
+    return `${getFormattedDateTime(recommendStartDateTime)}~${getFormattedDateTime(recommendEndDateTime)}`;
+  });
+  
   const handleCreateNewPoll = async () => {
     try {
-      const response = await getAppointmentStatus(groupCode, appointmentCode)
-      if (response.data.status === "CLOSED") {
-          const res = await getAppointmentRecommendation(groupCode, appointmentCode)
-          console.log(res)
-      }
-
+        navigate(`/groups/${groupCode}/poll/create`, {
+          state: {
+            title,
+            firstRankAppointmentRecommendation
+          }
+        });
     } catch (err) {
       console.log(err);
     }
@@ -91,15 +100,17 @@ return (
           >
             삭제
           </Button>
-          <Button
-            variant="filled"
-            colorScheme={theme.colors.YELLOW_100} 
-            padding="2rem 2rem"
-            fontSize="3.2rem"
-            onClick={handleCreateNewPoll}
-          >
-            애매해? 투표 ㄱ
-          </Button>
+          {(isClosed && firstRankAppointmentRecommendation.length > 1) && (
+            <Button
+              variant="filled"
+              colorScheme={theme.colors.YELLOW_100} 
+              padding="2rem 2rem"
+              fontSize="3.2rem"
+              onClick={handleCreateNewPoll}
+            >
+              공동 1등에 대한 재투표 만들기 
+            </Button>
+          )}
         </>
       )}
 
