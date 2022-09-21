@@ -1,7 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 
 // TODO: 자동정렬 설정
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import Box from '../../@common/Box/Box';
 import Divider from '../../@common/Divider/Divider';
@@ -17,15 +17,25 @@ import { createPoll } from '../../../api/poll';
 import { createPollData, PollInterface } from '../../../types/poll';
 import { GroupInterface } from '../../../types/group';
 import useInput from '../../../hooks/useInput';
+import { AppointmentInterface } from '../../../types/appointment';
+
+interface RouteState {
+  state : {
+    title: AppointmentInterface['title'];
+    firstRankAppointmentRecommendation: Array<string>;
+  }
+}
 
 function PollCreateForm() {
+  const location = useLocation() as RouteState;
   const navigate = useNavigate();
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(location.state? location.state.title: '');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isAllowedMultiplePollCount, setIsAllowedMultiplePollCount] = useState(false);
-  const [pollItems, setPollItems] = useState(['', '']);
+  const [pollItems, setPollItems] = useState(location.state? location.state.firstRankAppointmentRecommendation : ['', '']);
+  
   const [closingDate, handleCloseDate] = useInput('');
   const [closingTime, handleCloseTime] = useInput('');
 
