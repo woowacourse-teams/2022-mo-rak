@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
-@Profile("test")
+@Profile("performance")
 public class PerformanceConfig implements WebMvcConfigurer {
 
     private final PerformanceMonitor performanceMonitor;

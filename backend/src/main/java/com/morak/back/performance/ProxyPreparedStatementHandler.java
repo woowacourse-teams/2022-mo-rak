@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 
 @RequiredArgsConstructor
-@Profile("test")
+@Profile("performance")
 public class ProxyPreparedStatementHandler implements InvocationHandler {
 
     private final Object preparedStatement;

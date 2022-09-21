@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Profile("test")
+@Profile("performance")
 public class PollDao {
 
     private final JdbcTemplate jdbcTemplate;

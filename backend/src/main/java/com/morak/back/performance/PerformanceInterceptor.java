@@ -10,7 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 @RequiredArgsConstructor
-@Profile("test")
+@Profile("performance")
 public class PerformanceInterceptor implements HandlerInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger("PERFORMANCE");

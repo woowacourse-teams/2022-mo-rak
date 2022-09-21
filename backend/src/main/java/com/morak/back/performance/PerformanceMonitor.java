@@ -9,7 +9,7 @@ import org.springframework.web.context.annotation.RequestScope;
 @Component
 @RequestScope
 @Getter
-@Profile("test")
+@Profile("performance")
 public class PerformanceMonitor {
 
     private static final double WARNING_REQUEST_TIME = 200 * 1_000_000.0;

@@ -12,7 +12,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 @Component
 @Aspect
 @RequiredArgsConstructor
-@Profile("test")
+@Profile("performance")
 public class PerformanceMonitorAop {
 
     private final PerformanceMonitor performanceMonitor;

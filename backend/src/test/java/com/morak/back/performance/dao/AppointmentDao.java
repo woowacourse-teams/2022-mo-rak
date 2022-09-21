@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Profile("test")
+@Profile("performance")
 public class AppointmentDao {
 
     private final JdbcTemplate jdbcTemplate;

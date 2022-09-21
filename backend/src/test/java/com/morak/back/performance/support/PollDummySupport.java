@@ -19,11 +19,11 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.test.context.ActiveProfiles;
 
 @Component
-@ActiveProfiles("test")
+@Profile("performance")
 public class PollDummySupport {
 
     @Autowired
