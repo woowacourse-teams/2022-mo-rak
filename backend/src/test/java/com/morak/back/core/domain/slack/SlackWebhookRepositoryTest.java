@@ -7,6 +7,8 @@ import com.morak.back.core.domain.Code;
 import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamRepository;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +67,7 @@ class SlackWebhookRepositoryTest {
     }
 
     @Test
-    void 팀_아이디_목록으로_웹훅_목록을_가져온다() {
+    void 팀으로_웹훅_목록을_가져온다() {
         // given
         Team team = teamRepository.save(
                 Team.builder()
@@ -80,13 +82,43 @@ class SlackWebhookRepositoryTest {
                         .build()
         );
         // when
-        SlackWebhook savedWebhook = webhookRepository.findByTeamId(team.getId()).orElseThrow();
+        SlackWebhook savedWebhook = webhookRepository.findByTeam(team).orElseThrow();
         // then
         assertThat(savedWebhook).isEqualTo(webhook);
     }
 
     @Test
-    void 팀_아이디로_웹훅을_지운다() {
+    void 팀_목록으로_웹훅_목록을_조회한다() {
+        // given
+        List<Team> teams = new ArrayList<>();
+        int iterationCount = 10;
+
+        for (int i = 0; i < iterationCount; i++) {
+            String code = "AAAAaaa" + i;
+            Team savedTeam = teamRepository.save(
+                    Team.builder()
+                            .name("team" + i)
+                            .code(Code.generate(length -> code))
+                            .build()
+            );
+            webhookRepository.save(
+                    SlackWebhook.builder()
+                            .team(savedTeam)
+                            .url("https://hooks.slack.com/services/testA")
+                            .build()
+            );
+            teams.add(savedTeam);
+        }
+
+        // when
+        List<SlackWebhook> webhooks = webhookRepository.findAllByTeams(teams);
+
+        // then
+        assertThat(webhooks).hasSize(iterationCount);
+    }
+
+    @Test
+    void 팀으로_웹훅을_지운다() {
         // given
         Team team = teamRepository.save(
                 Team.builder()
@@ -101,9 +133,9 @@ class SlackWebhookRepositoryTest {
                         .build()
         );
         // when
-        webhookRepository.deleteByTeamId(team.getId());
+        webhookRepository.deleteByTeam(team);
         // then
 
-        assertThat(webhookRepository.findByTeamId(team.getId())).isEmpty();
+        assertThat(webhookRepository.findByTeam(team)).isEmpty();
     }
 }

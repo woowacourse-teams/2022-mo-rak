@@ -14,6 +14,7 @@ import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.ui.dto.ExceptionResponse;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
@@ -213,7 +214,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 없는_멤버가_그룹_참가_여부를_요청하면_팀코드_팀이름_false를_반환한다() {
+    void 없는_멤버가_그룹_참가_여부를_요청하면_NOT_FOUND를_반환한다() {
         // given
         TeamCreateRequest teamCreateRequest = new TeamCreateRequest("하이");
         String teamLocation = 그룹_생성을_요청한다(teamCreateRequest, token).header("Location");
@@ -222,14 +223,12 @@ public class TeamAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = 그룹_참가_여부_조회를_요청한다(teamInvitationLocation, otherToken);
-        InvitationJoinedResponse invitationJoinedResponse = response.as(InvitationJoinedResponse.class);
+        String s = SimpleRestAssured.extractCodeNumber(response);
         // then
         Assertions.assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(invitationJoinedResponse)
-                        .usingRecursiveComparison()
-                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation), teamCreateRequest.getName(),
-                                false))
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR.getNumber())
         );
     }
 
@@ -455,9 +454,9 @@ public class TeamAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
                 () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
-                        .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR.getNumber())
+                        .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR.getNumber())
         );
     }
 

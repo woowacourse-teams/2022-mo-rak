@@ -12,9 +12,11 @@ import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
@@ -85,7 +87,7 @@ class AppointmentRepositoryTest {
         appointmentRepository.save(appointment);
 
         // when
-        List<Appointment> appointments = appointmentRepository.findAllByTeamId(team.getId());
+        List<Appointment> appointments = appointmentRepository.findAllByTeam(team);
 
         // then
         Assertions.assertAll(
@@ -216,7 +218,7 @@ class AppointmentRepositoryTest {
                 .build();
 
         Appointment savedAppointment = appointmentRepository.save(appointment);
-        appointmentRepository.deleteById(savedAppointment.getId());
+        appointmentRepository.delete(savedAppointment);
 
         // when
         Optional<Appointment> appointmentOptional = appointmentRepository.findByCode(savedAppointment.getCode());
@@ -235,5 +237,34 @@ class AppointmentRepositoryTest {
 
         // then
         assertThat(appointmentsToBeClosed).hasSize(1);
+    }
+
+    @Test
+    void 아이디_목록으로_약속잡기_목록을_종료한다(@Autowired EntityManager entityManager) {
+        // given
+        int iterationCount = 10;
+        List<Appointment> appointments = new ArrayList<>();
+
+        for (int i = 0; i < iterationCount; i++) {
+            String code = "zxcvabc" + i;
+            Appointment savedAppointment = appointmentRepository.save(
+                    DEFAULT_BUILDER.code(Code.generate(ignored -> code)).build()
+            );
+            appointments.add(savedAppointment);
+        }
+
+        // when
+        appointmentRepository.closeAllByIds(
+                appointments.stream()
+                        .map(Appointment::getId)
+                        .collect(Collectors.toList())
+        );
+
+        for (Appointment appointment : appointments) {
+            entityManager.refresh(appointment);
+        }
+        // then
+        assertThat(appointments).allMatch(Appointment::isClosed);
+
     }
 }

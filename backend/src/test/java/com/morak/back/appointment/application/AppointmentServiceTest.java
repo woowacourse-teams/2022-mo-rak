@@ -88,7 +88,8 @@ class AppointmentServiceTest {
         this.receiver = new FakeApiReceiver();
         SlackClient slackClient = new FakeSlackClient(receiver);
         this.notificationService =
-                new NotificationService(slackClient, teamRepository, teamMemberRepository, slackWebhookRepository);
+                new NotificationService(slackClient, teamRepository, teamMemberRepository,
+                        slackWebhookRepository, memberRepository);
         appointmentService = new AppointmentService(appointmentRepository, availableTimeRepository,
                 memberRepository, teamRepository, teamMemberRepository, notificationService);
     }
@@ -110,7 +111,7 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .closedAt(LocalDateTime.now().plusDays(1).plusMinutes(30));
+                .closedAt(LocalDateTime.now().plusMinutes(30));
 
         약속잡기_중간 = DEFAULT_BUILDER
                 .code(Code.generate(codeGenerator))
@@ -890,7 +891,7 @@ class AppointmentServiceTest {
         appointmentService.deleteAppointment(모락.getCode(), 에덴.getId(), 약속잡기_중간.getCode());
 
         // then
-        assertThat(availableTimeRepository.findAllByAppointmentId(appointment.getId())).isEmpty();
+        assertThat(availableTimeRepository.findAllByAppointment(appointment)).isEmpty();
     }
 
     @Test
