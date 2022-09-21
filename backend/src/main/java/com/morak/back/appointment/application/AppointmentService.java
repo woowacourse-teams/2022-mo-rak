@@ -167,7 +167,7 @@ public class AppointmentService {
                         CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR, appointmentCode
                 ));
         validateAppointmentInTeam(team, appointment);
-        List<Member> members = teamMemberRepository.findAllByTeamId(team.getId())
+        List<Member> members = teamMemberRepository.findAllByTeam(team)
                 .stream()
                 .map(TeamMember::getMember)
                 .collect(Collectors.toList());

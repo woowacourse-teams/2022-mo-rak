@@ -21,8 +21,6 @@ public interface AvailableTimeRepository extends Repository<AvailableTime, Long>
 
     List<AvailableTime> findAllByAppointment(Appointment appointment);
 
-    void flush();
-
     @Modifying
     @Query("DELETE FROM AvailableTime at WHERE at.appointment = :appointment")
     void deleteAllByAppointment(@Param("appointment") Appointment appointment);
