@@ -20,6 +20,7 @@ function MainFeatureMenuContainer() {
         {/* TODO: 네이밍 고민 */}
         <StyledFeatureMenuContainer onClick={handleNavigate('poll')}>
           <StlyedImageWrapper>
+            {/* TODO: StyledImage 네이밍 고민 */}
             <StyledImage src={Poll} alt="poll menu" />
           </StlyedImageWrapper>
           <StyledFeatureMenuName>투표하기</StyledFeatureMenuName>
@@ -53,7 +54,7 @@ const StlyedImageWrapper = styled.div(
   font-size: 3.2rem;
   border-radius: 100%;
   background: ${theme.colors.GRAY_200};
-  padding: 8rem;
+  padding: 8rem;  
 
   &:hover {
     background: ${theme.colors.GRAY_300};
@@ -63,6 +64,7 @@ const StlyedImageWrapper = styled.div(
 
 const StyledImage = styled.img`
   width: 24rem;
+  aspect-ratio: 1 / 1;
 `;
 
 const StyledFeatureMenuName = styled.div`

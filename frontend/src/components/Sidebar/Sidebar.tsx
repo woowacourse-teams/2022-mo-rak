@@ -47,37 +47,41 @@ function Sidebar() {
     fetchGroups();
   }, [groupCode]);
 
-  if (isLoading) return <div>로딩중</div>;
-
   return (
     <>
       <StyledContainer>
-        <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+        {isLoading ? (
+          <div>로딩중</div>
+        ) : (
+          <>
+            <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
 
-        {/* 그룹 */}
-        {/* TODO: handleSetActiveGroupMenu 넘겨주는 방식(하나로 넘겨줄 수는 없을까?) */}
-        <SidebarGroupsModal
-          onClickCreateMenu={handleSetActiveGroupMenu('create')}
-          onClickParticipateMenu={handleSetActiveGroupMenu('participate')}
-          groupCode={groupCode}
-          groups={groups}
-        />
+            {/* 그룹 */}
+            {/* TODO: handleSetActiveGroupMenu 넘겨주는 방식(하나로 넘겨줄 수는 없을까?) */}
+            <SidebarGroupsModal
+              onClickCreateMenu={handleSetActiveGroupMenu('create')}
+              onClickParticipateMenu={handleSetActiveGroupMenu('participate')}
+              groupCode={groupCode}
+              groups={groups}
+            />
 
-        {/* 기능 */}
-        <Divider />
-        <SidebarFeatureMenu groupCode={groupCode} />
+            {/* 기능 */}
+            <Divider />
+            <SidebarFeatureMenu groupCode={groupCode} />
 
-        {/* 멤버 목록 */}
-        <Divider />
-        <SidebarMembersProfileMenu groupCode={groupCode} />
+            {/* 멤버 목록 */}
+            <Divider />
+            <SidebarMembersProfileMenu groupCode={groupCode} />
 
-        <StyledBottomMenu>
-          {/* 슬랙연동 */}
-          <SidebarSlackMenu onClickMenu={handleSetActiveGroupMenu('slack')} />
+            <StyledBottomMenu>
+              {/* 슬랙연동 */}
+              <SidebarSlackMenu onClickMenu={handleSetActiveGroupMenu('slack')} />
 
-          {/* 초대링크 */}
-          <SidebarInvitationMenu groupCode={groupCode} />
-        </StyledBottomMenu>
+              {/* 초대링크 */}
+              <SidebarInvitationMenu groupCode={groupCode} />
+            </StyledBottomMenu>
+          </>
+        )}
       </StyledContainer>
 
       <SidebarMenuModals
@@ -108,6 +112,7 @@ const StyledLogo = styled.img`
   display: block;
   margin: 2rem auto;
   width: 16rem;
+  aspect-ratio: 16 / 9;
   cursor: pointer;
   padding-right: 4rem;
 `;
