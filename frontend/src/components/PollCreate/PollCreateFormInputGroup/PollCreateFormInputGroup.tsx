@@ -54,8 +54,6 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
     setPollItems(newPollItems);
   };
 
-  console.log(pollItems);
-
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
       {pollItems.map((pollItem, idx) => (
