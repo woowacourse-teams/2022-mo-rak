@@ -64,7 +64,8 @@ public class PollService {
 
     private void validateMemberInTeam(Team team, Member member) {
         if (!teamMemberRepository.existsByTeamAndMember(team, member)) {
-            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, team.getId(), member.getId());
+            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, team.getId(),
+                    member.getId());
         }
     }
 
@@ -76,7 +77,7 @@ public class PollService {
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team, member);
 
-        List<Poll> polls = pollRepository.findAllByTeamId(team.getId());
+        List<Poll> polls = pollRepository.findAllByTeam(team);
 
         return polls.stream()
                 .map(poll -> PollResponse.from(poll, member))
@@ -178,7 +179,7 @@ public class PollService {
                 .orElseThrow(() -> PollNotFoundException.ofPoll(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
         validateHost(member, poll);
         validateTeam(team, poll);
-        pollRepository.deleteById(poll.getId());
+        pollRepository.delete(poll);
     }
 
     private void validateHost(Member member, Poll poll) {
@@ -208,11 +209,25 @@ public class PollService {
     @Generated
     void notifyClosedByScheduled() {
         List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.now());
-        for (Poll poll : pollsToBeClosed) {
-            pollRepository.closeById(poll.getId());
-            notificationService.notifyMenuStatus(
-                    poll.getTeam(), MessageFormatter.formatClosed(FormattableData.from(poll))
-            );
-        }
+
+        closeAll(pollsToBeClosed);
+        notifyStatusAll(pollsToBeClosed);
+    }
+
+    private void closeAll(List<Poll> pollsToBeClosed) {
+        pollRepository.closeAllByIds(
+                pollsToBeClosed.stream()
+                        .map(Poll::getId)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    private void notifyStatusAll(List<Poll> pollsToBeClosed) {
+        Map<Team, String> teamMessages = pollsToBeClosed.stream()
+                .collect(Collectors.toMap(
+                        Poll::getTeam,
+                        poll -> MessageFormatter.formatClosed(FormattableData.from(poll))
+                ));
+        notificationService.notifyAllMenuStatus(teamMessages);
     }
 }

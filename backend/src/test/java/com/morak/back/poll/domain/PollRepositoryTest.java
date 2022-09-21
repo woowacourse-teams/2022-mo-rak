@@ -63,12 +63,14 @@ class PollRepositoryTest {
 
     // TODO: 2022/08/11 data.sql 의존 제거
     @Test
-    void 팀ID로_투표_목록을_조회한다() {
+    void 팀으로_투표_목록을_조회한다() {
         // given
-        long teamId = 1L;
+        Team team = Team.builder()
+                .id(1L)
+                .build();
 
         // when
-        List<Poll> polls = pollRepository.findAllByTeamId(teamId);
+        List<Poll> polls = pollRepository.findAllByTeam(team);
 
         // then
         assertThat(polls).hasSize(1);
@@ -158,15 +160,16 @@ class PollRepositoryTest {
     }
 
     @Test
-    void ID로_투표를_종료한다() {
+    void ID목록으로_투표를_종료한다() {
         // given
         Poll poll = pollRepository.findByCode("testcode").orElseThrow();
 
         // when
-        pollRepository.closeById(poll.getId());
+        pollRepository.closeAllByIds(List.of(poll.getId()));
         entityManager.detach(poll);
 
         // then
-        assertThat(pollRepository.findByCode("testcode").get().getStatus()).isEqualTo(PollStatus.CLOSED);
+        assertThat(pollRepository.findByCode("testcode").get().getStatus())
+                .isEqualTo(PollStatus.CLOSED);
     }
 }
