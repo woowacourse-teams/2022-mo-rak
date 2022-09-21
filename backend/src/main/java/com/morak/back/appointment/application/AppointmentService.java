@@ -265,7 +265,7 @@ public class AppointmentService {
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team.getId(), memberId);
+        validateMemberInTeam(team, member);
 
         Appointment appointment = appointmentRepository.findByCode(appointmentCode)
                 .orElseThrow(() -> AppointmentNotFoundException.ofAppointment(
