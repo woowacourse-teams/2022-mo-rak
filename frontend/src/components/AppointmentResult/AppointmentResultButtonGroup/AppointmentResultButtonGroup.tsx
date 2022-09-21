@@ -6,7 +6,7 @@ import { AxiosError } from 'axios';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { GroupInterface } from '../../../types/group';
 import { AppointmentInterface, getAppointmentResponse } from '../../../types/appointment';
-import { closeAppointment, deleteAppointment } from '../../../api/appointment';
+import { closeAppointment, deleteAppointment, getAppointmentRecommendation, getAppointmentStatus } from '../../../api/appointment';
 import Button from '../../@common/Button/Button';
 
 interface Props {
@@ -34,6 +34,19 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
     }
   };
 
+  const handleCreateNewPoll = async () => {
+    try {
+      const response = await getAppointmentStatus(groupCode, appointmentCode)
+      if (response.data.status === "CLOSED") {
+          const res = await getAppointmentRecommendation(groupCode, appointmentCode)
+          console.log(res)
+      }
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const handleDeleteAppointment = async () => {
     try {
       if (window.confirm('약속잡기를 삭제하시겠습니까?')) {
@@ -52,7 +65,7 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
     }
   };
 
-  return (
+return (
     <FlexContainer gap="4rem" justifyContent="center">
       {isHost && (
         <>
@@ -77,6 +90,15 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
             onClick={handleDeleteAppointment}
           >
             삭제
+          </Button>
+          <Button
+            variant="filled"
+            colorScheme={theme.colors.YELLOW_100} 
+            padding="2rem 2rem"
+            fontSize="3.2rem"
+            onClick={handleCreateNewPoll}
+          >
+            애매해? 투표 ㄱ
           </Button>
         </>
       )}
