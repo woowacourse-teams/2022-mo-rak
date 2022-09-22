@@ -47,29 +47,32 @@ function Sidebar() {
     fetchGroups();
   }, [groupCode]);
 
-  if (isLoading) return <div>로딩중</div>; 
-
   return (
     <>
       <StyledContainer>
-        <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
-        
-        <SidebarGroupsMenu
-          onClickMenu={handleActiveGroupMenu}
-          groupCode={groupCode}
-          groups={groups}
-        />
+        {isLoading ? (
+          <div>로딩중</div>
+        ) : (
+          <>
+            <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+            <SidebarGroupsMenu
+              onClickMenu={handleActiveGroupMenu}
+              groupCode={groupCode}
+              groups={groups}
+            />
 
-        <Divider />
-        <SidebarFeatureMenu groupCode={groupCode} />
+            <Divider />
+            <SidebarFeatureMenu groupCode={groupCode} />
 
-        <Divider />
-        <SidebarMembersProfileMenu groupCode={groupCode} />
+            <Divider />
+            <SidebarMembersProfileMenu groupCode={groupCode} />
 
-        <StyledBottomMenu>
-          <SidebarSlackMenu onClick={handleActiveGroupMenu('slack')} /> 
-          <SidebarInvitationMenu groupCode={groupCode} />
-        </StyledBottomMenu>
+            <StyledBottomMenu>
+              <SidebarSlackMenu onClick={handleActiveGroupMenu('slack')} /> 
+              <SidebarInvitationMenu groupCode={groupCode} />
+            </StyledBottomMenu>
+          </>
+        )}
       </StyledContainer>
 
       {/* TODO: 모달이 모여있음  */}
@@ -99,6 +102,7 @@ const StyledLogo = styled.img`
   display: block;
   margin: 2rem auto;
   width: 16rem;
+  aspect-ratio: 16 / 9;
   cursor: pointer;
   padding-right: 4rem;
 `;

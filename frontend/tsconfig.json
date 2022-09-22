@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
-    "module": "es6",
+    "module": "ES2020",
     "target": "ES2015",
     "jsx": "react-jsx",
     "strict": true,

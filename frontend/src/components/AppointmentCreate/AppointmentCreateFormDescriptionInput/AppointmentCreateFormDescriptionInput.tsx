@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes, memo } from 'react';
 import styled from '@emotion/styled';
 import Input from '../../@common/Input/Input';
 import { AppointmentInterface } from '../../../types/appointment';
@@ -31,4 +31,7 @@ const StyledLabel = styled.label(
 `
 );
 
-export default AppointmentCreateFormDescriptionInput;
+export default memo(
+  AppointmentCreateFormDescriptionInput,
+  (prev, next) => prev.description === next.description
+);

@@ -27,10 +27,7 @@ function SidebarFeatureMenu({ groupCode }: Props) {
     <StyledFeatureContainer>
       <StyledMenuHeader>기능</StyledMenuHeader>
       <FlexContainer flexDirection="column">
-        <StyledPollMenu
-          onClick={handleActiveMenu('poll')}
-          isActive={activeMenu === 'poll'}
-        >
+        <StyledPollMenu onClick={handleActiveMenu('poll')} isActive={activeMenu === 'poll'}>
           <StyledPollIcon src={Poll} />
           <StyledFeatureTitle>투표하기</StyledFeatureTitle>
         </StyledPollMenu>

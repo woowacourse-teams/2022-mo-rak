@@ -28,6 +28,7 @@ const StyledUserProfile = styled.div<CSSProperties>(
 
 const StyledUserImage = styled.img`
   border-radius: 100%;
+  aspect-ratio: 1 / 1;
 `;
 
 const StyledUserName = styled.p<CSSProperties>(

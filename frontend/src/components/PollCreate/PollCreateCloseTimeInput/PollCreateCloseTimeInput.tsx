@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, memo } from 'react';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import Input from '../../@common/Input/Input';
 
@@ -38,4 +38,8 @@ const StyledLabel = styled.label(
   color: ${theme.colors.GRAY_400};
 `
 );
-export default PollCreateCloseTimeInput;
+
+export default memo(
+  PollCreateCloseTimeInput,
+  (prev, next) => prev.closingDate === next.closingDate && prev.closingTime === next.closingTime
+);

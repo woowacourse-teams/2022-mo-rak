@@ -3,6 +3,7 @@ import { useTheme } from '@emotion/react';
 import Button from '../../@common/Button/Button';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { PollInterface } from '../../../types/poll';
+import { memo } from 'react';
 
 interface Props {
   isAnonymous: PollInterface['isAnonymous'];
@@ -69,4 +70,9 @@ function PollCreateDetail({
   );
 }
 
-export default PollCreateDetail;
+export default memo(
+  PollCreateDetail,
+  (prev, next) =>
+    prev.isAnonymous === next.isAnonymous &&
+    prev.isAllowedMultiplePollCount === next.isAllowedMultiplePollCount
+);
