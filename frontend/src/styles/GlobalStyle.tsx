@@ -78,7 +78,13 @@ const style = css`
     outline: none;
   }
 
-  @media screen and (1024px <= width < 1920px) {
+  @media screen and (max-width: 1919px) {
+    html {
+      font-size: 8px;
+    }
+  }
+
+  @media screen and (max-width: 1365px) {
     html {
       font-size: 7px;
     }

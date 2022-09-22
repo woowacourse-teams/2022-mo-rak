@@ -24,7 +24,7 @@ CREATE TABLE team
 (
     `id`         bigint       NOT NULL AUTO_INCREMENT,
     `name`       varchar(255) NOT NULL,
-    `code`       varchar(255) NOT NULL,
+    `code`       varchar(255) NOT NULL UNIQUE UNIQUE,
     `created_at` datetime     NOT NULL,
     `updated_at` datetime     NOT NULL,
     PRIMARY KEY (id)
@@ -46,7 +46,7 @@ CREATE TABLE team_invitation
 (
     `id`         bigint       NOT NULL AUTO_INCREMENT,
     `team_id`    bigint       NOT NULL,
-    `code`       varchar(255) NOT NULL,
+    `code`       varchar(255) NOT NULL UNIQUE,
     `expired_at` datetime     NOT NULL,
     `created_at` datetime     NOT NULL,
     `updated_at` datetime     NOT NULL,
@@ -71,6 +71,8 @@ CREATE TABLE `poll`
     FOREIGN KEY (team_id) REFERENCES team (id),
     FOREIGN KEY (host_id) REFERENCES member (id)
 );
+
+CREATE INDEX `index_poll` ON `poll` (`closed_at`);
 
 CREATE TABLE `poll_item`
 (
@@ -118,6 +120,8 @@ CREATE TABLE appointment
     FOREIGN KEY (host_id) REFERENCES member (id)
 );
 
+CREATE INDEX `index_appointment` ON `appointment` (`closed_at`);
+
 CREATE TABLE appointment_available_time
 (
     `id`              BIGINT   NOT NULL AUTO_INCREMENT,
@@ -129,7 +133,7 @@ CREATE TABLE appointment_available_time
     `updated_at`      DATETIME NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (appointment_id) REFERENCES appointment (id),
-    FOREIGN KEY (member_id) REFERENCES member (id)
+    FOREIGN KEY (member_id) REFERENCES member (id),
 );
 
 ALTER TABLE appointment_available_time

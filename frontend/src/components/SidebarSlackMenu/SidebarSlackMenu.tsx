@@ -3,12 +3,12 @@ import styled from '@emotion/styled';
 import Slack from '../../assets/slack.svg';
 
 interface Props {
-  onClickMenu: MouseEventHandler<HTMLButtonElement>;
+  onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
-function SidebarSlackMenu({ onClickMenu }: Props) {
+function SidebarSlackMenu({ onClick }: Props) {
   return (
-    <StyledContainer onClick={onClickMenu}>
+    <StyledContainer onClick={onClick}>
       <StyledSlackLogo src={Slack} alt="slack-icon" />
       <StyledText>슬랙 채널 연동</StyledText>
     </StyledContainer>
@@ -28,7 +28,7 @@ const StyledSlackLogo = styled.img`
 `;
 
 const StyledText = styled.p`
-  font-size: 1.7rem; // TODO: 4단위로 변경
+  font-size: 1.6rem; 
 `;
 
 export default SidebarSlackMenu;

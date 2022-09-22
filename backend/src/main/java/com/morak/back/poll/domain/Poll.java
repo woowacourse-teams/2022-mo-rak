@@ -101,7 +101,7 @@ public class Poll extends BaseEntity {
         this.code = code;
     }
 
-    public void addItem(PollItem pollItem) {
+    protected void addItem(PollItem pollItem) {
         pollItems.add(pollItem);
     }
 

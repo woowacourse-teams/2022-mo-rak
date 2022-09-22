@@ -20,11 +20,14 @@ class PollResultRepositoryTest {
         Member member = Member.builder()
                 .id(1L)
                 .build();
+        Poll poll = Poll.builder().id(1L).build();
         PollItem pollItemA = PollItem.builder()
                 .id(1L)
+                .poll(poll)
                 .build();
         PollItem pollItemB = PollItem.builder()
                 .id(2L)
+                .poll(poll)
                 .build();
 
         // when

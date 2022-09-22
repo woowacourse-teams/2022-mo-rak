@@ -9,29 +9,26 @@ import GithubLogo from '../../../assets/github-logo.svg';
 import Circle from '../../../assets/half-circle.svg';
 import Glitter from '../../../assets/glitter.svg';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
 function LandingMainSection({ id }: Props) {
   return (
     <StyledMainSection id={id}>
-      <StyledNavbar>
-        <StyledMenu href="#main-section">LOGIN</StyledMenu>
-        <StyledMenu href="#introduce-section">ABOUT</StyledMenu>
-        <StyledMenu href="#service-introduce-section">FEATURES</StyledMenu>
-      </StyledNavbar>
+      <LandingNavbar />
       <StyledLogo src={Logo} alt="logo" />
 
       <FlexContainer flexDirection="column" gap="2rem">
-        <StyledSmallTitle>모락이 해줄게요</StyledSmallTitle>
-        <StyledBigTitle>
+        <StyledSubTitle>모락이 해줄게요</StyledSubTitle>
+        <StyledTitle>
           <StyledSmileImage src={Smile} alt="smile" />
           <StyledLineImage src={Line} alt="line" />
           <StyledGlitterImage src={Glitter} alt="glitter" />
           모임을
           <br />
           즐겁게, 편하게!
-        </StyledBigTitle>
+        </StyledTitle>
         <StyledLink
           href={`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}`}
         >
@@ -41,12 +38,12 @@ function LandingMainSection({ id }: Props) {
           </StyledLoginContainer>
         </StyledLink>
       </FlexContainer>
-      <StyledSectionGuideContainer>
+      <StyledNextSectionGuideContainer>
         <StyledBlobContainer>
           <StyledBlobImage src={Blob} alt="blob"/>
           <StyledGuideText>모락 소개</StyledGuideText>
         </StyledBlobContainer>
-      </StyledSectionGuideContainer>
+      </StyledNextSectionGuideContainer>
     </StyledMainSection>
   );
 }
@@ -57,7 +54,7 @@ const StyledLink = styled.a`
 `;
 
 const StyledGithubLogo = styled.img`
-  width: 3.8rem;
+  width: 4rem;
 `;
 
 const StyledLoginText = styled.p(
@@ -74,24 +71,15 @@ const StyledLoginContainer = styled.div(
   justify-content: center;
   gap: 2.4rem;
   width: 33.6rem;
-  color: ${theme.colors.WHITE_100};
-  background-color: ${theme.colors.BLACK_100};
-  border-radius: 15px;
+  border-radius: 1.6rem;
   padding: 1.2rem;
   margin: 0 auto;
+  color: ${theme.colors.WHITE_100};
+  background-color: ${theme.colors.BLACK_100};
 `
 );
 
-const StyledNavbar = styled.nav`
-  position: absolute;
-  right: 12rem;
-  top: 6rem;
-  display: flex;
-  list-style: none;
-  gap: 4rem;
-  font-size: 2rem;
-  cursor: pointer;
-`;
+
 
 const StyledLogo = styled.img`
   width: 10rem;
@@ -100,15 +88,6 @@ const StyledLogo = styled.img`
   left: 4rem;
 `;
 
-const StyledMenu = styled.a(
-  ({ theme }) => `
-  text-decoration: none;
-  color: ${theme.colors.BLACK_100};
-`
-);
-
-// section 1
-// TODO: section태그마다 반복되는 속성들을 공통으로 묶어줄 수 있는 방법은 없을까
 const StyledMainSection = styled.section`
   height: 100vh;
   display: flex;
@@ -123,26 +102,26 @@ const StyledMainSection = styled.section`
   background-position: bottom 0 right 0;
 `;
 
-const StyledSmallTitle = styled.div(
+const StyledSubTitle = styled.div(
   ({ theme }) => `
   font-size: 2.4rem;
   margin-bottom: 1.2rem;
-  color: ${theme.colors.BLACK_100};
   letter-spacing: 0.4rem;
   margin: 0 auto;
   padding-top: 20rem;
+  color: ${theme.colors.BLACK_100};
 `
 );
 
-const StyledBigTitle = styled.h1(
+const StyledTitle = styled.h1(
   ({ theme }) => `
   font-size: 10.4rem;
   font-weight: 700;
   text-align: center;
   position: relative;
-  color: ${theme.colors.BLACK_100};
   line-height: 12rem;
   letter-spacing: -0.4rem;
+  color: ${theme.colors.BLACK_100};
 `
 );
 
@@ -169,7 +148,7 @@ const StyledGlitterImage = styled.img`
   width: 6rem;
 `;
 
-const StyledSectionGuideContainer = styled.div`
+const StyledNextSectionGuideContainer = styled.div`
   position: absolute;
   right: 14rem;
   bottom: 6rem;

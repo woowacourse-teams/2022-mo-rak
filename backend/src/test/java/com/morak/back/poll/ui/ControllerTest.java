@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.morak.back.auth.application.TokenProvider;
+import com.morak.back.performance.PerformanceMonitor;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
@@ -24,6 +25,9 @@ public class ControllerTest {
 
     @MockBean
     protected TokenProvider tokenProvider;
+
+    @MockBean
+    protected PerformanceMonitor performanceMonitor;
 
     @BeforeEach
     void setUp() {

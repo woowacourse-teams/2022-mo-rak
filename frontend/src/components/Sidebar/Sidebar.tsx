@@ -7,7 +7,7 @@ import { getGroups } from '../../api/group';
 import { GroupInterface } from '../../types/group';
 
 import Divider from '../@common/Divider/Divider';
-import SidebarGroupsModal from '../SidebarGroupsModal/SidebarGroupsModal';
+import SidebarGroupsMenu from '../SidebarGroupsMenu/SidebarGroupsMenu';
 import SidebarMenuModals from '../SidebarMenuModals/SidebarMenuModals';
 
 import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembersProfileMenu';
@@ -28,7 +28,7 @@ function Sidebar() {
     navigate(location);
   };
 
-  const handleSetActiveGroupMenu = (menu: null | string) => () => {
+  const handleActiveGroupMenu = (menu: null | string) => () => {
     setActiveModalMenu(menu);
   };
 
@@ -55,38 +55,30 @@ function Sidebar() {
         ) : (
           <>
             <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
-
-            {/* 그룹 */}
-            {/* TODO: handleSetActiveGroupMenu 넘겨주는 방식(하나로 넘겨줄 수는 없을까?) */}
-            <SidebarGroupsModal
-              onClickCreateMenu={handleSetActiveGroupMenu('create')}
-              onClickParticipateMenu={handleSetActiveGroupMenu('participate')}
+            <SidebarGroupsMenu
+              onClickMenu={handleActiveGroupMenu}
               groupCode={groupCode}
               groups={groups}
             />
 
-            {/* 기능 */}
             <Divider />
             <SidebarFeatureMenu groupCode={groupCode} />
 
-            {/* 멤버 목록 */}
             <Divider />
             <SidebarMembersProfileMenu groupCode={groupCode} />
 
             <StyledBottomMenu>
-              {/* 슬랙연동 */}
-              <SidebarSlackMenu onClickMenu={handleSetActiveGroupMenu('slack')} />
-
-              {/* 초대링크 */}
+              <SidebarSlackMenu onClick={handleActiveGroupMenu('slack')} /> 
               <SidebarInvitationMenu groupCode={groupCode} />
             </StyledBottomMenu>
           </>
         )}
       </StyledContainer>
 
+      {/* TODO: 모달이 모여있음  */}
       <SidebarMenuModals
         activeModalMenu={activeModalMenu}
-        closeModal={handleSetActiveGroupMenu(null)}
+        closeModal={handleActiveGroupMenu(null)}
         groupCode={groupCode}
       />
     </>
@@ -95,16 +87,14 @@ function Sidebar() {
 
 const StyledContainer = styled.div(
   ({ theme }) => `
-  z-index: 1; 
-  width: 36.4rem;
-  height: 100vh;
   position: sticky;
   top: 0;
-  border-right: 0.1rem solid ${theme.colors.GRAY_200};
+  width: 36.4rem;
+  height: 100vh;
+  z-index: 1; 
   background: ${theme.colors.WHITE_100};
   padding-left: 4rem;
   gap: 2rem;
-  border: none;
 `
 );
 
@@ -118,11 +108,11 @@ const StyledLogo = styled.img`
 `;
 
 const StyledBottomMenu = styled.div`
+  position: absolute; 
+  bottom: 4rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  position: absolute;
-  bottom: 4rem;
 `;
 
 export default Sidebar;

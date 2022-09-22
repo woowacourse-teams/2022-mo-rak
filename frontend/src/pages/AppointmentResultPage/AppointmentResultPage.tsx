@@ -82,8 +82,10 @@ function AppointmentResultPage() {
         </FlexContainer>
         <AppointmentResultButtonGroup
           groupCode={groupCode}
+          appointmentRecommendation={appointmentRecommendation}
           appointmentCode={appointmentCode}
           isClosed={appointment.isClosed}
+          title={appointment.title}
           isHost={appointment.isHost}
         />
       </FlexContainer>

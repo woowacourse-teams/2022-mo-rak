@@ -6,26 +6,7 @@ import { AppointmentRecommendationInterface } from '../../../types/appointment';
 import { GroupInterface, MemberInterface } from '../../../types/group';
 import { getGroupMembers } from '../../../api/group';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
-
-const getDateTime = (
-  recommendationDateTime: AppointmentRecommendationInterface[
-    | 'recommendStartDateTime'
-    | 'recommendEndDateTime']
-) => {
-  // TODO: 리팩토링
-  const period = recommendationDateTime.slice(-2);
-  const dateTime = new Date(recommendationDateTime.slice(0, -2));
-  const week = ['일', '월', '화', '수', '목', '금', '토'];
-
-  const year = dateTime.getFullYear();
-  const month = dateTime.getMonth() + 1;
-  const date = dateTime.getDate();
-  const day = week[dateTime.getDay()];
-  const hour = dateTime.getHours().toString().padStart(2, '0');
-  const minutes = dateTime.getMinutes().toString().padStart(2, '0');
-
-  return ` ${year}.${month}.${date}(${day}) ${hour}:${minutes}${period} `;
-};
+import { getFormattedDateTime } from '../../../utils/date';
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -86,7 +67,7 @@ function AppointmentResultRanking({
                 <StyledResultText>{rank}</StyledResultText>
               )}
               <StyledResultText>
-                {getDateTime(recommendStartDateTime)}<br/>~{getDateTime(recommendEndDateTime)}
+                {getFormattedDateTime(recommendStartDateTime)}<br/>~{getFormattedDateTime(recommendEndDateTime)}
               </StyledResultText>
               <StyledResultText>
                 {availableMembers.length}/{totalParticipants}명 가능

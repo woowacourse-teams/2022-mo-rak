@@ -34,6 +34,12 @@ const deleteAppointment = (
   appointmentCode: AppointmentInterface['code']
 ) => axios.delete(`/${groupCode}/appointments/${appointmentCode}`);
 
+const getAppointmentStatus = (
+  groupCode: GroupInterface['code'],
+  appointmentCode: AppointmentInterface['code']
+) => axios.get(`/${groupCode}/appointments/${appointmentCode}/status`);
+
+
 export {
   getAppointments,
   getAppointment,
@@ -41,5 +47,6 @@ export {
   progressAppointment,
   getAppointmentRecommendation,
   closeAppointment,
-  deleteAppointment
+  deleteAppointment,
+  getAppointmentStatus
 };

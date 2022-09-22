@@ -3,47 +3,34 @@ import styled from '@emotion/styled';
 
 import Services from '../../../assets/services.svg';
 import CircleHighlight from '../../../assets/circle-highlight.svg';
+import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
-function LandingIntroduceSection({ id }: Props) {
+function LandingServiceIntroductionSection({ id }: Props) {
   return (
-    <StyledIntroduceSection id={id}>
-      <StyledNavbar>
-        <StyledMenu href="#main-section">LOGIN</StyledMenu>
-        <StyledMenu href="#introduce-section">ABOUT</StyledMenu>
-        <StyledMenu href="#service-introduce-section">FEATURES</StyledMenu>
-      </StyledNavbar>
+    <StyledServiceIntroductionSection id={id}>
+      <LandingNavbar />
       <div>
-        <StyledMainIntroduceText>
+        <StyledTitle>
           분산된 서비스...
           <br />
           불편하지 않으셨나요?
           <StyledHighlightImage src={CircleHighlight} alt="highlight" />
-        </StyledMainIntroduceText>
-        <StyledDetailIntroduceText>
+        </StyledTitle>
+        <StyledSubTitle>
           투표 하기, 일정 정하기... 분산 되어있는 서비스에 불편함을 느끼지 않으셨나요?
           <br />
           모락에 모두 모여있어요!
-        </StyledDetailIntroduceText>
+        </StyledSubTitle>
       </div>
       <StyledServicesImage src={Services} alt="services" />
-    </StyledIntroduceSection>
+    </StyledServiceIntroductionSection>
   );
 }
 
-const StyledNavbar = styled.nav`
-  position: absolute;
-  right: 12rem;
-  top: 6rem;
-  display: flex;
-  list-style: none;
-  gap: 4rem;
-  font-size: 2rem;
-  cursor: pointer;
-`;
 
-const StyledIntroduceSection = styled.section`
+const StyledServiceIntroductionSection = styled.section`
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -53,16 +40,16 @@ const StyledIntroduceSection = styled.section`
   justify-content: space-evenly;
 `;
 
-const StyledMainIntroduceText = styled.h1(
+const StyledTitle = styled.h1(
   ({ theme }) => `
-  font-size: 4rem;
-  text-align: left;
-  color: ${theme.colors.BLACK_100};
-  margin-bottom: 2rem;
   position: relative;
+  text-align: left;
+  font-size: 4rem;
+  margin-bottom: 2rem;
   font-weight: 700;
   line-height: 4.4rem;
   letter-spacing: 0.4rem;
+  color: ${theme.colors.BLACK_100};
 `
 );
 
@@ -74,13 +61,13 @@ const StyledHighlightImage = styled.img`
   height: 6.8rem;
 `;
 
-const StyledDetailIntroduceText = styled.span(
+const StyledSubTitle = styled.span(
   ({ theme }) => `
   font-size: 2rem;
   text-align: left;
-  color: ${theme.colors.BLACK_100};
-  letter-spacing: 0.1rem; // TODO: 4단위
+  letter-spacing: 0.1rem; 
   line-height: 2.4rem;
+  color: ${theme.colors.BLACK_100};
 `
 );
 
@@ -89,11 +76,4 @@ const StyledServicesImage = styled.img`
   height: 63.6rem;
 `;
 
-const StyledMenu = styled.a(
-  ({ theme }) => `
-  text-decoration: none;
-  color: ${theme.colors.BLACK_100};
-`
-);
-
-export default LandingIntroduceSection;
+export default LandingServiceIntroductionSection;

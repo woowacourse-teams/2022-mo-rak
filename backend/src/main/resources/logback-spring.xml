@@ -89,6 +89,22 @@
         </filter>
     </appender>
 
+    <appender name="PERFORMANCE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS_ABSOLUTE_PATH}/performance.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_ABSOLUTE_PATH}/performance.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>15MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf8</charset>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %msg%n</Pattern>
+        </encoder>
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="INFO_LOG"/>
@@ -101,5 +117,9 @@
             <appender-ref ref="ASYNC_SLACK"/>
         </logger>
     </springProfile>
+
+    <logger name="PERFORMANCE">
+        <appender-ref ref="PERFORMANCE"/>
+    </logger>
 
 </configuration>
