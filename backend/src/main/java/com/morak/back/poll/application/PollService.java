@@ -117,25 +117,7 @@ public class PollService {
                 .orElseThrow(
                         () -> PollNotFoundException.ofPollItem(CustomErrorCode.POLL_ITEM_NOT_FOUND_ERROR, pollItemId));
     }
-
-    private Map<PollItem, String> mapPollItemAndDescription2(List<PollResultRequest> requests) {
-        Map<Long, String> descriptionsById = requests.stream().collect(Collectors.toMap(
-                PollResultRequest::getId,
-                PollResultRequest::getDescription
-        ));
-
-        List<Long> ids = requests.stream()
-                .map(PollResultRequest::getId)
-                .collect(Collectors.toList());
-        List<PollItem> pollItems = pollItemRepository.findAllByIds(ids);
-
-        return pollItems.stream()
-                .collect(Collectors.toMap(
-                        item -> item,
-                        item -> descriptionsById.get(item.getId())
-                ));
-    }
-
+    
     @Transactional(readOnly = true)
     public PollResponse findPoll(String teamCode, Long memberId, String pollCode) {
         Member member = memberRepository.findById(memberId)
