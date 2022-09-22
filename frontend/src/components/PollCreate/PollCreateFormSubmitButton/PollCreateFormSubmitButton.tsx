@@ -1,4 +1,5 @@
 import { useTheme } from '@emotion/react';
+import { memo } from 'react';
 
 import Button from '../../@common/Button/Button';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
@@ -22,4 +23,4 @@ function PollCreateFormSubmitButton() {
   );
 }
 
-export default PollCreateFormSubmitButton;
+export default memo(PollCreateFormSubmitButton);

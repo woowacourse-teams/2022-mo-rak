@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, memo } from 'react';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { Time } from '../../../types/appointment';
 import AppointmentCreateFormTimeInput from '../AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput';
@@ -45,4 +45,7 @@ const StyledHelperText = styled.p`
   font-size: 2rem;
 `;
 
-export default AppointmentCreateFormTimeLimitInput;
+export default memo(
+  AppointmentCreateFormTimeLimitInput,
+  (prev, next) => prev.endTime === next.endTime && prev.startTime === next.startTime
+);

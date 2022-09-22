@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import { SelectHTMLAttributes } from 'react';
+import { memo, SelectHTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import TextField from '../../@common/TextField/TextField';
@@ -43,7 +43,14 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
         padding="0.4rem 0.8rem"
         width="9.2rem"
       >
-        <Select id="minute" onChange={onChange} value={minute} name="minute" fontSize="2.4rem" required>
+        <Select
+          id="minute"
+          onChange={onChange}
+          value={minute}
+          name="minute"
+          fontSize="2.4rem"
+          required
+        >
           <option value="00">00</option>
           <option value="30">30</option>
         </Select>
@@ -62,4 +69,7 @@ const StyledLabel = styled.label`
   font-size: 2.8rem;
 `;
 
-export default AppointmentCreateFormDurationInput;
+export default memo(
+  AppointmentCreateFormDurationInput,
+  (prev, next) => prev.duration === next.duration
+);

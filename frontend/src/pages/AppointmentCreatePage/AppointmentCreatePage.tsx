@@ -11,8 +11,8 @@ function AppointmentCreatePage() {
 
   return (
     <StyledContainer>
-      <FlexContainer flexDirection='column' gap="2rem">
-        <AppointmentCreateHeader /> 
+      <FlexContainer flexDirection="column" gap="2rem">
+        <AppointmentCreateHeader />
         <FlexContainer gap="4rem">
           <StyledLeftContainer>
             <Calendar

@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, memo } from 'react';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import Input from '../../@common/Input/Input';
@@ -57,4 +57,10 @@ const StyledTitle = styled.div(
 `
 );
 
-export default AppointmentCreateFormCloseTimeInput;
+export default memo(
+  AppointmentCreateFormCloseTimeInput,
+  (prev, next) =>
+    prev.closeTime === next.closeTime &&
+    prev.closeDate === next.closeTime &&
+    prev.maxCloseDate === next.maxCloseDate
+);

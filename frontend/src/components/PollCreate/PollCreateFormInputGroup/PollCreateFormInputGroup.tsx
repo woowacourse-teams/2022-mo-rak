@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, MouseEvent, ChangeEvent } from 'react';
+import { Dispatch, SetStateAction, MouseEvent, ChangeEvent, memo } from 'react';
 
 import { useTheme } from '@emotion/react';
 
@@ -54,8 +54,6 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
     setPollItems(newPollItems);
   };
 
-  console.log(pollItems);
-
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
       {pollItems.map((pollItem, idx) => (
@@ -103,4 +101,4 @@ const StyledDeleteIcon = styled.img`
   width: 1.8rem;
 `;
 
-export default PollCreateFormInputGroup;
+export default memo(PollCreateFormInputGroup, (prev, next) => prev.pollItems === next.pollItems);

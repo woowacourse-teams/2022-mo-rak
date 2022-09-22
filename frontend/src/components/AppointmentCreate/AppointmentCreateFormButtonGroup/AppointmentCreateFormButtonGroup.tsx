@@ -1,4 +1,4 @@
-import { MouseEventHandler } from 'react';
+import { memo, MouseEventHandler } from 'react';
 import { useTheme } from '@emotion/react';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import Button from '../../@common/Button/Button';
@@ -34,4 +34,4 @@ function AppointmentCreateFormButtonGroup({ onCancel }: Props) {
   );
 }
 
-export default AppointmentCreateFormButtonGroup;
+export default memo(AppointmentCreateFormButtonGroup, () => true);
