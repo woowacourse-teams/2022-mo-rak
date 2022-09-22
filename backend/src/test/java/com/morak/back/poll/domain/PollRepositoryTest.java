@@ -165,7 +165,8 @@ class PollRepositoryTest {
         Poll poll = pollRepository.findByCode("testcode").orElseThrow();
 
         // when
-        pollRepository.closeAllByIds(List.of(poll.getId()));
+        pollRepository.closeAll(List.of(poll));
+        entityManager.flush();
         entityManager.detach(poll);
 
         // then

@@ -117,7 +117,7 @@ public class PollService {
                 .orElseThrow(
                         () -> PollNotFoundException.ofPollItem(CustomErrorCode.POLL_ITEM_NOT_FOUND_ERROR, pollItemId));
     }
-    
+
     @Transactional(readOnly = true)
     public PollResponse findPoll(String teamCode, Long memberId, String pollCode) {
         Member member = memberRepository.findById(memberId)
@@ -210,16 +210,8 @@ public class PollService {
     void notifyClosedByScheduled() {
         List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.now());
 
-        closeAll(pollsToBeClosed);
+        pollRepository.closeAll(pollsToBeClosed);
         notifyStatusAll(pollsToBeClosed);
-    }
-
-    private void closeAll(List<Poll> pollsToBeClosed) {
-        pollRepository.closeAllByIds(
-                pollsToBeClosed.stream()
-                        .map(Poll::getId)
-                        .collect(Collectors.toList())
-        );
     }
 
     private void notifyStatusAll(List<Poll> pollsToBeClosed) {

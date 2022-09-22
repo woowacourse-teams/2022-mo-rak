@@ -254,11 +254,7 @@ class AppointmentRepositoryTest {
         }
 
         // when
-        appointmentRepository.closeAllByIds(
-                appointments.stream()
-                        .map(Appointment::getId)
-                        .collect(Collectors.toList())
-        );
+        appointmentRepository.closeAll(appointments);
 
         for (Appointment appointment : appointments) {
             entityManager.refresh(appointment);

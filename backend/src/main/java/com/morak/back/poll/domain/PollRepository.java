@@ -21,12 +21,12 @@ public interface PollRepository extends Repository<Poll, Long> {
     @Query("select p from Poll p where p.code.code = :code")
     Optional<Poll> findByCode(@Param("code") String code);
 
-    @Query("select p from Poll p join fetch p.pollItems pi where p.code.code = :code")
+    @Query("select p from Poll p join fetch p.pollItems where p.code.code = :code")
     Optional<Poll> findFetchedByCode(@Param("code") String code);
 
     void delete(Poll poll);
 
     @Modifying
-    @Query("update Poll p set p.status = 'CLOSED' where p.id in :ids")
-    void closeAllByIds(@Param("ids") List<Long> ids);
+    @Query("update Poll p set p.status = 'CLOSED' where p in :polls")
+    void closeAll(@Param("polls") List<Poll> polls);
 }
