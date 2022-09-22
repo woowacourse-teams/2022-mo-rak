@@ -37,8 +37,8 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
     }
   };
 
-  const firstRankAppointmentRecommendation = appointmentRecommendation
-  .filter((appointment) => appointment.rank === 1)
+  const firstRankAppointmentRecommendations = appointmentRecommendation
+  .filter(({rank}) => rank === 1)
   .map(({recommendStartDateTime, recommendEndDateTime}) => {
     return `${getFormattedDateTime(recommendStartDateTime)}~${getFormattedDateTime(recommendEndDateTime)}`;
   });
@@ -48,7 +48,7 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
         navigate(`/groups/${groupCode}/poll/create`, {
           state: {
             title,
-            firstRankAppointmentRecommendation
+            firstRankAppointmentRecommendations
           }
         });
     } catch (err) {
@@ -100,11 +100,11 @@ return (
           >
             삭제
           </Button>
-          {(isClosed && firstRankAppointmentRecommendation.length > 1) && (
+          {(isClosed && firstRankAppointmentRecommendations.length > 1) && (
             <Button
               variant="filled"
               colorScheme={theme.colors.YELLOW_100} 
-              padding="2rem 2rem"
+              padding="2rem"
               fontSize="3.2rem"
               onClick={handleCreateNewPoll}
             >
