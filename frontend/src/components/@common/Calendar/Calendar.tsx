@@ -337,6 +337,10 @@ const StyledCurrentMonthDay = styled(StyledMonthDay)<{
 
 const StyledCurrentMonthDayPrevToday = styled(StyledCurrentMonthDay)(
   ({ theme }) => `
+  &:hover {
+    border: none;
+  }
+
   color: ${theme.colors.GRAY_200};
 `
 );
