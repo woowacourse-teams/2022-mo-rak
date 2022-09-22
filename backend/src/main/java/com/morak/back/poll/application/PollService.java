@@ -92,7 +92,7 @@ public class PollService {
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team, member);
 
-        Poll poll = pollRepository.findByCode(pollCode)
+        Poll poll = pollRepository.findFetchedByCode(pollCode)
                 .orElseThrow(() -> PollNotFoundException.ofPoll(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
         validateTeam(team, poll);
         poll.doPoll(member, mapPollItemAndDescription(requests));
@@ -116,6 +116,24 @@ public class PollService {
         return pollItemRepository.findById(pollItemId)
                 .orElseThrow(
                         () -> PollNotFoundException.ofPollItem(CustomErrorCode.POLL_ITEM_NOT_FOUND_ERROR, pollItemId));
+    }
+
+    private Map<PollItem, String> mapPollItemAndDescription2(List<PollResultRequest> requests) {
+        Map<Long, String> descriptionsById = requests.stream().collect(Collectors.toMap(
+                PollResultRequest::getId,
+                PollResultRequest::getDescription
+        ));
+
+        List<Long> ids = requests.stream()
+                .map(PollResultRequest::getId)
+                .collect(Collectors.toList());
+        List<PollItem> pollItems = pollItemRepository.findAllByIds(ids);
+
+        return pollItems.stream()
+                .collect(Collectors.toMap(
+                        item -> item,
+                        item -> descriptionsById.get(item.getId())
+                ));
     }
 
     @Transactional(readOnly = true)
@@ -158,7 +176,7 @@ public class PollService {
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team, member);
 
-        Poll poll = pollRepository.findByCode(pollCode)
+        Poll poll = pollRepository.findFetchedByCode(pollCode)
                 .orElseThrow(() -> PollNotFoundException.ofPoll(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
         validateTeam(team, poll);
 

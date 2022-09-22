@@ -4,6 +4,8 @@ import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -20,6 +22,9 @@ public interface PollRepository extends Repository<Poll, Long> {
 
     @Query("select p from Poll p where p.code.code = :code")
     Optional<Poll> findByCode(@Param("code") String code);
+
+    @Query("select p from Poll p join fetch p.pollItems pi where p.code.code = :code")
+    Optional<Poll> findFetchedByCode(@Param("code") String code);
 
     void delete(Poll poll);
 

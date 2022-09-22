@@ -81,7 +81,7 @@ public class Poll extends BaseEntity {
 
     @Formula("(SELECT COUNT(DISTINCT pr.member_id) "
             + "FROM poll_result AS pr "
-            + "LEFT JOIN poll_item AS pi "
+            + "INNER JOIN poll_item AS pi "
             + "ON pr.poll_item_id = pi.id "
             + "WHERE pi.poll_id = id)")
     private Integer count;
