@@ -14,6 +14,8 @@ public interface TeamMemberRepository extends Repository<TeamMember, Long> {
     @Query("SELECT tm FROM TeamMember tm JOIN FETCH tm.team WHERE tm.member = :member")
     List<TeamMember> findAllByMember(@Param("member") Member member);
 
+    Optional<TeamMember> findFirstByMemberOrderByIdAsc(@Param("member") Member member);
+
     @Query("SELECT tm FROM TeamMember tm JOIN FETCH tm.member WHERE tm.team = :team")
     List<TeamMember> findAllByTeam(@Param("team") Team team);
 

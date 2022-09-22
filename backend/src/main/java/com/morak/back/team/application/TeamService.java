@@ -197,8 +197,12 @@ public class TeamService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
 
-        List<TeamMember> teamMembers = teamMemberRepository.findAllByMember(member);
-        return TeamResponse.from(findFirstTeamMember(memberId, teamMembers).getTeam());
+        TeamMember teamMember = teamMemberRepository.findFirstByMemberOrderByIdAsc(member).orElseThrow(
+                () -> TeamNotFoundException.ofTeam(
+                        CustomErrorCode.TEAM_NOT_FOUND_ERROR, memberId + "번의 멤버가 속해있는 팀이 없습니다."
+                )
+        );
+        return TeamResponse.from(teamMember.getTeam());
     }
 
     private TeamMember findFirstTeamMember(Long memberId, List<TeamMember> teamMembers) {
