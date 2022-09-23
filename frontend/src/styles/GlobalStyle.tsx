@@ -84,7 +84,7 @@ const style = css`
     }
   }
 
-  @media screen and (max-width: 1365px) {
+  @media screen and (max-width: 1366px) {
     html {
       font-size: 7px;
     }
