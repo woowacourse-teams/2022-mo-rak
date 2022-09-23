@@ -5,8 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { GroupInterface } from '../../../types/group';
-import { AppointmentInterface, getAppointmentResponse, AppointmentRecommendationInterface } from '../../../types/appointment';
-import { closeAppointment, deleteAppointment } from '../../../api/appointment';
+import {
+  AppointmentInterface,
+  getAppointmentResponse,
+  AppointmentRecommendationInterface
+} from '../../../types/appointment';
+import {
+  closeAppointment,
+  deleteAppointment,
+  getAppointmentStatus
+} from '../../../api/appointment';
 import Button from '../../@common/Button/Button';
 import { getFormattedDateTime } from '../../../utils/date';
 
@@ -16,10 +24,19 @@ interface Props {
   isClosed: AppointmentInterface['isClosed'];
   isHost: getAppointmentResponse['isHost'];
   title: getAppointmentResponse['title'];
-  appointmentRecommendation: Array<AppointmentRecommendationInterface>; 
+  appointmentRecommendation: Array<AppointmentRecommendationInterface>;
+  setIsClosed: (isClosed: AppointmentInterface['isClosed']) => void;
 }
 
-function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, isHost, title, appointmentRecommendation }: Props) {
+function AppointmentResultButtonGroup({
+  groupCode,
+  appointmentCode,
+  isClosed,
+  isHost,
+  title,
+  appointmentRecommendation,
+  setIsClosed
+}: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -27,10 +44,16 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
     navigate(location);
   };
 
-  const handleCloseAppointment = () => {
+  const handleCloseAppointment = async () => {
     try {
       if (window.confirm('약속잡기를 마감하시겠습니까?')) {
-        closeAppointment(groupCode, appointmentCode);
+        await closeAppointment(groupCode, appointmentCode);
+        const {
+          data: { status }
+        } = await getAppointmentStatus(groupCode, appointmentCode);
+
+        const isClosed = status === 'CLOSED' ? true : false;
+        setIsClosed(isClosed);
       }
     } catch (err) {
       console.log(err);
@@ -38,23 +61,25 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
   };
 
   const firstRankAppointmentRecommendations = appointmentRecommendation
-  .filter(({rank}) => rank === 1)
-  .map(({recommendStartDateTime, recommendEndDateTime}) => {
-    return `${getFormattedDateTime(recommendStartDateTime)}~${getFormattedDateTime(recommendEndDateTime)}`;
-  });
-  
+    .filter(({ rank }) => rank === 1)
+    .map(({ recommendStartDateTime, recommendEndDateTime }) => {
+      return `${getFormattedDateTime(recommendStartDateTime)}~${getFormattedDateTime(
+        recommendEndDateTime
+      )}`;
+    });
+
   const handleCreateNewPoll = async () => {
     try {
-        navigate(`/groups/${groupCode}/poll/create`, {
-          state: {
-            title,
-            firstRankAppointmentRecommendations
-          }
-        });
+      navigate(`/groups/${groupCode}/poll/create`, {
+        state: {
+          title,
+          firstRankAppointmentRecommendations
+        }
+      });
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const handleDeleteAppointment = async () => {
     try {
@@ -74,7 +99,7 @@ function AppointmentResultButtonGroup({ groupCode, appointmentCode, isClosed, is
     }
   };
 
-return (
+  return (
     <FlexContainer gap="4rem" justifyContent="center">
       {isHost && (
         <>
@@ -90,6 +115,7 @@ return (
               마감
             </Button>
           )}
+
           <Button
             variant="filled"
             colorScheme={theme.colors.GRAY_400}
@@ -100,15 +126,15 @@ return (
           >
             삭제
           </Button>
-          {(isClosed && firstRankAppointmentRecommendations.length > 1) && (
+          {isClosed && firstRankAppointmentRecommendations.length > 1 && (
             <Button
               variant="filled"
-              colorScheme={theme.colors.YELLOW_100} 
+              colorScheme={theme.colors.YELLOW_100}
               padding="2rem"
               fontSize="3.2rem"
               onClick={handleCreateNewPoll}
             >
-              공동 1등에 대한 재투표 만들기 
+              공동 1등에 대한 재투표 만들기
             </Button>
           )}
         </>

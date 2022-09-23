@@ -87,7 +87,7 @@ function AppointmentProgressTimePicker({
     <Box width="30rem" minHeight="52rem" height="60rem" padding="3.6rem 2rem" overflow="auto">
       <FlexContainer flexDirection="column" gap="1.2rem">
         {!selectedDate ? (
-          <StyledGuide>왼쪽에서 날짜를 선택해주세요~</StyledGuide>
+          <StyledGuide>왼쪽에서 날짜를 선택해주세요</StyledGuide>
         ) : (
           <>
             {timeTables.map(({ start, end }) => {

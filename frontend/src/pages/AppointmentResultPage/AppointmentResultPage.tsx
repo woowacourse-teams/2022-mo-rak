@@ -27,6 +27,19 @@ function AppointmentResultPage() {
     appointmentCode: AppointmentInterface['code'];
   };
 
+  const handleShowParticipant = (idx: number) => () => {
+    setClickedRecommendation(idx);
+  };
+
+  // TODO: 함수명 컨벤션에 대해서 생각해보자
+  // 이벤트 핸들러 함수면 handle prefix가 맞는 것 같은데, 그게 아닌 함수에는 handle이 필요없는 것 같다.
+  const setIsClosed = (isClosed: AppointmentInterface['isClosed']) => {
+    // TODO: if appointment가 맞나?...없을 수도 있어서 undefined error가 발생
+    if (appointment) {
+      setAppointment({ ...appointment, isClosed });
+    }
+  };
+
   useEffect(() => {
     const fetchAppointmentRecommendation = async () => {
       try {
@@ -51,10 +64,6 @@ function AppointmentResultPage() {
 
     fetchAppointment();
   }, []);
-
-  const handleShowParticipant = (idx: number) => () => {
-    setClickedRecommendation(idx);
-  };
 
   if (!appointment) return <div>로딩중입니다.</div>;
 
@@ -87,6 +96,7 @@ function AppointmentResultPage() {
           isClosed={appointment.isClosed}
           title={appointment.title}
           isHost={appointment.isHost}
+          setIsClosed={setIsClosed}
         />
       </FlexContainer>
     </StyledContainer>
