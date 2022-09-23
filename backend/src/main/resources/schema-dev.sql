@@ -133,7 +133,7 @@ CREATE TABLE appointment_available_time
     `updated_at`      DATETIME NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (appointment_id) REFERENCES appointment (id),
-    FOREIGN KEY (member_id) REFERENCES member (id),
+    FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
 ALTER TABLE appointment_available_time
