@@ -79,7 +79,7 @@ public class PollDummySupport {
     public List<PollResult> makeDummyPollResult(Member member, int pollItemSize) {
         return LongStream.rangeClosed(1L, pollItemSize)
                 .mapToObj(pollItemIndex -> PollResult.builder()
-                        .pollItem(PollItem.builder().id(pollItemIndex).build())
+                        .pollItem(PollItem.builder().id(pollItemIndex).poll(Poll.builder().build()).build())
                         .member(member)
                         .description("더미 투표 선택 결과")
                         .build())

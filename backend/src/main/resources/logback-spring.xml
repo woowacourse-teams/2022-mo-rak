@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <springProperty name="SLACK_ERROR_URL" source="logging.slack.error-url"/>
+
     <property name="LOGS_ABSOLUTE_PATH" value="./logs"/>
     <property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{36} - %msg%n"/>
     <property name="MAX_HISTORY" value="30"/>
+    <property name="PERFORMANCE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %-5level %msg%n"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -71,7 +74,6 @@
         </rollingPolicy>
     </appender>
 
-    <springProperty name="SLACK_ERROR_URL" source="logging.slack.error-url"/>
     <appender name="SLACK" class="com.github.maricn.logback.SlackAppender">
         <webhookUri>${SLACK_ERROR_URL}</webhookUri>
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -101,8 +103,22 @@
         </rollingPolicy>
         <encoder>
             <charset>utf8</charset>
-            <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %msg%n</Pattern>
+            <Pattern>${PERFORMANCE_LOG_PATTERN}</Pattern>
         </encoder>
+    </appender>
+
+    <appender name="PERFORMANCE_SLACK" class="com.github.maricn.logback.SlackAppender">
+        <webhookUri>${SLACK_ERROR_URL}</webhookUri>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${PERFORMANCE_LOG_PATTERN}</pattern>
+        </layout>
+        <username>MORAK-BOT</username>
+        <iconEmoji>:oncoming_police_car:</iconEmoji>
+        <colorCoding>true</colorCoding>
+    </appender>
+
+    <appender name="PERFORMANCE_ASYNC_SLACK" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="PERFORMANCE_SLACK"/>
     </appender>
 
     <root level="INFO">
@@ -120,6 +136,7 @@
 
     <logger name="PERFORMANCE">
         <appender-ref ref="PERFORMANCE"/>
+        <appender-ref ref="PERFORMANCE_ASYNC_SLACK"/>
     </logger>
 
 </configuration>
