@@ -1,14 +1,15 @@
 import { useTheme } from '@emotion/react';
-import React, { InputHTMLAttributes } from 'react';
+import { ChangeEventHandler, InputHTMLAttributes, memo } from 'react';
 import Input from '../../@common/Input/Input';
 import TextField from '../../@common/TextField/TextField';
 import { PollInterface } from '../../../types/poll';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   title: PollInterface['title'];
+  onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-function PollCreateFormTitleInput({ title, ...props }: Props) {
+function PollCreateFormTitleInput({ title, onChange }: Props) {
   const theme = useTheme();
 
   return (
@@ -21,10 +22,10 @@ function PollCreateFormTitleInput({ title, ...props }: Props) {
         textAlign="left"
         required
         autoFocus
-        {...props}
+        onChange={onChange}
       />
     </TextField>
   );
 }
 
-export default PollCreateFormTitleInput;
+export default memo(PollCreateFormTitleInput, (prev, next) => prev.title === next.title);

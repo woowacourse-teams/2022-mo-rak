@@ -1,17 +1,23 @@
 import styled from '@emotion/styled';
-import React from 'react';
+
 import { AppointmentInterface } from '../../../types/appointment';
+import AppointmentProgressDetail from '../../../components/AppointmentProgress/AppointmentProgressDetail/AppointmentProgressDetail';
 
 interface Props {
-  title: AppointmentInterface['title'];
-  description: AppointmentInterface['description'];
+  appointment: AppointmentInterface;
 }
 
-function AppointmentProgressHeader({ title, description }: Props) {
+function AppointmentProgressHeader({ appointment }: Props) {
   return (
     <StyledHeaderContainer>
-      <StyledHeader>{title}</StyledHeader>
-      <StyledDescription>{description}</StyledDescription>
+      <StyledHeader>{appointment.title}</StyledHeader>
+      <StyledDescription>{appointment.description}</StyledDescription>
+      <AppointmentProgressDetail
+          durationHours={appointment.durationHours}
+          durationMinutes={appointment.durationMinutes}
+          startTime={appointment.startTime}
+          endTime={appointment.endTime}
+        />
     </StyledHeaderContainer>
   );
 }
@@ -19,9 +25,8 @@ function AppointmentProgressHeader({ title, description }: Props) {
 const StyledHeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3.6rem;
+  gap: 2rem;
   max-height: 20.8rem;
-  /* min-height: 20.8rem; */
 `;
 
 const StyledHeader = styled.header`
@@ -29,7 +34,7 @@ const StyledHeader = styled.header`
 `;
 
 const StyledDescription = styled.div`
-  font-size: 2rem;
+  font-size: 2.4rem;
   overflow-y: auto;
 `;
 

@@ -10,7 +10,9 @@ module.exports = {
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    filename: '[name].[contenthash].js',
+    publicPath: '/',
+    clean: true
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -21,30 +23,38 @@ module.exports = {
       'process.env': JSON.stringify(process.env)
     })
   ],
+  // TODO: loader 정리
+  // TODO: asset test 파일 형식 필요없는 거 제거
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/i,
         loader: 'ts-loader',
-        exclude: ['/node_modules/']
+        exclude: /(node_modules)/
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: 'asset'
       },
       {
-        test: /\.(js|jsx)$/i,
+        test: /\.(js)$/i,
         exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript']
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-react',
+              {
+                runtime: 'automatic'
+              }
+            ]
           }
         }
       }
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js', '...']
+    extensions: ['.tsx', '.ts', '.js']
   }
 };

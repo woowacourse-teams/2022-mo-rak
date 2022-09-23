@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React from 'react';
+
 import PollMainContainer from '../../components/PollMain/PollMainContainer/PollMainContainer';
 import PollMainHeader from '../../components/PollMain/PollMainHeader/PollMainHeader';
 

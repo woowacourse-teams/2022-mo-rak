@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
 import Logo from '../../assets/logo.svg';
@@ -7,7 +7,7 @@ import { getGroups } from '../../api/group';
 import { GroupInterface } from '../../types/group';
 
 import Divider from '../@common/Divider/Divider';
-import SidebarGroupMenu from '../SidebarGroupMenu/SidebarGroupMenu';
+import SidebarGroupsMenu from '../SidebarGroupsMenu/SidebarGroupsMenu';
 import SidebarMenuModals from '../SidebarMenuModals/SidebarMenuModals';
 
 import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembersProfileMenu';
@@ -28,7 +28,7 @@ function Sidebar() {
     navigate(location);
   };
 
-  const handleSetActiveGroupMenu = (menu: null | string) => () => {
+  const handleActiveGroupMenu = (menu: null | string) => () => {
     setActiveModalMenu(menu);
   };
 
@@ -47,79 +47,72 @@ function Sidebar() {
     fetchGroups();
   }, [groupCode]);
 
-  if (isLoading) return <div>로딩중</div>;
-
   return (
     <>
       <StyledContainer>
-        <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+        {isLoading ? (
+          <div>로딩중</div>
+        ) : (
+          <>
+            <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+            <SidebarGroupsMenu
+              onClickMenu={handleActiveGroupMenu}
+              groupCode={groupCode}
+              groups={groups}
+            />
 
-        {/* 그룹 */}
-        {/* TODO: handleSetActiveGroupMenu 넘겨주는 방식(하나로 넘겨줄 수는 없을까?) */}
-        <SidebarGroupMenu
-          onClickCreateMenu={handleSetActiveGroupMenu('create')}
-          onClickParticipateMenu={handleSetActiveGroupMenu('participate')}
-          groupCode={groupCode}
-          groups={groups}
-        />
+            <Divider />
+            <SidebarFeatureMenu groupCode={groupCode} />
 
-        {/* 기능 */}
-        <Divider />
-        <SidebarFeatureMenu groupCode={groupCode} />
+            <Divider />
+            <SidebarMembersProfileMenu groupCode={groupCode} />
 
-        {/* 멤버 목록 */}
-        <Divider />
-        <SidebarMembersProfileMenu groupCode={groupCode} />
-
-        <StyledBottomMenu>
-          {/* 슬랙연동 */}
-          <SidebarSlackMenu onClickMenu={handleSetActiveGroupMenu('slack')} />
-
-          {/* 초대링크 */}
-          <SidebarInvitationMenu groupCode={groupCode} />
-        </StyledBottomMenu>
-
+            <StyledBottomMenu>
+              <SidebarSlackMenu onClick={handleActiveGroupMenu('slack')} /> 
+              <SidebarInvitationMenu groupCode={groupCode} />
+            </StyledBottomMenu>
+          </>
+        )}
       </StyledContainer>
 
+      {/* TODO: 모달이 모여있음  */}
       <SidebarMenuModals
         activeModalMenu={activeModalMenu}
-        closeModal={handleSetActiveGroupMenu(null)}
+        closeModal={handleActiveGroupMenu(null)}
         groupCode={groupCode}
       />
-
     </>
   );
 }
 
 const StyledContainer = styled.div(
   ({ theme }) => `
-  z-index: 1; 
-  width: 36.4rem;
-  height: 100vh;
   position: sticky;
   top: 0;
-  border-right: 0.1rem solid ${theme.colors.GRAY_200};
+  width: 36.4rem;
+  height: 100vh;
+  z-index: 1; 
   background: ${theme.colors.WHITE_100};
   padding-left: 4rem;
   gap: 2rem;
-  border: none;
 `
 );
 
 const StyledLogo = styled.img`
   display: block;
-  margin: 2rem auto;  
+  margin: 2rem auto;
   width: 16rem;
+  aspect-ratio: 16 / 9;
   cursor: pointer;
   padding-right: 4rem;
 `;
 
 const StyledBottomMenu = styled.div`
+  position: absolute; 
+  bottom: 4rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  position: absolute;
-  bottom: 4rem;
 `;
 
 export default Sidebar;

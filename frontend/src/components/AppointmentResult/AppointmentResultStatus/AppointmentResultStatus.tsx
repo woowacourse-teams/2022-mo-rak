@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import TextField from '../../@common/TextField/TextField';
@@ -14,7 +13,7 @@ function AppointmentResultStatus({ isClosed }: Props) {
   return (
     <TextField
       variant="filled"
-      width="6.8rem"
+      width="12.8rem"
       padding="1.6rem 0"
       borderRadius="1.2rem"
       colorScheme={isClosed ? theme.colors.GRAY_400 : theme.colors.PURPLE_100}
@@ -27,7 +26,7 @@ function AppointmentResultStatus({ isClosed }: Props) {
 const StyledStatus = styled.span(
   ({ theme }) => `
   color: ${theme.colors.WHITE_100};
-  font-size: 1.6rem;
+  font-size: 2.4rem;
 `
 );
 

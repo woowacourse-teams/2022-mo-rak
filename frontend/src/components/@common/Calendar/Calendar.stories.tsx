@@ -1,4 +1,3 @@
-import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import Calendar from './Calendar';
 
@@ -7,6 +6,6 @@ export default {
   component: Calendar
 } as Meta;
 
-const Template: Story = () => <Calendar />;
+const Template: Story = () => <Calendar startDate="2022-08-22" endDate="2022-08-31" />;
 
 export const Default = Template.bind({});

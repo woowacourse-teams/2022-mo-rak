@@ -1,71 +1,59 @@
 import styled from '@emotion/styled';
-import React, { MouseEventHandler, useMemo } from 'react';
+import { MouseEventHandler, useMemo } from 'react';
 import Box from '../../@common/Box/Box';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { AppointmentInterface, AvailableTimes } from '../../../types/appointment';
 
-// TODO: 로직 리팩토링...엉망임
+const formatHourMinutePeriod = (date: Date) =>
+  date
+    .toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })
+    .replace(' ', '');
+
+const getTimeDetail = (time: string): [string, number, number] => {
+  const period = time.slice(-2);
+  const [hour, minute] = time.slice(0, -2).split(':');
+
+  return [period, Number(hour), Number(minute)];
+};
+
 // NOTE: () => [{s: '10:00AM', e: '10:30AM' ....}]
-const getTimes = (
+const getTimeTables = (
   startTime: AppointmentInterface['startTime'],
   endTime: AppointmentInterface['endTime']
 ) => {
-  // NOTE: 여기서 AM, PM 고려해서 시, 분을 포맷해준다.
-  const formatHM = (hour: number, minute: number) => {
-    const period = Math.floor(hour / 12) >= 1 ? 'PM' : 'AM';
-    let formatedHour = period === 'PM' ? hour % 12 : hour;
-    formatedHour = formatedHour === 0 ? 12 : formatedHour;
+  const [startPeriod, startHour, startMinute] = getTimeDetail(startTime);
+  const [endPeriod, endHour, endMinute] = getTimeDetail(endTime);
 
-    return `${String(formatedHour).padStart(2, '0')}:${String(minute).padStart(2, '0')}${period}`;
-  };
-
-  const startPeriod = startTime.slice(-2);
-  const [startHour, startMinute] = startTime.slice(0, -2).split(':');
-
-  const endPeriod = endTime.slice(-2);
-  const [endHour, endMinute] = endTime.slice(0, -2).split(':');
-
-  const startHM = new Date();
-  if (Number(startHour) !== 12 && startPeriod === 'PM') {
-    startHM.setHours(Number(startHour) + 12);
-  } else if (Number(startHour) === 12 && startPeriod === 'AM') {
-    startHM.setHours(Number(startHour) - 12);
-  } else {
-    startHM.setHours(Number(startHour));
+  const startDate = new Date(0, 0, 0, startHour, startMinute);
+  if (startHour !== 12 && startPeriod === 'PM') {
+    startDate.setHours(startHour + 12);
+  }
+  if (startHour === 12 && startPeriod === 'AM') {
+    startDate.setHours(startHour - 12);
   }
 
-  startHM.setMinutes(Number(startMinute));
-
-  const endHM = new Date();
-  if (
-    (Number(endHour) !== 12 && endPeriod === 'PM') ||
-    (Number(endHour) === 12 && endPeriod === 'AM')
-  ) {
-    endHM.setHours(Number(endHour) + 12);
-  } else {
-    endHM.setHours(Number(endHour));
+  const endDate = new Date(0, 0, 0, endHour, endMinute);
+  if ((endHour !== 12 && endPeriod === 'PM') || (endHour === 12 && endPeriod === 'AM')) {
+    endDate.setHours(endHour + 12);
   }
-
-  endHM.setMinutes(Number(endMinute));
 
   const timetables = [];
-
-  while (startHM.getTime() !== endHM.getTime()) {
-    const [SH, SM] = [startHM.getHours(), startHM.getMinutes()];
-    startHM.setMinutes(startHM.getMinutes() + 30);
-    const [EH, EM] = [startHM.getHours(), startHM.getMinutes()];
+  while (startDate.getTime() !== endDate.getTime()) {
+    const startTimeTable = startDate;
+    const endTimeTable = new Date(startTimeTable.getTime() + 1800000);
 
     timetables.push({
-      start: formatHM(SH, SM),
-      end: formatHM(EH, EM)
+      start: formatHourMinutePeriod(startTimeTable),
+      end: formatHourMinutePeriod(endTimeTable)
     });
+
+    startDate.setMinutes(startDate.getMinutes() + 30);
   }
 
   return timetables;
 };
 
-// TODO: 중복됨 제거
-const getPlusOneDate = (date: string) => {
+const getPlusOneDay = (date: string) => {
   const currentDate = new Date(date);
   currentDate.setDate(currentDate.getDate() + 1);
 
@@ -84,6 +72,7 @@ interface Props {
   availableTimes: AvailableTimes;
 }
 
+// TODO: 위의 함수들이 여러개로 나뉘어져있는 것을 컴포넌트에 놔둬도 될지 고민해보기
 function AppointmentProgressTimePicker({
   startTime,
   endTime,
@@ -91,29 +80,31 @@ function AppointmentProgressTimePicker({
   onClickTime,
   availableTimes
 }: Props) {
-  const times = useMemo(() => getTimes(startTime, endTime), []);
+  const timeTables = useMemo(() => getTimeTables(startTime, endTime), []);
 
   return (
     // TODO: box minheight 없애야할듯
-    <Box width="30rem" minHeight="52rem" height="52rem" padding="3.6rem 2rem" overflow="auto">
+    <Box width="30rem" minHeight="52rem" height="60rem" padding="3.6rem 2rem" overflow="auto">
       <FlexContainer flexDirection="column" gap="1.2rem">
         {!selectedDate ? (
-          <StyledGuideText>왼쪽에서 날짜를 선택해주세요~</StyledGuideText>
+          <StyledGuide>왼쪽에서 날짜를 선택해주세요</StyledGuide>
         ) : (
           <>
-            {times.map(({ start, end }) => {
+            {timeTables.map(({ start, end }) => {
               // TODO: 리팩토링
               const endSelectedDate =
-                end === '12:00AM' ? getPlusOneDate(selectedDate) : selectedDate;
+                end === '12:00AM' ? getPlusOneDay(selectedDate) : selectedDate;
+              const isAvailableTime = availableTimes.some(
+                (availableTime) =>
+                  availableTime.start === `${selectedDate}T${start}` &&
+                  availableTime.end === `${endSelectedDate}T${end}`
+              );
 
               return (
                 <StyledTime
+                  key={`${start}-${end}`}
                   onClick={onClickTime(start, end)}
-                  isSelected={availableTimes.some(
-                    (availableTime) =>
-                      availableTime.start === `${selectedDate}T${start}` &&
-                      availableTime.end === `${endSelectedDate}T${end}`
-                  )}
+                  isSelected={isAvailableTime}
                 >
                   {start}~{end}
                 </StyledTime>
@@ -129,9 +120,9 @@ function AppointmentProgressTimePicker({
 const StyledTime = styled.div<{ isSelected: boolean }>(
   ({ theme, isSelected }) => `
   width: 25.6rem;
-  font-size: 1.6rem;
+  font-size: 2rem;
   text-align: center;
-  padding: 0.8rem 0;
+  padding: 1.2rem 0;
   border-radius: 10px;
   cursor: pointer;
 
@@ -144,7 +135,7 @@ const StyledTime = styled.div<{ isSelected: boolean }>(
 `
 );
 
-const StyledGuideText = styled.p(
+const StyledGuide = styled.p(
   ({ theme }) => `
   font-size: 2rem;
   text-align: center;

@@ -1,14 +1,15 @@
-import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { useMenuDispatchContext } from '../context/MenuProvider';
+import useMenuDispatchContext from '../hooks/useMenuDispatchContext';
+import {Menu} from '../types/menu';
 
 interface Props {
-  menu: string;
+  // TODO: 존재하는 메뉴 literal
+  menu: Menu;
 }
 
 function MenuRoute({ menu }: Props) {
   const dispatch = useMenuDispatchContext();
-  dispatch({ type: 'SET_CLICKED_MENU', payload: menu });
+  dispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
 
   return <Outlet />;
 }

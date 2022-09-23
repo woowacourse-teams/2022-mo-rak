@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import { memo, MouseEventHandler } from 'react';
 import { useTheme } from '@emotion/react';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import Button from '../../@common/Button/Button';
@@ -11,7 +11,7 @@ function AppointmentCreateFormButtonGroup({ onCancel }: Props) {
   const theme = useTheme();
 
   return (
-    <FlexContainer justifyContent="center" gap="0.8rem">
+    <FlexContainer justifyContent="space-between">
       <Button
         variant="filled"
         colorScheme={theme.colors.GRAY_400}
@@ -34,4 +34,4 @@ function AppointmentCreateFormButtonGroup({ onCancel }: Props) {
   );
 }
 
-export default AppointmentCreateFormButtonGroup;
+export default memo(AppointmentCreateFormButtonGroup, () => true);

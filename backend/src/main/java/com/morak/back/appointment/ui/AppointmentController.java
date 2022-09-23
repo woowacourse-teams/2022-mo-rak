@@ -4,6 +4,7 @@ import com.morak.back.appointment.application.AppointmentService;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
+import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.support.Auth;
@@ -81,5 +82,13 @@ public class AppointmentController {
                                                   @PathVariable String appointmentCode) {
         appointmentService.deleteAppointment(groupCode, memberId, appointmentCode);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{appointmentCode}/status")
+    public ResponseEntity<AppointmentStatusResponse> findAppointmentStatus(@PathVariable String groupCode,
+                                                                           @Auth Long memberId,
+                                                                           @PathVariable String appointmentCode) {
+        AppointmentStatusResponse response = appointmentService.findAppointmentStatus(groupCode, memberId, appointmentCode);
+        return ResponseEntity.ok(response);
     }
 }

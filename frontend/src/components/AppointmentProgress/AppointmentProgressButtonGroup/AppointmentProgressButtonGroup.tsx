@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import React, { MouseEventHandler } from 'react';
+import { MouseEventHandler } from 'react';
 import Button from '../../@common/Button/Button';
 
 interface Props {
@@ -13,7 +13,7 @@ function AppointmentProgressButtonGroup({ onClickProgress }: Props) {
     <Button
       variant="filled"
       colorScheme={theme.colors.PURPLE_100}
-      width="31.6rem"
+      width="30rem"
       fontSize="4rem"
       onClick={onClickProgress}
     >

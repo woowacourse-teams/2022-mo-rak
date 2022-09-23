@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.slack.FakeApiReceiver;
 import com.morak.back.core.domain.slack.FakeSlackClient;
 import com.morak.back.core.domain.slack.FormattableData;
@@ -40,14 +41,16 @@ class NotificationServiceTest {
     @Autowired
     public NotificationServiceTest(TeamRepository teamRepository,
                                    TeamMemberRepository teamMemberRepository,
-                                   SlackWebhookRepository slackWebhookRepository) {
+                                   SlackWebhookRepository slackWebhookRepository,
+                                   MemberRepository memberRepository) {
         this.receiver = new FakeApiReceiver();
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.slackWebhookRepository = slackWebhookRepository;
         SlackClient slackClient = new FakeSlackClient(receiver);
         this.notificationService =
-                new NotificationService(slackClient, teamRepository, teamMemberRepository, slackWebhookRepository);
+                new NotificationService(slackClient, teamRepository, teamMemberRepository,
+                        slackWebhookRepository, memberRepository);
     }
 
     @BeforeEach
@@ -77,7 +80,7 @@ class NotificationServiceTest {
         // given
         String url = "https://hooks.slack.com/services/my-url";
 
-        SlackWebhook savedWebhook = slackWebhookRepository.findByTeamId(team.getId()).orElseThrow();
+        SlackWebhook savedWebhook = slackWebhookRepository.findByTeam(team).orElseThrow();
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
 
         // when

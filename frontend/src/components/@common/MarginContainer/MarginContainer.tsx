@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, CSSProperties, HTMLAttributes } from 'react';
+import { PropsWithChildren, CSSProperties, HTMLAttributes } from 'react';
 
 import styled from '@emotion/styled';
 

@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import React, { SelectHTMLAttributes } from 'react';
+import { memo, SelectHTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import TextField from '../../@common/TextField/TextField';
@@ -20,7 +20,7 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
       <TextField
         variant="outlined"
         colorScheme={theme.colors.PURPLE_100}
-        borderRadius="10px"
+        borderRadius="1.2rem"
         padding="0.4rem 0.8rem"
         width="6rem"
       >
@@ -29,7 +29,9 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
           {createRange({
             size: 25
           }).map((hour: number) => (
-            <option value={hour}>{hour}</option>
+            <option key={hour} value={hour}>
+              {hour}
+            </option>
           ))}
         </Select>
       </TextField>
@@ -37,11 +39,18 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
       <TextField
         variant="outlined"
         colorScheme={theme.colors.PURPLE_100}
-        borderRadius="10px"
+        borderRadius="1.2rem"
         padding="0.4rem 0.8rem"
         width="9.2rem"
       >
-        <Select id="minute" onChange={onChange} value={minute} name="minute" required>
+        <Select
+          id="minute"
+          onChange={onChange}
+          value={minute}
+          name="minute"
+          fontSize="2.4rem"
+          required
+        >
           <option value="00">00</option>
           <option value="30">30</option>
         </Select>
@@ -53,11 +62,14 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
 }
 
 const StyledContent = styled.p`
-  font-size: 3.2rem;
+  font-size: 2.8rem;
 `;
 
 const StyledLabel = styled.label`
-  font-size: 3.2rem;
+  font-size: 2.8rem;
 `;
 
-export default AppointmentCreateFormDurationInput;
+export default memo(
+  AppointmentCreateFormDurationInput,
+  (prev, next) => prev.duration === next.duration
+);

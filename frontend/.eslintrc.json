@@ -1,10 +1,13 @@
-// TODO: eslint 설정 다시 하기
 {
   "env": {
     "browser": true,
     "es2021": true
   },
-  "extends": ["plugin:react/recommended", "airbnb", "plugin:cypress/recommended"],
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:cypress/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -21,15 +24,11 @@
       }
     }
   },
-  "plugins": ["react", "@typescript-eslint", "@emotion"],
+  "plugins": ["@emotion"],
   "rules": {
-    "react/jsx-filename-extension": ["off", { "extensions": [".tsx"] }],
-    "import/extensions": ["off", { "extensions": [".ts", ".tsx"] }],
-    "comma-dangle": ["error", "never"],
-    "no-use-before-define": "off",
-    "react/jsx-props-no-spreading": "off",
-    "object-curly-newline": "off",
-    "react/require-default-props": "off",
-    "implicit-arrow-linebreak": "off"
+    "@emotion/syntax-preference": ["error", "string"],
+    "@typescript-eslint/no-empty-interface": "off",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
   }
 }

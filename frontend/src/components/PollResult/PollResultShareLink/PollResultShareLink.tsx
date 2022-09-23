@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import Link from '../../../assets/link.svg';
 import { PollInterface } from '../../../types/poll';
@@ -31,8 +30,8 @@ function PollResultShareLink({ groupCode, pollCode, status }: Props) {
 }
 
 const StyledLink = styled.img`
-  width: 2rem;
-  height: 2rem;
+  width: 2.4rem;
+  height: 2.4rem;
   cursor: pointer;
 `;
 

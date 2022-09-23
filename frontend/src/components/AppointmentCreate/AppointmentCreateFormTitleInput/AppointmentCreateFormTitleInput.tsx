@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes, memo } from 'react';
 import styled from '@emotion/styled';
 import Input from '../../@common/Input/Input';
 import { AppointmentInterface } from '../../../types/appointment';
@@ -14,7 +14,7 @@ function AppointmentCreateFormTitleInput({ title, onChange }: Props) {
       <Input
         id="appointment-title"
         placeholder="약속 제목을 입력해주세요"
-        fontSize="3.2rem"
+        fontSize="2.4rem"
         textAlign="start"
         value={title}
         onChange={onChange}
@@ -27,9 +27,9 @@ function AppointmentCreateFormTitleInput({ title, onChange }: Props) {
 
 const StyledLabel = styled.label(
   ({ theme }) => `
-  font-size: 4rem;
+  font-size: 2.8rem;
   color: ${theme.colors.PURPLE_100};
 `
 );
 
-export default AppointmentCreateFormTitleInput;
+export default memo(AppointmentCreateFormTitleInput, (prev, next) => prev.title === next.title);

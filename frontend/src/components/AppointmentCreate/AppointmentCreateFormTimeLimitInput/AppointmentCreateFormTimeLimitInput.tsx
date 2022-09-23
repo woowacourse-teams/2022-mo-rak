@@ -1,10 +1,6 @@
-import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import React, { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, memo } from 'react';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
-import TextField from '../../@common/TextField/TextField';
-import { createRange } from '../../../utils/number';
-import Select from '../../@common/Select/Select';
 import { Time } from '../../../types/appointment';
 import AppointmentCreateFormTimeInput from '../AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput';
 
@@ -23,8 +19,8 @@ function AppointmentCreateFormTimeLimitInput({
 }: Props) {
   return (
     <>
-      <StyledLabel>가능 시간 제한</StyledLabel>
-      <StyledHelperText>AM 12:00 ~ AM 12:00(다음날)은 하루종일을 의미합니다.</StyledHelperText>
+      <StyledTitle>가능 시간 제한 설정</StyledTitle>
+      <StyledHelperText>오전 12:00 ~ 오전 12:00(다음날)은 하루종일을 의미합니다.</StyledHelperText>
       <FlexContainer alignItems="center" gap="2.8rem">
         <AppointmentCreateFormTimeInput time={startTime} onChange={onChangeStartTime} />
         <StyledContent>~</StyledContent>
@@ -34,19 +30,22 @@ function AppointmentCreateFormTimeLimitInput({
   );
 }
 
-const StyledLabel = styled.label(
+const StyledTitle = styled.div(
   ({ theme }) => `
-  font-size: 4rem;
+  font-size: 2.8rem;
   color: ${theme.colors.PURPLE_100};
 `
 );
 
 const StyledContent = styled.p`
-  font-size: 3.2rem;
+  font-size: 2.4rem;
 `;
 
 const StyledHelperText = styled.p`
-  font-size: 1.6rem;
+  font-size: 2rem;
 `;
 
-export default AppointmentCreateFormTimeLimitInput;
+export default memo(
+  AppointmentCreateFormTimeLimitInput,
+  (prev, next) => prev.endTime === next.endTime && prev.startTime === next.startTime
+);

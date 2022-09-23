@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, CSSProperties } from 'react';
+import { InputHTMLAttributes, CSSProperties } from 'react';
 
 import styled from '@emotion/styled';
 

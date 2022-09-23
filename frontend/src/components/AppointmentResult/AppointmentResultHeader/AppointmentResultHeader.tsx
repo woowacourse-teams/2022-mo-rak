@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React from 'react';
+
 import { AppointmentInterface } from '../../../types/appointment';
 import LinkIcon from '../../../assets/link.svg';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
@@ -29,7 +29,7 @@ interface Props {
 }
 
 function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, closedAt }: Props) {
-  const handleCopyInviationLink = () => {
+  const handleCopyInvitationLink = () => {
     const baseLink = `${process.env.CLIENT_URL}/groups/${groupCode}/appointment/${appointmentCode}`;
 
     if (isClosed) {
@@ -48,9 +48,9 @@ function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, 
   return (
     <>
       {/* TODO: 리팩토링 */}
-      <FlexContainer gap="0.4rem">
+      <FlexContainer gap="1.2rem">
         {/* TODO: Input 컴포넌트 width 100%에 대해 고민해보고 추후 해결되면 사용해주자 */}
-        <input type="image" src={LinkIcon} alt="link" onClick={handleCopyInviationLink} />
+        <StyledLinkIcon src={LinkIcon} alt="link" onClick={handleCopyInvitationLink} />
         <StyledTitle>{title}</StyledTitle>
       </FlexContainer>
       <FlexContainer justifyContent="space-between">
@@ -75,5 +75,9 @@ const StyledTitle = styled.h1`
 const StyledContent = styled.p`
   font-size: 2.4rem;
 `;
+
+const StyledLinkIcon = styled.img`
+  width: 2.4rem;
+`
 
 export default AppointmentResultHeader;

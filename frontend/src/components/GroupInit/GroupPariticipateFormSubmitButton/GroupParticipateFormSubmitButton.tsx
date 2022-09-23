@@ -1,15 +1,11 @@
-import React from 'react';
 import styled from '@emotion/styled';
 
 function GroupParticipateFormSubmitButton() {
-  return (
-    <StyledButton type="submit">
-      참가하기
-    </StyledButton>
-  );
+  return <StyledButton type="submit">참가하기</StyledButton>;
 }
 
-const StyledButton = styled.button(({ theme }) => `
+const StyledButton = styled.button(
+  ({ theme }) => `
   background-color: ${theme.colors.YELLOW_200};
   color: ${theme.colors.WHITE_100};
   border-radius: 0 10px 10px 0;
@@ -22,6 +18,7 @@ const StyledButton = styled.button(({ theme }) => `
     background-color: ${theme.colors.YELLOW_300};
     transition: all 0.2s linear;
   }
-`);
+`
+);
 
 export default GroupParticipateFormSubmitButton;

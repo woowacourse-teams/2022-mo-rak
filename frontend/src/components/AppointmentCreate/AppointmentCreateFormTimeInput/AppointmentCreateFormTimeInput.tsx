@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, memo } from 'react';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import TextField from '../../@common/TextField/TextField';
@@ -19,27 +19,29 @@ function AppointmentCreateFormTimeInput({ time, onChange }: Props) {
     <TextField
       variant="outlined"
       colorScheme={theme.colors.PURPLE_100}
-      borderRadius="10px"
+      borderRadius="1.2rem"
       padding="0.4rem 0.8rem"
-      width="21.6rem"
+      width="18rem"
     >
       <FlexContainer alignItems="center">
         {/* TODO: label을 어떻게 넣을것인가? 빈값으로? */}
-        <Select name="period" value={time.period} onChange={onChange} required>
-          <option value="AM">AM</option>
-          <option value="PM">PM</option>
+        <Select name="period" value={time.period} onChange={onChange} fontSize="2.4rem" required>
+          <option value="AM">오전</option>
+          <option value="PM">오후</option>
         </Select>
-        <Select name="hour" value={time.hour} onChange={onChange} required>
+        <Select name="hour" value={time.hour} onChange={onChange} fontSize="2.4rem" required>
           <option value="">--</option>
           {createRange({
             size: 12,
             startNumber: 1
           }).map((hour: number) => (
-            <option value={hour}>{hour}</option>
+            <option key={hour} value={hour}>
+              {hour}
+            </option>
           ))}
         </Select>
         <StyledContent>:</StyledContent>
-        <Select name="minute" value={time.minute} onChange={onChange} required>
+        <Select name="minute" value={time.minute} onChange={onChange} fontSize="2.4rem" required>
           <option value="00">00</option>
           <option value="30">30</option>
         </Select>
@@ -49,7 +51,7 @@ function AppointmentCreateFormTimeInput({ time, onChange }: Props) {
 }
 
 const StyledContent = styled.p`
-  font-size: 3.2rem;
+  font-size: 2.4rem;
 `;
 
-export default AppointmentCreateFormTimeInput;
+export default memo(AppointmentCreateFormTimeInput, (prev, next) => prev.time === next.time);

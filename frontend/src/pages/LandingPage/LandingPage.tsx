@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   getLocalStorageItem,
@@ -12,10 +12,9 @@ import {
 import { signin } from '../../api/auth';
 import { getDefaultGroup } from '../../api/group';
 import LandingMainSection from '../../components/Landing/LandingMainSection/LandingMainSection';
-import LandingIntroduceSection from '../../components/Landing/LandingIntroduceSection/LandingIntroduceSection';
-import LandingServiceIntroduceSection from '../../components/Landing/LandingServiceIntroduceSection/LandingServiceIntroduceSection';
+import LandingServiceIntroductionSection from '../../components/Landing/LandingServiceIntroductionSection/LandingServiceIntroductionSection';
+import LandingFeatureIntroductionSection from '../../components/Landing/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';
 
-// TODO: 페이지 추상화
 function LandingPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -45,7 +44,7 @@ function LandingPage() {
       }
     };
     // TODO: 중복 로직해결
-    // TODO: 다시 한 번 token을 가져오는
+    // TODO: 다시 한 번 token을 가져오는 중복 로직해결
     const token = getLocalStorageItem('token');
 
     if (token) {
@@ -88,20 +87,20 @@ function LandingPage() {
 
   return (
     <StyledContainer>
+      {/* TODO: section 네이밍 인관성 */}
       <LandingMainSection id="main-section" />
-      <LandingIntroduceSection id="introduce-section" />
-      <LandingServiceIntroduceSection id="service-introduce-section" />
+      <LandingServiceIntroductionSection id="service-introduction-section" />
+      <LandingFeatureIntroductionSection id="feature-introduction-section" />
     </StyledContainer>
   );
 }
 
 const StyledContainer = styled.div`
-  scroll-snap-type: y mandatory;
+  height: 100vh;  
   overflow-y: scroll;
-  height: 100vh;
-  width: 100%;
-  font-family: 'Nanum Gothic', sans-serif;
+  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
+  font-family: 'Nanum Gothic', sans-serif;
 `;
 
 export default LandingPage;

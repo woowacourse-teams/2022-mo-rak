@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, MouseEvent, ChangeEvent } from 'react';
+import { Dispatch, SetStateAction, MouseEvent, ChangeEvent, memo } from 'react';
 
 import { useTheme } from '@emotion/react';
 
@@ -57,6 +57,8 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
   return (
     <FlexContainer flexDirection="column" gap="1.2rem">
       {pollItems.map((pollItem, idx) => (
+        // TODO: key를 넣어줘야한다.
+        // eslint-disable-next-line react/jsx-key
         <TextField
           variant="outlined"
           borderRadius="10px"
@@ -69,7 +71,7 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
               id={pollItem}
               value={pollItem}
               color={theme.colors.BLACK_100}
-              fontSize="1.2rem"
+              fontSize="1.6rem"
               placeholder="선택항목을 입력해주세요!"
               onChange={handleChange(idx)}
               aria-label={`poll-input${idx}`}
@@ -96,6 +98,7 @@ const StyledDeleteIcon = styled.img`
   position: absolute;
   right: 1rem;
   cursor: pointer;
+  width: 1.8rem;
 `;
 
-export default PollCreateFormInputGroup;
+export default memo(PollCreateFormInputGroup, (prev, next) => prev.pollItems === next.pollItems);

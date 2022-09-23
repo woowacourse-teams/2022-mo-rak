@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import React from 'react';
+
 import styled from '@emotion/styled';
 
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
@@ -29,37 +29,39 @@ function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Pro
   const theme = useTheme();
 
   return (
-    <FlexContainer flexDirection="column" gap="1.2rem">
+    <FlexContainer flexDirection="column" gap="1.6rem">
       <StyledCloseTime>
         {getFormattedClosedTime(closedAt)}
         까지
       </StyledCloseTime>
-      <TextField
-        width="5.2rem"
-        borderRadius="20px"
-        variant="outlined"
-        padding="0.4rem 0"
-        colorScheme={theme.colors.PURPLE_100}
-      >
-        <StyledDetail>
-          {durationHours}
-          시간
-          {durationMinutes.toString().padStart(2, '0')}분
-        </StyledDetail>
-      </TextField>
+      {/* TODO: flex 쓰지 않고 padding을 줄 수 있도록 만들어보기 */}
+      <FlexContainer>
+        <TextField
+          padding="0.8rem 1.6rem" 
+          borderRadius="20px"
+          variant="outlined"
+          colorScheme={theme.colors.PURPLE_100}
+        >
+          <StyledDetail>
+            {durationHours}
+            시간
+            {durationMinutes.toString().padStart(2, '0')}분
+          </StyledDetail>
+        </TextField>
+      </FlexContainer>
     </FlexContainer>
   );
 }
 
 const StyledCloseTime = styled.p`
-  font-size: 0.8rem;
+  font-size: 1.4rem;
   align-self: end;
 `;
 
 const StyledDetail = styled.span(
   ({ theme }) => `
   color: ${theme.colors.PURPLE_100};
-  font-size: 0.8rem;
+  font-size: 1.2rem;
 `
 );
 

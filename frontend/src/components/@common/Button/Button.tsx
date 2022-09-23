@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, PropsWithChildren, CSSProperties } from 'react';
+import { ButtonHTMLAttributes, PropsWithChildren, CSSProperties } from 'react';
 
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
@@ -56,8 +56,8 @@ const StyledButton = styled.button<
   ({ width, padding, borderRadius, fontSize, variantStyle, disabled }) => `
   position: relative;
   text-align: center;
-  border-radius: ${borderRadius || '15px'};
-  width: ${width || '100%'};
+  border-radius: ${borderRadius || '1.6rem'};
+  width: ${width || 'auto'};
   padding: ${padding || '1.2rem 0'};
   ${disabled && 'cursor: default'};
   ${fontSize && `font-size: ${fontSize}`};

@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import React from 'react';
+import { memo } from 'react';
 
 import Button from '../../@common/Button/Button';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
@@ -11,7 +11,7 @@ function PollCreateFormSubmitButton() {
     <FlexContainer justifyContent="center">
       <Button
         variant="filled"
-        width="46rem"
+        width="100%"
         padding="2rem 0"
         colorScheme={theme.colors.PURPLE_100}
         fontSize="2rem"
@@ -23,4 +23,4 @@ function PollCreateFormSubmitButton() {
   );
 }
 
-export default PollCreateFormSubmitButton;
+export default memo(PollCreateFormSubmitButton);

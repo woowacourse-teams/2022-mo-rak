@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, memo } from 'react';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import Input from '../../@common/Input/Input';
@@ -25,13 +25,13 @@ function AppointmentCreateFormCloseTimeInput({
 
   return (
     <>
-      <StyledLabel>마감 시간 설정</StyledLabel>
+      <StyledTitle>마감 시간 설정</StyledTitle>
       <TextField
         variant="outlined"
         colorScheme={theme.colors.PURPLE_100}
-        width="36rem"
-        padding="0.8rem"
-        borderRadius="10px"
+        width="42rem"
+        padding="0.4rem 0.8rem"
+        borderRadius="1.2rem"
       >
         <FlexContainer alignItems="center">
           <Input
@@ -40,21 +40,27 @@ function AppointmentCreateFormCloseTimeInput({
             max={maxCloseDate}
             onChange={onChangeDate}
             value={closeDate}
-            fontSize="2rem"
+            fontSize="2.4rem"
             required
           />
-          <Input type="time" onChange={onChangeTime} value={closeTime} fontSize="2rem" required />
+          <Input type="time" onChange={onChangeTime} value={closeTime} fontSize="2.4rem" required />
         </FlexContainer>
       </TextField>
     </>
   );
 }
 
-const StyledLabel = styled.label(
+const StyledTitle = styled.div(
   ({ theme }) => `
-  font-size: 4rem;
+  font-size: 2.8rem;
   color: ${theme.colors.PURPLE_100};
 `
 );
 
-export default AppointmentCreateFormCloseTimeInput;
+export default memo(
+  AppointmentCreateFormCloseTimeInput,
+  (prev, next) =>
+    prev.closeTime === next.closeTime &&
+    prev.closeDate === next.closeDate &&
+    prev.maxCloseDate === next.maxCloseDate
+);

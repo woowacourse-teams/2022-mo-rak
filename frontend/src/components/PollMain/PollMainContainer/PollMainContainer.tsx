@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 import { useLottie } from 'lottie-react';
@@ -19,7 +19,7 @@ import emptyAnimation from '../../../assets/empty-animation.json';
 function PollMainContainer() {
   const [polls, setPolls] = useState<getPollsResponse>([]);
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
-  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
+  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' }); 
 
   useEffect(() => {
     const fetchPolls = async () => {
@@ -49,9 +49,10 @@ function PollMainContainer() {
       {polls.length > 0 &&
         polls.map(({ status, title, code, isAnonymous, allowedPollCount, closedAt, count }) => (
           <Box
-            width="26.4rem"
-            padding="2rem"
-            minHeight="16.8rem"
+            key={code}
+            width="36.4rem"
+            padding="2.8rem"
+            minHeight="23.2rem"
             filter={status === 'CLOSED' ? 'grayscale(1)' : 'none'}
           >
             <FlexContainer justifyContent="end">
@@ -59,7 +60,7 @@ function PollMainContainer() {
             </FlexContainer>
             <StyledTitle>{title}</StyledTitle>
             <PollMainProgress currentParticipants={count} groupCode={groupCode} />
-            <MarginContainer margin="0 0 1.2rem">
+            <MarginContainer margin="0 0 1.6rem">
               {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
               <PollMainDetail
                 isAnonymous={isAnonymous}
@@ -75,14 +76,18 @@ function PollMainContainer() {
 }
 
 const StyledContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3.2rem;
 `;
 
 const StyledTitle = styled.h1`
-  font-size: 1.6rem;
+  font-size: 2.2rem;
   text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 1.2rem;
 `;
 
 const LottieWrapper = styled.div`
@@ -94,7 +99,7 @@ const LottieWrapper = styled.div`
 const StyledGuide = styled.p(
   ({ theme }) => `
   text-align: center;
-  font-size: 2.8rem;
+  font-size: 4rem;
 
   color: ${theme.colors.GRAY_400}
 `

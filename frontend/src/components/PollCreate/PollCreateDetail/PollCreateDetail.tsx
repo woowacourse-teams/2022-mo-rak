@@ -1,8 +1,9 @@
 import { useTheme } from '@emotion/react';
-import React from 'react';
+
 import Button from '../../@common/Button/Button';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { PollInterface } from '../../../types/poll';
+import { memo } from 'react';
 
 interface Props {
   isAnonymous: PollInterface['isAnonymous'];
@@ -23,20 +24,20 @@ function PollCreateDetail({
     <FlexContainer flexDirection="column" gap="1.2rem">
       <FlexContainer gap="1.2rem">
         <Button
-          width="6.4rem"
+          padding="1.2rem 2rem"
           borderRadius="20px"
           variant="outlined"
-          fontSize="0.8rem"
+          fontSize="1.2rem"
           colorScheme={isAnonymous ? theme.colors.GRAY_400 : theme.colors.PURPLE_100}
           onClick={handleAnonymous(false)}
         >
           기명
         </Button>
         <Button
-          width="6.4rem"
+          padding="1.2rem 2rem"
           borderRadius="20px"
           variant="outlined"
-          fontSize="0.8rem"
+          fontSize="1.2rem"
           colorScheme={isAnonymous ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
           onClick={handleAnonymous(true)}
         >
@@ -45,20 +46,20 @@ function PollCreateDetail({
       </FlexContainer>
       <FlexContainer gap="1.2rem">
         <Button
-          width="9.2rem"
+          padding="1.2rem"
           borderRadius="20px"
           variant="outlined"
-          fontSize="0.8rem"
+          fontSize="1.2rem"
           colorScheme={isAllowedMultiplePollCount ? theme.colors.GRAY_400 : theme.colors.PURPLE_100}
           onClick={handleAllowedMultiplePollCount(false)}
         >
           하나만 투표 가능
         </Button>
         <Button
-          width="9.2rem"
+          padding="1.2rem"
           borderRadius="20px"
           variant="outlined"
-          fontSize="0.8rem"
+          fontSize="1.2rem"
           colorScheme={isAllowedMultiplePollCount ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
           onClick={handleAllowedMultiplePollCount(true)}
         >
@@ -69,4 +70,9 @@ function PollCreateDetail({
   );
 }
 
-export default PollCreateDetail;
+export default memo(
+  PollCreateDetail,
+  (prev, next) =>
+    prev.isAnonymous === next.isAnonymous &&
+    prev.isAllowedMultiplePollCount === next.isAllowedMultiplePollCount
+);

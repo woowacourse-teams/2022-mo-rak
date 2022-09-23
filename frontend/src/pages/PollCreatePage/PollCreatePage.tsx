@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React from 'react';
+
 import PollCreateForm from '../../components/PollCreate/PollCreateForm/PollCreateForm';
 
 function PollCreatePage() {
@@ -15,6 +15,9 @@ const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  /* TODO: 위니랑 이야기해보기 */
+  /* margin: 8rem 0;
+  height: 100%; */
 `;
 
 export default PollCreatePage;

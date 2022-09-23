@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Progress from '../../@common/Progress/Progress';
 import { getPollResponse } from '../../../types/poll';
@@ -41,15 +41,14 @@ function PollMainProgress({ currentParticipants, groupCode }: Props) {
       <StyledParticipantsStatus>
         {currentParticipants}
         명/
-        {totalParticipants}
-        명
+        {totalParticipants}명
       </StyledParticipantsStatus>
     </FlexContainer>
   );
 }
 
 const StyledParticipantsStatus = styled.p`
-  font-size: 0.8rem;
+  font-size: 1.6rem;
 `;
 
 export default PollMainProgress;

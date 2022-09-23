@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import React, { ChangeEventHandler } from 'react';
+import { ChangeEventHandler } from 'react';
 import styled from '@emotion/styled';
 import TextField from '../../@common/TextField/TextField';
 import Input from '../../@common/Input/Input';
@@ -37,6 +37,7 @@ const StyledParticipateIcon = styled.img`
   position: absolute;
   top: 2rem;
   left: 2.4rem;
+  width: 4rem;
 `;
 
 export default GroupParticipateInvitationCodeInput;

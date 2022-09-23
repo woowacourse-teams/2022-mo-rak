@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, PropsWithChildren } from 'react';
+import { InputHTMLAttributes, PropsWithChildren } from 'react';
 import styled from '@emotion/styled';
 import FlexContainer from '../FlexContainer/FlexContainer';
 import Check from '../../../assets/check.svg';
@@ -33,7 +33,7 @@ const StyledCheckbox = styled.img`
   height: 2rem;
   position: absolute;
   left: 1.2rem;
-  top: 10px;
+  top: 1rem;
 `;
 
 const StyledLabel = styled.span`

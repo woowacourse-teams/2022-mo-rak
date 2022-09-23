@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, PropsWithChildren, CSSProperties } from 'react';
+import { HTMLAttributes, PropsWithChildren, CSSProperties } from 'react';
 import styled from '@emotion/styled';
 
 interface Props extends PropsWithChildren<HTMLAttributes<HTMLDivElement>> {}

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAppointment, progressAppointment } from '../../api/appointment';
 import { GroupInterface } from '../../types/group';
@@ -10,9 +10,9 @@ import {
 } from '../../types/appointment';
 import Calendar from '../../components/@common/Calendar/Calendar';
 import AppointmentProgressHeader from '../../components/AppointmentProgress/AppointmentProgressHeader/AppointmentProgressHeader';
-import AppointmentProgressDetail from '../../components/AppointmentProgress/AppointmentProgressDetail/AppointmentProgressDetail';
 import AppointmentProgressTimePicker from '../../components/AppointmentProgress/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
 import AppointmentProgressButtonGroup from '../../components/AppointmentProgress/AppointmentProgressButtonGroup/AppointmentProgressButtonGroup';
+import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
 
 // TODO: 중복됨 제거
 const getPlusOneDate = (date: string) => {
@@ -111,41 +111,38 @@ function AppointmentProgressPage() {
   // NOTE: 이렇게 Left,Right가 있을 때는 어떻게 추상화 레벨을 맞춰줄까?...
   return (
     <StyledContainer>
-      <StyledLeftContainer>
+      <FlexContainer flexDirection='column' gap="2rem">
         <AppointmentProgressHeader
-          title={appointment.title}
-          description={appointment.description}
+          appointment={appointment}
         />
-        <Calendar
-          version="select"
-          startDate={appointment.startDate}
-          endDate={
-            appointment.endTime === '12:00AM'
-              ? getMinusOneDate(appointment.endDate)
-              : appointment.endDate
-          }
-          selectedDate={selectedDate}
-          // TODO: setSelectedDate를 넘겨주는 것이 아니라 onClickDay 같이 해주는 게 어떨까? props를 받는 Calendar 컴포넌트에서는
-          // 위에서 어떤 함수가 내려오는 지 정확한 이름을 알 필요가 없다. 바깥에는 onClickDay 같이 소통할 수 있는 인터페이스만 제공해주면 될뿐
-          setSelectedDate={setSelectedDate}
-        />
-      </StyledLeftContainer>
-      <StyledRightContainer>
-        <AppointmentProgressDetail
-          durationHours={appointment.durationHours}
-          durationMinutes={appointment.durationMinutes}
-          startTime={appointment.startTime}
-          endTime={appointment.endTime}
-        />
-        <AppointmentProgressTimePicker
-          startTime={appointment.startTime}
-          endTime={appointment.endTime}
-          selectedDate={selectedDate}
-          onClickTime={handleAvailableTimes}
-          availableTimes={availableTimes}
-        />
-        <AppointmentProgressButtonGroup onClickProgress={handleProgressAppointment} />
-      </StyledRightContainer>
+        <FlexContainer gap="4rem">
+          <StyledLeftContainer>
+            <Calendar
+              version="select"
+              startDate={appointment.startDate}
+              endDate={
+                appointment.endTime === '12:00AM'
+                  ? getMinusOneDate(appointment.endDate)
+                  : appointment.endDate
+              }
+              selectedDate={selectedDate}
+              // TODO: setSelectedDate를 넘겨주는 것이 아니라 onClickDay 같이 해주는 게 어떨까? props를 받는 Calendar 컴포넌트에서는
+              // 위에서 어떤 함수가 내려오는 지 정확한 이름을 알 필요가 없다. 바깥에는 onClickDay 같이 소통할 수 있는 인터페이스만 제공해주면 될뿐
+              setSelectedDate={setSelectedDate}
+            />
+          </StyledLeftContainer>
+          <StyledRightContainer>
+            <AppointmentProgressTimePicker
+              startTime={appointment.startTime}
+              endTime={appointment.endTime}
+              selectedDate={selectedDate}
+              onClickTime={handleAvailableTimes}
+              availableTimes={availableTimes}
+            />
+            <AppointmentProgressButtonGroup onClickProgress={handleProgressAppointment} />
+          </StyledRightContainer>
+        </FlexContainer>
+      </FlexContainer>
     </StyledContainer>
   );
 }
@@ -153,9 +150,10 @@ function AppointmentProgressPage() {
 const StyledContainer = styled.div`
   width: calc(100% - 36.4rem);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18.4rem;
+  gap: 8rem;
 `;
 
 const StyledLeftContainer = styled.div`
@@ -168,7 +166,6 @@ const StyledLeftContainer = styled.div`
 const StyledRightContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 38.8rem;
   gap: 1.2rem;
   align-items: center;
 `;

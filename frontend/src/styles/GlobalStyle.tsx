@@ -1,4 +1,3 @@
-import React from 'react';
 import { Global, css } from '@emotion/react';
 import theme from './theme';
 
@@ -8,14 +7,8 @@ const style = css`
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/TmoneyRoundWindRegular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
   }
-
-  @font-face {
-    font-family: 'TmoneyRoundWindExtraBold';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/TmoneyRoundWindExtraBold.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
 
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -84,7 +77,19 @@ const style = css`
   input:focus {
     outline: none;
   }
-`;
+
+  @media screen and (max-width: 1919px) {
+    html {
+      font-size: 8px;
+    }
+  }
+
+  @media screen and (max-width: 1365px) {
+    html {
+      font-size: 7px;
+    }
+  };
+`
 
 function GlobalStyle() {
   return <Global styles={style} />;

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { CSSProperties } from 'react';
+import { CSSProperties } from 'react';
 import { MemberInterface } from '../../../types/group';
 
 interface Props extends CSSProperties {
@@ -28,12 +28,16 @@ const StyledUserProfile = styled.div<CSSProperties>(
 
 const StyledUserImage = styled.img`
   border-radius: 100%;
+  aspect-ratio: 1 / 1;
 `;
 
 const StyledUserName = styled.p<CSSProperties>(
   ({ fontSize }) => `
   text-align: center;
   font-size: ${fontSize || '1.6rem'};
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `
 );
 

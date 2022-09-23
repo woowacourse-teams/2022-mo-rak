@@ -31,6 +31,7 @@ interface Time {
 
 type AvailableTimes = Array<{ start: string; end: string }>;
 
+// TODO: 대문자 타입 일관성 지켜주기
 type createAppointmentData = Omit<AppointmentInterface, 'id' | 'code' | 'isClosed'>;
 
 type getAppointmentResponse = AppointmentInterface & {
@@ -43,6 +44,8 @@ type getAppointmentsResponse = Array<
   }
 >;
 
+type AppointmentStatus = 'CLOSED' | 'OPEN';
+
 export {
   Time,
   createAppointmentData,
@@ -50,5 +53,6 @@ export {
   getAppointmentResponse,
   AvailableTimes,
   AppointmentRecommendationInterface,
-  AppointmentInterface
+  AppointmentInterface,
+  AppointmentStatus
 };

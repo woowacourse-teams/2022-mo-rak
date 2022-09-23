@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { AxiosError } from 'axios';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';

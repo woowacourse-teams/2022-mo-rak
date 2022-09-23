@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { useParams } from 'react-router-dom';
@@ -65,7 +65,7 @@ function PollResultContainer() {
   }, []);
 
   return (
-    <Box width="84.4rem" padding="2rem 4.8rem 5.6rem">
+    <Box width="84.4rem" padding="6.4rem 4.8rem">
       {poll ? (
         <>
           <FlexContainer justifyContent="end">
@@ -94,7 +94,7 @@ function PollResultContainer() {
               closedAt={poll.closedAt}
             />
           </MarginContainer>
-          <MarginContainer margin="0 0 4rem 0">
+          <MarginContainer margin="0 0 15.2rem 0">
             <FlexContainer flexDirection="column" gap="1.2rem">
               <PollResultItemGroup
                 status={poll.status}

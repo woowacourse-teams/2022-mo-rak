@@ -139,7 +139,9 @@ tasks.named('jacocoTestCoverageVerification') {
                     '**.*Interceptor*',
                     '**.*Extractor*',
                     '**.RestSlackClient',
-                    '**.*Config'
+                    '**.*Config',
+                    '**.*Performance*',
+                    '**.Proxy*'
             ]
         }
 

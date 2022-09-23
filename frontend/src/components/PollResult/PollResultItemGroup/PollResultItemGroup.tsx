@@ -1,4 +1,4 @@
-import React, { useState, CSSProperties } from 'react';
+import { useState, CSSProperties } from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
@@ -52,9 +52,10 @@ function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
 
         return (
           <TextField
+            key={id}
             variant={status === 'CLOSED' && isWinningPollItem ? 'filled' : 'outlined'}
             padding="1.2rem 0"
-            borderRadius="15px"
+            borderRadius="1.6rem"
             colorScheme={theme.colors.PURPLE_100}
             aria-label={`${subject}-result`}
           >
@@ -120,8 +121,8 @@ const StyledCheckIcon = styled.img<
   ({ checked }) => `
   display: ${checked ? 'block' : 'none'};
   position: absolute;
-  top: 0.8rem;
-  left: 2rem;
+  top: 1rem;
+  left: 1.6rem;
   width: 2rem;
   height: 2rem;
 `

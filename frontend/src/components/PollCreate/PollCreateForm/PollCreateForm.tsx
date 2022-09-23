@@ -1,7 +1,7 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 
 // TODO: 자동정렬 설정
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, Location } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import Box from '../../@common/Box/Box';
 import Divider from '../../@common/Divider/Divider';
@@ -17,15 +17,24 @@ import { createPoll } from '../../../api/poll';
 import { createPollData, PollInterface } from '../../../types/poll';
 import { GroupInterface } from '../../../types/group';
 import useInput from '../../../hooks/useInput';
+import { AppointmentInterface } from '../../../types/appointment';
+
+interface LocationWithState extends Location {
+  state : {
+    title: AppointmentInterface['title'];
+    firstRankAppointmentRecommendations: Array<string>;
+  }
+}
 
 function PollCreateForm() {
+  const location = useLocation() as LocationWithState;
   const navigate = useNavigate();
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
-
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(location.state?.title ?? '');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isAllowedMultiplePollCount, setIsAllowedMultiplePollCount] = useState(false);
-  const [pollItems, setPollItems] = useState(['', '']);
+  const [pollItems, setPollItems] = useState(location.state?.firstRankAppointmentRecommendations ?? ['', '']);
+  
   const [closingDate, handleCloseDate] = useInput('');
   const [closingTime, handleCloseTime] = useInput('');
 
@@ -75,7 +84,7 @@ function PollCreateForm() {
   };
 
   return (
-    <Box width="84.4rem" padding="4.8rem 4.8rem 14rem">
+    <Box width="84.4rem" padding="6.4rem 4.8rem">
       <form onSubmit={handleSubmit}>
         <PollCreateCloseTimeInput
           closingDate={closingDate}
@@ -83,7 +92,7 @@ function PollCreateForm() {
           onChangeDate={handleCloseDate}
           onChangeTime={handleCloseTime}
         />
-        <MarginContainer margin="0 0 4rem 0">
+        <MarginContainer margin="0 0 4.4rem 0">
           <PollCreateFormTitleInput title={title} onChange={handleTitle} />
           <Divider />
         </MarginContainer>
