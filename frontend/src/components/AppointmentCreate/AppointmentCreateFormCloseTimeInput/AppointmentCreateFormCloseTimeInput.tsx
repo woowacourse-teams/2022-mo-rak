@@ -61,6 +61,6 @@ export default memo(
   AppointmentCreateFormCloseTimeInput,
   (prev, next) =>
     prev.closeTime === next.closeTime &&
-    prev.closeDate === next.closeTime &&
+    prev.closeDate === next.closeDate &&
     prev.maxCloseDate === next.maxCloseDate
 );
