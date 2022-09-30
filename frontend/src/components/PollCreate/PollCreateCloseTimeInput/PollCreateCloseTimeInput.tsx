@@ -21,12 +21,23 @@ function PollCreateCloseTimeInput({ closingTime, closingDate, onChangeTime, onCh
         <Input
           type="date"
           fontSize="1.6rem"
+          // TODO: closingDate vs closeDate 정하고 통일
           value={closingDate}
+          aria-label="poll-closingDate"
+          role="textbox"
           min={today}
           onChange={onChangeDate}
           required
         />
-        <Input type="time" fontSize="1.6rem" value={closingTime} onChange={onChangeTime} required />
+        <Input
+          type="time"
+          fontSize="1.6rem"
+          aria-label="poll-closingTime"
+          role="textbox"
+          value={closingTime}
+          onChange={onChangeTime}
+          required
+        />
       </FlexContainer>
     </FlexContainer>
   );

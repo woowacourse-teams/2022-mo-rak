@@ -55,6 +55,7 @@ module.exports = {
     ]
   },
   resolve: {
+    // TODO: js 없으니 extensions에 없어도 되지 않을까?
     extensions: ['.tsx', '.ts', '.js']
   }
 };

@@ -21,7 +21,7 @@ function MainFeatureMenuContainer() {
         <StyledFeatureMenuContainer onClick={handleNavigate('poll')}>
           <StlyedImageWrapper>
             {/* TODO: StyledImage 네이밍 고민 */}
-            <StyledImage src={Poll} alt="poll menu" />
+            <StyledImage src={Poll} alt="poll-menu" />
           </StlyedImageWrapper>
           <StyledFeatureMenuName>투표하기</StyledFeatureMenuName>
         </StyledFeatureMenuContainer>
