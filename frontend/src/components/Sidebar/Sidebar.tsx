@@ -14,6 +14,7 @@ import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembe
 import SidebarFeatureMenu from '../SidebarFeatureMenu/SidebarFeatureMenu';
 import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
 import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
+import SidebarLogoutMenu from '../SidebarLogoutMenu/SidebarLogoutMenu';
 
 function Sidebar() {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +29,7 @@ function Sidebar() {
     navigate(location);
   };
 
-  const handleActiveGroupMenu = (menu: null | string) => () => {
+  const handleActiveModalMenu = (menu: null | string) => () => {
     setActiveModalMenu(menu);
   };
 
@@ -56,7 +57,7 @@ function Sidebar() {
           <>
             <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
             <SidebarGroupsMenu
-              onClickMenu={handleActiveGroupMenu}
+              onClickMenu={handleActiveModalMenu}
               groupCode={groupCode}
               groups={groups}
             />
@@ -68,8 +69,9 @@ function Sidebar() {
             <SidebarMembersProfileMenu groupCode={groupCode} />
 
             <StyledBottomMenu>
-              <SidebarSlackMenu onClick={handleActiveGroupMenu('slack')} /> 
+              <SidebarSlackMenu onClick={handleActiveModalMenu('slack')} /> 
               <SidebarInvitationMenu groupCode={groupCode} />
+              <SidebarLogoutMenu />
             </StyledBottomMenu>
           </>
         )}
@@ -78,7 +80,7 @@ function Sidebar() {
       {/* TODO: 모달이 모여있음  */}
       <SidebarMenuModals
         activeModalMenu={activeModalMenu}
-        closeModal={handleActiveGroupMenu(null)}
+        closeModal={handleActiveModalMenu(null)}
         groupCode={groupCode}
       />
     </>
