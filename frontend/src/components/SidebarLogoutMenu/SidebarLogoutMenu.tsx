@@ -1,13 +1,25 @@
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import Leave from '../../assets/leave.svg';
+import { removeLocalStorageItem } from '../../utils/storage';
+
 
 function SidebarLogoutMenu() {
-    return (
-      <StyledContainer>
-        <StyledLeaveImage src={Leave} alt="group-leave-button" />
-        <StyledText>로그아웃</StyledText>
-      </StyledContainer>
-    );
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    if(confirm('로그아웃을 하시겠습니까?')) {
+      removeLocalStorageItem('token');
+      navigate('/');
+    }
+  };
+
+  return (
+    <StyledContainer onClick={handleLogout}>
+      <StyledLeaveImage src={Leave} alt="group-leave-button" />
+      <StyledText>로그아웃</StyledText>
+    </StyledContainer>
+  );
 }
 
 const StyledContainer = styled.button`
