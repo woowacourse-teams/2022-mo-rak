@@ -14,6 +14,7 @@ import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembe
 import SidebarFeatureMenu from '../SidebarFeatureMenu/SidebarFeatureMenu';
 import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
 import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
+import SidebarLogoutMenu from '../SidebarLogoutMenu/SidebarLogoutMenu';
 
 function Sidebar() {
   const [isLoading, setIsLoading] = useState(true);
@@ -70,6 +71,7 @@ function Sidebar() {
             <StyledBottomMenu>
               <SidebarSlackMenu onClick={handleActiveGroupMenu('slack')} /> 
               <SidebarInvitationMenu groupCode={groupCode} />
+              <SidebarLogoutMenu />
             </StyledBottomMenu>
           </>
         )}
