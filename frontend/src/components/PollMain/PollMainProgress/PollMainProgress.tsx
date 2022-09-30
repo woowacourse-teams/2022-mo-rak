@@ -15,6 +15,7 @@ function PollMainProgress({ currentParticipants, groupCode }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
   const totalParticipants = groupMembers.length;
 
+  // TODO: 네트워크 요청 줄이기
   useEffect(() => {
     const fetchGroupMembers = async () => {
       try {
