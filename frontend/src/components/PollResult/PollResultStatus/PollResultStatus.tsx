@@ -18,7 +18,7 @@ function PollResultStatus({ status }: Props) {
       borderRadius="1.2rem"
       colorScheme={status === 'OPEN' ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}
     >
-      <StyledStatus>{status === 'OPEN' ? '진행중' : '완료'}</StyledStatus>
+      <StyledStatus aria-label="poll-status">{status === 'OPEN' ? '진행중' : '완료'}</StyledStatus>
     </TextField>
   );
 }
