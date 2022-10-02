@@ -56,9 +56,9 @@ public class OAuthService {
                 .orElseGet(() -> memberRepository.save(memberResponse.toMember()));
     }
 
-    public MemberResponse findMember(Long id) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, id));
+    public MemberResponse findMember(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         return MemberResponse.from(member);
     }
 
@@ -67,6 +67,7 @@ public class OAuthService {
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
 
         member.changeName(request.getName());
+        memberRepository.flush();
     }
 }
 

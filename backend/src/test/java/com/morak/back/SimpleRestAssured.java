@@ -1,8 +1,5 @@
 package com.morak.back;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.ui.dto.ExceptionResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -69,6 +66,14 @@ public class SimpleRestAssured {
     public static ExtractableResponse<Response> patch(String path, Map<String, String> header) {
         return thenExtract(given()
                 .headers(header)
+                .when().patch(path));
+    }
+
+    public static ExtractableResponse<Response> patch(String path, Map<String, String> header, Object request) {
+        return thenExtract(given()
+                .headers(header)
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().patch(path));
     }
 
