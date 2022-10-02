@@ -163,7 +163,6 @@ const StyledCloseButton = styled.img`
   right: 0.8rem;
   top: 0.8rem;
   width: 1.2rem;
-  height: 1.2rem;
   cursor: pointer;
 `;
 
