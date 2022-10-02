@@ -1,12 +1,19 @@
-package com.morak.back.brandnew;
+package com.morak.back.brandnew.domain;
 
 import java.time.LocalDateTime;
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
+@Embeddable
+@NoArgsConstructor
 public class FakeDateTime implements MorakDateTime {
 
-    private final LocalDateTime dateTime;
-    private final LocalDateTime now;
+    private LocalDateTime dateTime;
+
+    @Transient
+    private LocalDateTime now;
 
     @Builder
     public FakeDateTime(LocalDateTime dateTime, LocalDateTime now) {
@@ -15,12 +22,12 @@ public class FakeDateTime implements MorakDateTime {
     }
 
     @Override
-    public boolean isBeforeNow() {
+    public boolean beforeNow() {
         return dateTime.isBefore(now);
     }
 
     @Override
-    public boolean isAfterNow() {
+    public boolean afterNow() {
         return dateTime.isAfter(now);
     }
 }

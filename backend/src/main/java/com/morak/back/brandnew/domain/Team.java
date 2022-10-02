@@ -1,4 +1,4 @@
-package com.morak.back.brandnew;
+package com.morak.back.brandnew.domain;
 
 import java.util.List;
 import lombok.Builder;
