@@ -12,9 +12,9 @@ interface Props extends PropsWithChildren {
   backgroundColor?: string;
 }
 
-type VariantStyleProps = Pick<Props, 'variant' | 'width'>;
+type VariantStyleProps = Pick<Props, 'variant' | 'width' | 'backgroundColor'>;
 
-const getVariantStyle = ({ variant, width }: VariantStyleProps) => {
+const getVariantStyle = ({ variant, width, backgroundColor }: VariantStyleProps) => {
   const theme = useTheme();
   
   switch (variant) {
@@ -28,7 +28,7 @@ const getVariantStyle = ({ variant, width }: VariantStyleProps) => {
           top: 100%; 
           left: 50%;
           margin-left: -5px;
-          border-color: ${theme.colors.PURPLE_50} transparent transparent transparent;
+          border-color: ${backgroundColor || theme.colors.PURPLE_50} transparent transparent transparent;
         }
       `;
     case 'bottom':
@@ -41,7 +41,7 @@ const getVariantStyle = ({ variant, width }: VariantStyleProps) => {
           bottom: 100%; 
           left: 50%;
           margin-left: -5px;
-          border-color: transparent transparent ${theme.colors.PURPLE_50} transparent;
+          border-color: transparent transparent ${backgroundColor || theme.colors.PURPLE_50} transparent;
         }
       `;
     case 'left':
@@ -55,7 +55,7 @@ const getVariantStyle = ({ variant, width }: VariantStyleProps) => {
           top: 50%;
           left: 100%;
           margin-top: -5px;
-          border-color: transparent transparent transparent ${theme.colors.PURPLE_50};
+          border-color: transparent transparent transparent ${backgroundColor || theme.colors.PURPLE_50};
         }
       `;
     case 'right':
@@ -69,7 +69,7 @@ const getVariantStyle = ({ variant, width }: VariantStyleProps) => {
           top: 50%;
           right: 100%; 
           margin-top: -5px;
-          border-color: transparent ${theme.colors.PURPLE_50} transparent transparent;
+          border-color: transparent ${backgroundColor || theme.colors.PURPLE_50} transparent transparent;
         }
       `;
     default:
@@ -80,7 +80,7 @@ const getVariantStyle = ({ variant, width }: VariantStyleProps) => {
 function Tooltip({children, variant, width, backgroundColor, text, fontSize, fontColor}: Props) {
   const [isVisible, setIsVisible] = useState(false);
 
-  const variantStyle = getVariantStyle({ variant, width });
+  const variantStyle = getVariantStyle({ variant, width, backgroundColor });
 
   const handleToggleContent = () => {
     setIsVisible(!isVisible);
