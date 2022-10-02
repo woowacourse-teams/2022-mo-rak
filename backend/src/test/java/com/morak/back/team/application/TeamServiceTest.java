@@ -322,8 +322,8 @@ class TeamServiceTest {
                 .usingRecursiveComparison()
                 .isEqualTo(
                         List.of(
-                                new MemberResponse(member.getId(), member.getName(), member.getProfileUrl()),
                                 new MemberResponse(박성우.getId(), 박성우.getName(), 박성우.getProfileUrl()),
+                                new MemberResponse(member.getId(), member.getName(), member.getProfileUrl()),
                                 new MemberResponse(이찬주.getId(), 이찬주.getName(), 이찬주.getProfileUrl())
                         )
                 );
