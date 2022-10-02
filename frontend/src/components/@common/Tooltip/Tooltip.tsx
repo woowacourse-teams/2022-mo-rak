@@ -4,7 +4,7 @@ import { useTheme } from '@emotion/react';
 import Close from '../../../assets/close-button.svg';
 
 interface Props extends PropsWithChildren {
-  text: string;
+  content: string;
   width: string;
   placement: 'top' | 'bottom' | 'left' | 'right';
   fontSize?: string;
@@ -90,7 +90,7 @@ function Tooltip({
   placement,
   width,
   backgroundColor,
-  text,
+  content,
   fontSize,
   fontColor
 }: Props) {
@@ -116,9 +116,9 @@ function Tooltip({
         placementStyle={placementStyle}
       >
         <StyledCloseButton onClick={handleCloseContent} src={Close} alt="close-button" />
-        <StyledText fontSize={fontSize} color={fontColor}>
-          {text}
-        </StyledText>
+        <StyledContent fontSize={fontSize} color={fontColor}>
+          {content}
+        </StyledContent>
       </StyledContentContainer>
     </StyledContainer>
   );
@@ -166,7 +166,7 @@ const StyledCloseButton = styled.img`
   cursor: pointer;
 `;
 
-const StyledText = styled.p<CSSProperties>(
+const StyledContent = styled.p<CSSProperties>(
   ({ fontSize, color }) => `
     ${fontSize && `font-size: ${fontSize}`};
     ${color && `color: ${color}`};
