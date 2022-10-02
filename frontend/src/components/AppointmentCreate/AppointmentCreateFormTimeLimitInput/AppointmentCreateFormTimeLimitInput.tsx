@@ -30,7 +30,7 @@ function AppointmentCreateFormTimeLimitInput({
           </StyledHelpIconWrapper>
         </Tooltip>
       </FlexContainer>
-      
+
       <FlexContainer alignItems="center" gap="2.8rem">
         <AppointmentCreateFormTimeInput time={startTime} onChange={onChangeStartTime} />
         <StyledContent>~</StyledContent>
@@ -47,7 +47,7 @@ const StyledTitle = styled.div(
 `
 );
 
-const StyledHelpIconWrapper = styled.div(({theme}) => `
+const StyledHelpIconWrapper = styled.div(({ theme }) => `
   display: flex;
   justify-content: center;
   width: 2.8rem;

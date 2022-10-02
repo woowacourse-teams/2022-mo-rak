@@ -1,7 +1,7 @@
 import { PropsWithChildren, useState, CSSProperties } from 'react';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
-import Close from '../../../assets/close-button.svg'
+import Close from '../../../assets/close-button.svg';
 
 interface Props extends PropsWithChildren {
   text: string;
@@ -16,7 +16,7 @@ type VariantStyleProps = Pick<Props, 'variant' | 'width' | 'backgroundColor'>;
 
 const getVariantStyle = ({ variant, width, backgroundColor }: VariantStyleProps) => {
   const theme = useTheme();
-  
+
   switch (variant) {
     case 'top':
       return `
@@ -28,7 +28,9 @@ const getVariantStyle = ({ variant, width, backgroundColor }: VariantStyleProps)
           top: 100%; 
           left: 50%;
           margin-left: -5px;
-          border-color: ${backgroundColor || theme.colors.PURPLE_50} transparent transparent transparent;
+          border-color: ${
+            backgroundColor || theme.colors.PURPLE_50
+          } transparent transparent transparent;
         }
       `;
     case 'bottom':
@@ -41,7 +43,9 @@ const getVariantStyle = ({ variant, width, backgroundColor }: VariantStyleProps)
           bottom: 100%; 
           left: 50%;
           margin-left: -5px;
-          border-color: transparent transparent ${backgroundColor || theme.colors.PURPLE_50} transparent;
+          border-color: transparent transparent ${
+            backgroundColor || theme.colors.PURPLE_50
+          } transparent;
         }
       `;
     case 'left':
@@ -55,7 +59,9 @@ const getVariantStyle = ({ variant, width, backgroundColor }: VariantStyleProps)
           top: 50%;
           left: 100%;
           margin-top: -5px;
-          border-color: transparent transparent transparent ${backgroundColor || theme.colors.PURPLE_50};
+          border-color: transparent transparent transparent ${
+            backgroundColor || theme.colors.PURPLE_50
+          };
         }
       `;
     case 'right':
@@ -69,7 +75,9 @@ const getVariantStyle = ({ variant, width, backgroundColor }: VariantStyleProps)
           top: 50%;
           right: 100%; 
           margin-top: -5px;
-          border-color: transparent ${backgroundColor || theme.colors.PURPLE_50} transparent transparent;
+          border-color: transparent ${
+            backgroundColor || theme.colors.PURPLE_50
+          } transparent transparent;
         }
       `;
     default:
@@ -77,7 +85,7 @@ const getVariantStyle = ({ variant, width, backgroundColor }: VariantStyleProps)
   }
 };
 
-function Tooltip({children, variant, width, backgroundColor, text, fontSize, fontColor}: Props) {
+function Tooltip({ children, variant, width, backgroundColor, text, fontSize, fontColor }: Props) {
   const [isVisible, setIsVisible] = useState(false);
 
   const variantStyle = getVariantStyle({ variant, width, backgroundColor });
@@ -88,14 +96,21 @@ function Tooltip({children, variant, width, backgroundColor, text, fontSize, fon
 
   const handleCloseContent = () => {
     setIsVisible(false);
-  }
+  };
 
   return (
     <StyledContainer>
       <StyledContentTrigger onClick={handleToggleContent}>{children}</StyledContentTrigger>
-      <StyledContentContainer isVisible={isVisible} width={width} backgroundColor={backgroundColor} variantStyle={variantStyle}>
+      <StyledContentContainer
+        isVisible={isVisible}
+        width={width}
+        backgroundColor={backgroundColor}
+        variantStyle={variantStyle}
+      >
         <StyledCloseButton onClick={handleCloseContent} src={Close} alt="close-button" />
-        <StyledText fontSize={fontSize} color={fontColor}>{text}</StyledText>
+        <StyledText fontSize={fontSize} color={fontColor}>
+          {text}
+        </StyledText>
       </StyledContentContainer>
     </StyledContainer>
   );
@@ -114,12 +129,13 @@ const StyledContentContainer = styled.div<
   CSSProperties & {
     isVisible: boolean;
     variantStyle: string;
-  }>(
-  ({isVisible, backgroundColor, width, theme, variantStyle}) => `
+  }
+>(
+  ({ isVisible, backgroundColor, width, theme, variantStyle }) => `
     ${variantStyle};
     position: absolute;
-    visibility: ${isVisible? 'visible' : 'hidden'};  
-    background: ${backgroundColor? backgroundColor : theme.colors.PURPLE_50}; 
+    visibility: ${isVisible ? 'visible' : 'hidden'};  
+    background: ${backgroundColor ? backgroundColor : theme.colors.PURPLE_50}; 
     width: ${width}rem;
     border-radius: 1.2rem;
     padding: 1.6rem;
@@ -130,20 +146,21 @@ const StyledContentContainer = styled.div<
       border-width: 0.8rem;
       border-style: solid;
     }
-`);
+`
+);
 
 // TODO: 시맨틱 태그를 위해서, StyledCloseButton 은 button 태그를 생성하고, 내부에 StyledCloseIcon을 넣어줘야할 것 같다. (일관성 위해 일단 이전 방식-모달-과 똑같이 작성)
 const StyledCloseButton = styled.img`
   position: absolute;
   right: 0.8rem;
   top: 0.8rem;
-  width: 1.2rem; 
+  width: 1.2rem;
   height: 1.2rem;
   cursor: pointer;
 `;
 
 const StyledText = styled.div<CSSProperties>(
-  ({fontSize, color}) =>`
+  ({ fontSize, color }) => `
     ${fontSize && `font-size: ${fontSize}`};
     ${color && `color: ${color}`};
     line-height: 1.6rem;
