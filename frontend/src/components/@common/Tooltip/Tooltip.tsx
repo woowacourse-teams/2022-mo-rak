@@ -142,7 +142,7 @@ const StyledContentContainer = styled.div<
   ({ isVisible, backgroundColor, width, theme, placementStyle }) => `
     ${placementStyle};
     position: absolute;
-    visibility: ${isVisible ? 'visible' : 'hidden'};  
+    display: ${isVisible ? 'block' : 'none'};  
     background: ${backgroundColor ? backgroundColor : theme.colors.PURPLE_50}; 
     width: ${width}rem;
     border-radius: 1.2rem;
