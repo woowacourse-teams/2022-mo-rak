@@ -180,9 +180,4 @@ const StyledHelpIcon = styled.img`
   width: 2rem;
 `;
 
-const StyledContent = styled.p`
-  font-size: 2.4rem;
-`;
-
-
 export default AppointmentResultButtonGroup;
