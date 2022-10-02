@@ -85,7 +85,15 @@ const getPlacementStyle = ({ placement, width, backgroundColor }: placementStyle
   }
 };
 
-function Tooltip({ children, placement, width, backgroundColor, text, fontSize, fontColor }: Props) {
+function Tooltip({
+  children,
+  placement,
+  width,
+  backgroundColor,
+  text,
+  fontSize,
+  fontColor
+}: Props) {
   const [isVisible, setIsVisible] = useState(false);
 
   const placementStyle = getPlacementStyle({ placement, width, backgroundColor });
@@ -159,7 +167,7 @@ const StyledCloseButton = styled.img`
   cursor: pointer;
 `;
 
-const StyledText = styled.div<CSSProperties>(
+const StyledText = styled.p<CSSProperties>(
   ({ fontSize, color }) => `
     ${fontSize && `font-size: ${fontSize}`};
     ${color && `color: ${color}`};
