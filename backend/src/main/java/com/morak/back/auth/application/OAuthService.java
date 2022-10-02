@@ -6,6 +6,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.AuthenticationException;
 import com.morak.back.auth.exception.MemberNotFoundException;
+import com.morak.back.auth.ui.dto.ChangeNameRequest;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
@@ -59,6 +60,13 @@ public class OAuthService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, id));
         return MemberResponse.from(member);
+    }
+
+    public void changeName(Long memberId, ChangeNameRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
+
+        member.changeName(request.getName());
     }
 }
 

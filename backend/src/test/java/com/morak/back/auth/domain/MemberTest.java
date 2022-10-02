@@ -32,4 +32,20 @@ class MemberTest {
         // then
         assertThat(anonymous.getId()).isEqualTo(0L);
     }
+
+    @Test
+    void 멤버의_이름을_변경한다() {
+        // given
+        Member member = Member.builder()
+                .name("RIANAEH")
+                .oauthId("oauth-id")
+                .profileUrl("http://profile_url.com")
+                .build();
+
+        // when
+        member.changeName("엘리");
+
+        // then
+        assertThat(member.getName()).isEqualTo("엘리");
+    }
 }
