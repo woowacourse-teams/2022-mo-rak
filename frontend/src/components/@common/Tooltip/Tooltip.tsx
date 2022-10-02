@@ -146,6 +146,7 @@ const StyledText = styled.div<CSSProperties>(
   ({fontSize, color}) =>`
     ${fontSize && `font-size: ${fontSize}`};
     ${color && `color: ${color}`};
+    line-height: 1.6rem;
   `
 );
 
