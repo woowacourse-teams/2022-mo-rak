@@ -149,7 +149,7 @@ const StyledContentContainer = styled.div<
     padding: 1.6rem;
 
     &::after {
-      content: " ";
+      content: "";
       position: absolute;
       border-width: 0.8rem;
       border-style: solid;
