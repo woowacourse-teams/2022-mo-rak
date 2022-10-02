@@ -4,7 +4,7 @@ import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import { Time } from '../../../types/appointment';
 import AppointmentCreateFormTimeInput from '../AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput';
 import Question from '../../../assets/question.svg';
-import Tooltip from '../../@common/Tooltip/Tooltip'
+import Tooltip from '../../@common/Tooltip/Tooltip';
 
 interface Props {
   startTime: Time;
@@ -19,12 +19,15 @@ function AppointmentCreateFormTimeLimitInput({
   onChangeStartTime,
   onChangeEndTime
 }: Props) {
-
   return (
     <>
       <FlexContainer gap="2rem">
         <StyledTitle>가능 시간 제한 설정</StyledTitle>
-        <Tooltip text="오전 12:00 ~ 오전 12:00(다음날)은 하루종일을 의미합니다." width="26" variant="right">
+        <Tooltip
+          text="오전 12:00 ~ 오전 12:00(다음날)은 하루종일을 의미합니다."
+          width="26"
+          placement="right"
+        >
           <StyledHelpIconWrapper>
             <StyledHelpIcon src={Question} alt="help-icon" />
           </StyledHelpIconWrapper>
@@ -47,14 +50,16 @@ const StyledTitle = styled.div(
 `
 );
 
-const StyledHelpIconWrapper = styled.div(({ theme }) => `
+const StyledHelpIconWrapper = styled.div(
+  ({ theme }) => `
   display: flex;
   justify-content: center;
   width: 2.8rem;
   height: 2.8rem;
   background: ${theme.colors.GRAY_300};
   border-radius: 100%;
-`);
+`
+);
 
 const StyledHelpIcon = styled.img`
   width: 2rem;

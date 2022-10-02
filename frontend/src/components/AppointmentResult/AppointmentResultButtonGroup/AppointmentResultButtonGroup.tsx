@@ -21,7 +21,6 @@ import Button from '../../@common/Button/Button';
 import { getFormattedDateTime } from '../../../utils/date';
 import Question from '../../../assets/question.svg';
 
-
 interface Props {
   groupCode: GroupInterface['code'];
   appointmentCode: AppointmentInterface['code'];
@@ -131,22 +130,27 @@ function AppointmentResultButtonGroup({
             삭제
           </Button>
           {isClosed && firstRankAppointmentRecommendations.length > 1 && (
-          <FlexContainer alignItems="center" gap="0.8rem">
-            <Button
-              variant="filled"
-              colorScheme={theme.colors.YELLOW_100}
-              padding="2rem 3.2rem"
-              fontSize="3.2rem"
-              onClick={handleCreateNewPoll}
-            >
-              공동 1등 재투표
-            </Button>
-            <Tooltip text="공동 1등이 나왔네요! 공동 1등에 대한 재투표를 생성할 수 있습니다." width="24" variant="right" backgroundColor={theme.colors.GRAY_300}>
-              <StyledHelpIconWrapper>
-                <StyledHelpIcon src={Question} alt="help-icon" />
-              </StyledHelpIconWrapper>
-            </Tooltip>
-          </FlexContainer>
+            <FlexContainer alignItems="center" gap="0.8rem">
+              <Button
+                variant="filled"
+                colorScheme={theme.colors.YELLOW_100}
+                padding="2rem 3.2rem"
+                fontSize="3.2rem"
+                onClick={handleCreateNewPoll}
+              >
+                공동 1등 재투표
+              </Button>
+              <Tooltip
+                text="공동 1등이 나왔네요! 공동 1등에 대한 재투표를 생성할 수 있습니다."
+                width="24"
+                placement="right"
+                backgroundColor={theme.colors.GRAY_300}
+              >
+                <StyledHelpIconWrapper>
+                  <StyledHelpIcon src={Question} alt="help-icon" />
+                </StyledHelpIconWrapper>
+              </Tooltip>
+            </FlexContainer>
           )}
         </>
       )}
@@ -167,14 +171,16 @@ function AppointmentResultButtonGroup({
   );
 }
 
-const StyledHelpIconWrapper = styled.div(({theme}) => `
+const StyledHelpIconWrapper = styled.div(
+  ({ theme }) => `
   display: flex;
   justify-content: center;
   width: 2.8rem;
   height: 2.8rem;
   background: ${theme.colors.GRAY_300};
   border-radius: 100%;
-`);
+`
+);
 
 const StyledHelpIcon = styled.img`
   width: 2rem;

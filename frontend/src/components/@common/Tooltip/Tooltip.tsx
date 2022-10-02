@@ -6,18 +6,18 @@ import Close from '../../../assets/close-button.svg';
 interface Props extends PropsWithChildren {
   text: string;
   width: string;
-  variant: 'top' | 'bottom' | 'left' | 'right';
+  placement: 'top' | 'bottom' | 'left' | 'right';
   fontSize?: string;
   fontColor?: string;
   backgroundColor?: string;
 }
 
-type VariantStyleProps = Pick<Props, 'variant' | 'width' | 'backgroundColor'>;
+type placementStyleProps = Pick<Props, 'placement' | 'width' | 'backgroundColor'>;
 
-const getVariantStyle = ({ variant, width, backgroundColor }: VariantStyleProps) => {
+const getPlacementStyle = ({ placement, width, backgroundColor }: placementStyleProps) => {
   const theme = useTheme();
 
-  switch (variant) {
+  switch (placement) {
     case 'top':
       return `
         bottom: 100%;
@@ -85,10 +85,10 @@ const getVariantStyle = ({ variant, width, backgroundColor }: VariantStyleProps)
   }
 };
 
-function Tooltip({ children, variant, width, backgroundColor, text, fontSize, fontColor }: Props) {
+function Tooltip({ children, placement, width, backgroundColor, text, fontSize, fontColor }: Props) {
   const [isVisible, setIsVisible] = useState(false);
 
-  const variantStyle = getVariantStyle({ variant, width, backgroundColor });
+  const placementStyle = getPlacementStyle({ placement, width, backgroundColor });
 
   const handleToggleContent = () => {
     setIsVisible(!isVisible);
@@ -105,7 +105,7 @@ function Tooltip({ children, variant, width, backgroundColor, text, fontSize, fo
         isVisible={isVisible}
         width={width}
         backgroundColor={backgroundColor}
-        variantStyle={variantStyle}
+        placementStyle={placementStyle}
       >
         <StyledCloseButton onClick={handleCloseContent} src={Close} alt="close-button" />
         <StyledText fontSize={fontSize} color={fontColor}>
@@ -128,11 +128,11 @@ const StyledContentTrigger = styled.div`
 const StyledContentContainer = styled.div<
   CSSProperties & {
     isVisible: boolean;
-    variantStyle: string;
+    placementStyle: string;
   }
 >(
-  ({ isVisible, backgroundColor, width, theme, variantStyle }) => `
-    ${variantStyle};
+  ({ isVisible, backgroundColor, width, theme, placementStyle }) => `
+    ${placementStyle};
     position: absolute;
     visibility: ${isVisible ? 'visible' : 'hidden'};  
     background: ${backgroundColor ? backgroundColor : theme.colors.PURPLE_50}; 
