@@ -1,9 +1,11 @@
 import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
 
 import { useNavigate } from 'react-router-dom';
 
 import { AxiosError } from 'axios';
 import FlexContainer from '../../@common/FlexContainer/FlexContainer';
+import Tooltip from '../../@common/Tooltip/Tooltip';
 import { GroupInterface } from '../../../types/group';
 import {
   AppointmentInterface,
@@ -17,6 +19,8 @@ import {
 } from '../../../api/appointment';
 import Button from '../../@common/Button/Button';
 import { getFormattedDateTime } from '../../../utils/date';
+import Question from '../../../assets/question.svg';
+
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -127,15 +131,22 @@ function AppointmentResultButtonGroup({
             삭제
           </Button>
           {isClosed && firstRankAppointmentRecommendations.length > 1 && (
+          <FlexContainer alignItems="center" gap="0.8rem">
             <Button
               variant="filled"
               colorScheme={theme.colors.YELLOW_100}
-              padding="2rem"
+              padding="2rem 3.2rem"
               fontSize="3.2rem"
               onClick={handleCreateNewPoll}
             >
-              공동 1등에 대한 재투표 만들기
+              공동 1등 재투표
             </Button>
+            <Tooltip text="공동 1등이 나왔네요! 공동 1등에 대한 재투표를 생성할 수 있습니다." width="24" variant="right">
+              <StyledHelpIconWrapper>
+                <StyledHelpIcon src={Question} alt="help-icon" />
+              </StyledHelpIconWrapper>
+            </Tooltip>
+          </FlexContainer>
           )}
         </>
       )}
@@ -155,5 +166,23 @@ function AppointmentResultButtonGroup({
     </FlexContainer>
   );
 }
+
+const StyledHelpIconWrapper = styled.div(({theme}) => `
+  display: flex;
+  justify-content: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  background: ${theme.colors.GRAY_300};
+  border-radius: 100%;
+`);
+
+const StyledHelpIcon = styled.img`
+  width: 2rem;
+`;
+
+const StyledContent = styled.p`
+  font-size: 2.4rem;
+`;
+
 
 export default AppointmentResultButtonGroup;
