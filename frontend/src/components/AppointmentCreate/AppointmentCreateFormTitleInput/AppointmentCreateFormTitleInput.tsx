@@ -18,6 +18,7 @@ function AppointmentCreateFormTitleInput({ title, onChange }: Props) {
         textAlign="start"
         value={title}
         onChange={onChange}
+        aria-label="appointment-title"
         required
         autoFocus
       />

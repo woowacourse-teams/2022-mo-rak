@@ -6,6 +6,7 @@ import FlexContainer from '../../@common/FlexContainer/FlexContainer';
 import TextField from '../../@common/TextField/TextField';
 
 interface Props {
+  // TODO: 투표와 변수명 맞춰기
   closeTime: string;
   closeDate: string;
   maxCloseDate: string;
@@ -41,9 +42,19 @@ function AppointmentCreateFormCloseTimeInput({
             onChange={onChangeDate}
             value={closeDate}
             fontSize="2.4rem"
+            role="textbox"
+            aria-label="appointment-closeDate"
             required
           />
-          <Input type="time" onChange={onChangeTime} value={closeTime} fontSize="2.4rem" required />
+          <Input
+            type="time"
+            onChange={onChangeTime}
+            value={closeTime}
+            fontSize="2.4rem"
+            role="textbox"
+            aria-label="appointment-closeTime"
+            required
+          />
         </FlexContainer>
       </TextField>
     </>

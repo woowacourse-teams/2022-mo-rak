@@ -22,9 +22,18 @@ function AppointmentCreateFormTimeLimitInput({
       <StyledTitle>가능 시간 제한 설정</StyledTitle>
       <StyledHelperText>오전 12:00 ~ 오전 12:00(다음날)은 하루종일을 의미합니다.</StyledHelperText>
       <FlexContainer alignItems="center" gap="2.8rem">
-        <AppointmentCreateFormTimeInput time={startTime} onChange={onChangeStartTime} />
+        <AppointmentCreateFormTimeInput
+          time={startTime}
+          // TODO: 네이밍 고민
+          ariaLabelHelper="start"
+          onChange={onChangeStartTime}
+        />
         <StyledContent>~</StyledContent>
-        <AppointmentCreateFormTimeInput time={endTime} onChange={onChangeEndTime} />
+        <AppointmentCreateFormTimeInput
+          time={endTime}
+          ariaLabelHelper="end"
+          onChange={onChangeEndTime}
+        />
       </FlexContainer>
     </>
   );
