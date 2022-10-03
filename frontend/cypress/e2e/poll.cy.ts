@@ -1,18 +1,24 @@
 describe('투표 기능에 대한 e2e 테스트', () => {
-  beforeEach(() => {
+  before(() => {
     localStorage.setItem('token', JSON.stringify(Cypress.env('token')));
+    cy.saveLocalStorage();
+    cy.visit('http://localhost:3000/');
+  });
+
+  beforeEach(() => {
     cy.intercept('GET', '**/api/groups/**/polls').as('getPolls');
     cy.intercept('POST', '**/api/groups/**/polls').as('createPoll');
     cy.intercept('GET', '**/api/groups/**/polls/**/items').as('getPollItems');
     cy.intercept('GET', '**/api/groups/**/polls/**/result').as('getPollResult');
     cy.intercept('GET', '**/api/groups/**/members').as('getGroupMembers');
     cy.intercept('GET', '**/api/groups').as('getGroups');
+    cy.restoreLocalStorage().then(() => {
+      expect(localStorage.getItem('token')).not.to.be.null;
+    });
   });
 
-  it('메인페이지에 접속할 수 있다.', () => {
-    cy.visit('http://localhost:3000/');
-    cy.wait('@getGroupMembers');
-    cy.wait('@getGroups');
+  afterEach(() => {
+    cy.saveLocalStorage();
   });
 
   it('투표를 생성할 수 있다.', () => {
@@ -32,8 +38,7 @@ describe('투표 기능에 대한 e2e 테스트', () => {
     cy.findByRole('textbox', { name: 'poll-input1' }).type('공단');
 
     cy.findByRole('button', { name: '투표 만들기' }).click();
-    cy.wait('@createPoll');
-    cy.wait('@getPollItems');
+    cy.wait(['@createPoll', '@getPollItems']);
   });
 
   it('투표를 진행할 수 있다.', () => {
@@ -42,10 +47,10 @@ describe('투표 기능에 대한 e2e 테스트', () => {
       '서브웨이가 세상에서 제일 좋아요!'
     );
     cy.findByRole('button', { name: '투표하기' }).click();
+    cy.wait('@getPollResult');
   });
 
   it('투표 결과를 확인할 수 있다.', () => {
-    cy.wait('@getPollResult');
     cy.findByRole('generic', { name: 'poll-result-서브웨이' });
     cy.findByRole('generic', { name: '서브웨이' });
     cy.findByRole('generic', { name: '서브웨이-count' }).should('have.text', 1);
