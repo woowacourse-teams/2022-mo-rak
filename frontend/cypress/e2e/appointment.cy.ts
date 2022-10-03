@@ -1,10 +1,10 @@
 describe('약속잡기 기능에 대한 e2e 테스트', () => {
   beforeEach(() => {
     localStorage.setItem('token', JSON.stringify(Cypress.env('token')));
-    // cy.intercept('GET', '**/api/groups/**/appointments').as('getAppointments');
+    cy.intercept('GET', '**/api/groups/**/appointments').as('getAppointments');
     cy.intercept('POST', '**/api/groups/**/appointments').as('createAppointment');
+    cy.intercept('GET', '**/api/groups/**/appointments/**').as('getAppointment');
     // cy.intercept('POST', '**/api/groups/**/appointments').as('getAppointmentRecommendation');
-    // cy.intercept('POST', '**/api/groups/**/appointments').as('getAppointment');
     // cy.intercept('POST', '**/api/groups/**/appointments').as('progressAppointment');
     // cy.intercept('POST', '**/api/groups/**/appointments').as('closeAppointment');
     // cy.intercept('POST', '**/api/groups/**/appointments').as('deleteAppointment');
@@ -44,8 +44,26 @@ describe('약속잡기 기능에 대한 e2e 테스트', () => {
     cy.findByRole('textbox', { name: 'appointment-closeDate' }).type(`${year}-${nextMonth}-19`);
     cy.findByRole('textbox', { name: 'appointment-closeTime' }).type('18:00');
     cy.findByRole('button', { name: '생성' }).click();
-    // cy.findByRole('button', { name: '투표 만들기' }).click();
+
     cy.wait('@createAppointment');
-    // cy.wait('@getPollItems');
+  });
+
+  it('약속잡기를 진행할 수 있다.', () => {
+    const today = new Date();
+    today.setMonth(today.getMonth() + 1);
+    const nextMonth = today.toISOString().split('T')[0].split('-')[1];
+
+    cy.wait('@getAppointment');
+
+    cy.findByRole('button', { name: 'next-month' }).click();
+    cy.findByRole('generic', { name: `${nextMonth}-19` }).click();
+    cy.findByRole('generic', { name: '01:00PM-01:30PM' }).click();
+    cy.findByRole('generic', { name: '01:30PM-02:00PM' }).click();
+    cy.findByRole('generic', { name: '02:00PM-02:30PM' }).click();
+
+    cy.findByRole('generic', { name: `${nextMonth}-18` }).click();
+    cy.findByRole('generic', { name: '03:00PM-03:30PM' }).click();
+    cy.findByRole('generic', { name: '03:30PM-04:00PM' }).click();
+    cy.findByRole('button', { name: '선택' }).click();
   });
 });
