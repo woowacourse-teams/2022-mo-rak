@@ -23,7 +23,6 @@ import com.morak.back.team.ui.dto.TeamResponse;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -165,19 +164,20 @@ public class TeamService {
         validateJoined(team, member);
 
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(team.getId());
-        Stream<Member> identity = Stream.of();
         return teamMembers.stream()
                 .map(TeamMember::getMember)
-                .reduce(identity, (memberStream, m) -> moveMeToFirst(memberStream, m, member), Stream::concat)
+                .sorted(moveMeToFirst(member))
                 .map(MemberResponse::from)
                 .collect(Collectors.toList());
     }
 
-    private Stream<Member> moveMeToFirst(Stream<Member> memberStream, final Member member, Member me) {
-        if (member.equals(me)) {
-            return Stream.concat(Stream.of(member), memberStream);
-        }
-        return Stream.concat(memberStream, Stream.of(member));
+    private Comparator<Member> moveMeToFirst(Member member) {
+        return (Member m1, Member m2) -> {
+            if (m1.equals(member)) {
+                return -1;
+            }
+            return 1;
+        };
     }
 
     public void exitMemberFromTeam(Long memberId, String teamCode) {

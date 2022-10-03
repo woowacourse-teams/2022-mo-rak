@@ -315,16 +315,16 @@ class TeamServiceTest {
         teamMemberRepository.save(new TeamMember(null, team, 이찬주));
 
         // when
-        List<MemberResponse> memberResponses = teamService.findMembersInTeam(박성우.getId(), team.getCode());
+        List<MemberResponse> memberResponses = teamService.findMembersInTeam(이찬주.getId(), team.getCode());
 
         // then
         assertThat(memberResponses)
                 .usingRecursiveComparison()
                 .isEqualTo(
                         List.of(
-                                new MemberResponse(박성우.getId(), 박성우.getName(), 박성우.getProfileUrl()),
+                                new MemberResponse(이찬주.getId(), 이찬주.getName(), 이찬주.getProfileUrl()),
                                 new MemberResponse(member.getId(), member.getName(), member.getProfileUrl()),
-                                new MemberResponse(이찬주.getId(), 이찬주.getName(), 이찬주.getProfileUrl())
+                                new MemberResponse(박성우.getId(), 박성우.getName(), 박성우.getProfileUrl())
                         )
                 );
     }
