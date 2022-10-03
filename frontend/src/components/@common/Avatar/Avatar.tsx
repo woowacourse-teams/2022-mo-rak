@@ -16,6 +16,7 @@ function Avatar({ profileUrl, name, width, fontSize }: Props) {
   );
 }
 
+// TODO: StyledContainer 어떤가
 const StyledUserProfile = styled.div<CSSProperties>(
   ({ width }) => `
   display: flex;

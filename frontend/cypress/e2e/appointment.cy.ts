@@ -1,20 +1,25 @@
 describe('약속잡기 기능에 대한 e2e 테스트', () => {
-  beforeEach(() => {
+  before(() => {
     localStorage.setItem('token', JSON.stringify(Cypress.env('token')));
-    cy.intercept('GET', '**/api/groups/**/appointments').as('getAppointments');
-    cy.intercept('POST', '**/api/groups/**/appointments').as('createAppointment');
-    cy.intercept('GET', '**/api/groups/**/appointments/**').as('getAppointment');
-    // cy.intercept('POST', '**/api/groups/**/appointments').as('getAppointmentRecommendation');
-    // cy.intercept('POST', '**/api/groups/**/appointments').as('progressAppointment');
-    // cy.intercept('POST', '**/api/groups/**/appointments').as('closeAppointment');
-    // cy.intercept('POST', '**/api/groups/**/appointments').as('deleteAppointment');
-    // cy.intercept('POST', '**/api/groups/**/appointments').as('getAppointmentStatus');
-    // cy.intercept('GET', '**/api/groups/**/members').as('getGroupMembers');
-    // cy.intercept('GET', '**/api/groups').as('getGroups');
+    cy.saveLocalStorage();
+    cy.visit('http://localhost:3000/');
   });
 
-  it('메인페이지에 접속할 수 있다.', () => {
-    cy.visit('http://localhost:3000/');
+  beforeEach(() => {
+    cy.intercept('GET', '**/api/groups/**/appointments').as('getAppointments');
+    cy.intercept('POST', '**/api/groups/**/appointments').as('createAppointment');
+    cy.intercept('GET', '**/api/groups/**/appointments/**/recommendation').as(
+      'getAppointmentRecommendation'
+    );
+    cy.intercept('PUT', '**/api/groups/**/appointments/**').as('progressAppointment');
+    cy.intercept('GET', '**/api/groups/**/appointments/**').as('getAppointment');
+    cy.restoreLocalStorage().then(() => {
+      expect(localStorage.getItem('token')).not.to.be.null;
+    });
+  });
+
+  afterEach(() => {
+    cy.saveLocalStorage();
   });
 
   it('약속잡기를 생성할 수 있다.', () => {
@@ -49,11 +54,11 @@ describe('약속잡기 기능에 대한 e2e 테스트', () => {
   });
 
   it('약속잡기를 진행할 수 있다.', () => {
+    cy.wait('@getAppointment');
+
     const today = new Date();
     today.setMonth(today.getMonth() + 1);
     const nextMonth = today.toISOString().split('T')[0].split('-')[1];
-
-    cy.wait('@getAppointment');
 
     cy.findByRole('button', { name: 'next-month' }).click();
     cy.findByRole('generic', { name: `${nextMonth}-19` }).click();
@@ -65,5 +70,13 @@ describe('약속잡기 기능에 대한 e2e 테스트', () => {
     cy.findByRole('generic', { name: '03:00PM-03:30PM' }).click();
     cy.findByRole('generic', { name: '03:30PM-04:00PM' }).click();
     cy.findByRole('button', { name: '선택' }).click();
+
+    cy.wait('@progressAppointment');
+    cy.wait('@getAppointment');
+    cy.wait('@getAppointmentRecommendation');
+  });
+
+  it('약속잡기 결과를 확인할 수 있다.', () => {
+    cy.findByRole('generic', { name: 'appointment-result-1' }).should('have.text');
   });
 });
