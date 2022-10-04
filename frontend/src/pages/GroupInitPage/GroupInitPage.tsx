@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 
-import GroupInitContainer from '../../components/GroupInit/GroupInitContainer/GroupInitContainer';
+import GroupInitContainer from './components/GroupInitContainer/GroupInitContainer';
 import { getDefaultGroup } from '../../api/group';
 import { getLocalStorageItem, removeLocalStorageItem } from '../../utils/storage';
+import { StyledContainer } from './GroupInitPage.style';
 
 function GroupInitPage() {
   const navigate = useNavigate();
@@ -47,15 +47,5 @@ function GroupInitPage() {
     </StyledContainer>
   );
 }
-
-const StyledContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6.4rem;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-`;
 
 export default GroupInitPage;
