@@ -57,14 +57,18 @@ function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
             padding="1.2rem 0"
             borderRadius="1.6rem"
             colorScheme={theme.colors.PURPLE_100}
-            aria-label={`${subject}-result`}
+            aria-label={`poll-result-${subject}`}
           >
             {status === 'OPEN' ? (
               <StyledCheckIcon checked={selectedPollItemIds.includes(id)} src={Check} alt="check" />
             ) : (
               <StyledCrownIcon isWinningPollItem={isWinningPollItem} src={Crown} alt="crown" />
             )}
-            <StyledSubject status={status} isWinningPollItem={isWinningPollItem}>
+            <StyledSubject
+              status={status}
+              isWinningPollItem={isWinningPollItem}
+              aria-label={subject}
+            >
               {subject}
             </StyledSubject>
             <StyledParticipantCount onClick={handleShowParticipant(id)}>
@@ -73,7 +77,11 @@ function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
                   src={status === 'CLOSED' && isWinningPollItem ? UserWhite : UserPurple}
                   alt="user"
                 />
-                <StyledUserCount status={status} isWinningPollItem={isWinningPollItem}>
+                <StyledUserCount
+                  status={status}
+                  isWinningPollItem={isWinningPollItem}
+                  aria-label={`${subject}-count`}
+                >
                   {count}
                 </StyledUserCount>
               </FlexContainer>

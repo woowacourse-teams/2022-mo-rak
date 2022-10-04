@@ -17,6 +17,7 @@ function PollCreateFormTitleInput({ title, onChange }: Props) {
       <Input
         value={title}
         placeholder="투표 제목을 입력해주세요🧐"
+        aria-label="poll-title"
         fontSize="3.2rem"
         color={theme.colors.BLACK_100}
         textAlign="left"

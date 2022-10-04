@@ -11,6 +11,7 @@ import { getFormattedDateTime } from '../../../utils/date';
 interface Props {
   groupCode: GroupInterface['code'];
   appointmentRecommendation: Array<AppointmentRecommendationInterface>;
+  // TODO: clicked보다는 selected가 더 맞지 않을까?
   clickedRecommendation: number;
   onClickRank: (idx: number) => MouseEventHandler<HTMLDivElement>;
 }
@@ -56,7 +57,9 @@ function AppointmentResultRanking({
           <StyledRank
             key={`${recommendStartDateTime}-${recommendEndDateTime}`}
             onClick={onClickRank(idx)}
+            // TODO: isClicked?
             isClicked={idx === clickedRecommendation}
+            aria-label={`appointment-result-${rank}`}
           >
             <FlexContainer justifyContent="space-between" alignItems="center">
               {/* TODO: 상수화 */}
@@ -67,7 +70,8 @@ function AppointmentResultRanking({
                 <StyledResultText>{rank}</StyledResultText>
               )}
               <StyledResultText>
-                {getFormattedDateTime(recommendStartDateTime)}<br/>~{getFormattedDateTime(recommendEndDateTime)}
+                {getFormattedDateTime(recommendStartDateTime)}
+                <br />~{getFormattedDateTime(recommendEndDateTime)}
               </StyledResultText>
               <StyledResultText>
                 {availableMembers.length}/{totalParticipants}명 가능

@@ -129,14 +129,20 @@ function Calendar({
   return (
     <StyledCalendar>
       <StyledMonth>
-        <StyledPrevButton onClick={handleShowPrevMonth} disabled={isCurrentMonth}>
+        <StyledPrevButton
+          onClick={handleShowPrevMonth}
+          disabled={isCurrentMonth}
+          aria-label="prev-month"
+        >
           {/* TODO: 이런 방식이 괜찮은 방법인지 고민하기 */}
           &#8249;
         </StyledPrevButton>
         <StyledMonthTitle>
           {currentDate.getFullYear()}년 {currentMonth + 1}월
         </StyledMonthTitle>
-        <StyledNextButton onClick={handleShowNextMonth}>&#8250;</StyledNextButton>
+        <StyledNextButton onClick={handleShowNextMonth} aria-label="next-month">
+          &#8250;
+        </StyledNextButton>
       </StyledMonth>
       <StyledWeekends>
         {weeks.map((day) => (
@@ -155,7 +161,12 @@ function Calendar({
               if (isNotInStartAndEndDate(day)) {
                 return (
                   // TODO: 변수명 생각해보기
-                  <StyledCurrentMonthDayNotInStartAndEndDate key={day}>
+                  <StyledCurrentMonthDayNotInStartAndEndDate
+                    key={day}
+                    aria-label={`${String(currentMonth + 1).padStart(2, '0')}-${String(
+                      day
+                    ).padStart(2, '0')}`}
+                  >
                     {day}
                   </StyledCurrentMonthDayNotInStartAndEndDate>
                 );
@@ -166,15 +177,28 @@ function Calendar({
                   key={day}
                   onClick={handleSelectedDate(day)}
                   isSelectedDate={isSelectedDate(day)}
+                  aria-label={`${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(
+                    2,
+                    '0'
+                  )}`}
                 >
                   {day}
                 </StyledCurrentMonthDay>
               );
             })
           : getCurrentMonthDays().map((day) => {
+              // TODO: isBeforeTody로 변경할까?
               if (isPrevToday(day)) {
                 return (
-                  <StyledCurrentMonthDayPrevToday key={day}>{day}</StyledCurrentMonthDayPrevToday>
+                  <StyledCurrentMonthDayPrevToday
+                    key={day}
+                    // TODO: 값 리팩토링 필요
+                    aria-label={`${String(currentMonth + 1).padStart(2, '0')}-${String(
+                      day
+                    ).padStart(2, '0')}`}
+                  >
+                    {day}
+                  </StyledCurrentMonthDayPrevToday>
                 );
               }
 
@@ -186,6 +210,9 @@ function Calendar({
                     onClick={setStartDate && setEndDate && handleStartOrEndDate(day)}
                     isBetweenStartEndDate={isBetweenStartEndDate(day)}
                     isStartOrEndDate={isStartOrEndDate(day)}
+                    aria-label={`${String(currentMonth + 1).padStart(2, '0')}-${String(
+                      day
+                    ).padStart(2, '0')}`}
                   >
                     {day}
                   </StyledCurrentMonthDayToday>
@@ -198,6 +225,10 @@ function Calendar({
                   onClick={handleStartOrEndDate(day)}
                   isBetweenStartEndDate={isBetweenStartEndDate(day)}
                   isStartOrEndDate={isStartOrEndDate(day)}
+                  aria-label={`${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(
+                    2,
+                    '0'
+                  )}`}
                 >
                   {day}
                 </StyledCurrentMonthDay>

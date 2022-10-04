@@ -105,6 +105,7 @@ function AppointmentProgressTimePicker({
                   key={`${start}-${end}`}
                   onClick={onClickTime(start, end)}
                   isSelected={isAvailableTime}
+                  aria-label={`${start}-${end}`}
                 >
                   {start}~{end}
                 </StyledTime>

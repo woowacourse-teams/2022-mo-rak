@@ -24,7 +24,14 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
         padding="0.4rem 0.8rem"
         width="6rem"
       >
-        <Select id="hour" onChange={onChange} value={hour} name="hour" required>
+        <Select
+          id="hour"
+          onChange={onChange}
+          value={hour}
+          name="hour"
+          aria-label="appointment-duration-hour"
+          required
+        >
           <option value="">--</option>
           {createRange({
             size: 25
@@ -49,6 +56,7 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
           value={minute}
           name="minute"
           fontSize="2.4rem"
+          aria-label="appointment-duration-minute"
           required
         >
           <option value="00">00</option>

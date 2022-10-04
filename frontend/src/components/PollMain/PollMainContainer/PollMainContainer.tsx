@@ -19,7 +19,7 @@ import emptyAnimation from '../../../assets/empty-animation.json';
 function PollMainContainer() {
   const [polls, setPolls] = useState<getPollsResponse>([]);
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
-  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' }); 
+  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
 
   useEffect(() => {
     const fetchPolls = async () => {
@@ -39,7 +39,7 @@ function PollMainContainer() {
       <>
         {/* TODO: 재사용 가능하지 않을까한다! */}
         <LottieWrapper>{emptyLottie.View}</LottieWrapper>
-        <StyledGuide>첫 투표를 만들어보세요!</StyledGuide>
+        <StyledGuide aria-label="poll-guide">첫 투표를 만들어보세요!</StyledGuide>
       </>
     );
   }

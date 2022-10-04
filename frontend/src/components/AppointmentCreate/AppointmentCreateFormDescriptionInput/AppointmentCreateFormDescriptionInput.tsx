@@ -18,6 +18,7 @@ function AppointmentCreateFormDescriptionInput({ description, onChange }: Props)
         textAlign="start"
         value={description}
         onChange={onChange}
+        aria-label="appointment-description"
         required
       />
     </>

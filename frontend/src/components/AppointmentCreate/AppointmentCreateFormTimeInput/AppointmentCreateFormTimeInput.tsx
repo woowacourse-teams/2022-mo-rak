@@ -9,10 +9,11 @@ import { Time } from '../../../types/appointment';
 
 interface Props {
   time: Time;
+  ariaLabelHelper: 'start' | 'end';
   onChange: ChangeEventHandler<HTMLSelectElement>;
 }
 
-function AppointmentCreateFormTimeInput({ time, onChange }: Props) {
+function AppointmentCreateFormTimeInput({ time, ariaLabelHelper, onChange }: Props) {
   const theme = useTheme();
 
   return (
@@ -25,11 +26,25 @@ function AppointmentCreateFormTimeInput({ time, onChange }: Props) {
     >
       <FlexContainer alignItems="center">
         {/* TODO: label을 어떻게 넣을것인가? 빈값으로? */}
-        <Select name="period" value={time.period} onChange={onChange} fontSize="2.4rem" required>
+        <Select
+          name="period"
+          value={time.period}
+          onChange={onChange}
+          fontSize="2.4rem"
+          aria-label={`appointment-${ariaLabelHelper}-time-limit-period`}
+          required
+        >
           <option value="AM">오전</option>
           <option value="PM">오후</option>
         </Select>
-        <Select name="hour" value={time.hour} onChange={onChange} fontSize="2.4rem" required>
+        <Select
+          name="hour"
+          value={time.hour}
+          onChange={onChange}
+          fontSize="2.4rem"
+          aria-label={`appointment-${ariaLabelHelper}-time-limit-hour`}
+          required
+        >
           <option value="">--</option>
           {createRange({
             size: 12,
@@ -41,7 +56,14 @@ function AppointmentCreateFormTimeInput({ time, onChange }: Props) {
           ))}
         </Select>
         <StyledContent>:</StyledContent>
-        <Select name="minute" value={time.minute} onChange={onChange} fontSize="2.4rem" required>
+        <Select
+          name="minute"
+          value={time.minute}
+          onChange={onChange}
+          fontSize="2.4rem"
+          aria-label={`appointment-${ariaLabelHelper}-time-limit-minute`}
+          required
+        >
           <option value="00">00</option>
           <option value="30">30</option>
         </Select>

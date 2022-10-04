@@ -35,9 +35,18 @@ function AppointmentCreateFormTimeLimitInput({
       </FlexContainer>
 
       <FlexContainer alignItems="center" gap="2.8rem">
-        <AppointmentCreateFormTimeInput time={startTime} onChange={onChangeStartTime} />
+        <AppointmentCreateFormTimeInput
+          time={startTime}
+          // TODO: 네이밍 고민
+          ariaLabelHelper="start"
+          onChange={onChangeStartTime}
+        />
         <StyledContent>~</StyledContent>
-        <AppointmentCreateFormTimeInput time={endTime} onChange={onChangeEndTime} />
+        <AppointmentCreateFormTimeInput
+          time={endTime}
+          ariaLabelHelper="end"
+          onChange={onChangeEndTime}
+        />
       </FlexContainer>
     </>
   );

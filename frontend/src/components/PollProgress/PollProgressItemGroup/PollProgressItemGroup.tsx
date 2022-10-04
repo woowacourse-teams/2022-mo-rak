@@ -51,7 +51,12 @@ function PollProgressItemGroup({
               borderRadius="10px"
             >
               {allowedPollCount >= 2 ? (
-                <Checkbox id={String(id)} checked={isSelectedPollItem} onChange={onChangeCheckbox}>
+                <Checkbox
+                  id={String(id)}
+                  checked={isSelectedPollItem}
+                  onChange={onChangeCheckbox}
+                  aria-label={subject}
+                >
                   {subject}
                 </Checkbox>
               ) : (
@@ -59,6 +64,7 @@ function PollProgressItemGroup({
                   id={String(id)}
                   name={subject}
                   checked={isSelectedPollItem}
+                  aria-label={subject}
                   onChange={onChangeRadio}
                 >
                   {subject}
@@ -80,7 +86,7 @@ function PollProgressItemGroup({
                   placeholder="선택한 이유는?"
                   value={selectedPollItem?.description}
                   onChange={onChangeText(id)}
-                  aria-label={subject}
+                  aria-label={`${subject}-description`}
                 />
               </TextField>
             </StyledDescription>
