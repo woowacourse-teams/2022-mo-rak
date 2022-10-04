@@ -8,11 +8,11 @@ import {
   AppointmentInterface,
   getAppointmentResponse
 } from '../../types/appointment';
-import Calendar from '../../components/@common/Calendar/Calendar';
-import AppointmentProgressHeader from '../../components/AppointmentProgress/AppointmentProgressHeader/AppointmentProgressHeader';
-import AppointmentProgressTimePicker from '../../components/AppointmentProgress/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
-import AppointmentProgressButtonGroup from '../../components/AppointmentProgress/AppointmentProgressButtonGroup/AppointmentProgressButtonGroup';
-import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
+import Calendar from '../../components/Calendar/Calendar';
+import AppointmentProgressHeader from './components/AppointmentProgressHeader/AppointmentProgressHeader';
+import AppointmentProgressTimePicker from './components/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
+import AppointmentProgressButtonGroup from './components/AppointmentProgressButtonGroup/AppointmentProgressButtonGroup';
+import FlexContainer from '../../components/FlexContainer/FlexContainer';
 
 // TODO: 중복됨 제거
 const getPlusOneDate = (date: string) => {

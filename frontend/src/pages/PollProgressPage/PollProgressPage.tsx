@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import PollProgressForm from '../../components/PollProgress/PollProgressForm/PollProgressForm';
+import PollProgressForm from './components/PollProgressForm/PollProgressForm';
 
 function PollProgressPage() {
   return (

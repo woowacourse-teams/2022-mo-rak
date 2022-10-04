@@ -11,9 +11,9 @@ import {
 } from '../../utils/storage';
 import { signin } from '../../api/auth';
 import { getDefaultGroup } from '../../api/group';
-import LandingMainSection from '../../components/Landing/LandingMainSection/LandingMainSection';
-import LandingServiceIntroductionSection from '../../components/Landing/LandingServiceIntroductionSection/LandingServiceIntroductionSection';
-import LandingFeatureIntroductionSection from '../../components/Landing/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';
+import LandingMainSection from './components/LandingMainSection/LandingMainSection';
+import LandingServiceIntroductionSection from './components/LandingServiceIntroductionSection/LandingServiceIntroductionSection';
+import LandingFeatureIntroductionSection from './components/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';
 
 function LandingPage() {
   const navigate = useNavigate();

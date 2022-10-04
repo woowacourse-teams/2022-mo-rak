@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
-import PollMainContainer from '../../components/PollMain/PollMainContainer/PollMainContainer';
-import PollMainHeader from '../../components/PollMain/PollMainHeader/PollMainHeader';
+import PollMainContainer from './components/PollMainContainer/PollMainContainer';
+import PollMainHeader from './components/PollMainHeader/PollMainHeader';
 
 function PollMainPage() {
   return (

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import PollResultContainer from '../../components/PollResult/PollResultContainer/PollResultContainer';
+import PollResultContainer from './components/PollResultContainer/PollResultContainer';
 
 function PollResultPage() {
   return (

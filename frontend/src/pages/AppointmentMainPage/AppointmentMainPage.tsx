@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
-import AppointmentMainContainer from '../../components/AppointmentMain/AppointmentMainContainer/AppointmentMainContainer';
-import AppointmentMainHeader from '../../components/AppointmentMain/AppointmentMainHeader/AppointmentMainHeader';
+import AppointmentMainContainer from './components/AppointmentMainContainer/AppointmentMainContainer';
+import AppointmentMainHeader from './components/AppointmentMainHeader/AppointmentMainHeader';
 
 function AppointmentMainPage() {
   return (

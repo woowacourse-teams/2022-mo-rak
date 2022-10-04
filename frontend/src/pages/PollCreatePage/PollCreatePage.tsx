@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import PollCreateForm from '../../components/PollCreate/PollCreateForm/PollCreateForm';
+import PollCreateForm from './components/PollCreateForm/PollCreateForm';
 
 function PollCreatePage() {
   return (

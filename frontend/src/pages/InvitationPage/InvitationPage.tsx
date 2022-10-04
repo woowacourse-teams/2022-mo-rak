@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import InvitationContainer from '../../components/Invitation/InvitationContainer/InvitationContainer';
+import InvitationContainer from './components/InvitationContainer/InvitationContainer';
 
 function InvitationPage() {
   return (

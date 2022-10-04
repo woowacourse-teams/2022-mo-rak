@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import MainFeatureMenuContainer from '../../components/Main/MainFeatureMenuContainer/MainFeatureMenuContainer';
+import MainFeatureMenuContainer from './components/MainFeatureMenuContainer/MainFeatureMenuContainer';
 
 function MainPage() {
   return (

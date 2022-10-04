@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 
-import GroupInitContainer from '../../components/GroupInit/GroupInitContainer/GroupInitContainer';
+import GroupInitContainer from './components/GroupInitContainer/GroupInitContainer';
 import { getDefaultGroup } from '../../api/group';
 import { getLocalStorageItem, removeLocalStorageItem } from '../../utils/storage';
 

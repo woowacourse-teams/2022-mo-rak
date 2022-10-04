@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import AppointmentCreateForm from '../../components/AppointmentCreate/AppointmentCreateForm/AppointmentCreateForm';
-import Calendar from '../../components/@common/Calendar/Calendar';
-import AppointmentCreateHeader from '../../components/AppointmentCreate/AppointmentCreateHeader/AppointmentCreateHeader';
-import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
+import AppointmentCreateForm from './components/AppointmentCreateForm/AppointmentCreateForm';
+import Calendar from '../../components/Calendar/Calendar';
+import AppointmentCreateHeader from './components/AppointmentCreateHeader/AppointmentCreateHeader';
+import FlexContainer from '../../components/FlexContainer/FlexContainer';
 
 function AppointmentCreatePage() {
   const [startDate, setStartDate] = useState(''); // 2022-08-20 과 같은 형식이 들어옴 -> new Date()로 감싸서 사용 가능

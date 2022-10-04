@@ -9,11 +9,11 @@ import {
   getAppointmentResponse
 } from '../../types/appointment';
 import { GroupInterface } from '../../types/group';
-import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
-import AppointmentResultRanking from '../../components/AppointmentResult/AppointmentResultRanking/AppointmentResultRanking';
-import AppointmentResultAvailableMembers from '../../components/AppointmentResult/AppointmentResultAvailableMembers/AppointmentResultAvailableMembers';
-import AppointmentResultButtonGroup from '../../components/AppointmentResult/AppointmentResultButtonGroup/AppointmentResultButtonGroup';
-import AppointmentResultHeader from '../../components/AppointmentResult/AppointmentResultHeader/AppointmentResultHeader';
+import FlexContainer from '../../components/FlexContainer/FlexContainer';
+import AppointmentResultRanking from './components/AppointmentResultRanking/AppointmentResultRanking';
+import AppointmentResultAvailableMembers from './components/AppointmentResultAvailableMembers/AppointmentResultAvailableMembers';
+import AppointmentResultButtonGroup from './components/AppointmentResultButtonGroup/AppointmentResultButtonGroup';
+import AppointmentResultHeader from './components/AppointmentResultHeader/AppointmentResultHeader';
 
 function AppointmentResultPage() {
   const [appointment, setAppointment] = useState<getAppointmentResponse>();
