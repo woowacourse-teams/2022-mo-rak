@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
+import { StyledTitle } from './PollResultContainer.styles';
 
 import { useParams } from 'react-router-dom';
 import Box from '../../../../components/Box/Box';
@@ -117,12 +117,5 @@ function PollResultContainer() {
     </Box>
   );
 }
-
-const StyledTitle = styled.h1(
-  ({ theme }) => `
-  color: ${theme.colors.BLACK_100};
-  font-size: 3.2rem;
-`
-);
 
 export default PollResultContainer;

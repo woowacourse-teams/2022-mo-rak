@@ -1,7 +1,7 @@
 import { ChangeEventHandler } from 'react';
 
 import { useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
+import { StyledDescription } from './PollProgressItemGroup.styles';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 
 import { PollInterface, SelectedPollItem, getPollItemsResponse } from '../../../../types/poll';
@@ -96,11 +96,5 @@ function PollProgressItemGroup({
     </FlexContainer>
   );
 }
-
-const StyledDescription = styled.div<{ isVisible: boolean }>(
-  ({ isVisible }) => `
-  display: ${isVisible ? 'block' : 'none'};
-`
-);
 
 export default PollProgressItemGroup;

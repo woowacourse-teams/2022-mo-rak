@@ -1,6 +1,6 @@
 import { useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
 import TextField from '../../../../components/TextField/TextField';
+import { StyledStatus } from './AppointmentMainStatus.style';
 
 interface Props {
   isClosed: boolean;
@@ -21,12 +21,5 @@ function AppointmentMainStatus({ isClosed }: Props) {
     </TextField>
   );
 }
-
-const StyledStatus = styled.span(
-  ({ theme }) => `
-  color: ${theme.colors.WHITE_100};
-  font-size: 1.2rem;
-`
-);
 
 export default AppointmentMainStatus;

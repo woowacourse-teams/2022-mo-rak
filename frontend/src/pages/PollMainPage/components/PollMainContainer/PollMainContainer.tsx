@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
-import styled from '@emotion/styled';
+import {
+  StyledContainer,
+  StyledGuide,
+  StyledTitle,
+  StyledLottieWrapper
+} from './PollMainContainer.styles';
 import { useParams } from 'react-router-dom';
 import { useLottie } from 'lottie-react';
 import Box from '../../../../components/Box/Box';
@@ -38,7 +43,7 @@ function PollMainContainer() {
     return (
       <>
         {/* TODO: 재사용 가능하지 않을까한다! */}
-        <LottieWrapper>{emptyLottie.View}</LottieWrapper>
+        <StyledLottieWrapper>{emptyLottie.View}</StyledLottieWrapper>
         <StyledGuide aria-label="poll-guide">첫 투표를 만들어보세요!</StyledGuide>
       </>
     );
@@ -74,35 +79,5 @@ function PollMainContainer() {
     </StyledContainer>
   );
 }
-
-const StyledContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3.2rem;
-`;
-
-const StyledTitle = styled.h1`
-  font-size: 2.2rem;
-  text-align: center;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin-top: 1.2rem;
-`;
-
-const LottieWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StyledGuide = styled.p(
-  ({ theme }) => `
-  text-align: center;
-  font-size: 4rem;
-
-  color: ${theme.colors.GRAY_400}
-`
-);
 
 export default PollMainContainer;

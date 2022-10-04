@@ -1,10 +1,9 @@
 import { useTheme } from '@emotion/react';
 
-import styled from '@emotion/styled';
-
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import TextField from '../../../../components/TextField/TextField';
 import { AppointmentInterface } from '../../../../types/appointment';
+import { StyledCloseTime, StyledDetail } from './AppointmentMainDetail.style';
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);
@@ -52,17 +51,5 @@ function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Pro
     </FlexContainer>
   );
 }
-
-const StyledCloseTime = styled.p`
-  font-size: 1.4rem;
-  align-self: end;
-`;
-
-const StyledDetail = styled.span(
-  ({ theme }) => `
-  color: ${theme.colors.PURPLE_100};
-  font-size: 1.2rem;
-`
-);
 
 export default AppointmentMainDetail;

@@ -28,7 +28,7 @@ const StyledSlackLogo = styled.img`
 `;
 
 const StyledText = styled.p`
-  font-size: 1.6rem; 
+  font-size: 1.6rem;
 `;
 
 export default SidebarSlackMenu;

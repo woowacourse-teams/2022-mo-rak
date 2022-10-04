@@ -1,11 +1,11 @@
 import { ChangeEventHandler, memo } from 'react';
-import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import TextField from '../../../../components/TextField/TextField';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Select from '../../../../components/Select/Select';
 import { createRange } from '../../../../utils/number';
 import { Time } from '../../../../types/appointment';
+import { StyledContent } from './AppointmentCreateFormTimeInput.style';
 
 interface Props {
   time: Time;
@@ -71,9 +71,5 @@ function AppointmentCreateFormTimeInput({ time, ariaLabelHelper, onChange }: Pro
     </TextField>
   );
 }
-
-const StyledContent = styled.p`
-  font-size: 2.4rem;
-`;
 
 export default memo(AppointmentCreateFormTimeInput, (prev, next) => prev.time === next.time);

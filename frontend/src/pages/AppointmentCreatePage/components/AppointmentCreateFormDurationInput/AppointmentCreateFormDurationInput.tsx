@@ -1,11 +1,11 @@
 import { useTheme } from '@emotion/react';
 import { memo, SelectHTMLAttributes } from 'react';
-import styled from '@emotion/styled';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import TextField from '../../../../components/TextField/TextField';
 import Select from '../../../../components/Select/Select';
 import { createRange } from '../../../../utils/number';
 import { Time } from '../../../../types/appointment';
+import { StyledContent, StyledLabel } from './AppointmentCreateFormDurationInput.style';
 
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
   duration: Omit<Time, 'period'>;
@@ -68,14 +68,6 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
     </FlexContainer>
   );
 }
-
-const StyledContent = styled.p`
-  font-size: 2.8rem;
-`;
-
-const StyledLabel = styled.label`
-  font-size: 2.8rem;
-`;
 
 export default memo(
   AppointmentCreateFormDurationInput,

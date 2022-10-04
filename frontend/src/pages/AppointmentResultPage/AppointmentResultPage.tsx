@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
+import { StyledContainer } from './AppointmentResultPage.style';
 
 import { getAppointment, getAppointmentRecommendation } from '../../api/appointment';
 import {
@@ -102,12 +102,5 @@ function AppointmentResultPage() {
     </StyledContainer>
   );
 }
-
-const StyledContainer = styled.div`
-  width: calc(100% - 36.4rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 export default AppointmentResultPage;

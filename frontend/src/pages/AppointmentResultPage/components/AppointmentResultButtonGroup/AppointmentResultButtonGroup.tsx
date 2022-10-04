@@ -1,5 +1,4 @@
 import { useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -20,6 +19,7 @@ import {
 import Button from '../../../../components/Button/Button';
 import { getFormattedDateTime } from '../../../../utils/date';
 import Question from '../../../../assets/question.svg';
+import { StyledHelpIconWrapper, StyledHelpIcon } from './AppointmentResultButtonGroup.style';
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -170,20 +170,5 @@ function AppointmentResultButtonGroup({
     </FlexContainer>
   );
 }
-
-const StyledHelpIconWrapper = styled.div(
-  ({ theme }) => `
-  display: flex;
-  justify-content: center;
-  width: 2.8rem;
-  height: 2.8rem;
-  background: ${theme.colors.GRAY_300};
-  border-radius: 100%;
-`
-);
-
-const StyledHelpIcon = styled.img`
-  width: 2rem;
-`;
 
 export default AppointmentResultButtonGroup;

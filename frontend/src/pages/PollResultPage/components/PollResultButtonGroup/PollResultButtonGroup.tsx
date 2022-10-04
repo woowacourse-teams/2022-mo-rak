@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-useless-fragment */
 import { useTheme } from '@emotion/react';
 
 import { useNavigate } from 'react-router-dom';

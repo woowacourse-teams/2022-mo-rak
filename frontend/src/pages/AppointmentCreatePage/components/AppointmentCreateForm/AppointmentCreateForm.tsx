@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
@@ -15,6 +14,7 @@ import useInputs from '../../../../hooks/useInputs';
 import { Time, createAppointmentData, AppointmentInterface } from '../../../../types/appointment';
 import { createAppointment } from '../../../../api/appointment';
 import { GroupInterface } from '../../../../types/group';
+import { StyledForm } from './AppointmentCreateForm.style';
 
 interface Props {
   startDate: AppointmentInterface['startDate'];
@@ -147,11 +147,5 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
     </StyledForm>
   );
 }
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 3.2rem;
-`;
 
 export default AppointmentCreateForm;

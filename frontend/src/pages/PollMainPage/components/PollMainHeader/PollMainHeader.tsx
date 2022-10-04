@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import { StyledTitle } from './PollMainHeader.styles';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
@@ -32,9 +32,5 @@ function PollMainHeader() {
     </>
   );
 }
-
-const StyledTitle = styled.div`
-  font-size: 4rem;
-`;
 
 export default PollMainHeader;

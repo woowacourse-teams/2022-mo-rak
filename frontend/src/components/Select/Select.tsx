@@ -8,10 +8,10 @@ function Select({ children, ...props }: Props & CSSProperties) {
 }
 
 const StyledSelect = styled.select<CSSProperties>(
-  ({fontSize}) => `
+  ({ fontSize }) => `
   appearance: none;
   width: 100%;
-  font-size: ${fontSize ||  "2.8rem"};
+  font-size: ${fontSize || '2.8rem'};
   text-align: center;
   border: none;
   cursor: pointer;
@@ -19,6 +19,7 @@ const StyledSelect = styled.select<CSSProperties>(
   :focus {
     outline: none;
   }
-`);
+`
+);
 
 export default Select;

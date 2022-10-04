@@ -1,9 +1,8 @@
-import styled from '@emotion/styled';
-
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Box from '../../../../components/Box/Box';
 import { AppointmentRecommendationInterface } from '../../../../types/appointment';
 import Avatar from '../../../../components/Avatar/Avatar';
+import { StyledGuideText, StyledSmallTitle } from './AppointmentResultAvailableMembers.style';
 
 interface Props {
   appointmentRecommendation: Array<AppointmentRecommendationInterface>;
@@ -61,16 +60,5 @@ function AppointmentResultAvailableMembers({
     </FlexContainer>
   );
 }
-
-const StyledGuideText = styled.div(
-  ({ theme }) => `
-  font-size: 2rem;
-  color: ${theme.colors.GRAY_400};
-`
-);
-
-const StyledSmallTitle = styled.h1`
-  font-size: 2rem;
-`;
 
 export default AppointmentResultAvailableMembers;

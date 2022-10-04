@@ -1,7 +1,7 @@
 import { InputHTMLAttributes, memo } from 'react';
-import styled from '@emotion/styled';
 import Input from '../../../../components/Input/Input';
 import { AppointmentInterface } from '../../../../types/appointment';
+import { StyledLabel } from './AppointmentCreateFormDescriptionInput.style';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   description: AppointmentInterface['description'];
@@ -24,13 +24,6 @@ function AppointmentCreateFormDescriptionInput({ description, onChange }: Props)
     </>
   );
 }
-
-const StyledLabel = styled.label(
-  ({ theme }) => `
-  font-size: 2.8rem;
-  color: ${theme.colors.PURPLE_100};
-`
-);
 
 export default memo(
   AppointmentCreateFormDescriptionInput,

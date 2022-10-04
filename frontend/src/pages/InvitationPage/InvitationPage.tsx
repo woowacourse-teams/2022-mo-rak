@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import { StyledContainer } from './InvitationPage.styles';
 
 import InvitationContainer from './components/InvitationContainer/InvitationContainer';
 
@@ -9,15 +9,5 @@ function InvitationPage() {
     </StyledContainer>
   );
 }
-
-const StyledContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6.4rem;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-`;
 
 export default InvitationPage;

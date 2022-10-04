@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
-import styled from '@emotion/styled';
+import { StyledTitle } from './PollProgressForm.styles';
 import Box from '../../../../components/Box/Box';
 import Divider from '../../../../components/Divider/Divider';
 import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
@@ -170,12 +170,5 @@ function PollProgressForm() {
     </Box>
   );
 }
-
-const StyledTitle = styled.h1(
-  ({ theme }) => `
-  color: ${theme.colors.BLACK_100};
-  font-size: 3.2rem;
-`
-);
 
 export default PollProgressForm;

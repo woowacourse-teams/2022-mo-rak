@@ -1,10 +1,10 @@
-import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '../../../../components/Button/Button';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Divider from '../../../../components/Divider/Divider';
+import { StyledTitle } from './AppointmentMainHeader.style';
 
 function AppointmentMainHeader() {
   const theme = useTheme();
@@ -33,9 +33,5 @@ function AppointmentMainHeader() {
     </>
   );
 }
-
-const StyledTitle = styled.div`
-  font-size: 4rem;
-`;
 
 export default AppointmentMainHeader;

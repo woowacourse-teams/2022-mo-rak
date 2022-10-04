@@ -1,11 +1,10 @@
-import styled from '@emotion/styled';
-
 import { AppointmentInterface } from '../../../../types/appointment';
 import LinkIcon from '../../../../assets/link.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { writeClipboard } from '../../../../utils/clipboard';
 import AppointmentResultStatus from '../AppointmentResultStatus/AppointmentResultStatus';
 import { GroupInterface } from '../../../../types/group';
+import { StyledTitle, StyledContent, StyledLinkIcon } from './AppointmentResultHeader.style';
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);
@@ -67,17 +66,5 @@ function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, 
     </>
   );
 }
-
-const StyledTitle = styled.h1`
-  font-size: 4rem;
-`;
-
-const StyledContent = styled.p`
-  font-size: 2.4rem;
-`;
-
-const StyledLinkIcon = styled.img`
-  width: 2.4rem;
-`;
 
 export default AppointmentResultHeader;

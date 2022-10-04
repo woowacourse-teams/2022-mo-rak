@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
 import Progress from '../../../../components/Progress/Progress';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { GroupInterface, MemberInterface } from '../../../../types/group';
 import { getGroupMembers } from '../../../../api/group';
+import { StyledParticipantsStatus } from './AppointmentMainProgress.style';
 
 interface Props {
   count: number;
@@ -45,9 +45,5 @@ function AppointmentMainProgress({ count, groupCode }: Props) {
     </FlexContainer>
   );
 }
-
-const StyledParticipantsStatus = styled.p`
-  font-size: 1.6rem;
-`;
 
 export default AppointmentMainProgress;

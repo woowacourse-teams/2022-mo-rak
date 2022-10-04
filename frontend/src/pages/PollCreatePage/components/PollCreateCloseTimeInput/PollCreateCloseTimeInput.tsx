@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import { StyledLabel } from './PollCreateCloseTimeInput.styles';
 import { ChangeEventHandler, memo } from 'react';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Input from '../../../../components/Input/Input';
@@ -42,13 +42,6 @@ function PollCreateCloseTimeInput({ closingTime, closingDate, onChangeTime, onCh
     </FlexContainer>
   );
 }
-
-const StyledLabel = styled.label(
-  ({ theme }) => `
-  font-size: 1.6rem;
-  color: ${theme.colors.GRAY_400};
-`
-);
 
 export default memo(
   PollCreateCloseTimeInput,

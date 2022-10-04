@@ -1,9 +1,9 @@
 import { useTheme } from '@emotion/react';
 import { ChangeEventHandler } from 'react';
-import styled from '@emotion/styled';
 import TextField from '../../../../components/TextField/TextField';
 import Input from '../../../../components/Input/Input';
 import Participate from '../../../../assets/participate.svg';
+import { StyledParticipateIcon } from './GroupParticipateInvitationCodeInput.style';
 
 interface Props {
   invitationCode: string;
@@ -32,12 +32,5 @@ function GroupParticipateInvitationCodeInput({ invitationCode, handleInvitationC
     </TextField>
   );
 }
-
-const StyledParticipateIcon = styled.img`
-  position: absolute;
-  top: 2rem;
-  left: 2.4rem;
-  width: 4rem;
-`;
 
 export default GroupParticipateInvitationCodeInput;

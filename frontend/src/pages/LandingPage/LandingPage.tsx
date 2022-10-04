@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import { StyledContainer } from './LandingPage.styles';
 
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -94,13 +94,5 @@ function LandingPage() {
     </StyledContainer>
   );
 }
-
-const StyledContainer = styled.div`
-  height: 100vh;  
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-  font-family: 'Nanum Gothic', sans-serif;
-`;
 
 export default LandingPage;

@@ -1,9 +1,9 @@
 import { ChangeEventHandler, memo } from 'react';
-import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import Input from '../../../../components/Input/Input';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import TextField from '../../../../components/TextField/TextField';
+import { StyledTitle } from './AppointmentCreateFormCloseTimeInput.style';
 
 interface Props {
   // TODO: 투표와 변수명 맞춰기
@@ -60,13 +60,6 @@ function AppointmentCreateFormCloseTimeInput({
     </>
   );
 }
-
-const StyledTitle = styled.div(
-  ({ theme }) => `
-  font-size: 2.8rem;
-  color: ${theme.colors.PURPLE_100};
-`
-);
 
 export default memo(
   AppointmentCreateFormCloseTimeInput,

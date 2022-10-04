@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
+import { StyledStatus } from './PollMainStatus.styles';
 import TextField from '../../../../components/TextField/TextField';
 import { PollInterface } from '../../../../types/poll';
 
@@ -22,12 +22,5 @@ function PollMainStatus({ status }: Props) {
     </TextField>
   );
 }
-
-const StyledStatus = styled.span(
-  ({ theme }) => `
-  color: ${theme.colors.WHITE_100};
-  font-size: 1.2rem;
-`
-);
 
 export default PollMainStatus;

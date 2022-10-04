@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createGroup } from '../../../../api/group';
@@ -6,6 +5,7 @@ import { GroupInterface } from '../../../../types/group';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import GroupCreateFormNameInput from '../GroupCreateFormNameInput/GroupCreateFormNameInput';
 import GroupCreateFormSubmitButton from '../GroupCreateFormSubmitButton/GroupCreateFormSubmitButton';
+import { StyledForm } from './GroupCreateForm.style';
 
 function GroupCreateForm() {
   const navigate = useNavigate();
@@ -37,13 +37,5 @@ function GroupCreateForm() {
     </StyledForm>
   );
 }
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1.2rem;
-`;
 
 export default GroupCreateForm;

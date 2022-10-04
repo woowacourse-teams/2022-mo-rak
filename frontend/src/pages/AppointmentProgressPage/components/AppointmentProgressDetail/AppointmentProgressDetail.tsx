@@ -1,6 +1,5 @@
-import styled from '@emotion/styled';
-
 import { AppointmentInterface } from '../../../../types/appointment';
+import { StyledDuration } from './AppointmentProgressDetail.style';
 
 interface Props {
   durationHours: AppointmentInterface['durationHours'];
@@ -17,9 +16,5 @@ function AppointmentProgressDetail({ durationHours, durationMinutes, startTime, 
     </StyledDuration>
   );
 }
-
-const StyledDuration = styled.p`
-  font-size: 2.4rem;
-`;
 
 export default AppointmentProgressDetail;

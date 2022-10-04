@@ -1,11 +1,11 @@
 import { ChangeEventHandler } from 'react';
-import styled from '@emotion/styled';
 
 import { useTheme } from '@emotion/react';
 import Input from '../../../../components/Input/Input';
 import TextField from '../../../../components/TextField/TextField';
 import { GroupInterface } from '../../../../types/group';
 import Create from '../../../../assets/create-plus.svg';
+import { StyledCreateIcon } from './GroupCreateFormNameInput.style';
 
 interface Props {
   groupName: GroupInterface['name'];
@@ -34,12 +34,5 @@ function GroupCreateFormNameInput({ groupName, onChange }: Props) {
     </TextField>
   );
 }
-
-const StyledCreateIcon = styled.img`
-  width: 2.8rem;
-  position: absolute;
-  top: 2.8rem;
-  left: 2.4rem;
-`;
 
 export default GroupCreateFormNameInput;

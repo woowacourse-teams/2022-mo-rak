@@ -1,10 +1,15 @@
-import styled from '@emotion/styled';
 import { ChangeEventHandler, memo } from 'react';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { Time } from '../../../../types/appointment';
 import AppointmentCreateFormTimeInput from '../AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput';
 import Question from '../../../../assets/question.svg';
 import Tooltip from '../../../../components/Tooltip/Tooltip';
+import {
+  StyledTitle,
+  StyledHelpIconWrapper,
+  StyledHelpIcon,
+  StyledContent
+} from './AppointmentCreateFormTimeLimitInput.style';
 
 interface Props {
   startTime: Time;
@@ -51,32 +56,6 @@ function AppointmentCreateFormTimeLimitInput({
     </>
   );
 }
-
-const StyledTitle = styled.div(
-  ({ theme }) => `
-  font-size: 2.8rem;
-  color: ${theme.colors.PURPLE_100};
-`
-);
-
-const StyledHelpIconWrapper = styled.div(
-  ({ theme }) => `
-  display: flex;
-  justify-content: center;
-  width: 2.8rem;
-  height: 2.8rem;
-  background: ${theme.colors.GRAY_300};
-  border-radius: 100%;
-`
-);
-
-const StyledHelpIcon = styled.img`
-  width: 2rem;
-`;
-
-const StyledContent = styled.p`
-  font-size: 2.4rem;
-`;
 
 export default memo(
   AppointmentCreateFormTimeLimitInput,

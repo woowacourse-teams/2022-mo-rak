@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
+import { StyledParticipantsStatus } from './PollResultProgress.styles';
 import Progress from '../../../../components/Progress/Progress';
 import { getPollResponse } from '../../../../types/poll';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
@@ -49,9 +49,5 @@ function PollResultProgress({ currentParticipants, groupCode }: Props) {
     </FlexContainer>
   );
 }
-
-const StyledParticipantsStatus = styled.p`
-  font-size: 1.2rem;
-`;
 
 export default PollResultProgress;

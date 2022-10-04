@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +7,7 @@ import useInput from '../../../../hooks/useInput';
 import GroupParticipateInvitationCodeInput from '../GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';
 import GroupParticipateFormSubmitButton from '../GroupPariticipateFormSubmitButton/GroupParticipateFormSubmitButton';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
+import { StyledForm } from './GroupParticipateForm.style';
 
 function GroupParticipateForm() {
   const [invitationCode, handleInvitationCode] = useInput('');
@@ -38,13 +38,5 @@ function GroupParticipateForm() {
     </StyledForm>
   );
 }
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1.2rem;
-`;
 
 export default GroupParticipateForm;

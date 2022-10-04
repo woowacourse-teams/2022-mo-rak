@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
+import { StyledLogo, StyledTitle } from './InvitationContainer.styles';
 import { AxiosError } from 'axios';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Box from '../../../../components/Box/Box';
@@ -80,13 +80,5 @@ function InvitationContainer() {
     </Box>
   );
 }
-
-const StyledLogo = styled.img`
-  width: 32rem;
-`;
-
-const StyledTitle = styled.p`
-  font-size: 3.2rem;
-`;
 
 export default InvitationContainer;

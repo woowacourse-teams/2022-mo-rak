@@ -1,6 +1,6 @@
 import { useTheme } from '@emotion/react';
 
-import styled from '@emotion/styled';
+import { StyledContainer, StyledCloseTime, StyledDetail } from './PolLResultDetail.styles';
 import TextField from '../../../../components/TextField/TextField';
 
 import { PollInterface } from '../../../../types/poll';
@@ -52,24 +52,5 @@ function PollResultDetail({ isAnonymous, allowedPollCount, closedAt }: Props) {
     </StyledContainer>
   );
 }
-
-const StyledContainer = styled.div`
-  display: flex;
-  gap: 1.2rem;
-  position: relative;
-`;
-
-const StyledCloseTime = styled.p`
-  font-size: 1.2rem;
-  position: absolute;
-  right: 0;
-`;
-
-const StyledDetail = styled.span(
-  ({ theme }) => `
-  color: ${theme.colors.PURPLE_100};
-  font-size: 1.2rem;
-`
-);
 
 export default PollResultDetail;

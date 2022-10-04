@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, MouseEvent, ChangeEvent, memo } from 'react';
 
 import { useTheme } from '@emotion/react';
 
-import styled from '@emotion/styled';
+import { StyledDeleteIcon } from './PollCreateFormInputGroup.styles';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Input from '../../../../components/Input/Input';
 import TextField from '../../../../components/TextField/TextField';
@@ -93,12 +93,5 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
     </FlexContainer>
   );
 }
-
-const StyledDeleteIcon = styled.img`
-  position: absolute;
-  right: 1rem;
-  cursor: pointer;
-  width: 1.8rem;
-`;
 
 export default memo(PollCreateFormInputGroup, (prev, next) => prev.pollItems === next.pollItems);

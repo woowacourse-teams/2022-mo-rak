@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import { StyledLink } from './PollResultShareLink.styles';
 import Link from '../../../../assets/link.svg';
 import { PollInterface } from '../../../../types/poll';
 import { GroupInterface } from '../../../../types/group';
@@ -28,11 +28,5 @@ function PollResultShareLink({ groupCode, pollCode, status }: Props) {
 
   return <StyledLink src={Link} alt="link" onClick={handleCopyShareLink} />;
 }
-
-const StyledLink = styled.img`
-  width: 2.4rem;
-  height: 2.4rem;
-  cursor: pointer;
-`;
 
 export default PollResultShareLink;
