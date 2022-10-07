@@ -1,8 +1,8 @@
 package com.morak.back.brandnew;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.morak.back.brandnew.domain.Member;
-import com.morak.back.brandnew.domain.PollManager;
+import com.morak.back.brandnew.domain.NewPoll;
+import com.morak.back.poll.domain.PollStatus;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class PollResponse {
 
     private Boolean isAnonymous;
 
-    private boolean closed;
+    private PollStatus status;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime closedAt;
@@ -32,17 +32,17 @@ public class PollResponse {
 
     private Integer count;
 
-    public static PollResponse from(Member member, PollManager pollManager) {
+    public static PollResponse from(Long memberId, NewPoll poll) {
         return new PollResponse(
-                pollManager.getId(),
-                pollManager.getPoll().getTitle(),
-                pollManager.getPoll().getAllowedCount(),
-                pollManager.getPoll().getAnonymous(),
-                pollManager.getPoll().getClosed(),
-                pollManager.getPoll().getClosedAt().getDateTime(),
-                pollManager.getPoll().getCode().getCode(),
-                pollManager.getPoll().isHost(member),
-                pollManager.countSelectMembers()
+                poll.getId(),
+                poll.getPollInfo().getTitle(),
+                poll.getPollInfo().getAllowedCount(),
+                poll.getPollInfo().getAnonymous(),
+                poll.getPollInfo().getStatus(),
+                poll.getPollInfo().getClosedAt().getDateTime(),
+                poll.getPollInfo().getCode(),
+                poll.getPollInfo().isHost(memberId),
+                poll.countSelectMembers()
         );
     }
 }

@@ -1,5 +1,6 @@
 package com.morak.back.brandnew.domain;
 
+import com.morak.back.auth.domain.Member;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Embedded;
@@ -69,5 +70,9 @@ public class NewPollItem {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    public Integer countSelectMembers() {
+        return selectMembers.countSelectMembers();
     }
 }
