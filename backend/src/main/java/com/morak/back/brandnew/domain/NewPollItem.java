@@ -1,6 +1,8 @@
 package com.morak.back.brandnew.domain;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.poll.domain.PollResult;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Embedded;
@@ -74,5 +76,9 @@ public class NewPollItem {
 
     public Integer countSelectMembers() {
         return selectMembers.countSelectMembers();
+    }
+
+    public List<PollResult> getSelectMembersByAnonymous() {
+        return null;
     }
 }

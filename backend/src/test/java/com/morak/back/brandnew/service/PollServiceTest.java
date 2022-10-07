@@ -9,11 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.brandnew.PollCreateRequest;
+import com.morak.back.brandnew.PollItemResultResponse;
 import com.morak.back.brandnew.PollResponse;
 import com.morak.back.brandnew.domain.NewPoll;
 import com.morak.back.brandnew.domain.NewPollItem;
 import com.morak.back.brandnew.repository.NewPollRepository;
 import com.morak.back.poll.domain.PollStatus;
+import com.morak.back.poll.ui.dto.MemberResultResponse;
 import com.morak.back.poll.ui.dto.PollResultRequest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
@@ -21,6 +23,7 @@ import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +43,8 @@ class PollServiceTest {
     private Member eden;
 
     @Autowired
-    public PollServiceTest(TeamRepository teamRepository, MemberRepository memberRepository, TeamMemberRepository teamMemberRepository, NewPollRepository pollRepository) {
+    public PollServiceTest(TeamRepository teamRepository, MemberRepository memberRepository,
+                           TeamMemberRepository teamMemberRepository, NewPollRepository pollRepository) {
         this.teamRepository = teamRepository;
         this.memberRepository = memberRepository;
         this.teamMemberRepository = teamMemberRepository;
@@ -169,5 +173,92 @@ class PollServiceTest {
                 () -> assertThat(pollItems.get(0).getSelectMembers().getValues().get(엘리)).isNull(),
                 () -> assertThat(pollItems.get(1).getSelectMembers().getValues().get(엘리)).isEqualTo("볼링 비싸요!")
         );
+    }
+
+    @Test
+    void 기명_투표_결과를_조회한다() {
+        // given
+        Member ellie = memberRepository.save(엘리);
+
+        List<String> subjects = List.of("볼링", "보드게임");
+        PollCreateRequest request = PollCreateRequest.builder()
+                .title("모락 회의")
+                .anonymous(false)
+                .allowedPollCount(2)
+                .closedAt(LocalDateTime.now().plusDays(1))
+                .subjects(subjects)
+                .build();
+
+        String pollCode = pollService.createPoll(morak.getCode(), eden.getId(), request);
+
+        NewPoll poll = pollRepository.findByCode(pollCode).orElseThrow();
+        List<NewPollItem> pollItems = poll.getPollItems();
+
+        PollResultRequest pollItem1 = new PollResultRequest(pollItems.get(0).getId(), "그냥!");
+        PollResultRequest pollItem2 = new PollResultRequest(pollItems.get(1).getId(), "볼링 비싸요!");
+
+        pollService.doPoll(morak.getCode(), eden.getId(), pollCode, List.of(pollItem1, pollItem2));
+        pollService.doPoll(morak.getCode(), ellie.getId(), pollCode, List.of(pollItem1));
+        pollRepository.flush();
+
+        // when
+        List<PollItemResultResponse> responses = pollService.findPollResults(morak.getCode(), eden.getId(), pollCode);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(responses).hasSize(2),
+                () -> assertThat(responses.get(0).getCount()).isEqualTo(2),
+                () -> assertThat(memberNames(responses.get(0).getMembers())).containsOnly(eden.getName(),
+                        ellie.getName()),
+                () -> assertThat(responses.get(1).getCount()).isEqualTo(1),
+                () -> assertThat(memberNames(responses.get(1).getMembers())).containsOnly(eden.getName())
+        );
+    }
+
+    @Test
+    void 익명_투표_결과를_조회한다() {
+        // given
+        Member ellie = memberRepository.save(엘리);
+
+        List<String> subjects = List.of("볼링", "보드게임");
+        PollCreateRequest request = PollCreateRequest.builder()
+                .title("모락 회의")
+                .anonymous(true)
+                .allowedPollCount(2)
+                .closedAt(LocalDateTime.now().plusDays(1))
+                .subjects(subjects)
+                .build();
+
+        String pollCode = pollService.createPoll(morak.getCode(), eden.getId(), request);
+
+        NewPoll poll = pollRepository.findByCode(pollCode).orElseThrow();
+        List<NewPollItem> pollItems = poll.getPollItems();
+
+        PollResultRequest pollItem1 = new PollResultRequest(pollItems.get(0).getId(), "그냥!");
+        PollResultRequest pollItem2 = new PollResultRequest(pollItems.get(1).getId(), "볼링 비싸요!");
+
+        pollService.doPoll(morak.getCode(), eden.getId(), pollCode, List.of(pollItem1, pollItem2));
+        pollService.doPoll(morak.getCode(), ellie.getId(), pollCode, List.of(pollItem1));
+        pollRepository.flush();
+
+        // when
+        List<PollItemResultResponse> responses = pollService.findPollResults(morak.getCode(), eden.getId(), pollCode);
+
+        // then
+        String anonymousName = Member.getAnonymous().getName();
+        Assertions.assertAll(
+                () -> assertThat(responses).hasSize(2),
+                () -> assertThat(responses.get(0).getCount()).isEqualTo(2),
+                () -> assertThat(memberNames(responses.get(0).getMembers())).containsExactly(anonymousName,
+                        anonymousName),
+                () -> assertThat(responses.get(1).getCount()).isEqualTo(1),
+                () -> assertThat(memberNames(responses.get(1).getMembers())).containsExactly(anonymousName)
+        );
+    }
+
+    private List<String> memberNames(final List<MemberResultResponse> members) {
+        return members.stream()
+                .map(MemberResultResponse::getName)
+                .collect(Collectors.toList());
     }
 }

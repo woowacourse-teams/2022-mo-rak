@@ -11,7 +11,6 @@ import com.morak.back.brandnew.repository.NewPollRepository;
 import com.morak.back.poll.ui.dto.PollResultRequest;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -58,7 +57,7 @@ public class PollService {
         // TODO: 2022/10/06 teamCode, pollCode로 validate
         NewPoll poll = pollRepository.findByCode(pollCode).orElseThrow();
         return poll.getPollItems().stream()
-                .map(PollItemResultResponse::of)
+                .map(pollItem -> PollItemResultResponse.of(pollItem, poll.getPollInfo().getAnonymous()))
                 .collect(Collectors.toList());
     }
 
