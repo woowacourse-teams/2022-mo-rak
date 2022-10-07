@@ -4,6 +4,7 @@ import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
 
 public enum PollStatus {
+
     OPEN, CLOSED;
 
     public boolean isClosed() {

@@ -1,5 +1,6 @@
 package com.morak.back.brandnew.domain;
 
+import com.morak.back.auth.domain.Member;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -12,26 +13,25 @@ import javax.persistence.MapKeyColumn;
 import lombok.Builder;
 import lombok.Getter;
 
-@Embeddable
-//@NoArgsConstructor
 @Getter
+@Embeddable
 public class SelectMembers {
 
     @ElementCollection
+    @MapKeyColumn(name = "member_id")
+    @Column(name = "description")
     @CollectionTable(
             name = "select_member",
             joinColumns = @JoinColumn(name = "new_poll_item_id")
     )
-    @MapKeyColumn
-    @Column(name = "description")
     private Map<Member, String> values;
 
+    @Builder
     public SelectMembers() {
         this(new HashMap<>());
     }
 
-    @Builder
-    public SelectMembers(Map<Member, String> values) {
+    protected SelectMembers(Map<Member, String> values) {
         this.values = values;
     }
 
@@ -45,5 +45,9 @@ public class SelectMembers {
 
     public void remove(Member member) {
         values.remove(member);
+    }
+
+    public Integer countSelectMembers() {
+        return values.size();
     }
 }

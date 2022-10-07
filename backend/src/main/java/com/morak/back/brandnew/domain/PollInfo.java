@@ -2,9 +2,11 @@ package com.morak.back.brandnew.domain;
 
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.poll.domain.PollStatus;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.ManyToOne;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Embeddable
-public class Poll {
+public class PollInfo {
 
     @Embedded
     private Code code;
@@ -23,24 +25,27 @@ public class Poll {
 
     private int allowedCount;
 
-    @ManyToOne
-    private Member host;
+    private String teamCode;
 
-    private Boolean closed;
+    private Long hostId;
+
+    @Enumerated(EnumType.STRING)
+    private PollStatus status;
 
     @Embedded
     private TempDateTime closedAt;
 
     @Builder
-    public Poll(String title, Boolean anonymous, int allowedCount, Member host, Boolean closed,
-                TempDateTime closedAt) {
+    public PollInfo(String title, Boolean anonymous, int allowedCount, String teamCode, Long hostId, PollStatus status,
+                    TempDateTime closedAt) {
         validateClosedAt(closedAt);
         this.code = Code.generate(new RandomCodeGenerator());
         this.title = title;
         this.anonymous = anonymous;
         this.allowedCount = allowedCount;
-        this.host = host;
-        this.closed = closed;
+        this.teamCode = teamCode;
+        this.hostId = hostId;
+        this.status = status;
         this.closedAt = closedAt;
     }
 
@@ -50,29 +55,37 @@ public class Poll {
         }
     }
 
+    public String getCode() {
+        return this.code.getCode();
+    }
+
     public boolean isGreaterThan(int count) {
         return allowedCount < count;
     }
 
-    public void close(Member member) {
-        validateHost(member);
+    public void close(Long memberId) {
+        validateHost(memberId);
         validateClose();
-        closed = true;
+        status.close();
     }
 
     private void validateClose() {
-        if (closed) {
+        if (status.isClosed()) {
             throw new IllegalArgumentException("이미 끝남");
         }
     }
 
-    private void validateHost(Member member) {
-        if (!host.isSame(member)) {
+    private void validateHost(Long memberId) {
+        if (!hostId.equals(memberId)) {
             throw new IllegalArgumentException("호스트 아님");
         }
     }
 
-    public boolean isHost(Member member) {
-        return host.isSame(member);
+    public boolean isHost(Long memberId) {
+        return hostId.equals(memberId);
+    }
+
+    public boolean isClosed() {
+        return status.isClosed();
     }
 }

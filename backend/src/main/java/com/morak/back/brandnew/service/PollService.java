@@ -1,15 +1,17 @@
 package com.morak.back.brandnew.service;
 
+import com.morak.back.auth.domain.Member;
+import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.brandnew.PollCreateRequest;
+import com.morak.back.brandnew.PollItemResultResponse;
 import com.morak.back.brandnew.PollResponse;
-import com.morak.back.brandnew.domain.Member;
+import com.morak.back.brandnew.domain.NewPoll;
 import com.morak.back.brandnew.domain.NewPollItem;
-import com.morak.back.brandnew.domain.PollManager;
-import com.morak.back.brandnew.repository.NewMemberRepository;
-import com.morak.back.brandnew.repository.PollManagerRepository;
+import com.morak.back.brandnew.repository.NewPollRepository;
 import com.morak.back.poll.ui.dto.PollResultRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,36 +22,44 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PollService {
 
-    private final NewMemberRepository memberRepository;
-    private final PollManagerRepository pollManagerRepository;
+    private final MemberRepository memberRepository;
+    private final NewPollRepository pollRepository;
 
-    public void createPoll(Long memberId, PollCreateRequest request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("멤버 없음"));
+    public String createPoll(String teamCode, Long memberId, PollCreateRequest request) {
+        // TODO: 2022/10/06 teamCode, memberId로 validate
+        NewPoll poll = request.toPoll(teamCode, memberId);
 
-        PollManager pollManager = request.toPollManager(member);
-
-        pollManagerRepository.save(pollManager);
+        return pollRepository.save(poll).getPollInfo().getCode();
     }
 
-    public PollResponse findPoll(Long memberId, String pollCode) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("멤버 없음"));
-
-        PollManager pollManager = pollManagerRepository.findByCode(pollCode)
+    public PollResponse findPoll(String teamCode, Long memberId, String pollCode) {
+        // TODO: 2022/10/06 teamCode, memberId로 validate
+        // TODO: 2022/10/06 teamCode, pollCode로 validate
+        NewPoll poll = pollRepository.findByCode(pollCode)
                 .orElseThrow(() -> new IllegalArgumentException("poll 없어~~"));
 
-        return PollResponse.from(member, pollManager);
+        return PollResponse.from(memberId, poll);
     }
 
-    public void selectPollItems(Long memberId, String pollCode, List<PollResultRequest> requests) {
+    public void doPoll(String teamCode, Long memberId, String pollCode, List<PollResultRequest> requests) {
+        // TODO: 2022/10/06 teamCode, memberId로 validate
+        // TODO: 2022/10/06 teamCode, pollCode로 validate
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("멤버 없음"));
 
-        PollManager pollManager = pollManagerRepository.findByCode(pollCode)
+        NewPoll poll = pollRepository.findByCode(pollCode)
                 .orElseThrow(() -> new IllegalArgumentException("poll 없어~~"));
 
-        pollManager.select(member, toData(requests));
+        poll.doPoll(member, toData(requests));
+    }
+
+    public List<PollItemResultResponse> findPollResults(String teamCode, Long memberId, String pollCode) {
+        // TODO: 2022/10/06 teamCode, memberId로 validate
+        // TODO: 2022/10/06 teamCode, pollCode로 validate
+        NewPoll poll = pollRepository.findByCode(pollCode).orElseThrow();
+        return poll.getPollItems().stream()
+                .map(PollItemResultResponse::of)
+                .collect(Collectors.toList());
     }
 
     private Map<NewPollItem, String> toData(List<PollResultRequest> requests) {
