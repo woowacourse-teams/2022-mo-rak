@@ -1,10 +1,4 @@
-import {
-  StyledImageWrapper,
-  StyledFeatureMenuContainer,
-  StyledFeatureMenuName,
-  StyledImage,
-  StyledTitle
-} from './MainFeatureMenuContainer.styles';
+import { StyledTitle } from './MainFeatureMenuContainer.styles';
 import { useNavigate } from 'react-router-dom';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 
@@ -12,6 +6,7 @@ import Poll from '../../../../assets/poll.svg';
 import Appointment from '../../../../assets/appointment.svg';
 import Role from '../../../../assets/role.svg';
 import Divider from '../../../../components/Divider/Divider';
+import MainFeatureMenu from '../MainFeatureMenu/MainFeatureMenu';
 
 function MainFeatureMenuContainer() {
   const navigate = useNavigate();
@@ -26,28 +21,13 @@ function MainFeatureMenuContainer() {
       <Divider />
 
       <FlexContainer justifyContent="center" gap="8rem">
-        {/* TODO: 네이밍 고민 */}
-        <StyledFeatureMenuContainer onClick={handleNavigate('poll')}>
-          <StyledImageWrapper>
-            {/* TODO: StyledImage 네이밍 고민 */}
-            <StyledImage src={Poll} alt="poll-menu" />
-            <StyledFeatureMenuName>투표하기</StyledFeatureMenuName>
-          </StyledImageWrapper>
-        </StyledFeatureMenuContainer>
-
-        <StyledFeatureMenuContainer onClick={handleNavigate('appointment')}>
-          <StyledImageWrapper>
-            <StyledImage src={Appointment} alt="appointment-menu" />
-            <StyledFeatureMenuName>약속잡기</StyledFeatureMenuName>
-          </StyledImageWrapper>
-        </StyledFeatureMenuContainer>
-
-        <StyledFeatureMenuContainer onClick={() => alert('준비중입니다.')}>
-          <StyledImageWrapper>
-            <StyledImage src={Role} alt="role-menu" />
-            <StyledFeatureMenuName>역할 정하기</StyledFeatureMenuName>
-          </StyledImageWrapper>
-        </StyledFeatureMenuContainer>
+        <MainFeatureMenu onClick={handleNavigate('poll')} menu="투표하기" menuImg={Poll} />
+        <MainFeatureMenu
+          onClick={handleNavigate('appointment')}
+          menu="약속잡기"
+          menuImg={Appointment}
+        />
+        <MainFeatureMenu onClick={() => alert('준비중입니다.')} menu="역할 정하기" menuImg={Role} />
       </FlexContainer>
     </FlexContainer>
   );
