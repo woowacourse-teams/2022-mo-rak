@@ -16,7 +16,7 @@ import {
   StyledContainer,
   StyledLeftContainer,
   StyledRightContainer
-} from './AppointmentProgressPage.style';
+} from './AppointmentProgressPage.styles';
 
 // TODO: 중복됨 제거
 const getPlusOneDate = (date: string) => {

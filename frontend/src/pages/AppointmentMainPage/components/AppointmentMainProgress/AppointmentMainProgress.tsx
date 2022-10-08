@@ -3,7 +3,7 @@ import Progress from '../../../../components/Progress/Progress';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { GroupInterface, MemberInterface } from '../../../../types/group';
 import { getGroupMembers } from '../../../../api/group';
-import { StyledParticipantsStatus } from './AppointmentMainProgress.style';
+import { StyledParticipantsStatus } from './AppointmentMainProgress.styles';
 
 interface Props {
   count: number;

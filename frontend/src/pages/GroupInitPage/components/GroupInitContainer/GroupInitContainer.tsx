@@ -10,7 +10,7 @@ import {
   StyledLogo,
   StyledBigText,
   StyledSmallText
-} from './GroupInitContainer.style';
+} from './GroupInitContainer.styles';
 
 function GroupInitContainer() {
   return (

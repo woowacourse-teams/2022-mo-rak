@@ -3,7 +3,7 @@ import { useTheme } from '@emotion/react';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import TextField from '../../../../components/TextField/TextField';
 import { AppointmentInterface } from '../../../../types/appointment';
-import { StyledCloseTime, StyledDetail } from './AppointmentMainDetail.style';
+import { StyledCloseTime, StyledDetail } from './AppointmentMainDetail.styles';
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);

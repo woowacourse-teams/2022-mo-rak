@@ -5,7 +5,7 @@ import TextField from '../../../../components/TextField/TextField';
 import Select from '../../../../components/Select/Select';
 import { createRange } from '../../../../utils/number';
 import { Time } from '../../../../types/appointment';
-import { StyledContent, StyledLabel } from './AppointmentCreateFormDurationInput.style';
+import { StyledContent, StyledLabel } from './AppointmentCreateFormDurationInput.styles';
 
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
   duration: Omit<Time, 'period'>;

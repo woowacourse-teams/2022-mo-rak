@@ -14,7 +14,7 @@ import useInputs from '../../../../hooks/useInputs';
 import { Time, createAppointmentData, AppointmentInterface } from '../../../../types/appointment';
 import { createAppointment } from '../../../../api/appointment';
 import { GroupInterface } from '../../../../types/group';
-import { StyledForm } from './AppointmentCreateForm.style';
+import { StyledForm } from './AppointmentCreateForm.styles';
 
 interface Props {
   startDate: AppointmentInterface['startDate'];
