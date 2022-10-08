@@ -1,5 +1,5 @@
 import {
-  StlyedImageWrapper,
+  StyledImageWrapper,
   StyledFeatureMenuContainer,
   StyledFeatureMenuName,
   StyledImage,
@@ -10,6 +10,8 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 
 import Poll from '../../../../assets/poll.svg';
 import Appointment from '../../../../assets/appointment.svg';
+import Role from '../../../../assets/role.svg';
+import Divider from '../../../../components/Divider/Divider';
 
 function MainFeatureMenuContainer() {
   const navigate = useNavigate();
@@ -19,23 +21,32 @@ function MainFeatureMenuContainer() {
   };
 
   return (
-    <FlexContainer flexDirection="column">
+    <FlexContainer flexDirection="column" gap="4rem">
       <StyledTitle>사용할 기능을 선택하세요!</StyledTitle>
+      <Divider />
 
       <FlexContainer justifyContent="center" gap="8rem">
         {/* TODO: 네이밍 고민 */}
         <StyledFeatureMenuContainer onClick={handleNavigate('poll')}>
-          <StlyedImageWrapper>
+          <StyledImageWrapper>
             {/* TODO: StyledImage 네이밍 고민 */}
             <StyledImage src={Poll} alt="poll-menu" />
-          </StlyedImageWrapper>
-          <StyledFeatureMenuName>투표하기</StyledFeatureMenuName>
+            <StyledFeatureMenuName>투표하기</StyledFeatureMenuName>
+          </StyledImageWrapper>
         </StyledFeatureMenuContainer>
+
         <StyledFeatureMenuContainer onClick={handleNavigate('appointment')}>
-          <StlyedImageWrapper>
+          <StyledImageWrapper>
             <StyledImage src={Appointment} alt="appointment-menu" />
-          </StlyedImageWrapper>
-          <StyledFeatureMenuName>약속잡기</StyledFeatureMenuName>
+            <StyledFeatureMenuName>약속잡기</StyledFeatureMenuName>
+          </StyledImageWrapper>
+        </StyledFeatureMenuContainer>
+
+        <StyledFeatureMenuContainer onClick={() => alert('준비중입니다.')}>
+          <StyledImageWrapper>
+            <StyledImage src={Role} alt="role-menu" />
+            <StyledFeatureMenuName>역할 정하기</StyledFeatureMenuName>
+          </StyledImageWrapper>
         </StyledFeatureMenuContainer>
       </FlexContainer>
     </FlexContainer>
