@@ -22,7 +22,8 @@ const StyledImageWrapper = styled.div(
     background: ${theme.colors.YELLOW_50};
     box-shadow: rgba(250, 222, 144, 0.7) 0px 50px 100px -20px, rgba(250, 222, 144, 0.3) 0px 30px 60px -30px;
   }
-
+  
+  // TODO: StyledImage 컴포넌트를 참조할 수 있도록 변경
   &:hover > img {
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(194deg) brightness(102%) contrast(101%);
   }
