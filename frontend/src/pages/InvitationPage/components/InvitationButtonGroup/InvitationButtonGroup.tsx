@@ -28,7 +28,6 @@ function InvitationButtonGroup({ navigate, invitationCode, groupCode }: Props) {
 
   const handleCancelInvitation = () => {
     if (window.confirm('거절하시겠습니까?')) {
-      console.log('취소');
       navigate('/');
     }
   };
