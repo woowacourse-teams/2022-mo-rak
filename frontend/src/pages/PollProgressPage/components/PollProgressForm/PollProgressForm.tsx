@@ -111,7 +111,6 @@ function PollProgressForm() {
 
         setPoll(res.data);
       } catch (err) {
-        alert('poll 없어~~');
         navigate(`/groups/${groupCode}/poll`);
       }
     };

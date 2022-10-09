@@ -26,7 +26,7 @@ function SidebarMembersProfileMenu({ groupCode }: Props) {
       } catch (err) {
         if (err instanceof Error) {
           const statusCode = err.message;
-          if (statusCode === '404' || '403' || '400') {
+          if (statusCode === ('404' || '400')) {
             alert('그룹이 없어요~');
             navigate('/');
           }
