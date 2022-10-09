@@ -71,10 +71,10 @@ class PollServiceTest {
                 .subjects(subjects)
                 .build();
         // when
-        pollService.createPoll(morak.getCode(), eden.getId(), request);
+        String savedPoll = pollService.createPoll(morak.getCode(), eden.getId(), request);
 
         // then
-        NewPoll poll = pollRepository.findById(1L).orElseThrow();
+        NewPoll poll = pollRepository.findByCode(savedPoll).orElseThrow();
         List<NewPollItem> pollItems = poll.getPollItems();
 
         Assertions.assertAll(
@@ -130,7 +130,7 @@ class PollServiceTest {
 
         // then
         pollRepository.flush();
-        assertThat(pollItems.get(0).getSelectMembers().getValues().get(에덴)).isEqualTo("그냥!");
+        assertThat(pollItems.get(0).getSelectMembers().getValues().get(eden)).isEqualTo("그냥!");
     }
 
     @Test
@@ -170,8 +170,8 @@ class PollServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(pollItems.get(0).getSelectMembers().getValues().get(엘리)).isNull(),
-                () -> assertThat(pollItems.get(1).getSelectMembers().getValues().get(엘리)).isEqualTo("볼링 비싸요!")
+                () -> assertThat(pollItems.get(0).getSelectMembers().getValues().get(ellie)).isNull(),
+                () -> assertThat(pollItems.get(1).getSelectMembers().getValues().get(ellie)).isEqualTo("볼링 비싸요!")
         );
     }
 
