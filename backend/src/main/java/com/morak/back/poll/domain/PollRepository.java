@@ -28,5 +28,5 @@ public interface PollRepository extends Repository<Poll, Long> {
 
     @Modifying
     @Query("update Poll p set p.status = 'CLOSED' where p in :polls")
-    void closeAll(@Param("polls") List<Poll> polls);
+    void closeAll(@Param("polls") Iterable<Poll> polls);
 }

@@ -7,6 +7,7 @@ import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
 import com.morak.back.support.RepositoryTest;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,19 +59,20 @@ class TeamMemberRepositoryTest {
     }
 
     @Test
-    void 팀멤버를_삭제한다(@Autowired EntityManager entityManager) {
+    void 팀멤버를_삭제한다() {
         // given
         TeamMember teamMember = TeamMember.builder()
                 .member(member)
                 .team(team)
                 .build();
         teamMemberRepository.save(teamMember);
-        // when
         teamMemberRepository.delete(teamMember);
 
+        // when
+        Optional<TeamMember> deletedTeamMember = teamMemberRepository.findByTeamAndMember(team, member);
+
         // then
-        TeamMember deletedTeamMember = entityManager.find(TeamMember.class, teamMember.getId());
-        assertThat(deletedTeamMember).isNull();
+        assertThat(deletedTeamMember).isEmpty();
     }
 
     @Test
