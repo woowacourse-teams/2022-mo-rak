@@ -18,13 +18,6 @@ function GroupInitPage() {
         navigate(`/groups/${groupCode}`);
       } catch (err) {
         if (err instanceof Error) {
-          const statusCode = err.message;
-          if (statusCode === '401') {
-            removeLocalStorageItem('token');
-            navigate('/');
-
-            return;
-          }
         }
         console.log(
           '그룹 생성 및 참가 페이지에서 로그인을 했지만, 속해있는 그룹이 없는 것을 확인했습니다.'

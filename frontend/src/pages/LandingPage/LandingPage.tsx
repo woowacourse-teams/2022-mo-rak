@@ -29,13 +29,6 @@ function LandingPage() {
       } catch (err) {
         if (err instanceof Error) {
           const statusCode = err.message;
-          if (statusCode === '401') {
-            removeLocalStorageItem('token');
-            navigate('/');
-
-            return;
-          }
-
           if (statusCode === '404') {
             navigate('/init');
             console.log('랜딩페이지에서 로그인을 했지만, 속해있는 그룹이 없습니다.');
@@ -87,7 +80,6 @@ function LandingPage() {
 
   return (
     <StyledContainer>
-      {/* TODO: section 네이밍 인관성 */}
       <LandingMainSection id="main-section" />
       <LandingServiceIntroductionSection id="service-introduction-section" />
       <LandingFeatureIntroductionSection id="feature-introduction-section" />

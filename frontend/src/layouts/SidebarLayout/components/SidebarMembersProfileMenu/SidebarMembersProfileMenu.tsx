@@ -26,18 +26,11 @@ function SidebarMembersProfileMenu({ groupCode }: Props) {
       } catch (err) {
         if (err instanceof Error) {
           const statusCode = err.message;
-
-          if (statusCode === '401') {
-            alert('로그인 해주세요~');
-            navigate('/');
-          }
-
           if (statusCode === '404' || '403' || '400') {
             alert('그룹이 없어요~');
             navigate('/');
           }
         }
-        console.log(err);
       }
     };
 

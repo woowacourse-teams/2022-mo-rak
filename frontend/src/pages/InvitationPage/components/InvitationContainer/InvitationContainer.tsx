@@ -33,11 +33,6 @@ function InvitationContainer() {
       } catch (err) {
         if (err instanceof AxiosError) {
           const errCode = err.response?.data.codeNumber;
-          if (errCode === '0201') {
-            saveSessionStorageItem('redirectUrl', location.pathname);
-            navigate('/');
-            alert('로그인이 필요한 서비스입니다!');
-          }
         }
 
         setIsLoading(true);

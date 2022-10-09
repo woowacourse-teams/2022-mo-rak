@@ -26,7 +26,6 @@ function PollMainProgress({ currentParticipants, groupCode }: Props) {
         }
       } catch (err) {
         if (err instanceof Error) {
-          // TOOD: 모든 곳에서 401 대비를 해주는 게 맞을까?
           console.log(err);
         }
       }
