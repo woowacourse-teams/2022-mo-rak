@@ -2,7 +2,7 @@ import { MouseEventHandler, useMemo } from 'react';
 import Box from '../../../../components/Box/Box';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { AppointmentInterface, AvailableTimes } from '../../../../types/appointment';
-import { StyledTime, StyledGuide } from './AppointmentProgressTimePicker.style';
+import { StyledTime, StyledGuide } from './AppointmentProgressTimePicker.styles';
 
 const formatHourMinutePeriod = (date: Date) =>
   date

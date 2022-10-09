@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { StyledContainer } from './AppointmentResultPage.style';
+import { StyledContainer } from './AppointmentResultPage.styles';
 
 import { getAppointment, getAppointmentRecommendation } from '../../api/appointment';
 import {

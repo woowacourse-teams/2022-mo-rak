@@ -9,7 +9,7 @@ import {
   StyledHelpIconWrapper,
   StyledHelpIcon,
   StyledContent
-} from './AppointmentCreateFormTimeLimitInput.style';
+} from './AppointmentCreateFormTimeLimitInput.styles';
 
 interface Props {
   startTime: Time;

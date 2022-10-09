@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import GroupInitContainer from './components/GroupInitContainer/GroupInitContainer';
 import { getDefaultGroup } from '../../api/group';
 import { getLocalStorageItem, removeLocalStorageItem } from '../../utils/storage';
-import { StyledContainer } from './GroupInitPage.style';
+import { StyledContainer } from './GroupInitPage.styles';
 
 function GroupInitPage() {
   const navigate = useNavigate();

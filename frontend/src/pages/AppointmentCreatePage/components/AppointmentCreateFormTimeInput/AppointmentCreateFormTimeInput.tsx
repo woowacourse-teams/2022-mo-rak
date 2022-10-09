@@ -5,7 +5,7 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Select from '../../../../components/Select/Select';
 import { createRange } from '../../../../utils/number';
 import { Time } from '../../../../types/appointment';
-import { StyledContent } from './AppointmentCreateFormTimeInput.style';
+import { StyledContent } from './AppointmentCreateFormTimeInput.styles';
 
 interface Props {
   time: Time;
