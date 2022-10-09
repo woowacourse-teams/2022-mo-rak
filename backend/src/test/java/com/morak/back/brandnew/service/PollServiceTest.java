@@ -256,6 +256,44 @@ class PollServiceTest {
         );
     }
 
+    @Test
+    void 삭제한다() {
+        // given
+        Member ellie = memberRepository.save(엘리);
+
+        List<String> subjects = List.of("볼링", "보드게임");
+        PollCreateRequest request = PollCreateRequest.builder()
+                .title("모락 회의")
+                .anonymous(true)
+                .allowedPollCount(2)
+                .closedAt(LocalDateTime.now().plusDays(1))
+                .subjects(subjects)
+                .build();
+
+        String pollCode = pollService.createPoll(morak.getCode(), eden.getId(), request);
+
+        NewPoll poll = pollRepository.findByCode(pollCode).orElseThrow();
+        List<NewPollItem> pollItems = poll.getPollItems();
+
+        PollResultRequest pollItem1 = new PollResultRequest(pollItems.get(0).getId(), "그냥!");
+        PollResultRequest pollItem2 = new PollResultRequest(pollItems.get(1).getId(), "볼링 비싸요!");
+
+        pollService.doPoll(morak.getCode(), eden.getId(), pollCode, List.of(pollItem1, pollItem2));
+        pollService.doPoll(morak.getCode(), ellie.getId(), pollCode, List.of(pollItem1));
+        pollRepository.flush();
+
+        // when
+        pollRepository.delete(poll);
+        pollRepository.flush();
+        pollRepository.findByCode(poll.getPollInfo().getCode());
+
+        // when
+
+
+        // then
+//        assertThat()
+    }
+
     private List<String> memberNames(final List<MemberResultResponse> members) {
         return members.stream()
                 .map(MemberResultResponse::getName)
