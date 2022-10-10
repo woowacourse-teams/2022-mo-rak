@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 
-const StyledFeatureMenuWrapper = styled.div`
+const StyledWrapper = styled.div`
   cursor: pointer;
 `;
 
-const StyledImageContainer = styled.div(
+const StyledMenuContainer = styled.div(
   ({ theme }) => `
   width: 32rem;
   height: 32rem;
@@ -35,10 +35,10 @@ const StyledImage = styled.img`
   filter: invert(96%) sepia(69%) saturate(7252%) hue-rotate(320deg) brightness(100%) contrast(96%);
 `;
 
-const StyledFeatureMenuName = styled.div`
+const StyledName = styled.div`
   margin: 2rem 0 0;
   text-align: center;
   font-size: 2.4rem;
 `;
 
-export { StyledImageContainer, StyledFeatureMenuWrapper, StyledFeatureMenuName, StyledImage };
+export { StyledMenuContainer, StyledWrapper, StyledName, StyledImage };

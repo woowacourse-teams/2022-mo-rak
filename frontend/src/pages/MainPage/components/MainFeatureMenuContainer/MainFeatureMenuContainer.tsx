@@ -21,9 +21,9 @@ function MainFeatureMenuContainer() {
 
   return (
     <FlexContainer flexDirection="column" gap="4rem">
+      {/* TODO: header 컴포넌트로 따로 분리해야할까? */}
       <StyledTitle>사용할 기능을 선택하세요!</StyledTitle>
       <Divider />
-
       <FlexContainer justifyContent="center" gap="8rem">
         <MainFeatureMenu onClick={handleNavigate('poll')} name="투표하기" img={Poll} />
         <MainFeatureMenu
