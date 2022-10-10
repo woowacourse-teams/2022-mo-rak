@@ -1,8 +1,12 @@
-import styled from '@emotion/styled';
 import { GroupInterface } from '../../../../types/group';
 import Plus from '../../../../assets/plus.svg';
 import { createInvitationCode } from '../../../../api/group';
 import { writeClipboard } from '../../../../utils/clipboard';
+import {
+  StyledInvitationLink,
+  StyledInvitationText,
+  StyledPlusIcon
+} from './SidebarInvitationMenu.styles';
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -33,21 +37,5 @@ function SidebarInvitationMenu({ groupCode }: Props) {
     </StyledInvitationLink>
   );
 }
-
-const StyledInvitationLink = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  font-size: 1.6rem;
-  padding: 0.4rem;
-`;
-
-const StyledInvitationText = styled.p`
-  font-size: 1.6rem;
-`;
-
-const StyledPlusIcon = styled.img`
-  width: 2.4rem;
-`;
 
 export default SidebarInvitationMenu;
