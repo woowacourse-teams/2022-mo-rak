@@ -88,7 +88,13 @@ const style = css`
     html {
       font-size: 7px;
     }
-  };
+  }
+
+  @media screen and (max-width: 700px) {
+    html {
+      font-size: 4px;
+    }
+  }
 `
 
 function GlobalStyle() {
