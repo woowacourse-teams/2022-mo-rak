@@ -32,7 +32,6 @@ const StyledImageWrapper = styled.div(
 
 const StyledImage = styled.img`
   width: 10rem;
-  height: 10rem;
   filter: invert(96%) sepia(69%) saturate(7252%) hue-rotate(320deg) brightness(100%) contrast(96%);
 `;
 
