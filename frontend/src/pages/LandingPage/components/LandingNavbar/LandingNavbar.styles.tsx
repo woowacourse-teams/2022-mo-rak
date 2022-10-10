@@ -9,6 +9,10 @@ const StyledNavbar = styled.nav`
   gap: 4rem;
   font-size: 2rem;
   cursor: pointer;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
 `;
 
 const StyledMenu = styled.a(
