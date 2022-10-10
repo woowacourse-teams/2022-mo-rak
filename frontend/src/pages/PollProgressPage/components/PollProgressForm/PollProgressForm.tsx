@@ -17,6 +17,7 @@ import {
 } from '../../../../types/poll';
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 import { GroupInterface } from '../../../../types/group';
+import { AxiosError } from 'axios';
 
 const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
   pollItems
@@ -50,7 +51,15 @@ function PollProgressForm() {
       await progressPoll(pollCode, selectedPollItems, groupCode);
       navigate(`/groups/${groupCode}/poll/${pollCode}/result`);
     } catch (err) {
-      alert(err);
+      if (err instanceof AxiosError) {
+        const errCode = err.response?.data.codeNumber;
+
+        if (errCode === '2300') {
+          alert('존재하지 않는 투표입니다!');
+
+          navigate(`/groups/${groupCode}/poll`);
+        }
+      }
     }
   };
 
@@ -98,7 +107,7 @@ function PollProgressForm() {
     };
 
   useEffect(() => {
-    const fetchPoll = async (pollCode: PollInterface['code']) => {
+    (async (pollCode: PollInterface['code']) => {
       try {
         const res = await getPoll(pollCode, groupCode);
 
@@ -111,24 +120,25 @@ function PollProgressForm() {
 
         setPoll(res.data);
       } catch (err) {
-        navigate(`/groups/${groupCode}/poll`);
-      }
-    };
+        if (err instanceof AxiosError) {
+          const errCode = err.response?.data.codeNumber;
 
-    fetchPoll(pollCode);
+          if (errCode === '2300') {
+            alert('존재하지 않는 투표입니다!');
+            navigate(`/groups/${groupCode}/poll`);
+          }
+        }
+      }
+    })(pollCode);
   }, []);
 
   useEffect(() => {
-    const fetchPollItems = async (pollCode: PollInterface['code']) => {
+    (async (pollCode: PollInterface['code']) => {
       try {
         const res = await getPollItems(pollCode, groupCode);
         setPollItems(res.data);
-      } catch (err) {
-        alert(err);
-      }
-    };
-
-    fetchPollItems(pollCode);
+      } catch (err) {}
+    })(pollCode);
   }, []);
 
   useEffect(() => {
