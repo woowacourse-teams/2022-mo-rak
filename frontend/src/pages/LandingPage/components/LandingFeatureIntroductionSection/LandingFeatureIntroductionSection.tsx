@@ -2,8 +2,8 @@ import { HTMLAttributes } from 'react';
 import {
   StyledAppointmentImage,
   StyledFeatureCircle,
-  StyledFeatureContainer,
-  StyledFeatureIntroductionSection,
+  StyledFeaturesContainer,
+  StyledContainer,
   StyledFeatureName,
   StyledGlitterImage,
   StyledUndefinedImage,
@@ -25,7 +25,7 @@ interface Props extends HTMLAttributes<HTMLElement> {}
 
 function LandingFeatureIntroductionSection({ id }: Props) {
   return (
-    <StyledFeatureIntroductionSection id={id}>
+    <StyledContainer id={id}>
       <LandingNavbar />
 
       <StyledIntroductionTitleContainer>
@@ -33,7 +33,7 @@ function LandingFeatureIntroductionSection({ id }: Props) {
         <StyledSubTitle>모락이 모임을 더 편하고, 즐겁게 할 수 있도록 도와줄게요</StyledSubTitle>
       </StyledIntroductionTitleContainer>
 
-      <StyledFeatureContainer>
+      <StyledFeaturesContainer>
         <div>
           <StyledFeatureCircle>
             <StyledPollImage src={Poll} alt="poll" />
@@ -56,15 +56,8 @@ function LandingFeatureIntroductionSection({ id }: Props) {
           </StyledFeatureCircle>
           <StyledFeatureName>coming soon!</StyledFeatureName>
         </div>
-
-        <div>
-          <StyledFeatureCircle>
-            <StyledUndefinedImage src={Undefined} alt="undefined" />
-          </StyledFeatureCircle>
-          <StyledFeatureName>coming soon!</StyledFeatureName>
-        </div>
-      </StyledFeatureContainer>
-    </StyledFeatureIntroductionSection>
+      </StyledFeaturesContainer>
+    </StyledContainer>
   );
 }
 
