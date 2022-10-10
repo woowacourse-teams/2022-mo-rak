@@ -15,6 +15,10 @@ function MainFeatureMenuContainer() {
     navigate(location);
   };
 
+  const handleAlert = (message: string) => () => {
+    alert(message);
+  };
+
   return (
     <FlexContainer flexDirection="column" gap="4rem">
       <StyledTitle>사용할 기능을 선택하세요!</StyledTitle>
@@ -27,7 +31,11 @@ function MainFeatureMenuContainer() {
           menu="약속잡기"
           menuImg={Appointment}
         />
-        <MainFeatureMenu onClick={() => alert('준비중입니다.')} menu="역할 정하기" menuImg={Role} />
+        <MainFeatureMenu
+          onClick={handleAlert('준비중인 서비스입니다.')}
+          menu="역할 정하기"
+          menuImg={Role}
+        />
       </FlexContainer>
     </FlexContainer>
   );
