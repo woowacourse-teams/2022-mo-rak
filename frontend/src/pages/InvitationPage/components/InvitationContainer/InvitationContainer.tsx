@@ -1,34 +1,34 @@
 import { useEffect, useState } from 'react';
 import { StyledLogo, StyledTitle } from './InvitationContainer.styles';
 import { AxiosError } from 'axios';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Box from '../../../../components/Box/Box';
 import Logo from '../../../../assets/logo.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import InvitationButtonGroup from '../InvitationButtonGroup/InvitationButtonGroup';
 import { getIsJoinedGroup } from '../../../../api/group';
 import { GroupInterface } from '../../../../types/group';
-import { saveSessionStorageItem } from '../../../../utils/storage';
 
 function InvitationContainer() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [name, setName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [isJoined, setIsJoined] = useState(false);
   const [groupCode, setGroupCode] = useState<GroupInterface['code']>('');
   const { invitationCode } = useParams() as { invitationCode: string };
 
   useEffect(() => {
-    // TODO: 인자로 넘겨여할까? 너무 외부에 있는 변수에 의존하고 있다. 인자로 받아서 사용해주는 것이 올바른 코드가 아닐까? ex) invitationCode
     const fetchGetIsJoinedGroup = async () => {
       try {
         const res = await getIsJoinedGroup(invitationCode);
         const { groupCode, name, isJoined } = res.data;
 
+        if (isJoined) {
+          navigate(`/groups/${groupCode}`);
+          alert('이미 속해있는 그룹의 초대장입니다~');
+        }
+
         setGroupCode(groupCode);
         setName(name);
-        setIsJoined(isJoined);
         setIsLoading(false);
       } catch (err) {
         if (err instanceof AxiosError) {
@@ -41,13 +41,6 @@ function InvitationContainer() {
 
     fetchGetIsJoinedGroup();
   }, []);
-
-  useEffect(() => {
-    if (isJoined) {
-      navigate(`/groups/${groupCode}`);
-      alert('이미 속해있는 그룹의 초대장입니다~');
-    }
-  }, [isJoined]);
 
   if (isLoading) return <div>로딩중</div>;
 
