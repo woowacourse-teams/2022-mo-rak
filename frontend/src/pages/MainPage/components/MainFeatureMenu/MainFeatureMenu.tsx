@@ -4,7 +4,7 @@ import {
   StyledWrapper,
   StyledName,
   StyledImage
-} from './MainFeatureMenu.style';
+} from './MainFeatureMenu.styles';
 
 interface Props {
   onClick: MouseEventHandler<HTMLDivElement>;
