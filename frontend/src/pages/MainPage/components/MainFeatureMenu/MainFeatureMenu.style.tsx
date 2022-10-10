@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 
-const StyledFeatureMenuContainer = styled.div`
+const StyledFeatureMenuWrapper = styled.div`
   cursor: pointer;
 `;
 
-const StyledImageWrapper = styled.div(
+const StyledImageContainer = styled.div(
   ({ theme }) => `
   width: 32rem;
   height: 32rem;
@@ -41,4 +41,4 @@ const StyledFeatureMenuName = styled.div`
   font-size: 2.4rem;
 `;
 
-export { StyledImageWrapper, StyledFeatureMenuContainer, StyledFeatureMenuName, StyledImage };
+export { StyledImageContainer, StyledFeatureMenuWrapper, StyledFeatureMenuName, StyledImage };
