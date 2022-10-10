@@ -8,17 +8,17 @@ import {
 
 interface Props {
   onClick: MouseEventHandler<HTMLDivElement>;
-  menu: '투표하기' | '약속잡기' | '역할 정하기';
-  menuImg: string;
+  name: '투표하기' | '약속잡기' | '역할 정하기';
+  img: string;
 }
 
-function MainFeatureMenu({ onClick, menu, menuImg }: Props) {
+function MainFeatureMenu({ onClick, name, img }: Props) {
   return (
     <StyledFeatureMenuContainer onClick={onClick}>
       <StyledImageWrapper>
         {/* TODO: StyledImage 네이밍 고민 */}
-        <StyledImage src={menuImg} alt={menu} />
-        <StyledFeatureMenuName>{menu}</StyledFeatureMenuName>
+        <StyledImage src={img} alt={name} />
+        <StyledFeatureMenuName>{name}</StyledFeatureMenuName>
       </StyledImageWrapper>
     </StyledFeatureMenuContainer>
   );

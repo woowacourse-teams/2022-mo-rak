@@ -25,16 +25,16 @@ function MainFeatureMenuContainer() {
       <Divider />
 
       <FlexContainer justifyContent="center" gap="8rem">
-        <MainFeatureMenu onClick={handleNavigate('poll')} menu="투표하기" menuImg={Poll} />
+        <MainFeatureMenu onClick={handleNavigate('poll')} name="투표하기" img={Poll} />
         <MainFeatureMenu
           onClick={handleNavigate('appointment')}
-          menu="약속잡기"
-          menuImg={Appointment}
+          name="약속잡기"
+          img={Appointment}
         />
         <MainFeatureMenu
           onClick={handleAlert('준비중인 서비스입니다.')}
-          menu="역할 정하기"
-          menuImg={Role}
+          name="역할 정하기"
+          img={Role}
         />
       </FlexContainer>
     </FlexContainer>
