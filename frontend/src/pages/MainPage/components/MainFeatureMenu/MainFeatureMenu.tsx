@@ -1,3 +1,4 @@
+import { MouseEventHandler } from 'react';
 import {
   StyledImageWrapper,
   StyledFeatureMenuContainer,
@@ -6,8 +7,8 @@ import {
 } from './MainFeatureMenu.style';
 
 interface Props {
-  onClick: () => void;
-  menu: string;
+  onClick: MouseEventHandler<HTMLDivElement>;
+  menu: '투표하기' | '약속잡기' | '역할 정하기';
   menuImg: string;
 }
 
