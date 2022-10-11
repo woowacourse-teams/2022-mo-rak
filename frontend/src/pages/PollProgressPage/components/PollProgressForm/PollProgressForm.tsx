@@ -40,7 +40,6 @@ function PollProgressForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!poll) return;
     if (selectedPollItems.length <= 0) {
       alert('최소 1개의 선택항목을 선택해주세요!');
 
@@ -54,10 +53,23 @@ function PollProgressForm() {
       if (err instanceof AxiosError) {
         const errCode = err.response?.data.codeNumber;
 
-        if (errCode === '2300') {
-          alert('존재하지 않는 투표입니다!');
+        switch (errCode) {
+          case '2300': {
+            alert('존재하지 않는 투표입니다!');
+            navigate(`/groups/${groupCode}/poll`);
 
-          navigate(`/groups/${groupCode}/poll`);
+            break;
+          }
+
+          case '2100': {
+            alert('마감된 투표입니다.');
+            navigate(`/groups/${groupCode}/poll`);
+
+            break;
+          }
+
+          default:
+            return;
         }
       }
     }
@@ -91,7 +103,6 @@ function PollProgressForm() {
 
   const handleDescription =
     (pollItemId: PollItemInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
-      // TODO: 깊은 복사 함수 만들기
       const copiedSelectedPollItems: Array<SelectedPollItem> = JSON.parse(
         JSON.stringify(selectedPollItems)
       );
