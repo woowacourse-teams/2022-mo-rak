@@ -19,11 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class PollService {
+public class NewPollService {
 
     private final MemberRepository memberRepository;
     private final NewPollRepository pollRepository;
 
+//    @ValidateTeamMember
     public String createPoll(String teamCode, Long memberId, PollCreateRequest request) {
         // TODO: 2022/10/06 teamCode, memberId로 validate
         NewPoll poll = request.toPoll(teamCode, memberId);

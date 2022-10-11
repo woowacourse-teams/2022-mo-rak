@@ -37,7 +37,7 @@ class PollServiceTest {
     private final MemberRepository memberRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final NewPollRepository pollRepository;
-    private final PollService pollService;
+    private final NewPollService pollService;
 
     private Team morak;
     private Member eden;
@@ -49,7 +49,7 @@ class PollServiceTest {
         this.memberRepository = memberRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.pollRepository = pollRepository;
-        this.pollService = new PollService(memberRepository, pollRepository);
+        this.pollService = new NewPollService(memberRepository, pollRepository);
     }
 
     @BeforeEach
