@@ -78,47 +78,12 @@
 - 개발일지를 작성하고 세미나를 통해 지식을 공유해요. 
 - 서로 "왜?"라는 질문을 해주기로해요.
 
-# 인프라
+# ⚙️ 인프라
 
 ![image](https://user-images.githubusercontent.com/42317507/194999269-0687cfa0-518f-4930-948f-4c863356bd98.png)
 
-## 모락만사성
-## 모락을 담다
+# 📸 볼거리
 
-### 모락 그림일지 
-![img](https://user-images.githubusercontent.com/42317507/194999477-d5919dca-7823-4bb9-84b5-b357f4954520.png)
-[모락의 브이로그](https://www.youtube.com/watch?v=sLBxjoZ6gKA)
-
-### 모락 자랑일지
-
-![img_1](https://user-images.githubusercontent.com/42317507/194999519-64278ea1-95b4-4643-9b1a-6c20f3e6aa10.png)
-
-[1차 데모](https://www.youtube.com/watch?v=R7JO6cLeyhU)
-
-- 모락 핵심 서비스 소개
-- 모락의 팀 문화 및 규칙
-
-![img_3](https://user-images.githubusercontent.com/42317507/194999538-d4c3c9d0-10ce-471e-b080-93a498081b8d.png)
-
-[2차 데모](https://www.youtube.com/watch?v=G4uQTNYNanY)
-
-- 계획한 이슈 목록, 완료 목록
-- 브랜치 전략
-- API 설계
-- 배포 자동화
-
-![img_5](https://user-images.githubusercontent.com/42317507/194999557-997325ab-a18f-437c-bb4f-10c9781ae9a8.png)
-
-[3차 데모](https://www.youtube.com/watch?v=RSkr2x3n9B8)
-
-- API 문서화
-- 테스트 전략
-- 시맨틱 버저닝
-- 로깅 및 https 적용
-
-![img_7](https://user-images.githubusercontent.com/42317507/194999581-97aa25bc-53a4-4c66-9be9-f386b7c092b7.png)
-
-[4차 데모](https://www.youtube.com/watch?v=u_INarrFVZ0)
-
-- 프론트 성능 리포트 및 테스트 자동화
-- 코드 정적 분석 리포트
+|[모락 브이로그](https://www.youtube.com/watch?v=sLBxjoZ6gKA)|[1차 데모](https://www.youtube.com/watch?v=R7JO6cLeyhU)|[2차 데모](https://www.youtube.com/watch?v=G4uQTNYNanY)|
+| :-: | :-: | :-: |
+|<img src="https://user-images.githubusercontent.com/45311765/195134377-3e10f4b5-8134-4342-835f-c7054f4c33d5.png" alt="albur" width="300">|<img src="https://user-images.githubusercontent.com/45311765/195134271-211bbbbb-2dea-4051-a79b-c398d98bd833.png" alt="albur" width="300">|<img src="https://user-images.githubusercontent.com/45311765/195133960-84e90f26-8822-4549-b03f-2710f22c397f.png" alt="albur" width="300">|
