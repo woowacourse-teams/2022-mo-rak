@@ -6,6 +6,7 @@ import Button from '../../../../components/Button/Button';
 import { closePoll, deletePoll } from '../../../../api/poll';
 import { PollInterface, getPollResponse, getPollItemsResponse } from '../../../../types/poll';
 import { GroupInterface } from '../../../../types/group';
+import { AxiosError } from 'axios';
 
 interface Props {
   pollCode: PollInterface['code'];
@@ -27,7 +28,14 @@ function PollResultButtonGroup({ pollCode, status, isHost, groupCode, pollItems 
         await deletePoll(pollCode, groupCode);
         navigate(`/groups/${groupCode}/poll`);
       } catch (err) {
-        alert(err);
+        if (err instanceof AxiosError) {
+          const errCode = err.response?.data.codeNumber;
+
+          if (errCode === '2300') {
+            alert('존재하지 않는 투표입니다');
+            navigate(`/groups/${groupCode}/poll`);
+          }
+        }
       }
     }
   };
@@ -38,7 +46,14 @@ function PollResultButtonGroup({ pollCode, status, isHost, groupCode, pollItems 
         await closePoll(pollCode, groupCode);
         navigate(`/groups/${groupCode}/poll`);
       } catch (err) {
-        alert(err);
+        if (err instanceof AxiosError) {
+          const errCode = err.response?.data.codeNumber;
+
+          if (errCode === '2100') {
+            alert('이미 마감된 투표입니다');
+            navigate(`/groups/${groupCode}/poll`);
+          }
+        }
       }
     }
   };
