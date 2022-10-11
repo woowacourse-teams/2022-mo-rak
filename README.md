@@ -1,6 +1,6 @@
 <p align="center">
       <a href="https://mo-rak.com/" target="_blank">    
-            <img src="https://user-images.githubusercontent.com/79205414/194690088-90f39269-d6bf-472e-a633-a9de19a94904.png" width="300"/>
+            <img src="https://user-images.githubusercontent.com/45311765/195138388-4251bc8f-3f97-4e4f-976e-a2dee418097f.png"/>
       </a>
 </p>
 
