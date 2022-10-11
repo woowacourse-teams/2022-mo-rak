@@ -5,7 +5,7 @@ import Input from '../../../../components/Input/Input';
 import TextField from '../../../../components/TextField/TextField';
 import { GroupInterface } from '../../../../types/group';
 import Create from '../../../../assets/create-plus.svg';
-import { StyledCreateIcon } from './GroupCreateFormNameInput.style';
+import { StyledCreateIcon } from './GroupCreateFormNameInput.styles';
 
 interface Props {
   groupName: GroupInterface['name'];

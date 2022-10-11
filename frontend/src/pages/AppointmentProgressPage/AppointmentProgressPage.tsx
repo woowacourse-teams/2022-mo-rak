@@ -16,7 +16,7 @@ import {
   StyledContainer,
   StyledLeftContainer,
   StyledRightContainer
-} from './AppointmentProgressPage.style';
+} from './AppointmentProgressPage.styles';
 import { AxiosError } from 'axios';
 
 // TODO: 중복됨 제거

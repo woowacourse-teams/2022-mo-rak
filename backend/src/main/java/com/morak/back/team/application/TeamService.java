@@ -147,7 +147,10 @@ public class TeamService {
 
     @Transactional(readOnly = true)
     public List<TeamResponse> findTeams(Long memberId) {
-        List<TeamMember> teamMembers = teamMemberRepository.findAllByMemberId(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
+
+        List<TeamMember> teamMembers = teamMemberRepository.findAllByMember(member);
         return teamMembers.stream()
                 .sorted(Comparator.comparingLong(TeamMember::getId))
                 .map(TeamMember::getTeam)
@@ -163,7 +166,7 @@ public class TeamService {
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateJoined(team, member);
 
-        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(team.getId());
+        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeam(team);
         return teamMembers.stream()
                 .map(TeamMember::getMember)
                 .map(MemberResponse::from)
@@ -173,9 +176,11 @@ public class TeamService {
     public void exitMemberFromTeam(Long memberId, String teamCode) {
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
 
         TeamMember teamMember = teamMemberRepository
-                .findByTeamIdAndMemberId(team.getId(), memberId)
+                .findByTeamAndMember(team, member)
                 .orElseThrow(
                         () -> TeamAuthorizationException.of(
                                 CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR,
@@ -189,8 +194,15 @@ public class TeamService {
 
     @Transactional(readOnly = true)
     public TeamResponse findDefaultTeam(Long memberId) {
-        List<TeamMember> teamMembers = teamMemberRepository.findAllByMemberId(memberId);
-        return TeamResponse.from(findFirstTeamMember(memberId, teamMembers).getTeam());
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
+
+        TeamMember teamMember = teamMemberRepository.findFirstByMemberOrderByIdAsc(member)
+                .orElseThrow(() -> TeamNotFoundException.ofTeam(
+                                CustomErrorCode.TEAM_NOT_FOUND_ERROR, memberId + "번의 멤버가 속해있는 팀이 없습니다."
+                        )
+                );
+        return TeamResponse.from(teamMember.getTeam());
     }
 
     private TeamMember findFirstTeamMember(Long memberId, List<TeamMember> teamMembers) {

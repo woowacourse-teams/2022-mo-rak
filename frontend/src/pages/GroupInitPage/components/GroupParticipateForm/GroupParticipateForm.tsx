@@ -7,7 +7,7 @@ import useInput from '../../../../hooks/useInput';
 import GroupParticipateInvitationCodeInput from '../GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';
 import GroupParticipateFormSubmitButton from '../GroupPariticipateFormSubmitButton/GroupParticipateFormSubmitButton';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { StyledForm } from './GroupParticipateForm.style';
+import { StyledForm } from './GroupParticipateForm.styles';
 import { AxiosError } from 'axios';
 
 function GroupParticipateForm() {

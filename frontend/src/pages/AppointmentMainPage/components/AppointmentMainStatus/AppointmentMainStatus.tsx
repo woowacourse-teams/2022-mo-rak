@@ -1,6 +1,6 @@
 import { useTheme } from '@emotion/react';
 import TextField from '../../../../components/TextField/TextField';
-import { StyledStatus } from './AppointmentMainStatus.style';
+import { StyledStatus } from './AppointmentMainStatus.styles';
 
 interface Props {
   isClosed: boolean;

@@ -11,7 +11,7 @@ import {
   StyledResultText,
   StyledCrownIcon,
   StyledRank
-} from './AppointmentResultRanking.style';
+} from './AppointmentResultRanking.styles';
 
 interface Props {
   groupCode: GroupInterface['code'];

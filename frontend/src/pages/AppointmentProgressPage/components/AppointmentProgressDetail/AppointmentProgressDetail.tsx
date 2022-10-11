@@ -1,5 +1,5 @@
 import { AppointmentInterface } from '../../../../types/appointment';
-import { StyledDuration } from './AppointmentProgressDetail.style';
+import { StyledDuration } from './AppointmentProgressDetail.styles';
 
 interface Props {
   durationHours: AppointmentInterface['durationHours'];

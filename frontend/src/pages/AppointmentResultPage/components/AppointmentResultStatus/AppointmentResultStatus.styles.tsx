@@ -8,4 +8,3 @@ const StyledStatus = styled.span(
 );
 
 export { StyledStatus };
-scrollTo;

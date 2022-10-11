@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import GroupInitContainer from './components/GroupInitContainer/GroupInitContainer';
 import { getDefaultGroup } from '../../api/group';
 import { getLocalStorageItem } from '../../utils/storage';
-import { StyledContainer } from './GroupInitPage.style';
+import { StyledContainer } from './GroupInitPage.styles';
 import { AxiosError } from 'axios';
+
 
 function GroupInitPage() {
   const navigate = useNavigate();

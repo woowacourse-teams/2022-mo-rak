@@ -3,7 +3,7 @@ import { useTheme } from '@emotion/react';
 import Input from '../../../../components/Input/Input';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import TextField from '../../../../components/TextField/TextField';
-import { StyledTitle } from './AppointmentCreateFormCloseTimeInput.style';
+import { StyledTitle } from './AppointmentCreateFormCloseTimeInput.styles';
 
 interface Props {
   // TODO: 투표와 변수명 맞춰기

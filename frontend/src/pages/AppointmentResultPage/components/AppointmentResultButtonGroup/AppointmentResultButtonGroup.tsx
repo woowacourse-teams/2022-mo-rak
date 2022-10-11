@@ -19,7 +19,7 @@ import {
 import Button from '../../../../components/Button/Button';
 import { getFormattedDateTime } from '../../../../utils/date';
 import Question from '../../../../assets/question.svg';
-import { StyledHelpIconWrapper, StyledHelpIcon } from './AppointmentResultButtonGroup.style';
+import { StyledHelpIconWrapper, StyledHelpIcon } from './AppointmentResultButtonGroup.styles';
 
 interface Props {
   groupCode: GroupInterface['code'];

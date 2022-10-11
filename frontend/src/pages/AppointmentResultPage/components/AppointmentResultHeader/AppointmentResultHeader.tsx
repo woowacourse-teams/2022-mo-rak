@@ -4,7 +4,7 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { writeClipboard } from '../../../../utils/clipboard';
 import AppointmentResultStatus from '../AppointmentResultStatus/AppointmentResultStatus';
 import { GroupInterface } from '../../../../types/group';
-import { StyledTitle, StyledContent, StyledLinkIcon } from './AppointmentResultHeader.style';
+import { StyledTitle, StyledContent, StyledLinkIcon } from './AppointmentResultHeader.styles';
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);

@@ -24,6 +24,6 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
     List<Appointment> findAllToBeClosed(@Param("thresholdDateTime") LocalDateTime thresholdDateTime);
 
     @Modifying
-    @Query("update Appointment a set a.status = 'CLOSED' where a.id in :ids")
-    void closeAllByIds(@Param("ids") Iterable<Long> ids);
+    @Query("update Appointment a set a.status = 'CLOSED' where a in :appointments")
+    void closeAll(@Param("appointments") Iterable<Appointment> appointments);
 }

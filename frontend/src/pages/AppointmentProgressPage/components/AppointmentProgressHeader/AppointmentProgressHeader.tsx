@@ -4,7 +4,7 @@ import {
   StyledHeaderContainer,
   StyledHeader,
   StyledDescription
-} from './AppointmentProgressHeader.style';
+} from './AppointmentProgressHeader.styles';
 
 interface Props {
   appointment: AppointmentInterface;

@@ -5,7 +5,7 @@ import { GroupInterface } from '../../../../types/group';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import GroupCreateFormNameInput from '../GroupCreateFormNameInput/GroupCreateFormNameInput';
 import GroupCreateFormSubmitButton from '../GroupCreateFormSubmitButton/GroupCreateFormSubmitButton';
-import { StyledForm } from './GroupCreateForm.style';
+import { StyledForm } from './GroupCreateForm.styles';
 import { AxiosError } from 'axios';
 
 function GroupCreateForm() {

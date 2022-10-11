@@ -1,6 +1,6 @@
 import { InputHTMLAttributes, CSSProperties, PropsWithChildren } from 'react';
 
-import styled from '@emotion/styled';
+import { StyledContainer } from './TextField.styles';
 import { useTheme } from '@emotion/react';
 
 interface Props extends PropsWithChildren<InputHTMLAttributes<HTMLInputElement>> {
@@ -42,21 +42,5 @@ function TextField({ colorScheme, variant, children, ...props }: Props & CSSProp
     </StyledContainer>
   );
 }
-
-const StyledContainer = styled.div<
-  CSSProperties & {
-    variantStyle: string;
-  }
->(
-  // TODO: text-align이 여기에 있는 게 맞을까??
-  ({ width, borderRadius, variantStyle, padding }) => `
-    ${variantStyle};
-    position: relative;
-    text-align: center;
-    ${width && `width: ${width}`};
-    ${borderRadius && `border-radius: ${borderRadius}`};
-    ${padding && `padding: ${padding}`};
-  `
-);
 
 export default TextField;

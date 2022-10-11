@@ -17,7 +17,7 @@ import {
   StyledTitle,
   LottieWrapper,
   StyledGuide
-} from './AppointmentMainContainer.style';
+} from './AppointmentMainContainer.styles';
 
 function AppointmentMainContainer() {
   const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
