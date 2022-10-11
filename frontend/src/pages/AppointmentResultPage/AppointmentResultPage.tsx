@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { StyledContainer } from './AppointmentResultPage.style';
-
 import { getAppointment, getAppointmentRecommendation } from '../../api/appointment';
 import {
   AppointmentInterface,
@@ -14,8 +13,10 @@ import AppointmentResultRanking from './components/AppointmentResultRanking/Appo
 import AppointmentResultAvailableMembers from './components/AppointmentResultAvailableMembers/AppointmentResultAvailableMembers';
 import AppointmentResultButtonGroup from './components/AppointmentResultButtonGroup/AppointmentResultButtonGroup';
 import AppointmentResultHeader from './components/AppointmentResultHeader/AppointmentResultHeader';
+import { AxiosError } from 'axios';
 
 function AppointmentResultPage() {
+  const navigate = useNavigate();
   const [appointment, setAppointment] = useState<getAppointmentResponse>();
   const [appointmentRecommendation, setAppointmentRecommendation] = useState<
     Array<AppointmentRecommendationInterface>
@@ -31,8 +32,6 @@ function AppointmentResultPage() {
     setClickedRecommendation(idx);
   };
 
-  // TODO: 함수명 컨벤션에 대해서 생각해보자
-  // 이벤트 핸들러 함수면 handle prefix가 맞는 것 같은데, 그게 아닌 함수에는 handle이 필요없는 것 같다.
   const setIsClosed = (isClosed: AppointmentInterface['isClosed']) => {
     // TODO: if appointment가 맞나?...없을 수도 있어서 undefined error가 발생
     if (appointment) {
@@ -41,28 +40,28 @@ function AppointmentResultPage() {
   };
 
   useEffect(() => {
-    const fetchAppointmentRecommendation = async () => {
-      try {
-        const res = await getAppointmentRecommendation(groupCode, appointmentCode);
-        setAppointmentRecommendation(res.data);
-      } catch (err) {
-        alert(err);
-      }
-    };
-    fetchAppointmentRecommendation();
+    (async () => {
+      const res = await getAppointmentRecommendation(groupCode, appointmentCode);
+      setAppointmentRecommendation(res.data);
+    })();
   }, []);
 
   useEffect(() => {
-    const fetchAppointment = async () => {
+    (async () => {
       try {
         const res = await getAppointment(groupCode, appointmentCode);
         setAppointment(res.data);
       } catch (err) {
-        alert(err);
-      }
-    };
+        if (err instanceof AxiosError) {
+          const errCode = err.response?.data.codeNumber;
 
-    fetchAppointment();
+          if (errCode === '3300') {
+            alert('존재하지 않는 약속잡기입니다.');
+            navigate(`/groups/${groupCode}/appointment`);
+          }
+        }
+      }
+    })();
   }, []);
 
   if (!appointment) return <div>로딩중입니다.</div>;
