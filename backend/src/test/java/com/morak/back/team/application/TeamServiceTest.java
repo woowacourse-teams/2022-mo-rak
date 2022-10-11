@@ -404,9 +404,9 @@ class TeamServiceTest {
         Long invalidMemberId = member.getId() + 1;
         // when & then
         assertThatThrownBy(() -> teamService.exitMemberFromTeam(invalidMemberId, team.getCode()))
-                .isInstanceOf(TeamAuthorizationException.class)
+                .isInstanceOf(MemberNotFoundException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+                .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR);
     }
 
     @Test

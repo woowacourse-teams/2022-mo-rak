@@ -11,14 +11,16 @@ public interface TeamMemberRepository extends Repository<TeamMember, Long> {
 
     boolean existsByTeamAndMember(Team team, Member member);
 
-    @Query("SELECT tm FROM TeamMember tm JOIN FETCH tm.team WHERE tm.member.id = :memberId")
-    List<TeamMember> findAllByMemberId(@Param("memberId") Long memberId);
+    @Query("SELECT tm FROM TeamMember tm JOIN FETCH tm.team WHERE tm.member = :member")
+    List<TeamMember> findAllByMember(@Param("member") Member member);
 
-    @Query("SELECT tm FROM TeamMember tm JOIN FETCH tm.member WHERE tm.team.id = :teamId")
-    List<TeamMember> findAllByTeamId(@Param("teamId") Long teamId);
+    @Query("SELECT tm FROM TeamMember tm JOIN FETCH tm.member WHERE tm.team = :team")
+    List<TeamMember> findAllByTeam(@Param("team") Team team);
 
-    @Query("SELECT tm FROM TeamMember tm WHERE tm.team.id = :teamId AND tm.member.id = :memberId")
-    Optional<TeamMember> findByTeamIdAndMemberId(@Param("teamId") Long teamId, @Param("memberId") Long memberId);
+    Optional<TeamMember> findFirstByMemberOrderByIdAsc(Member member);
+
+    @Query("SELECT tm FROM TeamMember tm WHERE tm.team = :team AND tm.member = :member")
+    Optional<TeamMember> findByTeamAndMember(@Param("team") Team team, @Param("member") Member member);
 
     TeamMember save(TeamMember teamMember);
 

@@ -63,9 +63,10 @@ public class AppointmentService {
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team, member);
 
-        Appointment appointment = request.toAppointment(team, member, Code.generate(CODE_GENERATOR));
-        Appointment savedAppointment = appointmentRepository.save(appointment);
-        notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(appointment)));
+        Appointment savedAppointment = appointmentRepository.save(
+                request.toAppointment(team, member, Code.generate(CODE_GENERATOR))
+        );
+        notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(savedAppointment)));
         return savedAppointment.getCode();
     }
 
@@ -167,7 +168,7 @@ public class AppointmentService {
                         CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR, appointmentCode
                 ));
         validateAppointmentInTeam(team, appointment);
-        List<Member> members = teamMemberRepository.findAllByTeamId(team.getId())
+        List<Member> members = teamMemberRepository.findAllByTeam(team)
                 .stream()
                 .map(TeamMember::getMember)
                 .collect(Collectors.toList());
@@ -239,16 +240,8 @@ public class AppointmentService {
     public void notifyClosedBySchedule() {
         List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(LocalDateTime.now());
 
-        closeAll(appointmentsToBeClosed);
+        appointmentRepository.closeAll(appointmentsToBeClosed);
         notifyStatusAll(appointmentsToBeClosed);
-    }
-
-    private void closeAll(List<Appointment> appointmentsToBeClosed) {
-        appointmentRepository.closeAllByIds(
-                appointmentsToBeClosed.stream()
-                        .map(Appointment::getId)
-                        .collect(Collectors.toList())
-        );
     }
 
     private void notifyStatusAll(List<Appointment> appointmentsToBeClosed) {
