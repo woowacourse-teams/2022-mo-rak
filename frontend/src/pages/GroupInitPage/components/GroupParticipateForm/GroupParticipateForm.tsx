@@ -11,7 +11,7 @@ import { StyledForm } from './GroupParticipateForm.style';
 import { AxiosError } from 'axios';
 
 function GroupParticipateForm() {
-  const [invitationCode, handleInvitationCode] = useInput('');
+  const [invitationCode, handleInvitationCode, resetInvitationCode] = useInput('');
 
   const navigate = useNavigate();
 
@@ -34,6 +34,7 @@ function GroupParticipateForm() {
 
         if (errCode === '1301') {
           alert('그룹 코드를 다시 한 번 확인해주세요!');
+          resetInvitationCode();
         }
       }
     }
