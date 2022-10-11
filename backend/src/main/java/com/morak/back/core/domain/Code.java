@@ -1,26 +1,32 @@
 package com.morak.back.core.domain;
 
+import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.exception.DomainLogicException;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Embeddable
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Getter
 public class Code {
 
     private static final int LENGTH = 8;
 
-    @NotBlank(message = "code는 blank 일 수 없습니다.")
-    @Size(min = LENGTH, max = LENGTH, message = "코드의 길이는 8자여야 합니다.")
     private String code;
+
+    private Code(String code) {
+        validateLength(code);
+        this.code = code;
+    }
 
     public static Code generate(CodeGenerator generator) {
         return new Code(generator.generate(LENGTH));
+    }
+
+    private void validateLength(String value) {
+        if (value.length() != LENGTH) {
+            throw new DomainLogicException(CustomErrorCode.TEMP_ERROR, "코드" + value + "의 길이는 8자여야 합니다.");
+        }
     }
 }

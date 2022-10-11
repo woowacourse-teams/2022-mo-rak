@@ -159,12 +159,10 @@ class AppointmentControllerTest extends ControllerTest {
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}";
         List<AvailableTimeRequest> requests = List.of(
                 new AvailableTimeRequest(
-                        LocalDateTime.of(2022, 8, 6, 16, 0),
-                        LocalDateTime.of(2022, 8, 6, 16, 30)
+                        LocalDateTime.of(2022, 8, 6, 16, 0)
                 ),
                 new AvailableTimeRequest(
-                        LocalDateTime.of(2022, 8, 6, 16, 30),
-                        LocalDateTime.of(2022, 8, 6, 17, 0)
+                        LocalDateTime.of(2022, 8, 6, 16, 30)
                 )
         );
 

@@ -124,20 +124,19 @@ CREATE INDEX `index_appointment` ON `appointment` (`closed_at`);
 
 CREATE TABLE appointment_available_time
 (
-    `id`              BIGINT   NOT NULL AUTO_INCREMENT,
+--     `id`              BIGINT   NOT NULL AUTO_INCREMENT,
     `appointment_id`  BIGINT   NOT NULL,
     `member_id`       BIGINT   NOT NULL,
     `start_date_time` DATETIME NOT NULL,
-    `end_date_time`   DATETIME NOT NULL,
-    `created_at`      DATETIME NOT NULL,
-    `updated_at`      DATETIME NOT NULL,
-    PRIMARY KEY (id),
+    `created_at`      DATETIME,
+    `updated_at`      DATETIME,
+--     PRIMARY KEY (id),
     FOREIGN KEY (appointment_id) REFERENCES appointment (id),
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
 ALTER TABLE appointment_available_time
-    ADD UNIQUE (appointment_id, member_id, start_date_time, end_date_time);
+    ADD UNIQUE (appointment_id, member_id, start_date_time);
 
 CREATE TABLE slack_webhook
 (

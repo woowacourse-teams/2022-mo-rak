@@ -1,16 +1,17 @@
 package com.morak.back.appointment.domain;
 
-import static com.morak.back.appointment.domain.Appointment.MINUTES_UNIT;
-
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.Duration;
 import java.time.LocalTime;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.commons.lang3.NotImplementedException;
 
 @Getter
 @NoArgsConstructor
@@ -18,87 +19,50 @@ import lombok.ToString;
 @ToString
 public class TimePeriod {
 
-    /*
-        startTime이 00:00일 경우 당일의 자정을 의미한다.
-     */
-    @NotNull(message = "약속잡기 시작 시간은 null일 수 없습니다.")
-    private LocalTime startTime;
+    private static final int MINUTES_UNIT = 30;
 
-    /*
-        endTime이 00:00일 경우 다음날의 자정을 의미한다.
-     */
-    @NotNull(message = "약속잡기 마지막 시간은 null일 수 없습니다.")
-    private LocalTime endTime;
+    @AttributeOverrides(
+            @AttributeOverride(name = "time", column = @Column(name = "start_time"))
+    )
+    private Time startTime;
 
-    private TimePeriod(LocalTime startTime, LocalTime endTime) {
+    @AttributeOverrides(
+            @AttributeOverride(name = "time", column = @Column(name = "end_time"))
+    )
+    private Time endTime;
+
+    private TimePeriod(Time startTime, Time endTime) {
+        validateChronology(startTime, endTime);
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-    public static TimePeriod of(LocalTime startTime, LocalTime endTime) {
-        if (!isMidnight(endTime)) {
-            validateChronology(startTime, endTime);
-        }
-        validateMinutes(startTime, endTime);
-        return new TimePeriod(startTime, endTime);
+    public TimePeriod(LocalTime startTime, LocalTime endTime) {
+        this(new Time(startTime), new Time(endTime.minusMinutes(MINUTES_UNIT)));
     }
 
-    private static boolean isMidnight(LocalTime endTime) {
-        return endTime.equals(LocalTime.MIDNIGHT);
-    }
-
-    private static void validateChronology(LocalTime startTime, LocalTime endTime) {
-        if (!endTime.isAfter(startTime)) {
+    private static void validateChronology(Time startTime, Time endTime) {
+        if (endTime.isBefore(startTime)) {
             throw new AppointmentDomainLogicException(
-                CustomErrorCode.APPOINTMENT_TIME_REVERSE_CHRONOLOGY_ERROR,
-                String.format(
-                    "약속잡기 마지막 시간(%s)은 시작 시간(%s) 이후여야 합니다.",
-                    endTime, startTime
-                )
+                    CustomErrorCode.APPOINTMENT_TIME_REVERSE_CHRONOLOGY_ERROR,
+                    String.format(
+                            "약속잡기 마지막 시간(%s)은 시작 시간(%s) 이후여야 합니다.",
+                            endTime, startTime
+                    )
             );
         }
     }
 
-    // TODO : minutesUnit. 상수인가, 변수인가
-    private static void validateMinutes(LocalTime startTime, LocalTime endTime) {
-        if (isNotDividedByUnit(startTime) || isNotDividedByUnit(endTime)) {
-            throw new AppointmentDomainLogicException(
-                CustomErrorCode.APPOINTMENT_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR,
-                String.format(
-                    "약속잡기 시작/마지막 시간(%s, %s)은 %d분 단위여야 합니다.",
-                    startTime, endTime, MINUTES_UNIT
-                )
-            );
-        }
-
-    }
-
-    private static boolean isNotDividedByUnit(LocalTime time) {
-        return time.getMinute() % MINUTES_UNIT != 0;
+    public Duration getDuration() {
+        return startTime.getDuration(endTime).plusMinutes(MINUTES_UNIT);
     }
 
     public boolean isAvailableRange(TimePeriod timePeriod) {
-        LocalTime selectedStartTime = timePeriod.startTime;
-        if (selectedStartTime.isBefore(this.startTime)) {
-            return false;
-        }
-
-        if (isMidnight(this.endTime)) {
-            return true;
-        }
-
-        LocalTime selectedEndTime = timePeriod.endTime;
-        return !isOutOfEndTime(selectedEndTime);
+        throw new NotImplementedException();
     }
 
-    private boolean isOutOfEndTime(LocalTime selectedEndTime) {
-        return selectedEndTime.isAfter(this.endTime) || isMidnight(selectedEndTime);
-    }
-
-    public boolean isLessThanDurationMinutes(Integer durationMinutes) {
-        if (endTime.equals(LocalTime.MIDNIGHT)) {
-            return Duration.between(startTime, endTime).plusDays(1).toMinutes() < durationMinutes;
-        }
-        return Duration.between(startTime, endTime).toMinutes() < durationMinutes;
+    public boolean isBetween(LocalTime localTime) {
+        Time time = new Time(localTime);
+        return !startTime.isAfter(time) && !endTime.isBefore(time);
     }
 }

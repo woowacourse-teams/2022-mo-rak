@@ -141,28 +141,23 @@ public class AppointmentCreateRequestFixture {
             LocalDateTime.now().plusDays(1));
 
     public static AvailableTimeRequest 모락_회식_첫째날_4시부터_4시반_선택_요청_데이터 = new AvailableTimeRequest(
-            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0)),
-            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30))
+            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 0))
     );
 
     public static AvailableTimeRequest 모락_회식_첫째날_4시반부터_5시_선택_요청_데이터 = new AvailableTimeRequest(
-            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30)),
-            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 0))
+            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(16, 30))
     );
 
     public static AvailableTimeRequest 모락_회식_첫째날_5시부터_5시반_선택_요청_데이터 = new AvailableTimeRequest(
-            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 0)),
-            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 30))
+            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 0))
     );
 
     public static AvailableTimeRequest 모락_회식_첫째날_5시반부터_6시_선택_요청_데이터 = new AvailableTimeRequest(
-            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 30)),
-            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(18, 0))
+            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 30))
     );
 
     public static AvailableTimeRequest 모락_회식_첫째날_11시_반부터_00시_선택_요청_데이터 = new AvailableTimeRequest(
-            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 30)),
-            LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.of(0, 0))
+            LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 30))
     );
 
     public static AppointmentCreateRequest 범위_하루종일_약속잡기_요청_데이터 = new AppointmentCreateRequest(

@@ -6,6 +6,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,14 +33,14 @@ public class RecommendationResponse {
     public static RecommendationResponse from(RankRecommendation rankRecommendation) {
         return new RecommendationResponse(
                 rankRecommendation.getRank(),
-                rankRecommendation.getDateTimePeriod().getStartDateTime(),
-                rankRecommendation.getDateTimePeriod().getEndDateTime(),
+                rankRecommendation.getStartDateTime(),
+                rankRecommendation.getEndDateTime(),
                 toMemberResponses(rankRecommendation.getAvailableMembers()),
                 toMemberResponses(rankRecommendation.getUnavailableMembers())
         );
     }
 
-    private static List<MemberResponse> toMemberResponses(List<Member> members) {
+    private static List<MemberResponse> toMemberResponses(Set<Member> members) {
         return members
                 .stream()
                 .map(MemberResponse::from)

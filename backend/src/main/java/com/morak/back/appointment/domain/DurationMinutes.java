@@ -4,6 +4,7 @@ import static com.morak.back.appointment.domain.Appointment.MINUTES_UNIT;
 
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
+import java.time.Duration;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -85,6 +86,10 @@ public class DurationMinutes {
                 )
             );
         }
+    }
+
+    public boolean isLongerThan(Duration duration) {
+        return Duration.ofMinutes(durationMinutes).compareTo(duration) > 0;
     }
 }
 

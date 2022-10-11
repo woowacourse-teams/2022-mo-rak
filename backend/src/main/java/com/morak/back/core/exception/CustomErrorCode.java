@@ -30,7 +30,6 @@ public enum CustomErrorCode {
     POLL_ITEM_NOT_FOUND_ERROR("2301", "요청한 투표항목을 찾을 수 없습니다."),
 
     APPOINTMENT_ALREADY_CLOSED_ERROR("3100", "이미 마감된 약속잡기입니다."),
-    APPOINTMENT_DUPLICATED_AVAILABLE_TIME_ERROR("3101", "약속잡기 선택에 중복된 시간이 있습니다."),
     APPOINTMENT_PAST_CREATE_ERROR("3102", "약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다.."),
     APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR("3103", "진행 시간은 약속잡기 시간보다 짧아야 합니다.."),
     APPOINTMENT_DURATION_NOT_MINUTES_UNIT_ERROR("3104", "약속잡기 진행시간은 30분 단위여야 합니다."),
@@ -41,8 +40,7 @@ public enum CustomErrorCode {
     APPOINTMENT_DATE_REVERSE_CHRONOLOGY_ERROR("3109", "약속잡기 마지막 날짜는 시작 날짜보다 미래여야 합니다."),
     APPOINTMENT_TIME_REVERSE_CHRONOLOGY_ERROR("3110", "약속잡기 마지막 시각은 시작 시각보다 미래여야 합니다."),
     APPOINTMENT_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR("3111", "약속잡기 시작시각, 마지막 시각은 30분 단위여야 합니다."),
-    AVAILABLETIME_DATE_OUT_OF_RANGE_ERROR("3112", "약속잡기 선택 날짜가 약속잡기 날짜를 벗어났습니다."),
-    AVAILABLETIME_TIME_OUT_OF_RANGE_ERROR("3113", "약속잡기 선택 시간이 약속잡기 시간을 벗어났습니다."),
+    AVAILABLETIME_OUT_OF_RANGE_ERROR("3113", "약속잡기 선택 시간이 약속잡기 시간을 벗어났습니다."),
     AVAILABLETIME_REVERSE_CHRONOLOGY_ERROR("3114", "약속잡기 마지막 날짜&시각은 현재 날짜&시각보다 미래여야 합니다."),
     AVAILABLETIME_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR("3115", "약속잡기 선택 시각은 30분 단위여야 합니다."),
     AVAILABLETIME_DURATION_NOT_MINUTES_UNIT_ERROR("3116", "약속잡기 선택 진행 시간은 30분 단위여야 합니다."),
@@ -59,7 +57,9 @@ public enum CustomErrorCode {
     NOTIFICATION_SCHEDULING_FAILURE_ERROR("4402", "스케줄링 실행 중 실패했습니다."),
 
     MORAK_ERROR("9901", "처리하지 못한 예외입니다."),
-    RUNTIME_ERROR("9902", "예상치 못한 예외입니다.");
+    RUNTIME_ERROR("9902", "예상치 못한 예외입니다."),
+
+    TEMP_ERROR("0123", "임시 에러입니다.");
 
     private final String number;
     private final String information;

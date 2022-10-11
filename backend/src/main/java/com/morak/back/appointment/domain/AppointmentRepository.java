@@ -13,17 +13,17 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
 
     Appointment save(Appointment appointment);
 
-    List<Appointment> findAllByTeam(Team team);
+    List<Appointment> findAllByMenuTeam(Team team);
 
-    @Query("select a from Appointment a where a.code.code = :code")
+    @Query("select a from Appointment a where a.menu.code.code = :code")
     Optional<Appointment> findByCode(@Param("code") String code);
 
     void delete(Appointment appointment);
 
-    @Query("select a from Appointment a join fetch a.team where a.status = 'OPEN' and a.closedAt <= :thresholdDateTime")
+    @Query("select a from Appointment a join fetch a.menu.team where a.menu.status = 'OPEN' and a.menu.closedAt.closedAt <= :thresholdDateTime")
     List<Appointment> findAllToBeClosed(@Param("thresholdDateTime") LocalDateTime thresholdDateTime);
 
     @Modifying
-    @Query("update Appointment a set a.status = 'CLOSED' where a.id in :ids")
+    @Query("update Appointment a set a.menu.status = 'CLOSED' where a.id in :ids")
     void closeAllByIds(@Param("ids") Iterable<Long> ids);
 }

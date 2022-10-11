@@ -23,21 +23,7 @@ public class AvailableTimeRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mma", locale = "en_US")
     private LocalDateTime start;
 
-    @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mma", locale = "en_US")
-    private LocalDateTime end;
-
-    public AvailableTime toAvailableTime(Member member, Appointment appointment) {
-        return AvailableTime.builder()
-                .member(member)
-                .appointment(appointment)
-                .startDateTime(this.start)
-                .endDateTime(this.end)
-                .build();
-    }
-
     @Override
-    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -46,12 +32,11 @@ public class AvailableTimeRequest {
             return false;
         }
         AvailableTimeRequest that = (AvailableTimeRequest) o;
-        return Objects.equals(start, that.start) && Objects.equals(end, that.end);
+        return Objects.equals(start, that.start);
     }
 
     @Override
-    @Generated
     public int hashCode() {
-        return Objects.hash(start, end);
+        return Objects.hash(start);
     }
 }

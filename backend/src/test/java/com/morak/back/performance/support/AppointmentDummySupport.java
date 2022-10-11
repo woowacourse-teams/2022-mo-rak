@@ -76,12 +76,9 @@ public class AppointmentDummySupport {
                 for (int hour = 16; hour <= 19; hour++) {
                     availableTimes.add(
                             AvailableTime.builder()
-                                    .appointment(appointment)
                                     .member(MEMBER_ID1)
                                     .startDateTime(
                                             LocalDateTime.of(LocalDate.now().plusDays(day), LocalTime.of(hour, 0)))
-                                    .endDateTime(
-                                            LocalDateTime.of(LocalDate.now().plusDays(day), LocalTime.of(hour, 30)))
                                     .build()
                     );
                 }

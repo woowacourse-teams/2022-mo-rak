@@ -1,12 +1,10 @@
 package com.morak.back.appointment.domain;
 
 import com.morak.back.auth.domain.Member;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,33 +18,23 @@ public class RecommendationCells {
     private List<RecommendationCell> cells;
 
     public static RecommendationCells of(Appointment appointment, List<Member> members) {
-        LocalDateTime firstStartDateTime = appointment.getStartDateTime();
-        LocalDateTime lastEndDateTime = appointment.getEndDateTime();
-        DurationMinutes durationMinutes = appointment.getDurationMinutes();
-
-        return new RecommendationCells(Stream.iterate(
-                        firstStartDateTime,
-                        isStartTimeWithDurationNotOverEndTime(durationMinutes, lastEndDateTime),
-                        s -> s.plusMinutes(Appointment.MINUTES_UNIT))
-                .map(s -> RecommendationCell.of(s, durationMinutes, members))
+        List<AppointmentTime> times = appointment.getAppointmentTimes();
+        return new RecommendationCells(times.stream()
+                .map(time -> RecommendationCell.of(time, members))
                 .collect(Collectors.toList()));
     }
 
-    private static Predicate<LocalDateTime> isStartTimeWithDurationNotOverEndTime(DurationMinutes durationMinutes,
-                                                                                  LocalDateTime endDateTime) {
-        return startDateTime -> !startDateTime.plusMinutes(durationMinutes.getDurationMinutes()).isAfter(endDateTime);
-    }
-
-    public List<RankRecommendation> recommend(List<AvailableTime> availableTimes) {
+    public List<RankRecommendation> recommend(Set<AvailableTime> availableTimes) {
         List<RecommendationCell> recommendationCells = calculate(availableTimes);
+
         int rank = 0;
         int index = 0;
         int currentScore = Integer.MAX_VALUE;
 
         List<RankRecommendation> rankRecommendations = new ArrayList<>();
         for (RecommendationCell recommendationCell : recommendationCells) {
-            int cellScore = recommendationCell.sumScore();
             ++index;
+            int cellScore = recommendationCell.sumScore();
             if (cellScore < currentScore) {
                 rank = index;
                 currentScore = cellScore;
@@ -56,11 +44,11 @@ public class RecommendationCells {
         return rankRecommendations;
     }
 
-    private List<RecommendationCell> calculate(List<AvailableTime> availableTimes) {
-        // TODO: 2022/08/03 이름 바꾸기! 
+    private List<RecommendationCell> calculate(Set<AvailableTime> availableTimes) {
         for (RecommendationCell cell : cells) {
             cell.calculate(availableTimes);
         }
+
         return cells.stream()
                 .filter(RecommendationCell::hasAnyMembers)
                 .sorted()

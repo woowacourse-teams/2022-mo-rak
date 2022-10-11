@@ -49,22 +49,22 @@ public class AppointmentDao {
     }
 
     public void batchInsertAvailableTime(List<AvailableTime> availableTimes) {
-        jdbcTemplate.batchUpdate(
-                "INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, end_date_time, created_at, updated_at) VALUES (?, ?, ?, ?, now(), now());",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1, availableTimes.get(i).getAppointment().getId());
-                        ps.setLong(2, availableTimes.get(i).getMember().getId());
-                        ps.setObject(3, availableTimes.get(i).getDateTimePeriod().getStartDateTime());
-                        ps.setObject(4, availableTimes.get(i).getDateTimePeriod().getEndDateTime());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return availableTimes.size();
-                    }
-                }
-        );
+//        jdbcTemplate.batchUpdate(
+//                "INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, end_date_time, created_at, updated_at) VALUES (?, ?, ?, ?, now(), now());",
+//                new BatchPreparedStatementSetter() {
+//                    @Override
+//                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+//                        ps.setLong(1, availableTimes.get(i).getAppointment().getId());
+//                        ps.setLong(2, availableTimes.get(i).getMember().getId());
+//                        ps.setObject(3, availableTimes.get(i).getDateTimePeriod().getStartDateTime());
+//                        ps.setObject(4, availableTimes.get(i).getDateTimePeriod().getEndDateTime());
+//                    }
+//
+//                    @Override
+//                    public int getBatchSize() {
+//                        return availableTimes.size();
+//                    }
+//                }
+//        );
     }
 }
