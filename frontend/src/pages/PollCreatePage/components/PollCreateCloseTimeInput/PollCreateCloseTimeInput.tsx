@@ -21,7 +21,6 @@ function PollCreateCloseTimeInput({ closingTime, closingDate, onChangeTime, onCh
         <Input
           type="date"
           fontSize="1.6rem"
-          // TODO: closingDate vs closeDate 정하고 통일
           value={closingDate}
           min={today}
           onChange={onChangeDate}
