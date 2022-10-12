@@ -33,7 +33,7 @@ const style = css`
   }
   
   html {
-    font-size: 10px;
+    font-size: 1.4vw;
     font-family: 'TmoneyRoundWindRegular', sans-serif;
   }
 
@@ -78,21 +78,27 @@ const style = css`
     outline: none;
   }
 
-  @media screen and (max-width: 1919px) {
-    html {
-      font-size: 8px;
-    }
-  }
-
-  @media screen and (max-width: 1366px) {
+  @media screen and (min-width: 500px) {
     html {
       font-size: 7px;
     }
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (min-width: 1367px) {
     html {
-      font-size: 4px;
+      font-size: 8px;
+    }
+  }
+
+  @media screen and (min-width: 1700px) {
+    html {
+      font-size: 9px;
+    }
+  }
+
+  @media screen and (min-width: 1920px) {
+    html {
+      font-size: 10px;
     }
   }
 `
