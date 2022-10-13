@@ -6,6 +6,7 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import GroupCreateFormNameInput from '../GroupCreateFormNameInput/GroupCreateFormNameInput';
 import GroupCreateFormSubmitButton from '../GroupCreateFormSubmitButton/GroupCreateFormSubmitButton';
 import { StyledForm } from './GroupCreateForm.styles';
+import { AxiosError } from 'axios';
 
 function GroupCreateForm() {
   const navigate = useNavigate();
@@ -20,7 +21,13 @@ function GroupCreateForm() {
 
       navigate(`/groups/${groupCode}`);
     } catch (err) {
-      alert(err);
+      if (err instanceof AxiosError) {
+        const errCode = err.response?.data.codeNumber;
+
+        if (errCode === '4000') {
+          alert('그룹이름을 입력해주세요!');
+        }
+      }
     }
   };
 

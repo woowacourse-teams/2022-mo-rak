@@ -14,22 +14,19 @@ interface Props {
 
 function SidebarInvitationMenu({ groupCode }: Props) {
   const handleCopyInvitationCode = async () => {
-    try {
-      const res = await createInvitationCode(groupCode);
-      const invitationCode = res.headers.location.split('groups/in/')[1];
-      const invitationLink = `
+    const res = await createInvitationCode(groupCode);
+    const invitationCode = res.headers.location.split('groups/in/')[1];
+    const invitationLink = `
         링크를 클릭하거나, 참가 코드를 입력해주세요😀
         url: ${process.env.CLIENT_URL}/invite/${invitationCode}
         코드: ${invitationCode}
-        `;
+    `;
 
-      writeClipboard(invitationLink).then(() => {
-        alert('초대링크가 클립보드에 복사되었습니다💌');
-      });
-    } catch (err) {
-      alert(err);
-    }
+    writeClipboard(invitationLink).then(() => {
+      alert('초대링크가 클립보드에 복사되었습니다💌');
+    });
   };
+
   return (
     <StyledInvitationLink onClick={handleCopyInvitationCode}>
       <StyledPlusIcon src={Plus} alt="invitation-link" />

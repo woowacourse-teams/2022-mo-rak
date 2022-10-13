@@ -1,7 +1,13 @@
 import axios from 'axios';
-import { getLocalStorageItem } from '../utils/storage';
+import {
+  getLocalStorageItem,
+  removeLocalStorageItem,
+  saveSessionStorageItem
+} from '../utils/storage';
 
-const axiosInstanceGenerator = (path: string, isAuthRequired = true) => {
+type Path = 'auth' | 'groups';
+
+const axiosInstanceGenerator = (path: Path, isAuthRequired = true) => {
   const instance = axios.create({
     baseURL: `${process.env.BASE_API_URL}/${path}`,
     headers: { 'Content-Type': 'application/json' }
@@ -12,11 +18,51 @@ const axiosInstanceGenerator = (path: string, isAuthRequired = true) => {
       const newConfig = { ...config };
 
       newConfig.headers = {
-        Authorization: `Bearer ${getLocalStorageItem('token')} `
+        Authorization: `Bearer ${getLocalStorageItem('token')}`
       };
 
       return newConfig;
     });
+
+    let is401ErrorProcessing = false;
+    let is403ErrorProcessing = false;
+    instance.interceptors.response.use(
+      (res) => {
+        is401ErrorProcessing = false;
+        is403ErrorProcessing = false;
+
+        return res;
+      },
+      (err) => {
+        const url = err.response.config.url;
+        const statusCode = err.response.status;
+
+        if (!is401ErrorProcessing && statusCode === 401) {
+          is401ErrorProcessing = true;
+
+          const isInvitationPage = url.includes('in');
+          if (isInvitationPage) {
+            saveSessionStorageItem('redirectUrl', window.location.pathname);
+          }
+
+          alert('로그인 해주세요😀');
+          removeLocalStorageItem('token');
+          // TODO: react에서는 anti-pattern인 리다이렉트 방법, 수정 필요
+          // TODO: 강제로 html을 다시 받아오는 거라, 추후 SPA 방식의 navigation을 하게 되면, 여러 개의 alert가 뜰 듯, 수정 필요...
+          window.location.href = '/';
+        }
+
+        if (!is403ErrorProcessing && statusCode === 403) {
+          is403ErrorProcessing = true;
+
+          alert('접근 권한이 없습니다');
+          // TODO: react에서는 anti-pattern인 리다이렉트 방법, 수정 필요
+          window.location.href = '/error';
+        }
+
+        return Promise.reject(err);
+      }
+    );
   }
 
   return instance;
@@ -24,10 +70,5 @@ const axiosInstanceGenerator = (path: string, isAuthRequired = true) => {
 
 const authInstance = axiosInstanceGenerator('auth', false);
 const groupInstance = axiosInstanceGenerator('groups');
-// NOTE: poll, appointment의 instance를 만들어주려면, groupCode를 넘겨받아서 instance를 생성해줘야한다.
-// 생각을 해보면, 매번 code가 달라질텐데, 그럴때마다 instance를 만들어서 활용해주는 것보다는 사용하는 곳에서 code를
-// 넘겨주는 것이 훨씬 효율적이어보임
-// const pollInstance = axiosInstanceGenerator('group');
-// const appointmentInstance = axiosInstanceGenerator('appointment');
 
 export { authInstance, groupInstance };

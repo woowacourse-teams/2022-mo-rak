@@ -4,6 +4,7 @@ interface CreateRangeInterface {
   isReverse?: boolean;
 }
 
+// TODO: createRange로 모듈 만들기
 const createRange = ({
   size,
   startNumber = 0,

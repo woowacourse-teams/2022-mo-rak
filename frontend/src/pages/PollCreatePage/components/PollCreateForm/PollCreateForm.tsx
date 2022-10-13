@@ -60,7 +60,6 @@ function PollCreateForm() {
     };
 
     try {
-      // TODO: 쿼리 적용
       const res = await createPoll(pollData, groupCode);
       const pollCode = res.headers.location.split('polls/')[1];
 
@@ -68,14 +67,12 @@ function PollCreateForm() {
       navigate(`/groups/${groupCode}/poll/${pollCode}/progress`);
     } catch (err) {
       if (err instanceof AxiosError) {
-        // TODO: 타이핑
-        const codeNumber = err.response?.data.codeNumber;
+        const errCode = err.response?.data.codeNumber;
 
-        if (codeNumber === '4000') {
+        if (errCode === '4000') {
           alert('투표 마감시간은 현재보다 미래여야합니다');
         }
       }
-      // TODO: 에러 핸들링 고도화
     }
   };
 

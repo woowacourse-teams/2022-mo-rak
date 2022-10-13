@@ -79,29 +79,40 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
 
       navigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`);
     } catch (err) {
+      console.log(err, 'error');
       if (err instanceof AxiosError) {
         const errCode = err.response?.data.codeNumber;
 
-        if (errCode === '3103') {
-          alert('진행 시간은 약속잡기 시간(가능시간제한)보다 짧아야 합니다.');
+        switch (errCode) {
+          case '3103': {
+            alert('진행 시간은 약속잡기 시간(가능시간제한)보다 짧아야 합니다.');
 
-          return;
-        }
+            break;
+          }
 
-        if (errCode === '3117') {
-          alert('마감 시간은 현재 시간과 마지막 날짜의 최대 가능 시간사이여야합니다');
+          case '3117': {
+            alert('마감 시간은 현재 시간과 마지막 날짜의 최대 가능 시간사이여야합니다');
 
-          return;
-        }
+            break;
+          }
 
-        if (errCode === '3102') {
-          alert('약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다..');
+          case '3102': {
+            alert('약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다..');
 
-          return;
-        }
+            break;
+          }
 
-        if (errCode === '3107') {
-          alert('약속잡기 진행시간은 30분에서 24시간 사이여야 합니다.');
+          case '3107': {
+            alert('약속잡기 진행시간은 30분에서 24시간 사이여야 합니다.');
+
+            break;
+          }
+
+          case '4000': {
+            alert('제목과 설명은 공백일 수 없습니다.');
+
+            break;
+          }
         }
       }
     }
