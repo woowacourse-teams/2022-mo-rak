@@ -1,17 +1,16 @@
-package com.morak.back.appointment.domain;
+package com.morak.back.appointment.domain.menu;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.appointment.domain.menu.MenuStatus;
-import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.exception.DomainLogicException;
 import org.junit.jupiter.api.Test;
 
 class MenuStatusTest {
 
     @Test
-    void 약속잡기가_종료된_경우_true를_반환한다() {
+    void 종료된_상태인_경우_true를_반환한다() {
         // given
         MenuStatus closed = MenuStatus.CLOSED;
 
@@ -20,7 +19,7 @@ class MenuStatusTest {
     }
 
     @Test
-    void 약속잡기가_종료되지_않은_경우_false를_반환한다() {
+    void 종료되지_않은_상태인_경우_false를_반환한다() {
         // given
         MenuStatus open = MenuStatus.OPEN;
 
@@ -41,14 +40,14 @@ class MenuStatusTest {
     }
 
     @Test
-    void 상태가_close일떄_close_하는_경우_예외를_던진다() {
+    void 상태가_close일_때_close_하는_경우_예외를_던진다() {
         // given
         MenuStatus status = MenuStatus.CLOSED;
 
         // when & then
-        assertThatThrownBy(() -> status.close())
-                .isInstanceOf(AppointmentDomainLogicException.class)
+        assertThatThrownBy(status::close)
+                .isInstanceOf(DomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR);
+                .isEqualTo(CustomErrorCode.MENU_ALREADY_CLOSED_ERROR);
     }
 }

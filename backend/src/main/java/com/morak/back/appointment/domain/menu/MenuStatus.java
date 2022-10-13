@@ -12,10 +12,7 @@ public enum MenuStatus {
 
     public MenuStatus close() {
         if (this == CLOSED) {
-            throw new DomainLogicException(
-                    CustomErrorCode.TEMP_ERROR,
-                    "이미 마감된 상태입니다."
-            );
+            throw new DomainLogicException(CustomErrorCode.MENU_ALREADY_CLOSED_ERROR, "이미 마감된 상태입니다.");
         }
         return CLOSED;
     }
