@@ -36,7 +36,7 @@ public class Time {
     }
 
     public boolean isBefore(Time other) {
-        return this.isBefore(other.time);
+        return isBefore(other.time);
     }
 
     public boolean isBefore(LocalTime other) {
@@ -44,7 +44,7 @@ public class Time {
     }
 
     public boolean isAfter(Time other) {
-        return this.isAfter(other.time);
+        return isAfter(other.time);
     }
 
     public boolean isAfter(LocalTime other) {
