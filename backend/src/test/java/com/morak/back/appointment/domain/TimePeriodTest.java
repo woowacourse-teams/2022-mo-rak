@@ -10,6 +10,7 @@ import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class TimePeriodTest {
@@ -60,94 +61,42 @@ class TimePeriodTest {
 
     }
 
-    // TODO : 아래 테스트를 parameterized Test로 전환한다.
-    @Test
-    void 약속잡기_가능시간이_10시부터_20시이고_선택시간이_23시_30분부터_24시이면_예외를_던진다() {
+    @ParameterizedTest
+    @CsvSource({"0, 0, false", "9, 30, false", "19, 0, true", "23, 30, false"})
+    void 약속잡기_시간이_10시부터_20시인_경우_포함되는지_확인한다(int hour, int minute, boolean expected) {
         // given
         TimePeriod appointmentTimePeriod = new TimePeriod(LocalTime.of(10, 0), LocalTime.of(20, 0));
-        TimePeriod timePeriod = new TimePeriod(LocalTime.of(23, 30), LocalTime.of(0, 0));
 
         // when
-        boolean isAvailableRange = appointmentTimePeriod.isAvailableRange(timePeriod);
-        // then
-        assertThat(isAvailableRange).isFalse();
-    }
-
-    @Test
-    void 약속잡기_가능시간이_10시부터_20시이고_선택시간이_24시_0분부터_24시_30분이면_예외를_던진다() {
-        // given
-        TimePeriod appointmentTimePeriod = new TimePeriod(LocalTime.of(10, 0), LocalTime.of(20, 0));
-        TimePeriod timePeriod = new TimePeriod(LocalTime.of(0, 0), LocalTime.of(0, 30));
-
-        // when
-        boolean isAvailableRange = appointmentTimePeriod.isAvailableRange(timePeriod);
+        boolean isBetween = appointmentTimePeriod.isBetween(LocalTime.of(hour, minute));
 
         // then
-        assertThat(isAvailableRange).isFalse();
+        assertThat(isBetween).isEqualTo(expected);
     }
 
-    @Test
-    void 약속잡기_가능시간이_10시부터_20시이고_선택시간이_19시_0분부터_19시_30분이면_통과한다() {
-        // given
-        TimePeriod appointmentTimePeriod = new TimePeriod(LocalTime.of(10, 0), LocalTime.of(20, 0));
-        TimePeriod timePeriod = new TimePeriod(LocalTime.of(19, 0), LocalTime.of(19, 30));
-
-        // when
-        boolean isAvailableRange = appointmentTimePeriod.isAvailableRange(timePeriod);
-
-        // then
-        assertThat(isAvailableRange).isTrue();
-    }
-
-    @Test
-    void 약속잡기_가능시간이_10시부터_24시이고_선택시간이_23시_30분부터_24시이면_통과한다() {
+    @ParameterizedTest
+    @CsvSource({"0, 0, false", "9, 30, false", "10, 0, true", "19, 0, true", "23, 30, true"})
+    void 약속잡기_시간이_10시부터_24시인_경우_포함되는지_확인한다(int hour, int minute, boolean expected) {
         // given
         TimePeriod appointmentTimePeriod = new TimePeriod(LocalTime.of(10, 0), LocalTime.of(0, 0));
-        TimePeriod timePeriod = new TimePeriod(LocalTime.of(23, 30), LocalTime.of(0, 0));
 
         // when
-        boolean isAvailableRange = appointmentTimePeriod.isAvailableRange(timePeriod);
+        boolean isBetween = appointmentTimePeriod.isBetween(LocalTime.of(hour, minute));
 
         // then
-        assertThat(isAvailableRange).isTrue();
+        assertThat(isBetween).isEqualTo(expected);
     }
 
-    @Test
-    void 약속잡기_가능시간이_10시부터_24시이고_선택시간이_24시_0분부터_24시_30분이면_예외를_던진다() {
-        // given
-        TimePeriod appointmentTimePeriod = new TimePeriod(LocalTime.of(10, 0), LocalTime.of(0, 0));
-        TimePeriod timePeriod = new TimePeriod(LocalTime.of(0, 0), LocalTime.of(0, 30));
-
-        // when
-        boolean isAvailableRange = appointmentTimePeriod.isAvailableRange(timePeriod);
-
-        // then
-        assertThat(isAvailableRange).isFalse();
-    }
-
-    @Test
-    void 약속잡기_가능시간이_0시부터_24시이고_선택시간이_23시_30분부터_24시이면_통과한다() {
+    @ParameterizedTest
+    @CsvSource({"0, 0, true", "10, 0, true", "19, 0, true", "23, 30, true"})
+    void 약속잡기_시간이_0시부터_24시인_경우_포함되는지_확인한다(int hour, int minute, boolean expected) {
         // given
         TimePeriod appointmentTimePeriod = new TimePeriod(LocalTime.of(0, 0), LocalTime.of(0, 0));
-        TimePeriod timePeriod = new TimePeriod(LocalTime.of(23, 30), LocalTime.of(0, 0));
 
         // when
-        boolean isAvailableRange = appointmentTimePeriod.isAvailableRange(timePeriod);
+        boolean isBetween = appointmentTimePeriod.isBetween(LocalTime.of(hour, minute));
 
         // then
-        assertThat(isAvailableRange).isTrue();
-    }
-
-    @Test
-    void 약속잡기_가능시간이_0시부터_24시이고_선택시간이_24시_0분부터_24시_30분이면_통과한다() {
-        // given
-        TimePeriod appointmentTimePeriod = new TimePeriod(LocalTime.of(0, 0), LocalTime.of(0, 0));
-        TimePeriod timePeriod = new TimePeriod(LocalTime.of(0, 0), LocalTime.of(0, 30));
-
-        // when
-        boolean isAvailableRange = appointmentTimePeriod.isAvailableRange(timePeriod);
-
-        // then
-        assertThat(isAvailableRange).isTrue();
+        assertThat(isBetween).isEqualTo(expected);
     }
 }
