@@ -36,9 +36,15 @@ function PollCreateForm() {
   const [pollItems, setPollItems] = useState(
     location.state?.firstRankAppointmentRecommendations ?? ['', '']
   );
+  // TODO: 위치가 별로다
+  const getDateAfter7days = () => {
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 7);
 
-  const [closingDate, handleCloseDate] = useInput('');
-  const [closingTime, handleCloseTime] = useInput('');
+    return currentDate.toISOString().split('T')[0];
+  };
+  const [closingDate, handleCloseDate] = useInput(getDateAfter7days());
+  const [closingTime, handleCloseTime] = useInput('23:59');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
