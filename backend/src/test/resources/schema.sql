@@ -101,7 +101,7 @@ CREATE TABLE poll_result
 CREATE TABLE appointment
 (
     `id`               BIGINT       NOT NULL AUTO_INCREMENT,
-    `team_id`          BIGINT       NOT NULL,
+    `team_code`        VARCHAR(255) NOT NULL,
     `host_id`          BIGINT       NOT NULL,
     `title`            VARCHAR(255) NOT NULL,
     `description`      VARCHAR(255) NOT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE appointment
     `created_at`       DATETIME     NOT NULL,
     `updated_at`       DATETIME     NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (team_id) REFERENCES team (id),
+    FOREIGN KEY (team_code) REFERENCES team (code),
     FOREIGN KEY (host_id) REFERENCES member (id)
 );
 
@@ -124,19 +124,20 @@ CREATE INDEX `index_appointment` ON `appointment` (`closed_at`);
 
 CREATE TABLE appointment_available_time
 (
---     `id`              BIGINT   NOT NULL AUTO_INCREMENT,
+    `id`              BIGINT   NOT NULL AUTO_INCREMENT,
     `appointment_id`  BIGINT   NOT NULL,
     `member_id`       BIGINT   NOT NULL,
     `start_date_time` DATETIME NOT NULL,
-    `created_at`      DATETIME,
-    `updated_at`      DATETIME,
---     PRIMARY KEY (id),
+    `end_date_time`   DATETIME NOT NULL,
+    `created_at`      DATETIME NOT NULL,
+    `updated_at`      DATETIME NOT NULL,
+    PRIMARY KEY (id),
     FOREIGN KEY (appointment_id) REFERENCES appointment (id),
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
 ALTER TABLE appointment_available_time
-    ADD UNIQUE (appointment_id, member_id, start_date_time);
+    ADD UNIQUE (appointment_id, member_id, start_date_time, end_date_time);
 
 CREATE TABLE slack_webhook
 (

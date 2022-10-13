@@ -6,7 +6,6 @@ import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.Duration;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,10 +23,9 @@ public class DurationMinutes {
     private static final int MAX_HOURS = 24;
     private static final int DAY_MINUTES = 1440;
 
-    @NotNull(message = "약속잡기 진행 시간은 null일 수 없습니다.")
-    private Integer durationMinutes;
+    private int durationMinutes;
 
-    public static DurationMinutes of(Integer hours, Integer minutes) {
+    public static DurationMinutes of(int hours, int minutes) {
         validateTimeFormat(hours, minutes);
         validateMinutes(minutes);
         int durationMinutes = hours * HOUR_MINUTES + minutes;
@@ -35,15 +33,15 @@ public class DurationMinutes {
         return new DurationMinutes(durationMinutes);
     }
 
-    public Integer parseHours() {
+    public int parseHours() {
         return this.durationMinutes / HOUR_MINUTES;
     }
 
-    public Integer parseMinutes() {
+    public int parseMinutes() {
         return this.durationMinutes % HOUR_MINUTES;
     }
 
-    private static void validateTimeFormat(Integer hours, Integer minutes) {
+    private static void validateTimeFormat(int hours, int minutes) {
         if (hours < MIN_TIME || hours > MAX_HOURS) {
             throw new AppointmentDomainLogicException(
                     CustomErrorCode.APPOINTMENT_DURATION_HOUR_OUT_OF_RANGE_ERROR,
@@ -64,7 +62,7 @@ public class DurationMinutes {
         }
     }
 
-    private static void validateMinutes(Integer minutes) {
+    private static void validateMinutes(int minutes) {
         if (minutes % MINUTES_UNIT != 0) {
             throw new AppointmentDomainLogicException(
                 CustomErrorCode.APPOINTMENT_DURATION_NOT_MINUTES_UNIT_ERROR,
@@ -76,7 +74,7 @@ public class DurationMinutes {
         }
     }
 
-    private static void validateDurationMinutesRange(Integer durationMinutes) {
+    private static void validateDurationMinutesRange(int durationMinutes) {
         if (durationMinutes < MINUTES_UNIT || durationMinutes > DAY_MINUTES) {
             throw new AppointmentDomainLogicException(
                 CustomErrorCode.APPOINTMENT_DURATION_MINUTE_RANGE_ERROR,

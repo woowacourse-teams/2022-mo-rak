@@ -1,15 +1,11 @@
 package com.morak.back.appointment.domain.menu;
 
-import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
-import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -60,7 +56,7 @@ public class Menu {
         return this.teamCode.equals(otherTeamCode);
     }
 
-    public Boolean isClosed() {
+    public boolean isClosed() {
         return this.status.isClosed();
     }
 

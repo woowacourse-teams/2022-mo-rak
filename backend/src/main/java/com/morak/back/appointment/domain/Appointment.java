@@ -29,7 +29,6 @@ import javax.persistence.JoinColumn;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Formula;
 
 @Entity
 @Getter
@@ -37,7 +36,6 @@ import org.hibernate.annotations.Formula;
 public class Appointment extends BaseEntity {
 
     public static final int MINUTES_UNIT = 30;
-    private static final int NO_ONE_SELECTED = 0;
 
     @Embedded
     private Menu menu;
@@ -56,15 +54,12 @@ public class Appointment extends BaseEntity {
             name = "appointment_available_time",
             joinColumns = @JoinColumn(name = "appointment_id")
     )
-    private Set<AvailableTime> availableTimes = new HashSet<>();
-
-    @Formula("(SELECT COUNT(DISTINCT aat.member_id) FROM appointment_available_time as aat WHERE aat.appointment_id = id)")
-    private Integer count;
+    private final Set<AvailableTime> availableTimes = new HashSet<>();
 
     @Builder
     private Appointment(Long id, String teamCode, Long hostId, String title, String description, LocalDate startDate,
-                        LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer durationHours,
-                        Integer durationMinutes, Code code, LocalDateTime closedAt, LocalDateTime now) {
+                        LocalDate endDate, LocalTime startTime, LocalTime endTime, int durationHours,
+                        int durationMinutes, Code code, LocalDateTime closedAt, LocalDateTime now) {
         super(id);
         this.menu = new Menu(teamCode, hostId, code, title, description, MenuStatus.OPEN,
                 new AppointmentClosedAt(closedAt, now, endDate, endTime));
@@ -118,11 +113,11 @@ public class Appointment extends BaseEntity {
                 && now.isBefore(dateTime);
     }
 
-    public Integer parseHours() {
+    public int parseHours() {
         return this.durationMinutes.parseHours();
     }
 
-    public Integer parseMinutes() {
+    public int parseMinutes() {
         return this.durationMinutes.parseMinutes();
     }
 
@@ -148,7 +143,7 @@ public class Appointment extends BaseEntity {
         return this.menu.isHost(memberId);
     }
 
-    public Boolean isClosed() {
+    public boolean isClosed() {
         return this.menu.isClosed();
     }
 
@@ -172,11 +167,11 @@ public class Appointment extends BaseEntity {
         return menu.getCode();
     }
 
-    public Integer getCount() {
-        if (this.count == null) {
-            return NO_ONE_SELECTED;
-        }
-        return this.count;
+    public int getCount() {
+        return (int) availableTimes.stream()
+                .map(AvailableTime::getMember)
+                .distinct()
+                .count();
     }
 
     public String getTitle() {
