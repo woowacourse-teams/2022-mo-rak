@@ -27,7 +27,7 @@ describe('약속잡기 기능에 대한 e2e 테스트', () => {
     today.setMonth(today.getMonth() + 1);
     const [year, nextMonth] = today.toISOString().split('T')[0].split('-');
 
-    cy.findByRole('img', { name: 'appointment-menu' }).click();
+    cy.findByRole('img', { name: '약속잡기' }).click();
     cy.findByRole('button', { name: '약속 생성하기' }).click();
     cy.findByRole('button', { name: 'next-month' }).click();
 

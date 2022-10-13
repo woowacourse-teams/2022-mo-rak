@@ -27,7 +27,7 @@ describe('투표 기능에 대한 e2e 테스트', () => {
     const [dateAfter7days, currentTime] = today.toISOString().split('T');
     const currentHourMinute = currentTime.slice(0, 5);
 
-    cy.findByRole('img', { name: 'poll-menu' }).click();
+    cy.findByRole('img', { name: '투표하기' }).click();
     cy.wait('@getPolls');
 
     cy.findByRole('button', { name: '투표 생성하기' }).click();
