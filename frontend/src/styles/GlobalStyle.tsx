@@ -31,12 +31,6 @@ const style = css`
     vertical-align: baseline;
     box-sizing: border-box;
   }
-  
-  html {
-    font-size: 1.4vw;
-    font-family: 'TmoneyRoundWindRegular', sans-serif;
-  }
-
 
   article, aside, details, figcaption, figure, 
   footer, header, hgroup, menu, nav, section {
@@ -76,6 +70,11 @@ const style = css`
 
   input:focus {
     outline: none;
+  }
+
+  html {
+    font-size: 1.4vw;
+    font-family: 'TmoneyRoundWindRegular', sans-serif;
   }
 
   @media screen and (min-width: 500px) {
