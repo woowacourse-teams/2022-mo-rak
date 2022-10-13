@@ -7,6 +7,7 @@ import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
+import com.morak.back.poll.domain.BaseEntity;
 import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
@@ -246,11 +247,7 @@ class AppointmentRepositoryTest {
         }
 
         // when
-        appointmentRepository.closeAllByIds(
-                appointments.stream()
-                        .map(Appointment::getId)
-                        .collect(Collectors.toList())
-        );
+        appointmentRepository.closeAllByIds(appointments.stream().map(BaseEntity::getId).collect(Collectors.toList()));
 
         for (Appointment appointment : appointments) {
             entityManager.refresh(appointment);

@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAppointment, progressAppointment } from '../../api/appointment';
@@ -8,11 +7,16 @@ import {
   AppointmentInterface,
   getAppointmentResponse
 } from '../../types/appointment';
-import Calendar from '../../components/@common/Calendar/Calendar';
-import AppointmentProgressHeader from '../../components/AppointmentProgress/AppointmentProgressHeader/AppointmentProgressHeader';
-import AppointmentProgressTimePicker from '../../components/AppointmentProgress/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
-import AppointmentProgressButtonGroup from '../../components/AppointmentProgress/AppointmentProgressButtonGroup/AppointmentProgressButtonGroup';
-import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
+import Calendar from '../../components/Calendar/Calendar';
+import AppointmentProgressHeader from './components/AppointmentProgressHeader/AppointmentProgressHeader';
+import AppointmentProgressTimePicker from './components/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
+import AppointmentProgressButtonGroup from './components/AppointmentProgressButtonGroup/AppointmentProgressButtonGroup';
+import FlexContainer from '../../components/FlexContainer/FlexContainer';
+import {
+  StyledContainer,
+  StyledLeftContainer,
+  StyledRightContainer
+} from './AppointmentProgressPage.styles';
 
 // TODO: 중복됨 제거
 const getPlusOneDate = (date: string) => {
@@ -111,10 +115,8 @@ function AppointmentProgressPage() {
   // NOTE: 이렇게 Left,Right가 있을 때는 어떻게 추상화 레벨을 맞춰줄까?...
   return (
     <StyledContainer>
-      <FlexContainer flexDirection='column' gap="2rem">
-        <AppointmentProgressHeader
-          appointment={appointment}
-        />
+      <FlexContainer flexDirection="column" gap="2rem">
+        <AppointmentProgressHeader appointment={appointment} />
         <FlexContainer gap="4rem">
           <StyledLeftContainer>
             <Calendar
@@ -146,28 +148,5 @@ function AppointmentProgressPage() {
     </StyledContainer>
   );
 }
-
-const StyledContainer = styled.div`
-  width: calc(100% - 36.4rem);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8rem;
-`;
-
-const StyledLeftContainer = styled.div`
-  display: flex;
-  width: 45.2rem;
-  flex-direction: column;
-  gap: 1.8rem;
-`;
-
-const StyledRightContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  align-items: center;
-`;
 
 export default AppointmentProgressPage;

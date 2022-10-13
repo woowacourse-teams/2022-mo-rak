@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { MenuRoute } from './routes/MenuRoute';
-import SidebarLayout from './components/SidebarLayout/SidebarLayout';
+import SidebarLayout from './layouts/SidebarLayout/SidebarLayout';
 
 const PollMainPage = lazy(() => import('./pages/PollMainPage/PollMainPage'));
 const PollCreatePage = lazy(() => import('./pages/PollCreatePage/PollCreatePage'));

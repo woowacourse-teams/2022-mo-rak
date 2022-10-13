@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
+import { StyledContainer } from './PollProgressPage.styles';
 
-import PollProgressForm from '../../components/PollProgress/PollProgressForm/PollProgressForm';
+import PollProgressForm from './components/PollProgressForm/PollProgressForm';
 
 function PollProgressPage() {
   return (
@@ -9,12 +9,5 @@ function PollProgressPage() {
     </StyledContainer>
   );
 }
-
-const StyledContainer = styled.div`
-  width: calc(100% - 36.4rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 export default PollProgressPage;

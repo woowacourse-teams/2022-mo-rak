@@ -369,7 +369,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 없는_멤버가_그룹_목록을_조회하면_빈_리스트를_반환한다() {
+    void 없는_멤버가_그룹_목록을_조회하면_NOT_FOUND를_반환한다() {
         // given
         String invalidToken = tokenProvider.createToken(String.valueOf(0L));
 
@@ -378,8 +378,9 @@ public class TeamAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(toObjectList(response, TeamResponse.class)).hasSize(0)
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR.getNumber())
         );
     }
 
@@ -490,7 +491,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
                 () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
-                        .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR.getNumber())
+                        .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR.getNumber())
         );
     }
 
@@ -544,7 +545,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 없는_멤버가_그룹_탈퇴_요청을_보내면_FORBIDDEN이_반환된다() {
+    void 없는_멤버가_그룹_탈퇴_요청을_보내면_NOT_FOUND가_반환된다() {
         // given
         TeamCreateRequest request = new TeamCreateRequest("albur");
         String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
@@ -556,9 +557,9 @@ public class TeamAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
                 () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
-                        .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR.getNumber())
+                        .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR.getNumber())
         );
     }
 
