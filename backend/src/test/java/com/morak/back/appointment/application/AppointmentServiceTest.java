@@ -1,6 +1,6 @@
 package com.morak.back.appointment.application;
 
-import static com.morak.back.appointment.domain.MenuStatus.CLOSED;
+import static com.morak.back.appointment.domain.menu.MenuStatus.CLOSED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -10,7 +10,7 @@ import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.AvailableTime;
-import com.morak.back.appointment.domain.MenuStatus;
+import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;

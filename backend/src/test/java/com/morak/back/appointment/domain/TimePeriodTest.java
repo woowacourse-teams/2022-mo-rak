@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.appointment.domain.timeperiod.TimePeriod;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalTime;

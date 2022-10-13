@@ -1,7 +1,8 @@
-package com.morak.back.appointment.domain;
+package com.morak.back.appointment.domain.recommend;
 
 import static com.morak.back.appointment.domain.Appointment.MINUTES_UNIT;
 
+import com.morak.back.appointment.domain.AvailableTime;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

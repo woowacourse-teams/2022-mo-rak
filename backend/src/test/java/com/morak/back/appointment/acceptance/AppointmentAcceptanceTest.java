@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.SimpleRestAssured;
-import com.morak.back.appointment.domain.MenuStatus;
+import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;

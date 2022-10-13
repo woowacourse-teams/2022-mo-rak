@@ -1,5 +1,6 @@
 package com.morak.back.appointment.domain;
 
+import com.morak.back.appointment.domain.menu.ClosedAt;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

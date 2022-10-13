@@ -1,4 +1,4 @@
-package com.morak.back.appointment.domain;
+package com.morak.back.appointment.domain.recommend;
 
 import com.morak.back.auth.domain.Member;
 import java.time.LocalDateTime;

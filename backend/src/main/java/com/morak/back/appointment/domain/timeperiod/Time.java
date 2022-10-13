@@ -1,4 +1,4 @@
-package com.morak.back.appointment.domain;
+package com.morak.back.appointment.domain.timeperiod;
 
 import static com.morak.back.appointment.domain.Appointment.MINUTES_UNIT;
 

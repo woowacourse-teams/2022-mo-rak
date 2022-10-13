@@ -1,5 +1,6 @@
-package com.morak.back.appointment.domain;
+package com.morak.back.appointment.domain.recommend;
 
+import com.morak.back.appointment.domain.AvailableTime;
 import com.morak.back.auth.domain.Member;
 import java.util.List;
 import java.util.Map;

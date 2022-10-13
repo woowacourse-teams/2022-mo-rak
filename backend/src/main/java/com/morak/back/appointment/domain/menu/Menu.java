@@ -1,4 +1,4 @@
-package com.morak.back.appointment.domain;
+package com.morak.back.appointment.domain.menu;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
-import com.morak.back.appointment.domain.MenuStatus;
+import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.application.NotificationService;
