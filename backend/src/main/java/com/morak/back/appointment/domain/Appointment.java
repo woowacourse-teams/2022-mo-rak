@@ -78,16 +78,16 @@ public class Appointment extends BaseEntity {
         }
     }
 
-    public void selectAvailableTime(Set<LocalDateTime> localDateTimes, Member member, LocalDateTime now) {
+    public void selectAvailableTime(Set<LocalDateTime> localDateTimes, Long memberId, LocalDateTime now) {
         validateStatus();
 
         Set<AvailableTime> availableTimes = new HashSet<>();
         for (LocalDateTime dateTime : localDateTimes) {
             validateSelectTime(now, dateTime);
-            availableTimes.add(AvailableTime.builder().member(member).startDateTime(dateTime).build());
+            availableTimes.add(AvailableTime.builder().memberId(memberId).startDateTime(dateTime).build());
         }
 
-        this.availableTimes.removeIf(availableTime -> availableTime.getMember().equals(member));
+        this.availableTimes.removeIf(availableTime -> availableTime.getMemberId().equals(memberId));
         this.availableTimes.addAll(availableTimes);
     }
 
@@ -169,7 +169,7 @@ public class Appointment extends BaseEntity {
 
     public int getCount() {
         return (int) availableTimes.stream()
-                .map(AvailableTime::getMember)
+                .map(AvailableTime::getMemberId)
                 .distinct()
                 .count();
     }

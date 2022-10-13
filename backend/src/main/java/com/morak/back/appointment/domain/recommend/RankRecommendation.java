@@ -1,6 +1,5 @@
 package com.morak.back.appointment.domain.recommend;
 
-import com.morak.back.auth.domain.Member;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.Getter;
@@ -12,8 +11,8 @@ public class RankRecommendation {
 
     private final int rank;
     private final AppointmentTime appointmentTime;
-    private final Set<Member> availableMembers;
-    private final Set<Member> unavailableMembers;
+    private final Set<Long> availableMembers;
+    private final Set<Long> unavailableMembers;
 
     public static RankRecommendation from(int rank, RecommendationCell recommendationCell) {
         return new RankRecommendation(

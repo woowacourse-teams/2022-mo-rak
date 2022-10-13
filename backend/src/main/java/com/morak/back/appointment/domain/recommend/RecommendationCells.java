@@ -19,10 +19,10 @@ public class RecommendationCells {
 
     private List<RecommendationCell> cells;
 
-    public static RecommendationCells of(Appointment appointment, List<Member> members) {
+    public static RecommendationCells of(Appointment appointment, List<Long> memberIds) {
         List<AppointmentTime> times = appointment.getAppointmentTimes();
         return new RecommendationCells(times.stream()
-                .map(time -> RecommendationCell.of(time, members))
+                .map(time -> RecommendationCell.of(time, memberIds))
                 .collect(Collectors.toList()));
     }
 

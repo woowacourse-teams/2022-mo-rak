@@ -15,14 +15,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AvailableTime {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    private Long memberId;
 
     private LocalDateTime startDateTime;
 
     @Builder
-    private AvailableTime(Member member, LocalDateTime startDateTime) {
-        this.member = member;
+    private AvailableTime(Long memberId, LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
@@ -35,11 +33,12 @@ public class AvailableTime {
             return false;
         }
         AvailableTime that = (AvailableTime) o;
-        return Objects.equals(member, that.member) && Objects.equals(startDateTime, that.startDateTime);
+        return Objects.equals(getMemberId(), that.getMemberId()) &&
+                Objects.equals(getStartDateTime(), that.getStartDateTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(member, startDateTime);
+        return Objects.hash(getMemberId(), getStartDateTime());
     }
 }

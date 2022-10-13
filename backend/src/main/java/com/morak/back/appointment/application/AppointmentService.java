@@ -17,6 +17,7 @@ import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
+import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
@@ -130,7 +131,7 @@ public class AppointmentService {
                 requests.stream()
                         .map(AvailableTimeRequest::getStart)
                         .collect(Collectors.toSet()),
-                member,
+                memberId ,
                 systemTime.now()
         );
     }
@@ -149,19 +150,29 @@ public class AppointmentService {
                         CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR, appointmentCode
                 ));
         validateAppointmentInTeam(teamCode, appointment);
-        List<Member> members = teamMemberRepository.findAllByTeam(team)
+        List<Long> memberIds = teamMemberRepository.findAllByTeam(team)
                 .stream()
-                .map(TeamMember::getMember)
+                .map(teamMember -> teamMember.getMember().getId())
                 .collect(Collectors.toList());
 
-        RecommendationCells recommendationCells = RecommendationCells.of(appointment, members);
+        RecommendationCells recommendationCells = RecommendationCells.of(appointment, memberIds);
 
         Set<AvailableTime> availableTimes = appointment.getAvailableTimes();
 
+        // todo: clean up this
         List<RankRecommendation> rankRecommendations = recommendationCells.recommend(availableTimes);
-
         return rankRecommendations.stream()
-                .map(RecommendationResponse::from)
+                .map(recommendation -> new RecommendationResponse(
+                        recommendation.getRank(),
+                        recommendation.getStartDateTime(),
+                        recommendation.getEndDateTime(),
+                        memberRepository.findByIdIn(recommendation.getAvailableMembers()).stream()
+                                .map(MemberResponse::from).collect(
+                                        Collectors.toList()),
+                        memberRepository.findByIdIn(recommendation.getUnavailableMembers()).stream()
+                                .map(MemberResponse::from).collect(
+                                        Collectors.toList())
+                ))
                 .collect(Collectors.toList());
     }
 

@@ -1,7 +1,6 @@
 package com.morak.back.appointment.domain.recommend;
 
 import com.morak.back.appointment.domain.AvailableTime;
-import com.morak.back.auth.domain.Member;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,12 +18,12 @@ public class RecommendationCell implements Comparable<RecommendationCell> {
     private static final int INITIAL_SCORE = 0;
 
     private final AppointmentTime appointmentTime;
-    private final Map<Member, Integer> memberScores;
+    private final Map<Long, Integer> memberIdScores;
 
-    public static RecommendationCell of(AppointmentTime appointmentTime, List<Member> members) {
+    public static RecommendationCell of(AppointmentTime appointmentTime, List<Long> memberIds) {
         return new RecommendationCell(
                 appointmentTime,
-                members.stream()
+                memberIds.stream()
                         .collect(Collectors.toMap(Function.identity(), member -> INITIAL_SCORE))
         );
     }
@@ -37,12 +36,12 @@ public class RecommendationCell implements Comparable<RecommendationCell> {
 
     private void increaseScoreIfAvailableTimeRange(AvailableTime availableTime) {
         if (this.appointmentTime.contains(availableTime)) {
-            this.memberScores.computeIfPresent(availableTime.getMember(), (member, score) -> score + 1);
+            this.memberIdScores.computeIfPresent(availableTime.getMemberId(), (member, score) -> score + 1);
         }
     }
 
     public int sumScore() {
-        return this.memberScores.values()
+        return this.memberIdScores.values()
                 .stream()
                 .mapToInt(i -> i)
                 .sum();
@@ -57,19 +56,19 @@ public class RecommendationCell implements Comparable<RecommendationCell> {
         return Integer.compare(o.sumScore(), this.sumScore());
     }
 
-    public Set<Member> getAvailableMembers() {
+    public Set<Long> getAvailableMembers() {
         int unitCount = appointmentTime.getUnitCount();
 
-        return memberScores.entrySet().stream()
+        return memberIdScores.entrySet().stream()
                 .filter(entry -> entry.getValue() == unitCount)
                 .map(Entry::getKey)
                 .collect(Collectors.toSet());
     }
 
-    public Set<Member> getUnavailableMembers() {
-        Set<Member> availableMembers = getAvailableMembers();
+    public Set<Long> getUnavailableMembers() {
+        Set<Long> availableMembers = getAvailableMembers();
 
-        return memberScores.keySet().stream()
+        return memberIdScores.keySet().stream()
                 .filter(member -> !availableMembers.contains(member))
                 .collect(Collectors.toSet());
     }
