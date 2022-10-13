@@ -3,8 +3,8 @@ package com.morak.back.appointment.application;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.AvailableTime;
-import com.morak.back.appointment.domain.MorakTime;
 import com.morak.back.appointment.domain.RankRecommendation;
+import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.appointment.domain.RecommendationCells;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentNotFoundException;
@@ -54,7 +54,7 @@ public class AppointmentService {
 
     private final NotificationService notificationService;
 
-    private final MorakTime realTime;
+    private final SystemTime systemTime;
 
     public String createAppointment(String teamCode, Long memberId, AppointmentCreateRequest request) {
         Member member = memberRepository.findById(memberId)
@@ -63,7 +63,7 @@ public class AppointmentService {
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team, member);
 
-        Appointment appointment = request.toAppointment(team, member, Code.generate(CODE_GENERATOR), realTime.now());
+        Appointment appointment = request.toAppointment(team, member, Code.generate(CODE_GENERATOR), systemTime.now());
         Appointment savedAppointment = appointmentRepository.save(appointment);
         notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(appointment)));
 

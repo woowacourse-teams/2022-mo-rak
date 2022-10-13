@@ -11,7 +11,7 @@ import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.AvailableTime;
 import com.morak.back.appointment.domain.MenuStatus;
-import com.morak.back.appointment.domain.RealTime;
+import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.appointment.exception.AppointmentNotFoundException;
@@ -60,7 +60,7 @@ class AppointmentServiceTest {
     private final NotificationService notificationService;
     private final AppointmentService appointmentService;
 
-    private final RealTime realTime;
+    private final SystemTime systemTime;
 
     private AppointmentBuilder DEFAULT_BUILDER;
 
@@ -84,14 +84,14 @@ class AppointmentServiceTest {
         this.appointmentRepository = appointmentRepository;
         this.memberRepository = memberRepository;
         this.teamRepository = teamRepository;
-        this.realTime = new RealTime();
+        this.systemTime = new SystemTime(LocalDateTime.now());
 
         this.receiver = new FakeApiReceiver();
         SlackClient slackClient = new FakeSlackClient(receiver);
         this.notificationService = new NotificationService(slackClient, teamRepository, teamMemberRepository,
                         slackWebhookRepository, memberRepository);
         this.appointmentService = new AppointmentService(appointmentRepository,
-                memberRepository, teamRepository, teamMemberRepository, notificationService, realTime);
+                memberRepository, teamRepository, teamMemberRepository, notificationService, systemTime);
     }
 
     @BeforeEach
@@ -100,7 +100,7 @@ class AppointmentServiceTest {
 
         에덴 = memberRepository.findById(1L).orElseThrow();
         모락 = teamRepository.findByCode("MoraK123").orElseThrow();
-        LocalDate now = realTime.now().toLocalDate();
+        LocalDate now = systemTime.now().toLocalDate();
 
         DEFAULT_BUILDER = Appointment.builder()
                 .title("회식 날짜")
@@ -113,7 +113,7 @@ class AppointmentServiceTest {
                 .endTime(LocalTime.of(20, 0))
                 .durationHours(2)
                 .durationMinutes(0)
-                .now(realTime.now())
+                .now(systemTime.now())
                 .closedAt(LocalDateTime.now().plusMinutes(30));
 
         약속잡기_현재부터_1일에서_5일_14시_20시 = DEFAULT_BUILDER

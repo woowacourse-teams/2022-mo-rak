@@ -2,7 +2,6 @@ package com.morak.back.appointment.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.morak.back.appointment.domain.Appointment;
-import com.morak.back.appointment.domain.MorakTime;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.team.domain.Team;

@@ -5,8 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.MenuStatus;
-import com.morak.back.appointment.domain.MorakTime;
-import com.morak.back.appointment.domain.RealTime;
+import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.slack.FakeApiReceiver;
@@ -22,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
 @ServiceTest
-@Import(RealTime.class)
+@Import(SystemTime.class)
 class AppointmentSchedulerTest {
 
     private final AppointmentRepository appointmentRepository;
@@ -34,7 +33,7 @@ class AppointmentSchedulerTest {
                                     MemberRepository memberRepository, TeamRepository teamRepository,
                                     TeamMemberRepository teamMemberRepository,
                                     SlackWebhookRepository slackWebhookRepository,
-                                    MorakTime fakeTime) {
+                                    SystemTime systemTime) {
         this.appointmentRepository = appointmentRepository;
         this.receiver = new FakeApiReceiver();
         SlackClient slackClient = new FakeSlackClient(receiver);
@@ -53,7 +52,7 @@ class AppointmentSchedulerTest {
                         teamRepository,
                         teamMemberRepository,
                         notificationService,
-                        fakeTime)
+                        systemTime)
         );
     }
 

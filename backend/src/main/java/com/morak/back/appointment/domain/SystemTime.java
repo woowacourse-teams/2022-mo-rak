@@ -3,20 +3,16 @@ package com.morak.back.appointment.domain;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import org.springframework.stereotype.Component;
 
-@Component
-public class RealTime implements MorakTime {
+public class SystemTime {
 
     private final ZoneOffset zoneOffset = ZoneOffset.UTC;
-    private Clock clock = Clock.systemDefaultZone();
+    private final Clock clock;
 
-    @Override
-    public void changeTime(LocalDateTime dateTime) {
+    public SystemTime(LocalDateTime dateTime) {
         this.clock = Clock.fixed(dateTime.atOffset(zoneOffset).toInstant(), zoneOffset);
     }
 
-    @Override
     public LocalDateTime now() {
         return LocalDateTime.now(clock);
     }
