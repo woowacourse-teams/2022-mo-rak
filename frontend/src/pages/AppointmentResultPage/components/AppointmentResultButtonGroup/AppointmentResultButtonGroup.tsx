@@ -71,9 +71,6 @@ function AppointmentResultButtonGroup({
 
             break;
           }
-
-          default:
-            return;
         }
       }
     }
@@ -122,9 +119,6 @@ function AppointmentResultButtonGroup({
 
             break;
           }
-
-          default:
-            return;
         }
       }
     }

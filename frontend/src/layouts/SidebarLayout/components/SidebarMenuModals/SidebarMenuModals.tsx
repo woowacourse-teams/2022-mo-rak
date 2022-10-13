@@ -96,8 +96,6 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
             resetInvitationCode();
 
             break;
-
-          default:
         }
       }
     }

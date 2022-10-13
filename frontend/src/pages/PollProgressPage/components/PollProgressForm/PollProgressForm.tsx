@@ -67,9 +67,6 @@ function PollProgressForm() {
 
             break;
           }
-
-          default:
-            return;
         }
       }
     }

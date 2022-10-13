@@ -79,6 +79,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
 
       navigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`);
     } catch (err) {
+      console.log(err, 'error');
       if (err instanceof AxiosError) {
         const errCode = err.response?.data.codeNumber;
 
@@ -112,8 +113,6 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
 
             break;
           }
-
-          default:
         }
       }
     }
