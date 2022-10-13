@@ -311,7 +311,7 @@ class AppointmentServiceTest {
 
         // when
         AppointmentResponse appointmentResponse = appointmentService.findAppointment(
-                appointment.getTeam().getCode(), appointment.getHost().getId(), appointment.getCode()
+                appointment.getTeamCode().getCode(), appointment.getHostId().getId(), appointment.getCode()
         );
 
         // then
@@ -372,8 +372,8 @@ class AppointmentServiceTest {
         // then
         assertThatNoException().isThrownBy(
                 () -> appointmentService.selectAvailableTimes(
-                        appointment.getTeam().getCode(),
-                        appointment.getHost().getId(),
+                        appointment.getTeamCode().getCode(),
+                        appointment.getHostId().getId(),
                         appointment.getCode(),
                         requests
                 )
@@ -431,8 +431,8 @@ class AppointmentServiceTest {
 
         // then
         assertThatCode(() -> appointmentService.selectAvailableTimes(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode(),
                 requests
         )).doesNotThrowAnyException();
@@ -453,8 +453,8 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode(),
                 requests
         ))
@@ -477,8 +477,8 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode(),
                 requests
         ))
@@ -504,8 +504,8 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode(),
                 requests
         ))
@@ -528,8 +528,8 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode(),
                 requests
         ))
@@ -552,8 +552,8 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode(),
                 requests
         ))
@@ -576,8 +576,8 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode(),
                 requests
         ))
@@ -605,8 +605,8 @@ class AppointmentServiceTest {
         // then
         assertThatNoException().isThrownBy(
                 () -> appointmentService.selectAvailableTimes(
-                        appointment.getTeam().getCode(),
-                        appointment.getHost().getId(),
+                        appointment.getTeamCode().getCode(),
+                        appointment.getHostId().getId(),
                         appointment.getCode(),
                         requests
                 )
@@ -631,8 +631,8 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode(),
                 requests
         ))
@@ -660,8 +660,8 @@ class AppointmentServiceTest {
         // then
         assertThatNoException().isThrownBy(
                 () -> appointmentService.selectAvailableTimes(
-                        appointment.getTeam().getCode(),
-                        appointment.getHost().getId(),
+                        appointment.getTeamCode().getCode(),
+                        appointment.getHostId().getId(),
                         appointment.getCode(),
                         requests
                 )
@@ -687,8 +687,8 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode(),
                 requests
         ))
@@ -717,8 +717,8 @@ class AppointmentServiceTest {
 
         // then
         assertThatThrownBy(() -> appointmentService.selectAvailableTimes(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode(),
                 requests
         ))
@@ -782,8 +782,8 @@ class AppointmentServiceTest {
 
         // when
         appointmentService.closeAppointment(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode()
         );
 
@@ -811,7 +811,7 @@ class AppointmentServiceTest {
         Member 엘리 = memberRepository.findById(2L).orElseThrow();
 
         // when & then
-        assertThatThrownBy(() -> appointmentService.closeAppointment(appointment.getTeam().getCode(), 엘리.getId(),
+        assertThatThrownBy(() -> appointmentService.closeAppointment(appointment.getTeamCode().getCode(), 엘리.getId(),
                 appointment.getCode()))
                 .isInstanceOf(AppointmentAuthorizationException.class)
                 .extracting("code")
@@ -851,8 +851,8 @@ class AppointmentServiceTest {
 
         // when
         appointmentService.deleteAppointment(
-                appointment.getTeam().getCode(),
-                appointment.getHost().getId(),
+                appointment.getTeamCode().getCode(),
+                appointment.getHostId().getId(),
                 appointment.getCode()
         );
 
@@ -881,7 +881,7 @@ class AppointmentServiceTest {
         Member 엘리 = memberRepository.findById(2L).orElseThrow();
 
         // when & then
-        assertThatThrownBy(() -> appointmentService.deleteAppointment(appointment.getTeam().getCode(), 엘리.getId(),
+        assertThatThrownBy(() -> appointmentService.deleteAppointment(appointment.getTeamCode().getCode(), 엘리.getId(),
                 appointment.getCode()))
                 .isInstanceOf(AppointmentAuthorizationException.class)
                 .extracting("code")
@@ -930,7 +930,7 @@ class AppointmentServiceTest {
     @Test
     void 약속잡기가_마감되었는지_확인한다() {
         // given
-        약속잡기_현재부터_1일에서_5일_14시_20시.close(약속잡기_현재부터_1일에서_5일_14시_20시.getHost());
+        약속잡기_현재부터_1일에서_5일_14시_20시.close(약속잡기_현재부터_1일에서_5일_14시_20시.getHostId());
         appointmentRepository.save(약속잡기_현재부터_1일에서_5일_14시_20시);
 
         // when

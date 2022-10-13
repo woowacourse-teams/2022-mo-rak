@@ -101,7 +101,7 @@ CREATE TABLE poll_result
 CREATE TABLE appointment
 (
     `id`               BIGINT       NOT NULL AUTO_INCREMENT,
-    `team_id`          BIGINT       NOT NULL,
+    `team_code`        VARCHAR(255) NOT NULL,
     `host_id`          BIGINT       NOT NULL,
     `title`            VARCHAR(255) NOT NULL,
     `description`      VARCHAR(255) NOT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE appointment
     `created_at`       DATETIME     NOT NULL,
     `updated_at`       DATETIME     NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (team_id) REFERENCES team (id),
+    FOREIGN KEY (team_code) REFERENCES team (code),
     FOREIGN KEY (host_id) REFERENCES member (id)
 );
 

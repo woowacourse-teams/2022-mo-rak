@@ -18,11 +18,9 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Menu {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Team team;
+    private String teamCode;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member host;
+    private Long hostId;
 
     @Embedded
     private Code code;
@@ -39,10 +37,10 @@ public class Menu {
     @Embedded
     private ClosedAt closedAt;
 
-    public Menu(Team team, Member host, Code code, String title, String description, MenuStatus status,
+    public Menu(String teamCode, Long hostId, Code code, String title, String description, MenuStatus status,
                 ClosedAt closedAt) {
-        this.team = team;
-        this.host = host;
+        this.teamCode = teamCode;
+        this.hostId = hostId;
         this.code = code;
         this.title = new Title(title);
         this.description = new Description(description);
@@ -54,8 +52,12 @@ public class Menu {
         this.status = MenuStatus.CLOSED;
     }
 
-    public boolean isHost(Member member) {
-        return this.host.equals(member);
+    public boolean isHost(Long memberId) {
+        return this.hostId.equals(memberId);
+    }
+
+    public boolean isTeamEquals(String otherTeamCode) {
+        return this.teamCode.equals(otherTeamCode);
     }
 
     public Boolean isClosed() {

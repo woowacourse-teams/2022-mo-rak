@@ -48,7 +48,7 @@ public class AppointmentResponse {
 
     private Boolean isHost;
 
-    public static AppointmentResponse from(Appointment appointment, Member member) {
+    public static AppointmentResponse from(Appointment appointment, Long memberId) {
         return new AppointmentResponse(
                 appointment.getId(),
                 appointment.getCode(),
@@ -62,7 +62,7 @@ public class AppointmentResponse {
                 appointment.getEndTime(),
                 appointment.getClosedAt(),
                 appointment.isClosed(),
-                appointment.isHost(member)
+                appointment.isHost(memberId)
         );
     }
 }

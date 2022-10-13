@@ -20,12 +20,8 @@ public class AvailableTime {
 
     private LocalDateTime startDateTime;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
     @Builder
-    private AvailableTime(Long id, Member member,
-                          LocalDateTime startDateTime) {
+    private AvailableTime(Member member, LocalDateTime startDateTime) {
         this.member = member;
         this.startDateTime = startDateTime;
     }

@@ -105,7 +105,7 @@ class AppointmentRepositoryTest {
         appointmentRepository.save(appointment);
 
         // when
-        List<Appointment> appointments = appointmentRepository.findAllByMenuTeam(team);
+        List<Appointment> appointments = appointmentRepository.team_code(team);
 
         // then
         Assertions.assertAll(

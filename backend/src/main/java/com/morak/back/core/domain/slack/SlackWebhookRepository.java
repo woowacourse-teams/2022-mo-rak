@@ -17,6 +17,6 @@ public interface SlackWebhookRepository extends Repository<SlackWebhook, Long> {
 
     void flush();
 
-    @Query("select wh from SlackWebhook wh where wh.team in :teams")
-    List<SlackWebhook> findAllByTeams(@Param("teams") Iterable<Team> teams);
+    @Query("select wh from SlackWebhook wh where wh.team.code.code in :codes")
+    List<SlackWebhook> findAllByTeams(@Param("codes") Iterable<String> codes);
 }

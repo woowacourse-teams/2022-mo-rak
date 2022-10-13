@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.apache.commons.lang3.NotImplementedException;
 
 @NoArgsConstructor
 @Embeddable
@@ -53,10 +52,6 @@ public class TimePeriod {
 
     public Duration getDuration() {
         return startTime.getDuration(endTime).plusMinutes(MINUTES_UNIT);
-    }
-
-    public boolean isAvailableRange(TimePeriod timePeriod) {
-        throw new NotImplementedException();
     }
 
     public boolean isBetween(LocalTime localTime) {

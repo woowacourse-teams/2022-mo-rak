@@ -22,12 +22,12 @@ public class AppointmentDao {
 
     public void batchInsertAppointment(List<Appointment> appointments) {
         jdbcTemplate.batchUpdate(
-                "INSERT INTO appointment (team_id, host_id, title, description, start_date, end_date, start_time, end_time, duration_minutes, status, code, closed_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now());",
+                "INSERT INTO appointment (team_code, host_id, title, description, start_date, end_date, start_time, end_time, duration_minutes, status, code, closed_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now());",
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1, appointments.get(i).getTeam().getId());
-                        ps.setLong(2, appointments.get(i).getHost().getId());
+                        ps.setString(1, appointments.get(i).getTeamCode());
+                        ps.setLong(2, appointments.get(i).getHostId());
                         ps.setString(3, appointments.get(i).getTitle());
                         ps.setString(4, appointments.get(i).getDescription());
                         ps.setObject(5, appointments.get(i).getStartDate());

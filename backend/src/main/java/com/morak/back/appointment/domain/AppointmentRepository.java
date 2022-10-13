@@ -1,6 +1,5 @@
 package com.morak.back.appointment.domain;
 
-import com.morak.back.team.domain.Team;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -13,14 +12,14 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
 
     Appointment save(Appointment appointment);
 
-    List<Appointment> findAllByMenuTeam(Team team);
+    List<Appointment> findAllByMenuTeamCode(String teamCode);
 
     @Query("select a from Appointment a where a.menu.code.code = :code")
     Optional<Appointment> findByCode(@Param("code") String code);
 
     void delete(Appointment appointment);
 
-    @Query("select a from Appointment a join fetch a.menu.team where a.menu.status = 'OPEN' and a.menu.closedAt.closedAt <= :thresholdDateTime")
+    @Query("select a from Appointment a where a.menu.status = 'OPEN' and a.menu.closedAt.closedAt <= :thresholdDateTime")
     List<Appointment> findAllToBeClosed(@Param("thresholdDateTime") LocalDateTime thresholdDateTime);
 
     @Modifying

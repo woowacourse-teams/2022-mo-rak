@@ -220,6 +220,7 @@ public class PollService {
                         Poll::getTeam,
                         poll -> MessageFormatter.formatClosed(FormattableData.from(poll))
                 ));
-        notificationService.notifyAllMenuStatus(teamMessages);
+        // todo : 이벤트 방식으로 전환하기.
+//        notificationService.notifyAllMenuStatus(teamMessages);
     }
 }

@@ -14,7 +14,6 @@ import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.DomainLogicException;
 import com.morak.back.poll.domain.BaseEntity;
-import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -63,11 +62,11 @@ public class Appointment extends BaseEntity {
     private Integer count;
 
     @Builder
-    private Appointment(Long id, Team team, Member host, String title, String description, LocalDate startDate,
+    private Appointment(Long id, String teamCode, Long hostId, String title, String description, LocalDate startDate,
                         LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer durationHours,
                         Integer durationMinutes, Code code, LocalDateTime closedAt, LocalDateTime now) {
         super(id);
-        this.menu = new Menu(team, host, code, title, description, MenuStatus.OPEN,
+        this.menu = new Menu(teamCode, hostId, code, title, description, MenuStatus.OPEN,
                 new AppointmentClosedAt(closedAt, now, endDate, endTime));
         this.datePeriod = new DatePeriod(startDate, endDate, now.toLocalDate());
         this.timePeriod = new TimePeriod(startTime, endTime);
@@ -127,26 +126,26 @@ public class Appointment extends BaseEntity {
         return this.durationMinutes.parseMinutes();
     }
 
-    public void close(Member member) {
-        validateHost(member);
+    public void close(Long memberId) {
+        validateHost(memberId);
         menu.close();
     }
 
-    private void validateHost(Member member) {
-        if (!isHost(member)) {
+    private void validateHost(Long memberId) {
+        if (!isHost(memberId)) {
             throw new AppointmentAuthorizationException(
                     CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR,
-                    member.getId() + "번 멤버는 " + getCode() + "코드의 약속잡기의 호스트가 아닙니다."
+                    memberId + "번 멤버는 " + getCode() + "코드의 약속잡기의 호스트가 아닙니다."
             );
         }
     }
 
-    public boolean isBelongedTo(Team otherTeam) {
-        return menu.getTeam().equals(otherTeam);
+    public boolean isBelongedTo(String otherTeamCode) {
+        return menu.isTeamEquals(otherTeamCode);
     }
 
-    public boolean isHost(Member member) {
-        return this.menu.isHost(member);
+    public boolean isHost(Long memberId) {
+        return this.menu.isHost(memberId);
     }
 
     public Boolean isClosed() {
@@ -194,16 +193,16 @@ public class Appointment extends BaseEntity {
     }
 
 
-    public Team getTeam() {
-        return menu.getTeam();
+    public String getTeamCode() {
+        return menu.getTeamCode();
     }
 
     public MenuStatus getStatus() {
         return menu.getStatus();
     }
 
-    public Member getHost() {
-        return menu.getHost();
+    public Long getHostId() {
+        return menu.getHostId();
     }
 
     public List<AppointmentTime> getAppointmentTimes() {
