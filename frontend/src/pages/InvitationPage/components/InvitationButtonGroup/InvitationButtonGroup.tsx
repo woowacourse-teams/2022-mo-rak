@@ -5,6 +5,7 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 
 import { participateGroup } from '../../../../api/group';
 import { GroupInterface } from '../../../../types/group';
+import { AxiosError } from 'axios';
 
 interface Props {
   navigate: NavigateFunction;
@@ -20,8 +21,13 @@ function InvitationButtonGroup({ navigate, invitationCode, groupCode }: Props) {
       await participateGroup(invitationCode);
       navigate(`/groups/${groupCode}`);
     } catch (err) {
-      if (err instanceof Error) {
-        console.log(JSON.stringify(err));
+      if (err instanceof AxiosError) {
+        const errCode = err.response?.data.codeNumber;
+
+        if (errCode === '1101') {
+          alert('이미 가입된 모임입니다~');
+          navigate(`/groups/${groupCode}`);
+        }
       }
     }
   };
