@@ -29,7 +29,7 @@ public class Date {
     }
 
     public boolean isAfter(Date other) {
-        return this.date.isAfter(other.date);
+        return isAfter(other.date);
     }
 
     public boolean isAfter(LocalDate other) {
