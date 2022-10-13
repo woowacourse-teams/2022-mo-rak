@@ -8,12 +8,10 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.apache.commons.lang3.NotImplementedException;
 
-@Getter
 @NoArgsConstructor
 @Embeddable
 @ToString
@@ -64,5 +62,13 @@ public class TimePeriod {
     public boolean isBetween(LocalTime localTime) {
         Time time = new Time(localTime);
         return !startTime.isAfter(time) && !endTime.isBefore(time);
+    }
+
+    public LocalTime getStartTime() {
+        return this.startTime.getTime();
+    }
+
+    public LocalTime getEndTime() {
+        return this.endTime.getTime();
     }
 }

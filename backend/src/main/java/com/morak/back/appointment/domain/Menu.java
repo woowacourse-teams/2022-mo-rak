@@ -53,4 +53,28 @@ public class Menu {
     public void close() {
         this.status = MenuStatus.CLOSED;
     }
+
+    public boolean isHost(Member member) {
+        return this.host.equals(member);
+    }
+
+    public Boolean isClosed() {
+        return this.status.isClosed();
+    }
+
+    public String getCode() {
+        return this.code.getCode();
+    }
+
+    public String getTitle() {
+        return this.title.getTitle();
+    }
+
+    public String getDescription() {
+        return this.description.getDescription();
+    }
+
+    public LocalDateTime getClosedAt() {
+        return this.closedAt.getClosedAt();
+    }
 }

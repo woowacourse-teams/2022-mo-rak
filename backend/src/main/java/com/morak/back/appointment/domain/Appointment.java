@@ -141,11 +141,11 @@ public class Appointment extends BaseEntity {
     }
 
     public boolean isHost(Member member) {
-        return this.menu.getHost().equals(member);
+        return this.menu.isHost(member);
     }
 
     public Boolean isClosed() {
-        return this.menu.getStatus().isClosed();
+        return this.menu.isClosed();
     }
 
     public LocalDate getStartDate() {
@@ -157,15 +157,15 @@ public class Appointment extends BaseEntity {
     }
 
     public LocalTime getStartTime() {
-        return this.timePeriod.getStartTime().getTime();
+        return this.timePeriod.getStartTime();
     }
 
     public LocalTime getEndTime() {
-        return this.timePeriod.getEndTime().getTime();
+        return this.timePeriod.getEndTime();
     }
 
     public String getCode() {
-        return menu.getCode().getCode();
+        return menu.getCode();
     }
 
     public Integer getCount() {
@@ -176,16 +176,16 @@ public class Appointment extends BaseEntity {
     }
 
     public String getTitle() {
-        return menu.getTitle().getTitle();
+        return menu.getTitle();
     }
 
     public String getDescription() {
-        return menu.getDescription().getDescription();
+        return menu.getDescription();
     }
 
 
     public LocalDateTime getClosedAt() {
-        return menu.getClosedAt().getClosedAt();
+        return menu.getClosedAt();
     }
 
 
@@ -202,8 +202,8 @@ public class Appointment extends BaseEntity {
     }
 
     public List<AppointmentTime> getAppointmentTimes() {
-        LocalTime startTime = timePeriod.getStartTime().getTime();
-        LocalTime endTime = timePeriod.getEndTime().getTime();
+        LocalTime startTime = timePeriod.getStartTime();
+        LocalTime endTime = timePeriod.getEndTime();
         long duration = (long) durationMinutes.getDurationMinutes() - MINUTES_UNIT;
 
         LocalDate date = datePeriod.getStartDate();
@@ -213,7 +213,7 @@ public class Appointment extends BaseEntity {
                 times.add(new AppointmentTime(LocalDateTime.of(date, startTime), durationMinutes.getDurationMinutes()));
                 startTime = startTime.plusMinutes(MINUTES_UNIT);
             }
-            startTime = timePeriod.getStartTime().getTime();
+            startTime = timePeriod.getStartTime();
             date = date.plusDays(1L);
         }
 

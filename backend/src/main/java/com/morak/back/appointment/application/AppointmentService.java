@@ -130,7 +130,7 @@ public class AppointmentService {
                         .map(AvailableTimeRequest::getStart)
                         .collect(Collectors.toSet()),
                 member,
-                LocalDateTime.now() // todo : injection
+                systemTime.now()
         );
     }
 
@@ -175,7 +175,7 @@ public class AppointmentService {
                 .orElseThrow(() -> AppointmentNotFoundException.ofAppointment(
                         CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR, appointmentCode
                 ));
-        validateHost(member, appointment);
+        validateHost(member, appointment); // TODO: 2022/10/13 지워야할까?
         validateAppointmentInTeam(team, appointment);
         appointment.close(member);
         notificationService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(appointment)));
@@ -192,9 +192,8 @@ public class AppointmentService {
                 .orElseThrow(() -> AppointmentNotFoundException.ofAppointment(
                         CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR, appointmentCode
                 ));
-        validateHost(member, appointment);
         validateAppointmentInTeam(team, appointment);
-//        availableTimeRepository.deleteAllByAppointment(appointment);
+        validateHost(member, appointment);
         appointmentRepository.delete(appointment);
     }
 
