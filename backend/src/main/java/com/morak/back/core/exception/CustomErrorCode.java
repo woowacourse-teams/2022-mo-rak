@@ -52,6 +52,7 @@ public enum CustomErrorCode {
 
     INVALID_PROPERTY_ERROR("4000", "잘못된 값이 입력되었습니다."),
     PAST_CLOSED_TIME_ERROR("4100", "마감 시간은 과거일 수 없습니다."),
+    DESCRIPTION_OUT_OF_LENGTH_ERROR("4101", "설명의 길이가 너무 깁니다."),
     API_NOT_FOUND_ERROR("4300", "요청한 API가 존재하지 않습니다"),
     NOTIFICATION_INVALID_URL_ERROR("4400", "알림 요청 URL이 잘못되었습니다."),
     NOTIFICATION_REQUEST_FAILURE_ERROR("4401", "요청 결과에 실패했습니다."),
