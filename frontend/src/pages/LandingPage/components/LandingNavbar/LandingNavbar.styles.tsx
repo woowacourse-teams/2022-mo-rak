@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import responsive from '../../../../utils/responsive';
 
 const StyledNavbar = styled.nav`
   position: absolute;
@@ -10,9 +11,9 @@ const StyledNavbar = styled.nav`
   font-size: 2rem;
   cursor: pointer;
 
-  @media (max-width: 700px) {
+  ${responsive.mobile(`
     display: none;
-  }
+  `)}
 `;
 
 const StyledMenu = styled.a(
