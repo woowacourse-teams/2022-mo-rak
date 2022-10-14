@@ -2,16 +2,18 @@ package com.morak.back.role.acceptance;
 
 
 import static com.morak.back.AuthSupporter.toHeader;
+import static com.morak.back.SimpleRestAssured.get;
 import static com.morak.back.SimpleRestAssured.put;
+import static com.morak.back.SimpleRestAssured.toObject;
 import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_생성을_요청한다;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.role.application.dto.RoleNameEditRequest;
+import com.morak.back.role.application.dto.RoleNameResponses;
 import com.morak.back.role.domain.Role;
 import com.morak.back.role.domain.RoleRepository;
-import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -31,6 +33,22 @@ public class RoleAcceptanceTest extends AcceptanceTest {
     private String token;
 
     // -- A
+    @Test
+    void 역할_목록을_조회한다() {
+        // given
+        token = tokenProvider.createToken(String.valueOf(1L));
+
+        // when
+
+        ExtractableResponse<Response> response = get("/api/groups/MoraK123/roles/names", toHeader(token));
+        RoleNameResponses roleNameResponses = toObject(response, RoleNameResponses.class);
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(roleNameResponses.getRoles()).containsExactly("반장", "청소부")
+        );
+    }
 
     // -- B
 
@@ -48,7 +66,6 @@ public class RoleAcceptanceTest extends AcceptanceTest {
 
         String[] splitLocation = albur.header("Location").split("/");
         String groupCode = splitLocation[splitLocation.length - 1];
-
 
         // when
         Optional<Role> optionalRole = roleRepository.findByTeamCode(groupCode);

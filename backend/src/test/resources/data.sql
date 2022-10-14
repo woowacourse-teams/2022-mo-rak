@@ -61,5 +61,9 @@ INSERT INTO slack_webhook (team_id, url, created_at, updated_at) VALUES (1L, 'ht
 
 INSERT INTO role (team_code) VALUES ('MoraK123');
 
-INSERT INTO role_name (role_id, role_name) VALUES (1L, '데일리 마스터');
+INSERT INTO role_name (role_id, role_name) VALUES (1, '데일리 마스터');
+INSERT INTO role_name (role_id, role_name) VALUES (1, '반장');
+INSERT INTO role_name (role_id, role_name) VALUES (1, '청소부');
+
+-- temp
 
