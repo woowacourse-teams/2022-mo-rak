@@ -51,4 +51,8 @@ public class Role {
         roleHistories.add(roleHistory);
         return roleHistory;
     }
+
+    public List<RoleHistory> findAllGroupByDate() {
+        return roleHistories.findAllGroupByDate();
+    }
 }
