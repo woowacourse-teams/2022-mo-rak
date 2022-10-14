@@ -5,11 +5,13 @@ import com.morak.back.role.exception.RoleDomainLogicException;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 @NoArgsConstructor
 @Embeddable
+@Getter
 public class RoleName {
 
     private static final int MAX_LENGTH = 20;
