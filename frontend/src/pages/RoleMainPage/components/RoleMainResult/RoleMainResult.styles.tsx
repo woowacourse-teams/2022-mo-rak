@@ -23,7 +23,7 @@ const StyledRoleResultContainer = styled.div`
   flex-wrap: wrap;
   gap: 2rem;
   margin-top: 2rem;
-  overflow: scroll;
+  overflow-y: scroll;
   height: 32rem;
 `;
 
@@ -33,7 +33,7 @@ const StyledDateContainer = styled.div`
   flex-direction: column;
   gap: 0.8rem;
   margin-top: 2rem;
-  overflow: scroll;
+  overflow-y: scroll;
   height: 32rem;
 `;
 

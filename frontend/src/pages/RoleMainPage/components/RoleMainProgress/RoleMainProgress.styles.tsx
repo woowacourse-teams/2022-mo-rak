@@ -11,7 +11,7 @@ const StyledRolesContainer = styled.div`
   width: 100%;
   display: flex;
   gap: 2rem;
-  overflow: scroll;
+  overflow-x: scroll;
 `;
 
 const StyledRoleWrapper = styled.div`
