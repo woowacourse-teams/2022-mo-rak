@@ -18,8 +18,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.morak.back.poll.ui.ControllerTest;
 import com.morak.back.role.application.RoleService;
+import com.morak.back.role.application.dto.HistoryResponse;
 import com.morak.back.role.application.dto.RoleNameEditRequest;
 import com.morak.back.role.application.dto.RoleNameResponses;
+import com.morak.back.role.application.dto.RoleResponse;
+import com.morak.back.role.application.dto.RolesResponse;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,11 +34,9 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(RoleController.class)
 class RoleControllerTest extends ControllerTest {
 
+    private final String groupCode = "rlgHKPj3";
     @MockBean
     private RoleService roleService;
-
-    private final String groupCode = "rlgHKPj3";
-    // -- A
 
     @Test
     void 역할_이름_목록을_조회한다() throws Exception {
@@ -52,8 +54,6 @@ class RoleControllerTest extends ControllerTest {
                         pathParameters(parameterWithName("groupCode").description("그룹_코드"))
                 ));
     }
-
-    // -- B
 
     @Test
     void 역할정하기_이름_목록을_변경한다() throws Exception {
@@ -76,7 +76,6 @@ class RoleControllerTest extends ControllerTest {
                 ));
     }
 
-    // -- C
     @Test
     void 역할을_정한다() throws Exception {
         // given
@@ -99,7 +98,33 @@ class RoleControllerTest extends ControllerTest {
                 ));
     }
 
-    // -- D
+    @Test
+    void 역할_히스토리를_조회한다() throws Exception {
+        // given
+        String groupCode = "rlgHKPj3";
+        Long roleId = 1L;
+        RoleResponse 서기 = new RoleResponse(1L, "서기");
+        RoleResponse 카메라맨 = new RoleResponse(2L, "카메라맨");
+        HistoryResponse historyResponse1 = new HistoryResponse(LocalDate.of(2022, 10, 15), List.of(서기, 카메라맨));
+        HistoryResponse historyResponse2 = new HistoryResponse(LocalDate.of(2022, 10, 14), List.of(서기, 카메라맨));
+        RolesResponse roleResponse = new RolesResponse(
+                List.of(historyResponse1, historyResponse2
+                )
+        );
+        given(roleService.findHistories(anyString(), anyLong())).willReturn(roleResponse);
 
+        // when
+        ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/roles/histories", groupCode)
+                .header("Authorization", "bearer access.token"));
+
+        // then
+        response
+                .andExpect(status().isOk())
+                .andDo(document("role/role-histories",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(parameterWithName("groupCode").description("그룹_코드"))
+                ));
+    }
 
 }
