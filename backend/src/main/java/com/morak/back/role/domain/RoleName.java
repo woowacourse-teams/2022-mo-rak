@@ -2,6 +2,7 @@ package com.morak.back.role.domain;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.exception.RoleDomainLogicException;
+import java.util.Objects;
 
 public class RoleName {
 
@@ -21,5 +22,29 @@ public class RoleName {
                     value + "는 " + MAX_LENGTH + "자를 넘을 수 없습니다."
             );
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        RoleName roleName = (RoleName) o;
+        return Objects.equals(value, roleName.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return "RoleName{" +
+                "value='" + value + '\'' +
+                '}';
     }
 }
