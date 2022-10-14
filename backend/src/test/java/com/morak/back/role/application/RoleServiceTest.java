@@ -48,7 +48,6 @@ class RoleServiceTest {
         // given
         String teamCode = "MoraK123";
         Long memberId = 1L;
-        roleRepository.save(new Role(teamCode));
 
         // when
         roleService.editRoleNames(teamCode, memberId, List.of("서기", "타임키퍼"));
@@ -61,8 +60,8 @@ class RoleServiceTest {
     @Test
     void 역할정하기가_존재하지_않고_역할의_이름_목록을_수정하면_예외를_던진다() {
         // given
-        String teamCode = "MoraK123";
-        Long memberId = 1L;
+        String teamCode = "Betrayed";
+        Long memberId = 4L;
 
         // when & then
         assertThatThrownBy(() -> roleService.editRoleNames(teamCode, memberId, List.of("서기", "타임키퍼")))

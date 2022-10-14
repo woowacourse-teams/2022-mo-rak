@@ -8,14 +8,19 @@ import com.morak.back.role.domain.Role;
 import com.morak.back.role.domain.RoleRepository;
 import com.morak.back.role.exception.RoleNotFoundException;
 import com.morak.back.team.domain.Team;
+import com.morak.back.team.domain.TeamCreateEvent;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamAuthorizationException;
 import com.morak.back.team.exception.TeamNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Service
 @Transactional
@@ -32,6 +37,13 @@ public class RoleService {
 
 
     // -- B
+
+    @TransactionalEventListener
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void createDefaultRole(TeamCreateEvent event) {
+        roleRepository.save(new Role(event.getTeamCode()));
+        roleRepository.flush();
+    }
 
     public void editRoleNames(String teamCode, Long memberId, List<String> names) {
         Member member = memberRepository.findById(memberId)
