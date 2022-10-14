@@ -19,7 +19,7 @@ class RoleTest {
     @Test
     void 생성_테스트() {
         // given & when
-        Role role = new Role();
+        Role role = new Role("TestTeam");
 
         // then
         assertThat(role.getRoleNames().getValues()).hasSize(1);
@@ -28,7 +28,7 @@ class RoleTest {
     @Test
     void 역할의_이름_목록을_변경한다() {
         // given
-        Role role = new Role();
+        Role role = new Role("TestTeam");
 
         // when
         role.updateNames(List.of("카메라맨", "타임키퍼"));
@@ -43,7 +43,7 @@ class RoleTest {
     @Test
     void 역할을_정한다() {
         // given
-        Role role = new Role();
+        Role role = new Role("TestTeam");
         role.updateNames(List.of("데일리 마스터", "서기"));
         List<Long> memberIds = Arrays.asList(1L, 2L, 3L);
 
@@ -67,7 +67,7 @@ class RoleTest {
     @Test
     void 역할을_정할때_멤버의_수보다_역할의_개수가_많으면_예외를_던진다() {
         // given
-        Role role = new Role();
+        Role role = new Role("TestTeam");
         role.updateNames(List.of("데일리 마스터", "서기"));
         List<Long> memberIds = Arrays.asList(1L);
 

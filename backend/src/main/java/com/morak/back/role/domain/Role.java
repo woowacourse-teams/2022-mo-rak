@@ -9,9 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor
 public class Role {
 
     private static final String DEFAULT_ROLE = "데일리 마스터";
@@ -27,15 +29,16 @@ public class Role {
     private RoleNames roleNames;
 
     @Embedded
-    private final RoleHistories roleHistories;
+    private RoleHistories roleHistories;
 
-    private Role(RoleNames roleNames, RoleHistories roleHistories) {
+    public Role(String teamCode, RoleNames roleNames, RoleHistories roleHistories) {
+        this.teamCode = teamCode;
         this.roleNames = roleNames;
         this.roleHistories = roleHistories;
     }
 
-    public Role() {
-        this(RoleNames.from(List.of(DEFAULT_ROLE)), new RoleHistories());
+    public Role(String teamCode) {
+        this(teamCode, RoleNames.from(List.of(DEFAULT_ROLE)), new RoleHistories());
     }
 
     public void updateNames(List<String> names) {
