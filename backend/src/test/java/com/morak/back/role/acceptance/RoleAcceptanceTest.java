@@ -32,13 +32,13 @@ public class RoleAcceptanceTest extends AcceptanceTest {
 
     // -- A
     @Test
-    void 투표_목록을_조회한다() {
+    void 역할_목록을_조회한다() {
         // given
         token = tokenProvider.createToken(String.valueOf(1L));
 
         // when
 
-        ExtractableResponse<Response> response = get("/api/groups/code1234/roles/names", toHeader(token));
+        ExtractableResponse<Response> response = get("/api/groups/MoraK123/roles/names", toHeader(token));
         RoleNameResponses roleNameResponses = toObject(response, RoleNameResponses.class);
 
         // then

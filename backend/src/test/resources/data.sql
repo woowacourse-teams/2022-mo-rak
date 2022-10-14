@@ -60,6 +60,6 @@ VALUES (1, 2, '발표 준비 날짜 정하기', '데모 데이 발표 준비를 
 INSERT INTO slack_webhook (team_id, url, created_at, updated_at) VALUES (1L, 'https://slack.webhook.com/', now(), now());
 
 -- temp
-INSERT INTO role (team_code) VALUES ('code1234');
+INSERT INTO role (team_code) VALUES ('MoraK123');
 INSERT INTO role_name (role_id, role_name) VALUES (1, '반장');
 INSERT INTO role_name (role_id, role_name) VALUES (1, '청소부');

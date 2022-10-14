@@ -1,24 +1,25 @@
 package com.morak.back.role.application;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
-import com.morak.back.poll.ui.dto.PollCreateRequest;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.application.dto.RoleNameResponses;
 import com.morak.back.role.domain.Role;
 import com.morak.back.role.domain.RoleHistories;
 import com.morak.back.role.domain.RoleName;
 import com.morak.back.role.domain.RoleNames;
 import com.morak.back.role.domain.RoleRepository;
+import com.morak.back.role.exception.RoleNotFoundException;
 import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
+import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
-import java.time.LocalDateTime;
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -60,7 +61,7 @@ class RoleServiceTest {
                 .name("team")
                 .code(Code.generate(length -> "abcd1234"))
                 .build());
-
+        teamMemberRepository.save(TeamMember.builder().team(team).member(member).build());
         roleRepository.save(new Role(team.getCode(), new RoleNames(List.of(new RoleName("반장"), new RoleName("부반장"))), new RoleHistories()));
         // when
         RoleNameResponses roleNameResponses = roleService.findRoleNames(team.getCode(), member.getId());
@@ -75,16 +76,32 @@ class RoleServiceTest {
     @Test
     void 역할의_이름_목록을_수정한다() {
         // given
+        String teamCode = "MoraK123";
+        Long memberId = 1L;
+        roleRepository.save(new Role(teamCode));
 
         // when
+        roleService.editRoleNames(teamCode, memberId, List.of("서기", "타임키퍼"));
 
         // then
+        Role role = roleRepository.findByTeamCode(teamCode).orElseThrow();
+        assertThat(role.getRoleNames().getValues()).containsExactly(new RoleName("서기"), new RoleName("타임키퍼"));
     }
 
+    @Test
+    void 역할정하기가_존재하지_않고_역할의_이름_목록을_수정하면_예외를_던진다() {
+        // given
+        String teamCode = "MoraK123";
+        Long memberId = 1L;
+
+        // when & then
+        assertThatThrownBy(() -> roleService.editRoleNames(teamCode, memberId, List.of("서기", "타임키퍼")))
+                .isInstanceOf(RoleNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.ROLE_NOT_FOUND_ERROR);
+    }
 
     // -- C
-
-
 
     // -- D
 
