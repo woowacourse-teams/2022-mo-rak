@@ -9,6 +9,8 @@ import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.application.dto.RoleNameResponses;
+import com.morak.back.role.application.dto.RoleResponse;
+import com.morak.back.role.application.dto.RolesResponse;
 import com.morak.back.role.domain.Role;
 import com.morak.back.role.domain.RoleHistories;
 import com.morak.back.role.domain.RoleHistory;
@@ -195,8 +197,7 @@ class RoleServiceTest {
         roleHistories.add(history2);
         roleHistories.add(history3);
         roleHistories.add(history4);
-        Role role = new Role(team.getCode(), RoleNames.from(List.of(데일리_마스터, 서기)), roleHistories);
-        return role;
+        return new Role(team.getCode(), RoleNames.from(List.of(데일리_마스터, 서기)), roleHistories);
     }
 
     @Test

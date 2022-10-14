@@ -5,6 +5,7 @@ import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.application.dto.RoleNameResponses;
+import com.morak.back.role.application.dto.RolesResponse;
 import com.morak.back.role.domain.RandomShuffleStrategy;
 import com.morak.back.role.domain.Role;
 import com.morak.back.role.domain.RoleHistory;

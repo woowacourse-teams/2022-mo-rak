@@ -1,16 +1,18 @@
-package com.morak.back.role.application;
+package com.morak.back.role.application.dto;
 
 import java.util.Map.Entry;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoleResponse {
 
-    private final Long memberId;
-    private final String name;
+    private Long memberId;
+    private String name;
 
     public static RoleResponse from(Entry<String, Long> matchResult) {
         return new RoleResponse(matchResult.getValue(), matchResult.getKey());

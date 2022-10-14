@@ -13,6 +13,7 @@ import com.morak.back.AcceptanceTest;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.role.application.dto.RoleNameEditRequest;
 import com.morak.back.role.application.dto.RoleNameResponses;
+import com.morak.back.role.application.dto.RolesResponse;
 import com.morak.back.role.domain.Role;
 import com.morak.back.role.domain.RoleRepository;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
@@ -30,6 +31,7 @@ public class RoleAcceptanceTest extends AcceptanceTest {
 
     @Autowired
     private TokenProvider tokenProvider;
+    private String token;
 
     private String teamLocation;
 
@@ -37,20 +39,14 @@ public class RoleAcceptanceTest extends AcceptanceTest {
     public void setUp() {
         super.setUp();
         token = tokenProvider.createToken(String.valueOf(1L));
-        teamLocation = post("/api/groups", new TeamCreateRequest("팀"), toHeader(token)).header("Location");
+        teamLocation = 그룹_생성을_요청한다(new TeamCreateRequest("그룹"), token).header("Location");
     }
 
-    private String token;
 
-    // -- A
     @Test
     void 역할_목록을_조회한다() {
-        // given
-        token = tokenProvider.createToken(String.valueOf(1L));
-
         // when
-
-        ExtractableResponse<Response> response = get("/api/groups/MoraK123/roles/names", toHeader(token));
+        ExtractableResponse<Response> response = 역할_이름들을_조회(token);
         RoleNameResponses roleNameResponses = toObject(response, RoleNameResponses.class);
 
         // then
@@ -61,16 +57,13 @@ public class RoleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 그룹_생성시_역할_정하기를_생성한다(@Autowired RoleRepository roleRepository)
-            throws InterruptedException {
+    void 그룹_생성시_역할_정하기를_생성한다(@Autowired RoleRepository roleRepository) {
         // given
-        ExtractableResponse<Response> albur = 그룹_생성을_요청한다(new TeamCreateRequest("albur"), token);
-
-        String[] splitLocation = albur.header("Location").split("/");
-        String groupCode = splitLocation[splitLocation.length - 1];
+        String[] splitLocation = teamLocation.split("/");
+        String teamCode = splitLocation[splitLocation.length - 1];
 
         // when
-        Optional<Role> optionalRole = roleRepository.findByTeamCode(groupCode);
+        Optional<Role> optionalRole = roleRepository.findByTeamCode(teamCode);
 
         // then
         assertThat(optionalRole).isPresent();
@@ -82,30 +75,55 @@ public class RoleAcceptanceTest extends AcceptanceTest {
         RoleNameEditRequest request = new RoleNameEditRequest(List.of("서기", "타임키퍼"));
 
         // when
-        ExtractableResponse<Response> response = put("/api/groups/MoraK123/roles/names", request, toHeader(token));
+        ExtractableResponse<Response> response = 역할정하기_이름_목록_수정(request, token);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    // -- C
     @Test
     void 역할을_매칭한다() {
-        // given
-
         // when
-        ExtractableResponse<Response> response = 역할_매칭을_요청한다();
+        ExtractableResponse<Response> response = 역할_매칭을_요청(token);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.header("Location")).contains(teamLocation + "/roles/");
     }
 
-    private ExtractableResponse<Response> 역할_매칭을_요청한다() {
+    @Test
+    void 역할_히스토리를_조회한다() {
+        // given
+        String[] splitLocation = teamLocation.split("/");
+        String teamCode = splitLocation[splitLocation.length - 1];
+
+        RoleNameEditRequest request = new RoleNameEditRequest(List.of("서기", "타임키퍼"));
+        역할정하기_이름_목록_수정(request, token);
+
+        역할_매칭을_요청(token);
+        역할_매칭을_요청(token);
+
+        // when
+        ExtractableResponse<Response> response = 역할_히스토리를_조회(token);
+        RolesResponse rolesResponse = toObject(response, RolesResponse.class);
+
+        // then
+        assertThat(rolesResponse.getRoles()).hasSize(1);
+    }
+
+    private ExtractableResponse<Response> 역할_매칭을_요청(String token) {
         return post(teamLocation + "/roles", toHeader(token));
     }
 
-    // -- D
+    private ExtractableResponse<Response> 역할정하기_이름_목록_수정(RoleNameEditRequest request, String token) {
+        return put("/api/groups/MoraK123/roles/names", request, toHeader(token));
+    }
 
+    private ExtractableResponse<Response> 역할_이름들을_조회(String token) {
+        return get("/api/groups/MoraK123/roles/names", toHeader(token));
+    }
 
+    private ExtractableResponse<Response> 역할_히스토리를_조회(String token) {
+        return get(teamLocation + "/roles/histories", toHeader(token));
+    }
 }

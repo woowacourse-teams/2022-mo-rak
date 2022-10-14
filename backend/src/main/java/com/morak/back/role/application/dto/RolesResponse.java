@@ -1,16 +1,18 @@
-package com.morak.back.role.application;
+package com.morak.back.role.application.dto;
 
 import com.morak.back.role.domain.RoleHistory;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class RolesResponse {
 
-    private final List<HistoryResponse> roles;
+    private List<HistoryResponse> roles;
 
     public static RolesResponse from(List<RoleHistory> roleHistories) {
         return new RolesResponse(roleHistories.stream()

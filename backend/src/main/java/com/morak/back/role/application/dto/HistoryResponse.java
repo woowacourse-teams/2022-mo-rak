@@ -1,4 +1,4 @@
-package com.morak.back.role.application;
+package com.morak.back.role.application.dto;
 
 import com.morak.back.role.domain.RoleHistory;
 import java.time.LocalDate;
@@ -6,15 +6,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class HistoryResponse {
 
-    private final LocalDate date;
-    private final List<RoleResponse> role;
+    private LocalDate date;
+    private List<RoleResponse> role;
 
     public static HistoryResponse from(RoleHistory roleHistory) {
         Map<String, Long> matchResult = getMatchResult(roleHistory);
