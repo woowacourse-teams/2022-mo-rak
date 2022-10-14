@@ -14,7 +14,6 @@ import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.core.ui.dto.ExceptionResponse;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
@@ -186,7 +185,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(invitationJoinedResponse)
                         .usingRecursiveComparison()
-                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation), teamCreateRequest.getName(),
+                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation),
+                                teamCreateRequest.getName(),
                                 true))
         );
     }
@@ -208,7 +208,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(invitationJoinedResponse)
                         .usingRecursiveComparison()
-                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation), teamCreateRequest.getName(),
+                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation),
+                                teamCreateRequest.getName(),
                                 false))
         );
     }

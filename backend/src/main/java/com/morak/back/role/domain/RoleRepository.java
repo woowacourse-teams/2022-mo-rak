@@ -7,12 +7,18 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     // -- A
 
+
+
     // -- B
 
+
+
     // -- C
+    Optional<Role> findByTeamCode(String teamCode);
+
 
 
     // -- D
-    Optional<Role> findByTeamCode(String teamCode);
+
 
 }
