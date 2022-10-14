@@ -5,10 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import lombok.Getter;
 
+@Getter
+@Embeddable
 public class RoleHistories {
 
-    private final List<RoleHistory> values;
+    @OneToMany(cascade = {CascadeType.PERSIST}, orphanRemoval = true)
+    @JoinColumn(name = "role_id", nullable = false, updatable = false)
+    private List<RoleHistory> values;
 
     private RoleHistories(List<RoleHistory> values) {
         this.values = values;
@@ -22,7 +31,7 @@ public class RoleHistories {
         this.values.add(roleHistory);
     }
 
-    public List<RoleHistory> getGroupByDate() {
+    public List<RoleHistory> findAllGroupByDate() {
         return groupByDate().values().stream()
                 .map(this::extractLatest)
                 .collect(Collectors.toList());

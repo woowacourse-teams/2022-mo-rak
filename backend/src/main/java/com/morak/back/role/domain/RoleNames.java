@@ -6,14 +6,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@Embeddable
+@NoArgsConstructor
 public class RoleNames {
 
-    private static final int MAX_SIZE = 100;
-
-    private final List<RoleName> values;
+    @ElementCollection
+    @CollectionTable(name = "role_name", joinColumns = @JoinColumn(name = "role_id"))
+    private List<RoleName> values;
 
     public RoleNames(List<RoleName> values) {
         validateMinSize(values.size());

@@ -3,12 +3,19 @@ package com.morak.back.role.domain;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.exception.RoleDomainLogicException;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import lombok.NoArgsConstructor;
 
+
+@NoArgsConstructor
+@Embeddable
 public class RoleName {
 
     private static final int MAX_LENGTH = 20;
 
-    private final String value;
+    @Column(name = "role_name", nullable = false)
+    private String value;
 
     public RoleName(String value) {
         validateLength(value);

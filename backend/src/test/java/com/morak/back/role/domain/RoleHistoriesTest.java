@@ -30,7 +30,7 @@ class RoleHistoriesTest {
         roleHistories.add(history4);
 
         // when
-        List<RoleHistory> histories = roleHistories.getGroupByDate();
+        List<RoleHistory> histories = roleHistories.findAllGroupByDate();
         // then
         Assertions.assertAll(
                 () -> assertThat(histories).hasSize(2),
