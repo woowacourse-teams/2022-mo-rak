@@ -58,3 +58,12 @@ VALUES (1, 2, '발표 준비 날짜 정하기', '데모 데이 발표 준비를 
         'FEsd23C1', '2022-07-31T23:59:00', now(), now());
 
 INSERT INTO slack_webhook (team_id, url, created_at, updated_at) VALUES (1L, 'https://slack.webhook.com/', now(), now());
+
+INSERT INTO role (team_code) VALUES ('MoraK123');
+
+INSERT INTO role_name (role_id, role_name) VALUES (1, '데일리 마스터');
+INSERT INTO role_name (role_id, role_name) VALUES (1, '반장');
+INSERT INTO role_name (role_id, role_name) VALUES (1, '청소부');
+
+-- temp
+

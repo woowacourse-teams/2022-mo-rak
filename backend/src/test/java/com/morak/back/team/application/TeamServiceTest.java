@@ -25,6 +25,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 
 @ServiceTest
 class TeamServiceTest {
@@ -41,6 +42,9 @@ class TeamServiceTest {
     @Autowired
     private TeamInvitationRepository teamInvitationRepository;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     private TeamService teamService;
 
     private Member member;
@@ -49,7 +53,13 @@ class TeamServiceTest {
 
     @BeforeEach
     void setUp() {
-        teamService = new TeamService(teamRepository, memberRepository, teamMemberRepository, teamInvitationRepository);
+        teamService = new TeamService(
+                teamRepository,
+                memberRepository,
+                teamMemberRepository,
+                teamInvitationRepository,
+                eventPublisher
+        );
 
         member = memberRepository.save(Member.builder()
                 .id(null)
