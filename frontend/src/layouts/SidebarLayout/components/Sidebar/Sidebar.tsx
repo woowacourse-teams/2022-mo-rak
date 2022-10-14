@@ -10,7 +10,7 @@ import SidebarGroupsMenu from '../SidebarGroupsMenu/SidebarGroupsMenu';
 import SidebarMenuModals from '../SidebarMenuModals/SidebarMenuModals';
 
 import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembersProfileMenu';
-import SidebarFeatureMenu from '../SidebarFeatureMenu/SidebarFeatureMenu';
+import SidebarFeaturesMenu from '../SidebarFeaturesMenu/SidebarFeaturesMenu';
 import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
 import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
 import SidebarLogoutMenu from '../SidebarLogoutMenu/SidebarLogoutMenu';
@@ -57,7 +57,7 @@ function Sidebar() {
           />
 
           <Divider />
-          <SidebarFeatureMenu groupCode={groupCode} />
+          <SidebarFeaturesMenu groupCode={groupCode} />
 
           <Divider />
           <SidebarMembersProfileMenu groupCode={groupCode} />

@@ -101,7 +101,6 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
     }
   };
 
-  // slack url 등록
   const handleLinkSlack = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
