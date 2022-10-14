@@ -49,7 +49,6 @@ function AppointmentMainContainer() {
             key={code}
             width="36.4rem"
             padding="2.8rem"
-            minHeight="23.2rem"
             filter={isClosed ? 'grayscale(1)' : 'none'}
           >
             <FlexContainer justifyContent="end">
