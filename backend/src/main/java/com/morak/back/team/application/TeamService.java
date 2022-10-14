@@ -9,6 +9,7 @@ import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.team.domain.Team;
+import com.morak.back.team.domain.TeamCreateEvent;
 import com.morak.back.team.domain.TeamInvitation;
 import com.morak.back.team.domain.TeamInvitationRepository;
 import com.morak.back.team.domain.TeamMember;
@@ -24,6 +25,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,7 @@ public class TeamService {
     private final MemberRepository memberRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final TeamInvitationRepository teamInvitationRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public String createTeam(Long memberId, TeamCreateRequest request) {
         Team team = Team.builder()
@@ -47,13 +50,13 @@ public class TeamService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team savedTeam = teamRepository.save(team);
+        eventPublisher.publishEvent(new TeamCreateEvent(savedTeam.getCode()));
 
         TeamMember teamMember = TeamMember.builder()
                 .team(savedTeam)
                 .member(member)
                 .build();
         teamMemberRepository.save(teamMember);
-
         return savedTeam.getCode();
     }
 
