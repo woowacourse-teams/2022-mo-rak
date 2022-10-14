@@ -5,9 +5,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.exception.RoleDomainLogicException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.assertj.core.data.TemporalUnitWithinOffset;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -45,12 +48,19 @@ class RoleTest {
         List<Long> memberIds = Arrays.asList(1L, 2L, 3L);
 
         // when
-        Map<RoleName, Long> actual = role.matchMembers(memberIds, ids -> ids);
+        RoleHistory actual = role.matchMembers(memberIds, ids -> ids);
 
         // then
         Assertions.assertAll(
-                () -> assertThat(actual).hasSize(2),
-                () -> assertThat(actual).isEqualTo(Map.of(new RoleName("데일리 마스터"), 1L, new RoleName("서기"), 2L))
+                () -> assertThat(actual.getDateTime()).isCloseTo(
+                        LocalDateTime.now(),
+                        new TemporalUnitWithinOffset(1, ChronoUnit.SECONDS)
+                ),
+                () -> assertThat(actual.getMatchResult()).hasSize(2),
+                () -> assertThat(actual.getMatchResult()).isEqualTo(Map.of(
+                        new RoleName("데일리 마스터"), 1L,
+                        new RoleName("서기"), 2L)
+                )
         );
     }
 

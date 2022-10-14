@@ -49,7 +49,7 @@ public class RoleNames {
         if (size < this.values.size()) {
             throw new RoleDomainLogicException(
                     CustomErrorCode.ROLE_NAMES_MAX_SIZE_ERROR,
-                    "멤버의 개수(" + size + ")보다 역할의 개수(" + + this.values.size() + ")가 더 적어야 합니다");
+                    "멤버의 개수(" + size + ")보다 역할의 개수(" + +this.values.size() + ")가 더 적어야 합니다");
         }
     }
 }
