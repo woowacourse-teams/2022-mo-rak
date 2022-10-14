@@ -3,6 +3,7 @@ package com.morak.back.brandnew.domain;
 import com.morak.back.auth.domain.Member;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -49,5 +50,18 @@ public class SelectMembers {
 
     public Integer countSelectMembers() {
         return values.size();
+    }
+
+    public Boolean isSelectedBy(Long memberId) {
+        return values.keySet().stream()
+                .anyMatch(member -> member.isSameId(memberId));
+    }
+
+    public String getDescriptionFrom(Long memberId) {
+        return values.entrySet().stream()
+                .filter(entry -> entry.getKey().isSameId(memberId))
+                .map(Entry::getValue)
+                .findFirst()
+                .orElse("");
     }
 }

@@ -1,6 +1,7 @@
 package com.morak.back.brandnew.domain;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.poll.domain.BaseEntity;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Embedded;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "new_poll")
-public class NewPoll {
+public class NewPoll extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

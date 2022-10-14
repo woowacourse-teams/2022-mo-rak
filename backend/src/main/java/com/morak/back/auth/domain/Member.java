@@ -71,5 +71,9 @@ public class Member extends BaseEntity {
     public int hashCode() {
         return Objects.hash(id, oauthId, name, profileUrl);
     }
+
+    public boolean isSameId(Long memberId) {
+        return this.id.equals(memberId);
+    }
 }
 

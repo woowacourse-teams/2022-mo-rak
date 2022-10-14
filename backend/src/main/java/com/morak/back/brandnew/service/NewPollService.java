@@ -2,12 +2,13 @@ package com.morak.back.brandnew.service;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
-import com.morak.back.brandnew.PollCreateRequest;
-import com.morak.back.brandnew.PollItemResultResponse;
-import com.morak.back.brandnew.PollResponse;
 import com.morak.back.brandnew.domain.NewPoll;
 import com.morak.back.brandnew.domain.NewPollItem;
 import com.morak.back.brandnew.repository.NewPollRepository;
+import com.morak.back.poll.ui.dto.PollCreateRequest;
+import com.morak.back.poll.ui.dto.PollItemResponse;
+import com.morak.back.poll.ui.dto.PollItemResultResponse;
+import com.morak.back.poll.ui.dto.PollResponse;
 import com.morak.back.poll.ui.dto.PollResultRequest;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class NewPollService {
     private final MemberRepository memberRepository;
     private final NewPollRepository pollRepository;
 
-//    @ValidateTeamMember
+    //    @ValidateTeamMember
     public String createPoll(String teamCode, Long memberId, PollCreateRequest request) {
         // TODO: 2022/10/06 teamCode, memberId로 validate
         NewPoll poll = request.toPoll(teamCode, memberId);
@@ -53,6 +54,12 @@ public class NewPollService {
         poll.doPoll(member, toData(requests));
     }
 
+    public List<PollResponse> findPolls(String teamCode, Long memberId) {
+        return pollRepository.findAll().stream()
+                .map(poll -> PollResponse.from(memberId, poll))
+                .collect(Collectors.toList());
+    }
+
     public List<PollItemResultResponse> findPollResults(String teamCode, Long memberId, String pollCode) {
         // TODO: 2022/10/06 teamCode, memberId로 validate
         // TODO: 2022/10/06 teamCode, pollCode로 validate
@@ -65,5 +72,26 @@ public class NewPollService {
     private Map<NewPollItem, String> toData(List<PollResultRequest> requests) {
         return requests.stream()
                 .collect(Collectors.toMap(PollResultRequest::toPollItem, PollResultRequest::getDescription));
+    }
+
+    public void deletePoll(String teamCode, Long memberId, String pollCode) {
+        // TODO: 2022/10/06 teamCode, memberId로 validate
+        // TODO: 2022/10/06 teamCode, pollCode로 validate
+        NewPoll poll = pollRepository.findByCode(pollCode).orElseThrow();
+        pollRepository.delete(poll);
+    }
+
+    public void closePoll(String teamCode, Long memberId, String pollCode) {
+        // TODO: 2022/10/06 teamCode, memberId로 validate
+        // TODO: 2022/10/06 teamCode, pollCode로 validate
+        NewPoll poll = pollRepository.findByCode(pollCode).orElseThrow();
+        poll.close(memberId);
+    }
+
+    public List<PollItemResponse> findPollItems(String teamCode, Long memberId, String pollCode) {
+        NewPoll poll = pollRepository.findFetchedByCode(pollCode).orElseThrow();
+        return poll.getPollItems().stream()
+                .map(pollItem -> PollItemResponse.from(pollItem, memberId))
+                .collect(Collectors.toList());
     }
 }

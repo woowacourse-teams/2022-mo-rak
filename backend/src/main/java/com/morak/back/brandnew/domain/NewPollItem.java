@@ -81,4 +81,12 @@ public class NewPollItem {
     public List<PollResult> getSelectMembersByAnonymous() {
         return null;
     }
+
+    public Boolean isSelectedBy(Long memberId) {
+        return selectMembers.isSelectedBy(memberId);
+    }
+
+    public String getDescriptionFrom(Long memberId) {
+        return selectMembers.getDescriptionFrom(memberId);
+    }
 }
