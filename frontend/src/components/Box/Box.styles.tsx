@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 // NOTE: overflow와 height 속성 추가....
 const StyledBox = styled.div<CSSProperties>(
   ({ theme, width, borderRadius, padding, minHeight, filter, height, overflow }) => `
-    min-height: ${minHeight || '65.2rem'};
+    min-height: ${minHeight};
     border-radius: ${borderRadius || '15px'};
     box-shadow: 0px 4px 4px ${theme.colors.TRANSPARENT_BLACK_100_25};
     background-color: ${theme.colors.WHITE_100};

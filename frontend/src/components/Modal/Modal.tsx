@@ -1,5 +1,5 @@
 import { MouseEvent, PropsWithChildren, useRef } from 'react';
-import { StyledModalContainer } from './Modal.styles';
+import { StyledContainer } from './Modal.styles';
 
 interface Props extends PropsWithChildren {
   isVisible: boolean;
@@ -7,23 +7,23 @@ interface Props extends PropsWithChildren {
 }
 
 function Modal({ children, isVisible, close }: Props) {
-  const outside = useRef<HTMLDivElement>(null);
+  const outsideRef = useRef<HTMLDivElement>(null);
 
   const handleCloseModal = (e: MouseEvent<HTMLDivElement>) => {
-    if (outside.current === e.target) {
+    if (outsideRef.current === e.target) {
       close();
     }
   };
 
   return (
-    <StyledModalContainer
-      ref={outside}
+    <StyledContainer
+      ref={outsideRef}
       isVisible={isVisible}
       tabIndex={-1}
       onClick={handleCloseModal}
     >
       {children}
-    </StyledModalContainer>
+    </StyledContainer>
   );
 }
 

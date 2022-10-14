@@ -45,7 +45,7 @@ function InvitationContainer() {
   if (isLoading) return <div>로딩중</div>;
 
   return (
-    <Box width="60rem" minHeight="65.2rem" padding="9.2rem 0">
+    <Box width="60rem" padding="9.2rem 0">
       <FlexContainer
         justifyContent="center"
         flexDirection="column"
