@@ -58,8 +58,9 @@ public enum CustomErrorCode {
     NOTIFICATION_REQUEST_FAILURE_ERROR("4401", "요청 결과에 실패했습니다."),
     NOTIFICATION_SCHEDULING_FAILURE_ERROR("4402", "스케줄링 실행 중 실패했습니다."),
 
-    INVALID_ROLE_NAME_LENGTH_ERROR("5100", "역할의 이름은 20자를 넘을 수 없습니다."),
-    INVALID_ROLE_NAMES_SIZE_ERROR("5101", "역할의 개수는 하나 이상이어야 합니다."),
+    ROLE_NAME_LENGTH_ERROR("5100", "역할의 이름은 20자를 넘을 수 없습니다."),
+    ROLE_NAMES_DEFAULT_SIZE_ERROR("5101", "역할의 개수는 1개 이상, 100개 이하여야 합니다."),
+    ROLE_NAMES_MAX_SIZE_ERROR("5102", "역할의 개수는 멤버 수 이하여야 합니다."),
 
     MORAK_ERROR("9901", "처리하지 못한 예외입니다."),
     RUNTIME_ERROR("9902", "예상치 못한 예외입니다.");

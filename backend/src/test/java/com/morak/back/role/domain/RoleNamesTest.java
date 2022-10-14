@@ -31,6 +31,6 @@ class RoleNamesTest {
         assertThatThrownBy(() -> new RoleNames(names))
                 .isInstanceOf(RoleDomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.INVALID_ROLE_NAMES_SIZE_ERROR);
+                .isEqualTo(CustomErrorCode.ROLE_NAMES_DEFAULT_SIZE_ERROR);
     }
 }

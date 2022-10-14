@@ -30,6 +30,6 @@ class RoleNameTest {
         assertThatThrownBy(() -> new RoleName(name))
                 .isInstanceOf(RoleDomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.INVALID_ROLE_NAME_LENGTH_ERROR);
+                .isEqualTo(CustomErrorCode.ROLE_NAME_LENGTH_ERROR);
     }
 }

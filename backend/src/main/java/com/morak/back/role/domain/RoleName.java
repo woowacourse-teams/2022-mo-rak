@@ -18,7 +18,7 @@ public class RoleName {
     private void validateLength(String value) {
         if (value.length() > MAX_LENGTH) {
             throw new RoleDomainLogicException(
-                    CustomErrorCode.INVALID_ROLE_NAME_LENGTH_ERROR,
+                    CustomErrorCode.ROLE_NAME_LENGTH_ERROR,
                     value + "는 " + MAX_LENGTH + "자를 넘을 수 없습니다."
             );
         }
