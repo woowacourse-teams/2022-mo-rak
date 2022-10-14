@@ -32,6 +32,7 @@ interface Time {
 type AvailableTimes = Array<{ start: string; end: string }>;
 
 // TODO: 대문자 타입 일관성 지켜주기
+// TODO: CreateAppointmentRequest 어떤지?? 만약 해주게 되면 요청 보내는 것은 다 Request, 응답은 Response로 바꿔줘야함
 type createAppointmentData = Omit<AppointmentInterface, 'id' | 'code' | 'isClosed'>;
 
 type getAppointmentResponse = AppointmentInterface & {
