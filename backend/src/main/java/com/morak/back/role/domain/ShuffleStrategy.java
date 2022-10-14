@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface ShuffleStrategy {
 
-    List<Long> shuffle(List<Long> memberIds);
+    void shuffle(List<Long> memberIds);
 }
