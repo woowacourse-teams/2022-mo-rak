@@ -47,7 +47,7 @@ function PollProgressForm() {
     }
 
     try {
-      await progressPoll(pollCode, selectedPollItems, groupCode);
+      await progressPoll(groupCode, pollCode, selectedPollItems);
       navigate(`/groups/${groupCode}/poll/${pollCode}/result`);
     } catch (err) {
       if (err instanceof AxiosError) {
