@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledModalContainer = styled.div<{ isVisible: boolean }>(
+const StyledContainer = styled.div<{ isVisible: boolean }>(
   ({ theme, isVisible }) => `
   z-index: 10;
   display: ${isVisible ? 'flex' : 'none'};
@@ -15,4 +15,4 @@ const StyledModalContainer = styled.div<{ isVisible: boolean }>(
 `
 );
 
-export { StyledModalContainer };
+export { StyledContainer };
