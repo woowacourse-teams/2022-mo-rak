@@ -32,7 +32,6 @@ function InvitationContainer() {
         setIsLoading(false);
       } catch (err) {
         if (err instanceof AxiosError) {
-          const errCode = err.response?.data.codeNumber;
         }
 
         setIsLoading(true);

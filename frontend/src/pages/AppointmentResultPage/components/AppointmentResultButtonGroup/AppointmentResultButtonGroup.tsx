@@ -11,11 +11,7 @@ import {
   getAppointmentResponse,
   AppointmentRecommendationInterface
 } from '../../../../types/appointment';
-import {
-  closeAppointment,
-  deleteAppointment,
-  getAppointmentStatus
-} from '../../../../api/appointment';
+import { closeAppointment, deleteAppointment } from '../../../../api/appointment';
 import Button from '../../../../components/Button/Button';
 import { getFormattedDateTime } from '../../../../utils/date';
 import Question from '../../../../assets/question.svg';
