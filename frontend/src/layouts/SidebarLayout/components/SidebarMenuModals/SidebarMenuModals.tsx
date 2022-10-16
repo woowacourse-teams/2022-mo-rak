@@ -16,7 +16,7 @@ import { Group } from '../../../../types/group';
 import { createGroup, participateGroup } from '../../../../api/group';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import { linkSlack } from '../../../../api/slack';
-import { SlackInterface } from '../../../../types/slack';
+import { LinkSlackRequest } from '../../../../types/slack';
 import useInput from '../../../../hooks/useInput';
 import {
   StyledModalFormContainer,
@@ -104,12 +104,12 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
   const handleLinkSlack = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const slackUrlData: SlackInterface = {
+    const slack: LinkSlackRequest = {
       url: slackUrl
     };
 
     try {
-      await linkSlack(slackUrlData, groupCode);
+      await linkSlack(slack, groupCode);
       alert('슬랙 채널과 연동이 완료되었습니다 🎉');
       resetSlackUrl();
       closeModal();

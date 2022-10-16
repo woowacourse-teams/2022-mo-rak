@@ -1,9 +1,9 @@
 import { groupInstance as axios } from './axios';
 
 import { Group } from '../types/group';
-import { SlackInterface } from '../types/slack';
+import { LinkSlackRequest } from '../types/slack';
 
-const linkSlack = (slackUrl: SlackInterface, groupCode: Group['code']) =>
-  axios.post(`/${groupCode}/slack`, slackUrl);
+const linkSlack = (slack: LinkSlackRequest, groupCode: Group['code']) =>
+  axios.post(`/${groupCode}/slack`, slack);
 
 export { linkSlack };
