@@ -47,6 +47,7 @@ const StyledSettingIcon = styled.img`
 const StyledGroupsModalIcon = styled.img`
   width: 2.4rem;
   cursor: pointer;
+  filter: invert(59%) sepia(6%) saturate(17%) hue-rotate(314deg) brightness(103%) contrast(77%);
 
   &:hover {
     transform: scale(1.1, 1.1);
