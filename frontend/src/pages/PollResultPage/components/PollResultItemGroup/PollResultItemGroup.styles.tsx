@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { CSSProperties } from 'react';
-import { PollInterface } from '../../../../types/poll';
+import { Poll } from '../../../../types/poll';
 
 const StyledParticipantCount = styled.div`
   position: absolute;
@@ -46,7 +46,7 @@ const StyledCheckIcon = styled.img<
 
 const StyledUserCount = styled.span<{
   isWinningPollItem: boolean;
-  status: PollInterface['status'];
+  status: Poll['status'];
 }>(
   ({ theme, status, isWinningPollItem }) => `
   color: ${
@@ -56,7 +56,7 @@ const StyledUserCount = styled.span<{
 `
 );
 
-const StyledSubject = styled.span<{ isWinningPollItem: boolean; status: PollInterface['status'] }>(
+const StyledSubject = styled.span<{ isWinningPollItem: boolean; status: Poll['status'] }>(
   ({ theme, isWinningPollItem, status }) => `
   color: ${
     status === 'CLOSED' && isWinningPollItem ? theme.colors.WHITE_100 : theme.colors.BLACK_100

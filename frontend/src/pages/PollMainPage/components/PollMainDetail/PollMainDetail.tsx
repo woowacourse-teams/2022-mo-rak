@@ -2,11 +2,11 @@ import { useTheme } from '@emotion/react';
 
 import { StyledCloseTime, StyledDetail } from './PollMainDetail.styles';
 
-import { PollInterface } from '../../../../types/poll';
+import { Poll } from '../../../../types/poll';
 import TextField from '../../../../components/TextField/TextField';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 
-interface Props extends Pick<PollInterface, 'isAnonymous' | 'allowedPollCount' | 'closedAt'> {}
+interface Props extends Pick<Poll, 'isAnonymous' | 'allowedPollCount' | 'closedAt'> {}
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);

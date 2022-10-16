@@ -4,9 +4,9 @@ import { StyledDetail } from './PollProgressDetail.styles';
 import TextField from '../../../../components/TextField/TextField';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 
-import { PollInterface } from '../../../../types/poll';
+import { Poll } from '../../../../types/poll';
 
-interface Props extends Pick<PollInterface, 'isAnonymous' | 'allowedPollCount'> {}
+interface Props extends Pick<Poll, 'isAnonymous' | 'allowedPollCount'> {}
 
 function PollProgressDetail({ isAnonymous, allowedPollCount }: Props) {
   const theme = useTheme();

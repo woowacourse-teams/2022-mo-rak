@@ -9,12 +9,12 @@ import TextField from '../../../../components/TextField/TextField';
 import Button from '../../../../components/Button/Button';
 
 import Bin from '../../../../assets/bin.svg';
-import { PollItemInterface } from '../../../../types/poll';
+import { PollItem } from '../../../../types/poll';
 
 interface Props {
   // TODO: pollItems 괜찮을까? subjects가 아닐까?
-  pollItems: Array<PollItemInterface['subject']>;
-  setPollItems: Dispatch<SetStateAction<Array<PollItemInterface['subject']>>>;
+  pollItems: Array<PollItem['subject']>;
+  setPollItems: Dispatch<SetStateAction<Array<PollItem['subject']>>>;
 }
 
 function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {

@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Button from '../../../../components/Button/Button';
 import { closePoll, deletePoll } from '../../../../api/poll';
-import { PollInterface, getPollResponse, getPollItemsResponse } from '../../../../types/poll';
+import { Poll, getPollResponse, getPollItemsResponse } from '../../../../types/poll';
 import { Group } from '../../../../types/group';
 import { AxiosError } from 'axios';
 
 interface Props {
-  pollCode: PollInterface['code'];
-  status: PollInterface['status'];
+  pollCode: Poll['code'];
+  status: Poll['status'];
   isHost: getPollResponse['isHost'];
   groupCode: Group['code'];
   pollItems: getPollItemsResponse;

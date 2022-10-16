@@ -9,8 +9,8 @@ import {
   StyledSubject
 } from './PollResultItemGroup.styles';
 import {
-  PollInterface,
-  PollItemInterface,
+  Poll,
+  PollItem,
   getPollResultResponse,
   getPollItemsResponse
 } from '../../../../types/poll';
@@ -24,7 +24,7 @@ import PollParticipantModal from '../PollParticipantModal/PollParticipantModal';
 import TextField from '../../../../components/TextField/TextField';
 
 interface Props {
-  status: PollInterface['status'];
+  status: Poll['status'];
   pollResult: getPollResultResponse;
   pollItems: getPollItemsResponse;
 }
@@ -48,7 +48,7 @@ function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
   const winningPollItemIds = getWinningPollItemIds(pollResult);
 
   // TODO: 뭐지? 살펴보기
-  const handleShowParticipant = (pollItemId: PollItemInterface['id']) => () => {
+  const handleShowParticipant = (pollItemId: PollItem['id']) => () => {
     setActivePollItem(pollItemId);
   };
 

@@ -1,6 +1,6 @@
 import { Member } from './group';
 
-interface PollInterface {
+type Poll = {
   id: number;
   title: string;
   allowedPollCount: number;
@@ -9,24 +9,23 @@ interface PollInterface {
   createdAt: string;
   closedAt: string;
   code: string;
-}
+};
 
-interface PollItemInterface {
+type PollItem = {
   id: number;
   subject: string;
-}
+};
 
 // TODO: description 분리
-type SelectedPollItem = Pick<PollItemInterface, 'id'> & {
+type SelectedPollItem = Pick<PollItem, 'id'> & {
   description: string;
 };
 
-type createPollData = Pick<
-  PollInterface,
-  'title' | 'allowedPollCount' | 'isAnonymous' | 'closedAt'
-> & { subjects: Array<PollItemInterface['subject']> };
+type createPollRequest = Pick<Poll, 'title' | 'allowedPollCount' | 'isAnonymous' | 'closedAt'> & {
+  subjects: Array<PollItem['subject']>;
+};
 
-type getPollResponse = PollInterface & {
+type getPollResponse = Poll & {
   isHost: boolean;
   count: number;
 };
@@ -34,18 +33,18 @@ type getPollResponse = PollInterface & {
 type getPollsResponse = Array<getPollResponse>;
 
 type getPollResultResponse = Array<
-  PollItemInterface & {
+  PollItem & {
     members: Array<Member & Pick<SelectedPollItem, 'description'>>;
     count: number;
   }
 >;
 
-type getPollItemsResponse = Array<PollItemInterface & { isSelected: boolean; description: string }>;
+type getPollItemsResponse = Array<PollItem & { isSelected: boolean; description: string }>;
 
 export {
-  PollInterface,
-  createPollData,
-  PollItemInterface,
+  Poll,
+  createPollRequest,
+  PollItem,
   getPollResponse,
   getPollsResponse,
   getPollResultResponse,

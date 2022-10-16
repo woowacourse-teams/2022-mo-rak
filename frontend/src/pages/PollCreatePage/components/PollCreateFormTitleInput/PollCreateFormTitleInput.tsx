@@ -2,10 +2,10 @@ import { useTheme } from '@emotion/react';
 import { ChangeEventHandler, InputHTMLAttributes, memo } from 'react';
 import Input from '../../../../components/Input/Input';
 import TextField from '../../../../components/TextField/TextField';
-import { PollInterface } from '../../../../types/poll';
+import { Poll } from '../../../../types/poll';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  title: PollInterface['title'];
+  title: Poll['title'];
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
 

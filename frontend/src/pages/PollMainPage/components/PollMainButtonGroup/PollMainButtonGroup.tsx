@@ -2,11 +2,11 @@ import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Button from '../../../../components/Button/Button';
-import { PollInterface } from '../../../../types/poll';
+import { Poll } from '../../../../types/poll';
 
 interface Props {
-  pollCode: PollInterface['code'];
-  status: PollInterface['status'];
+  pollCode: Poll['code'];
+  status: Poll['status'];
 }
 
 function PollMainButtonGroup({ pollCode, status }: Props) {

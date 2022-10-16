@@ -1,12 +1,12 @@
 import { StyledLink } from './PollResultShareLink.styles';
 import Link from '../../../../assets/link.svg';
-import { PollInterface } from '../../../../types/poll';
+import { Poll } from '../../../../types/poll';
 import { Group } from '../../../../types/group';
 
 interface Props {
-  pollCode: PollInterface['code'];
+  pollCode: Poll['code'];
   groupCode: Group['code'];
-  status: PollInterface['status'];
+  status: Poll['status'];
 }
 
 function PollResultShareLink({ groupCode, pollCode, status }: Props) {
