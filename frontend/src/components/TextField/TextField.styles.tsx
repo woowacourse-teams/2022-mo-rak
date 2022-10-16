@@ -8,10 +8,11 @@ const StyledContainer = styled.div<
   }
 >(
   // TODO: text-align이 여기에 있는 게 맞을까??
-  ({ width, borderRadius, variantStyle, padding }) => `
+  ({ width, borderRadius, variantStyle, padding, maxWidth }) => `
     ${variantStyle};
     position: relative;
     text-align: center;
+    ${maxWidth && `max-width: ${maxWidth}`};
     ${width && `width: ${width}`};
     ${borderRadius && `border-radius: ${borderRadius}`};
     ${padding && `padding: ${padding}`};

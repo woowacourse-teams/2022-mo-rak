@@ -8,6 +8,7 @@ const StyledButton = styled.button(
   fontSize: 1.6rem;
   padding: 2.8rem 0; 
   width: 20vw;
+  max-width: 21.2rem;
   font-size: 2.4rem;
 
   &: hover {
