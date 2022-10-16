@@ -4,10 +4,10 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Button from '../../../../components/Button/Button';
 import { Poll } from '../../../../types/poll';
 
-interface Props {
+type Props = {
   pollCode: Poll['code'];
   status: Poll['status'];
-}
+};
 
 function PollMainButtonGroup({ pollCode, status }: Props) {
   const theme = useTheme();

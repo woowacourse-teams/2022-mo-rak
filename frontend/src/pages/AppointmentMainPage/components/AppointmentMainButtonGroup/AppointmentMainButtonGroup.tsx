@@ -4,10 +4,10 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Button from '../../../../components/Button/Button';
 import { Appointment } from '../../../../types/appointment';
 
-interface Props {
+type Props = {
   appointmentCode: Appointment['code'];
   isClosed: boolean;
-}
+};
 
 function AppointmentMainButtonGroup({ appointmentCode, isClosed }: Props) {
   const theme = useTheme();

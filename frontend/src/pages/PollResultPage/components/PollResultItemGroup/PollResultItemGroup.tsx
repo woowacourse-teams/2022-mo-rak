@@ -23,11 +23,11 @@ import UserWhite from '../../../../assets/user-white.svg';
 import PollParticipantModal from '../PollParticipantModal/PollParticipantModal';
 import TextField from '../../../../components/TextField/TextField';
 
-interface Props {
+type Props = {
   status: Poll['status'];
   pollResult: getPollResultResponse;
   pollItems: getPollItemsResponse;
-}
+};
 
 const getWinningPollItemIds = (pollResult: getPollResultResponse) => {
   const pollItemCounts = pollResult.map((pollItem) => pollItem.count);

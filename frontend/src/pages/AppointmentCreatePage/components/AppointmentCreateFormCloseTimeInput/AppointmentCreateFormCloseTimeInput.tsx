@@ -5,14 +5,14 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import TextField from '../../../../components/TextField/TextField';
 import { StyledTitle } from './AppointmentCreateFormCloseTimeInput.styles';
 
-interface Props {
+type Props = {
   // TODO: 투표와 변수명 맞춰기
   closeTime: string;
   closeDate: string;
   maxCloseDate: string;
   onChangeTime: ChangeEventHandler<HTMLInputElement>;
   onChangeDate: ChangeEventHandler<HTMLInputElement>;
-}
+};
 
 function AppointmentCreateFormCloseTimeInput({
   closeTime,

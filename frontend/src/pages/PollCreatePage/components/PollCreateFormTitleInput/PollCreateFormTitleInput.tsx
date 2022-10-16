@@ -4,10 +4,10 @@ import Input from '../../../../components/Input/Input';
 import TextField from '../../../../components/TextField/TextField';
 import { Poll } from '../../../../types/poll';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+type Props = {
   title: Poll['title'];
   onChange: ChangeEventHandler<HTMLInputElement>;
-}
+} & InputHTMLAttributes<HTMLInputElement>;
 
 function PollCreateFormTitleInput({ title, onChange }: Props) {
   const theme = useTheme();

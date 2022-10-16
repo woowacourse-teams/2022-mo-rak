@@ -2,9 +2,9 @@ import { useTheme } from '@emotion/react';
 import { MouseEventHandler } from 'react';
 import Button from '../../../../components/Button/Button';
 
-interface Props {
+type Props = {
   onClickProgress: MouseEventHandler<HTMLButtonElement>;
-}
+};
 
 function AppointmentProgressButtonGroup({ onClickProgress }: Props) {
   const theme = useTheme();

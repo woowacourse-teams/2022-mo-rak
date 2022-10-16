@@ -6,9 +6,9 @@ import {
   StyledDescription
 } from './AppointmentProgressHeader.styles';
 
-interface Props {
+type Props = {
   appointment: Appointment;
-}
+};
 
 function AppointmentProgressHeader({ appointment }: Props) {
   return (

@@ -5,10 +5,10 @@ import { Group, Member } from '../../../../types/group';
 import { getGroupMembers } from '../../../../api/group';
 import { StyledParticipantsStatus } from './AppointmentMainProgress.styles';
 
-interface Props {
+type Props = {
   count: number;
   groupCode: Group['code'];
-}
+};
 
 function AppointmentMainProgress({ count, groupCode }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<Member>>([]);

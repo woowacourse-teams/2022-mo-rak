@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 
 import { StyledDivider } from './Divider.styles';
 
-interface Props extends CSSProperties {}
+type Props = CSSProperties;
 
 function Divider({ borderColor }: Props) {
   return <StyledDivider borderColor={borderColor} />;

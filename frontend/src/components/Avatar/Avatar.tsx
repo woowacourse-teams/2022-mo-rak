@@ -2,10 +2,10 @@ import { CSSProperties } from 'react';
 import { Member } from '../../types/group';
 import { StyledUserProfile, StyledUserImage, StyledUserName } from './Avatar.styles';
 
-interface Props extends CSSProperties {
+type Props = {
   profileUrl: Member['profileUrl'];
   name: Member['name'];
-}
+} & CSSProperties;
 
 function Avatar({ profileUrl, name, width, fontSize }: Props) {
   return (

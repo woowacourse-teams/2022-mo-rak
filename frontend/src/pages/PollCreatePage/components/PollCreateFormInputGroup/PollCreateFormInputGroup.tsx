@@ -11,11 +11,11 @@ import Button from '../../../../components/Button/Button';
 import Bin from '../../../../assets/bin.svg';
 import { PollItem } from '../../../../types/poll';
 
-interface Props {
+type Props = {
   // TODO: pollItems 괜찮을까? subjects가 아닐까?
   pollItems: Array<PollItem['subject']>;
   setPollItems: Dispatch<SetStateAction<Array<PollItem['subject']>>>;
-}
+};
 
 function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
   const theme = useTheme();

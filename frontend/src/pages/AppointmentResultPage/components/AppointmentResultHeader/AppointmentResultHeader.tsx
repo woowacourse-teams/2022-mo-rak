@@ -19,13 +19,13 @@ const getFormattedClosedTime = (value: string) => {
   });
 };
 
-interface Props {
+type Props = {
   groupCode: Group['code'];
   appointmentCode: Appointment['code'];
   title: Appointment['title'];
   closedAt: Appointment['closedAt'];
   isClosed: Appointment['isClosed'];
-}
+};
 
 function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, closedAt }: Props) {
   const handleCopyInvitationLink = () => {

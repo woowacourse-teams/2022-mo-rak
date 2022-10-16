@@ -13,13 +13,13 @@ import {
   StyledRank
 } from './AppointmentResultRanking.styles';
 
-interface Props {
+type Props = {
   groupCode: Group['code'];
   appointmentRecommendation: Array<AppointmentRecommendation>;
   // TODO: clicked보다는 selected가 더 맞지 않을까?
   clickedRecommendation: number;
   onClickRank: (idx: number) => MouseEventHandler<HTMLDivElement>;
-}
+};
 
 function AppointmentResultRanking({
   groupCode,

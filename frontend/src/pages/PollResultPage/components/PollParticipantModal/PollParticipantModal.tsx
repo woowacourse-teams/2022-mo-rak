@@ -7,9 +7,9 @@ import {
 import { Member } from '../../../../types/group';
 import { SelectedPollItem } from '../../../../types/poll';
 
-interface Props {
+type Props = {
   participants: Array<Member & Pick<SelectedPollItem, 'description'>>;
-}
+};
 
 function PollParticipantModal({ participants }: Props) {
   return (

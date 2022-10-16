@@ -7,11 +7,11 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { Group } from '../../../../types/group';
 import { AxiosError } from 'axios';
 
-interface Props {
+type Props = {
   pollCode: Poll['code'];
   isHost: getPollResponse['isHost'];
   groupCode: Group['code'];
-}
+};
 
 function PollProgressButtonGroup({ pollCode, isHost, groupCode }: Props) {
   const theme = useTheme();

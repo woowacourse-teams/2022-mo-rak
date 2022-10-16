@@ -2,9 +2,9 @@ import { PropsWithChildren, CSSProperties, HTMLAttributes } from 'react';
 
 import { StyledContainer } from './MarginContainer.styles';
 
-interface Props extends PropsWithChildren<HTMLAttributes<HTMLDivElement>> {}
+type Props = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & CSSProperties;
 
-function MarginContainer({ children, ...props }: Props & CSSProperties) {
+function MarginContainer({ children, ...props }: Props) {
   return <StyledContainer {...props}>{children}</StyledContainer>;
 }
 

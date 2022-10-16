@@ -7,10 +7,10 @@ import { Group } from '../../../../types/group';
 import Create from '../../../../assets/create-plus.svg';
 import { StyledCreateIcon } from './GroupCreateFormNameInput.styles';
 
-interface Props {
+type Props = {
   groupName: Group['name'];
   onChange: ChangeEventHandler<HTMLInputElement>;
-}
+};
 
 function GroupCreateFormNameInput({ groupName, onChange }: Props) {
   const theme = useTheme();

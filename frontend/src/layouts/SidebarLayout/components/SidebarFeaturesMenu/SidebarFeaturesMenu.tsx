@@ -16,9 +16,9 @@ import {
   StyledMenu
 } from './SidebarFeaturesMenu.styles';
 
-interface Props {
+type Props = {
   groupCode: Group['code'];
-}
+};
 
 function SidebarFeaturesMenu({ groupCode }: Props) {
   const { activeMenu } = useMenuContext();

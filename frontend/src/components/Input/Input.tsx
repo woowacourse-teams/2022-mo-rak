@@ -2,7 +2,7 @@ import { InputHTMLAttributes, CSSProperties } from 'react';
 
 import { StyledInput } from './Input.styles';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {}
+type Props = InputHTMLAttributes<HTMLInputElement> & CSSProperties;
 
 function Input({ ...props }: Props & CSSProperties) {
   return <StyledInput {...props} />;

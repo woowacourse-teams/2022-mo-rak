@@ -5,12 +5,12 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { Poll } from '../../../../types/poll';
 import { memo } from 'react';
 
-interface Props {
+type Props = {
   isAnonymous: Poll['isAnonymous'];
   isAllowedMultiplePollCount: boolean;
   handleAnonymous: (anonymousStatus: boolean) => () => void;
   handleAllowedMultiplePollCount: (isAllowedMultiplePollCountStatus: boolean) => () => void;
-}
+};
 
 function PollCreateDetail({
   isAnonymous,

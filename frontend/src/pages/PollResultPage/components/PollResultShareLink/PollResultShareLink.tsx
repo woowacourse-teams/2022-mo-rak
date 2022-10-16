@@ -3,11 +3,11 @@ import Link from '../../../../assets/link.svg';
 import { Poll } from '../../../../types/poll';
 import { Group } from '../../../../types/group';
 
-interface Props {
+type Props = {
   pollCode: Poll['code'];
   groupCode: Group['code'];
   status: Poll['status'];
-}
+};
 
 function PollResultShareLink({ groupCode, pollCode, status }: Props) {
   const handleCopyShareLink = () => {

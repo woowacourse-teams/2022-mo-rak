@@ -6,7 +6,7 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 
 import { Poll } from '../../../../types/poll';
 
-interface Props extends Pick<Poll, 'isAnonymous' | 'allowedPollCount'> {}
+type Props = Pick<Poll, 'isAnonymous' | 'allowedPollCount'>;
 
 function PollProgressDetail({ isAnonymous, allowedPollCount }: Props) {
   const theme = useTheme();

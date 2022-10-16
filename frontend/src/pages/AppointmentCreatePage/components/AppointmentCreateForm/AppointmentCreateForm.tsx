@@ -16,11 +16,6 @@ import { createAppointment } from '../../../../api/appointment';
 import { Group } from '../../../../types/group';
 import { StyledForm } from './AppointmentCreateForm.styles';
 
-interface Props {
-  startDate: Appointment['startDate'];
-  endDate: Appointment['endDate'];
-}
-
 const getFormattedTime = (time: Time) => {
   const { period, hour, minute } = time;
 
@@ -32,6 +27,11 @@ const getPlusOneDate = (date: string) => {
   currentDate.setDate(currentDate.getDate() + 1);
 
   return currentDate.toISOString().split('T')[0];
+};
+
+type Props = {
+  startDate: Appointment['startDate'];
+  endDate: Appointment['endDate'];
 };
 
 function AppointmentCreateForm({ startDate, endDate }: Props) {

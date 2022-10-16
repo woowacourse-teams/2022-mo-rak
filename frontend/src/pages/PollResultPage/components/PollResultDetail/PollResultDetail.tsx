@@ -5,7 +5,7 @@ import TextField from '../../../../components/TextField/TextField';
 
 import { Poll } from '../../../../types/poll';
 
-interface Props extends Pick<Poll, 'isAnonymous' | 'allowedPollCount' | 'closedAt'> {}
+type Props = Pick<Poll, 'isAnonymous' | 'allowedPollCount' | 'closedAt'>;
 
 // TODO: 변수명 통일해주자! formatted?
 // TODO: 메인페이지에서도 사용하는 데 어디에 이 함수를 놓을 수 있을지 고민해보자!

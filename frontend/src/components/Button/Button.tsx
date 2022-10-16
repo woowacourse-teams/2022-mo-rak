@@ -23,20 +23,15 @@ const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
   }
 };
 
-interface Props extends PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>> {
+type Props = {
   colorScheme: string;
   variant: 'filled' | 'outlined';
-}
+} & PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>> &
+  CSSProperties;
 
 type VariantStyleProps = Pick<Props, 'colorScheme' | 'variant'>;
 
-function Button({
-  children,
-  colorScheme,
-  type = 'button',
-  variant,
-  ...props
-}: Props & CSSProperties) {
+function Button({ children, colorScheme, type = 'button', variant, ...props }: Props) {
   const variantStyle = getVariantStyle({ variant, colorScheme });
 
   return (

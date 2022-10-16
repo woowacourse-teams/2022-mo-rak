@@ -10,9 +10,9 @@ import {
   StyledContainer
 } from './SidebarMembersProfileMenu.styles';
 
-interface Props {
+type Props = {
   groupCode: Group['code'];
-}
+};
 
 function SidebarMembersProfileMenu({ groupCode }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<Member>>([]);

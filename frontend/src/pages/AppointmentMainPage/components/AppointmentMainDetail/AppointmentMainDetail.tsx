@@ -18,11 +18,11 @@ const getFormattedClosedTime = (value: string) => {
   });
 };
 
-interface Props {
+type Props = {
   durationHours: Appointment['durationHours'];
   durationMinutes: Appointment['durationMinutes'];
   closedAt: Appointment['closedAt'];
-}
+};
 
 function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Props) {
   const theme = useTheme();

@@ -16,7 +16,7 @@ import {
   StyledCurrentMonthDayNotInStartAndEndDate
 } from './Calendar.styles';
 
-interface Props {
+type Props = {
   version?: 'default' | 'select';
   startDate: string;
   endDate: string;
@@ -24,7 +24,7 @@ interface Props {
   setStartDate?: Dispatch<SetStateAction<string>>;
   setEndDate?: Dispatch<SetStateAction<string>>;
   setSelectedDate?: Dispatch<SetStateAction<string>>;
-}
+};
 
 const weeks = ['일', '월', '화', '수', '목', '금', '토'];
 

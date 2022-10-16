@@ -32,11 +32,11 @@ import {
   StyledSmallLogo
 } from './SidebarMenuModals.styles';
 
-interface Props {
+type Props = {
   activeModalMenu: string | null;
   closeModal: () => void;
   groupCode: Group['code'];
-}
+};
 
 function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
   const [groupName, handleGroupName, resetGroupName] = useInput('');

@@ -3,9 +3,9 @@ import { useTheme } from '@emotion/react';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Button from '../../../../components/Button/Button';
 
-interface Props {
+type Props = {
   onCancel: MouseEventHandler<HTMLButtonElement>;
-}
+};
 
 function AppointmentCreateFormButtonGroup({ onCancel }: Props) {
   const theme = useTheme();

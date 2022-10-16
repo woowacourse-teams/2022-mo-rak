@@ -57,7 +57,7 @@ const getPlusOneDay = (date: string) => {
   return currentDate.toISOString().split('T')[0];
 };
 
-interface Props {
+type Props = {
   startTime: Appointment['startTime'];
   endTime: Appointment['endTime'];
   selectedDate: string;
@@ -67,7 +67,7 @@ interface Props {
     end: string
   ) => MouseEventHandler<HTMLDivElement> | MouseEventHandler<HTMLDivElement>;
   availableTimes: AvailableTimes;
-}
+};
 
 // TODO: 위의 함수들이 여러개로 나뉘어져있는 것을 컴포넌트에 놔둬도 될지 고민해보기
 function AppointmentProgressTimePicker({

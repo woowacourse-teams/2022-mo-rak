@@ -17,7 +17,7 @@ import { getFormattedDateTime } from '../../../../utils/date';
 import Question from '../../../../assets/question.svg';
 import { StyledHelpIconWrapper, StyledHelpIcon } from './AppointmentResultButtonGroup.styles';
 
-interface Props {
+type Props = {
   groupCode: Group['code'];
   appointmentCode: Appointment['code'];
   isClosed: Appointment['isClosed'];
@@ -25,7 +25,7 @@ interface Props {
   title: GetAppointmentResponse['title'];
   appointmentRecommendation: Array<AppointmentRecommendation>;
   setIsClosed: (isClosed: Appointment['isClosed']) => void;
-}
+};
 
 function AppointmentResultButtonGroup({
   groupCode,

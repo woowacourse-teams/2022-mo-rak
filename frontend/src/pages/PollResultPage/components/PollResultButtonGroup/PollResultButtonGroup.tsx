@@ -8,13 +8,13 @@ import { Poll, getPollResponse, getPollItemsResponse } from '../../../../types/p
 import { Group } from '../../../../types/group';
 import { AxiosError } from 'axios';
 
-interface Props {
+type Props = {
   pollCode: Poll['code'];
   status: Poll['status'];
   isHost: getPollResponse['isHost'];
   groupCode: Group['code'];
   pollItems: getPollItemsResponse;
-}
+};
 
 function PollResultButtonGroup({ pollCode, status, isHost, groupCode, pollItems }: Props) {
   const theme = useTheme();

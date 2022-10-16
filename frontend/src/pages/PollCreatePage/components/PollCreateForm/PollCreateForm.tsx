@@ -19,12 +19,12 @@ import { Group } from '../../../../types/group';
 import useInput from '../../../../hooks/useInput';
 import { Appointment } from '../../../../types/appointment';
 
-interface LocationWithState extends Location {
+type LocationWithState = {
   state: {
     title: Appointment['title'];
     firstRankAppointmentRecommendations: Array<string>;
   };
-}
+} & Location;
 
 function PollCreateForm() {
   const location = useLocation() as LocationWithState;

@@ -4,10 +4,10 @@ import { AppointmentRecommendation } from '../../../../types/appointment';
 import Avatar from '../../../../components/Avatar/Avatar';
 import { StyledGuideText, StyledSmallTitle } from './AppointmentResultAvailableMembers.styles';
 
-interface Props {
+type Props = {
   appointmentRecommendation: Array<AppointmentRecommendation>;
   clickedRecommendation: number;
-}
+};
 
 function AppointmentResultAvailableMembers({
   appointmentRecommendation,

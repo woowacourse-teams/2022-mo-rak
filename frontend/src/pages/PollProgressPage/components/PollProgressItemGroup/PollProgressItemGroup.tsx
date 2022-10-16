@@ -11,14 +11,14 @@ import Radio from '../../../../components/Radio/Radio';
 import Checkbox from '../../../../components/Checkbox/Checkbox';
 import Input from '../../../../components/Input/Input';
 
-interface Props {
+type Props = {
   pollItems: getPollItemsResponse;
   selectedPollItems: Array<SelectedPollItem>;
   allowedPollCount: Poll['allowedPollCount'];
   onChangeCheckbox: ChangeEventHandler<HTMLInputElement>;
   onChangeRadio: ChangeEventHandler<HTMLInputElement>;
   onChangeText: (pollId: number) => ChangeEventHandler<HTMLInputElement>;
-}
+};
 
 const getSelectedPollItem = (pollId: Poll['id'], selectedPollItems: Array<SelectedPollItem>) =>
   selectedPollItems.find((selectedPollItem) => selectedPollItem.id === pollId);

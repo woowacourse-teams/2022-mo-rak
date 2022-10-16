@@ -3,9 +3,9 @@ import TextField from '../../../../components/TextField/TextField';
 import { Poll } from '../../../../types/poll';
 import { StyledStatus } from './PollResultStatus.styles';
 
-interface Props {
+type Props = {
   status: Poll['status'];
-}
+};
 
 function PollResultStatus({ status }: Props) {
   const theme = useTheme();

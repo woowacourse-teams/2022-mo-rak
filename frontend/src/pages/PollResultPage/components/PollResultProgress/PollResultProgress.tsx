@@ -6,10 +6,10 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { Group, Member } from '../../../../types/group';
 import { getGroupMembers } from '../../../../api/group';
 
-interface Props {
+type Props = {
   currentParticipants: getPollResponse['count'];
   groupCode: Group['code'];
-}
+};
 
 function PollResultProgress({ currentParticipants, groupCode }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<Member>>([]);

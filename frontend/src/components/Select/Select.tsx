@@ -1,9 +1,9 @@
 import { PropsWithChildren, CSSProperties, SelectHTMLAttributes } from 'react';
 import { StyledSelect } from './Select.styles';
 
-interface Props extends PropsWithChildren<SelectHTMLAttributes<HTMLSelectElement>> {}
+type Props = PropsWithChildren<SelectHTMLAttributes<HTMLSelectElement>> & CSSProperties;
 
-function Select({ children, ...props }: Props & CSSProperties) {
+function Select({ children, ...props }: Props) {
   return <StyledSelect {...props}>{children}</StyledSelect>;
 }
 
