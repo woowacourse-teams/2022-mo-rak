@@ -4,7 +4,7 @@ import { StyledTitle } from './RoleMainHeader.styles';
 function RoleMainHeader() {
   return (
     <>
-      <StyledTitle>약속 정하기</StyledTitle>
+      <StyledTitle>역할 정하기</StyledTitle>
       <Divider />
     </>
   );

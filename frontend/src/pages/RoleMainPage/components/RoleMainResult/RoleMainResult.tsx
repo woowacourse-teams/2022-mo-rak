@@ -6,135 +6,79 @@ import {
   StyledTitle,
   StyledRole,
   StyledRoleContainer,
-  StyledDateContainer,
-  StyledRoleResultContainer,
-  StyledDate
+  StyledDateWrapper,
+  StyledRoleResultWrapper,
+  StyledDate,
+  StyledEmptyText
 } from './RoleMainResult.styles';
 import Divider from '../../../../components/Divider/Divider';
+import { useEffect, useState } from 'react';
+import { GetRolesHistoriesResponse } from '../../../../types/role';
+import { getGroupMembers } from '../../../../api/group';
+import { useParams } from 'react-router-dom';
+import { GroupInterface } from '../../../../types/group';
+import { MemberInterface } from '../../../../types/group';
 
-function RoleMainResult() {
+type Props = { rolesHistories: GetRolesHistoriesResponse };
+
+function RoleMainResult({ rolesHistories }: Props) {
+  const [activeIdx, setActiveIdx] = useState(0);
+  // TODO: 임시
+  const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const handleShowResult = (idx: number) => () => {
+    setActiveIdx(idx);
+  };
+
+  // TODO: 임시
+  useEffect(() => {
+    (async () => {
+      const res = await getGroupMembers(groupCode);
+      setGroupMembers(res.data);
+    })();
+  }, []);
+
   return (
     <FlexContainer gap="3rem">
-      {/* 역할 정하기 결과 */}
       <Box width="70%" height="50rem" padding="2rem">
         <StyledTitle>역할 정하기</StyledTitle>
         <Divider />
-        <StyledRoleResultContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-          <StyledRoleContainer>
-            <StyledRole>데일리마스터</StyledRole>
-            <Avatar
-              profileUrl="https://pbs.twimg.com/media/EU2rX8dUMAA1sMv.jpg:small"
-              name="김위니"
-              width="8rem"
-            />
-          </StyledRoleContainer>
-        </StyledRoleResultContainer>
+        <StyledRoleResultWrapper>
+          {rolesHistories.roles.length > 0 ? (
+            (() => {
+              const currentRole = rolesHistories.roles[activeIdx].role;
+
+              return currentRole.map(({ memberId, name }) => {
+                const [currentMember] = groupMembers.filter(({ id }) => id === memberId);
+
+                return (
+                  <StyledRoleContainer key={memberId}>
+                    <StyledRole>{name}</StyledRole>
+                    <Avatar
+                      profileUrl={currentMember.profileUrl}
+                      name={currentMember.name}
+                      width="8rem"
+                    />
+                  </StyledRoleContainer>
+                );
+              });
+            })()
+          ) : (
+            <StyledEmptyText>첫 역할 정하기를 진행해보세요</StyledEmptyText>
+          )}
+        </StyledRoleResultWrapper>
       </Box>
 
-      {/* 이전 결과 */}
       <Box width="30%" height="50rem" padding="2rem">
-        <StyledTitle>이전 결과</StyledTitle>
-        <Divider />
-        <StyledDateContainer>
-          <StyledDate>2022.10.15(토)</StyledDate>
-          <StyledDate>2022.10.15(토)</StyledDate>
-          <StyledDate>2022.10.15(토)</StyledDate>
-          <StyledDate>2022.10.15(토)</StyledDate>
-          <StyledDate>2022.10.15(토)</StyledDate>
-          <StyledDate>2022.10.15(토)</StyledDate>
-          <StyledDate>2022.10.15(토)</StyledDate>
-          <StyledDate>2022.10.15(토)</StyledDate>
-          <StyledDate>2022.10.15(토)</StyledDate>
-          <StyledDate>2022.10.15(토)</StyledDate>
-        </StyledDateContainer>
+        <>
+          <StyledTitle>이전 결과</StyledTitle>
+          <Divider />
+          {rolesHistories.roles.map((history, idx) => (
+            <StyledDateWrapper key={`${idx}-${history}`} onClick={handleShowResult(idx)}>
+              <StyledDate isActive={idx === activeIdx}>{history.date}</StyledDate>
+            </StyledDateWrapper>
+          ))}
+        </>
       </Box>
     </FlexContainer>
   );
