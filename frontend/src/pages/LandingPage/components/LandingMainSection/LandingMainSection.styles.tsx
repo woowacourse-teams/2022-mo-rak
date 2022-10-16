@@ -39,8 +39,7 @@ const StyledLogo = styled.img`
   left: 4rem;
 `;
 
-// TODO: 왜 background-image로 했을까~ 일관성 ㅠㅠ
-const StyledMainSection = styled.section`
+const StyledContainer = styled.section`
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -67,7 +66,7 @@ const StyledSubTitle = styled.div(
 
 const StyledTitle = styled.h1(
   ({ theme }) => `
-  font-size: 10.4rem;
+  font-size: 9.6rem;
   font-weight: 700;
   text-align: center;
   position: relative;
@@ -80,7 +79,7 @@ const StyledTitle = styled.h1(
 const StyledSmileImage = styled.img`
   position: absolute;
   bottom: 0;
-  left: -6.8rem;
+  left: -4.8rem;
   top: 7.6rem;
   width: 10rem;
 `;
@@ -115,13 +114,14 @@ const StyledBlobImage = styled.img`
   height: 17.4rem;
 `;
 
-const StyledGuideText = styled.span(
+const StyledAnchor = styled.a(
   ({ theme }) => `
-  position: absolute; 
-  top: 7.2rem; 
-  left: 4.2rem; 
-  font-size: 2.4rem; 
+  position: absolute;
+  top: 7.2rem;
+  left: 4.2rem;
+  text-decoration: none;
   color: ${theme.colors.BLACK_100};
+  font-size: 2.4rem;
 `
 );
 
@@ -130,15 +130,15 @@ export {
   StyledBlobImage,
   StyledGithubLogo,
   StyledGlitterImage,
-  StyledGuideText,
   StyledLineImage,
   StyledLink,
   StyledLoginContainer,
   StyledLoginText,
   StyledLogo,
-  StyledMainSection,
+  StyledContainer,
   StyledNextSectionGuideContainer,
   StyledSmileImage,
   StyledSubTitle,
-  StyledTitle
+  StyledTitle,
+  StyledAnchor
 };

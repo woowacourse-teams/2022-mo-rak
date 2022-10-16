@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledServiceIntroductionSection = styled.section`
+const StyledContainer = styled.section`
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -8,6 +8,7 @@ const StyledServiceIntroductionSection = styled.section`
   scroll-snap-align: start;
   position: relative;
   justify-content: space-evenly;
+  flex-wrap: wrap;
 `;
 
 const StyledTitle = styled.h1(
@@ -15,7 +16,7 @@ const StyledTitle = styled.h1(
   position: relative;
   text-align: left;
   font-size: 4rem;
-  margin-bottom: 2rem;
+  margin: 10rem 0 2rem;
   font-weight: 700;
   line-height: 4.4rem;
   letter-spacing: 0.4rem;
@@ -36,10 +37,14 @@ const StyledSubTitle = styled.span(
   font-size: 2rem;
   text-align: left;
   letter-spacing: 0.1rem; 
-  line-height: 2.4rem;
+  line-height: 2.8rem;
   color: ${theme.colors.BLACK_100};
 `
 );
+
+const StyledTitleContainer = styled.div`
+  padding: 4rem;
+`;
 
 const StyledServicesImage = styled.img`
   width: 67.6rem;
@@ -48,8 +53,9 @@ const StyledServicesImage = styled.img`
 
 export {
   StyledHighlightImage,
-  StyledServiceIntroductionSection,
+  StyledContainer,
   StyledServicesImage,
   StyledSubTitle,
-  StyledTitle
+  StyledTitle,
+  StyledTitleContainer
 };
