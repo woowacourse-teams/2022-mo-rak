@@ -4,7 +4,7 @@ import { StyledInput } from './Input.styles';
 
 type Props = InputHTMLAttributes<HTMLInputElement> & CSSProperties;
 
-function Input({ ...props }: Props & CSSProperties) {
+function Input({ ...props }: Props) {
   return <StyledInput {...props} />;
 }
 
