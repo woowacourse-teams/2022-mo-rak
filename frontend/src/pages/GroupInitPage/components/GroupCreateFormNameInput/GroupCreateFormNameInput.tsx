@@ -3,12 +3,12 @@ import { ChangeEventHandler } from 'react';
 import { useTheme } from '@emotion/react';
 import Input from '../../../../components/Input/Input';
 import TextField from '../../../../components/TextField/TextField';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import Create from '../../../../assets/create-plus.svg';
 import { StyledCreateIcon } from './GroupCreateFormNameInput.styles';
 
 interface Props {
-  groupName: GroupInterface['name'];
+  groupName: Group['name'];
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
 

@@ -12,7 +12,7 @@ import Plus from '../../../../assets/plus.svg';
 import LinkIcon from '../../../../assets/link.svg';
 import Close from '../../../../assets/close-button.svg';
 import Logo from '../../../../assets/logo.svg';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { createGroup, participateGroup } from '../../../../api/group';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import { linkSlack } from '../../../../api/slack';
@@ -35,7 +35,7 @@ import {
 interface Props {
   activeModalMenu: string | null;
   closeModal: () => void;
-  groupCode: GroupInterface['code'];
+  groupCode: Group['code'];
 }
 
 function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {

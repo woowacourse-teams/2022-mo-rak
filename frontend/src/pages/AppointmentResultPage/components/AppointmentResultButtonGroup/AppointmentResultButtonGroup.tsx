@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Tooltip from '../../../../components/Tooltip/Tooltip';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import {
   Appointment,
   GetAppointmentResponse,
@@ -18,7 +18,7 @@ import Question from '../../../../assets/question.svg';
 import { StyledHelpIconWrapper, StyledHelpIcon } from './AppointmentResultButtonGroup.styles';
 
 interface Props {
-  groupCode: GroupInterface['code'];
+  groupCode: Group['code'];
   appointmentCode: Appointment['code'];
   isClosed: Appointment['isClosed'];
   isHost: GetAppointmentResponse['isHost'];

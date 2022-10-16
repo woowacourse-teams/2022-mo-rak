@@ -15,7 +15,7 @@ import PollCreateCloseTimeInput from '../PollCreateCloseTimeInput/PollCreateClos
 
 import { createPoll } from '../../../../api/poll';
 import { createPollData, PollInterface } from '../../../../types/poll';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import useInput from '../../../../hooks/useInput';
 import { Appointment } from '../../../../types/appointment';
 
@@ -29,7 +29,7 @@ interface LocationWithState extends Location {
 function PollCreateForm() {
   const location = useLocation() as LocationWithState;
   const navigate = useNavigate();
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [title, setTitle] = useState(location.state?.title ?? '');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isAllowedMultiplePollCount, setIsAllowedMultiplePollCount] = useState(false);

@@ -13,7 +13,7 @@ import useInput from '../../../../hooks/useInput';
 import useInputs from '../../../../hooks/useInputs';
 import { Time, CreateAppointmentRequest, Appointment } from '../../../../types/appointment';
 import { createAppointment } from '../../../../api/appointment';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { StyledForm } from './AppointmentCreateForm.styles';
 
 interface Props {
@@ -38,7 +38,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   const navigate = useNavigate();
   const [title, handleTitle] = useInput('');
   // TODO: groupCode 받아오는 게 계속 중복되어서, 중복줄이자
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [description, handleDescription] = useInput('');
   const [duration, handleDuration] = useInputs<Omit<Time, 'period'>>({ hour: '', minute: '' });
   const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });

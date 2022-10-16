@@ -17,7 +17,7 @@ import {
   getPollResultResponse,
   getPollItemsResponse
 } from '../../../../types/poll';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 
 import PollResultProgress from '../PollResultProgress/PollResultProgress';
 import PollResultStatus from '../PollResultStatus/PollResultStatus';
@@ -27,7 +27,7 @@ import { AxiosError } from 'axios';
 function PollResultContainer() {
   const navigate = useNavigate();
   const { groupCode, pollCode } = useParams() as {
-    groupCode: GroupInterface['code'];
+    groupCode: Group['code'];
     pollCode: PollInterface['code'];
   };
   const [poll, setPoll] = useState<getPollResponse>();

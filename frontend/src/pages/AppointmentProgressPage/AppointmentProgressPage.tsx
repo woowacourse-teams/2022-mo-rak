@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAppointment, progressAppointment } from '../../api/appointment';
-import { GroupInterface } from '../../types/group';
+import { Group } from '../../types/group';
 import { AvailableTimes, Appointment, GetAppointmentResponse } from '../../types/appointment';
 import Calendar from '../../components/Calendar/Calendar';
 import AppointmentProgressHeader from './components/AppointmentProgressHeader/AppointmentProgressHeader';
@@ -37,7 +37,7 @@ const getMinusOneDate = (date: string) => {
 function AppointmentProgressPage() {
   const navigate = useNavigate();
   const { groupCode, appointmentCode } = useParams() as {
-    groupCode: GroupInterface['code'];
+    groupCode: Group['code'];
     appointmentCode: Appointment['code'];
   };
   const [appointment, setAppointment] = useState<GetAppointmentResponse>();

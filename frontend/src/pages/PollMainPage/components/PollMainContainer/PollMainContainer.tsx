@@ -16,14 +16,14 @@ import MarginContainer from '../../../../components/MarginContainer/MarginContai
 
 import { getPolls } from '../../../../api/poll';
 import { getPollsResponse } from '../../../../types/poll';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 
 import PollMainButtonGroup from '../PollMainButtonGroup/PollMainButtonGroup';
 import emptyAnimation from '../../../../assets/empty-animation.json';
 
 function PollMainContainer() {
   const [polls, setPolls] = useState<getPollsResponse>([]);
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
 
   useEffect(() => {

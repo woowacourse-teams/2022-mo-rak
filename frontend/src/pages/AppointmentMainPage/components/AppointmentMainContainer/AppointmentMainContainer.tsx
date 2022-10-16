@@ -4,7 +4,7 @@ import { useLottie } from 'lottie-react';
 import Box from '../../../../components/Box/Box';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { GetAppointmentsResponse } from '../../../../types/appointment';
 import { getAppointments } from '../../../../api/appointment';
 import AppointmentMainStatus from '../AppointmentMainStatus/AppointmentMainStatus';
@@ -21,7 +21,7 @@ import {
 
 function AppointmentMainContainer() {
   const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [appointments, setAppointments] = useState<GetAppointmentsResponse>([]);
 
   useEffect(() => {

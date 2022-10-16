@@ -1,4 +1,4 @@
-import { MemberInterface } from './group';
+import { Member } from './group';
 
 type Appointment = {
   id: number;
@@ -19,8 +19,8 @@ type AppointmentRecommendation = {
   rank: number;
   recommendStartDateTime: string;
   recommendEndDateTime: string;
-  availableMembers: Array<MemberInterface>;
-  unavailableMembers: Array<MemberInterface>;
+  availableMembers: Array<Member>;
+  unavailableMembers: Array<Member>;
 };
 
 type Time = {

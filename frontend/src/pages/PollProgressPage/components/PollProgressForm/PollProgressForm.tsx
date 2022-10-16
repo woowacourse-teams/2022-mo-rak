@@ -16,7 +16,7 @@ import {
   PollItemInterface
 } from '../../../../types/poll';
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { AxiosError } from 'axios';
 
 const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
@@ -30,7 +30,7 @@ const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
 function PollProgressForm() {
   const navigate = useNavigate();
   const { groupCode, pollCode } = useParams() as {
-    groupCode: GroupInterface['code'];
+    groupCode: Group['code'];
     pollCode: PollInterface['code'];
   };
   const [poll, setPoll] = useState<getPollResponse>();

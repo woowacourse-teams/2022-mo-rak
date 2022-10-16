@@ -3,16 +3,16 @@ import { StyledParticipantsStatus } from './PollMainProgress.styles';
 import Progress from '../../../../components/Progress/Progress';
 import { getPollResponse } from '../../../../types/poll';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { GroupInterface, MemberInterface } from '../../../../types/group';
+import { Group, Member } from '../../../../types/group';
 import { getGroupMembers } from '../../../../api/group';
 
 interface Props {
   currentParticipants: getPollResponse['count'];
-  groupCode: GroupInterface['code'];
+  groupCode: Group['code'];
 }
 
 function PollMainProgress({ currentParticipants, groupCode }: Props) {
-  const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
+  const [groupMembers, setGroupMembers] = useState<Array<Member>>([]);
   const totalParticipants = groupMembers.length;
 
   // TODO: 네트워크 요청 줄이기

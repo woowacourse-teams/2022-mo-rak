@@ -2,32 +2,32 @@
 // groupInstance보다는 더 명확할 것 같아서 사용을 했습니다.
 import { groupInstance as axios } from './axios';
 import { PollInterface, createPollData, SelectedPollItem } from '../types/poll';
-import { GroupInterface } from '../types/group';
+import { Group } from '../types/group';
 
-const getPolls = (groupCode: GroupInterface['code']) => axios.get(`/${groupCode}/polls`);
+const getPolls = (groupCode: Group['code']) => axios.get(`/${groupCode}/polls`);
 
-const getPoll = (pollCode: PollInterface['code'], groupCode: GroupInterface['code']) =>
+const getPoll = (pollCode: PollInterface['code'], groupCode: Group['code']) =>
   axios.get(`/${groupCode}/polls/${pollCode}`);
 
-const getPollItems = (pollCode: PollInterface['code'], groupCode: GroupInterface['code']) =>
+const getPollItems = (pollCode: PollInterface['code'], groupCode: Group['code']) =>
   axios.get(`/${groupCode}/polls/${pollCode}/items`);
 
-const getPollResult = (pollCode: PollInterface['code'], groupCode: GroupInterface['code']) =>
+const getPollResult = (pollCode: PollInterface['code'], groupCode: Group['code']) =>
   axios.get(`/${groupCode}/polls/${pollCode}/result`);
 
-const createPoll = (poll: createPollData, groupCode: GroupInterface['code']) =>
+const createPoll = (poll: createPollData, groupCode: Group['code']) =>
   axios.post(`/${groupCode}/polls`, poll);
 
 const progressPoll = (
-  groupCode: GroupInterface['code'],
+  groupCode: Group['code'],
   pollCode: PollInterface['code'],
   items: Array<SelectedPollItem>
 ) => axios.put(`/${groupCode}/polls/${pollCode}`, items);
 
-const deletePoll = (pollCode: PollInterface['code'], groupCode: GroupInterface['code']) =>
+const deletePoll = (pollCode: PollInterface['code'], groupCode: Group['code']) =>
   axios.delete(`/${groupCode}/polls/${pollCode}`);
 
-const closePoll = (pollCode: PollInterface['code'], groupCode: GroupInterface['code']) =>
+const closePoll = (pollCode: PollInterface['code'], groupCode: Group['code']) =>
   axios.patch(`/${groupCode}/polls/${pollCode}/close`);
 
 export {

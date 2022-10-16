@@ -1,4 +1,4 @@
-import { MemberInterface } from './group';
+import { Member } from './group';
 
 interface PollInterface {
   id: number;
@@ -35,7 +35,7 @@ type getPollsResponse = Array<getPollResponse>;
 
 type getPollResultResponse = Array<
   PollItemInterface & {
-    members: Array<MemberInterface & Pick<SelectedPollItem, 'description'>>;
+    members: Array<Member & Pick<SelectedPollItem, 'description'>>;
     count: number;
   }
 >;

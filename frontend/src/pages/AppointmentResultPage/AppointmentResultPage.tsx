@@ -7,7 +7,7 @@ import {
   AppointmentRecommendation,
   GetAppointmentResponse
 } from '../../types/appointment';
-import { GroupInterface } from '../../types/group';
+import { Group } from '../../types/group';
 import FlexContainer from '../../components/FlexContainer/FlexContainer';
 import AppointmentResultRanking from './components/AppointmentResultRanking/AppointmentResultRanking';
 import AppointmentResultAvailableMembers from './components/AppointmentResultAvailableMembers/AppointmentResultAvailableMembers';
@@ -24,7 +24,7 @@ function AppointmentResultPage() {
   const [clickedRecommendation, setClickedRecommendation] = useState<number>(-1);
 
   const { groupCode, appointmentCode } = useParams() as {
-    groupCode: GroupInterface['code'];
+    groupCode: Group['code'];
     appointmentCode: Appointment['code'];
   };
 

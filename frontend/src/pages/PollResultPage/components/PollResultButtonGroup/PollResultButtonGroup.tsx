@@ -5,14 +5,14 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Button from '../../../../components/Button/Button';
 import { closePoll, deletePoll } from '../../../../api/poll';
 import { PollInterface, getPollResponse, getPollItemsResponse } from '../../../../types/poll';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { AxiosError } from 'axios';
 
 interface Props {
   pollCode: PollInterface['code'];
   status: PollInterface['status'];
   isHost: getPollResponse['isHost'];
-  groupCode: GroupInterface['code'];
+  groupCode: Group['code'];
   pollItems: getPollItemsResponse;
 }
 

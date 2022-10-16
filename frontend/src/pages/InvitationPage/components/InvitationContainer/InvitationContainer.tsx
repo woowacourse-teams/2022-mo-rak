@@ -7,13 +7,13 @@ import Logo from '../../../../assets/logo.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import InvitationButtonGroup from '../InvitationButtonGroup/InvitationButtonGroup';
 import { getIsJoinedGroup } from '../../../../api/group';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 
 function InvitationContainer() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [groupCode, setGroupCode] = useState<GroupInterface['code']>('');
+  const [groupCode, setGroupCode] = useState<Group['code']>('');
   const { invitationCode } = useParams() as { invitationCode: string };
 
   useEffect(() => {

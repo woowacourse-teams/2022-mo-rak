@@ -2,7 +2,7 @@ import { MouseEventHandler, useState, useEffect } from 'react';
 
 import Crown from '../../../../assets/crown.svg';
 import { AppointmentRecommendation } from '../../../../types/appointment';
-import { GroupInterface, MemberInterface } from '../../../../types/group';
+import { Group, Member } from '../../../../types/group';
 import { getGroupMembers } from '../../../../api/group';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { getFormattedDateTime } from '../../../../utils/date';
@@ -14,7 +14,7 @@ import {
 } from './AppointmentResultRanking.styles';
 
 interface Props {
-  groupCode: GroupInterface['code'];
+  groupCode: Group['code'];
   appointmentRecommendation: Array<AppointmentRecommendation>;
   // TODO: clicked보다는 selected가 더 맞지 않을까?
   clickedRecommendation: number;
@@ -27,7 +27,7 @@ function AppointmentResultRanking({
   clickedRecommendation,
   onClickRank
 }: Props) {
-  const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
+  const [groupMembers, setGroupMembers] = useState<Array<Member>>([]);
   const totalParticipants = groupMembers.length;
 
   useEffect(() => {
