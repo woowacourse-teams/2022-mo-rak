@@ -1,5 +1,6 @@
 /node_modules
 /dist
+/cypress/videos
 .env
 .DS_STORE
 cypress.env.json
