@@ -48,26 +48,24 @@ function Sidebar() {
   return (
     <>
       <StyledContainer>
-        <>
-          <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
-          <SidebarGroupsMenu
-            onClickMenu={handleActiveModalMenu}
-            groupCode={groupCode}
-            groups={groups}
-          />
+        <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+        <SidebarGroupsMenu
+          onClickMenu={handleActiveModalMenu}
+          groupCode={groupCode}
+          groups={groups}
+        />
 
-          <Divider />
-          <SidebarFeaturesMenu groupCode={groupCode} />
+        <Divider />
+        <SidebarFeaturesMenu groupCode={groupCode} />
 
-          <Divider />
-          <SidebarMembersProfileMenu groupCode={groupCode} />
+        <Divider />
+        <SidebarMembersProfileMenu groupCode={groupCode} />
 
-          <StyledBottomMenu>
-            <SidebarSlackMenu onClick={handleActiveModalMenu('slack')} />
-            <SidebarInvitationMenu groupCode={groupCode} />
-            <SidebarLogoutMenu />
-          </StyledBottomMenu>
-        </>
+        <StyledBottomMenu>
+          <SidebarSlackMenu onClick={handleActiveModalMenu('slack')} />
+          <SidebarInvitationMenu groupCode={groupCode} />
+          <SidebarLogoutMenu />
+        </StyledBottomMenu>
       </StyledContainer>
 
       {/* TODO: 모달이 모여있음  */}

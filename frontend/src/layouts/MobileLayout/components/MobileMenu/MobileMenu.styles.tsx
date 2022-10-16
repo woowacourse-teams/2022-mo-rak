@@ -33,4 +33,39 @@ const StyledMenuIcon = styled.img<{
 `
 );
 
-export { StyledContainer, StyledMenuIcon };
+const StyledMenuListContainer = styled.div<{ isVisible: boolean }>(
+  ({ isVisible, theme }) => `
+  display: ${isVisible ? 'flex' : 'none'};
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  min-height: 100vh;
+  z-index: 1; 
+  background: ${theme.colors.WHITE_100};
+  padding: 4rem;
+  gap: 2rem;
+`
+);
+
+const StyledCloseButton = styled.button`
+  position: absolute;
+  top: 4rem;
+  right: 4rem;
+  z-index: 1;
+`;
+
+const StyledBottomMenu = styled.div`
+  margin-top: 2.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+`;
+
+export {
+  StyledContainer,
+  StyledMenuIcon,
+  StyledMenuListContainer,
+  StyledCloseButton,
+  StyledBottomMenu
+};
