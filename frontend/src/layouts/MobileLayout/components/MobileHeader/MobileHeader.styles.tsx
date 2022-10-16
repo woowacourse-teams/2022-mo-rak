@@ -10,12 +10,13 @@ const StyledContainer = styled.div(
   z-index: 1;
   width: 100vw;
   height: 10vh;
-  background:${theme.colors.WHITE_100}; 
+  background:${theme.colors.WHITE_100};
 `
 );
 
 const StyledLogo = styled.img`
   width: 8rem;
+  cursor: pointer;
 `;
 
 export { StyledContainer, StyledLogo };

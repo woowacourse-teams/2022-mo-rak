@@ -11,18 +11,26 @@ const StyledContainer = styled.div(
   width: 100vw;
   height: 10vh;
   background:${theme.colors.WHITE_100}; 
+  border-radius: 10px 10px 0 0;
 `
 );
 
-const StyledMenuIcon = styled.img`
-  //TODO: filter도 theme으로 변경해줄까?
-
-  filter: invert(59%) sepia(6%) saturate(17%) hue-rotate(314deg) brightness(103%) contrast(77%);
+const StyledMenuIcon = styled.img<{
+  isActive?: boolean;
+}>(
+  ({ isActive }) => `
   width: 5.2rem;
-
   &:hover {
     filter: invert(32%) sepia(66%) saturate(3979%) hue-rotate(241deg) brightness(93%) contrast(91%);
   }
-`;
+  
+  //TODO: filter도 theme으로 변경해줄까?
+  filter: ${
+    isActive
+      ? `invert(45%) sepia(82%) saturate(6262%) hue-rotate(243deg) brightness(94%) contrast(88%)`
+      : `invert(59%) sepia(6%) saturate(17%) hue-rotate(314deg) brightness(103%) contrast(77%)`
+  }
+`
+);
 
 export { StyledContainer, StyledMenuIcon };

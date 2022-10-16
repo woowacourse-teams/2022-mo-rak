@@ -1,10 +1,14 @@
 import { StyledContainer, StyledLogo } from './MobileHeader.styles';
 import Logo from '../../../../assets/logo.svg';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { GroupInterface } from '../../../../types/group';
-function MobileHeader() {
+
+interface Props {
+  groupCode: GroupInterface['code'];
+}
+
+function MobileHeader({ groupCode }: Props) {
   const navigate = useNavigate();
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
 
   const handleNavigate = (location: string) => () => {
     navigate(location);
