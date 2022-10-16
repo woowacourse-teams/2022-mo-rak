@@ -1,10 +1,10 @@
 import { useTheme } from '@emotion/react';
 import TextField from '../../../../components/TextField/TextField';
-import { AppointmentInterface } from '../../../../types/appointment';
+import { Appointment } from '../../../../types/appointment';
 import { StyledStatus } from './AppointmentResultStatus.styles';
 
 interface Props {
-  isClosed: AppointmentInterface['isClosed'];
+  isClosed: Appointment['isClosed'];
 }
 
 function AppointmentResultStatus({ isClosed }: Props) {

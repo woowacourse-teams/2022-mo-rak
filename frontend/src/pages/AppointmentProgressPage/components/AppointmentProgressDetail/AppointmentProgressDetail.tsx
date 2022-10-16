@@ -1,11 +1,11 @@
-import { AppointmentInterface } from '../../../../types/appointment';
+import { Appointment } from '../../../../types/appointment';
 import { StyledDuration } from './AppointmentProgressDetail.styles';
 
 interface Props {
-  durationHours: AppointmentInterface['durationHours'];
-  durationMinutes: AppointmentInterface['durationMinutes'];
-  startTime: AppointmentInterface['startTime'];
-  endTime: AppointmentInterface['endTime'];
+  durationHours: Appointment['durationHours'];
+  durationMinutes: Appointment['durationMinutes'];
+  startTime: Appointment['startTime'];
+  endTime: Appointment['endTime'];
 }
 
 function AppointmentProgressDetail({ durationHours, durationMinutes, startTime, endTime }: Props) {

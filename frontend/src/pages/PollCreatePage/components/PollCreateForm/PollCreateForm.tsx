@@ -17,11 +17,11 @@ import { createPoll } from '../../../../api/poll';
 import { createPollData, PollInterface } from '../../../../types/poll';
 import { GroupInterface } from '../../../../types/group';
 import useInput from '../../../../hooks/useInput';
-import { AppointmentInterface } from '../../../../types/appointment';
+import { Appointment } from '../../../../types/appointment';
 
 interface LocationWithState extends Location {
   state: {
-    title: AppointmentInterface['title'];
+    title: Appointment['title'];
     firstRankAppointmentRecommendations: Array<string>;
   };
 }

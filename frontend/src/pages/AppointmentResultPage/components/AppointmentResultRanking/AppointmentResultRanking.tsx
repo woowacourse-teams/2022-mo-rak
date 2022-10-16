@@ -1,7 +1,7 @@
 import { MouseEventHandler, useState, useEffect } from 'react';
 
 import Crown from '../../../../assets/crown.svg';
-import { AppointmentRecommendationInterface } from '../../../../types/appointment';
+import { AppointmentRecommendation } from '../../../../types/appointment';
 import { GroupInterface, MemberInterface } from '../../../../types/group';
 import { getGroupMembers } from '../../../../api/group';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
@@ -15,7 +15,7 @@ import {
 
 interface Props {
   groupCode: GroupInterface['code'];
-  appointmentRecommendation: Array<AppointmentRecommendationInterface>;
+  appointmentRecommendation: Array<AppointmentRecommendation>;
   // TODO: clicked보다는 selected가 더 맞지 않을까?
   clickedRecommendation: number;
   onClickRank: (idx: number) => MouseEventHandler<HTMLDivElement>;
@@ -47,7 +47,7 @@ function AppointmentResultRanking({
             recommendStartDateTime,
             recommendEndDateTime,
             availableMembers
-          }: AppointmentRecommendationInterface,
+          }: AppointmentRecommendation,
           idx
         ) => (
           <StyledRank

@@ -11,14 +11,14 @@ import AppointmentCreateFormCloseTimeInput from '../AppointmentCreateFormCloseTi
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import useInput from '../../../../hooks/useInput';
 import useInputs from '../../../../hooks/useInputs';
-import { Time, createAppointmentData, AppointmentInterface } from '../../../../types/appointment';
+import { Time, CreateAppointmentRequest, Appointment } from '../../../../types/appointment';
 import { createAppointment } from '../../../../api/appointment';
 import { GroupInterface } from '../../../../types/group';
 import { StyledForm } from './AppointmentCreateForm.styles';
 
 interface Props {
-  startDate: AppointmentInterface['startDate'];
-  endDate: AppointmentInterface['endDate'];
+  startDate: Appointment['startDate'];
+  endDate: Appointment['endDate'];
 }
 
 const getFormattedTime = (time: Time) => {
@@ -58,7 +58,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
     const formattedStartTime = getFormattedTime(startTime);
     const formattedEndTime = getFormattedTime(endTime);
 
-    const appointment: createAppointmentData = {
+    const appointment: CreateAppointmentRequest = {
       title,
       description,
       startDate,

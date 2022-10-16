@@ -2,11 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAppointment, progressAppointment } from '../../api/appointment';
 import { GroupInterface } from '../../types/group';
-import {
-  AvailableTimes,
-  AppointmentInterface,
-  getAppointmentResponse
-} from '../../types/appointment';
+import { AvailableTimes, Appointment, GetAppointmentResponse } from '../../types/appointment';
 import Calendar from '../../components/Calendar/Calendar';
 import AppointmentProgressHeader from './components/AppointmentProgressHeader/AppointmentProgressHeader';
 import AppointmentProgressTimePicker from './components/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
@@ -42,9 +38,9 @@ function AppointmentProgressPage() {
   const navigate = useNavigate();
   const { groupCode, appointmentCode } = useParams() as {
     groupCode: GroupInterface['code'];
-    appointmentCode: AppointmentInterface['code'];
+    appointmentCode: Appointment['code'];
   };
-  const [appointment, setAppointment] = useState<getAppointmentResponse>();
+  const [appointment, setAppointment] = useState<GetAppointmentResponse>();
   const [selectedDate, setSelectedDate] = useState('');
   const [availableTimes, setAvailableTimes] = useState<AvailableTimes>([]);
 

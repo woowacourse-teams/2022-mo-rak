@@ -3,9 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { StyledContainer } from './AppointmentResultPage.styles';
 import { getAppointment, getAppointmentRecommendation } from '../../api/appointment';
 import {
-  AppointmentInterface,
-  AppointmentRecommendationInterface,
-  getAppointmentResponse
+  Appointment,
+  AppointmentRecommendation,
+  GetAppointmentResponse
 } from '../../types/appointment';
 import { GroupInterface } from '../../types/group';
 import FlexContainer from '../../components/FlexContainer/FlexContainer';
@@ -17,22 +17,22 @@ import { AxiosError } from 'axios';
 
 function AppointmentResultPage() {
   const navigate = useNavigate();
-  const [appointment, setAppointment] = useState<getAppointmentResponse>();
+  const [appointment, setAppointment] = useState<GetAppointmentResponse>();
   const [appointmentRecommendation, setAppointmentRecommendation] = useState<
-    Array<AppointmentRecommendationInterface>
+    Array<AppointmentRecommendation>
   >([]);
   const [clickedRecommendation, setClickedRecommendation] = useState<number>(-1);
 
   const { groupCode, appointmentCode } = useParams() as {
     groupCode: GroupInterface['code'];
-    appointmentCode: AppointmentInterface['code'];
+    appointmentCode: Appointment['code'];
   };
 
   const handleShowParticipant = (idx: number) => () => {
     setClickedRecommendation(idx);
   };
 
-  const setIsClosed = (isClosed: AppointmentInterface['isClosed']) => {
+  const setIsClosed = (isClosed: Appointment['isClosed']) => {
     // TODO: if appointment가 맞나?...없을 수도 있어서 undefined error가 발생
     if (appointment) {
       setAppointment({ ...appointment, isClosed });

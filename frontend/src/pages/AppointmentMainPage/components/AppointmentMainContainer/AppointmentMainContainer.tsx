@@ -5,7 +5,7 @@ import Box from '../../../../components/Box/Box';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
 import { GroupInterface } from '../../../../types/group';
-import { getAppointmentsResponse } from '../../../../types/appointment';
+import { GetAppointmentsResponse } from '../../../../types/appointment';
 import { getAppointments } from '../../../../api/appointment';
 import AppointmentMainStatus from '../AppointmentMainStatus/AppointmentMainStatus';
 import AppointmentMainProgress from '../AppointmentMainProgress/AppointmentMainProgress';
@@ -22,7 +22,7 @@ import {
 function AppointmentMainContainer() {
   const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
-  const [appointments, setAppointments] = useState<getAppointmentsResponse>([]);
+  const [appointments, setAppointments] = useState<GetAppointmentsResponse>([]);
 
   useEffect(() => {
     (async () => {

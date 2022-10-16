@@ -2,7 +2,7 @@ import { useTheme } from '@emotion/react';
 
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import TextField from '../../../../components/TextField/TextField';
-import { AppointmentInterface } from '../../../../types/appointment';
+import { Appointment } from '../../../../types/appointment';
 import { StyledCloseTime, StyledDetail } from './AppointmentMainDetail.styles';
 
 const getFormattedClosedTime = (value: string) => {
@@ -19,9 +19,9 @@ const getFormattedClosedTime = (value: string) => {
 };
 
 interface Props {
-  durationHours: AppointmentInterface['durationHours'];
-  durationMinutes: AppointmentInterface['durationMinutes'];
-  closedAt: AppointmentInterface['closedAt'];
+  durationHours: Appointment['durationHours'];
+  durationMinutes: Appointment['durationMinutes'];
+  closedAt: Appointment['closedAt'];
 }
 
 function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Props) {

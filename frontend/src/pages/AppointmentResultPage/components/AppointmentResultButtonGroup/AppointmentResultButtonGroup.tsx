@@ -7,9 +7,9 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Tooltip from '../../../../components/Tooltip/Tooltip';
 import { GroupInterface } from '../../../../types/group';
 import {
-  AppointmentInterface,
-  getAppointmentResponse,
-  AppointmentRecommendationInterface
+  Appointment,
+  GetAppointmentResponse,
+  AppointmentRecommendation
 } from '../../../../types/appointment';
 import { closeAppointment, deleteAppointment } from '../../../../api/appointment';
 import Button from '../../../../components/Button/Button';
@@ -19,12 +19,12 @@ import { StyledHelpIconWrapper, StyledHelpIcon } from './AppointmentResultButton
 
 interface Props {
   groupCode: GroupInterface['code'];
-  appointmentCode: AppointmentInterface['code'];
-  isClosed: AppointmentInterface['isClosed'];
-  isHost: getAppointmentResponse['isHost'];
-  title: getAppointmentResponse['title'];
-  appointmentRecommendation: Array<AppointmentRecommendationInterface>;
-  setIsClosed: (isClosed: AppointmentInterface['isClosed']) => void;
+  appointmentCode: Appointment['code'];
+  isClosed: Appointment['isClosed'];
+  isHost: GetAppointmentResponse['isHost'];
+  title: GetAppointmentResponse['title'];
+  appointmentRecommendation: Array<AppointmentRecommendation>;
+  setIsClosed: (isClosed: Appointment['isClosed']) => void;
 }
 
 function AppointmentResultButtonGroup({
