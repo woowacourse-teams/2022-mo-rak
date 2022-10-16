@@ -9,7 +9,7 @@ const StyledMenuHeader = styled.div`
 
 const StyledGroupsModalBox = styled.div`
   overflow-y: auto;
-  max-height: 32.4rem;
+  max-height: 26.4rem;
 `;
 
 const StyledSettingIcon = styled.img`

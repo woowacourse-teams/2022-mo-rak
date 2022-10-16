@@ -5,7 +5,6 @@ import {
   StyledCloseButton,
   StyledBottomMenu
 } from './MobileMenu.styles';
-import { getGroups } from '../../../../api/group';
 import Home from '../../../../assets/home.svg';
 import MenuImg from '../../../../assets/menu.svg';
 import Poll from '../../../../assets/poll.svg';
@@ -26,19 +25,18 @@ import MobileLogoutMenu from '../MobileLogoutMenu/MobileLogoutMenu';
 import MobileGroupsMenu from '../MobileGroupsMenu/MobileGroupsMenu';
 import MobileMenuModals from '../MobileMenuModals/MobileMenuModals';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface Props {
   groupCode: GroupInterface['code'];
+  groups: Array<GroupInterface>;
 }
 
-function MobileMenu({ groupCode }: Props) {
+function MobileMenu({ groupCode, groups }: Props) {
   const { activeMenu } = useMenuContext();
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
-  const [groups, setGroups] = useState<Array<GroupInterface>>([]);
   const [isVisibleListMenu, setIsVisibleListMenu] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [activeModalMenu, setActiveModalMenu] = useState<null | string>(null);
 
   const handleCloseListMenu = () => {
@@ -65,19 +63,6 @@ function MobileMenu({ groupCode }: Props) {
     setIsVisibleListMenu(false);
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await getGroups();
-        setGroups(res.data);
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(true);
-      }
-    })();
-  }, [groupCode]);
-
-  if (isLoading) return <div>로딩중</div>;
   return (
     <>
       <StyledContainer>
