@@ -18,25 +18,28 @@ import { getGroupMembers } from '../../../../api/group';
 import { useParams } from 'react-router-dom';
 import { GroupInterface } from '../../../../types/group';
 import { MemberInterface } from '../../../../types/group';
+import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
+import DeletedUser from '../../../../assets/deleted-user.svg';
 
 type Props = { rolesHistories: GetRolesHistoriesResponse };
 
 function RoleMainResult({ rolesHistories }: Props) {
   const [activeIdx, setActiveIdx] = useState(0);
-  // TODO: 임시
-  const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
+  const { groupMembers } = useGroupMembersContext();
+
+  // const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const handleShowResult = (idx: number) => () => {
     setActiveIdx(idx);
   };
 
-  // TODO: 임시
-  useEffect(() => {
-    (async () => {
-      const res = await getGroupMembers(groupCode);
-      setGroupMembers(res.data);
-    })();
-  }, []);
+  // // TODO: 임시
+  // useEffect(() => {
+  //   (async () => {
+  //     const res = await getGroupMembers(groupCode);
+  //     setGroupMembers(res.data);
+  //   })();
+  // }, []);
 
   return (
     <FlexContainer gap="3rem">
@@ -49,14 +52,14 @@ function RoleMainResult({ rolesHistories }: Props) {
               const currentRole = rolesHistories.roles[activeIdx].role;
 
               return currentRole.map(({ memberId, name }) => {
-                const [currentMember] = groupMembers.filter(({ id }) => id === memberId);
+                const currentMember = groupMembers.find(({ id }) => id === memberId);
 
                 return (
                   <StyledRoleContainer key={memberId}>
                     <StyledRole>{name}</StyledRole>
                     <Avatar
-                      profileUrl={currentMember.profileUrl}
-                      name={currentMember.name}
+                      profileUrl={currentMember?.profileUrl ?? DeletedUser}
+                      name={currentMember?.name ?? '탈퇴 회원'}
                       width="8rem"
                     />
                   </StyledRoleContainer>
