@@ -78,7 +78,6 @@ function AppointmentResultPage() {
         />
         <FlexContainer gap="4rem">
           <AppointmentResultRanking
-            groupCode={groupCode}
             appointmentRecommendation={appointmentRecommendation}
             clickedRecommendation={clickedRecommendation}
             onClickRank={handleShowParticipant}

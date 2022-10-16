@@ -12,12 +12,8 @@ import {
   StyledEmptyText
 } from './RoleMainResult.styles';
 import Divider from '../../../../components/Divider/Divider';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { GetRolesHistoriesResponse } from '../../../../types/role';
-import { getGroupMembers } from '../../../../api/group';
-import { useParams } from 'react-router-dom';
-import { GroupInterface } from '../../../../types/group';
-import { MemberInterface } from '../../../../types/group';
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 import DeletedUser from '../../../../assets/deleted-user.svg';
 
@@ -26,20 +22,9 @@ type Props = { rolesHistories: GetRolesHistoriesResponse };
 function RoleMainResult({ rolesHistories }: Props) {
   const [activeIdx, setActiveIdx] = useState(0);
   const { groupMembers } = useGroupMembersContext();
-
-  // const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const handleShowResult = (idx: number) => () => {
     setActiveIdx(idx);
   };
-
-  // // TODO: 임시
-  // useEffect(() => {
-  //   (async () => {
-  //     const res = await getGroupMembers(groupCode);
-  //     setGroupMembers(res.data);
-  //   })();
-  // }, []);
 
   return (
     <FlexContainer gap="3rem">

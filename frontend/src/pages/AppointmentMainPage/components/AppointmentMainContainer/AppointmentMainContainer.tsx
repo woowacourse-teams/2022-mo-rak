@@ -56,7 +56,7 @@ function AppointmentMainContainer() {
             </FlexContainer>
             <StyledTitle>{title}</StyledTitle>
             <MarginContainer margin="0 0 0.4rem">
-              <AppointmentMainProgress count={count} groupCode={groupCode} />
+              <AppointmentMainProgress count={count} />
             </MarginContainer>
             <MarginContainer margin="0 0 1.6rem">
               <AppointmentMainDetail

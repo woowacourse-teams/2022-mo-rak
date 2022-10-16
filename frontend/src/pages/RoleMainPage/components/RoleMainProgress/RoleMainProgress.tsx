@@ -13,7 +13,7 @@ import {
 import { useLottie } from 'lottie-react';
 import fireworkAnimation from '../../../../assets/firework-animation.json';
 import RoleMainRoleEditModal from '../RoleMainRoleEditModal/RoleMainRoleEditModal';
-import { allocateRoles, getRoles, getRolesHistories } from '../../../../api/role';
+import { allocateRoles, getRoles } from '../../../../api/role';
 import { useParams } from 'react-router-dom';
 import { GroupInterface } from '../../../../types/group';
 import { EditRolesRequest } from '../../../../types/role';
@@ -25,9 +25,9 @@ type Props = {
 
 function RoleMainProgress({ onAllocateRoles }: Props) {
   const theme = useTheme();
+  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [roles, setRoles] = useState<EditRolesRequest['roles']>([]);
   const [isLottieVisible, setIsLottieVisible] = useState(false);
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [isRoleEditModalVisible, setIsRoleEditModalVisible] = useState(false);
   const fireworkLottie = useLottie(
     {
@@ -38,6 +38,16 @@ function RoleMainProgress({ onAllocateRoles }: Props) {
       width: '68rem'
     }
   );
+
+  const triggerFireworkLottie = () => {
+    setIsLottieVisible(true);
+    fireworkLottie.play();
+
+    setTimeout(() => {
+      setIsLottieVisible(false);
+      fireworkLottie.pause();
+    }, 2000);
+  };
 
   const handleAllocateRoles = async () => {
     try {
@@ -63,16 +73,6 @@ function RoleMainProgress({ onAllocateRoles }: Props) {
         }
       }
     }
-  };
-
-  const triggerFireworkLottie = () => {
-    setIsLottieVisible(true);
-    fireworkLottie.play();
-
-    setTimeout(() => {
-      setIsLottieVisible(false);
-      fireworkLottie.pause();
-    }, 2000);
   };
 
   const handleCloseRoleEditModal = () => {
@@ -103,7 +103,6 @@ function RoleMainProgress({ onAllocateRoles }: Props) {
 
   return (
     <>
-      {/* 역할칩 */}
       <StyledRolesContainer>
         {roles.map((role, idx) => {
           return (
@@ -121,7 +120,6 @@ function RoleMainProgress({ onAllocateRoles }: Props) {
         })}
       </StyledRolesContainer>
 
-      {/* 버튼 */}
       <FlexContainer justifyContent="center" gap="2rem">
         <Button
           variant="filled"

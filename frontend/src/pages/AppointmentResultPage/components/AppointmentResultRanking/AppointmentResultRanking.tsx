@@ -1,9 +1,7 @@
-import { MouseEventHandler, useState, useEffect } from 'react';
+import { MouseEventHandler } from 'react';
 
 import Crown from '../../../../assets/crown.svg';
 import { AppointmentRecommendationInterface } from '../../../../types/appointment';
-import { GroupInterface, MemberInterface } from '../../../../types/group';
-import { getGroupMembers } from '../../../../api/group';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { getFormattedDateTime } from '../../../../utils/date';
 import {
@@ -12,9 +10,9 @@ import {
   StyledCrownIcon,
   StyledRank
 } from './AppointmentResultRanking.styles';
+import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 
 interface Props {
-  groupCode: GroupInterface['code'];
   appointmentRecommendation: Array<AppointmentRecommendationInterface>;
   // TODO: clicked보다는 selected가 더 맞지 않을까?
   clickedRecommendation: number;
@@ -22,20 +20,12 @@ interface Props {
 }
 
 function AppointmentResultRanking({
-  groupCode,
   appointmentRecommendation,
   clickedRecommendation,
   onClickRank
 }: Props) {
-  const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
+  const { groupMembers } = useGroupMembersContext();
   const totalParticipants = groupMembers.length;
-
-  useEffect(() => {
-    (async () => {
-      const res = await getGroupMembers(groupCode);
-      setGroupMembers(res.data);
-    })();
-  }, [groupCode]);
 
   return (
     <StyledResultBox>

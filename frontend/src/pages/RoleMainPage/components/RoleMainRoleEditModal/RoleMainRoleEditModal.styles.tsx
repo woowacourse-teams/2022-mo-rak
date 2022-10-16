@@ -15,8 +15,14 @@ const StyledLogo = styled.img`
   margin-bottom: 2rem;
 `;
 
-const StyledHeader = styled.div`
+const StyledTitle = styled.p`
   font-size: 2rem;
+  text-align: center;
+  margin-bottom: 0.8rem;
+`;
+
+const StyledDescription = styled.p`
+  font-size: 1.2rem;
   text-align: center;
   margin-bottom: 1.2rem;
 `;
@@ -86,11 +92,12 @@ const StyledBinIcon = styled.img`
 export {
   StyledModalFormContainer,
   StyledLogo,
-  StyledHeader,
+  StyledTitle,
   StyledTop,
   StyledCloseButton,
   StyledTriangle,
   StyledBottom,
   StyledBinIcon,
-  StyledRolesContainer
+  StyledRolesContainer,
+  StyledDescription
 };
