@@ -32,7 +32,7 @@ public class PollItems {
         if (this.values.isEmpty() || pollInfo.isAllowedCountGraterThan(this.values.size())) {
             throw new PollDomainLogicException(
                     CustomErrorCode.POLL_ITEM_COUNT_OUT_OF_RANGE_ERROR,
-                    "투표 항목의 개수(" + values.size() + ")는 " + pollInfo.getAllowedCount() + "개 이상여야합니다."
+                    "투표 항목의 개수(" + values.size() + ")는 " + pollInfo.getAllowedCount().getValue() + "개 이상여야합니다."
             );
         }
     }

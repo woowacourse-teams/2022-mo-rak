@@ -95,4 +95,12 @@ public class NewPoll extends BaseEntity {
     public List<NewPollItem> getPollItems() {
         return this.pollItems.getValues();
     }
+
+    public boolean isBelongedTo(Long teamId) {
+        return this.pollInfo.getTeamId().equals(teamId);
+    }
+
+    public boolean isHost(final Member member) {
+        return getPollInfo().isHost(member.getId());
+    }
 }
