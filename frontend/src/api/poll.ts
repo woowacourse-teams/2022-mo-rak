@@ -19,9 +19,9 @@ const createPoll = (poll: createPollData, groupCode: GroupInterface['code']) =>
   axios.post(`/${groupCode}/polls`, poll);
 
 const progressPoll = (
+  groupCode: GroupInterface['code'],
   pollCode: PollInterface['code'],
-  items: Array<SelectedPollItem>,
-  groupCode: GroupInterface['code']
+  items: Array<SelectedPollItem>
 ) => axios.put(`/${groupCode}/polls/${pollCode}`, items);
 
 const deletePoll = (pollCode: PollInterface['code'], groupCode: GroupInterface['code']) =>

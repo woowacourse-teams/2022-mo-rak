@@ -17,22 +17,10 @@ function PollMainProgress({ currentParticipants, groupCode }: Props) {
 
   // TODO: 네트워크 요청 줄이기
   useEffect(() => {
-    const fetchGroupMembers = async () => {
-      try {
-        if (groupCode) {
-          const res = await getGroupMembers(groupCode);
-
-          setGroupMembers(res.data);
-        }
-      } catch (err) {
-        if (err instanceof Error) {
-          // TOOD: 모든 곳에서 401 대비를 해주는 게 맞을까?
-          console.log(err);
-        }
-      }
-    };
-
-    fetchGroupMembers();
+    (async () => {
+      const res = await getGroupMembers(groupCode);
+      setGroupMembers(res.data);
+    })();
   }, [groupCode]);
 
   return (

@@ -27,16 +27,10 @@ function PollMainContainer() {
   const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
 
   useEffect(() => {
-    const fetchPolls = async () => {
+    (async () => {
       const res = await getPolls(groupCode);
       setPolls(res.data);
-    };
-
-    try {
-      fetchPolls();
-    } catch (err) {
-      alert(err);
-    }
+    })();
   }, []);
 
   if (polls.length <= 0) {
@@ -51,31 +45,29 @@ function PollMainContainer() {
 
   return (
     <StyledContainer>
-      {polls.length > 0 &&
-        polls.map(({ status, title, code, isAnonymous, allowedPollCount, closedAt, count }) => (
-          <Box
-            key={code}
-            width="36.4rem"
-            padding="2.8rem"
-            minHeight="23.2rem"
-            filter={status === 'CLOSED' ? 'grayscale(1)' : 'none'}
-          >
-            <FlexContainer justifyContent="end">
-              <PollMainStatus status={status} />
-            </FlexContainer>
-            <StyledTitle>{title}</StyledTitle>
-            <PollMainProgress currentParticipants={count} groupCode={groupCode} />
-            <MarginContainer margin="0 0 1.6rem">
-              {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
-              <PollMainDetail
-                isAnonymous={isAnonymous}
-                allowedPollCount={allowedPollCount}
-                closedAt={closedAt}
-              />
-            </MarginContainer>
-            <PollMainButtonGroup pollCode={code} status={status} />
-          </Box>
-        ))}
+      {polls.map(({ status, title, code, isAnonymous, allowedPollCount, closedAt, count }) => (
+        <Box
+          key={code}
+          width="36.4rem"
+          padding="2.8rem"
+          filter={status === 'CLOSED' ? 'grayscale(1)' : 'none'}
+        >
+          <FlexContainer justifyContent="end">
+            <PollMainStatus status={status} />
+          </FlexContainer>
+          <StyledTitle>{title}</StyledTitle>
+          <PollMainProgress currentParticipants={count} groupCode={groupCode} />
+          <MarginContainer margin="0 0 1.6rem">
+            {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
+            <PollMainDetail
+              isAnonymous={isAnonymous}
+              allowedPollCount={allowedPollCount}
+              closedAt={closedAt}
+            />
+          </MarginContainer>
+          <PollMainButtonGroup pollCode={code} status={status} />
+        </Box>
+      ))}
     </StyledContainer>
   );
 }

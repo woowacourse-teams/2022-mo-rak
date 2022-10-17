@@ -83,8 +83,7 @@ function AppointmentProgressTimePicker({
   const timeTables = useMemo(() => getTimeTables(startTime, endTime), []);
 
   return (
-    // TODO: box minheight 없애야할듯
-    <Box width="30rem" minHeight="52rem" height="60rem" padding="3.6rem 2rem" overflow="auto">
+    <Box width="30rem" height="60rem" padding="3.6rem 2rem" overflow="auto">
       <FlexContainer flexDirection="column" gap="1.2rem">
         {!selectedDate ? (
           <StyledGuide>왼쪽에서 날짜를 선택해주세요</StyledGuide>

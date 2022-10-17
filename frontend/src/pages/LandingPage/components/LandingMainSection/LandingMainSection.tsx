@@ -4,17 +4,17 @@ import {
   StyledBlobImage,
   StyledGithubLogo,
   StyledGlitterImage,
-  StyledGuideText,
   StyledLineImage,
   StyledLink,
   StyledLoginContainer,
   StyledLoginText,
   StyledLogo,
-  StyledMainSection,
+  StyledContainer,
   StyledNextSectionGuideContainer,
   StyledSmileImage,
   StyledSubTitle,
-  StyledTitle
+  StyledTitle,
+  StyledAnchor
 } from './LandingMainSection.styles';
 
 import Logo from '../../../../assets/logo.svg';
@@ -30,7 +30,7 @@ interface Props extends HTMLAttributes<HTMLElement> {}
 
 function LandingMainSection({ id }: Props) {
   return (
-    <StyledMainSection id={id}>
+    <StyledContainer id={id}>
       <LandingNavbar />
       <StyledLogo src={Logo} alt="logo" />
 
@@ -56,10 +56,10 @@ function LandingMainSection({ id }: Props) {
       <StyledNextSectionGuideContainer>
         <StyledBlobContainer>
           <StyledBlobImage src={Blob} alt="blob" />
-          <StyledGuideText>모락 소개</StyledGuideText>
+          <StyledAnchor href="#service-introduction-section">모락 소개</StyledAnchor>
         </StyledBlobContainer>
       </StyledNextSectionGuideContainer>
-    </StyledMainSection>
+    </StyledContainer>
   );
 }
 

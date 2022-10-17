@@ -51,15 +51,28 @@ function AppointmentResultButtonGroup({
     try {
       if (window.confirm('약속잡기를 마감하시겠습니까?')) {
         await closeAppointment(groupCode, appointmentCode);
-        const {
-          data: { status }
-        } = await getAppointmentStatus(groupCode, appointmentCode);
-
-        const isClosed = status === 'CLOSED' ? true : false;
-        setIsClosed(isClosed);
+        setIsClosed(true);
       }
     } catch (err) {
-      console.log(err);
+      if (err instanceof AxiosError) {
+        const errCode = err.response?.data.codeNumber;
+
+        switch (errCode) {
+          case '3300': {
+            alert('존재하지 않는 약속잡기입니다.');
+            navigate(`/groups/${groupCode}/appointment`);
+
+            break;
+          }
+
+          case '3100': {
+            alert('마감된 약속잡기입니다.');
+            setIsClosed(true);
+
+            break;
+          }
+        }
+      }
     }
   };
 
@@ -71,17 +84,13 @@ function AppointmentResultButtonGroup({
       )}`;
     });
 
-  const handleCreateNewPoll = async () => {
-    try {
-      navigate(`/groups/${groupCode}/poll/create`, {
-        state: {
-          title,
-          firstRankAppointmentRecommendations
-        }
-      });
-    } catch (err) {
-      console.log(err);
-    }
+  const handleCreateNewPoll = () => {
+    navigate(`/groups/${groupCode}/poll/create`, {
+      state: {
+        title,
+        firstRankAppointmentRecommendations
+      }
+    });
   };
 
   const handleDeleteAppointment = async () => {
@@ -94,9 +103,22 @@ function AppointmentResultButtonGroup({
       if (err instanceof AxiosError) {
         const errCode = err.response?.data.codeNumber;
 
-        if (errCode === '9902') {
-          alert('현재 사이트 이용이 원활하지 않아 삭제가 진행되지 않았습니다. 잠시후 이용해주세요');
-          navigate(`/groups/${groupCode}/appointment`);
+        switch (errCode) {
+          case '9902': {
+            alert(
+              '현재 사이트 이용이 원활하지 않아 삭제가 진행되지 않았습니다. 잠시후 이용해주세요'
+            );
+            navigate(`/groups/${groupCode}/appointment`);
+
+            break;
+          }
+
+          case '3300': {
+            alert('존재하지 않는 약속잡기입니다.');
+            navigate(`/groups/${groupCode}/appointment`);
+
+            break;
+          }
         }
       }
     }

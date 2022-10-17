@@ -17,6 +17,7 @@ import {
 } from '../../../../types/poll';
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 import { GroupInterface } from '../../../../types/group';
+import { AxiosError } from 'axios';
 
 const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
   pollItems
@@ -39,7 +40,6 @@ function PollProgressForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!poll) return;
     if (selectedPollItems.length <= 0) {
       alert('최소 1개의 선택항목을 선택해주세요!');
 
@@ -47,10 +47,28 @@ function PollProgressForm() {
     }
 
     try {
-      await progressPoll(pollCode, selectedPollItems, groupCode);
+      await progressPoll(groupCode, pollCode, selectedPollItems);
       navigate(`/groups/${groupCode}/poll/${pollCode}/result`);
     } catch (err) {
-      alert(err);
+      if (err instanceof AxiosError) {
+        const errCode = err.response?.data.codeNumber;
+
+        switch (errCode) {
+          case '2300': {
+            alert('존재하지 않는 투표입니다!');
+            navigate(`/groups/${groupCode}/poll`);
+
+            break;
+          }
+
+          case '2100': {
+            alert('마감된 투표입니다.');
+            navigate(`/groups/${groupCode}/poll`);
+
+            break;
+          }
+        }
+      }
     }
   };
 
@@ -82,7 +100,6 @@ function PollProgressForm() {
 
   const handleDescription =
     (pollItemId: PollItemInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
-      // TODO: 깊은 복사 함수 만들기
       const copiedSelectedPollItems: Array<SelectedPollItem> = JSON.parse(
         JSON.stringify(selectedPollItems)
       );
@@ -98,7 +115,7 @@ function PollProgressForm() {
     };
 
   useEffect(() => {
-    const fetchPoll = async (pollCode: PollInterface['code']) => {
+    (async (pollCode: PollInterface['code']) => {
       try {
         const res = await getPoll(pollCode, groupCode);
 
@@ -111,25 +128,25 @@ function PollProgressForm() {
 
         setPoll(res.data);
       } catch (err) {
-        alert('poll 없어~~');
-        navigate(`/groups/${groupCode}/poll`);
-      }
-    };
+        if (err instanceof AxiosError) {
+          const errCode = err.response?.data.codeNumber;
 
-    fetchPoll(pollCode);
+          if (errCode === '2300') {
+            alert('존재하지 않는 투표입니다!');
+            navigate(`/groups/${groupCode}/poll`);
+          }
+        }
+      }
+    })(pollCode);
   }, []);
 
   useEffect(() => {
-    const fetchPollItems = async (pollCode: PollInterface['code']) => {
+    (async (pollCode: PollInterface['code']) => {
       try {
         const res = await getPollItems(pollCode, groupCode);
         setPollItems(res.data);
-      } catch (err) {
-        alert(err);
-      }
-    };
-
-    fetchPollItems(pollCode);
+      } catch (err) {}
+    })(pollCode);
   }, []);
 
   useEffect(() => {

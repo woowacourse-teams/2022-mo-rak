@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyledTitle } from './PollResultContainer.styles';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Box from '../../../../components/Box/Box';
 import Divider from '../../../../components/Divider/Divider';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
@@ -22,8 +22,10 @@ import { GroupInterface } from '../../../../types/group';
 import PollResultProgress from '../PollResultProgress/PollResultProgress';
 import PollResultStatus from '../PollResultStatus/PollResultStatus';
 import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
+import { AxiosError } from 'axios';
 
 function PollResultContainer() {
+  const navigate = useNavigate();
   const { groupCode, pollCode } = useParams() as {
     groupCode: GroupInterface['code'];
     pollCode: PollInterface['code'];
@@ -33,35 +35,35 @@ function PollResultContainer() {
   const [pollItems, setPollItems] = useState<getPollItemsResponse>([]);
 
   useEffect(() => {
-    const fetchPoll = async () => {
-      const res = await getPoll(pollCode, groupCode);
-      setPoll(res.data);
-    };
+    (async () => {
+      try {
+        const res = await getPoll(pollCode, groupCode);
+        setPoll(res.data);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          const errCode = err.response?.data.codeNumber;
 
-    const fetchPollResult = async () => {
-      const res = await getPollResult(pollCode, groupCode);
-      setPollResult(res.data);
-    };
-
-    try {
-      fetchPoll();
-      fetchPollResult();
-    } catch (err) {
-      alert(err);
-    }
+          if (errCode === '2300') {
+            alert('존재하지 않는 투표입니다');
+            navigate(`/groups/${groupCode}/poll`);
+          }
+        }
+      }
+    })();
   }, []);
 
   useEffect(() => {
-    const fetchPollItems = async (pollCode: PollInterface['code']) => {
-      try {
-        const res = await getPollItems(pollCode, groupCode);
-        setPollItems(res.data);
-      } catch (err) {
-        alert(err);
-      }
-    };
+    (async () => {
+      const res = await getPollResult(pollCode, groupCode);
+      setPollResult(res.data);
+    })();
+  }, []);
 
-    fetchPollItems(pollCode);
+  useEffect(() => {
+    (async (pollCode: PollInterface['code']) => {
+      const res = await getPollItems(pollCode, groupCode);
+      setPollItems(res.data);
+    })(pollCode);
   }, []);
 
   return (

@@ -22,6 +22,7 @@ const AppointmentProgressPage = lazy(
 const AppointmentResultPage = lazy(
   () => import('./pages/AppointmentResultPage/AppointmentResultPage')
 );
+const RoleMainPage = lazy(() => import('./pages/RoleMainPage/RoleMainPage'));
 
 function App() {
   return (
@@ -56,6 +57,12 @@ function App() {
                     <Route path="create" element={<AppointmentCreatePage />} />
                     <Route path=":appointmentCode/progress" element={<AppointmentProgressPage />} />
                     <Route path=":appointmentCode/result" element={<AppointmentResultPage />} />
+                  </Route>
+                </Route>
+
+                <Route element={<MenuRoute menu="role" />}>
+                  <Route path="role">
+                    <Route index element={<RoleMainPage />} />
                   </Route>
                 </Route>
               </Route>

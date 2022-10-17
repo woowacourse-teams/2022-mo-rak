@@ -1,54 +1,58 @@
 import { useNavigate } from 'react-router-dom';
-import Poll from '../../../../assets/person-check.svg';
+import Poll from '../../../../assets/poll.svg';
 import Appointment from '../../../../assets/calendar-clock.svg';
+import Role from '../../../../assets/role.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import useMenuContext from '../../../../hooks/useMenuContext';
+import { Menu } from '../../../../types/menu';
 
 import { GroupInterface } from '../../../../types/group';
 import {
   StyledMenuHeader,
-  StyledFeatureContainer,
-  StyledPollIcon,
-  StyledAppointmentIcon,
-  StyledFeatureTitle,
-  StyledPollMenu,
-  StyledAppointmentMenu
-} from './SidebarFeatureMenu.styles';
+  StyledContainer,
+  StyledMenuIcon,
+  StyledMenuTitle,
+  StyledMenu
+} from './SidebarFeaturesMenu.styles';
 
 interface Props {
   groupCode: GroupInterface['code'];
 }
 
-function SidebarFeatureMenu({ groupCode }: Props) {
+function SidebarFeaturesMenu({ groupCode }: Props) {
   const { activeMenu } = useMenuContext();
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
 
   // TODO: 함수 역할에 맞게 분리 (navigate 역할 분리)
-  const handleActiveMenu = (menu: 'poll' | 'appointment') => () => {
+  const handleActiveMenu = (menu: Menu) => () => {
     dispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
     navigate(`/groups/${groupCode}/${menu}`);
   };
 
   return (
-    <StyledFeatureContainer>
+    <StyledContainer>
       <StyledMenuHeader>기능</StyledMenuHeader>
       <FlexContainer flexDirection="column">
-        <StyledPollMenu onClick={handleActiveMenu('poll')} isActive={activeMenu === 'poll'}>
-          <StyledPollIcon src={Poll} />
-          <StyledFeatureTitle>투표하기</StyledFeatureTitle>
-        </StyledPollMenu>
-        <StyledAppointmentMenu
+        <StyledMenu onClick={handleActiveMenu('poll')} isActive={activeMenu === 'poll'}>
+          <StyledMenuIcon src={Poll} />
+          <StyledMenuTitle>투표하기</StyledMenuTitle>
+        </StyledMenu>
+        <StyledMenu
           onClick={handleActiveMenu('appointment')}
           isActive={activeMenu === 'appointment'}
         >
-          <StyledAppointmentIcon src={Appointment} />
-          <StyledFeatureTitle>약속잡기</StyledFeatureTitle>
-        </StyledAppointmentMenu>
+          <StyledMenuIcon src={Appointment} />
+          <StyledMenuTitle>약속잡기</StyledMenuTitle>
+        </StyledMenu>
+        <StyledMenu onClick={handleActiveMenu('role')} isActive={activeMenu === 'role'}>
+          <StyledMenuIcon src={Role} />
+          <StyledMenuTitle>역할 정하기</StyledMenuTitle>
+        </StyledMenu>
       </FlexContainer>
-    </StyledFeatureContainer>
+    </StyledContainer>
   );
 }
 
-export default SidebarFeatureMenu;
+export default SidebarFeaturesMenu;

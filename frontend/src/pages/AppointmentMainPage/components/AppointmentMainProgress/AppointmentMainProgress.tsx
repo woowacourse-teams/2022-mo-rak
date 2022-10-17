@@ -16,21 +16,10 @@ function AppointmentMainProgress({ count, groupCode }: Props) {
   const currentParticipants = count;
 
   useEffect(() => {
-    const fetchGroupMembers = async () => {
-      try {
-        if (groupCode) {
-          const res = await getGroupMembers(groupCode);
-
-          setGroupMembers(res.data);
-        }
-      } catch (err) {
-        if (err instanceof Error) {
-          console.log(err);
-        }
-      }
-    };
-
-    fetchGroupMembers();
+    (async () => {
+      const res = await getGroupMembers(groupCode);
+      setGroupMembers(res.data);
+    })();
   }, [groupCode]);
 
   return (

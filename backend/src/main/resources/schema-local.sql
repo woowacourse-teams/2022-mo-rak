@@ -149,3 +149,32 @@ CREATE TABLE slack_webhook
     PRIMARY KEY (id),
     FOREIGN KEY (team_id) REFERENCES team (id)
 );
+
+CREATE TABLE role
+(
+    `id`        BIGINT       NOT NULL AUTO_INCREMENT,
+    `team_code` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE role_match_result
+(
+    `role_history_id` BIGINT       NOT NULL,
+    `member_id`       BIGINT       NOT NULL,
+    `role_name`       VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`role_history_id`, `role_name`)
+);
+
+CREATE TABLE role_name
+(
+    `role_id`   BIGINT       NOT NULL,
+    `role_name` VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE role_history
+(
+    `id`        BIGINT    NOT NULL AUTO_INCREMENT,
+    `date_time` TIMESTAMP NOT NULL,
+    `role_id`   BIGINT    NOT NULL,
+    PRIMARY KEY (`id`)
+);

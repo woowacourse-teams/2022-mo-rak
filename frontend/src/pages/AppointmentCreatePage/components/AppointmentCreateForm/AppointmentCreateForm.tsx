@@ -79,29 +79,40 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
 
       navigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`);
     } catch (err) {
+      console.log(err, 'error');
       if (err instanceof AxiosError) {
         const errCode = err.response?.data.codeNumber;
 
-        if (errCode === '3103') {
-          alert('진행 시간은 약속잡기 시간(가능시간제한)보다 짧아야 합니다.');
+        switch (errCode) {
+          case '3103': {
+            alert('진행 시간은 약속잡기 시간(가능시간제한)보다 짧아야 합니다.');
 
-          return;
-        }
+            break;
+          }
 
-        if (errCode === '3117') {
-          alert('마감 시간은 현재 시간과 마지막 날짜의 최대 가능 시간사이여야합니다');
+          case '3117': {
+            alert('마감 시간은 현재 시간과 마지막 날짜의 최대 가능 시간사이여야합니다');
 
-          return;
-        }
+            break;
+          }
 
-        if (errCode === '3102') {
-          alert('약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다..');
+          case '3102': {
+            alert('약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다..');
 
-          return;
-        }
+            break;
+          }
 
-        if (errCode === '3107') {
-          alert('약속잡기 진행시간은 30분에서 24시간 사이여야 합니다.');
+          case '3107': {
+            alert('약속잡기 진행시간은 30분에서 24시간 사이여야 합니다.');
+
+            break;
+          }
+
+          case '4000': {
+            alert('제목과 설명은 공백일 수 없습니다.');
+
+            break;
+          }
         }
       }
     }
@@ -116,7 +127,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
     // TODO: StyledForm처럼 컴포넌트의 역할을 담은 네이밍을 해줄 것인지? S
     // StyledContainer처럼 최상단은 무조건 StyledContainer로 해줄 것인지 컨벤션 정해서 통일
     <StyledForm onSubmit={handleCreateAppointment}>
-      <Box width="66rem" minHeight="56.4rem" padding="5.2rem">
+      <Box width="66rem" padding="5.2rem">
         <FlexContainer flexDirection="column" gap="2rem">
           <AppointmentCreateFormTitleInput title={title} onChange={handleTitle} />
           <AppointmentCreateFormDescriptionInput

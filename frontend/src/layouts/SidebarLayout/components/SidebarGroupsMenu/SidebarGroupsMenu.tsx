@@ -46,12 +46,8 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
 
   const handleLeaveGroup = async () => {
     if (window.confirm('그룹을 나가시겠습니까?')) {
-      try {
-        await leaveGroup(groupCode);
-        navigate('/init');
-      } catch (err) {
-        alert(err);
-      }
+      await leaveGroup(groupCode);
+      navigate('/init');
     }
   };
 

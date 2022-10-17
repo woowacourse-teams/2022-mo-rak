@@ -45,7 +45,6 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
 
-  // 그룹 생성
   const handleCreateGroup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -58,11 +57,17 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
       resetGroupName();
       closeModal();
     } catch (err) {
-      alert(err);
+      if (err instanceof AxiosError) {
+        const errCode = err.response?.data.codeNumber;
+
+        if (errCode === '4000') {
+          alert('팀 이름은 공백일 수 없습니다');
+          resetGroupName();
+        }
+      }
     }
   };
 
-  // 그룹 참가
   const handleParticipateGroup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -78,15 +83,24 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
       if (err instanceof AxiosError) {
         const errCode = err.response?.data.codeNumber;
 
-        if (errCode === '1101') {
-          alert('이미 참여하고 있는 그룹입니다!');
-          resetInvitationCode();
+        switch (errCode) {
+          case '1101': {
+            alert('이미 참여하고 있는 그룹입니다!');
+            resetInvitationCode();
+
+            break;
+          }
+
+          case '1301':
+            alert('찾으시는 그룹이 없습니다. 코드를 다시 확인해주세요!');
+            resetInvitationCode();
+
+            break;
         }
       }
     }
   };
 
-  // slack url 등록
   const handleLinkSlack = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -100,12 +114,20 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
       resetSlackUrl();
       closeModal();
     } catch (err) {
-      console.log(err);
+      if (err instanceof AxiosError) {
+        const errCode = err.response?.data.codeNumber;
+
+        if (errCode === '4000') {
+          alert('http로 시작하는 올바른 url을 입력해주세요!');
+          resetSlackUrl();
+        }
+      }
     }
   };
 
   return (
     <>
+      {/* TODO: 모달 컴포넌트 3개로 나눠줘야할듯 */}
       {/* 슬랙 연동 */}
       <Modal isVisible={activeModalMenu === 'slack'} close={closeModal}>
         {/* 슬랙 메뉴 */}

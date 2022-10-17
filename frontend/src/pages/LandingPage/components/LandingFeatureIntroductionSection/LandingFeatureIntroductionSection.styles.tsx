@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledFeatureIntroductionSection = styled.section`
+const StyledContainer = styled.section`
   position: relative;
   display: flex;
   justify-content: center;
@@ -17,7 +17,7 @@ const StyledIntroductionTitleContainer = styled.div`
 const StyledTitle = styled.h1(
   ({ theme }) => `
   font-size: 4rem;
-  text-align: left;
+  text-align: center;
   color: ${theme.colors.BLACK_100};
   margin-bottom: 1.2rem;
   position: relative;
@@ -37,8 +37,10 @@ const StyledSubTitle = styled.div(
 `
 );
 
-const StyledFeatureContainer = styled.div`
+const StyledFeaturesContainer = styled.div`
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 4rem;
 `;
 
@@ -90,8 +92,8 @@ const StyledUndefinedImage = styled.img`
 export {
   StyledAppointmentImage,
   StyledFeatureCircle,
-  StyledFeatureContainer,
-  StyledFeatureIntroductionSection,
+  StyledFeaturesContainer,
+  StyledContainer,
   StyledFeatureName,
   StyledGlitterImage,
   StyledUndefinedImage,
