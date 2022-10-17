@@ -61,11 +61,17 @@ function RoleMainResult({ rolesHistories }: Props) {
         <>
           <StyledTitle>이전 결과</StyledTitle>
           <Divider />
-          {rolesHistories.roles.map((history, idx) => (
-            <StyledDateWrapper key={`${idx}-${history}`} onClick={handleShowResult(idx)}>
-              <StyledDate isActive={idx === activeIdx}>{history.date}</StyledDate>
-            </StyledDateWrapper>
-          ))}
+          <StyledDateWrapper>
+            {rolesHistories.roles.map((history, idx) => (
+              <StyledDate
+                key={`${idx}-${history}`}
+                onClick={handleShowResult(idx)}
+                isActive={idx === activeIdx}
+              >
+                {history.date}
+              </StyledDate>
+            ))}
+          </StyledDateWrapper>
         </>
       </Box>
     </FlexContainer>
