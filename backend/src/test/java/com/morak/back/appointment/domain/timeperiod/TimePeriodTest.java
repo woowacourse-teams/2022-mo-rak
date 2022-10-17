@@ -1,10 +1,9 @@
-package com.morak.back.appointment.domain;
+package com.morak.back.appointment.domain.timeperiod;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.appointment.domain.timeperiod.TimePeriod;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalTime;
@@ -62,7 +61,7 @@ class TimePeriodTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"0, 0, false", "9, 30, false", "19, 0, true", "23, 30, false"})
+    @CsvSource({"0, 0, false", "9, 30, false", "19, 0, true", "20, 0, false", "23, 30, false"})
     void 약속잡기_시간이_10시부터_20시인_경우_포함되는지_확인한다(int hour, int minute, boolean expected) {
         // given
         TimePeriod appointmentTimePeriod = new TimePeriod(LocalTime.of(10, 0), LocalTime.of(20, 0));

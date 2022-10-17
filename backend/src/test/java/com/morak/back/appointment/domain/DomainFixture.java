@@ -23,8 +23,8 @@ public class DomainFixture {
     public static final Member 리엘 = new Member(3L, "oauth-id3", "ellie", "ellie-profile.com");
 
     public static final Appointment 약속잡기_회식_날짜 = Appointment.builder()
-            .host(new Member())
-            .team(new Team())
+            .hostId(1L)
+            .teamCode("TeamCode")
             .title("스터디 회의 날짜 정하기")
             .description("필참!!")
             .startDate(LocalDate.now().plusDays(1))

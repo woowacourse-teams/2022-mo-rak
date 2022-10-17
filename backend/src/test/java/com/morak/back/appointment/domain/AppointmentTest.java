@@ -9,10 +9,8 @@ import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.domain.recommend.AppointmentTime;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
-import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -31,8 +29,8 @@ class AppointmentTest {
     @BeforeEach
     void setUp() {
         DEFAULT_BUILDER = Appointment.builder()
-                .host(new Member())
-                .team(new Team())
+                .hostId(1L)
+                .teamCode("TEAMcode")
                 .title("스터디 회의 날짜 정하기")
                 .description("필참!!")
                 .code(Code.generate(length -> "MoraK123"))
@@ -164,15 +162,13 @@ class AppointmentTest {
     @Test
     void 약속잡기를_마감한다() {
         // given
-        Member eden = Member.builder()
-                .id(1L)
-                .build();
+        long hostId = 1L;
         Appointment appointment = DEFAULT_BUILDER
-                .host(eden)
+                .hostId(hostId)
                 .build();
 
         // when
-        appointment.close(eden);
+        appointment.close(hostId);
 
         // then
         assertThat(appointment.getStatus()).isEqualTo(MenuStatus.CLOSED);
@@ -181,19 +177,13 @@ class AppointmentTest {
     @Test
     void 약속잡기_마감_시_호스트가_아닐_경우_예외를_반환한다() {
         // given
-        Member eden = Member.builder()
-                .id(1L)
-                .build();
+        long hostId = 1L;
         Appointment appointment = DEFAULT_BUILDER
-                .host(eden)
-                .build();
-
-        Member ellie = Member.builder()
-                .id(2L)
+                .hostId(hostId)
                 .build();
 
         // when & then
-        assertThatThrownBy(() -> appointment.close(ellie))
+        assertThatThrownBy(() -> appointment.close(2L))
                 .isInstanceOf(AppointmentAuthorizationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR);
@@ -224,7 +214,8 @@ class AppointmentTest {
     }
 
     @Test
-    @Disabled // to do : fix this
+    @Disabled
+        // to do : fix this
     void 약속잡기의_기간이_포함되는지_확인한다() {
         // given
 //        Appointment appointment = DEFAULT_BUILDER.build();
@@ -241,7 +232,8 @@ class AppointmentTest {
     }
 
     @Test
-    @Disabled // todo : fix this
+    @Disabled
+        // todo : fix this
     void 약속잡기의_기간이_포함되지_않으면_False를_반환한다() {
         // given
 //        Appointment appointment = DEFAULT_BUILDER.build();
@@ -258,7 +250,8 @@ class AppointmentTest {
     }
 
     @Test
-    @Disabled // todo : fix this
+    @Disabled
+        // todo : fix this
     void 약속잡기의_시간이_포함되는지_확인한다() {
 //        // given
 //        Appointment appointment = DEFAULT_BUILDER.build();
@@ -272,7 +265,8 @@ class AppointmentTest {
     }
 
     @Test
-    @Disabled // todo : fix this
+    @Disabled
+        // todo : fix this
     void 약속잡기의_시간이_포함되지_않으면_False를_반환한다() {
 //        // given
 //        Appointment appointment = DEFAULT_BUILDER.build();
