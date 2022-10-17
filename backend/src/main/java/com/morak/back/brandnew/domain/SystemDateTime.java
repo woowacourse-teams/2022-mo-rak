@@ -4,29 +4,33 @@ import java.time.LocalDateTime;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Embeddable
 @NoArgsConstructor
-public class FakeDateTime implements MorakDateTime {
+@Builder
+public class SystemDateTime {
 
     private LocalDateTime dateTime;
 
     @Transient
     private LocalDateTime now;
 
-    @Builder
-    public FakeDateTime(LocalDateTime dateTime, LocalDateTime now) {
+    public SystemDateTime(LocalDateTime dateTime) {
+        this(dateTime, LocalDateTime.now());
+    }
+
+    public SystemDateTime(LocalDateTime dateTime, LocalDateTime now) {
         this.dateTime = dateTime;
         this.now = now;
     }
 
-    @Override
     public boolean beforeNow() {
         return dateTime.isBefore(now);
     }
 
-    @Override
     public boolean afterNow() {
         return dateTime.isAfter(now);
     }

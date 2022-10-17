@@ -35,8 +35,8 @@ public class NewPollItem {
     }
 
     @Builder
-    public NewPollItem(String subject) {
-        this(null, subject, new SelectMembers());
+    public NewPollItem(Long id, String subject) {
+        this(id, subject, new SelectMembers());
     }
 
     private NewPollItem(Long id, String subject, SelectMembers selectMembers) {
@@ -57,6 +57,22 @@ public class NewPollItem {
         selectMembers.remove(member);
     }
 
+    public Integer countSelectMembers() {
+        return selectMembers.countSelectMembers();
+    }
+
+    public List<PollResult> getSelectMembersByAnonymous() {
+        return null;
+    }
+
+    public Boolean isSelectedBy(Long memberId) {
+        return selectMembers.isSelectedBy(memberId);
+    }
+
+    public String getDescriptionFrom(Long memberId) {
+        return selectMembers.getDescriptionFrom(memberId);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -72,21 +88,5 @@ public class NewPollItem {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
-    }
-
-    public Integer countSelectMembers() {
-        return selectMembers.countSelectMembers();
-    }
-
-    public List<PollResult> getSelectMembersByAnonymous() {
-        return null;
-    }
-
-    public Boolean isSelectedBy(Long memberId) {
-        return selectMembers.isSelectedBy(memberId);
-    }
-
-    public String getDescriptionFrom(Long memberId) {
-        return selectMembers.getDescriptionFrom(memberId);
     }
 }

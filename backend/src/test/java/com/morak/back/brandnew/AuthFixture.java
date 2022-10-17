@@ -22,4 +22,18 @@ public class AuthFixture {
             .name("에덴")
             .profileUrl("https://eden-profile")
             .build();
+
+    public static Team createTeam(long id, String name, String code) {
+        return Team.builder()
+                .id(id)
+                .name(name)
+                .code(Code.generate(l -> code)).build();
+    }
+
+    public static Member createMember(long id, String name) {
+        return Member.builder()
+                .id(id)
+                .name(name)
+                .build();
+    }
 }

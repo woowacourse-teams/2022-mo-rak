@@ -4,7 +4,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.brandnew.domain.NewPoll;
 import com.morak.back.brandnew.domain.NewPollItem;
 import com.morak.back.brandnew.domain.PollInfo;
-import com.morak.back.brandnew.domain.TempDateTime;
+import com.morak.back.brandnew.domain.SystemDateTime;
 import com.morak.back.core.domain.Code;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
@@ -52,7 +52,7 @@ public class PollCreateRequest {
                 .teamCode(teamCode)
                 .hostId(hostId)
                 .status(PollStatus.OPEN)
-                .closedAt(new TempDateTime(closedAt))
+                .closedAt(new SystemDateTime(closedAt))
                 .build();
         List<NewPollItem> pollItems = subjects.stream()
                 .map(subject -> NewPollItem.builder().subject(subject).build())

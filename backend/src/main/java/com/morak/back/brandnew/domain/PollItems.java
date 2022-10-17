@@ -1,6 +1,8 @@
 package com.morak.back.brandnew.domain;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.poll.exception.PollDomainLogicException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +29,11 @@ public class PollItems {
     }
 
     public void validateCount(PollInfo pollInfo) {
-        if (values.isEmpty() || pollInfo.isGreaterThan(values.size())) {
-            throw new IllegalArgumentException("선택한 항목 개수가 틀립니다");
+        if (this.values.isEmpty() || pollInfo.isAllowedCountGraterThan(this.values.size())) {
+            throw new PollDomainLogicException(
+                    CustomErrorCode.POLL_ITEM_COUNT_OUT_OF_RANGE_ERROR,
+                    "투표 항목의 개수(" + values.size() + ")는 " + pollInfo.getAllowedCount() + "개 이상여야합니다."
+            );
         }
     }
 
@@ -52,5 +57,9 @@ public class PollItems {
                 .flatMap(Collection::stream)
                 .distinct()
                 .count();
+    }
+
+    public boolean containsAll(Collection<?> items) {
+        return this.values.containsAll(items);
     }
 }
