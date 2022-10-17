@@ -1,8 +1,11 @@
 package com.morak.back.brandnew.domain;
 
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.core.domain.CodeGenerator;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.domain.PollStatus;
+import com.morak.back.poll.exception.PollAuthorizationException;
+import com.morak.back.poll.exception.PollDomainLogicException;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.EnumType;
@@ -23,9 +26,11 @@ public class PollInfo {
 
     private Boolean anonymous;
 
-    private int allowedCount;
+    @Embedded
+    private NewAllowedCount allowedCount;
 
-    private String teamCode;
+    @Embedded
+    private Code teamCode;
 
     private Long hostId;
 
@@ -33,25 +38,28 @@ public class PollInfo {
     private PollStatus status;
 
     @Embedded
-    private TempDateTime closedAt;
+    private SystemDateTime closedAt;
 
     @Builder
-    public PollInfo(String title, Boolean anonymous, int allowedCount, String teamCode, Long hostId, PollStatus status,
-                    TempDateTime closedAt) {
+    public PollInfo(CodeGenerator codeGenerator, String title, Boolean anonymous, int allowedCount, String teamCode, Long hostId, PollStatus status,
+                    SystemDateTime closedAt) {
         validateClosedAt(closedAt);
-        this.code = Code.generate(new RandomCodeGenerator());
+        this.code = Code.generate(codeGenerator);
         this.title = title;
         this.anonymous = anonymous;
-        this.allowedCount = allowedCount;
-        this.teamCode = teamCode;
+        this.allowedCount = new NewAllowedCount(allowedCount);
+        this.teamCode = Code.generate(l -> teamCode);
         this.hostId = hostId;
         this.status = status;
         this.closedAt = closedAt;
     }
 
-    private void validateClosedAt(TempDateTime closedAt) {
+    private void validateClosedAt(SystemDateTime closedAt) {
         if (closedAt.beforeNow()) {
-            throw new IllegalArgumentException();
+            throw new PollDomainLogicException(
+                    CustomErrorCode.POLL_CLOSED_AT_OUT_OF_RANGE_ERROR,
+                    closedAt + "은 현재보다 미래가 아닙니다."
+            );
         }
     }
 
@@ -59,25 +67,21 @@ public class PollInfo {
         return this.code.getCode();
     }
 
-    public boolean isGreaterThan(int count) {
-        return allowedCount > count;
+    public boolean isAllowedCount(int itemCount) {
+        return itemCount >= 1 && !isAllowedCountLessThan(itemCount);
     }
 
     public void close(Long memberId) {
         validateHost(memberId);
-        validateClose();
-        status.close();
-    }
-
-    private void validateClose() {
-        if (status.isClosed()) {
-            throw new IllegalArgumentException("이미 끝남");
-        }
+        status = status.close();
     }
 
     private void validateHost(Long memberId) {
         if (!hostId.equals(memberId)) {
-            throw new IllegalArgumentException("호스트 아님");
+            throw new PollAuthorizationException(
+                    CustomErrorCode.POLL_HOST_MISMATCHED_ERROR,
+                    memberId + "번 멤버는 " + getCode() + " 코드 투표의 호스트가 아닙니다."
+            );
         }
     }
 
@@ -87,5 +91,13 @@ public class PollInfo {
 
     public boolean isClosed() {
         return status.isClosed();
+    }
+
+    public boolean isAllowedCountGraterThan(int itemCount) {
+        return this.allowedCount.isGraterThan(itemCount);
+    }
+
+    public boolean isAllowedCountLessThan(int itemCount) {
+        return this.allowedCount.isLessThan(itemCount);
     }
 }

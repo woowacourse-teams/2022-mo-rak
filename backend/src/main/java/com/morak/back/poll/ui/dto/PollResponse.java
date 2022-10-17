@@ -56,7 +56,7 @@ public class PollResponse implements Comparable<PollResponse> {
         return new PollResponse(
                 poll.getId(),
                 poll.getPollInfo().getTitle(),
-                poll.getPollInfo().getAllowedCount(),
+                poll.getPollInfo().getAllowedCount().getValue(),
                 poll.getPollInfo().getAnonymous(),
                 poll.getPollInfo().getStatus().name(),
                 poll.getCreatedAt(),
