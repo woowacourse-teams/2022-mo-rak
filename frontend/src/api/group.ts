@@ -3,6 +3,7 @@ import { GroupInterface } from '../types/group';
 
 const getGroups = () => axios.get('');
 
+// TODO: 여기서 response에 대한 data 타입을 건네줘야 나중에 사용할 때도 편할듯하다.
 const getGroupMembers = (groupCode: GroupInterface['code']) => axios.get(`/${groupCode}/members`);
 
 // TODO: '' 해결해야할듯

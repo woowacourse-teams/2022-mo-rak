@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 
 const StyledRoleContainer = styled.div`
-  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const StyledTitle = styled.h1`
@@ -15,7 +17,7 @@ const StyledRole = styled.div`
   margin-bottom: 0.8rem;
 `;
 
-const StyledRoleResultContainer = styled.div`
+const StyledRoleResultWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,26 +25,31 @@ const StyledRoleResultContainer = styled.div`
   flex-wrap: wrap;
   gap: 2rem;
   margin-top: 2rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 32rem;
 `;
 
-const StyledDateContainer = styled.div`
+const StyledDateWrapper = styled.div`
   padding: 0 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
   margin-top: 2rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 32rem;
 `;
 
-const StyledDate = styled.button(
-  ({ theme }) => `
+const StyledDate = styled.button<{
+  isActive: boolean;
+}>(
+  ({ theme, isActive }) => `
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   padding: 2rem;
   font-size: 1.6rem;
+  color: ${isActive ? theme.colors.WHITE_100 : theme.colors.BLACK_100};
+  background: ${isActive ? theme.colors.PURPLE_100 : theme.colors.WHITE_100};
+
 
   &:hover {
     transform: scale(1.03);
@@ -53,11 +60,19 @@ const StyledDate = styled.button(
 `
 );
 
+const StyledEmptyText = styled.div(
+  ({ theme }) => `
+  font-size: 2rem;
+  color: ${theme.colors.GRAY_300};
+`
+);
+
 export {
   StyledTitle,
   StyledRole,
   StyledRoleContainer,
-  StyledDateContainer,
-  StyledRoleResultContainer,
-  StyledDate
+  StyledDateWrapper,
+  StyledRoleResultWrapper,
+  StyledDate,
+  StyledEmptyText
 };

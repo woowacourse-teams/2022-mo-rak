@@ -56,7 +56,7 @@ function PollMainContainer() {
             <PollMainStatus status={status} />
           </FlexContainer>
           <StyledTitle>{title}</StyledTitle>
-          <PollMainProgress currentParticipants={count} groupCode={groupCode} />
+          <PollMainProgress currentParticipants={count} />
           <MarginContainer margin="0 0 1.6rem">
             {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
             <PollMainDetail
