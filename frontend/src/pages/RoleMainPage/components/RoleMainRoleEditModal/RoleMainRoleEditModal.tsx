@@ -1,40 +1,33 @@
-import { ChangeEvent, FormEvent, useState, useEffect, useContext } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import Close from '../../../../assets/close-button.svg';
 import Edit from '../../../../assets/edit.svg';
-import Bin from '../../../../assets/bin.svg';
 import {
-  StyledModalFormContainer,
+  StyledForm,
   StyledLogo,
   StyledTitle,
-  StyledRolesContainer,
   StyledTop,
   StyledCloseButton,
   StyledTriangle,
   StyledBottom,
-  StyledBinIcon,
   StyledDescription
 } from './RoleMainRoleEditModal.styles';
 import Modal from '../../../../components/Modal/Modal';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import TextField from '../../../../components/TextField/TextField';
-import { useTheme } from '@emotion/react';
-import Input from '../../../../components/Input/Input';
-import Button from '../../../../components/Button/Button';
 import { editRoles } from '../../../../api/role';
 import { useParams } from 'react-router-dom';
 import { GroupInterface } from '../../../../types/group';
 import { AxiosError } from 'axios';
 import { EditRolesRequest } from '../../../../types/role';
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
+import RoleMainRoleEditModalInputGroup from '../RoleMainRoleEditModalInputGroup/RoleMainRoleEditModalInputGroup';
+import RoleMainRoleEditModalButtonGroup from '../RoleMainRoleEditModalButtonGroup/RoleMainRoleEditModalButtonGroup';
 
 type Props = {
   close: () => void;
   initialRoles: EditRolesRequest['roles'];
-  onEditRoles: () => void;
+  onSubmit: () => void;
 };
 
-function RoleMainRoleEditModal({ initialRoles, close, onEditRoles }: Props) {
-  const theme = useTheme();
+function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
   const { groupMembers } = useGroupMembersContext();
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [roles, setRoles] = useState(initialRoles);
@@ -78,7 +71,7 @@ function RoleMainRoleEditModal({ initialRoles, close, onEditRoles }: Props) {
 
     try {
       await editRoles(groupCode, { roles });
-      onEditRoles();
+      onSubmit();
       close();
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -93,7 +86,7 @@ function RoleMainRoleEditModal({ initialRoles, close, onEditRoles }: Props) {
 
   return (
     <Modal isVisible={true} close={close}>
-      <StyledModalFormContainer onSubmit={handleAllocateRoles}>
+      <StyledForm onSubmit={handleAllocateRoles}>
         <StyledTop>
           <StyledLogo src={Edit} alt="edit-logo" />
           <StyledTitle>역할 목록 수정하기</StyledTitle>
@@ -102,62 +95,15 @@ function RoleMainRoleEditModal({ initialRoles, close, onEditRoles }: Props) {
           <StyledTriangle />
         </StyledTop>
         <StyledBottom>
-          <StyledRolesContainer>
-            {roles.map((role, idx) => (
-              <TextField
-                key={idx}
-                variant="filled"
-                colorScheme={theme.colors.WHITE_100}
-                borderRadius="1.2rem"
-                padding="1.6rem 5rem"
-                width="50.4rem"
-              >
-                <Input
-                  value={role}
-                  onChange={handleSetRoles(idx)}
-                  fontSize="1.6rem"
-                  required
-                  autoFocus
-                />
-                <StyledBinIcon src={Bin} alt="bin-icon" onClick={handleDeleteRoleInput(idx)} />
-              </TextField>
-            ))}
-            <Button
-              variant="filled"
-              colorScheme={theme.colors.YELLOW_200}
-              fontSize="2rem"
-              width="50.4rem"
-              onClick={handleAddRoleInput}
-            >
-              +
-            </Button>
-            <FlexContainer gap="2rem">
-              <Button
-                variant="filled"
-                colorScheme={theme.colors.GRAY_400}
-                width="14rem"
-                padding="1.6rem 3.2rem"
-                borderRadius="1.2rem"
-                fontSize="1.6rem"
-                onClick={close}
-              >
-                취소
-              </Button>
-              <Button
-                variant="filled"
-                colorScheme={theme.colors.YELLOW_200}
-                width="14rem"
-                padding="1.6rem 3.2rem"
-                borderRadius="1.2rem"
-                fontSize="1.6rem"
-                type="submit"
-              >
-                확인
-              </Button>
-            </FlexContainer>
-          </StyledRolesContainer>
+          <RoleMainRoleEditModalInputGroup
+            roles={roles}
+            onChangeRoleInput={handleSetRoles}
+            onClickDeleteButton={handleDeleteRoleInput}
+            onClickAddButton={handleAddRoleInput}
+          />
+          <RoleMainRoleEditModalButtonGroup />
         </StyledBottom>
-      </StyledModalFormContainer>
+      </StyledForm>
     </Modal>
   );
 }

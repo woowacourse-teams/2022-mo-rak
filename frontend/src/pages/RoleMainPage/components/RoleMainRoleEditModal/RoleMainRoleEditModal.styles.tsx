@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledModalFormContainer = styled.form(
+const StyledForm = styled.form(
   ({ theme }) => `
   width: 68rem;
   height: 56rem;
@@ -70,34 +70,23 @@ const StyledBottom = styled.div(
     padding: 4.4rem 0 2rem 0;
     border-bottom-left-radius: 1.2rem;
     border-bottom-right-radius: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.4rem;
+    overflow-y: scroll;
   `
 );
 
-const StyledRolesContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2.4rem;
-  overflow-y: scroll;
-  height: 100%;
-`;
-
-const StyledBinIcon = styled.img`
-  position: absolute;
-  right: 1.2rem;
-  width: 2rem;
-  cursor: pointer;
-`;
 
 export {
-  StyledModalFormContainer,
+  StyledForm,
   StyledLogo,
   StyledTitle,
   StyledTop,
   StyledCloseButton,
   StyledTriangle,
   StyledBottom,
-  StyledBinIcon,
-  StyledRolesContainer,
+  // StyledRolesContainer,
   StyledDescription
 };
