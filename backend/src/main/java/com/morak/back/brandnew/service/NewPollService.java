@@ -37,11 +37,7 @@ public class NewPollService {
 
     //    @ValidateTeamMember
     public String createPoll(String teamCode, Long memberId, PollCreateRequest request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team, member);
+        validateTeamAndMember(teamCode, memberId);
         NewPoll poll = request.toPoll(teamCode, memberId);
 
         return pollRepository.save(poll).getPollInfo().getCode();
@@ -75,9 +71,18 @@ public class NewPollService {
     }
 
     public List<PollResponse> findPolls(String teamCode, Long memberId) {
+        validateTeamAndMember(teamCode, memberId);
         return pollRepository.findAll().stream()
                 .map(poll -> PollResponse.from(memberId, poll))
                 .collect(Collectors.toList());
+    }
+
+    private void validateTeamAndMember(final String teamCode, final Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
+        Team team = teamRepository.findByCode(teamCode)
+                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
+        validateMemberInTeam(team, member);
     }
 
     public List<PollItemResultResponse> findPollResults(String teamCode, Long memberId, String pollCode) {
