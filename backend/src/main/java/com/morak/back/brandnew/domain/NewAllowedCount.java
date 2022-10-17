@@ -2,6 +2,7 @@ package com.morak.back.brandnew.domain;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class NewAllowedCount {
 
+    @Column(name = "allowed_count")
     private int value;
 
     public NewAllowedCount(int value) {
@@ -32,6 +34,6 @@ public class NewAllowedCount {
     }
 
     public boolean isLessThan(int itemCount) {
-        return this.value < itemCount;
+        return this.value >= itemCount;
     }
 }

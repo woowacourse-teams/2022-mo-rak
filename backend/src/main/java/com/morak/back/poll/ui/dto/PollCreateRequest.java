@@ -6,6 +6,7 @@ import com.morak.back.brandnew.domain.NewPollItem;
 import com.morak.back.brandnew.domain.PollInfo;
 import com.morak.back.brandnew.domain.SystemDateTime;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollItem.PollItemBuilder;
@@ -44,12 +45,13 @@ public class PollCreateRequest {
     @NotNull(message = "subjects 는 null 일 수 없습니다.")
     private List<String> subjects;
 
-    public NewPoll toPoll(String teamCode, Long hostId) {
+    public NewPoll toPoll(Long teamId, Long hostId) {
         PollInfo pollInfo = PollInfo.builder()
+                .codeGenerator(new RandomCodeGenerator())
                 .title(title)
                 .anonymous(isAnonymous)
                 .allowedCount(allowedPollCount)
-                .teamCode(teamCode)
+                .teamId(teamId)
                 .hostId(hostId)
                 .status(PollStatus.OPEN)
                 .closedAt(new SystemDateTime(closedAt))

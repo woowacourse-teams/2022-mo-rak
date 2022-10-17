@@ -29,8 +29,7 @@ public class PollInfo {
     @Embedded
     private NewAllowedCount allowedCount;
 
-    @Embedded
-    private Code teamCode;
+    private Long teamId;
 
     private Long hostId;
 
@@ -41,14 +40,14 @@ public class PollInfo {
     private SystemDateTime closedAt;
 
     @Builder
-    public PollInfo(CodeGenerator codeGenerator, String title, Boolean anonymous, int allowedCount, String teamCode, Long hostId, PollStatus status,
+    public PollInfo(CodeGenerator codeGenerator, String title, Boolean anonymous, int allowedCount, Long teamId, Long hostId, PollStatus status,
                     SystemDateTime closedAt) {
         validateClosedAt(closedAt);
         this.code = Code.generate(codeGenerator);
         this.title = title;
         this.anonymous = anonymous;
         this.allowedCount = new NewAllowedCount(allowedCount);
-        this.teamCode = Code.generate(l -> teamCode);
+        this.teamId = teamId;
         this.hostId = hostId;
         this.status = status;
         this.closedAt = closedAt;
@@ -68,7 +67,7 @@ public class PollInfo {
     }
 
     public boolean isAllowedCount(int itemCount) {
-        return itemCount >= 1 && !isAllowedCountLessThan(itemCount);
+        return itemCount >= 1 && isAllowedCountLessThan(itemCount);
     }
 
     public void close(Long memberId) {
