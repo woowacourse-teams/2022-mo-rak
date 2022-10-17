@@ -14,11 +14,11 @@ const StyledRolesContainer = styled.div`
   overflow-x: auto;
 `;
 
-const StyledRoleWrapper = styled.div`
+const StyledRoleContainer = styled.div`
   flex-shrink: 0;
 `;
 
-const StyledLottieWrapper = styled.div(
+const StyledLottieContainer = styled.div(
   ({ isVisible }: { isVisible: boolean }) => `
   display: ${isVisible ? 'flex' : 'none'};
   position: absolute;
@@ -27,4 +27,4 @@ const StyledLottieWrapper = styled.div(
   `
 );
 
-export { StyledDetail, StyledRolesContainer, StyledRoleWrapper, StyledLottieWrapper };
+export { StyledDetail, StyledRolesContainer, StyledRoleContainer, StyledLottieContainer };

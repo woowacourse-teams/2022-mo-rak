@@ -1,7 +1,7 @@
 import { MouseEventHandler } from 'react';
 import {
   StyledMenuContainer,
-  StyledWrapper,
+  StyledContainer,
   StyledName,
   StyledImage
 } from './MainFeatureMenu.styles';
@@ -14,14 +14,20 @@ interface Props {
 
 function MainFeatureMenu({ onClick, name, img }: Props) {
   return (
-    <StyledWrapper onClick={onClick}>
+    <StyledContainer onClick={onClick}>
       <StyledMenuContainer>
         {/* TODO: StyledImage 네이밍 고민 */}
         <StyledImage src={img} alt={name} />
         <StyledName>{name}</StyledName>
       </StyledMenuContainer>
-    </StyledWrapper>
+    </StyledContainer>
   );
 }
 
 export default MainFeatureMenu;
+
+<StyledContainer>
+  <div>
+    <a href=""></a>
+  </div>
+</StyledContainer>;

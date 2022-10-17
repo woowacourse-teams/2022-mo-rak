@@ -19,7 +19,7 @@ import {
 import Button from '../../../../components/Button/Button';
 import { getFormattedDateTime } from '../../../../utils/date';
 import Question from '../../../../assets/question.svg';
-import { StyledHelpIconWrapper, StyledHelpIcon } from './AppointmentResultButtonGroup.styles';
+import { StyledHelpIconContainer, StyledHelpIcon } from './AppointmentResultButtonGroup.styles';
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -168,9 +168,9 @@ function AppointmentResultButtonGroup({
                 placement="right"
                 backgroundColor={theme.colors.GRAY_300}
               >
-                <StyledHelpIconWrapper>
+                <StyledHelpIconContainer>
                   <StyledHelpIcon src={Question} alt="help-icon" />
-                </StyledHelpIconWrapper>
+                </StyledHelpIconContainer>
               </Tooltip>
             </FlexContainer>
           )}

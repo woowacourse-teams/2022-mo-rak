@@ -17,7 +17,7 @@ const StyledRole = styled.div`
   margin-bottom: 0.8rem;
 `;
 
-const StyledRoleResultWrapper = styled.div`
+const StyledRoleResultContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,7 +29,7 @@ const StyledRoleResultWrapper = styled.div`
   height: 32rem;
 `;
 
-const StyledDateWrapper = styled.div`
+const StyledDateContainer = styled.div`
   padding: 0 1.2rem;
   display: flex;
   flex-direction: column;
@@ -71,8 +71,8 @@ export {
   StyledTitle,
   StyledRole,
   StyledRoleContainer,
-  StyledDateWrapper,
-  StyledRoleResultWrapper,
+  StyledDateContainer,
+  StyledRoleResultContainer,
   StyledDate,
   StyledEmptyText
 };

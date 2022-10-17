@@ -6,8 +6,8 @@ import {
   StyledTitle,
   StyledRole,
   StyledRoleContainer,
-  StyledDateWrapper,
-  StyledRoleResultWrapper,
+  StyledDateContainer,
+  StyledRoleResultContainer,
   StyledDate,
   StyledEmptyText
 } from './RoleMainResult.styles';
@@ -31,7 +31,7 @@ function RoleMainResult({ rolesHistories }: Props) {
       <Box width="70%" height="50rem" padding="2rem">
         <StyledTitle>역할 정하기</StyledTitle>
         <Divider />
-        <StyledRoleResultWrapper>
+        <StyledRoleResultContainer>
           {rolesHistories.roles.length > 0 ? (
             (() => {
               const currentRole = rolesHistories.roles[activeIdx].role;
@@ -54,14 +54,14 @@ function RoleMainResult({ rolesHistories }: Props) {
           ) : (
             <StyledEmptyText>첫 역할 정하기를 진행해보세요</StyledEmptyText>
           )}
-        </StyledRoleResultWrapper>
+        </StyledRoleResultContainer>
       </Box>
 
       <Box width="30%" height="50rem" padding="2rem">
         <>
           <StyledTitle>이전 결과</StyledTitle>
           <Divider />
-          <StyledDateWrapper>
+          <StyledDateContainer>
             {rolesHistories.roles.map((history, idx) => (
               <StyledDate
                 key={`${idx}-${history}`}
@@ -71,7 +71,7 @@ function RoleMainResult({ rolesHistories }: Props) {
                 {history.date}
               </StyledDate>
             ))}
-          </StyledDateWrapper>
+          </StyledDateContainer>
         </>
       </Box>
     </FlexContainer>

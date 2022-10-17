@@ -6,7 +6,7 @@ import Question from '../../../../assets/question.svg';
 import Tooltip from '../../../../components/Tooltip/Tooltip';
 import {
   StyledTitle,
-  StyledHelpIconWrapper,
+  StyledHelpIconContainer,
   StyledHelpIcon,
   StyledContent
 } from './AppointmentCreateFormTimeLimitInput.styles';
@@ -33,9 +33,9 @@ function AppointmentCreateFormTimeLimitInput({
           width="26"
           placement="right"
         >
-          <StyledHelpIconWrapper>
+          <StyledHelpIconContainer>
             <StyledHelpIcon src={Question} alt="help-icon" />
-          </StyledHelpIconWrapper>
+          </StyledHelpIconContainer>
         </Tooltip>
       </FlexContainer>
 

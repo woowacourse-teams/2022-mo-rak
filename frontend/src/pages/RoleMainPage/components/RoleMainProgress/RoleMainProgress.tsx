@@ -7,11 +7,11 @@ import TextField from '../../../../components/TextField/TextField';
 import {
   StyledDetail,
   StyledRolesContainer,
-  StyledRoleWrapper,
-  StyledLottieWrapper
+  StyledRoleContainer,
+  StyledLottieContainer
 } from './RoleMainProgress.styles';
 import { useLottie } from 'lottie-react';
-import fireworkAnimation from '../../../../assets/firework-animation.json';
+import firework from '../../../../assets/firework-animation.json';
 import RoleMainRoleEditModal from '../RoleMainRoleEditModal/RoleMainRoleEditModal';
 import { allocateRoles, getRoles } from '../../../../api/role';
 import { useParams } from 'react-router-dom';
@@ -20,18 +20,18 @@ import { EditRolesRequest } from '../../../../types/role';
 import { AxiosError } from 'axios';
 
 type Props = {
-  onAllocateRoles: () => void;
+  onClickAllocateRolesButton: () => void;
 };
 
-function RoleMainProgress({ onAllocateRoles }: Props) {
+function RoleMainProgress({ onClickAllocateRolesButton }: Props) {
   const theme = useTheme();
   const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
   const [roles, setRoles] = useState<EditRolesRequest['roles']>([]);
-  const [isLottieVisible, setIsLottieVisible] = useState(false);
+  const [isFireworkAnimationVisible, setIsFireworkAnimationVisible] = useState(false);
   const [isRoleEditModalVisible, setIsRoleEditModalVisible] = useState(false);
-  const fireworkLottie = useLottie(
+  const fireworkAnimation = useLottie(
     {
-      animationData: fireworkAnimation,
+      animationData: firework,
       autoplay: false
     },
     {
@@ -39,21 +39,21 @@ function RoleMainProgress({ onAllocateRoles }: Props) {
     }
   );
 
-  const triggerFireworkLottie = () => {
-    setIsLottieVisible(true);
-    fireworkLottie.play();
+  const triggerFireworkAnimation = () => {
+    setIsFireworkAnimationVisible(true);
+    fireworkAnimation.play();
 
     setTimeout(() => {
-      setIsLottieVisible(false);
-      fireworkLottie.pause();
+      setIsFireworkAnimationVisible(false);
+      fireworkAnimation.pause();
     }, 2000);
   };
 
   const handleAllocateRoles = async () => {
     try {
       await allocateRoles(groupCode);
-      triggerFireworkLottie();
-      onAllocateRoles();
+      triggerFireworkAnimation();
+      onClickAllocateRolesButton();
     } catch (err) {
       if (err instanceof AxiosError) {
         const errCode = err.response?.data.codeNumber;
@@ -106,7 +106,7 @@ function RoleMainProgress({ onAllocateRoles }: Props) {
       <StyledRolesContainer>
         {roles.map((role, idx) => {
           return (
-            <StyledRoleWrapper key={`${idx}-${role}`}>
+            <StyledRoleContainer key={`${idx}-${role}`}>
               <TextField
                 padding="1.8rem 2.6rem"
                 borderRadius="40px"
@@ -115,7 +115,7 @@ function RoleMainProgress({ onAllocateRoles }: Props) {
               >
                 <StyledDetail>{role}</StyledDetail>
               </TextField>
-            </StyledRoleWrapper>
+            </StyledRoleContainer>
           );
         })}
       </StyledRolesContainer>
@@ -143,7 +143,9 @@ function RoleMainProgress({ onAllocateRoles }: Props) {
         >
           역할 정하기
         </Button>
-        <StyledLottieWrapper isVisible={isLottieVisible}>{fireworkLottie.View}</StyledLottieWrapper>
+        <StyledLottieContainer isVisible={isFireworkAnimationVisible}>
+          {fireworkAnimation.View}
+        </StyledLottieContainer>
       </FlexContainer>
       {isRoleEditModalVisible && (
         <RoleMainRoleEditModal
