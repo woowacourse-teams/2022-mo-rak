@@ -3,10 +3,10 @@ package com.morak.back.appointment.ui.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.appointment.domain.Appointment;
-import com.morak.back.auth.domain.Member;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,5 +64,29 @@ public class AppointmentResponse {
                 appointment.isClosed(),
                 appointment.isHost(memberId)
         );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AppointmentResponse that = (AppointmentResponse) o;
+        return Objects.equals(id, that.id) && Objects.equals(code, that.code)
+                && Objects.equals(title, that.title) && Objects.equals(description, that.description)
+                && Objects.equals(durationHours, that.durationHours) && Objects.equals(durationMinutes,
+                that.durationMinutes) && Objects.equals(startDate, that.startDate) && Objects.equals(
+                endDate, that.endDate) && Objects.equals(startTime, that.startTime) && Objects.equals(
+                endTime, that.endTime) && Objects.equals(closedAt, that.closedAt) && Objects.equals(
+                closed, that.closed) && Objects.equals(isHost, that.isHost);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code, title, description, durationHours, durationMinutes, startDate, endDate, startTime,
+                endTime, closedAt, closed, isHost);
     }
 }

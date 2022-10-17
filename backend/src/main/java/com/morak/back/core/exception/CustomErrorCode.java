@@ -55,6 +55,7 @@ public enum CustomErrorCode {
     DESCRIPTION_OUT_OF_LENGTH_ERROR("4101", "설명의 길이가 너무 깁니다."),
     MENU_ALREADY_CLOSED_ERROR("4102", "이미 마감된 상태입니다."),
     TITLE_LENGTH_OUT_OF_RANGE_ERROR("4103", "제목의 길이가 올바르지 않습니다."),
+    CODE_LENGTH_ERROR("4104","코드의 길이가 올바르지 않습니다."),
     API_NOT_FOUND_ERROR("4300", "요청한 API가 존재하지 않습니다"),
     NOTIFICATION_INVALID_URL_ERROR("4400", "알림 요청 URL이 잘못되었습니다."),
     NOTIFICATION_REQUEST_FAILURE_ERROR("4401", "요청 결과에 실패했습니다."),
@@ -66,9 +67,7 @@ public enum CustomErrorCode {
     ROLE_NOT_FOUND_ERROR("5300", "요청한 역할정하기를 찾을 수 없습니다."),
 
     MORAK_ERROR("9901", "처리하지 못한 예외입니다."),
-    RUNTIME_ERROR("9902", "예상치 못한 예외입니다."),
-
-    TEMP_ERROR("0123", "임시 에러입니다.");
+    RUNTIME_ERROR("9902", "예상치 못한 예외입니다.");
 
     private final String number;
     private final String information;

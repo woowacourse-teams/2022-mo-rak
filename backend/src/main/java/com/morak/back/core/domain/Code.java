@@ -26,7 +26,9 @@ public class Code {
 
     private void validateLength(String value) {
         if (value.length() != LENGTH) {
-            throw new DomainLogicException(CustomErrorCode.TEMP_ERROR, "코드" + value + "의 길이는 8자여야 합니다.");
+            throw new DomainLogicException(
+                    CustomErrorCode.CODE_LENGTH_ERROR, "코드" + value + "의 길이는 " + LENGTH + "자여야 합니다."
+            );
         }
     }
 }

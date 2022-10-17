@@ -24,8 +24,10 @@ public class AppointmentClosedAt extends ClosedAt {
 
     private void validatePastEndDateTime(LocalDateTime closedAt, LocalDateTime endDateTime) {
         if (closedAt.isAfter(endDateTime)) {
-            // TODO: 2022/10/06 fix this. 예외처리 정확하게 해야함.(커스텀 예외로)
-            throw new AppointmentDomainLogicException(CustomErrorCode.TEMP_ERROR, "일반");
+            throw new AppointmentDomainLogicException(
+                    CustomErrorCode.APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR,
+                    closedAt + "은 " + endDateTime + "보다 과거여야 합니다."
+            );
         }
     }
 }

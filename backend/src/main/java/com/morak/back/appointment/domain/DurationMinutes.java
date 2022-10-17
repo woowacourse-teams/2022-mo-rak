@@ -89,5 +89,12 @@ public class DurationMinutes {
     public boolean isLongerThan(Duration duration) {
         return Duration.ofMinutes(durationMinutes).compareTo(duration) > 0;
     }
+
+    @Override
+    public String toString() {
+        return "DurationMinutes{" +
+                "durationMinutes=" + durationMinutes +
+                '}';
+    }
 }
 

@@ -25,10 +25,10 @@ public class FormattableData {
         return new FormattableData(
                 "appointment",
                 "약속잡기",
-                appointment.getMenu().getTeamCode(),
+                appointment.getTeamCode(),
                 appointment.getTitle(),
                 appointment.getCode(),
-                appointment.getMenu().getTeamCode(),
+                appointment.getTeamCode(),
                 appointment.getClosedAt()
         );
     }

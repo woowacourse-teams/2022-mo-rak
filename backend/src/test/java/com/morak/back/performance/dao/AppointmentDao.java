@@ -34,7 +34,7 @@ public class AppointmentDao {
                         ps.setObject(6, appointments.get(i).getEndDate());
                         ps.setObject(7, appointments.get(i).getStartTime());
                         ps.setObject(8, appointments.get(i).getEndTime());
-                        ps.setInt(9, appointments.get(i).getDurationMinutes().getDurationMinutes());
+                        ps.setInt(9, appointments.get(i).getDurationMinutes());
                         ps.setString(10, appointments.get(i).getStatus().name());
                         ps.setString(11, appointments.get(i).getCode());
                         ps.setObject(12, appointments.get(i).getClosedAt());

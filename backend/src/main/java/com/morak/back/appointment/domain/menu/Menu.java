@@ -52,7 +52,7 @@ public class Menu {
         return this.hostId.equals(memberId);
     }
 
-    public boolean isTeamEquals(String otherTeamCode) {
+    public boolean isBelongedTo(String otherTeamCode) {
         return this.teamCode.equals(otherTeamCode);
     }
 
