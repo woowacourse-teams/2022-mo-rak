@@ -23,16 +23,21 @@ public enum CustomErrorCode {
 
     POLL_ALREADY_CLOSED_ERROR("2100", "이미 마감된 투표입니다."),
     POLL_COUNT_OUT_OF_RANGE_ERROR("2101", "허용된 투표 개수의 범위를 벗어났습니다."),
+    POLL_CLOSED_AT_OUT_OF_RANGE_ERROR("2102", "투표 마감 시간은 현재 시간보다 미래여야 합니다."),
+    POLL_ITEM_COUNT_OUT_OF_RANGE_ERROR("2103", "투표 선택 항목의 개수가 올바르지 않습니다."),
+    POLL_ALLOWED_COUNT_MIN_ERROR("2104", "투표 선택 허용 개수는 1개 이상이어야 합니다."),
+
     POLL_TEAM_MISMATCHED_ERROR("2200", "투표가 그룹에 속해있지 않습니다."),
     POLL_HOST_MISMATCHED_ERROR("2201", "투표의 호스트가 아닙니다."),
     POLL_ITEM_MISMATCHED_ERROR("2202", "투표 선택 항목이 투표에 속해있지 않습니다."),
+
     POLL_NOT_FOUND_ERROR("2300", "요청한 투표를 찾을 수 없습니다."),
     POLL_ITEM_NOT_FOUND_ERROR("2301", "요청한 투표항목을 찾을 수 없습니다."),
 
     APPOINTMENT_ALREADY_CLOSED_ERROR("3100", "이미 마감된 약속잡기입니다."),
     APPOINTMENT_DUPLICATED_AVAILABLE_TIME_ERROR("3101", "약속잡기 선택에 중복된 시간이 있습니다."),
-    APPOINTMENT_PAST_CREATE_ERROR("3102", "약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다.."),
-    APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR("3103", "진행 시간은 약속잡기 시간보다 짧아야 합니다.."),
+    APPOINTMENT_PAST_CREATE_ERROR("3102", "약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다."),
+    APPOINTMENT_DURATION_OVER_TIME_PERIOD_ERROR("3103", "진행 시간은 약속잡기 시간보다 짧아야 합니다."),
     APPOINTMENT_DURATION_NOT_MINUTES_UNIT_ERROR("3104", "약속잡기 진행시간은 30분 단위여야 합니다."),
     APPOINTMENT_DURATION_HOUR_OUT_OF_RANGE_ERROR("3105", "약속잡기 진행시간(시)은 24시간을 넘을 수 없습니다."),
     APPOINTMENT_DURATION_MINUTE_OUT_OF_RANGE_ERROR("3106", "약속잡기 진행시간(분) 은 60분 이상일 수 없습니다."),
