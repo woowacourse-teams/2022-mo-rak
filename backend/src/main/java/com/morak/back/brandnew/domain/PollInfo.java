@@ -60,7 +60,7 @@ public class PollInfo {
     }
 
     public boolean isGreaterThan(int count) {
-        return allowedCount < count;
+        return allowedCount > count;
     }
 
     public void close(Long memberId) {

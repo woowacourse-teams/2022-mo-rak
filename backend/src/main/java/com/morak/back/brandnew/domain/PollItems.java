@@ -26,8 +26,8 @@ public class PollItems {
         this.values = values;
     }
 
-    public void validateCount(PollInfo poll) {
-        if (values.size() <= 0 || poll.isGreaterThan(values.size())) {
+    public void validateCount(PollInfo pollInfo) {
+        if (values.isEmpty() || pollInfo.isGreaterThan(values.size())) {
             throw new IllegalArgumentException("선택한 항목 개수가 틀립니다");
         }
     }

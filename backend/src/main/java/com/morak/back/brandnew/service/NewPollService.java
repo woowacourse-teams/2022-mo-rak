@@ -2,14 +2,21 @@ package com.morak.back.brandnew.service;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
+import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.brandnew.domain.NewPoll;
 import com.morak.back.brandnew.domain.NewPollItem;
 import com.morak.back.brandnew.repository.NewPollRepository;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
 import com.morak.back.poll.ui.dto.PollResponse;
 import com.morak.back.poll.ui.dto.PollResultRequest;
+import com.morak.back.team.domain.Team;
+import com.morak.back.team.domain.TeamMemberRepository;
+import com.morak.back.team.domain.TeamRepository;
+import com.morak.back.team.exception.TeamAuthorizationException;
+import com.morak.back.team.exception.TeamNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,14 +30,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class NewPollService {
 
     private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
+    private final TeamMemberRepository teamMemberRepository;
+
     private final NewPollRepository pollRepository;
 
     //    @ValidateTeamMember
     public String createPoll(String teamCode, Long memberId, PollCreateRequest request) {
-        // TODO: 2022/10/06 teamCode, memberId로 validate
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
+        Team team = teamRepository.findByCode(teamCode)
+                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
+        validateMemberInTeam(team, member);
         NewPoll poll = request.toPoll(teamCode, memberId);
 
         return pollRepository.save(poll).getPollInfo().getCode();
+    }
+
+    private void validateMemberInTeam(Team team, Member member) {
+        if (!teamMemberRepository.existsByTeamAndMember(team, member)) {
+            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, team.getId(), member.getId());
+        }
     }
 
     public PollResponse findPoll(String teamCode, Long memberId, String pollCode) {
