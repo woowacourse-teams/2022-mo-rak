@@ -7,6 +7,7 @@ import com.morak.back.brandnew.domain.NewPoll;
 import com.morak.back.brandnew.domain.NewPollItem;
 import com.morak.back.brandnew.repository.NewPollRepository;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.poll.exception.PollNotFoundException;
 import com.morak.back.poll.ui.dto.PollCreateRequest;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollItemResultResponse;
@@ -35,7 +36,6 @@ public class NewPollService {
 
     private final NewPollRepository pollRepository;
 
-    //    @ValidateTeamMember
     public String createPoll(String teamCode, Long memberId, PollCreateRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
@@ -59,8 +59,7 @@ public class NewPollService {
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team, member);
-        NewPoll poll = pollRepository.findByCode(pollCode)
-                .orElseThrow(() -> new IllegalArgumentException("poll 없어~~"));
+        NewPoll poll = findPollByCode(pollCode);
 
         return PollResponse.from(memberId, poll);
     }
@@ -71,8 +70,7 @@ public class NewPollService {
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team, member);
-        NewPoll poll = pollRepository.findByCode(pollCode)
-                .orElseThrow(() -> new IllegalArgumentException("poll 없어~~"));
+        NewPoll poll = findPollByCode(pollCode);
 
         poll.doPoll(member, toData(requests));
     }
@@ -95,7 +93,7 @@ public class NewPollService {
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team, member);
-        NewPoll poll = pollRepository.findByCode(pollCode).orElseThrow();
+        NewPoll poll = findPollByCode(pollCode);
         return poll.getPollItems().stream()
                 .map(pollItem -> PollItemResultResponse.of(pollItem, poll.getPollInfo().getAnonymous()))
                 .collect(Collectors.toList());
@@ -112,7 +110,8 @@ public class NewPollService {
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team, member);
-        NewPoll poll = pollRepository.findByCode(pollCode).orElseThrow();
+
+        NewPoll poll = findPollByCode(pollCode);
         pollRepository.delete(poll);
     }
 
@@ -127,9 +126,16 @@ public class NewPollService {
     }
 
     public List<PollItemResponse> findPollItems(String teamCode, Long memberId, String pollCode) {
-        NewPoll poll = pollRepository.findFetchedByCode(pollCode).orElseThrow();
+        NewPoll poll = pollRepository.findFetchedByCode(pollCode)
+                .orElseThrow(() -> PollNotFoundException.ofPoll(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
+
         return poll.getPollItems().stream()
                 .map(pollItem -> PollItemResponse.from(pollItem, memberId))
                 .collect(Collectors.toList());
+    }
+
+    private NewPoll findPollByCode(String pollCode) {
+        return pollRepository.findByCode(pollCode)
+                .orElseThrow(() -> PollNotFoundException.ofPoll(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
     }
 }
