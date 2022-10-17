@@ -1,7 +1,7 @@
 package com.morak.back.appointment.domain.menu;
 
 import static com.morak.back.core.exception.CustomErrorCode.DESCRIPTION_OUT_OF_LENGTH_ERROR;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.core.exception.DomainLogicException;
@@ -27,7 +27,6 @@ class DescriptionTest {
         String description = "";
 
         // when & then
-        assertThatCode(() -> new Description(description))
-                .doesNotThrowAnyException();
+        assertThatNoException().isThrownBy(() -> new Description(description));
     }
 }

@@ -1,7 +1,7 @@
 package com.morak.back.appointment.domain.menu;
 
 import static com.morak.back.core.exception.CustomErrorCode.PAST_CLOSED_TIME_ERROR;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.core.exception.DomainLogicException;
@@ -33,7 +33,6 @@ class ClosedAtTest {
         LocalDateTime closedAt = now.plusMinutes(plusMinutes);
 
         // when & then
-        assertThatCode(() -> new ClosedAt(closedAt, now))
-                .doesNotThrowAnyException();
+        assertThatNoException().isThrownBy(() -> new ClosedAt(closedAt, now));
     }
 }

@@ -3,8 +3,8 @@ package com.morak.back.appointment.application;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.AvailableTime;
-import com.morak.back.appointment.domain.recommend.RankRecommendation;
 import com.morak.back.appointment.domain.SystemTime;
+import com.morak.back.appointment.domain.recommend.RankRecommendation;
 import com.morak.back.appointment.domain.recommend.RecommendationCells;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentNotFoundException;
@@ -27,7 +27,6 @@ import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
 import com.morak.back.core.util.MessageFormatter;
 import com.morak.back.team.domain.Team;
-import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamAuthorizationException;
@@ -120,7 +119,7 @@ public class AppointmentService {
         Team team = teamRepository.findByCode(teamCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team, member);
-        
+
         Appointment appointment = appointmentRepository.findByCode(appointmentCode)
                 .orElseThrow(() -> AppointmentNotFoundException.ofAppointment(
                         CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR, appointmentCode
@@ -131,7 +130,7 @@ public class AppointmentService {
                 requests.stream()
                         .map(AvailableTimeRequest::getStart)
                         .collect(Collectors.toSet()),
-                memberId ,
+                memberId,
                 systemTime.now()
         );
     }

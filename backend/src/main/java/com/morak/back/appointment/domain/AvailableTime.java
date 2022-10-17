@@ -1,11 +1,8 @@
 package com.morak.back.appointment.domain;
 
-import com.morak.back.auth.domain.Member;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

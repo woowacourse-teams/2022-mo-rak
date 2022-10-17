@@ -2,7 +2,7 @@ package com.morak.back.appointment.domain.dateperiod;
 
 import static com.morak.back.core.exception.CustomErrorCode.APPOINTMENT_PAST_DATE_CREATE_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
@@ -35,8 +35,7 @@ class DateTest {
         LocalDate validDate = today.plusDays(plusDays);
 
         // when & then
-        assertThatCode(() -> new Date(validDate, today))
-                .doesNotThrowAnyException();
+        assertThatNoException().isThrownBy(() -> new Date(validDate, today));
     }
 
     @ParameterizedTest

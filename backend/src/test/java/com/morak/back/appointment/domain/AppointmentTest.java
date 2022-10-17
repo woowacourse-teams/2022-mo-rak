@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 
 class AppointmentTest {
 
-    private static AppointmentBuilder DEFAULT_BUILDER;
+    private AppointmentBuilder DEFAULT_BUILDER;
 
     private LocalDateTime now;
 

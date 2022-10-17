@@ -33,14 +33,6 @@ public class DurationMinutes {
         return new DurationMinutes(durationMinutes);
     }
 
-    public int parseHours() {
-        return this.durationMinutes / HOUR_MINUTES;
-    }
-
-    public int parseMinutes() {
-        return this.durationMinutes % HOUR_MINUTES;
-    }
-
     private static void validateTimeFormat(int hours, int minutes) {
         if (hours < MIN_TIME || hours > MAX_HOURS) {
             throw new AppointmentDomainLogicException(
@@ -65,11 +57,11 @@ public class DurationMinutes {
     private static void validateMinutes(int minutes) {
         if (minutes % MINUTES_UNIT != 0) {
             throw new AppointmentDomainLogicException(
-                CustomErrorCode.APPOINTMENT_DURATION_NOT_MINUTES_UNIT_ERROR,
-                String.format(
-                    "약속잡기 진행시간 %d 는 %d 분 단위여야 합니다.",
-                    minutes, MINUTES_UNIT
-                )
+                    CustomErrorCode.APPOINTMENT_DURATION_NOT_MINUTES_UNIT_ERROR,
+                    String.format(
+                            "약속잡기 진행시간 %d 는 %d 분 단위여야 합니다.",
+                            minutes, MINUTES_UNIT
+                    )
             );
         }
     }
@@ -77,13 +69,21 @@ public class DurationMinutes {
     private static void validateDurationMinutesRange(int durationMinutes) {
         if (durationMinutes < MINUTES_UNIT || durationMinutes > DAY_MINUTES) {
             throw new AppointmentDomainLogicException(
-                CustomErrorCode.APPOINTMENT_DURATION_MINUTE_RANGE_ERROR,
-                String.format(
-                    "약속잡기 진행 시간 %d 은 최소 %d 분에서 %d 분 사이여야 합니다.",
-                    durationMinutes, MINUTES_UNIT, DAY_MINUTES
-                )
+                    CustomErrorCode.APPOINTMENT_DURATION_MINUTE_RANGE_ERROR,
+                    String.format(
+                            "약속잡기 진행 시간 %d 은 최소 %d 분에서 %d 분 사이여야 합니다.",
+                            durationMinutes, MINUTES_UNIT, DAY_MINUTES
+                    )
             );
         }
+    }
+
+    public int parseHours() {
+        return this.durationMinutes / HOUR_MINUTES;
+    }
+
+    public int parseMinutes() {
+        return this.durationMinutes % HOUR_MINUTES;
     }
 
     public boolean isLongerThan(Duration duration) {
