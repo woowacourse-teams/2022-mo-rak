@@ -1,6 +1,6 @@
+DROP TABLE IF EXISTS role_match_result;
 DROP TABLE IF EXISTS role_history;
 DROP TABLE IF EXISTS role_name;
-DROP TABLE IF EXISTS role_match_result;
 DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS poll_result;
 DROP TABLE IF EXISTS poll_item;
