@@ -3,7 +3,7 @@ import {
   StyledContainer,
   StyledGuide,
   StyledTitle,
-  StyledLottieWrapper
+  StyledLottieContainer
 } from './PollMainContainer.styles';
 import { useParams } from 'react-router-dom';
 import { useLottie } from 'lottie-react';
@@ -37,7 +37,7 @@ function PollMainContainer() {
     return (
       <>
         {/* TODO: 재사용 가능하지 않을까한다! */}
-        <StyledLottieWrapper>{emptyLottie.View}</StyledLottieWrapper>
+        <StyledLottieContainer>{emptyLottie.View}</StyledLottieContainer>
         <StyledGuide aria-label="poll-guide">첫 투표를 만들어보세요!</StyledGuide>
       </>
     );
@@ -56,7 +56,7 @@ function PollMainContainer() {
             <PollMainStatus status={status} />
           </FlexContainer>
           <StyledTitle>{title}</StyledTitle>
-          <PollMainProgress currentParticipants={count} groupCode={groupCode} />
+          <PollMainProgress currentParticipants={count} />
           <MarginContainer margin="0 0 1.6rem">
             {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
             <PollMainDetail

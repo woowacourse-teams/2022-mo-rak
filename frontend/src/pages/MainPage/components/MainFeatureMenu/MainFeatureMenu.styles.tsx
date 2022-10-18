@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledWrapper = styled.div`
+const StyledContainer = styled.div`
   cursor: pointer;
 `;
 
@@ -41,4 +41,4 @@ const StyledName = styled.div`
   font-size: 2.4rem;
 `;
 
-export { StyledMenuContainer, StyledWrapper, StyledName, StyledImage };
+export { StyledMenuContainer, StyledContainer, StyledName, StyledImage };

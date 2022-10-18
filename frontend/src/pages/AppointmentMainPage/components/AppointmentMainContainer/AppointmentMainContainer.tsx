@@ -15,7 +15,7 @@ import emptyAnimation from '../../../../assets/empty-animation.json';
 import {
   StyledContainer,
   StyledTitle,
-  LottieWrapper,
+  LottieContainer,
   StyledGuide
 } from './AppointmentMainContainer.styles';
 
@@ -35,7 +35,7 @@ function AppointmentMainContainer() {
     return (
       <>
         {/* TODO: 재사용 가능하지 않을까한다! */}
-        <LottieWrapper>{emptyLottie.View}</LottieWrapper>
+        <LottieContainer>{emptyLottie.View}</LottieContainer>
         <StyledGuide>첫 약속잡기를 만들어보세요!</StyledGuide>
       </>
     );
@@ -56,7 +56,7 @@ function AppointmentMainContainer() {
             </FlexContainer>
             <StyledTitle>{title}</StyledTitle>
             <MarginContainer margin="0 0 0.4rem">
-              <AppointmentMainProgress count={count} groupCode={groupCode} />
+              <AppointmentMainProgress count={count} />
             </MarginContainer>
             <MarginContainer margin="0 0 1.6rem">
               <AppointmentMainDetail

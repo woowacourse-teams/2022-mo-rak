@@ -1,15 +1,18 @@
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import useMenuDispatchContext from '../hooks/useMenuDispatchContext';
 import { Menu } from '../types/menu';
 
 type Props = {
-  // TODO: 존재하는 메뉴 literal
   menu: Menu;
 };
 
 function MenuRoute({ menu }: Props) {
   const dispatch = useMenuDispatchContext();
-  dispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
+
+  useEffect(() => {
+    dispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
+  }, []);
 
   return <Outlet />;
 }

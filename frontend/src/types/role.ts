@@ -20,4 +20,4 @@ type GetRolesHistoriesResponse = {
   roles: Array<Role>;
 };
 
-export { EditRolesRequest, GetRolesHistoriesResponse };
+export { EditRolesRequest, GetRolesHistoriesResponse, Role };

@@ -87,7 +87,7 @@ function PollResultContainer() {
             <Divider />
           </MarginContainer>
           <MarginContainer margin="1.4rem 0">
-            <PollResultProgress currentParticipants={poll.count} groupCode={groupCode} />
+            <PollResultProgress currentParticipants={poll.count} />
           </MarginContainer>
           <MarginContainer margin="1.4rem 0">
             <PollResultDetail

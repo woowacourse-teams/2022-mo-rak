@@ -1,27 +1,17 @@
-import { useEffect, useState } from 'react';
 import { StyledParticipantsStatus } from './PollMainProgress.styles';
 import Progress from '../../../../components/Progress/Progress';
 import { getPollResponse } from '../../../../types/poll';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { Group, Member } from '../../../../types/group';
-import { getGroupMembers } from '../../../../api/group';
+import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 
 type Props = {
   currentParticipants: getPollResponse['count'];
-  groupCode: Group['code'];
 };
 
-function PollMainProgress({ currentParticipants, groupCode }: Props) {
-  const [groupMembers, setGroupMembers] = useState<Array<Member>>([]);
-  const totalParticipants = groupMembers.length;
 
-  // TODO: 네트워크 요청 줄이기
-  useEffect(() => {
-    (async () => {
-      const res = await getGroupMembers(groupCode);
-      setGroupMembers(res.data);
-    })();
-  }, [groupCode]);
+function PollMainProgress({ currentParticipants }: Props) {
+  const { groupMembers } = useGroupMembersContext();
+  const totalParticipants = groupMembers.length;
 
   return (
     <FlexContainer flexDirection="column" alignItems="end">

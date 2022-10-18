@@ -15,7 +15,7 @@ const StyledTitle = styled.h1`
   margin-top: 1.2rem;
 `;
 
-const StyledLottieWrapper = styled.div`
+const StyledLottieContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,4 +30,4 @@ const StyledGuide = styled.p(
 `
 );
 
-export { StyledContainer, StyledGuide, StyledTitle, StyledLottieWrapper };
+export { StyledContainer, StyledGuide, StyledTitle, StyledLottieContainer };

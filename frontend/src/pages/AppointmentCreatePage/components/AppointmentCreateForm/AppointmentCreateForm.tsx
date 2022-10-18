@@ -37,7 +37,6 @@ type Props = {
 function AppointmentCreateForm({ startDate, endDate }: Props) {
   const navigate = useNavigate();
   const [title, handleTitle] = useInput('');
-  // TODO: groupCode 받아오는 게 계속 중복되어서, 중복줄이자
   const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [description, handleDescription] = useInput('');
   const [duration, handleDuration] = useInputs<Omit<Time, 'period'>>({ hour: '', minute: '' });
@@ -79,7 +78,6 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
 
       navigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`);
     } catch (err) {
-      console.log(err, 'error');
       if (err instanceof AxiosError) {
         const errCode = err.response?.data.codeNumber;
 

@@ -1,26 +1,16 @@
-import { useEffect, useState } from 'react';
 import Progress from '../../../../components/Progress/Progress';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { Group, Member } from '../../../../types/group';
-import { getGroupMembers } from '../../../../api/group';
 import { StyledParticipantsStatus } from './AppointmentMainProgress.styles';
+import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 
 type Props = {
   count: number;
-  groupCode: Group['code'];
 };
 
-function AppointmentMainProgress({ count, groupCode }: Props) {
-  const [groupMembers, setGroupMembers] = useState<Array<Member>>([]);
+function AppointmentMainProgress({ count }: Props) {
+  const { groupMembers } = useGroupMembersContext();
   const totalParticipants = groupMembers.length;
   const currentParticipants = count;
-
-  useEffect(() => {
-    (async () => {
-      const res = await getGroupMembers(groupCode);
-      setGroupMembers(res.data);
-    })();
-  }, [groupCode]);
 
   return (
     <FlexContainer flexDirection="column" alignItems="end">

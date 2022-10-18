@@ -1,6 +1,3 @@
-import { useEffect, useState } from 'react';
-import { getGroupMembers } from '../../../../api/group';
-import { Group, Member } from '../../../../types/group';
 import Avatar from '../../../../components/Avatar/Avatar';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import {
@@ -9,21 +6,11 @@ import {
   StyledName,
   StyledContainer
 } from './SidebarMembersProfileMenu.styles';
+import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 
-type Props = {
-  groupCode: Group['code'];
-};
-
-function SidebarMembersProfileMenu({ groupCode }: Props) {
-  const [groupMembers, setGroupMembers] = useState<Array<Member>>([]);
+function SidebarMembersProfileMenu() {
+  const { groupMembers } = useGroupMembersContext();
   const groupMembersCount = groupMembers.length;
-
-  useEffect(() => {
-    (async () => {
-      const res = await getGroupMembers(groupCode);
-      setGroupMembers(res.data);
-    })();
-  }, [groupCode]);
 
   return (
     <StyledMemberListContainer>
