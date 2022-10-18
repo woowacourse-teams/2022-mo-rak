@@ -8,6 +8,7 @@ import com.morak.back.AcceptanceTest;
 import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.FakeOAuthClient;
 import com.morak.back.auth.application.TokenProvider;
+import com.morak.back.auth.ui.dto.ChangeNameRequest;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.core.exception.CustomErrorCode;
@@ -56,11 +57,58 @@ public class OAuthAcceptanceTest extends AcceptanceTest {
         );
     }
 
+    @Test
+    void 본인_이름을_변경한다() {
+        // given
+        String token = tokenProvider.createToken("1");
+        ChangeNameRequest request = new ChangeNameRequest("변경하려는 이름");
+
+        // when
+        ExtractableResponse<Response> changeResponse = 본인_이름_변경을_요청한다(token, request);
+
+        // then
+        MemberResponse memberResponse = 자기자신_조회를_요청한다(token).as(MemberResponse.class);
+        Assertions.assertAll(
+                () -> assertThat(changeResponse.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(memberResponse.getName()).isEqualTo("변경하려는 이름")
+        );
+    }
+
+    @Test
+    void 본인_이름_변경_시_이름이_blank일_경우_BAD_REQUEST를_응답한다() {
+        // given
+        String token = tokenProvider.createToken("1");
+        ChangeNameRequest request = new ChangeNameRequest(" ");
+
+        // when
+        ExtractableResponse<Response> changeResponse = 본인_이름_변경을_요청한다(token, request);
+
+        // then
+        assertThat(changeResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 본인_이름_변경_시_이름이_255자를_넘으면_BAD_REQUEST를_응답한다() {
+        // given
+        String token = tokenProvider.createToken("1");
+        ChangeNameRequest request = new ChangeNameRequest("A".repeat(256));
+
+        // when
+        ExtractableResponse<Response> changeResponse = 본인_이름_변경을_요청한다(token, request);
+
+        // then
+        assertThat(changeResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
     private ExtractableResponse<Response> 로그인을_요청한다(SigninRequest request) {
         return post("/api/auth/signin", request);
     }
 
     private ExtractableResponse<Response> 자기자신_조회를_요청한다(String token) {
         return SimpleRestAssured.get("/api/auth/me", toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 본인_이름_변경을_요청한다(String token, ChangeNameRequest request) {
+        return SimpleRestAssured.patch("/api/auth/me/name", toHeader(token), request);
     }
 }

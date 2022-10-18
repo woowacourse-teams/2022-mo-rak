@@ -75,6 +75,14 @@ public class SimpleRestAssured {
                 .when().patch(path));
     }
 
+    public static ExtractableResponse<Response> patch(String path, Map<String, String> header, Object request) {
+        return thenExtract(given()
+                .headers(header)
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().patch(path));
+    }
+
     private static RequestSpecification given() {
         return RestAssured.given().log().all();
     }

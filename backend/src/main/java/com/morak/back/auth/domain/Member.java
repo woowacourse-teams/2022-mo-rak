@@ -52,6 +52,10 @@ public class Member extends BaseEntity {
         return ANONYMOUS_MEMBER;
     }
 
+    public void changeName(String name) {
+        this.name = name;
+    }
+
     @Override
     @Generated
     public boolean equals(Object o) {
