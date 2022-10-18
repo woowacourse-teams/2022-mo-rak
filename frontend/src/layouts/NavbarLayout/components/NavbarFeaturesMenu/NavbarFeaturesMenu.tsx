@@ -16,10 +16,10 @@ import {
   StyledMenu
 } from './NavbarFeaturesMenu.styles';
 
-interface Props {
+type Props = {
   groupCode: Group['code'];
   onClickMenu: () => void;
-}
+};
 
 function NavbarFeaturesMenu({ onClickMenu, groupCode }: Props) {
   const { activeMenu } = useMenuContext();

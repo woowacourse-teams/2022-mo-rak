@@ -10,9 +10,9 @@ import {
   StyledContainer
 } from './NavbarMembersProfileMenu.styles';
 
-interface Props {
+type Props = {
   groupCode: Group['code'];
-}
+};
 
 function NavbarMembersProfileMenu({ groupCode }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<Member>>([]);

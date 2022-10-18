@@ -19,12 +19,12 @@ import {
   StyledLeaveImage
 } from './NavbarGroupsMenu.styles';
 
-interface Props {
+type Props = {
   groupCode: Group['code'];
   groups: Array<Group>;
   onClickMenu: (menu: string) => () => void;
   onClickCloseMenusMenu: () => void;
-}
+};
 
 const getRandomPastelColor = () =>
   `hsl(${360 * Math.random()},${25 + 70 * Math.random()}%,${85 + 10 * Math.random()}%)`;

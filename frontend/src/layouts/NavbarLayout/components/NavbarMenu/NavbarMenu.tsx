@@ -27,10 +27,10 @@ import NavbarMenuModals from '../NavbarMenuModals/NavbarMenuModals';
 
 import { useState } from 'react';
 
-interface Props {
+type Props = {
   groupCode: Group['code'];
   groups: Array<Group>;
-}
+};
 
 function NavbarMenu({ groupCode, groups }: Props) {
   const { activeMenu, isVisibleMenus } = useMenuContext();

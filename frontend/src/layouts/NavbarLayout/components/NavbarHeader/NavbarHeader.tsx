@@ -10,10 +10,10 @@ import Logo from '../../../../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { Group } from '../../../../types/group';
 
-interface Props {
+type Props = {
   groupCode: Group['code'];
   groups: Array<Group>;
-}
+};
 
 function NavbarHeader({ groups, groupCode }: Props) {
   const navigate = useNavigate();

@@ -2,9 +2,9 @@ import { MouseEventHandler } from 'react';
 import Slack from '../../../../assets/slack.svg';
 import { StyledContainer, StyledSlackLogo, StyledText } from './NavbarSlackMenu.styles';
 
-interface Props {
+type Props = {
   onClick: MouseEventHandler<HTMLButtonElement>;
-}
+};
 
 function NavbarSlackMenu({ onClick }: Props) {
   return (

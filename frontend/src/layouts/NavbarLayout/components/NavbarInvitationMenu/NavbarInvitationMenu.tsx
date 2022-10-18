@@ -8,9 +8,9 @@ import {
   StyledPlusIcon
 } from './NavbarInvitationMenu.styles';
 
-interface Props {
+type Props = {
   groupCode: Group['code'];
-}
+};
 
 function NavbarInvitationMenu({ groupCode }: Props) {
   const handleCopyInvitationCode = async () => {
