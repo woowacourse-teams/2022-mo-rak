@@ -1,4 +1,5 @@
 import { Appointment } from '../../../../types/appointment';
+import { getFormattedHourMinuteDuration } from '../../../../utils/date';
 import { StyledDuration } from './AppointmentProgressDetail.styles';
 
 type Props = {
@@ -11,8 +12,8 @@ type Props = {
 function AppointmentProgressDetail({ durationHours, durationMinutes, startTime, endTime }: Props) {
   return (
     <StyledDuration>
-      약속시간은 {durationHours}시간 {durationMinutes}분동안 진행
-      <br />({startTime}~{endTime})
+      약속 진행시간: {getFormattedHourMinuteDuration(durationHours, durationMinutes)} ({startTime}~
+      {endTime})
     </StyledDuration>
   );
 }

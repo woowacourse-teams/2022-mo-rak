@@ -3,6 +3,7 @@ import { useTheme } from '@emotion/react';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import TextField from '../../../../components/TextField/TextField';
 import { Appointment } from '../../../../types/appointment';
+import { getFormattedHourMinuteDuration } from '../../../../utils/date';
 import { StyledCloseTime, StyledDetail } from './AppointmentMainDetail.styles';
 
 const getFormattedClosedTime = (value: string) => {
@@ -25,6 +26,7 @@ type Props = {
 };
 
 function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Props) {
+  console.log(durationHours, durationMinutes);
   const theme = useTheme();
 
   return (
@@ -42,9 +44,7 @@ function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Pro
           colorScheme={theme.colors.PURPLE_100}
         >
           <StyledDetail>
-            {durationHours}
-            시간
-            {durationMinutes.toString().padStart(2, '0')}분
+            {getFormattedHourMinuteDuration(durationHours, durationMinutes)}
           </StyledDetail>
         </TextField>
       </FlexContainer>
