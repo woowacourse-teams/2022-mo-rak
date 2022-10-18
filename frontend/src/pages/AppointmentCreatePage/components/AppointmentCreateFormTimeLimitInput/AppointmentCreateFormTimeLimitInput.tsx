@@ -11,12 +11,12 @@ import {
   StyledContent
 } from './AppointmentCreateFormTimeLimitInput.styles';
 
-interface Props {
+type Props = {
   startTime: Time;
   endTime: Time;
   onChangeStartTime: ChangeEventHandler<HTMLSelectElement>;
   onChangeEndTime: ChangeEventHandler<HTMLSelectElement>;
-}
+};
 
 function AppointmentCreateFormTimeLimitInput({
   startTime,

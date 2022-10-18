@@ -7,7 +7,7 @@ import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import useMenuContext from '../../../../hooks/useMenuContext';
 import { Menu } from '../../../../types/menu';
 
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import {
   StyledMenuHeader,
   StyledContainer,
@@ -16,9 +16,9 @@ import {
   StyledMenu
 } from './SidebarFeaturesMenu.styles';
 
-interface Props {
-  groupCode: GroupInterface['code'];
-}
+type Props = {
+  groupCode: Group['code'];
+};
 
 function SidebarFeaturesMenu({ groupCode }: Props) {
   const { activeMenu } = useMenuContext();

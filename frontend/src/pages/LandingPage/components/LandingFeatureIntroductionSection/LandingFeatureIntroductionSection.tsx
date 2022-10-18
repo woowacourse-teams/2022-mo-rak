@@ -21,7 +21,7 @@ import Appointment from '../../../../assets/time.svg';
 import Undefined from '../../../../assets/question.svg';
 import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
-interface Props extends HTMLAttributes<HTMLElement> {}
+type Props = HTMLAttributes<HTMLDivElement>;
 
 function LandingFeatureIntroductionSection({ id }: Props) {
   return (

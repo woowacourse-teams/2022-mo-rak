@@ -12,11 +12,11 @@ import Plus from '../../../../assets/plus.svg';
 import LinkIcon from '../../../../assets/link.svg';
 import Close from '../../../../assets/close-button.svg';
 import Logo from '../../../../assets/logo.svg';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { createGroup, participateGroup } from '../../../../api/group';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import { linkSlack } from '../../../../api/slack';
-import { SlackInterface } from '../../../../types/slack';
+import { LinkSlackRequest } from '../../../../types/slack';
 import useInput from '../../../../hooks/useInput';
 import {
   StyledModalFormContainer,
@@ -32,11 +32,11 @@ import {
   StyledSmallLogo
 } from './SidebarMenuModals.styles';
 
-interface Props {
+type Props = {
   activeModalMenu: string | null;
   closeModal: () => void;
-  groupCode: GroupInterface['code'];
-}
+  groupCode: Group['code'];
+};
 
 function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
   const [groupName, handleGroupName, resetGroupName] = useInput('');
@@ -104,12 +104,12 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
   const handleLinkSlack = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const slackUrlData: SlackInterface = {
+    const slack: LinkSlackRequest = {
       url: slackUrl
     };
 
     try {
-      await linkSlack(slackUrlData, groupCode);
+      await linkSlack(slack, groupCode);
       alert('슬랙 채널과 연동이 완료되었습니다 🎉');
       resetSlackUrl();
       closeModal();

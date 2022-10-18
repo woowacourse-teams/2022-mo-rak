@@ -14,7 +14,7 @@ import {
 import Modal from '../../../../components/Modal/Modal';
 import { editRoles } from '../../../../api/role';
 import { useParams } from 'react-router-dom';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { AxiosError } from 'axios';
 import { EditRolesRequest } from '../../../../types/role';
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
@@ -29,7 +29,7 @@ type Props = {
 
 function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
   const { groupMembers } = useGroupMembersContext();
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [roles, setRoles] = useState(initialRoles);
 
   const handleSetRoles = (targetIdx: number) => (e: ChangeEvent<HTMLInputElement>) => {

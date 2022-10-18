@@ -2,11 +2,9 @@ import { useTheme } from '@emotion/react';
 
 import { StyledCloseTime, StyledDetail } from './PollMainDetail.styles';
 
-import { PollInterface } from '../../../../types/poll';
+import { Poll } from '../../../../types/poll';
 import TextField from '../../../../components/TextField/TextField';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-
-interface Props extends Pick<PollInterface, 'isAnonymous' | 'allowedPollCount' | 'closedAt'> {}
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);
@@ -20,6 +18,8 @@ const getFormattedClosedTime = (value: string) => {
     hour12: true
   });
 };
+
+type Props = Pick<Poll, 'isAnonymous' | 'allowedPollCount' | 'closedAt'>;
 
 function PollMainDetail({ isAnonymous, allowedPollCount, closedAt }: Props) {
   const theme = useTheme();

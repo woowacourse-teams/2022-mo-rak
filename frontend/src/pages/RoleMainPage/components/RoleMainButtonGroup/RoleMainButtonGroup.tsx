@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import Button from '../../../../components/Button/Button';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { StyledAnimationContainer } from './RoleMainButtonGroup.styles';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { useState } from 'react';
 import { useLottie } from 'lottie-react';
 import { allocateRoles } from '../../../../api/role';
@@ -17,7 +17,7 @@ type Props = {
 
 function RoleMainButtonGroup({ onClickAllocateRolesButton, onClickEditRolesButton }: Props) {
   const theme = useTheme();
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [isFireworkAnimationVisible, setIsFireworkAnimationVisible] = useState(false);
   const fireworkAnimation = useLottie(
     {

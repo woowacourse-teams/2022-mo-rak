@@ -2,12 +2,12 @@ import { useTheme } from '@emotion/react';
 import { ChangeEventHandler, InputHTMLAttributes, memo } from 'react';
 import Input from '../../../../components/Input/Input';
 import TextField from '../../../../components/TextField/TextField';
-import { PollInterface } from '../../../../types/poll';
+import { Poll } from '../../../../types/poll';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  title: PollInterface['title'];
+type Props = {
+  title: Poll['title'];
   onChange: ChangeEventHandler<HTMLInputElement>;
-}
+} & InputHTMLAttributes<HTMLInputElement>;
 
 function PollCreateFormTitleInput({ title, onChange }: Props) {
   const theme = useTheme();

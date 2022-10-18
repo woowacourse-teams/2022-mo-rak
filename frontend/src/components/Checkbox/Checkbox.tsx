@@ -4,7 +4,7 @@ import Check from '../../assets/check.svg';
 import NotCheck from '../../assets/not-check.svg';
 import { StyledContainerLabel, StyledInput, StyledCheckbox, StyledLabel } from './Checkbox.styles';
 
-interface Props extends PropsWithChildren<InputHTMLAttributes<HTMLInputElement>> {}
+type Props = PropsWithChildren<InputHTMLAttributes<HTMLInputElement>>;
 
 function Checkbox({ id, children, checked, ...props }: Props) {
   return (

@@ -4,9 +4,9 @@ import { getPollResponse } from '../../../../types/poll';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 
-interface Props {
+type Props = {
   currentParticipants: getPollResponse['count'];
-}
+};
 
 function PollResultProgress({ currentParticipants }: Props) {
   const { groupMembers } = useGroupMembersContext();

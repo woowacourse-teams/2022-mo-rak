@@ -1,7 +1,7 @@
 import { MouseEventHandler, useMemo } from 'react';
 import Box from '../../../../components/Box/Box';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { AppointmentInterface, AvailableTimes } from '../../../../types/appointment';
+import { Appointment, AvailableTimes } from '../../../../types/appointment';
 import { StyledTime, StyledGuide } from './AppointmentProgressTimePicker.styles';
 
 const formatHourMinutePeriod = (date: Date) =>
@@ -17,10 +17,7 @@ const getTimeDetail = (time: string): [string, number, number] => {
 };
 
 // NOTE: () => [{s: '10:00AM', e: '10:30AM' ....}]
-const getTimeTables = (
-  startTime: AppointmentInterface['startTime'],
-  endTime: AppointmentInterface['endTime']
-) => {
+const getTimeTables = (startTime: Appointment['startTime'], endTime: Appointment['endTime']) => {
   const [startPeriod, startHour, startMinute] = getTimeDetail(startTime);
   const [endPeriod, endHour, endMinute] = getTimeDetail(endTime);
 
@@ -60,9 +57,9 @@ const getPlusOneDay = (date: string) => {
   return currentDate.toISOString().split('T')[0];
 };
 
-interface Props {
-  startTime: AppointmentInterface['startTime'];
-  endTime: AppointmentInterface['endTime'];
+type Props = {
+  startTime: Appointment['startTime'];
+  endTime: Appointment['endTime'];
   selectedDate: string;
   // NOTE: onClickTime이라는 확장성을 열어둔 prop에 (start, end)를 특정해주게 되면 의미가 없지 않을까?
   onClickTime: (
@@ -70,7 +67,7 @@ interface Props {
     end: string
   ) => MouseEventHandler<HTMLDivElement> | MouseEventHandler<HTMLDivElement>;
   availableTimes: AvailableTimes;
-}
+};
 
 // TODO: 위의 함수들이 여러개로 나뉘어져있는 것을 컴포넌트에 놔둬도 될지 고민해보기
 function AppointmentProgressTimePicker({

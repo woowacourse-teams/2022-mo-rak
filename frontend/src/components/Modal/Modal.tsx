@@ -1,10 +1,10 @@
 import { MouseEvent, PropsWithChildren, useRef } from 'react';
 import { StyledContainer } from './Modal.styles';
 
-interface Props extends PropsWithChildren {
+type Props = {
   isVisible: boolean;
   close: () => void;
-}
+} & PropsWithChildren;
 
 function Modal({ children, isVisible, close }: Props) {
   const outsideRef = useRef<HTMLDivElement>(null);

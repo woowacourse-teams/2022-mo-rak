@@ -1,4 +1,4 @@
-import { AppointmentInterface } from '../../../../types/appointment';
+import { Appointment } from '../../../../types/appointment';
 import AppointmentProgressDetail from '../AppointmentProgressDetail/AppointmentProgressDetail';
 import {
   StyledHeaderContainer,
@@ -6,9 +6,9 @@ import {
   StyledDescription
 } from './AppointmentProgressHeader.styles';
 
-interface Props {
-  appointment: AppointmentInterface;
-}
+type Props = {
+  appointment: Appointment;
+};
 
 function AppointmentProgressHeader({ appointment }: Props) {
   return (

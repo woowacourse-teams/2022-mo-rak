@@ -1,11 +1,12 @@
 import { CSSProperties, ProgressHTMLAttributes } from 'react';
 import { StyledProgress } from './Progress.styles';
 
-interface Props extends ProgressHTMLAttributes<HTMLProgressElement> {
+type Props = {
   accentColor?: string | undefined;
-}
+} & ProgressHTMLAttributes<HTMLProgressElement> &
+  CSSProperties;
 
-function Progress({ accentColor, ...props }: Props & CSSProperties) {
+function Progress({ accentColor, ...props }: Props) {
   return <StyledProgress accentColor={accentColor} {...props} />;
 }
 

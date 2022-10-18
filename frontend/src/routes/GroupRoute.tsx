@@ -3,10 +3,10 @@ import { Outlet, useParams } from 'react-router-dom';
 import { getGroupMembers } from '../api/group';
 import { MenuContext } from '../context/MenuProvider';
 import useGroupMembersDispatchContext from '../hooks/useGroupMembersDispatchContext';
-import { GroupInterface } from '../types/group';
+import { Group } from '../types/group';
 
 function GroupRoute() {
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const menuState = useContext(MenuContext);
   const groupMembersDispatch = useGroupMembersDispatchContext();
   const activeMenu = menuState?.activeMenu;

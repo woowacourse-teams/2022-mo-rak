@@ -1,5 +1,5 @@
-interface SlackInterface {
+type LinkSlackRequest = {
   url: string;
-}
+};
 
-export { SlackInterface };
+export { LinkSlackRequest };

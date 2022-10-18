@@ -1,7 +1,7 @@
 import { MouseEventHandler } from 'react';
 
 import Crown from '../../../../assets/crown.svg';
-import { AppointmentRecommendationInterface } from '../../../../types/appointment';
+import { AppointmentRecommendation } from '../../../../types/appointment';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { getFormattedDateTime } from '../../../../utils/date';
 import {
@@ -12,12 +12,12 @@ import {
 } from './AppointmentResultRanking.styles';
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 
-interface Props {
-  appointmentRecommendation: Array<AppointmentRecommendationInterface>;
+type Props = {
+  appointmentRecommendation: Array<AppointmentRecommendation>;
   // TODO: clicked보다는 selected가 더 맞지 않을까?
   clickedRecommendation: number;
   onClickRank: (idx: number) => MouseEventHandler<HTMLDivElement>;
-}
+};
 
 function AppointmentResultRanking({
   appointmentRecommendation,
@@ -37,7 +37,7 @@ function AppointmentResultRanking({
             recommendStartDateTime,
             recommendEndDateTime,
             availableMembers
-          }: AppointmentRecommendationInterface,
+          }: AppointmentRecommendation,
           idx
         ) => (
           <StyledRank

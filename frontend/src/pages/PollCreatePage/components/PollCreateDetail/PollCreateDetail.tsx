@@ -2,15 +2,15 @@ import { useTheme } from '@emotion/react';
 
 import Button from '../../../../components/Button/Button';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { PollInterface } from '../../../../types/poll';
+import { Poll } from '../../../../types/poll';
 import { memo } from 'react';
 
-interface Props {
-  isAnonymous: PollInterface['isAnonymous'];
+type Props = {
+  isAnonymous: Poll['isAnonymous'];
   isAllowedMultiplePollCount: boolean;
   handleAnonymous: (anonymousStatus: boolean) => () => void;
   handleAllowedMultiplePollCount: (isAllowedMultiplePollCountStatus: boolean) => () => void;
-}
+};
 
 function PollCreateDetail({
   isAnonymous,

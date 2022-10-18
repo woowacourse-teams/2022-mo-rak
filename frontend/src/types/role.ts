@@ -1,10 +1,10 @@
-import { MemberInterface } from './group';
+import { Member } from './group';
 
 type Role = {
   date: `${string}-${string}-${string}`;
   role: [
     {
-      memberId: MemberInterface['id'];
+      memberId: Member['id'];
       name: string;
     }
   ];

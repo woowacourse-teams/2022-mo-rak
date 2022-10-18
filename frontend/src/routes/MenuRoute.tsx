@@ -3,9 +3,9 @@ import { Outlet } from 'react-router-dom';
 import useMenuDispatchContext from '../hooks/useMenuDispatchContext';
 import { Menu } from '../types/menu';
 
-interface Props {
+type Props = {
   menu: Menu;
-}
+};
 
 function MenuRoute({ menu }: Props) {
   const dispatch = useMenuDispatchContext();

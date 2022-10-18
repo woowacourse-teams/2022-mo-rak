@@ -1,11 +1,11 @@
 import { InputHTMLAttributes, memo } from 'react';
 import Input from '../../../../components/Input/Input';
-import { AppointmentInterface } from '../../../../types/appointment';
+import { Appointment } from '../../../../types/appointment';
 import { StyledLabel } from './AppointmentCreateFormTitleInput.styles';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  title: AppointmentInterface['title'];
-}
+type Props = {
+  title: Appointment['title'];
+} & InputHTMLAttributes<HTMLInputElement>;
 
 function AppointmentCreateFormTitleInput({ title, onChange }: Props) {
   return (

@@ -3,9 +3,9 @@ import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { StyledParticipantsStatus } from './AppointmentMainProgress.styles';
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 
-interface Props {
+type Props = {
   count: number;
-}
+};
 
 function AppointmentMainProgress({ count }: Props) {
   const { groupMembers } = useGroupMembersContext();

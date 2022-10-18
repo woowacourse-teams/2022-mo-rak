@@ -1,13 +1,13 @@
-interface GroupInterface {
+type Group = {
   code: string;
   name: string;
-  members: Array<MemberInterface>;
-}
+  members: Array<Member>;
+};
 
-interface MemberInterface {
+type Member = {
   id: number;
   name: string;
   profileUrl: string;
-}
+};
 
-export { GroupInterface, MemberInterface };
+export { Group, Member };

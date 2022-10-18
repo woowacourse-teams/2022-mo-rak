@@ -6,11 +6,11 @@ import {
   StyledImage
 } from './MainFeatureMenu.styles';
 
-interface Props {
+type Props = {
   onClick: MouseEventHandler<HTMLDivElement>;
   name: '투표하기' | '약속잡기' | '역할 정하기';
   img: string;
-}
+};
 
 function MainFeatureMenu({ onClick, name, img }: Props) {
   return (

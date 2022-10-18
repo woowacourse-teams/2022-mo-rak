@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Logo from '../../../../assets/logo.svg';
 
 import { getGroups } from '../../../../api/group';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 
 import Divider from '../../../../components/Divider/Divider';
 import SidebarGroupsMenu from '../SidebarGroupsMenu/SidebarGroupsMenu';
@@ -19,9 +19,9 @@ import { StyledContainer, StyledLogo, StyledBottomMenu } from './Sidebar.styles'
 function Sidebar() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [groups, setGroups] = useState<Array<GroupInterface>>([]);
+  const [groups, setGroups] = useState<Array<Group>>([]);
   const [activeModalMenu, setActiveModalMenu] = useState<null | string>(null);
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
 
   const handleNavigate = (location: string) => () => {
     navigate(location);

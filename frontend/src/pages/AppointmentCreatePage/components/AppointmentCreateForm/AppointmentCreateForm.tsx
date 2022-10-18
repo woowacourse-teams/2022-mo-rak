@@ -11,15 +11,10 @@ import AppointmentCreateFormCloseTimeInput from '../AppointmentCreateFormCloseTi
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import useInput from '../../../../hooks/useInput';
 import useInputs from '../../../../hooks/useInputs';
-import { Time, createAppointmentData, AppointmentInterface } from '../../../../types/appointment';
+import { Time, CreateAppointmentRequest, Appointment } from '../../../../types/appointment';
 import { createAppointment } from '../../../../api/appointment';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { StyledForm } from './AppointmentCreateForm.styles';
-
-interface Props {
-  startDate: AppointmentInterface['startDate'];
-  endDate: AppointmentInterface['endDate'];
-}
 
 const getFormattedTime = (time: Time) => {
   const { period, hour, minute } = time;
@@ -34,10 +29,15 @@ const getPlusOneDate = (date: string) => {
   return currentDate.toISOString().split('T')[0];
 };
 
+type Props = {
+  startDate: Appointment['startDate'];
+  endDate: Appointment['endDate'];
+};
+
 function AppointmentCreateForm({ startDate, endDate }: Props) {
   const navigate = useNavigate();
   const [title, handleTitle] = useInput('');
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [description, handleDescription] = useInput('');
   const [duration, handleDuration] = useInputs<Omit<Time, 'period'>>({ hour: '', minute: '' });
   const [startTime, handleStartTime] = useInputs<Time>({ period: 'AM', hour: '', minute: '00' });
@@ -57,7 +57,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
     const formattedStartTime = getFormattedTime(startTime);
     const formattedEndTime = getFormattedTime(endTime);
 
-    const appointment: createAppointmentData = {
+    const appointment: CreateAppointmentRequest = {
       title,
       description,
       startDate,
