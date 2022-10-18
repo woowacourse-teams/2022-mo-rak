@@ -5,7 +5,7 @@ import {
   StyledProfileContainer,
   StyledName,
   StyledCurrentGroupContainer
-} from './MobileHeader.styles';
+} from './NavbarHeader.styles';
 import Logo from '../../../../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { GroupInterface } from '../../../../types/group';
@@ -15,7 +15,7 @@ interface Props {
   groups: Array<GroupInterface>;
 }
 
-function MobileHeader({ groups, groupCode }: Props) {
+function NavbarHeader({ groups, groupCode }: Props) {
   const navigate = useNavigate();
   const currentGroup = groups.find((group) => group.code === groupCode);
 
@@ -38,4 +38,4 @@ function MobileHeader({ groups, groupCode }: Props) {
   );
 }
 
-export default MobileHeader;
+export default NavbarHeader;

@@ -17,7 +17,7 @@ import {
   StyledLeaveGroupButton,
   StyledPlusImage,
   StyledLeaveImage
-} from './MobileGroupsMenu.styles';
+} from './NavbarGroupsMenu.styles';
 
 interface Props {
   groupCode: GroupInterface['code'];
@@ -29,7 +29,7 @@ interface Props {
 const getRandomPastelColor = () =>
   `hsl(${360 * Math.random()},${25 + 70 * Math.random()}%,${85 + 10 * Math.random()}%)`;
 
-function MobileGroupsMenu({ onClickCloseMenusMenu, onClickMenu, groupCode, groups }: Props) {
+function NavbarGroupsMenu({ onClickCloseMenusMenu, onClickMenu, groupCode, groups }: Props) {
   const navigate = useNavigate();
   const profileColor = getRandomPastelColor();
 
@@ -88,4 +88,4 @@ function MobileGroupsMenu({ onClickCloseMenusMenu, onClickMenu, groupCode, group
     </StyledContainer>
   );
 }
-export default MobileGroupsMenu;
+export default NavbarGroupsMenu;

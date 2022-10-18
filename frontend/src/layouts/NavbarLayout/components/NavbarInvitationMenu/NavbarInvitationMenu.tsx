@@ -6,13 +6,13 @@ import {
   StyledInvitationLink,
   StyledInvitationText,
   StyledPlusIcon
-} from './MobileInvitationMenu.styles';
+} from './NavbarInvitationMenu.styles';
 
 interface Props {
   groupCode: GroupInterface['code'];
 }
 
-function MobileInvitationMenu({ groupCode }: Props) {
+function NavbarInvitationMenu({ groupCode }: Props) {
   const handleCopyInvitationCode = async () => {
     const res = await createInvitationCode(groupCode);
     const invitationCode = res.headers.location.split('groups/in/')[1];
@@ -35,4 +35,4 @@ function MobileInvitationMenu({ groupCode }: Props) {
   );
 }
 
-export default MobileInvitationMenu;
+export default NavbarInvitationMenu;

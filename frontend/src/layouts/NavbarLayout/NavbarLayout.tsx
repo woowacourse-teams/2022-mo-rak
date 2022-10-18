@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { GroupInterface } from '../../types/group';
-import MobileHeader from './components/MobileHeader/MobileHeader';
-import MobileMenu from './components/MobileMenu/MobileMenu';
+import NavbarHeader from './components/NavbarHeader/NavbarHeader';
+import NavbarMenu from './components/NavbarMenu/NavbarMenu';
 import { getGroups } from '../../api/group';
 
-function MobileLayout() {
+function NavbarLayout() {
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<GroupInterface>>([]);
 
@@ -29,10 +29,10 @@ function MobileLayout() {
 
   return (
     <>
-      <MobileHeader groups={groups} groupCode={groupCode} />
-      <MobileMenu groups={groups} groupCode={groupCode} />
+      <NavbarHeader groups={groups} groupCode={groupCode} />
+      <NavbarMenu groups={groups} groupCode={groupCode} />
     </>
   );
 }
 
-export default MobileLayout;
+export default NavbarLayout;

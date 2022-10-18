@@ -8,13 +8,13 @@ import {
   StyledMenuHeader,
   StyledName,
   StyledContainer
-} from './MobileMembersProfileMenu.styles';
+} from './NavbarMembersProfileMenu.styles';
 
 interface Props {
   groupCode: GroupInterface['code'];
 }
 
-function MobileMembersProfileMenu({ groupCode }: Props) {
+function NavbarMembersProfileMenu({ groupCode }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
   const groupMembersCount = groupMembers.length;
 
@@ -42,4 +42,4 @@ function MobileMembersProfileMenu({ groupCode }: Props) {
   );
 }
 
-export default MobileMembersProfileMenu;
+export default NavbarMembersProfileMenu;

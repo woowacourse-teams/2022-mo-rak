@@ -30,7 +30,7 @@ import {
   StyledLinkIcon,
   StyledButton,
   StyledSmallLogo
-} from './MobileMenuModals.styles';
+} from './NavbarMenuModals.styles';
 
 interface Props {
   activeModalMenu: string | null;
@@ -38,7 +38,7 @@ interface Props {
   groupCode: GroupInterface['code'];
 }
 
-function MobileMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
+function NavbarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
   const [groupName, handleGroupName, resetGroupName] = useInput('');
   const [invitationCode, handleInvitationCode, resetInvitationCode] = useInput('');
   const [slackUrl, handleSlackUrl, resetSlackUrl] = useInput('');
@@ -241,4 +241,4 @@ function MobileMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
   );
 }
 
-export default MobileMenuModals;
+export default NavbarMenuModals;

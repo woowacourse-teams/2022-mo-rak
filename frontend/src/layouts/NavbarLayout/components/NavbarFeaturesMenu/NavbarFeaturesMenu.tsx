@@ -14,14 +14,14 @@ import {
   StyledMenuIcon,
   StyledMenuTitle,
   StyledMenu
-} from './MobileFeaturesMenu.styles';
+} from './NavbarFeaturesMenu.styles';
 
 interface Props {
   groupCode: GroupInterface['code'];
   onClickMenu: () => void;
 }
 
-function MobileFeaturesMenu({ onClickMenu, groupCode }: Props) {
+function NavbarFeaturesMenu({ onClickMenu, groupCode }: Props) {
   const { activeMenu } = useMenuContext();
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
@@ -57,4 +57,4 @@ function MobileFeaturesMenu({ onClickMenu, groupCode }: Props) {
   );
 }
 
-export default MobileFeaturesMenu;
+export default NavbarFeaturesMenu;

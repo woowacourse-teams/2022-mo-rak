@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import Leave from '../../../../assets/leave.svg';
 import { removeLocalStorageItem } from '../../../../utils/storage';
-import { StyledContainer, StyledLeaveImage, StyledText } from './MobileLogoutMenu.styles';
+import { StyledContainer, StyledLeaveImage, StyledText } from './NavbarLogoutMenu.styles';
 
-function MobileLogoutMenu() {
+function NavbarLogoutMenu() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -21,5 +21,4 @@ function MobileLogoutMenu() {
   );
 }
 
-export default MobileLogoutMenu;
-
+export default NavbarLogoutMenu;

@@ -4,7 +4,7 @@ import {
   StyledMenusContainer,
   StyledCloseButton,
   StyledBottomMenu
-} from './MobileMenu.styles';
+} from './NavbarMenu.styles';
 import Home from '../../../../assets/home.svg';
 import MenuImg from '../../../../assets/menu.svg';
 import Poll from '../../../../assets/poll.svg';
@@ -17,13 +17,13 @@ import useMenuContext from '../../../../hooks/useMenuContext';
 import { GroupInterface } from '../../../../types/group';
 import { Menu } from '../../../../types/menu';
 import Divider from '../../../../components/Divider/Divider';
-import MobileFeaturesMenu from '../MobileFeaturesMenu/MobileFeaturesMenu';
-import MobileMembersProfileMenu from '../MobileMembersProfileMenu/MobileMembersProfileMenu';
-import MobileSlackMenu from '../MobileSlackMenu/MobileSlackMenu';
-import MobileInvitationMenu from '../MobileInvitationMenu/MobileInvitationMenu';
-import MobileLogoutMenu from '../MobileLogoutMenu/MobileLogoutMenu';
-import MobileGroupsMenu from '../MobileGroupsMenu/MobileGroupsMenu';
-import MobileMenuModals from '../MobileMenuModals/MobileMenuModals';
+import NavbarFeaturesMenu from '../NavbarFeaturesMenu/NavbarFeaturesMenu';
+import NavbarMembersProfileMenu from '../NavbarMembersProfileMenu/NavbarMembersProfileMenu';
+import NavbarSlackMenu from '../NavbarSlackMenu/NavbarSlackMenu';
+import NavbarInvitationMenu from '../NavbarInvitationMenu/NavbarInvitationMenu';
+import NavbarLogoutMenu from '../NavbarLogoutMenu/NavbarLogoutMenu';
+import NavbarGroupsMenu from '../NavbarGroupsMenu/NavbarGroupsMenu';
+import NavbarMenuModals from '../NavbarMenuModals/NavbarMenuModals';
 
 import { useState } from 'react';
 
@@ -32,7 +32,7 @@ interface Props {
   groups: Array<GroupInterface>;
 }
 
-function MobileMenu({ groupCode, groups }: Props) {
+function NavbarMenu({ groupCode, groups }: Props) {
   const { activeMenu, isVisibleMenus } = useMenuContext();
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
@@ -90,7 +90,7 @@ function MobileMenu({ groupCode, groups }: Props) {
         <StyledCloseButton onClick={handleCloseMenus}>
           <img src={CloseButton} alt="메뉴닫기" />
         </StyledCloseButton>
-        <MobileGroupsMenu
+        <NavbarGroupsMenu
           onClickCloseMenusMenu={handleCloseMenus}
           onClickMenu={handleSetActiveModalMenu}
           groupCode={groupCode}
@@ -99,23 +99,23 @@ function MobileMenu({ groupCode, groups }: Props) {
 
         <Divider />
 
-        <MobileFeaturesMenu onClickMenu={handleCloseMenus} groupCode={groupCode} />
+        <NavbarFeaturesMenu onClickMenu={handleCloseMenus} groupCode={groupCode} />
 
         <Divider />
-        <MobileMembersProfileMenu groupCode={groupCode} />
+        <NavbarMembersProfileMenu groupCode={groupCode} />
 
         <Divider />
         <StyledBottomMenu>
-          <MobileSlackMenu onClick={handleSetActiveModalMenu('slack')} />
-          <MobileInvitationMenu groupCode={groupCode} />
-          <MobileLogoutMenu />
+          <NavbarSlackMenu onClick={handleSetActiveModalMenu('slack')} />
+          <NavbarInvitationMenu groupCode={groupCode} />
+          <NavbarLogoutMenu />
         </StyledBottomMenu>
       </StyledMenusContainer>
 
       {/* TODO: 모달이 모여있음  */}
       {/* TODO: portal 사용 */}
       {/* TODO: 모달이 기존과 같음 */}
-      <MobileMenuModals
+      <NavbarMenuModals
         activeModalMenu={activeModalMenu}
         closeModal={handleSetActiveModalMenu(null)}
         groupCode={groupCode}
@@ -124,4 +124,4 @@ function MobileMenu({ groupCode, groups }: Props) {
   );
 }
 
-export default MobileMenu;
+export default NavbarMenu;
