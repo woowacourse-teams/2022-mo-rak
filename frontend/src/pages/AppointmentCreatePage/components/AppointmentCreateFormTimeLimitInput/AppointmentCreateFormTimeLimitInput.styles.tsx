@@ -7,7 +7,7 @@ const StyledTitle = styled.div(
 `
 );
 
-const StyledHelpIconWrapper = styled.div(
+const StyledHelpIconContainer = styled.div(
   ({ theme }) => `
   display: flex;
   justify-content: center;
@@ -26,4 +26,4 @@ const StyledContent = styled.p`
   font-size: 2.4rem;
 `;
 
-export { StyledTitle, StyledHelpIconWrapper, StyledHelpIcon, StyledContent };
+export { StyledTitle, StyledHelpIconContainer, StyledHelpIcon, StyledContent };

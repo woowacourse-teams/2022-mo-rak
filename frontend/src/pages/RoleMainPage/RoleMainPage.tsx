@@ -27,7 +27,7 @@ function RoleMainPage() {
   return (
     <StyledContainer>
       <RoleMainHeader />
-      <RoleMainProgress onAllocateRoles={fetchRolesHistories} />
+      <RoleMainProgress onClickAllocateRolesButton={fetchRolesHistories} />
       <RoleMainResult rolesHistories={rolesHistories} />
     </StyledContainer>
   );

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledLottieContainer = styled.div(
+const StyledAnimationContainer = styled.div(
   ({ isVisible }: { isVisible: boolean }) => `
   display: ${isVisible ? 'flex' : 'none'};
   position: absolute;
@@ -9,4 +9,4 @@ const StyledLottieContainer = styled.div(
   `
 );
 
-export { StyledLottieContainer };
+export { StyledAnimationContainer };

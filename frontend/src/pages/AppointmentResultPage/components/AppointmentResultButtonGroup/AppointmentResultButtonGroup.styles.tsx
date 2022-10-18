@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledHelpIconWrapper = styled.div(
+const StyledHelpIconContainer = styled.div(
   ({ theme }) => `
   display: flex;
   justify-content: center;
@@ -15,4 +15,4 @@ const StyledHelpIcon = styled.img`
   width: 2rem;
 `;
 
-export { StyledHelpIconWrapper, StyledHelpIcon };
+export { StyledHelpIconContainer, StyledHelpIcon };
