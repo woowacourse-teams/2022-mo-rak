@@ -2,7 +2,7 @@ import {
   StyledContainer,
   StyledLogo,
   StyledGroupFirstCharacter,
-  StyledWrapper,
+  StyledProfileContainer,
   StyledName,
   StyledCurrentGroupContainer
 } from './MobileHeader.styles';
@@ -29,9 +29,9 @@ function MobileHeader({ groups, groupCode }: Props) {
       {currentGroup && (
         <StyledCurrentGroupContainer>
           <StyledName>🎉 {currentGroup.name}</StyledName>
-          <StyledWrapper>
+          <StyledProfileContainer>
             <StyledGroupFirstCharacter>{currentGroup.name[0]}</StyledGroupFirstCharacter>
-          </StyledWrapper>
+          </StyledProfileContainer>
         </StyledCurrentGroupContainer>
       )}
     </StyledContainer>

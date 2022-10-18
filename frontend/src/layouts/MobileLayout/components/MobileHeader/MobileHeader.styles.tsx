@@ -27,7 +27,7 @@ const StyledGroupFirstCharacter = styled.div(
 `
 );
 
-const StyledWrapper = styled.div(
+const StyledProfileContainer = styled.div(
   ({ theme }) => `
   display: flex;
   justify-content: center;
@@ -55,7 +55,7 @@ export {
   StyledContainer,
   StyledLogo,
   StyledGroupFirstCharacter,
-  StyledWrapper,
+  StyledProfileContainer,
   StyledName,
   StyledCurrentGroupContainer
 };
