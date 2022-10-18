@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { MenuRoute } from './routes/MenuRoute';
-import useDeviceState from './hooks/useDeviceState';
 import Layout from './layouts/Layout/Layout';
 
 const PollMainPage = lazy(() => import('./pages/PollMainPage/PollMainPage'));
