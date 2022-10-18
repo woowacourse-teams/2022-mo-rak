@@ -11,8 +11,9 @@ const StyledHeader = styled.header`
   font-size: 4.8rem;
 `;
 
-const StyledDescription = styled.div`
+const StyledDescription = styled.p`
   font-size: 2.4rem;
+  padding: 0.4rem 0;
   overflow-y: auto;
 `;
 
