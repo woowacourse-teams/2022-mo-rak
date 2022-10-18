@@ -5,10 +5,10 @@ import RoleMainResult from './components/RoleMainResult/RoleMainResult';
 import { getRolesHistories } from '../../api/role';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { GroupInterface } from '../../types/group';
+import { Group } from '../../types/group';
 
 function RoleMainPage() {
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [rolesHistories, setRolesHistories] = useState({
     roles: []
   });

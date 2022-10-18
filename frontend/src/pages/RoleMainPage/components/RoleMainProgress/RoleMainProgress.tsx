@@ -3,7 +3,7 @@ import RoleMainRoleEditModal from '../RoleMainRoleEditModal/RoleMainRoleEditModa
 import RoleMainRoles from '../RoleMainRoles/RoleMainRoles';
 import { getRoles } from '../../../../api/role';
 import { useParams } from 'react-router-dom';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { EditRolesRequest } from '../../../../types/role';
 import { AxiosError } from 'axios';
 import RoleMainButtonGroup from '../RoleMainButtonGroup/RoleMainButtonGroup';
@@ -13,7 +13,7 @@ type Props = {
 };
 
 function RoleMainProgress({ onClickAllocateRolesButton }: Props) {
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [roles, setRoles] = useState<EditRolesRequest['roles']>([]);
   const [isRoleEditModalVisible, setIsRoleEditModalVisible] = useState(false);
 

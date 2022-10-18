@@ -1,13 +1,13 @@
 import { createContext, useReducer, PropsWithChildren, Dispatch } from 'react';
-import { MemberInterface } from '../types/group';
+import { Member } from '../types/group';
 
 type GroupMembersState = {
-  groupMembers: Array<MemberInterface>;
+  groupMembers: Array<Member>;
 };
 
 type SetActiveMenuAction = {
   type: 'SET_GROUP_MEMBERS';
-  payload: Array<MemberInterface>;
+  payload: Array<Member>;
 };
 
 type GroupMembersAction = SetActiveMenuAction;
