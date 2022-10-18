@@ -8,8 +8,8 @@ const StyledContainer = styled.div(
   position: fixed;
   bottom: 0;
   z-index: 1;
-  width: 100vw;
-  height: 10vh;
+  width: 100%;
+  height: 10%;
   background:${theme.colors.WHITE_100}; 
   border-radius: 10px 10px 0 0;
 `
@@ -39,8 +39,8 @@ const StyledMenuListContainer = styled.div<{ isVisible: boolean }>(
   flex-direction: column;
   position: absolute;
   top: 0;
-  width: 100vw;
-  min-height: 100vh;
+  width: 100%;
+  min-height: 100%;
   z-index: 1; 
   background: ${theme.colors.WHITE_100};
   padding: 4rem;

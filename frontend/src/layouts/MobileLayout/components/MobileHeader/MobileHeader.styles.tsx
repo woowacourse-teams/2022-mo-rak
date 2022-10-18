@@ -9,8 +9,8 @@ const StyledContainer = styled.div(
   top: 0;
   padding-left: 2rem;
   z-index: 1;
-  width: 100vw;
-  height: 10vh;
+  width: 100%;
+  height: 10%;
   background:${theme.colors.WHITE_100};
 `
 );
