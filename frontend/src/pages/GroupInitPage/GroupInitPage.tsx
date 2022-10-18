@@ -4,9 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import GroupInitContainer from './components/GroupInitContainer/GroupInitContainer';
 import { getDefaultGroup } from '../../api/group';
 import { getLocalStorageItem } from '../../utils/storage';
-import { StyledContainer } from './GroupInitPage.styles';
 import { AxiosError } from 'axios';
-
 
 function GroupInitPage() {
   const navigate = useNavigate();
@@ -36,9 +34,10 @@ function GroupInitPage() {
   }, []);
 
   return (
-    <StyledContainer>
+    <>
+      {/* TODO: 페이지 구성 요소가 잘 보이지 않는다. */}
       <GroupInitContainer />
-    </StyledContainer>
+    </>
   );
 }
 
