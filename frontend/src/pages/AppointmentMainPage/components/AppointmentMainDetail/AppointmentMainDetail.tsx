@@ -26,7 +26,6 @@ type Props = {
 };
 
 function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Props) {
-  console.log(durationHours, durationMinutes);
   const theme = useTheme();
 
   return (
