@@ -5,17 +5,18 @@ import Input from '../../../../components/Input/Input';
 import Participate from '../../../../assets/participate.svg';
 import { StyledParticipateIcon } from './GroupParticipateInvitationCodeInput.styles';
 
-interface Props {
+type Props = {
   invitationCode: string;
   handleInvitationCode: ChangeEventHandler<HTMLInputElement>;
-}
+};
 
 function GroupParticipateInvitationCodeInput({ invitationCode, handleInvitationCode }: Props) {
   const theme = useTheme();
 
   return (
     <TextField
-      width="83.2rem"
+      width="75%"
+      maxWidth="83.2rem"
       variant="filled"
       colorScheme={theme.colors.WHITE_100}
       borderRadius="10px 0 0 10px"

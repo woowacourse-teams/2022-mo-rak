@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { GroupInterface } from '../../types/group';
+import { Group } from '../../types/group';
 import NavbarHeader from './components/NavbarHeader/NavbarHeader';
 import NavbarMenu from './components/NavbarMenu/NavbarMenu';
 import { getGroups } from '../../api/group';
 
 function NavbarLayout() {
   const [isLoading, setIsLoading] = useState(true);
-  const [groups, setGroups] = useState<Array<GroupInterface>>([]);
+  const [groups, setGroups] = useState<Array<Group>>([]);
 
   const { groupCode } = useParams() as {
-    groupCode: GroupInterface['code'];
+    groupCode: Group['code'];
   };
 
   useEffect(() => {

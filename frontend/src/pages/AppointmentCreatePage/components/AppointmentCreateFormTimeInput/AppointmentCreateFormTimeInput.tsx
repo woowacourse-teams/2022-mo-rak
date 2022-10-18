@@ -3,15 +3,15 @@ import { useTheme } from '@emotion/react';
 import TextField from '../../../../components/TextField/TextField';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Select from '../../../../components/Select/Select';
-import { createRange } from '../../../../utils/number';
+import { createRange } from '../../../../utils/createRange';
 import { Time } from '../../../../types/appointment';
 import { StyledContent } from './AppointmentCreateFormTimeInput.styles';
 
-interface Props {
+type Props = {
   time: Time;
   ariaLabelHelper: 'start' | 'end';
   onChange: ChangeEventHandler<HTMLSelectElement>;
-}
+};
 
 function AppointmentCreateFormTimeInput({ time, ariaLabelHelper, onChange }: Props) {
   const theme = useTheme();

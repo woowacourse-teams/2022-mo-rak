@@ -14,22 +14,22 @@ import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateForm
 import PollCreateCloseTimeInput from '../PollCreateCloseTimeInput/PollCreateCloseTimeInput';
 
 import { createPoll } from '../../../../api/poll';
-import { createPollData, PollInterface } from '../../../../types/poll';
-import { GroupInterface } from '../../../../types/group';
+import { createPollRequest, Poll } from '../../../../types/poll';
+import { Group } from '../../../../types/group';
 import useInput from '../../../../hooks/useInput';
-import { AppointmentInterface } from '../../../../types/appointment';
+import { Appointment } from '../../../../types/appointment';
 
-interface LocationWithState extends Location {
+type LocationWithState = {
   state: {
-    title: AppointmentInterface['title'];
+    title: Appointment['title'];
     firstRankAppointmentRecommendations: Array<string>;
   };
-}
+} & Location;
 
 function PollCreateForm() {
   const location = useLocation() as LocationWithState;
   const navigate = useNavigate();
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [title, setTitle] = useState(location.state?.title ?? '');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isAllowedMultiplePollCount, setIsAllowedMultiplePollCount] = useState(false);
@@ -51,7 +51,7 @@ function PollCreateForm() {
 
     const allowedPollCount = isAllowedMultiplePollCount ? pollItems.length : 1;
 
-    const pollData: createPollData = {
+    const poll: createPollRequest = {
       title,
       allowedPollCount,
       isAnonymous,
@@ -60,7 +60,7 @@ function PollCreateForm() {
     };
 
     try {
-      const res = await createPoll(pollData, groupCode);
+      const res = await createPoll(poll, groupCode);
       const pollCode = res.headers.location.split('polls/')[1];
 
       // TODO: 상수화
@@ -80,7 +80,7 @@ function PollCreateForm() {
     setTitle(e.target.value);
   };
 
-  const handleAnonymous = (anonymousStatus: PollInterface['isAnonymous']) => () => {
+  const handleAnonymous = (anonymousStatus: Poll['isAnonymous']) => () => {
     setIsAnonymous(anonymousStatus);
   };
 

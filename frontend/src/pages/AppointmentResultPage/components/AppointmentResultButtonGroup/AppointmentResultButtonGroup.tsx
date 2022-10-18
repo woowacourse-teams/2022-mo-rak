@@ -5,31 +5,27 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Tooltip from '../../../../components/Tooltip/Tooltip';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import {
-  AppointmentInterface,
-  getAppointmentResponse,
-  AppointmentRecommendationInterface
+  Appointment,
+  GetAppointmentResponse,
+  AppointmentRecommendation
 } from '../../../../types/appointment';
-import {
-  closeAppointment,
-  deleteAppointment,
-  getAppointmentStatus
-} from '../../../../api/appointment';
+import { closeAppointment, deleteAppointment } from '../../../../api/appointment';
 import Button from '../../../../components/Button/Button';
 import { getFormattedDateTime } from '../../../../utils/date';
 import Question from '../../../../assets/question.svg';
-import { StyledHelpIconWrapper, StyledHelpIcon } from './AppointmentResultButtonGroup.styles';
+import { StyledHelpIconContainer, StyledHelpIcon } from './AppointmentResultButtonGroup.styles';
 
-interface Props {
-  groupCode: GroupInterface['code'];
-  appointmentCode: AppointmentInterface['code'];
-  isClosed: AppointmentInterface['isClosed'];
-  isHost: getAppointmentResponse['isHost'];
-  title: getAppointmentResponse['title'];
-  appointmentRecommendation: Array<AppointmentRecommendationInterface>;
-  setIsClosed: (isClosed: AppointmentInterface['isClosed']) => void;
-}
+type Props = {
+  groupCode: Group['code'];
+  appointmentCode: Appointment['code'];
+  isClosed: Appointment['isClosed'];
+  isHost: GetAppointmentResponse['isHost'];
+  title: GetAppointmentResponse['title'];
+  appointmentRecommendation: Array<AppointmentRecommendation>;
+  setIsClosed: (isClosed: Appointment['isClosed']) => void;
+};
 
 function AppointmentResultButtonGroup({
   groupCode,
@@ -168,9 +164,9 @@ function AppointmentResultButtonGroup({
                 placement="right"
                 backgroundColor={theme.colors.GRAY_300}
               >
-                <StyledHelpIconWrapper>
+                <StyledHelpIconContainer>
                   <StyledHelpIcon src={Question} alt="help-icon" />
-                </StyledHelpIconWrapper>
+                </StyledHelpIconContainer>
               </Tooltip>
             </FlexContainer>
           )}

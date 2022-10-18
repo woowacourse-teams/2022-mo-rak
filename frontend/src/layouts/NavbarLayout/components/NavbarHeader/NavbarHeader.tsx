@@ -8,11 +8,11 @@ import {
 } from './NavbarHeader.styles';
 import Logo from '../../../../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 
 interface Props {
-  groupCode: GroupInterface['code'];
-  groups: Array<GroupInterface>;
+  groupCode: Group['code'];
+  groups: Array<Group>;
 }
 
 function NavbarHeader({ groups, groupCode }: Props) {

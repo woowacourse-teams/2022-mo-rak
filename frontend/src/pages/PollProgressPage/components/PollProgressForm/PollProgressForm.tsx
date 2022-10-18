@@ -9,14 +9,14 @@ import PollProgressButtonGroup from '../PollProgressButtonGroup/PollProgressButt
 import { getPoll, progressPoll, getPollItems } from '../../../../api/poll';
 import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGroup';
 import {
-  PollInterface,
+  Poll,
   SelectedPollItem,
   getPollResponse,
   getPollItemsResponse,
-  PollItemInterface
+  PollItem
 } from '../../../../types/poll';
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { AxiosError } from 'axios';
 
 const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
@@ -30,8 +30,8 @@ const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
 function PollProgressForm() {
   const navigate = useNavigate();
   const { groupCode, pollCode } = useParams() as {
-    groupCode: GroupInterface['code'];
-    pollCode: PollInterface['code'];
+    groupCode: Group['code'];
+    pollCode: Poll['code'];
   };
   const [poll, setPoll] = useState<getPollResponse>();
   const [pollItems, setPollItems] = useState<getPollItemsResponse>([]);
@@ -98,24 +98,23 @@ function PollProgressForm() {
     setSelectedPollItems([{ id, description: '' }]);
   };
 
-  const handleDescription =
-    (pollItemId: PollItemInterface['id']) => (e: ChangeEvent<HTMLInputElement>) => {
-      const copiedSelectedPollItems: Array<SelectedPollItem> = JSON.parse(
-        JSON.stringify(selectedPollItems)
-      );
+  const handleDescription = (pollItemId: PollItem['id']) => (e: ChangeEvent<HTMLInputElement>) => {
+    const copiedSelectedPollItems: Array<SelectedPollItem> = JSON.parse(
+      JSON.stringify(selectedPollItems)
+    );
 
-      const targetPollItem = copiedSelectedPollItems.find(
-        (copiedSelectedPollItem) => copiedSelectedPollItem.id === pollItemId
-      );
+    const targetPollItem = copiedSelectedPollItems.find(
+      (copiedSelectedPollItem) => copiedSelectedPollItem.id === pollItemId
+    );
 
-      if (targetPollItem) {
-        targetPollItem.description = e.target.value;
-        setSelectedPollItems(copiedSelectedPollItems);
-      }
-    };
+    if (targetPollItem) {
+      targetPollItem.description = e.target.value;
+      setSelectedPollItems(copiedSelectedPollItems);
+    }
+  };
 
   useEffect(() => {
-    (async (pollCode: PollInterface['code']) => {
+    (async (pollCode: Poll['code']) => {
       try {
         const res = await getPoll(pollCode, groupCode);
 
@@ -141,7 +140,7 @@ function PollProgressForm() {
   }, []);
 
   useEffect(() => {
-    (async (pollCode: PollInterface['code']) => {
+    (async (pollCode: Poll['code']) => {
       try {
         const res = await getPollItems(pollCode, groupCode);
         setPollItems(res.data);

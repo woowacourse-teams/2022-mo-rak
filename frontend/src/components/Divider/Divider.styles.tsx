@@ -2,9 +2,7 @@ import { CSSProperties } from 'react';
 
 import styled from '@emotion/styled';
 
-interface Props extends CSSProperties {}
-
-const StyledDivider = styled.hr<Props>(
+const StyledDivider = styled.hr<CSSProperties>(
   ({ borderColor, theme }) => `
     border-color: ${borderColor || theme.colors.GRAY_200};
     width: 100%;

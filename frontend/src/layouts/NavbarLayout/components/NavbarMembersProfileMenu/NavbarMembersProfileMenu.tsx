@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getGroupMembers } from '../../../../api/group';
-import { GroupInterface, MemberInterface } from '../../../../types/group';
+import { Group, Member } from '../../../../types/group';
 import Avatar from '../../../../components/Avatar/Avatar';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import {
@@ -11,11 +11,11 @@ import {
 } from './NavbarMembersProfileMenu.styles';
 
 interface Props {
-  groupCode: GroupInterface['code'];
+  groupCode: Group['code'];
 }
 
 function NavbarMembersProfileMenu({ groupCode }: Props) {
-  const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
+  const [groupMembers, setGroupMembers] = useState<Array<Member>>([]);
   const groupMembersCount = groupMembers.length;
 
   useEffect(() => {

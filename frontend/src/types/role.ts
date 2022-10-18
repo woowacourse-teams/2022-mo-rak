@@ -1,10 +1,10 @@
-import { MemberInterface } from './group';
+import { Member } from './group';
 
 type Role = {
   date: `${string}-${string}-${string}`;
   role: [
     {
-      memberId: MemberInterface['id'];
+      memberId: Member['id'];
       name: string;
     }
   ];
@@ -20,4 +20,4 @@ type GetRolesHistoriesResponse = {
   roles: Array<Role>;
 };
 
-export { EditRolesRequest, GetRolesHistoriesResponse };
+export { EditRolesRequest, GetRolesHistoriesResponse, Role };

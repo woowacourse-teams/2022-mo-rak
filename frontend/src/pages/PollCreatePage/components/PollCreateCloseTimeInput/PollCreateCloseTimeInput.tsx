@@ -3,12 +3,12 @@ import { ChangeEventHandler, memo } from 'react';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Input from '../../../../components/Input/Input';
 
-interface Props {
+type Props = {
   closingTime: string;
   closingDate: string;
   onChangeTime: ChangeEventHandler<HTMLInputElement>;
   onChangeDate: ChangeEventHandler<HTMLInputElement>;
-}
+};
 
 function PollCreateCloseTimeInput({ closingTime, closingDate, onChangeTime, onChangeDate }: Props) {
   const [today] = new Date().toISOString().split('T');

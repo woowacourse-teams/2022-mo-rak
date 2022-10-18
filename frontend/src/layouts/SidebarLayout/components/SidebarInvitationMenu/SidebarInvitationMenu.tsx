@@ -1,4 +1,4 @@
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import Plus from '../../../../assets/plus.svg';
 import { createInvitationCode } from '../../../../api/group';
 import { writeClipboard } from '../../../../utils/clipboard';
@@ -8,9 +8,9 @@ import {
   StyledPlusIcon
 } from './SidebarInvitationMenu.styles';
 
-interface Props {
-  groupCode: GroupInterface['code'];
-}
+type Props = {
+  groupCode: Group['code'];
+};
 
 function SidebarInvitationMenu({ groupCode }: Props) {
   const handleCopyInvitationCode = async () => {

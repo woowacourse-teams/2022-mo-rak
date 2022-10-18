@@ -14,7 +14,7 @@ import Role from '../../../../assets/role.svg';
 import { useNavigate } from 'react-router-dom';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import useMenuContext from '../../../../hooks/useMenuContext';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { Menu } from '../../../../types/menu';
 import Divider from '../../../../components/Divider/Divider';
 import NavbarFeaturesMenu from '../NavbarFeaturesMenu/NavbarFeaturesMenu';
@@ -28,8 +28,8 @@ import NavbarMenuModals from '../NavbarMenuModals/NavbarMenuModals';
 import { useState } from 'react';
 
 interface Props {
-  groupCode: GroupInterface['code'];
-  groups: Array<GroupInterface>;
+  groupCode: Group['code'];
+  groups: Array<Group>;
 }
 
 function NavbarMenu({ groupCode, groups }: Props) {

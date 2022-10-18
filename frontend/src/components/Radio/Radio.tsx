@@ -4,9 +4,9 @@ import Check from '../../assets/check.svg';
 import NotCheck from '../../assets/not-check.svg';
 import { StyledContainerLabel, StyledInput, StyledRadio, StyledLabel } from './Radio.styles';
 
-interface Props extends PropsWithChildren<InputHTMLAttributes<HTMLInputElement>> {
+type Props = {
   name: string;
-}
+} & PropsWithChildren<InputHTMLAttributes<HTMLInputElement>>;
 
 function Radio({ id, name, children, checked, ...props }: Props) {
   return (

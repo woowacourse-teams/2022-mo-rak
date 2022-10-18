@@ -3,10 +3,9 @@ import { Outlet } from 'react-router-dom';
 import useMenuDispatchContext from '../hooks/useMenuDispatchContext';
 import { Menu } from '../types/menu';
 
-interface Props {
-  // TODO: 존재하는 메뉴 literal
+type Props = {
   menu: Menu;
-}
+};
 
 function MenuRoute({ menu }: Props) {
   const dispatch = useMenuDispatchContext();

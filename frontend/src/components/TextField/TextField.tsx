@@ -3,11 +3,6 @@ import { InputHTMLAttributes, CSSProperties, PropsWithChildren } from 'react';
 import { StyledContainer } from './TextField.styles';
 import { useTheme } from '@emotion/react';
 
-interface Props extends PropsWithChildren<InputHTMLAttributes<HTMLInputElement>> {
-  variant: 'outlined' | 'unstyled' | 'filled';
-  colorScheme?: string;
-}
-
 type VariantStyleProps = Pick<Props, 'colorScheme' | 'variant'>;
 
 const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
@@ -33,7 +28,13 @@ const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
   }
 };
 
-function TextField({ colorScheme, variant, children, ...props }: Props & CSSProperties) {
+type Props = {
+  variant: 'outlined' | 'unstyled' | 'filled';
+  colorScheme?: string;
+} & PropsWithChildren<InputHTMLAttributes<HTMLInputElement>> &
+  CSSProperties;
+
+function TextField({ colorScheme, variant, children, ...props }: Props) {
   const variantStyle = getVariantStyle({ variant, colorScheme });
 
   return (

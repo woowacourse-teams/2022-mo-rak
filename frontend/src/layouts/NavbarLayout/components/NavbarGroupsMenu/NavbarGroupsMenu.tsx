@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import Plus from '../../../../assets/plus.svg';
 import Leave from '../../../../assets/leave.svg';
 import { leaveGroup } from '../../../../api/group';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import {
   StyledMenuHeader,
   StyledGroupsModalBox,
@@ -20,8 +20,8 @@ import {
 } from './NavbarGroupsMenu.styles';
 
 interface Props {
-  groupCode: GroupInterface['code'];
-  groups: Array<GroupInterface>;
+  groupCode: Group['code'];
+  groups: Array<Group>;
   onClickMenu: (menu: string) => () => void;
   onClickCloseMenusMenu: () => void;
 }
@@ -41,13 +41,12 @@ function NavbarGroupsMenu({ onClickCloseMenusMenu, onClickMenu, groupCode, group
     }
   };
 
-  const handleNavigateGroup =
-    (groupCode: GroupInterface['code'], groupName: GroupInterface['name']) => () => {
-      if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
-        navigate(`groups/${groupCode}`);
-        onClickCloseMenusMenu();
-      }
-    };
+  const handleNavigateGroup = (groupCode: Group['code'], groupName: Group['name']) => () => {
+    if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
+      navigate(`groups/${groupCode}`);
+      onClickCloseMenusMenu();
+    }
+  };
 
   return (
     <StyledContainer>

@@ -172,8 +172,18 @@ public class TeamService {
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeam(team);
         return teamMembers.stream()
                 .map(TeamMember::getMember)
+                .sorted(moveMeToFirst(member))
                 .map(MemberResponse::from)
                 .collect(Collectors.toList());
+    }
+
+    private Comparator<Member> moveMeToFirst(Member member) {
+        return (Member m1, Member m2) -> {
+            if (m1.equals(member)) {
+                return -1;
+            }
+            return 1;
+        };
     }
 
     public void exitMemberFromTeam(Long memberId, String teamCode) {

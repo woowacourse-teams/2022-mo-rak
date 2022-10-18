@@ -9,15 +9,6 @@ import {
   StyledContent
 } from './Tooltip.styles';
 
-interface Props extends PropsWithChildren {
-  content: string;
-  width: string; // TODO: width를 받지 않고 사이즈를 줄 수 있도록 변경
-  placement: 'top' | 'bottom' | 'left' | 'right';
-  fontSize?: string;
-  fontColor?: string;
-  backgroundColor?: string;
-}
-
 type placementStyleProps = Pick<Props, 'placement' | 'width' | 'backgroundColor'>;
 
 const getPlacementStyle = ({ placement, width, backgroundColor }: placementStyleProps) => {
@@ -90,6 +81,15 @@ const getPlacementStyle = ({ placement, width, backgroundColor }: placementStyle
       return '';
   }
 };
+
+type Props = {
+  content: string;
+  width: string; // TODO: width를 받지 않고 사이즈를 줄 수 있도록 변경
+  placement: 'top' | 'bottom' | 'left' | 'right';
+  fontSize?: string;
+  fontColor?: string;
+  backgroundColor?: string;
+} & PropsWithChildren;
 
 function Tooltip({
   children,

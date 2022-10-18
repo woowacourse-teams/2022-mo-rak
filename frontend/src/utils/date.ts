@@ -14,4 +14,13 @@ const getFormattedDateTime = (dateTimeInput: string) => {
   return `${year}.${month}.${date}(${day}) ${hour}:${minutes}${period}`;
 };
 
-export { getFormattedDateTime };
+const getFormattedHourMinuteDuration = (hours: number, minutes: number) => {
+  const hourText = `${hours}시간`;
+  const minuteText = `${minutes}분`;
+
+  if (hours > 0 && minutes > 0) return hourText + minuteText;
+  if (hours > 0) return hourText;
+  if (minutes > 0) return minuteText;
+};
+
+export { getFormattedDateTime, getFormattedHourMinuteDuration };

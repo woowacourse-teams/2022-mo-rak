@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import FlexContainer from '../../components/FlexContainer/FlexContainer';
+import { GroupMembersProvider } from '../../context/GroupMembersProvider';
 import { MenuProvider } from '../../context/MenuProvider';
 import useDeviceState from '../../hooks/useDeviceState';
 import NavbarLayout from '../NavbarLayout/NavbarLayout';
@@ -12,8 +13,10 @@ function Layout() {
   return (
     <FlexContainer>
       <MenuProvider>
-        {menuLayout}
-        <Outlet />
+        <GroupMembersProvider>
+          {menuLayout}
+          <Outlet />
+        </GroupMembersProvider>
       </MenuProvider>
     </FlexContainer>
   );

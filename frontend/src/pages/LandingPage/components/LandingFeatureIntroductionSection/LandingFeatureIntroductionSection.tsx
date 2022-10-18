@@ -6,7 +6,7 @@ import {
   StyledContainer,
   StyledFeatureName,
   StyledGlitterImage,
-  StyledUndefinedImage,
+  StyledRoleImage,
   StyledPollImage,
   StyledHighlightImage,
   StyledSubTitle,
@@ -18,10 +18,10 @@ import Glitter from '../../../../assets/glitter.svg';
 import Highlight from '../../../../assets/highlight.svg';
 import Poll from '../../../../assets/poll-small.svg';
 import Appointment from '../../../../assets/time.svg';
-import Undefined from '../../../../assets/question.svg';
+import Role from '../../../../assets/role.svg';
 import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
-interface Props extends HTMLAttributes<HTMLElement> {}
+type Props = HTMLAttributes<HTMLDivElement>;
 
 function LandingFeatureIntroductionSection({ id }: Props) {
   return (
@@ -51,10 +51,10 @@ function LandingFeatureIntroductionSection({ id }: Props) {
 
         <div>
           <StyledFeatureCircle>
-            <StyledUndefinedImage src={Undefined} alt="undefined" />
+            <StyledRoleImage src={Role} alt="role" />
             <StyledGlitterImage src={Glitter} alt="glitter" />
           </StyledFeatureCircle>
-          <StyledFeatureName>coming soon!</StyledFeatureName>
+          <StyledFeatureName>역할 정하기</StyledFeatureName>
         </div>
       </StyledFeaturesContainer>
     </StyledContainer>

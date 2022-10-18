@@ -3,13 +3,13 @@ import { memo, SelectHTMLAttributes } from 'react';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import TextField from '../../../../components/TextField/TextField';
 import Select from '../../../../components/Select/Select';
-import { createRange } from '../../../../utils/number';
+import { createRange } from '../../../../utils/createRange';
 import { Time } from '../../../../types/appointment';
 import { StyledContent, StyledLabel } from './AppointmentCreateFormDurationInput.styles';
 
-interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
+type Props = {
   duration: Omit<Time, 'period'>;
-}
+} & SelectHTMLAttributes<HTMLSelectElement>;
 
 function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
   const theme = useTheme();

@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 const StyledForm = styled.form`
+  width: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,4 +9,10 @@ const StyledForm = styled.form`
   gap: 1.2rem;
 `;
 
-export { StyledForm };
+const StyledInputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+export { StyledForm, StyledInputContainer };

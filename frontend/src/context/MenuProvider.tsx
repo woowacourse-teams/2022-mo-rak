@@ -1,35 +1,35 @@
 import { createContext, useReducer, PropsWithChildren, Dispatch } from 'react';
 import { Menu } from '../types/menu';
-interface MenuState {
+type MenuState = {
   activeMenu: Menu;
   isVisibleMenus: boolean;
   isVisibleGroupsModal: boolean;
-}
+};
 
-interface SetActiveMenuAction {
+type SetActiveMenuAction = {
   type: 'SET_ACTIVE_MENU';
   payload: Menu;
-}
+};
 
-interface SetIsVisibleGroupsModalAction {
+type SetIsVisibleGroupsModalAction = {
   type: 'SET_IS_VISIBLE_GROUPS_MODAL';
   payload: boolean;
-}
+};
 
-interface SetIsVisibleMenuList {
+type SetIsVisibleMenus = {
   type: 'SET_IS_VISIBLE_MENUS';
   payload: boolean;
-}
+};
 
-interface ToggleGroupsModalAction {
+type ToggleGroupsModalAction = {
   type: 'TOGGLE_GROUPS_MODAL';
-}
+};
 
 type MenuAction =
   | SetActiveMenuAction
   | SetIsVisibleGroupsModalAction
   | ToggleGroupsModalAction
-  | SetIsVisibleMenuList;
+  | SetIsVisibleMenus;
 
 const initialState = {
   activeMenu: 'poll',

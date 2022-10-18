@@ -3,7 +3,7 @@ import {
   StyledContainer,
   StyledGuide,
   StyledTitle,
-  StyledLottieWrapper
+  StyledLottieContainer
 } from './PollMainContainer.styles';
 import { useParams } from 'react-router-dom';
 import { useLottie } from 'lottie-react';
@@ -16,14 +16,14 @@ import MarginContainer from '../../../../components/MarginContainer/MarginContai
 
 import { getPolls } from '../../../../api/poll';
 import { getPollsResponse } from '../../../../types/poll';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 
 import PollMainButtonGroup from '../PollMainButtonGroup/PollMainButtonGroup';
 import emptyAnimation from '../../../../assets/empty-animation.json';
 
 function PollMainContainer() {
   const [polls, setPolls] = useState<getPollsResponse>([]);
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
   const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function PollMainContainer() {
     return (
       <>
         {/* TODO: 재사용 가능하지 않을까한다! */}
-        <StyledLottieWrapper>{emptyLottie.View}</StyledLottieWrapper>
+        <StyledLottieContainer>{emptyLottie.View}</StyledLottieContainer>
         <StyledGuide aria-label="poll-guide">첫 투표를 만들어보세요!</StyledGuide>
       </>
     );
@@ -56,7 +56,7 @@ function PollMainContainer() {
             <PollMainStatus status={status} />
           </FlexContainer>
           <StyledTitle>{title}</StyledTitle>
-          <PollMainProgress currentParticipants={count} groupCode={groupCode} />
+          <PollMainProgress currentParticipants={count} />
           <MarginContainer margin="0 0 1.6rem">
             {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
             <PollMainDetail

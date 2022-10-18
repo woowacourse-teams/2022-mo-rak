@@ -4,14 +4,14 @@ import Button from '../../../../components/Button/Button';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 
 import { participateGroup } from '../../../../api/group';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { AxiosError } from 'axios';
 
-interface Props {
+type Props = {
   navigate: NavigateFunction;
   invitationCode: string;
-  groupCode: GroupInterface['code'];
-}
+  groupCode: Group['code'];
+};
 
 function InvitationButtonGroup({ navigate, invitationCode, groupCode }: Props) {
   const theme = useTheme();
