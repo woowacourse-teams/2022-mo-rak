@@ -140,22 +140,31 @@ public class Appointment extends BaseEntity {
                 .count();
     }
 
+    // TODO: 2022/10/17 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!여기까지
     public List<AppointmentTime> getAppointmentTimes() {
-        LocalTime startTime = timePeriod.getStartTime();
-        LocalTime endTime = timePeriod.getEndTime();
-        long duration = (long) durationMinutes.getDurationMinutes() - MINUTES_UNIT;
 
-        LocalDate date = datePeriod.getStartDate();
+
         List<AppointmentTime> times = new ArrayList<>();
-        while (!date.isAfter(datePeriod.getEndDate())) {
-            while (!startTime.plusMinutes(duration).isAfter(endTime)) {
-                times.add(new AppointmentTime(LocalDateTime.of(date, startTime), durationMinutes.getDurationMinutes()));
-                startTime = startTime.plusMinutes(MINUTES_UNIT);
-            }
-            startTime = timePeriod.getStartTime();
-            date = date.plusDays(1L);
+
+        LocalDate endDate = datePeriod.getEndDate();
+        LocalDate date = datePeriod.getStartDate();
+        for (; !date.isAfter(endDate); date = date.plusDays(1L)) {
+            extracted(date);
         }
 
+        return times;
+    }
+
+    private List<AppointmentTime> extracted(LocalDate date) {
+        List<AppointmentTime> times = new ArrayList<>();
+
+        LocalTime startTime = timePeriod.getStartTime();
+        LocalTime endTime = timePeriod.getEndTime();
+        int durationMinutes = this.durationMinutes.getDurationMinutes();
+        long duration = (long) durationMinutes - MINUTES_UNIT;
+        for (; !startTime.plusMinutes(duration).isAfter(endTime); startTime = startTime.plusMinutes(MINUTES_UNIT)) {
+            times.add(new AppointmentTime(LocalDateTime.of(date, startTime), durationMinutes));
+        }
         return times;
     }
 }
