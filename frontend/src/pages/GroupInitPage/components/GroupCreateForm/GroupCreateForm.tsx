@@ -2,10 +2,9 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createGroup } from '../../../../api/group';
 import { GroupInterface } from '../../../../types/group';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import GroupCreateFormNameInput from '../GroupCreateFormNameInput/GroupCreateFormNameInput';
 import GroupCreateFormSubmitButton from '../GroupCreateFormSubmitButton/GroupCreateFormSubmitButton';
-import { StyledForm } from './GroupCreateForm.styles';
+import { StyledForm, StyledContainer } from './GroupCreateForm.styles';
 import { AxiosError } from 'axios';
 
 function GroupCreateForm() {
@@ -37,10 +36,10 @@ function GroupCreateForm() {
 
   return (
     <StyledForm onSubmit={handleCreateGroup}>
-      <FlexContainer>
+      <StyledContainer>
         <GroupCreateFormNameInput groupName={groupName} onChange={handleGroupName} />
         <GroupCreateFormSubmitButton />
-      </FlexContainer>
+      </StyledContainer>
     </StyledForm>
   );
 }

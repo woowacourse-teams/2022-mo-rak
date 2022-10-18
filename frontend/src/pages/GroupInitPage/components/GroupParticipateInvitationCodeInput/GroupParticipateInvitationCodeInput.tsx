@@ -15,7 +15,7 @@ function GroupParticipateInvitationCodeInput({ invitationCode, handleInvitationC
 
   return (
     <TextField
-      width="60vw"
+      width="75%"
       maxWidth="83.2rem"
       variant="filled"
       colorScheme={theme.colors.WHITE_100}
