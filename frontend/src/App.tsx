@@ -2,9 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { MenuRoute } from './routes/MenuRoute';
-import SidebarLayout from './layouts/SidebarLayout/SidebarLayout';
-import MobileLayout from './layouts/MobileLayout/MobileLayout';
 import useDeviceState from './hooks/useDeviceState';
+import Layout from './layouts/Layout/Layout';
 
 const PollMainPage = lazy(() => import('./pages/PollMainPage/PollMainPage'));
 const PollCreatePage = lazy(() => import('./pages/PollCreatePage/PollCreatePage'));
@@ -27,8 +26,6 @@ const AppointmentResultPage = lazy(
 const RoleMainPage = lazy(() => import('./pages/RoleMainPage/RoleMainPage'));
 
 function App() {
-  const isMobile = useDeviceState();
-
   return (
     // TODO: default 그룹을 찾는 요청을 해서 그룹이 있는 지 없는 지 확인하는 Route 생성? (PASS)
     // TODO: 로딩 UI 필요
@@ -40,7 +37,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="init" element={<GroupInitPage />} />
 
-            <Route element={isMobile ? <MobileLayout /> : <SidebarLayout />}>
+            <Route element={<Layout />}>
               <Route path="groups/:groupCode">
                 <Route element={<MenuRoute menu="main" />}>
                   <Route index element={<MainPage />} />
