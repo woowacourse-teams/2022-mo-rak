@@ -18,10 +18,10 @@ import {
 
 interface Props {
   groupCode: GroupInterface['code'];
-  onClickCloseListMenu: () => void;
+  onClickMenu: () => void;
 }
 
-function MobileFeaturesMenu({ onClickCloseListMenu, groupCode }: Props) {
+function MobileFeaturesMenu({ onClickMenu, groupCode }: Props) {
   const { activeMenu } = useMenuContext();
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ function MobileFeaturesMenu({ onClickCloseListMenu, groupCode }: Props) {
   const handleActiveMenu = (menu: Menu) => () => {
     dispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
     navigate(`/groups/${groupCode}/${menu}`);
-    onClickCloseListMenu();
+    onClickMenu();
   };
 
   return (

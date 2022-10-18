@@ -33,7 +33,7 @@ const StyledMenuIcon = styled.img<{
 `
 );
 
-const StyledMenuListContainer = styled.div<{ isVisible: boolean }>(
+const StyledMenusContainer = styled.div<{ isVisible: boolean }>(
   ({ isVisible, theme }) => `
   display: ${isVisible ? 'flex' : 'none'};
   flex-direction: column;
@@ -65,7 +65,7 @@ const StyledBottomMenu = styled.div`
 export {
   StyledContainer,
   StyledMenuIcon,
-  StyledMenuListContainer,
+  StyledMenusContainer,
   StyledCloseButton,
   StyledBottomMenu
 };

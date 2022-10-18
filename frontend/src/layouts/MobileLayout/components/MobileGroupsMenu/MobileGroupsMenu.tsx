@@ -23,13 +23,13 @@ interface Props {
   groupCode: GroupInterface['code'];
   groups: Array<GroupInterface>;
   onClickMenu: (menu: string) => () => void;
-  onClickCloseListMenu: () => void;
+  onClickCloseMenusMenu: () => void;
 }
 
 const getRandomPastelColor = () =>
   `hsl(${360 * Math.random()},${25 + 70 * Math.random()}%,${85 + 10 * Math.random()}%)`;
 
-function MobileGroupsMenu({ onClickCloseListMenu, onClickMenu, groupCode, groups }: Props) {
+function MobileGroupsMenu({ onClickCloseMenusMenu, onClickMenu, groupCode, groups }: Props) {
   const navigate = useNavigate();
   const profileColor = getRandomPastelColor();
 
@@ -37,7 +37,7 @@ function MobileGroupsMenu({ onClickCloseListMenu, onClickMenu, groupCode, groups
     if (window.confirm('그룹을 나가시겠습니까?')) {
       await leaveGroup(groupCode);
       navigate('/init');
-      onClickCloseListMenu();
+      onClickCloseMenusMenu();
     }
   };
 
@@ -45,7 +45,7 @@ function MobileGroupsMenu({ onClickCloseListMenu, onClickMenu, groupCode, groups
     (groupCode: GroupInterface['code'], groupName: GroupInterface['name']) => () => {
       if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
         navigate(`groups/${groupCode}`);
-        onClickCloseListMenu();
+        onClickCloseMenusMenu();
       }
     };
 
