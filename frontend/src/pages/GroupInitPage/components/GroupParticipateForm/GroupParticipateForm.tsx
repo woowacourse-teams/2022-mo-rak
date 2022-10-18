@@ -6,7 +6,7 @@ import useInput from '../../../../hooks/useInput';
 
 import GroupParticipateInvitationCodeInput from '../GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';
 import GroupParticipateFormSubmitButton from '../GroupPariticipateFormSubmitButton/GroupParticipateFormSubmitButton';
-import { StyledForm, StyledContainer } from './GroupParticipateForm.styles';
+import { StyledForm, StyledInputContainer } from './GroupParticipateForm.styles';
 import { AxiosError } from 'axios';
 
 function GroupParticipateForm() {
@@ -41,13 +41,13 @@ function GroupParticipateForm() {
 
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <StyledContainer>
+      <StyledInputContainer>
         <GroupParticipateInvitationCodeInput
           invitationCode={invitationCode}
           handleInvitationCode={handleInvitationCode}
         />
         <GroupParticipateFormSubmitButton />
-      </StyledContainer>
+      </StyledInputContainer>
     </StyledForm>
   );
 }

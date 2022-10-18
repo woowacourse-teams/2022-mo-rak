@@ -9,10 +9,10 @@ const StyledForm = styled.form`
   gap: 1.2rem;
 `;
 
-const StyledContainer = styled.div`
+const StyledInputContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
 `;
 
-export { StyledForm, StyledContainer };
+export { StyledForm, StyledInputContainer };
