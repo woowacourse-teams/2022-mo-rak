@@ -14,6 +14,8 @@ node {
     stage('deploy') {
         dir ('./backend/build/libs') {
             sh 'scp -i /var/lib/jenkins/key-morak.pem ./*.jar ubuntu@192.168.1.123:/home/ubuntu'
+            sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@192.168.1.123 "sh /home/ubuntu/start_service.sh 2>/dev/null"'
         }
     }
 }
+
