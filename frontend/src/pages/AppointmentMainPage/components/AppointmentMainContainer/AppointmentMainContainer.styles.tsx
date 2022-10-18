@@ -15,7 +15,7 @@ const StyledTitle = styled.h1`
   margin-top: 1.2rem;
 `;
 
-const LottieWrapper = styled.div`
+const LottieContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,4 +29,4 @@ const StyledGuide = styled.p(
   color: ${theme.colors.GRAY_400}
 `
 );
-export { StyledContainer, StyledTitle, LottieWrapper, StyledGuide };
+export { StyledContainer, StyledTitle, LottieContainer, StyledGuide };

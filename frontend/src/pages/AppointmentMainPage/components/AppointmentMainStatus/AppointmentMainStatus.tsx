@@ -2,9 +2,9 @@ import { useTheme } from '@emotion/react';
 import TextField from '../../../../components/TextField/TextField';
 import { StyledStatus } from './AppointmentMainStatus.styles';
 
-interface Props {
+type Props = {
   isClosed: boolean;
-}
+};
 
 function AppointmentMainStatus({ isClosed }: Props) {
   const theme = useTheme();

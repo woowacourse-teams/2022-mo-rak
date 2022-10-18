@@ -1,9 +1,9 @@
-import { AppointmentInterface } from '../../../../types/appointment';
+import { Appointment } from '../../../../types/appointment';
 import LinkIcon from '../../../../assets/link.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { writeClipboard } from '../../../../utils/clipboard';
 import AppointmentResultStatus from '../AppointmentResultStatus/AppointmentResultStatus';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import { StyledTitle, StyledContent, StyledLinkIcon } from './AppointmentResultHeader.styles';
 
 const getFormattedClosedTime = (value: string) => {
@@ -19,13 +19,13 @@ const getFormattedClosedTime = (value: string) => {
   });
 };
 
-interface Props {
-  groupCode: GroupInterface['code'];
-  appointmentCode: AppointmentInterface['code'];
-  title: AppointmentInterface['title'];
-  closedAt: AppointmentInterface['closedAt'];
-  isClosed: AppointmentInterface['isClosed'];
-}
+type Props = {
+  groupCode: Group['code'];
+  appointmentCode: Appointment['code'];
+  title: Appointment['title'];
+  closedAt: Appointment['closedAt'];
+  isClosed: Appointment['isClosed'];
+};
 
 function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, closedAt }: Props) {
   const handleCopyInvitationLink = () => {

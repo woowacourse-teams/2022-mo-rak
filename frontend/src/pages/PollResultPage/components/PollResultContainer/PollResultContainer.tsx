@@ -12,12 +12,12 @@ import PollResultDetail from '../PollResultDetail/PollResultDetail';
 import PollResultButtonGroup from '../PollResultButtonGroup/PollResultButtonGroup';
 import { getPoll, getPollResult, getPollItems } from '../../../../api/poll';
 import {
-  PollInterface,
+  Poll,
   getPollResponse,
   getPollResultResponse,
   getPollItemsResponse
 } from '../../../../types/poll';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 
 import PollResultProgress from '../PollResultProgress/PollResultProgress';
 import PollResultStatus from '../PollResultStatus/PollResultStatus';
@@ -27,8 +27,8 @@ import { AxiosError } from 'axios';
 function PollResultContainer() {
   const navigate = useNavigate();
   const { groupCode, pollCode } = useParams() as {
-    groupCode: GroupInterface['code'];
-    pollCode: PollInterface['code'];
+    groupCode: Group['code'];
+    pollCode: Poll['code'];
   };
   const [poll, setPoll] = useState<getPollResponse>();
   const [pollResult, setPollResult] = useState<getPollResultResponse>([]);
@@ -60,7 +60,7 @@ function PollResultContainer() {
   }, []);
 
   useEffect(() => {
-    (async (pollCode: PollInterface['code']) => {
+    (async (pollCode: Poll['code']) => {
       const res = await getPollItems(pollCode, groupCode);
       setPollItems(res.data);
     })(pollCode);
@@ -87,7 +87,7 @@ function PollResultContainer() {
             <Divider />
           </MarginContainer>
           <MarginContainer margin="1.4rem 0">
-            <PollResultProgress currentParticipants={poll.count} groupCode={groupCode} />
+            <PollResultProgress currentParticipants={poll.count} />
           </MarginContainer>
           <MarginContainer margin="1.4rem 0">
             <PollResultDetail

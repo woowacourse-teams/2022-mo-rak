@@ -1,6 +1,6 @@
-import { MemberInterface } from './group';
+import { Member } from './group';
 
-interface AppointmentInterface {
+type Appointment = {
   id: number;
   code: string;
   title: string;
@@ -13,47 +13,41 @@ interface AppointmentInterface {
   endTime: string;
   closedAt: string;
   isClosed: boolean;
-}
+};
 
-interface AppointmentRecommendationInterface {
+type AppointmentRecommendation = {
   rank: number;
   recommendStartDateTime: string;
   recommendEndDateTime: string;
-  availableMembers: Array<MemberInterface>;
-  unavailableMembers: Array<MemberInterface>;
-}
+  availableMembers: Array<Member>;
+  unavailableMembers: Array<Member>;
+};
 
-interface Time {
+type Time = {
   period: 'AM' | 'PM';
   hour: string;
   minute: string;
-}
-
-type AvailableTimes = Array<{ start: string; end: string }>;
-
-// TODO: 대문자 타입 일관성 지켜주기
-// TODO: CreateAppointmentRequest 어떤지?? 만약 해주게 되면 요청 보내는 것은 다 Request, 응답은 Response로 바꿔줘야함
-type createAppointmentData = Omit<AppointmentInterface, 'id' | 'code' | 'isClosed'>;
-
-type getAppointmentResponse = AppointmentInterface & {
-  isHost: boolean;
 };
 
-type getAppointmentsResponse = Array<
-  Omit<AppointmentInterface, 'startDate' | 'endDate' | 'startTime' | 'endTime'> & {
+type AvailableTimes = Array<{ start: string; end: string }>;
+type CreateAppointmentRequest = Omit<Appointment, 'id' | 'code' | 'isClosed'>;
+type GetAppointmentResponse = Appointment & {
+  isHost: boolean;
+};
+type GetAppointmentsResponse = Array<
+  Omit<Appointment, 'startDate' | 'endDate' | 'startTime' | 'endTime'> & {
     count: number;
   }
 >;
-
 type AppointmentStatus = 'CLOSED' | 'OPEN';
 
 export {
   Time,
-  createAppointmentData,
-  getAppointmentsResponse,
-  getAppointmentResponse,
+  CreateAppointmentRequest,
+  GetAppointmentsResponse,
+  GetAppointmentResponse,
   AvailableTimes,
-  AppointmentRecommendationInterface,
-  AppointmentInterface,
+  AppointmentRecommendation,
+  Appointment,
   AppointmentStatus
 };

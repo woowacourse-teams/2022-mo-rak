@@ -1,42 +1,21 @@
-import { useState } from 'react';
-import { useTheme } from '@emotion/react';
-import Button from '../../../../components/Button/Button';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import TextField from '../../../../components/TextField/TextField';
-import {
-  StyledDetail,
-  StyledRolesContainer,
-  StyledRoleWrapper,
-  StyledLottieWrapper
-} from './RoleMainProgress.styles';
-import { useLottie } from 'lottie-react';
-import fireworkAnimation from '../../../../assets/firework-animation.json';
+import { useEffect, useState } from 'react';
 import RoleMainRoleEditModal from '../RoleMainRoleEditModal/RoleMainRoleEditModal';
+import RoleMainRoles from '../RoleMainRoles/RoleMainRoles';
+import { getRoles } from '../../../../api/role';
+import { useParams } from 'react-router-dom';
+import { Group } from '../../../../types/group';
+import { EditRolesRequest } from '../../../../types/role';
+import { AxiosError } from 'axios';
+import RoleMainButtonGroup from '../RoleMainButtonGroup/RoleMainButtonGroup';
 
-function RoleMainProgress() {
-  const theme = useTheme();
-  const [isLottieVisible, setIsLottieVisible] = useState(false);
+type Props = {
+  onClickAllocateRolesButton: () => void;
+};
+
+function RoleMainProgress({ onClickAllocateRolesButton }: Props) {
+  const { groupCode } = useParams() as { groupCode: Group['code'] };
+  const [roles, setRoles] = useState<EditRolesRequest['roles']>([]);
   const [isRoleEditModalVisible, setIsRoleEditModalVisible] = useState(false);
-
-  const fireworkLottie = useLottie(
-    {
-      animationData: fireworkAnimation,
-      autoplay: false
-    },
-    {
-      width: '68rem'
-    }
-  );
-
-  const handleTriggerAnimation = () => {
-    setIsLottieVisible(true);
-    fireworkLottie.play();
-
-    setTimeout(() => {
-      setIsLottieVisible(false);
-      fireworkLottie.pause();
-    }, 2000);
-  };
 
   const handleCloseRoleEditModal = () => {
     setIsRoleEditModalVisible(false);
@@ -46,116 +25,38 @@ function RoleMainProgress() {
     setIsRoleEditModalVisible(true);
   };
 
+  const fetchRoles = async () => {
+    try {
+      const res = await getRoles(groupCode);
+      setRoles(res.data.roles);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        const errCode = err.response?.data.codeNumber;
+        if (errCode === '5300') {
+          alert('역할이 존재하지 않습니다');
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchRoles();
+  }, []);
+
   return (
     <>
-      {/* 역할칩 */}
-      <StyledRolesContainer>
-        {/* 이후 api에서 받아서 map으로 실제 데이터 넣어주기 */}
-        <StyledRoleWrapper>
-          <TextField
-            padding="1.8rem 2.6rem"
-            borderRadius="40px"
-            variant="outlined"
-            colorScheme={theme.colors.PURPLE_100}
-          >
-            <StyledDetail>데일리 마스터</StyledDetail>
-          </TextField>
-        </StyledRoleWrapper>
-
-        <StyledRoleWrapper>
-          <TextField
-            padding="1.8rem 2.6rem"
-            borderRadius="40px"
-            variant="outlined"
-            colorScheme={theme.colors.PURPLE_100}
-          >
-            <StyledDetail>데일리 마스터</StyledDetail>
-          </TextField>
-        </StyledRoleWrapper>
-
-        <StyledRoleWrapper>
-          <TextField
-            padding="1.8rem 2.6rem"
-            borderRadius="40px"
-            variant="outlined"
-            colorScheme={theme.colors.PURPLE_100}
-          >
-            <StyledDetail>데일리 마스터</StyledDetail>
-          </TextField>
-        </StyledRoleWrapper>
-
-        <StyledRoleWrapper>
-          <TextField
-            padding="1.8rem 2.6rem"
-            borderRadius="40px"
-            variant="outlined"
-            colorScheme={theme.colors.PURPLE_100}
-          >
-            <StyledDetail>데일리 마스터</StyledDetail>
-          </TextField>
-        </StyledRoleWrapper>
-
-        <StyledRoleWrapper>
-          <TextField
-            padding="1.8rem 2.6rem"
-            borderRadius="40px"
-            variant="outlined"
-            colorScheme={theme.colors.PURPLE_100}
-          >
-            <StyledDetail>데일리 마스터</StyledDetail>
-          </TextField>
-        </StyledRoleWrapper>
-
-        <StyledRoleWrapper>
-          <TextField
-            padding="1.8rem 2.6rem"
-            borderRadius="40px"
-            variant="outlined"
-            colorScheme={theme.colors.PURPLE_100}
-          >
-            <StyledDetail>데일리 마스터</StyledDetail>
-          </TextField>
-        </StyledRoleWrapper>
-
-        <StyledRoleWrapper>
-          <TextField
-            padding="1.8rem 2.6rem"
-            borderRadius="40px"
-            variant="outlined"
-            colorScheme={theme.colors.PURPLE_100}
-          >
-            <StyledDetail>데일리 마스터</StyledDetail>
-          </TextField>
-        </StyledRoleWrapper>
-      </StyledRolesContainer>
-
-      {/* 버튼 */}
-      <FlexContainer justifyContent="center" gap="2rem">
-        <Button
-          variant="filled"
-          width="16rem"
-          padding="1.6rem 0"
-          fontSize="2rem"
-          borderRadius="12px"
-          colorScheme={theme.colors.GRAY_300}
-          onClick={handleOpenRoleEditModal}
-        >
-          역할 수정하기
-        </Button>
-        <Button
-          variant="filled"
-          width="16rem"
-          padding="1.6rem 0"
-          fontSize="2rem"
-          borderRadius="12px"
-          colorScheme={theme.colors.PURPLE_100}
-          onClick={handleTriggerAnimation}
-        >
-          역할 정하기
-        </Button>
-        <StyledLottieWrapper isVisible={isLottieVisible}>{fireworkLottie.View}</StyledLottieWrapper>
-      </FlexContainer>
-      <RoleMainRoleEditModal isVisible={isRoleEditModalVisible} close={handleCloseRoleEditModal} />
+      <RoleMainRoles roles={roles} />
+      <RoleMainButtonGroup
+        onClickAllocateRolesButton={onClickAllocateRolesButton}
+        onClickEditRolesButton={handleOpenRoleEditModal}
+      />
+      {isRoleEditModalVisible && (
+        <RoleMainRoleEditModal
+          close={handleCloseRoleEditModal}
+          initialRoles={roles}
+          onSubmit={fetchRoles}
+        />
+      )}
     </>
   );
 }

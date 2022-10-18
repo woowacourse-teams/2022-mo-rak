@@ -5,7 +5,7 @@ import Plus from '../../../../assets/plus.svg';
 import Leave from '../../../../assets/leave.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { leaveGroup } from '../../../../api/group';
-import { GroupInterface } from '../../../../types/group';
+import { Group } from '../../../../types/group';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import useMenuContext from '../../../../hooks/useMenuContext';
 import {
@@ -28,11 +28,11 @@ import {
   StyledLeaveImage
 } from './SidebarGroupsMenu.styles';
 
-interface Props {
-  groupCode: GroupInterface['code'];
-  groups: Array<GroupInterface>;
+type Props = {
+  groupCode: Group['code'];
+  groups: Array<Group>;
   onClickMenu: (menu: string) => () => void;
-}
+};
 
 const getRandomPastelColor = () =>
   `hsl(${360 * Math.random()},${25 + 70 * Math.random()}%,${85 + 10 * Math.random()}%)`;
@@ -59,13 +59,12 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
     dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
   };
 
-  const handleNavigateGroup =
-    (groupCode: GroupInterface['code'], groupName: GroupInterface['name']) => () => {
-      if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
-        navigate(`groups/${groupCode}`);
-        closeGroupsModal();
-      }
-    };
+  const handleNavigateGroup = (groupCode: Group['code'], groupName: Group['name']) => () => {
+    if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
+      navigate(`groups/${groupCode}`);
+      closeGroupsModal();
+    }
+  };
 
   return (
     <StyledGroupContainer>

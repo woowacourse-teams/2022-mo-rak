@@ -1,26 +1,16 @@
-import { useEffect, useState } from 'react';
 import { StyledParticipantsStatus } from './PollResultProgress.styles';
 import Progress from '../../../../components/Progress/Progress';
 import { getPollResponse } from '../../../../types/poll';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { GroupInterface, MemberInterface } from '../../../../types/group';
-import { getGroupMembers } from '../../../../api/group';
+import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 
-interface Props {
+type Props = {
   currentParticipants: getPollResponse['count'];
-  groupCode: GroupInterface['code'];
-}
+};
 
-function PollResultProgress({ currentParticipants, groupCode }: Props) {
-  const [groupMembers, setGroupMembers] = useState<Array<MemberInterface>>([]);
+function PollResultProgress({ currentParticipants }: Props) {
+  const { groupMembers } = useGroupMembersContext();
   const totalParticipants = groupMembers.length;
-
-  useEffect(() => {
-    (async () => {
-      const res = await getGroupMembers(groupCode);
-      setGroupMembers(res.data);
-    })();
-  }, [groupCode]);
 
   return (
     <FlexContainer flexDirection="column" alignItems="end">

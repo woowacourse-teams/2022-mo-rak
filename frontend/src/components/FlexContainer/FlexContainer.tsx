@@ -1,9 +1,9 @@
 import { HTMLAttributes, PropsWithChildren, CSSProperties } from 'react';
 import { StyledContainer } from './FlexContainer.styles';
 
-interface Props extends PropsWithChildren<HTMLAttributes<HTMLDivElement>> {}
+type Props = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & CSSProperties;
 
-function FlexContainer({ children, ...props }: Props & CSSProperties) {
+function FlexContainer({ children, ...props }: Props) {
   return <StyledContainer {...props}>{children}</StyledContainer>;
 }
 

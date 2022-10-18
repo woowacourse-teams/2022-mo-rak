@@ -26,7 +26,7 @@ import Glitter from '../../../../assets/glitter.svg';
 import FlexContainer from '../../../../components//FlexContainer/FlexContainer';
 import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
-interface Props extends HTMLAttributes<HTMLElement> {}
+type Props = HTMLAttributes<HTMLDivElement>;
 
 function LandingMainSection({ id }: Props) {
   return (

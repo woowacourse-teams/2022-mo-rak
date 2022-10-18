@@ -5,10 +5,10 @@ import Input from '../../../../components/Input/Input';
 import Participate from '../../../../assets/participate.svg';
 import { StyledParticipateIcon } from './GroupParticipateInvitationCodeInput.styles';
 
-interface Props {
+type Props = {
   invitationCode: string;
   handleInvitationCode: ChangeEventHandler<HTMLInputElement>;
-}
+};
 
 function GroupParticipateInvitationCodeInput({ invitationCode, handleInvitationCode }: Props) {
   const theme = useTheme();

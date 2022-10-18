@@ -2,9 +2,9 @@ import { CSSProperties, PropsWithChildren, HTMLAttributes } from 'react';
 
 import { StyledBox } from './Box.styles';
 
-interface Props extends PropsWithChildren<HTMLAttributes<HTMLDivElement>> {}
+type Props = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & CSSProperties;
 
-function Box({ children, ...props }: Props & CSSProperties) {
+function Box({ children, ...props }: Props) {
   return <StyledBox {...props}>{children}</StyledBox>;
 }
 

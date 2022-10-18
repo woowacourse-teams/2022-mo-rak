@@ -12,7 +12,7 @@ import Services from '../../../../assets/services.svg';
 import CircleHighlight from '../../../../assets/circle-highlight.svg';
 import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
-interface Props extends HTMLAttributes<HTMLElement> {}
+type Props = HTMLAttributes<HTMLDivElement>;
 
 function LandingServiceIntroductionSection({ id }: Props) {
   return (

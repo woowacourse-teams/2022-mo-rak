@@ -19,6 +19,20 @@ include::{snippets}/auth/signin/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/auth/signin/http-response.adoc[]
 
+=== 본인 조회
+
+.HTTP REQUEST
+include::{snippets}/auth/get-me/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/auth/get-me/http-response.adoc[]
+
+=== 본인 이름 변경
+
+.HTTP REQUEST
+include::{snippets}/auth/change-name/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/auth/change-name/http-response.adoc[]
+
 === 에러 코드
 
 [cols="1,3",options=header]

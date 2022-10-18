@@ -4,26 +4,24 @@ import { useTheme } from '@emotion/react';
 import { StyledDescription } from './PollProgressItemGroup.styles';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 
-import { PollInterface, SelectedPollItem, getPollItemsResponse } from '../../../../types/poll';
+import { Poll, SelectedPollItem, getPollItemsResponse } from '../../../../types/poll';
 
 import TextField from '../../../../components/TextField/TextField';
 import Radio from '../../../../components/Radio/Radio';
 import Checkbox from '../../../../components/Checkbox/Checkbox';
 import Input from '../../../../components/Input/Input';
 
-interface Props {
+type Props = {
   pollItems: getPollItemsResponse;
   selectedPollItems: Array<SelectedPollItem>;
-  allowedPollCount: PollInterface['allowedPollCount'];
+  allowedPollCount: Poll['allowedPollCount'];
   onChangeCheckbox: ChangeEventHandler<HTMLInputElement>;
   onChangeRadio: ChangeEventHandler<HTMLInputElement>;
   onChangeText: (pollId: number) => ChangeEventHandler<HTMLInputElement>;
-}
+};
 
-const getSelectedPollItem = (
-  pollId: PollInterface['id'],
-  selectedPollItems: Array<SelectedPollItem>
-) => selectedPollItems.find((selectedPollItem) => selectedPollItem.id === pollId);
+const getSelectedPollItem = (pollId: Poll['id'], selectedPollItems: Array<SelectedPollItem>) =>
+  selectedPollItems.find((selectedPollItem) => selectedPollItem.id === pollId);
 
 function PollProgressItemGroup({
   pollItems,
