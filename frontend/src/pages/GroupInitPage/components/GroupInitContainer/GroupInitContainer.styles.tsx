@@ -38,6 +38,9 @@ const StyledBigText = styled.div`
 
 const StyledSmallText = styled.div`
   font-size: 2.4rem;
+  padding: 0 4rem;
+  text-align: center;
+  line-height: 3.2rem;
 `;
 
 export {
