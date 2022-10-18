@@ -11,6 +11,16 @@ spring:
   web:
     resources:
       add-mappings: false
+  datasource:
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 3000
+server:
+  tomcat:
+    accept-count: 200
+    max-connections: 400
+    threads:
+      max: 10
 
 ---
 
