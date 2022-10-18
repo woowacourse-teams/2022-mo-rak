@@ -2,6 +2,7 @@ import { createContext, useReducer, PropsWithChildren, Dispatch } from 'react';
 import { Menu } from '../types/menu';
 interface MenuState {
   activeMenu: Menu;
+  isVisibleListMenu: boolean;
   isVisibleGroupsModal: boolean;
 }
 
@@ -15,14 +16,24 @@ interface SetIsVisibleGroupsModalAction {
   payload: boolean;
 }
 
+interface SetIsVisibleMenuList {
+  type: 'SET_IS_VISIBLE_LIST_MENU';
+  payload: boolean;
+}
+
 interface ToggleGroupsModalAction {
   type: 'TOGGLE_GROUPS_MODAL';
 }
 
-type MenuAction = SetActiveMenuAction | SetIsVisibleGroupsModalAction | ToggleGroupsModalAction;
+type MenuAction =
+  | SetActiveMenuAction
+  | SetIsVisibleGroupsModalAction
+  | ToggleGroupsModalAction
+  | SetIsVisibleMenuList;
 
 const initialState = {
   activeMenu: 'poll',
+  isVisibleListMenu: false,
   isVisibleGroupsModal: false
 } as const;
 
@@ -45,6 +56,11 @@ function menuReducer(state: MenuState, action: MenuAction): MenuState {
       return {
         ...state,
         isVisibleGroupsModal: !state.isVisibleGroupsModal
+      };
+    case 'SET_IS_VISIBLE_LIST_MENU':
+      return {
+        ...state,
+        isVisibleListMenu: action.payload
       };
     default:
       return state;

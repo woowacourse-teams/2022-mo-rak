@@ -33,19 +33,17 @@ interface Props {
 }
 
 function MobileMenu({ groupCode, groups }: Props) {
-  const { activeMenu } = useMenuContext();
+  const { activeMenu, isVisibleListMenu } = useMenuContext();
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
-  const [isVisibleListMenu, setIsVisibleListMenu] = useState(false);
   const [activeModalMenu, setActiveModalMenu] = useState<null | string>(null);
 
   const handleCloseListMenu = () => {
-    setIsVisibleListMenu(false);
+    dispatch({ type: 'SET_IS_VISIBLE_LIST_MENU', payload: false });
   };
 
   const handleActiveListMenu = () => {
-    dispatch({ type: 'SET_ACTIVE_MENU', payload: 'list' });
-    setIsVisibleListMenu(true);
+    dispatch({ type: 'SET_IS_VISIBLE_LIST_MENU', payload: true });
   };
 
   // TODO: 함수 역할에 맞게 분리 (navigate 역할 분리)
@@ -60,7 +58,7 @@ function MobileMenu({ groupCode, groups }: Props) {
 
   const handleActiveModalMenu = (menu: null | string) => () => {
     setActiveModalMenu(menu);
-    setIsVisibleListMenu(false);
+    dispatch({ type: 'SET_IS_VISIBLE_LIST_MENU', payload: false });
   };
 
   return (
