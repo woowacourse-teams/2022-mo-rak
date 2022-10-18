@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import responsive from '../../../../utils/responsive';
 
 const StyledContainer = styled.div(
   ({ theme }) => `
@@ -10,6 +11,8 @@ const StyledContainer = styled.div(
   background: ${theme.colors.WHITE_100};
   padding-left: 4rem;
   gap: 2rem;
+  
+  ${responsive.mobile(`display: none`)}
 `
 );
 

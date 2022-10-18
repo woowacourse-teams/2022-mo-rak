@@ -28,7 +28,7 @@ function MobileHeader({ groups, groupCode }: Props) {
       <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
       {currentGroup && (
         <StyledCurrentGroupContainer>
-          <StyledName>👥 {currentGroup.name}</StyledName>
+          <StyledName>🎉 {currentGroup.name}</StyledName>
           <StyledWrapper>
             <StyledGroupFirstCharacter>{currentGroup.name[0]}</StyledGroupFirstCharacter>
           </StyledWrapper>
