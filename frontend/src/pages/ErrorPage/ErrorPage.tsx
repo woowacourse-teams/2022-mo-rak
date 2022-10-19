@@ -1,23 +1,22 @@
 import { useTheme } from '@emotion/react';
 import { useLottie } from 'lottie-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import notFound from '../../assets/not-found-animation.json';
 import Button from '../../components/Button/Button';
 import FlexContainer from '../../components/FlexContainer/FlexContainer';
 import { StyledGuid, StyledContainer } from './ErrorPage.styles';
-import { GroupInterface } from '../../types/group';
+
+type NavigateFunctionOverload = {
+  (location: string): () => void;
+  (location: number): () => void;
+};
 
 function ErrorPage() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { groupCode } = useParams() as { groupCode: GroupInterface['code'] };
-  const notFoundAnimation = useLottie({ animationData: notFound }, { width: '50rem' });
+  const notFoundAnimation = useLottie({ animationData: notFound }, { width: '40rem' });
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
-  const handleNavigate = (location: string) => () => {
+  const handleNavigate: NavigateFunctionOverload = (location: any) => () => {
     navigate(location);
   };
 
@@ -36,7 +35,7 @@ function ErrorPage() {
           padding="1.6rem 3rem"
           fontSize="2.4rem"
           borderRadius="1rem"
-          onClick={handleGoBack}
+          onClick={handleNavigate(-1)}
         >
           뒤로 가기
         </Button>
@@ -46,9 +45,9 @@ function ErrorPage() {
           padding="1.2rem 3rem"
           fontSize="2.4rem"
           borderRadius="1rem"
-          onClick={handleNavigate(`/groups/${groupCode}`)}
+          onClick={handleNavigate('/')}
         >
-          모락으로 돌아가기
+          메인으로 돌아가기
         </Button>
       </FlexContainer>
     </StyledContainer>
