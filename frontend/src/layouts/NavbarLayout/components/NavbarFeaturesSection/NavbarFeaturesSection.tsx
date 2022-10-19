@@ -14,14 +14,14 @@ import {
   StyledMenuIcon,
   StyledMenuTitle,
   StyledMenu
-} from './NavbarFeaturesMenu.styles';
+} from './NavbarFeaturesSection.styles';
 
 type Props = {
   groupCode: Group['code'];
-  onClickMenu: () => void;
+  closeDrawer: () => void;
 };
 
-function NavbarFeaturesMenu({ onClickMenu, groupCode }: Props) {
+function NavbarFeaturesSection({ closeDrawer, groupCode }: Props) {
   const { activeMenu } = useMenuContext();
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ function NavbarFeaturesMenu({ onClickMenu, groupCode }: Props) {
   const handleActiveMenu = (menu: Menu) => () => {
     dispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
     navigate(`/groups/${groupCode}/${menu}`);
-    onClickMenu();
+    closeDrawer();
   };
 
   return (
@@ -57,4 +57,4 @@ function NavbarFeaturesMenu({ onClickMenu, groupCode }: Props) {
   );
 }
 
-export default NavbarFeaturesMenu;
+export default NavbarFeaturesSection;

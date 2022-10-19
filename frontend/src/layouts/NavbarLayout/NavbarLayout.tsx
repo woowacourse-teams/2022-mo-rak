@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Group } from '../../types/group';
 import NavbarHeader from './components/NavbarHeader/NavbarHeader';
-import NavbarMenu from './components/NavbarMenu/NavbarMenu';
+import NavbarFooter from './components/NavbarFooter/NavbarFooter';
 import { getGroups } from '../../api/group';
 
 function NavbarLayout() {
@@ -30,7 +30,7 @@ function NavbarLayout() {
   return (
     <>
       <NavbarHeader groups={groups} groupCode={groupCode} />
-      <NavbarMenu groups={groups} groupCode={groupCode} />
+      <NavbarFooter groups={groups} groupCode={groupCode} />
     </>
   );
 }

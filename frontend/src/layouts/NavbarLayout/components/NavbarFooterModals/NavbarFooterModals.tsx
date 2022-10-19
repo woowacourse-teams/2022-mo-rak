@@ -30,7 +30,7 @@ import {
   StyledLinkIcon,
   StyledButton,
   StyledSmallLogo
-} from './NavbarMenuModals.styles';
+} from './NavbarFooterModals.styles';
 
 type Props = {
   activeModalMenu: string | null;
@@ -38,7 +38,7 @@ type Props = {
   groupCode: Group['code'];
 };
 
-function NavbarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
+function NavbarFooterModals({ activeModalMenu, closeModal, groupCode }: Props) {
   const [groupName, handleGroupName, resetGroupName] = useInput('');
   const [invitationCode, handleInvitationCode, resetInvitationCode] = useInput('');
   const [slackUrl, handleSlackUrl, resetSlackUrl] = useInput('');
@@ -53,7 +53,7 @@ function NavbarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
       const groupCode = res.headers.location.split('groups/')[1];
 
       navigate(`/groups/${groupCode}`);
-      dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
+      dispatch({ type: 'SET_IS_GROUPS_MODAL_VISIBLE', payload: false });
       resetGroupName();
       closeModal();
     } catch (err) {
@@ -76,7 +76,7 @@ function NavbarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
       const groupCode = res.headers.location.split('/groups/')[1];
 
       navigate(`/groups/${groupCode}`);
-      dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
+      dispatch({ type: 'SET_IS_GROUPS_MODAL_VISIBLE', payload: false });
       resetInvitationCode();
       closeModal();
     } catch (err) {
@@ -241,4 +241,4 @@ function NavbarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
   );
 }
 
-export default NavbarMenuModals;
+export default NavbarFooterModals;

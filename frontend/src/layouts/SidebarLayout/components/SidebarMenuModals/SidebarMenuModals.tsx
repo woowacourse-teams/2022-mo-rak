@@ -53,7 +53,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
       const groupCode = res.headers.location.split('groups/')[1];
 
       navigate(`/groups/${groupCode}`);
-      dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
+      dispatch({ type: 'SET_IS_GROUPS_MODAL_VISIBLE', payload: false });
       resetGroupName();
       closeModal();
     } catch (err) {
@@ -76,7 +76,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
       const groupCode = res.headers.location.split('/groups/')[1];
 
       navigate(`/groups/${groupCode}`);
-      dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
+      dispatch({ type: 'SET_IS_GROUPS_MODAL_VISIBLE', payload: false });
       resetInvitationCode();
       closeModal();
     } catch (err) {

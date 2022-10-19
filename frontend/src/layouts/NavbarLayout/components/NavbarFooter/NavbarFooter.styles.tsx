@@ -33,7 +33,7 @@ const StyledMenuIcon = styled.img<{
 `
 );
 
-const StyledMenusContainer = styled.div<{ isVisible: boolean }>(
+const StyledDrawer = styled.div<{ isVisible: boolean }>(
   ({ isVisible, theme }) => `
   display: ${isVisible ? 'flex' : 'none'};
   flex-direction: column;
@@ -55,17 +55,4 @@ const StyledCloseButton = styled.button`
   z-index: 1;
 `;
 
-const StyledBottomMenu = styled.div`
-  margin-top: 2.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-`;
-
-export {
-  StyledContainer,
-  StyledMenuIcon,
-  StyledMenusContainer,
-  StyledCloseButton,
-  StyledBottomMenu
-};
+export { StyledContainer, StyledMenuIcon, StyledDrawer, StyledCloseButton };

@@ -17,19 +17,19 @@ import {
   StyledLeaveGroupButton,
   StyledPlusImage,
   StyledLeaveImage
-} from './NavbarGroupsMenu.styles';
+} from './NavbarGroupsSection.styles';
 
 type Props = {
   groupCode: Group['code'];
   groups: Array<Group>;
   onClickMenu: (menu: string) => () => void;
-  onClickCloseMenusMenu: () => void;
+  closeDrawer: () => void;
 };
 
 const getRandomPastelColor = () =>
   `hsl(${360 * Math.random()},${25 + 70 * Math.random()}%,${85 + 10 * Math.random()}%)`;
 
-function NavbarGroupsMenu({ onClickCloseMenusMenu, onClickMenu, groupCode, groups }: Props) {
+function NavbarGroupsSection({ closeDrawer, onClickMenu, groupCode, groups }: Props) {
   const navigate = useNavigate();
   const profileColor = getRandomPastelColor();
 
@@ -37,14 +37,14 @@ function NavbarGroupsMenu({ onClickCloseMenusMenu, onClickMenu, groupCode, group
     if (window.confirm('그룹을 나가시겠습니까?')) {
       await leaveGroup(groupCode);
       navigate('/init');
-      onClickCloseMenusMenu();
+      closeDrawer();
     }
   };
 
   const handleNavigateGroup = (groupCode: Group['code'], groupName: Group['name']) => () => {
     if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
       navigate(`groups/${groupCode}`);
-      onClickCloseMenusMenu();
+      closeDrawer();
     }
   };
 
@@ -87,4 +87,4 @@ function NavbarGroupsMenu({ onClickCloseMenusMenu, onClickMenu, groupCode, group
     </StyledContainer>
   );
 }
-export default NavbarGroupsMenu;
+export default NavbarGroupsSection;

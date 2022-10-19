@@ -1,10 +1,9 @@
 import {
   StyledContainer,
   StyledMenuIcon,
-  StyledMenusContainer,
   StyledCloseButton,
-  StyledBottomMenu
-} from './NavbarMenu.styles';
+  StyledDrawer
+} from './NavbarFooter.styles';
 import Home from '../../../../assets/home.svg';
 import MenuImg from '../../../../assets/menu.svg';
 import Poll from '../../../../assets/poll.svg';
@@ -17,13 +16,11 @@ import useMenuContext from '../../../../hooks/useMenuContext';
 import { Group } from '../../../../types/group';
 import { Menu } from '../../../../types/menu';
 import Divider from '../../../../components/Divider/Divider';
-import NavbarFeaturesMenu from '../NavbarFeaturesMenu/NavbarFeaturesMenu';
-import NavbarMembersProfileMenu from '../NavbarMembersProfileMenu/NavbarMembersProfileMenu';
-import NavbarSlackMenu from '../NavbarSlackMenu/NavbarSlackMenu';
-import NavbarInvitationMenu from '../NavbarInvitationMenu/NavbarInvitationMenu';
-import NavbarLogoutMenu from '../NavbarLogoutMenu/NavbarLogoutMenu';
-import NavbarGroupsMenu from '../NavbarGroupsMenu/NavbarGroupsMenu';
-import NavbarMenuModals from '../NavbarMenuModals/NavbarMenuModals';
+import NavbarFeaturesSection from '../NavbarFeaturesSection/NavbarFeaturesSection';
+import NavbarMembersProfileSection from '../NavbarMembersProfileSection/NavbarMembersProfileSection';
+import NavbarGroupsSection from '../NavbarGroupsSection/NavbarGroupsSection';
+import NavbarBottomSection from '../NavbarBottomSection/NavbarBottomSection';
+import NavbarFooterModals from '../NavbarFooterModals/NavbarFooterModals';
 
 import { useState } from 'react';
 
@@ -32,23 +29,24 @@ type Props = {
   groups: Array<Group>;
 };
 
-function NavbarMenu({ groupCode, groups }: Props) {
-  const { activeMenu, isVisibleMenus } = useMenuContext();
-  const dispatch = useMenuDispatchContext();
+function NavbarFooter({ groupCode, groups }: Props) {
+  const { activeMenu, isDrawerVisible } = useMenuContext();
+  const menuDispatch = useMenuDispatchContext();
   const navigate = useNavigate();
   const [activeModalMenu, setActiveModalMenu] = useState<null | string>(null);
 
-  const handleCloseMenus = () => {
-    dispatch({ type: 'SET_IS_VISIBLE_MENUS', payload: false });
+  const handleCloseDrawer = () => {
+    menuDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: false });
   };
 
-  const handleSetActiveMenus = () => {
-    dispatch({ type: 'SET_IS_VISIBLE_MENUS', payload: true });
+  const handleSetActiveDrawer = () => {
+    menuDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: true });
   };
 
   // TODO: 함수 역할에 맞게 분리 (navigate 역할 분리)
   const handleSetActiveMenu = (menu: Menu) => () => {
-    dispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
+    menuDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
+
     if (menu === 'main') {
       navigate(`/groups/${groupCode}`);
       return;
@@ -58,7 +56,7 @@ function NavbarMenu({ groupCode, groups }: Props) {
 
   const handleSetActiveModalMenu = (menu: null | string) => () => {
     setActiveModalMenu(menu);
-    dispatch({ type: 'SET_IS_VISIBLE_MENUS', payload: false });
+    menuDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: false });
   };
 
   return (
@@ -67,7 +65,7 @@ function NavbarMenu({ groupCode, groups }: Props) {
         <button onClick={handleSetActiveMenu('main')}>
           <StyledMenuIcon src={Home} isActive={activeMenu === 'main'} alt="main-page" />
         </button>
-        <button onClick={handleSetActiveMenus}>
+        <button onClick={handleSetActiveDrawer}>
           <StyledMenuIcon src={MenuImg} alt="메뉴 목록" />
         </button>
         <button onClick={handleSetActiveMenu('poll')}>
@@ -86,12 +84,13 @@ function NavbarMenu({ groupCode, groups }: Props) {
       </StyledContainer>
 
       {/* 메뉴리스트 */}
-      <StyledMenusContainer isVisible={isVisibleMenus}>
-        <StyledCloseButton onClick={handleCloseMenus}>
+      <StyledDrawer isVisible={isDrawerVisible}>
+        <StyledCloseButton onClick={handleCloseDrawer}>
           <img src={CloseButton} alt="메뉴닫기" />
         </StyledCloseButton>
-        <NavbarGroupsMenu
-          onClickCloseMenusMenu={handleCloseMenus}
+
+        <NavbarGroupsSection
+          closeDrawer={handleCloseDrawer}
           onClickMenu={handleSetActiveModalMenu}
           groupCode={groupCode}
           groups={groups}
@@ -99,23 +98,19 @@ function NavbarMenu({ groupCode, groups }: Props) {
 
         <Divider />
 
-        <NavbarFeaturesMenu onClickMenu={handleCloseMenus} groupCode={groupCode} />
+        <NavbarFeaturesSection closeDrawer={handleCloseDrawer} groupCode={groupCode} />
 
         <Divider />
-        <NavbarMembersProfileMenu groupCode={groupCode} />
+        <NavbarMembersProfileSection groupCode={groupCode} />
 
         <Divider />
-        <StyledBottomMenu>
-          <NavbarSlackMenu onClick={handleSetActiveModalMenu('slack')} />
-          <NavbarInvitationMenu groupCode={groupCode} />
-          <NavbarLogoutMenu />
-        </StyledBottomMenu>
-      </StyledMenusContainer>
+        <NavbarBottomSection onClickMenu={handleSetActiveModalMenu} groupCode={groupCode} />
+      </StyledDrawer>
 
       {/* TODO: 모달이 모여있음  */}
       {/* TODO: portal 사용 */}
       {/* TODO: 모달이 기존과 같음 */}
-      <NavbarMenuModals
+      <NavbarFooterModals
         activeModalMenu={activeModalMenu}
         closeModal={handleSetActiveModalMenu(null)}
         groupCode={groupCode}
@@ -124,4 +119,4 @@ function NavbarMenu({ groupCode, groups }: Props) {
   );
 }
 
-export default NavbarMenu;
+export default NavbarFooter;

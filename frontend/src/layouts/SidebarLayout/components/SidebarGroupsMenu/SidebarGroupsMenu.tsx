@@ -40,7 +40,7 @@ const getRandomPastelColor = () =>
 function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
   const navigate = useNavigate();
   const dispatch = useMenuDispatchContext();
-  const { isVisibleGroupsModal } = useMenuContext();
+  const { isGroupsModalVisible } = useMenuContext();
   const profileColor = getRandomPastelColor();
   const currentGroup = groups.find((group) => group.code === groupCode);
 
@@ -56,7 +56,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
   };
 
   const closeGroupsModal = () => {
-    dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
+    dispatch({ type: 'SET_IS_GROUPS_MODAL_VISIBLE', payload: false });
   };
 
   const handleNavigateGroup = (groupCode: Group['code'], groupName: Group['name']) => () => {
@@ -82,7 +82,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
         </StyledGroupIconGroup>
       </FlexContainer>
 
-      <StyledGroupsModalContainer isVisible={isVisibleGroupsModal}>
+      <StyledGroupsModalContainer isVisible={isGroupsModalVisible}>
         <StyledGroupsModalBox>
           {groups.map((group) => {
             const isCurrentGroup = groupCode === group.code;
