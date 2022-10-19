@@ -64,7 +64,7 @@ function SidebarEditUsernameModal({ isVisible, close }: Props) {
             username={username}
             onChangeUsername={handleUsername}
           />
-          <SidebarEditUsernameModalButtonGroup />
+          <SidebarEditUsernameModalButtonGroup onClickCancelButton={close} />
         </StyledBottom>
       </StyledForm>
     </Modal>

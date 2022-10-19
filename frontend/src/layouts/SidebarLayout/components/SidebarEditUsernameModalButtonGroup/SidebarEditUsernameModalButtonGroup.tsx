@@ -2,7 +2,11 @@ import { useTheme } from '@emotion/react';
 import { StyledContainer } from './SidebarEditUsernameModalButtonGroup.styles';
 import Button from '../../../../components/Button/Button';
 
-function SidebarEditUsernameModalButtonGroup() {
+type Props = {
+  onClickCancelButton: () => void;
+};
+
+function SidebarEditUsernameModalButtonGroup({ onClickCancelButton }: Props) {
   const theme = useTheme();
 
   return (
@@ -14,7 +18,7 @@ function SidebarEditUsernameModalButtonGroup() {
         padding="1.6rem 3.2rem"
         borderRadius="1.2rem"
         fontSize="1.6rem"
-        onClick={close}
+        onClick={onClickCancelButton}
       >
         취소
       </Button>
