@@ -69,7 +69,7 @@ public class AppointmentSelectTest {
         // when & then
         assertThatThrownBy(() -> appointment.selectAvailableTime(
                 Set.of(LocalDateTime.of(now.toLocalDate().plusDays(plusDay), LocalTime.of(16, 0))),
-                1L, 
+                1L,
                 now
         )).isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")

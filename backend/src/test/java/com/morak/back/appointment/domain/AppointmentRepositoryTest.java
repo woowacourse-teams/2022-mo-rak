@@ -3,8 +3,8 @@ package com.morak.back.appointment.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
-import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.BaseEntity;
+import com.morak.back.core.domain.Code;
 import com.morak.back.support.RepositoryTest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

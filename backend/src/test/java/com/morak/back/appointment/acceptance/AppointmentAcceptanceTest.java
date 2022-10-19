@@ -90,10 +90,10 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
                 )),
                 Arguments.of(new AvailableTimeRequest(
                         LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(0, 0))
-                        )),
+                )),
                 Arguments.of(new AvailableTimeRequest(
                         LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(16, 0))
-                        ))
+                ))
         );
     }
 
