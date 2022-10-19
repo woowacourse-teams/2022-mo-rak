@@ -4,14 +4,14 @@ import { StyledUserProfile, StyledUserImage, StyledUserName } from './Avatar.sty
 
 type Props = {
   profileUrl: Member['profileUrl'];
-  name: Member['name'];
+  name?: Member['name'];
 } & CSSProperties;
 
 function Avatar({ profileUrl, name, width, fontSize }: Props) {
   return (
     <StyledUserProfile width={width}>
       <StyledUserImage src={profileUrl} />
-      <StyledUserName fontSize={fontSize}>{name}</StyledUserName>
+      {name && <StyledUserName fontSize={fontSize}>{name}</StyledUserName>}
     </StyledUserProfile>
   );
 }
