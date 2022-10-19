@@ -83,25 +83,18 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
     private static List<Arguments> getUnavailableTimeRequest() {
         return List.of(
                 Arguments.of(new AvailableTimeRequest(
-                                LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(10), LocalTime.of(23, 30))
-                        ),
-                        Arguments.of(new AvailableTimeRequest(
-                                LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getStartDate().minusDays(1), LocalTime.of(23, 30))
-                        ))
-                /*
-                TODO 아래 테스트는 400으로 떨어져야 하는데 200이 떨어진다.
-                생성된 데이터는 7일 24시(==8일 0시)이고, 8일00시00분 ~ 8일00시30분 으로 요청을 보내면 실패해야 하는데, 성공한다
-                -> 테스트가 깨진다.
-                Arguments.of(new AvailableTimeRequest(
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(0, 0)),
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(0, 30))
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(10), LocalTime.of(23, 30))
                 )),
                 Arguments.of(new AvailableTimeRequest(
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(16, 0)),
-                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(16, 30))
-                ))
-                */
-                ));
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getStartDate().minusDays(1), LocalTime.of(23, 30))
+                )),
+                Arguments.of(new AvailableTimeRequest(
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(0, 0))
+                        )),
+                Arguments.of(new AvailableTimeRequest(
+                        LocalDateTime.of(범위_하루종일_약속잡기_요청_데이터.getEndDate().plusDays(1), LocalTime.of(16, 0))
+                        ))
+        );
     }
 
     static AppointmentCreateRequest[] getInvalidPropertyAppointmentCreateRequest() {
