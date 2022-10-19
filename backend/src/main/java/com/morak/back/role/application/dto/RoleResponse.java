@@ -1,5 +1,6 @@
 package com.morak.back.role.application.dto;
 
+import com.morak.back.core.support.Generated;
 import com.morak.back.role.domain.RoleMatchResult;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -24,6 +25,7 @@ public class RoleResponse {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -36,6 +38,7 @@ public class RoleResponse {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(memberId, name);
     }

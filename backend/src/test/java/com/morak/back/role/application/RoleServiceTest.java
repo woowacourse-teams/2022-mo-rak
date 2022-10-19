@@ -25,6 +25,7 @@ import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
+import com.morak.back.team.exception.TeamAuthorizationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -93,6 +94,20 @@ class RoleServiceTest {
     }
 
     @Test
+    void 역할_이름_목록을_조회할_때_멤버가_팀에_속하지_않는_경우_예외를_던진다() {
+        // given
+        Member otherMember = saveOtherMember();
+
+        roleRepository.save(new Role(team.getCode()));
+
+        // when & then
+        assertThatThrownBy(() -> roleService.editRoleNames(team.getCode(), otherMember.getId(), List.of("서기", "타임키퍼")))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
     void 역할의_이름_목록을_수정한다() {
         // given
         roleRepository.save(new Role(team.getCode()));
@@ -137,11 +152,7 @@ class RoleServiceTest {
     @Test
     void 역할을_매칭한다() {
         // given
-        Member otherMember = memberRepository.save(Member.builder()
-                .oauthId("ellie-oauth-id")
-                .name("한해리")
-                .profileUrl("http://ellie-profile.com")
-                .build());
+        Member otherMember = saveOtherMember();
         teamMemberRepository.save(new TeamMember(null, team, otherMember));
 
         Role role = new Role(team.getCode());
@@ -164,11 +175,7 @@ class RoleServiceTest {
     @Test
     void 중복된_역할이_있을_때_역할을_매칭한다() {
         // given
-        Member otherMember = memberRepository.save(Member.builder()
-                .oauthId("ellie-oauth-id")
-                .name("한해리")
-                .profileUrl("http://ellie-profile.com")
-                .build());
+        Member otherMember = saveOtherMember();
         teamMemberRepository.save(new TeamMember(null, team, otherMember));
 
         Role role = new Role(team.getCode());
@@ -263,5 +270,13 @@ class RoleServiceTest {
                 .isInstanceOf(RoleNotFoundException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.ROLE_NOT_FOUND_ERROR);
+    }
+
+    private Member saveOtherMember() {
+        return memberRepository.save(Member.builder()
+                .oauthId("ellie-oauth-id")
+                .name("한해리")
+                .profileUrl("http://ellie-profile.com")
+                .build());
     }
 }
