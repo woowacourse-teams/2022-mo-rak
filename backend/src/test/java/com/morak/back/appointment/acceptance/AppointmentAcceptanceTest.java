@@ -31,6 +31,7 @@ import static com.morak.back.appointment.AppointmentCreateRequestFixture.총_진
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
+import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
@@ -326,6 +327,7 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
                 모락_회식_첫째날_5시부터_5시반_선택_요청_데이터
         );
         약속잡기_가능_시간_선택을_요청한다(location, requests);
+
         String accessToken2 = tokenProvider.createToken(String.valueOf(2L));
         List<AvailableTimeRequest> requests2 = List.of(
                 모락_회식_첫째날_4시반부터_5시_선택_요청_데이터,
@@ -337,7 +339,6 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
         // when
         ExtractableResponse<Response> response = 약속잡기_가능_시간_추천_결과_조회를_요청한다(location);
         List<RecommendationResponse> recommendationResponses = toObjectList(response, RecommendationResponse.class);
-
         // then
         assertThat(recommendationResponses).hasSize(4);
     }
@@ -468,7 +469,7 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
         AppointmentStatusResponse statusResponse = toObject(response, AppointmentStatusResponse.class);
 
         // then
-        assertThat(statusResponse.getStatus()).isEqualTo("OPEN");
+        assertThat(statusResponse.getStatus()).isEqualTo(MenuStatus.OPEN);
     }
 
     private ExtractableResponse<Response> 약속잡기_마감확인을_요청한다(String location) {

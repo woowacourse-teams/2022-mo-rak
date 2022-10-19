@@ -142,20 +142,18 @@ public class Appointment extends BaseEntity {
 
     // TODO: 2022/10/17 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!여기까지
     public List<AppointmentTime> getAppointmentTimes() {
-
-
         List<AppointmentTime> times = new ArrayList<>();
 
         LocalDate endDate = datePeriod.getEndDate();
         LocalDate date = datePeriod.getStartDate();
         for (; !date.isAfter(endDate); date = date.plusDays(1L)) {
-            extracted(date);
+            times.addAll(getAppointmentPerDate(date));
         }
 
         return times;
     }
 
-    private List<AppointmentTime> extracted(LocalDate date) {
+    private List<AppointmentTime> getAppointmentPerDate(LocalDate date) {
         List<AppointmentTime> times = new ArrayList<>();
 
         LocalTime startTime = timePeriod.getStartTime();

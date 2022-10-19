@@ -17,7 +17,7 @@ public class AppointmentTime {
 
     public boolean contains(AvailableTime availableTime) {
         LocalDateTime dateTime = availableTime.getStartDateTime();
-        return !startDateTime.isBefore(dateTime)
+        return !startDateTime.isAfter(dateTime)
                 && dateTime.isBefore(startDateTime.plusMinutes(durationMinutes));
     }
 
