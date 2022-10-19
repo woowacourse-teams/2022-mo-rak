@@ -1,5 +1,6 @@
 package com.morak.back.appointment.domain;
 
+import com.morak.back.core.domain.BaseElement;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Embeddable;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Embeddable
 @NoArgsConstructor
-public class AvailableTime {
+public class AvailableTime extends BaseElement {
 
     private Long memberId;
 
@@ -18,6 +19,7 @@ public class AvailableTime {
 
     @Builder
     private AvailableTime(Long memberId, LocalDateTime startDateTime) {
+        super();
         this.memberId = memberId;
         this.startDateTime = startDateTime;
     }

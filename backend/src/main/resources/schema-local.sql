@@ -128,16 +128,14 @@ CREATE TABLE appointment_available_time
     `appointment_id`  BIGINT   NOT NULL,
     `member_id`       BIGINT   NOT NULL,
     `start_date_time` DATETIME NOT NULL,
-    `end_date_time`   DATETIME NOT NULL,
     `created_at`      DATETIME NOT NULL,
-    `updated_at`      DATETIME NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (appointment_id) REFERENCES appointment (id),
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
 ALTER TABLE appointment_available_time
-    ADD UNIQUE (appointment_id, member_id, start_date_time, end_date_time);
+    ADD UNIQUE (appointment_id, member_id, start_date_time);
 
 CREATE TABLE slack_webhook
 (
