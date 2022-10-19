@@ -11,7 +11,7 @@ import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.poll.domain.BaseEntity;
+import com.morak.back.core.domain.BaseEntity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

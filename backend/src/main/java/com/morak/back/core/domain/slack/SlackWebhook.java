@@ -1,6 +1,6 @@
 package com.morak.back.core.domain.slack;
 
-import com.morak.back.poll.domain.BaseEntity;
+import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.team.domain.Team;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

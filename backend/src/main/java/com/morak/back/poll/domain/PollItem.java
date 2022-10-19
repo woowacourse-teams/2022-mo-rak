@@ -1,6 +1,7 @@
 package com.morak.back.poll.domain;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.BaseEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

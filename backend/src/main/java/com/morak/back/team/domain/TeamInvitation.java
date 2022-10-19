@@ -1,7 +1,7 @@
 package com.morak.back.team.domain;
 
 import com.morak.back.core.domain.Code;
-import com.morak.back.poll.domain.BaseEntity;
+import com.morak.back.core.domain.BaseEntity;
 import java.time.LocalDateTime;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;

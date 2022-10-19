@@ -2,7 +2,7 @@ package com.morak.back.team.domain;
 
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.support.Generated;
-import com.morak.back.poll.domain.BaseEntity;
+import com.morak.back.core.domain.BaseEntity;
 import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;

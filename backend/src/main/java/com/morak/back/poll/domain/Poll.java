@@ -1,6 +1,7 @@
 package com.morak.back.poll.domain;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollAuthorizationException;

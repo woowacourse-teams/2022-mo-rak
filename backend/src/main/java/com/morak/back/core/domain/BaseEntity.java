@@ -1,4 +1,4 @@
-package com.morak.back.poll.domain;
+package com.morak.back.core.domain;
 
 import java.time.LocalDateTime;
 import javax.persistence.EntityListeners;

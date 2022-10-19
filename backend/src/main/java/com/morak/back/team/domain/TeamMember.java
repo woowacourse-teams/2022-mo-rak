@@ -1,7 +1,7 @@
 package com.morak.back.team.domain;
 
 import com.morak.back.auth.domain.Member;
-import com.morak.back.poll.domain.BaseEntity;
+import com.morak.back.core.domain.BaseEntity;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
