@@ -45,9 +45,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ServiceTest
 class PollServiceTest {
 
-    // 방법1 레포지토리 만들어서 넣기
-    // 방법2 entity manager 로 넣기
-    // 방법3 service 로 넣기
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;

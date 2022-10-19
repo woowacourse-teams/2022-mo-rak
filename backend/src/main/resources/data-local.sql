@@ -20,30 +20,30 @@ VALUES (1, 2, now(), now());
 INSERT INTO team_member (team_id, member_id, created_at, updated_at)
 VALUES (1, 3, now(), now());
 
-INSERT INTO poll (team_id, host_id, title, allowed_poll_count, is_anonymous, status, created_at, updated_at, closed_at,
-                  code)
-VALUES (1, 1, 'test-poll-title', 2, true, 'OPEN', now(), now(), now(), 'testcode');
-
-INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
-VALUES (1, 'test-poll-item-subject-A', now(), now());
-
-INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
-VALUES (1, 'test-poll-item-subject-B', now(), now());
-
-INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
-VALUES (1, 'test-poll-item-subject-C', now(), now());
-
-INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
-VALUES (1, 1, '까라는 매일 자니깐..', now(), now());
-
-INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
-VALUES (2, 1, '그냥뇨', now(), now());
-
-INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
-VALUES (2, 2, '', now(), now());
-
-INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
-VALUES (3, 2, '에덴이 시켰어요', now(), now());
+-- INSERT INTO poll (team_id, host_id, title, allowed_poll_count, is_anonymous, status, created_at, updated_at, closed_at,
+--                   code)
+-- VALUES (1, 1, 'test-poll-title', 2, true, 'OPEN', now(), now(), now(), 'testcode');
+--
+-- INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
+-- VALUES (1, 'test-poll-item-subject-A', now(), now());
+--
+-- INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
+-- VALUES (1, 'test-poll-item-subject-B', now(), now());
+--
+-- INSERT INTO poll_item (poll_id, subject, created_at, updated_at)
+-- VALUES (1, 'test-poll-item-subject-C', now(), now());
+--
+-- INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
+-- VALUES (1, 1, '까라는 매일 자니깐..', now(), now());
+--
+-- INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
+-- VALUES (2, 1, '그냥뇨', now(), now());
+--
+-- INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
+-- VALUES (2, 2, '', now(), now());
+--
+-- INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
+-- VALUES (3, 2, '에덴이 시켰어요', now(), now());
 
 INSERT INTO appointment (team_id, host_id, title, description, start_date, end_date, start_time, end_time,
                          duration_minutes, status, code, closed_at, created_at, updated_at)

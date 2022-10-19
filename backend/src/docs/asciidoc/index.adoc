@@ -19,6 +19,20 @@ include::{snippets}/auth/signin/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/auth/signin/http-response.adoc[]
 
+=== 본인 조회
+
+.HTTP REQUEST
+include::{snippets}/auth/get-me/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/auth/get-me/http-response.adoc[]
+
+=== 본인 이름 변경
+
+.HTTP REQUEST
+include::{snippets}/auth/change-name/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/auth/change-name/http-response.adoc[]
+
 === 에러 코드
 
 [cols="1,3",options=header]
@@ -631,6 +645,114 @@ include::{snippets}/appointment/delete-appointment/path-parameters.adoc[]
 include::{snippets}/appointment/delete-appointment/http-request.adoc[]
 .HTTP RESPONSE
 include::{snippets}/appointment/delete-appointment/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+== 역할
+
+=== 역할 목록 조회
+include::{snippets}/role/get-role-names/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/role/get-role-names/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/role/get-role-names/http-response.adoc[]
+
+=== 에러 코드
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+=== 역할 수정
+include::{snippets}/role/role-name-edit/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/role/role-name-edit/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/role/role-name-edit/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+=== 역할 정하기
+include::{snippets}/role/role-match/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/role/role-match/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/role/role-match/http-response.adoc[]
+
+[cols="1,3",options=header]
+|===
+|Http Status Code
+|Description
+
+|400
+|요청이 잘못되었습니다.
+
+|401
+|사용자 인증에 실패했습니다.
+
+|403
+|접근 권한이 없는 요청입니다.
+
+|404
+|요청한 리소스를 찾을 수 없습니다.
+
+|===
+
+=== 역할 히스토리 조회
+include::{snippets}/role/role-histories/path-parameters.adoc[]
+.HTTP REQUEST
+include::{snippets}/role/role-histories/http-request.adoc[]
+.HTTP RESPONSE
+include::{snippets}/role/role-histories/http-response.adoc[]
 
 [cols="1,3",options=header]
 |===

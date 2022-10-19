@@ -1,14 +1,11 @@
 package com.morak.back.poll.application.dto;
 
-import com.morak.back.auth.domain.Member;
-import com.morak.back.poll.domain.Poll;
-import com.morak.back.poll.domain.PollItem;
-import com.morak.back.poll.domain.PollInfo;
-import com.morak.back.poll.domain.SystemDateTime;
-import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.poll.domain.Poll;
+import com.morak.back.poll.domain.PollInfo;
+import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollStatus;
-import com.morak.back.team.domain.Team;
+import com.morak.back.poll.domain.SystemDateTime;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

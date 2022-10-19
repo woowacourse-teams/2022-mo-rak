@@ -1,28 +1,39 @@
 {
-  "name": "morak-front",
-  "version": "0.0.1",
+  "name": "morak-frontend",
+  "version": "0.3.3",
   "description": "모락 서비스",
-  "main": "index.tsx",
+  "main": "src/index.tsx",
   "scripts": {
     "start": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "cypress:open": "cypress open",
     "lint": "eslint .",
+    "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/morak-morak/morak-front.git"
+    "url": "https://github.com/woowacourse-teams/2022-mo-rak"
   },
   "keywords": [],
-  "author": "",
+  "contributors": [
+    {
+      "name": "al-bur",
+      "email": "ssmin940606@gmail.com",
+      "url": "https://github.com/al-bur"
+    },
+    {
+      "name": "rladpwl0512",
+      "email": "rladpwl0512@gmail.com",
+      "url": "https://github.com/rladpwl0512"
+    }
+  ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/morak-morak/morak-front/issues"
+    "url": "https://github.com/woowacourse-teams/2022-mo-rak/issues"
   },
-  "homepage": "https://github.com/morak-morak/morak-front#readme",
+  "homepage": "https://github.com/woowacourse-teams/2022-mo-rak",
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
@@ -52,7 +63,7 @@
     "@typescript-eslint/parser": "^5.30.4",
     "@webpack-cli/generators": "^2.5.0",
     "babel-loader": "^8.2.5",
-    "cypress": "^10.4.0",
+    "cypress": "^10.9.0",
     "cypress-react-selector": "^3.0.0",
     "dotenv": "^16.0.1",
     "eslint": "^8.19.0",

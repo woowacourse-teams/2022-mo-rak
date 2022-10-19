@@ -14,7 +14,6 @@ import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.core.ui.dto.ExceptionResponse;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
@@ -186,7 +185,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(invitationJoinedResponse)
                         .usingRecursiveComparison()
-                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation), teamCreateRequest.getName(),
+                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation),
+                                teamCreateRequest.getName(),
                                 true))
         );
     }
@@ -208,7 +208,8 @@ public class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(invitationJoinedResponse)
                         .usingRecursiveComparison()
-                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation), teamCreateRequest.getName(),
+                        .isEqualTo(new InvitationJoinedResponse(extractTeamCodeFromLocation(teamLocation),
+                                teamCreateRequest.getName(),
                                 false))
         );
     }
@@ -369,7 +370,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 없는_멤버가_그룹_목록을_조회하면_빈_리스트를_반환한다() {
+    void 없는_멤버가_그룹_목록을_조회하면_NOT_FOUND를_반환한다() {
         // given
         String invalidToken = tokenProvider.createToken(String.valueOf(0L));
 
@@ -378,8 +379,9 @@ public class TeamAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(toObjectList(response, TeamResponse.class)).hasSize(0)
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR.getNumber())
         );
     }
 
@@ -490,7 +492,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
                 () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
-                        .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR.getNumber())
+                        .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR.getNumber())
         );
     }
 
@@ -544,7 +546,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 없는_멤버가_그룹_탈퇴_요청을_보내면_FORBIDDEN이_반환된다() {
+    void 없는_멤버가_그룹_탈퇴_요청을_보내면_NOT_FOUND가_반환된다() {
         // given
         TeamCreateRequest request = new TeamCreateRequest("albur");
         String teamLocation = 그룹_생성을_요청한다(request, token).header("Location");
@@ -556,9 +558,9 @@ public class TeamAcceptanceTest extends AcceptanceTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
                 () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
-                        .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR.getNumber())
+                        .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR.getNumber())
         );
     }
 

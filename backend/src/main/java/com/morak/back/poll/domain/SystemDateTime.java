@@ -1,6 +1,7 @@
 package com.morak.back.poll.domain;
 
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import lombok.Builder;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SystemDateTime {
 
+    @Column(name = "closed_at")
     private LocalDateTime dateTime;
 
     @Transient

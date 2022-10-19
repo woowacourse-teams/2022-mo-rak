@@ -23,7 +23,7 @@ public class PollItemResultResponse {
     public static PollItemResultResponse of(PollItem pollItem, Boolean anonymous) {
         return new PollItemResultResponse(
                 pollItem.getId(),
-                pollItem.getOnlyMembers().size(),
+                pollItem.countSelectMembers(),
                 toMemberResponsesByAnonymous(pollItem.getSelectMembers(), pickStrategy(anonymous)),
                 pollItem.getSubject()
         );

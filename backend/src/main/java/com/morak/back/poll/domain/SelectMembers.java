@@ -19,12 +19,12 @@ import lombok.Getter;
 public class SelectMembers {
 
     @ElementCollection
-    @MapKeyColumn(name = "member_id")
-    @Column(name = "description")
     @CollectionTable(
             name = "select_member",
             joinColumns = @JoinColumn(name = "poll_item_id")
     )
+    @MapKeyColumn(name = "member_id")
+    @Column(name = "description")
     private Map<Member, String> values;
 
     @Builder

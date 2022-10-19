@@ -1,33 +1,33 @@
 import { createContext, useReducer, PropsWithChildren, Dispatch } from 'react';
 import { Menu } from '../types/menu';
-interface MenuState {
+type MenuState = {
   activeMenu: Menu;
   isVisibleGroupsModal: boolean;
-}
+};
 
-interface SetActiveMenuAction {
-  type : 'SET_ACTIVE_MENU';
-  payload: Menu
-}
+type SetActiveMenuAction = {
+  type: 'SET_ACTIVE_MENU';
+  payload: Menu;
+};
 
-interface SetIsVisibleGroupsModalAction {
+type SetIsVisibleGroupsModalAction = {
   type: 'SET_IS_VISIBLE_GROUPS_MODAL';
-  payload: boolean
-}
+  payload: boolean;
+};
 
-interface ToggleGroupsModalAction {
+type ToggleGroupsModalAction = {
   type: 'TOGGLE_GROUPS_MODAL';
-}
+};
 
-type MenuAction = SetActiveMenuAction | SetIsVisibleGroupsModalAction | ToggleGroupsModalAction
+type MenuAction = SetActiveMenuAction | SetIsVisibleGroupsModalAction | ToggleGroupsModalAction;
 
 const initialState = {
   activeMenu: 'poll',
   isVisibleGroupsModal: false
-} as const
+} as const;
 
 const MenuContext = createContext<MenuState | null>(null);
-const MenuDispatchContext = createContext<Dispatch<MenuAction> | null>(null);  
+const MenuDispatchContext = createContext<Dispatch<MenuAction> | null>(null);
 
 function menuReducer(state: MenuState, action: MenuAction): MenuState {
   switch (action.type) {
@@ -60,7 +60,5 @@ function MenuProvider({ children }: PropsWithChildren) {
     </MenuContext.Provider>
   );
 }
-
-
 
 export { MenuContext, MenuDispatchContext, MenuProvider };

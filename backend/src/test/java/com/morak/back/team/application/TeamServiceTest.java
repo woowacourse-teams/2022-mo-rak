@@ -25,6 +25,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 
 @ServiceTest
 class TeamServiceTest {
@@ -41,6 +42,9 @@ class TeamServiceTest {
     @Autowired
     private TeamInvitationRepository teamInvitationRepository;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     private TeamService teamService;
 
     private Member member;
@@ -49,7 +53,13 @@ class TeamServiceTest {
 
     @BeforeEach
     void setUp() {
-        teamService = new TeamService(teamRepository, memberRepository, teamMemberRepository, teamInvitationRepository);
+        teamService = new TeamService(
+                teamRepository,
+                memberRepository,
+                teamMemberRepository,
+                teamInvitationRepository,
+                eventPublisher
+        );
 
         member = memberRepository.save(Member.builder()
                 .id(null)
@@ -315,16 +325,16 @@ class TeamServiceTest {
         teamMemberRepository.save(new TeamMember(null, team, 이찬주));
 
         // when
-        List<MemberResponse> memberResponses = teamService.findMembersInTeam(박성우.getId(), team.getCode());
+        List<MemberResponse> memberResponses = teamService.findMembersInTeam(이찬주.getId(), team.getCode());
 
         // then
         assertThat(memberResponses)
                 .usingRecursiveComparison()
                 .isEqualTo(
                         List.of(
+                                new MemberResponse(이찬주.getId(), 이찬주.getName(), 이찬주.getProfileUrl()),
                                 new MemberResponse(member.getId(), member.getName(), member.getProfileUrl()),
-                                new MemberResponse(박성우.getId(), 박성우.getName(), 박성우.getProfileUrl()),
-                                new MemberResponse(이찬주.getId(), 이찬주.getName(), 이찬주.getProfileUrl())
+                                new MemberResponse(박성우.getId(), 박성우.getName(), 박성우.getProfileUrl())
                         )
                 );
     }
@@ -404,9 +414,9 @@ class TeamServiceTest {
         Long invalidMemberId = member.getId() + 1;
         // when & then
         assertThatThrownBy(() -> teamService.exitMemberFromTeam(invalidMemberId, team.getCode()))
-                .isInstanceOf(TeamAuthorizationException.class)
+                .isInstanceOf(MemberNotFoundException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+                .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR);
     }
 
     @Test
