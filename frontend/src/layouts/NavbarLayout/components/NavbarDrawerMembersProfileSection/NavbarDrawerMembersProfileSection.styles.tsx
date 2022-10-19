@@ -5,13 +5,13 @@ const StyledMemberListContainer = styled.div`
 `;
 
 const StyledMenuHeader = styled.div`
-  font-size: 1.6rem;
+  font-size: 2.4rem;
   text-align: left;
   margin-bottom: 2rem;
 `;
 
 const StyledName = styled.div`
-  font-size: 1.6rem;
+  font-size: 2.4rem;
 `;
 
 const StyledContainer = styled.div`

@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 import styled from '@emotion/styled';
 
 const StyledMenuHeader = styled.div`
-  font-size: 1.6rem;
+  font-size: 2.4rem;
   text-align: left;
   margin-bottom: 2rem;
 `;
@@ -54,7 +54,7 @@ const StyledGroupFirstCharacter = styled.div(
 );
 
 const StyledGroupName = styled.div`
-  font-size: 1.6rem;
+  font-size: 2.4rem;
   margin-bottom: 1.2rem;
 `;
 
@@ -104,7 +104,6 @@ const StyledParticipateNewGroupButton = styled.button`
   align-items: center;
   cursor: pointer;
   gap: 1.2rem;
-  font-size: 1.6rem;
   padding: 2rem;
 
   &:hover {
@@ -118,7 +117,6 @@ const StyledCreateNewGroupButton = styled.button`
   align-items: center;
   cursor: pointer;
   gap: 1.2rem;
-  font-size: 1.6rem;
   width: 100%;
   padding: 2rem;
 
@@ -129,7 +127,7 @@ const StyledCreateNewGroupButton = styled.button`
 `;
 
 const StyledButtonText = styled.p`
-  font-size: 2rem;
+  font-size: 2.4rem;
 `;
 
 const StyledLeaveGroupButton = styled.button`
@@ -137,7 +135,6 @@ const StyledLeaveGroupButton = styled.button`
   align-items: center;
   cursor: pointer;
   gap: 1.2rem;
-  font-size: 1.6rem;
   width: 100%;
   padding: 2rem;
 

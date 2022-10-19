@@ -15,7 +15,7 @@ const StyledLeaveImage = styled.img`
 
 const StyledText = styled.p(
   ({ theme }) => `
-  font-size: 1.6rem; 
+  font-size: 2.4rem; 
   color: ${theme.colors.GRAY_400}
 `
 );

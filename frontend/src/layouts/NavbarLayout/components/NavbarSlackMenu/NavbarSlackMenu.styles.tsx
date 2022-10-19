@@ -13,7 +13,7 @@ const StyledSlackLogo = styled.img`
 `;
 
 const StyledText = styled.p`
-  font-size: 1.6rem;
+  font-size: 2.4rem;
 `;
 
 export { StyledContainer, StyledSlackLogo, StyledText };

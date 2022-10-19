@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const StyledMenuHeader = styled.div`
-  font-size: 1.6rem;
+  font-size: 2.4rem;
   text-align: left;
   margin-bottom: 2rem;
 `;
@@ -15,7 +15,7 @@ const StyledMenuIcon = styled.img`
 `;
 
 const StyledMenuTitle = styled.div`
-  font-size: 1.6rem;
+  font-size: 2.4rem;
 `;
 
 const StyledMenu = styled.div<{

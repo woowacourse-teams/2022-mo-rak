@@ -12,7 +12,6 @@ import useMenuContext from '../../../../hooks/useMenuContext';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import { Group } from '../../../../types/group';
 
-// NOTE: groupCode를 내려 주는 것과, useParams를 통해 불러오는 것 중 어떤 것이 더 효율적일까?
 // TODO: props drilling 발생 (groups)
 type Props = {
   groupCode: Group['code'];

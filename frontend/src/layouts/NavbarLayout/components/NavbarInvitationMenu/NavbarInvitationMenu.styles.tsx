@@ -9,7 +9,7 @@ const StyledInvitationLink = styled.button`
 `;
 
 const StyledInvitationText = styled.p`
-  font-size: 1.6rem;
+  font-size: 2.4rem;
 `;
 
 const StyledPlusIcon = styled.img`
