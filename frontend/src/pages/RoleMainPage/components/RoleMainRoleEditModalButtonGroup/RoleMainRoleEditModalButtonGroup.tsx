@@ -1,8 +1,13 @@
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Button from '../../../../components/Button/Button';
 import { useTheme } from '@emotion/react';
+import { MouseEventHandler } from 'react';
 
-function RoleMainRoleEditModalButtonGroup() {
+type Props = {
+  onClickCancelButton: MouseEventHandler<HTMLButtonElement>;
+};
+
+function RoleMainRoleEditModalButtonGroup({ onClickCancelButton }: Props) {
   const theme = useTheme();
   return (
     <FlexContainer gap="2rem">
@@ -13,7 +18,7 @@ function RoleMainRoleEditModalButtonGroup() {
         padding="1.6rem 3.2rem"
         borderRadius="1.2rem"
         fontSize="1.6rem"
-        onClick={close}
+        onClick={onClickCancelButton}
       >
         취소
       </Button>

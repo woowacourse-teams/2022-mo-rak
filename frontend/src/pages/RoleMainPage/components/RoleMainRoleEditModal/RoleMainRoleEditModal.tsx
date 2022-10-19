@@ -101,7 +101,7 @@ function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
             onClickDeleteButton={handleDeleteRoleInput}
             onClickAddButton={handleAddRoleInput}
           />
-          <RoleMainRoleEditModalButtonGroup />
+          <RoleMainRoleEditModalButtonGroup onClickCancelButton={close} />
         </StyledBottom>
       </StyledForm>
     </Modal>
