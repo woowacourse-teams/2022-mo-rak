@@ -15,7 +15,6 @@
 </div>
 
 <br>
-
 <br>
 
 # 🔎 소개 
@@ -33,6 +32,9 @@
 
 ![모락-투표하기](https://user-images.githubusercontent.com/79205414/194995574-eab0b766-ea99-4129-b0ac-d7c8bf95671a.gif)
 
+<br>
+<br>
+
 # 👨‍👩‍👧‍👦 팀 소개
 
 ## 팀 멤버
@@ -43,6 +45,8 @@
 | :-: | :-: | :-: | :-: | :-: | :-: |
 | <img src="https://user-images.githubusercontent.com/64825713/194213208-aa64bae2-16b3-48ab-bd9a-6d6029b1cfaf.png" alt="albur" width="150"> | <img src="https://user-images.githubusercontent.com/64825713/194213572-306c6b8c-0283-4615-ad54-f1421e8ec6cb.png" alt="위니" width="150"> | <img src="https://user-images.githubusercontent.com/64825713/194213401-f8fe16f9-6749-424e-b3b5-c685aec95a50.png" alt="에덴" width="150"> | <img src="https://user-images.githubusercontent.com/64825713/194213961-0c8c38d0-5795-4861-a997-9d3da2eb9dd7.png" alt="차리" width="150"> | <img src="https://user-images.githubusercontent.com/64825713/194214234-375362a1-2973-4460-be70-ffc3df759578.png" alt="엘리" width="150"> | <img src="https://user-images.githubusercontent.com/64825713/194214404-194f385e-2329-43e5-af07-524f8ff752d6.png" alt="배카라" width="150"> |
 |[앨버(송상민)](https://github.com/al-bur)|[위니(김예지)](https://github.com/rladpwl0512)|[에덴(김성산)](https://github.com/leo0842)|[차리(이찬주)](https://github.com/cjlee38)|[엘리(한해리)](https://github.com/RIANAEH)|[배카라(박성우)](https://github.com/seong-wooo)|
+
+<br>
 
 ## 팀 문화
 
@@ -78,9 +82,15 @@
 - 개발일지를 작성하고 세미나를 통해 지식을 공유해요. 
 - 서로 "왜?"라는 질문을 해주기로해요.
 
+<br>
+<br>
+
 # ⚙️ 인프라
 
-![image](https://user-images.githubusercontent.com/42317507/194999269-0687cfa0-518f-4930-948f-4c863356bd98.png)
+![image](https://user-images.githubusercontent.com/45311765/196595945-41b38977-343c-451d-a1b2-af0a6e895c89.png)
+
+<br>
+<br>
 
 # 📸 볼거리
 
