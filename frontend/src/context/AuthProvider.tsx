@@ -11,7 +11,12 @@ type SetAuthAction = {
   payload: Pick<Member, 'id' | 'name'>;
 };
 
-type AuthAction = SetAuthAction;
+type SetNameAction = {
+  type: 'SET_NAME';
+  payload: Member['name'];
+};
+
+type AuthAction = SetAuthAction | SetNameAction;
 
 function authReducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
@@ -20,6 +25,11 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
         ...state,
         id: action.payload.id,
         name: action.payload.name
+      };
+    case 'SET_NAME':
+      return {
+        ...state,
+        name: action.payload
       };
     default:
       return state;
