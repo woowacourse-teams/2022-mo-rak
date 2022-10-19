@@ -102,8 +102,6 @@ class PollAcceptanceTest extends AcceptanceTest {
                         new PollCreateRequest(" ", 1, false, LocalDateTime.now().plusDays(1), List.of("항목1", "항목2"))),
                 Arguments.of(new PollCreateRequest("투표_제목", null, false, LocalDateTime.now().plusDays(1),
                         List.of("항목1", "항목2"))),
-                Arguments.of(new PollCreateRequest("투표_제목", 1, null, LocalDateTime.now().plusDays(1),
-                        List.of("항목1", "항목2"))),
                 Arguments.of(new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().minusDays(1),
                         List.of("항목1", "항목2"))),
                 Arguments.of(new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1), null))
@@ -312,7 +310,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .ignoringFields("id", "createdAt")
                         .isEqualTo(
                                 List.of(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
-                                        request.getAnonymous(),
+                                        request.isAnonymous(),
                                         PollStatus.OPEN.name(), null, request.getClosedAt().withNano(0), pollCode, true, 0))
                         )
         );
@@ -355,7 +353,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("id", "createdAt")
                         .isEqualTo(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
-                                request.getAnonymous(),
+                                request.isAnonymous(),
                                 PollStatus.OPEN.name(), null, request.getClosedAt().withNano(0), pollCode, true, 0))
         );
     }
@@ -393,7 +391,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("id", "createdAt")
                         .isEqualTo(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
-                                request.getAnonymous(),
+                                request.isAnonymous(),
                                 PollStatus.OPEN.name(), null, request.getClosedAt().withNano(0), pollCode, true, 2))
         );
     }
@@ -553,7 +551,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표_결과_조회를_요청한다(pollLocation, token);
         List<PollItemResultResponse> pollItemResultResponses = toObjectList(response, PollItemResultResponse.class);
 
-        Member anonymous = Member.getAnonymous();
+        Member anonymous = Member.getAnonymousMember();
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),

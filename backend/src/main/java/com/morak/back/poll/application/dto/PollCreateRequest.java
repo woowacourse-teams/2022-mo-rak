@@ -30,9 +30,9 @@ public class PollCreateRequest {
     @NotNull(message = "allowedPollCount 는 null 일 수 없습니다.")
     private Integer allowedPollCount;
 
-    @NotNull(message = "isAnonymous 는 null 일 수 없습니다.")
+//    @NotNull(message = "isAnonymous 는 null 일 수 없습니다.")
     @JsonProperty("isAnonymous")
-    private Boolean anonymous;
+    private boolean anonymous;
 
     @Future(message = "closedAt은 미래여야 합니다.")
     private LocalDateTime closedAt;

@@ -48,7 +48,7 @@ public class Member extends BaseEntity {
     @URL(regexp = "^(http).*", message = "profileUrl은 http로 시작해야 합니다.")
     private String profileUrl;
 
-    public static Member getAnonymous() {
+    public static Member getAnonymousMember() {
         return ANONYMOUS_MEMBER;
     }
 

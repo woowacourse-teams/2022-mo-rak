@@ -52,7 +52,7 @@ public class PollItemResultResponse {
 
         @Override
         public Member viewMemberFrom(Entry<Member, String> selectMemberEntry) {
-            return Member.getAnonymous();
+            return Member.getAnonymousMember();
         }
     }
 

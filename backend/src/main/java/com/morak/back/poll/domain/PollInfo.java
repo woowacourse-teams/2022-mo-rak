@@ -23,7 +23,7 @@ public class PollInfo {
 
     private String title;
 
-    private Boolean anonymous;
+    private boolean anonymous;
 
     @Embedded
     private AllowedCount allowedCount;

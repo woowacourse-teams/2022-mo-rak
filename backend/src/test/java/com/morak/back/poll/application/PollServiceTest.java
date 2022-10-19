@@ -48,11 +48,7 @@ class PollServiceTest {
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
-    private final PollRepository pollRepository;
-    private final FakeApiReceiver receiver;
-    private final SlackClient slackClient;
 
-    private final NotificationService notificationService;
     private final PollService pollService;
 
     private Member member;
@@ -66,10 +62,10 @@ class PollServiceTest {
         this.memberRepository = memberRepository;
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
-        this.pollRepository = pollRepository;
-        this.receiver = new FakeApiReceiver();
-        this.slackClient = new FakeSlackClient(receiver);
-        this.notificationService = new NotificationService(slackClient, teamRepository, teamMemberRepository,
+        FakeApiReceiver receiver = new FakeApiReceiver();
+        SlackClient slackClient = new FakeSlackClient(receiver);
+        NotificationService notificationService = new NotificationService(slackClient, teamRepository,
+                teamMemberRepository,
                 slackWebhookRepository, memberRepository);
         this.pollService = new PollService(
                 pollRepository,
@@ -166,7 +162,7 @@ class PollServiceTest {
                                 null,
                                 pollCreateRequest.getTitle(),
                                 pollCreateRequest.getAllowedPollCount(),
-                                pollCreateRequest.getIsAnonymous(),
+                                pollCreateRequest.isAnonymous(),
                                 OPEN.name(),
                                 null,
                                 pollCreateRequest.getClosedAt(),
@@ -206,7 +202,7 @@ class PollServiceTest {
                                         null,
                                         pollCreateRequest2.getTitle(),
                                         pollCreateRequest2.getAllowedPollCount(),
-                                        pollCreateRequest2.getIsAnonymous(),
+                                        pollCreateRequest2.isAnonymous(),
                                         OPEN.name(),
                                         null,
                                         pollCreateRequest2.getClosedAt(),
@@ -217,7 +213,7 @@ class PollServiceTest {
                                         null,
                                         pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
-                                        pollCreateRequest.getIsAnonymous(),
+                                        pollCreateRequest.isAnonymous(),
                                         CLOSED.name(),
                                         null,
                                         pollCreateRequest.getClosedAt(),
@@ -256,7 +252,7 @@ class PollServiceTest {
                                         null,
                                         pollCreateRequest1.getTitle(),
                                         pollCreateRequest1.getAllowedPollCount(),
-                                        pollCreateRequest1.getIsAnonymous(),
+                                        pollCreateRequest1.isAnonymous(),
                                         CLOSED.name(),
                                         null,
                                         pollCreateRequest1.getClosedAt(),
@@ -266,7 +262,7 @@ class PollServiceTest {
                                 new PollResponse(null,
                                         pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
-                                        pollCreateRequest.getIsAnonymous(),
+                                        pollCreateRequest.isAnonymous(),
                                         CLOSED.name(),
                                         null,
                                         pollCreateRequest.getClosedAt(),
@@ -302,7 +298,7 @@ class PollServiceTest {
                                         null,
                                         pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
-                                        pollCreateRequest.getIsAnonymous(),
+                                        pollCreateRequest.isAnonymous(),
                                         OPEN.name(),
                                         null,
                                         pollCreateRequest.getClosedAt(),
@@ -495,7 +491,7 @@ class PollServiceTest {
                         null,
                         pollCreateRequest.getTitle(),
                         pollCreateRequest.getAllowedPollCount(),
-                        pollCreateRequest.getIsAnonymous(),
+                        pollCreateRequest.isAnonymous(),
                         OPEN.name(),
                         LocalDateTime.now(),
                         pollCreateRequest.getClosedAt(),
@@ -673,7 +669,7 @@ class PollServiceTest {
                 new PollResultRequest(3L, "ㅋ"));
         pollService.doPoll(team.getCode(), member.getId(), pollCode, pollResultRequests);
         List<PollItemResultResponse> pollItemResultResponses = pollService.findPollResults(team.getCode(), member.getId(), pollCode);
-        Member anonymous = Member.getAnonymous();
+        Member anonymous = Member.getAnonymousMember();
 
         // then
         assertThat(pollItemResultResponses)

@@ -100,7 +100,7 @@ public class PollService {
         Poll poll = findPollByCode(pollCode);
         return poll.getPollItems()
                 .stream()
-                .map(pollItem -> PollItemResultResponse.of(pollItem, poll.getPollInfo().getAnonymous()))
+                .map(pollItem -> PollItemResultResponse.of(pollItem, poll.getPollInfo().isAnonymous()))
                 .collect(Collectors.toList());
     }
 

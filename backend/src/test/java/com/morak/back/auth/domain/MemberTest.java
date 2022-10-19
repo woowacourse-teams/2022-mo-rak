@@ -27,7 +27,7 @@ class MemberTest {
     @Test
     void 익명_멤버를_얻어낸다() {
         // given & when
-        Member anonymous = Member.getAnonymous();
+        Member anonymous = Member.getAnonymousMember();
 
         // then
         assertThat(anonymous.getId()).isEqualTo(0L);
