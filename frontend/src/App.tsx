@@ -4,6 +4,7 @@ import { PrivateRoute } from './routes/PrivateRoute';
 import { MenuRoute } from './routes/MenuRoute';
 import SidebarLayout from './layouts/SidebarLayout/SidebarLayout';
 import GroupRoute from './routes/GroupRoute';
+import { AuthProvider } from './context/AuthProvider';
 
 const PollMainPage = lazy(() => import('./pages/PollMainPage/PollMainPage'));
 const PollCreatePage = lazy(() => import('./pages/PollCreatePage/PollCreatePage'));
@@ -33,7 +34,13 @@ function App() {
         <Route path="/">
           <Route index element={<LandingPage />} />
           <Route path="invite/:invitationCode" element={<InvitationPage />} />
-          <Route element={<PrivateRoute />}>
+          <Route
+            element={
+              <AuthProvider>
+                <PrivateRoute />
+              </AuthProvider>
+            }
+          >
             <Route path="init" element={<GroupInitPage />} />
 
             <Route element={<SidebarLayout />}>
