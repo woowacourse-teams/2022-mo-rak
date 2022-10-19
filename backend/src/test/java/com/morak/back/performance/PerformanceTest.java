@@ -31,6 +31,10 @@ import static com.morak.back.performance.support.PollRequestSupport.투표_삭�
 import static com.morak.back.performance.support.PollRequestSupport.투표_생성_요청_후_위치를_가져온다;
 import static com.morak.back.performance.support.PollRequestSupport.투표_선택항목_조회_요청_후_바디를_가져온다;
 import static com.morak.back.performance.support.PollRequestSupport.투표_진행을_요청한다;
+import static com.morak.back.performance.support.RoleRequestSupport.역할_매칭을_요청한다;
+import static com.morak.back.performance.support.RoleRequestSupport.역할_이름_목록_수정을_요청한다;
+import static com.morak.back.performance.support.RoleRequestSupport.역할_이름_목록_조회를_요청한다;
+import static com.morak.back.performance.support.RoleRequestSupport.역할_히스토를_조회를_요청한다;
 import static com.morak.back.performance.support.TeamMemberRequestSupport.extractTeamCodeFromLocation;
 import static com.morak.back.performance.support.TeamMemberRequestSupport.그룹_멤버_목록_조회를_요청한다;
 import static com.morak.back.performance.support.TeamMemberRequestSupport.그룹_목록_조회를_요청한다;
@@ -44,9 +48,11 @@ import static com.morak.back.performance.support.TeamMemberRequestSupport.기본
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.performance.support.AppointmentDummySupport;
 import com.morak.back.performance.support.PollDummySupport;
+import com.morak.back.performance.support.RoleDummySupport;
 import com.morak.back.performance.support.TeamMemberDummySupport;
 import com.morak.back.poll.ui.dto.PollItemResponse;
 import com.morak.back.poll.ui.dto.PollResultRequest;
+import com.morak.back.role.application.dto.RoleNameEditRequest;
 import io.restassured.RestAssured;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,6 +85,9 @@ public class PerformanceTest {
     @Autowired
     private PollDummySupport pollDummySupport;
 
+    @Autowired
+    private RoleDummySupport roleDummySupport;
+
     @LocalServerPort
     int port;
 
@@ -101,6 +110,7 @@ public class PerformanceTest {
         팀_멤버_API의_성능을_테스트한다();
         약속잡기_API의_성능을_테스트한다();
         투표_API의_성능을_테스트한다();
+        역할_API의_성능을_테스트한다();
     }
 
     private void 더미데이터를_추가한다() {
@@ -117,6 +127,10 @@ public class PerformanceTest {
         pollDummySupport.투표_더미데이터를_추가한다(TEAM_SIZE, POLL_SIZE_PER_TEAM);
         pollDummySupport.투표_선택항목_더미데이터를_추가한다(POLL_SIZE, POLL_ITEM_SIZE_PER_POLL);
         pollDummySupport.투표_선택결과_더미데이터를_추가한다(POLL_ITEM_SIZE);
+
+        roleDummySupport.역할_더미데이터를_추가한다(List.of("code1"));
+        roleDummySupport.역할_이름_더미데이터를_추가한다();
+        roleDummySupport.역할_히스토리_더미데이터를_추가한다();
 
         double timeOfInsultDummies = (System.currentTimeMillis() - startTime) / 1_000.0;
         LOG.info(String.format("더미 데이터 추가 시간: %f", timeOfInsultDummies));
@@ -166,5 +180,14 @@ public class PerformanceTest {
         return pollItemResponses.stream()
                 .map(response -> 투표_결과_요청_데이터(response.getId()))
                 .collect(Collectors.toList());
+    }
+
+    private void 역할_API의_성능을_테스트한다() {
+        LOG.info("[역할 성능 테스트]");
+        역할_이름_목록_조회를_요청한다(TEAM_ID1_LOCATION, member1Token); // 쿼리 개수 상 문제 없음(조회라 인덱스 봐야함)
+        RoleNameEditRequest request = new RoleNameEditRequest(List.of("서기", "타임키퍼", "데일리 마스터", "데일리 마스터"));
+        역할_이름_목록_수정을_요청한다(TEAM_ID1_LOCATION, member1Token, request); // 쿼리 개수 문제 있음(insert, delete)
+        역할_매칭을_요청한다(TEAM_ID1_LOCATION, member1Token);
+        역할_히스토를_조회를_요청한다(TEAM_ID1_LOCATION, member1Token);
     }
 }
