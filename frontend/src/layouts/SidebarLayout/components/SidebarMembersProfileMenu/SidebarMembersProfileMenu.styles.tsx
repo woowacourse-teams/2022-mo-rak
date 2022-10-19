@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 
 const StyledMemberListContainer = styled.div`
-  margin: 2.8rem 0;
+  height: 35%;
 `;
 
 const StyledMenuHeader = styled.div`
   font-size: 1.6rem;
   text-align: left;
-  margin-bottom: 2rem;
+  padding: 2rem 0;
 `;
 
 const StyledName = styled.div`
@@ -16,7 +16,7 @@ const StyledName = styled.div`
 
 const StyledContainer = styled.div`
   overflow-y: auto;
-  max-height: 36rem;
+  height: 80%;
 `;
 
 export { StyledMemberListContainer, StyledMenuHeader, StyledName, StyledContainer };
