@@ -3,7 +3,6 @@ package com.morak.back.role.domain;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.exception.RoleDomainLogicException;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.persistence.CollectionTable;
@@ -42,14 +41,11 @@ public class RoleNames {
         }
     }
 
-    public Map<RoleName, Long> match(List<Long> memberIds) {
+    public List<RoleMatchResult> match(List<Long> memberIds) {
         validateMemberCount(memberIds.size());
         return IntStream.range(0, this.values.size())
-                .boxed()
-                .collect(Collectors.toMap(
-                        this.values::get,
-                        memberIds::get
-                ));
+                .mapToObj(idx -> new RoleMatchResult(this.values.get(idx), memberIds.get(idx)))
+                .collect(Collectors.toList());
     }
 
     private void validateMemberCount(int size) {

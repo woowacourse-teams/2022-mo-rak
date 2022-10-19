@@ -14,6 +14,7 @@ import com.morak.back.role.application.dto.RolesResponse;
 import com.morak.back.role.domain.Role;
 import com.morak.back.role.domain.RoleHistories;
 import com.morak.back.role.domain.RoleHistory;
+import com.morak.back.role.domain.RoleMatchResult;
 import com.morak.back.role.domain.RoleName;
 import com.morak.back.role.domain.RoleNames;
 import com.morak.back.role.domain.RoleRepository;
@@ -108,6 +109,23 @@ class RoleServiceTest {
     }
 
     @Test
+    void 중복된_이름으로_역할의_이름_목록을_수정한다() {
+        // given
+        roleRepository.save(new Role(team.getCode()));
+
+        // when
+        roleService.editRoleNames(team.getCode(), member.getId(), List.of("서기", "타임키퍼", "타임키퍼"));
+
+        // then
+        Role role = roleRepository.findByTeamCode(team.getCode()).orElseThrow();
+        assertThat(role.getRoleNames().getValues()).containsExactly(
+                new RoleName("서기"),
+                new RoleName("타임키퍼"),
+                new RoleName("타임키퍼")
+        );
+    }
+
+    @Test
     void 역할정하기가_존재하지_않고_역할의_이름_목록을_수정하면_예외를_던진다() {
         // when & then
         assertThatThrownBy(() -> roleService.editRoleNames(team.getCode(), member.getId(), List.of("서기", "타임키퍼")))
@@ -134,6 +152,34 @@ class RoleServiceTest {
         roleService.matchRoleAndMember(team.getCode(), member.getId());
 
         roleRepository.flush(); // 테스트에서는 flush()를 해야 history의 id 값을 얻어올 수 있다.
+
+        // then
+        RoleHistories afterHistories = role.getRoleHistories();
+        Assertions.assertAll(
+                () -> assertThat(afterHistories.getValues().get(0).getId()).isNotNull(),
+                () -> assertThat(afterHistories.getValues().size()).isGreaterThan(beforeSize)
+        );
+    }
+
+    @Test
+    void 중복된_역할이_있을_때_역할을_매칭한다() {
+        // given
+        Member otherMember = memberRepository.save(Member.builder()
+                .oauthId("ellie-oauth-id")
+                .name("한해리")
+                .profileUrl("http://ellie-profile.com")
+                .build());
+        teamMemberRepository.save(new TeamMember(null, team, otherMember));
+
+        Role role = new Role(team.getCode());
+        roleRepository.save(role);
+        roleService.editRoleNames(team.getCode(), member.getId(), List.of("엘사모", "엘사모"));
+        int beforeSize = role.getRoleHistories().getValues().size();
+
+        // when
+        roleService.matchRoleAndMember(team.getCode(), member.getId());
+
+        roleRepository.flush();
 
         // then
         RoleHistories afterHistories = role.getRoleHistories();
@@ -196,16 +242,17 @@ class RoleServiceTest {
         RoleHistories roleHistories = new RoleHistories();
 
         Long memberId = member.getId();
-        RoleHistory history1 = new RoleHistory(now, Map.of(Role_데일리_마스터, memberId));
-        RoleHistory history2 = new RoleHistory(now.plusSeconds(10), Map.of(Role_서기, memberId));
-        RoleHistory history3 = new RoleHistory(now.minusDays(1), Map.of(Role_데일리_마스터, memberId));
-        RoleHistory history4 = new RoleHistory(now.minusDays(1).plusSeconds(10), Map.of(Role_서기, memberId));
+        RoleHistory history1 = new RoleHistory(now, List.of(new RoleMatchResult(Role_데일리_마스터, memberId)));
+        RoleHistory history2 = new RoleHistory(now.plusSeconds(10), List.of(new RoleMatchResult(Role_서기, memberId)));
+        RoleHistory history3 = new RoleHistory(now.minusDays(1), List.of(new RoleMatchResult(Role_데일리_마스터, memberId)));
+        RoleHistory history4 = new RoleHistory(now.minusDays(1).plusSeconds(10),
+                List.of(new RoleMatchResult(Role_서기, memberId)));
 
         roleHistories.add(history1);
         roleHistories.add(history2);
         roleHistories.add(history3);
         roleHistories.add(history4);
-        
+
         return roleRepository.save(new Role(team.getCode(), RoleNames.from(List.of(데일리_마스터, 서기)), roleHistories));
     }
 

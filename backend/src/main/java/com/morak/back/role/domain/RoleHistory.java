@@ -1,7 +1,7 @@
 package com.morak.back.role.domain;
 
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,14 +27,15 @@ public class RoleHistory implements Comparable<RoleHistory> {
     private LocalDateTime dateTime;
 
     @ElementCollection
-    @CollectionTable(name = "role_match_result", joinColumns = @JoinColumn(name = "role_history_id"))
-    @MapKeyColumn(name = "role_name")
-    @Column(name = "member_id", nullable = false)
-    private Map<RoleName, Long> matchResult;
+    @CollectionTable(
+            name = "role_match_result",
+            joinColumns = @JoinColumn(name = "role_history_id")
+    )
+    private List<RoleMatchResult> matchResults;
 
-    public RoleHistory(LocalDateTime dateTime, Map<RoleName, Long> matchResult) {
+    public RoleHistory(LocalDateTime dateTime, List<RoleMatchResult> matchResults) {
         this.dateTime = dateTime;
-        this.matchResult = matchResult;
+        this.matchResults = matchResults;
     }
 
     @Override
@@ -47,13 +47,13 @@ public class RoleHistory implements Comparable<RoleHistory> {
             return false;
         }
         RoleHistory that = (RoleHistory) o;
-        return Objects.equals(getDateTime(), that.getDateTime()) && Objects.equals(getMatchResult(),
-                that.getMatchResult());
+        return Objects.equals(getDateTime(), that.getDateTime()) && Objects.equals(getMatchResults(),
+                that.getMatchResults());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDateTime(), getMatchResult());
+        return Objects.hash(getDateTime(), getMatchResults());
     }
 
     @Override

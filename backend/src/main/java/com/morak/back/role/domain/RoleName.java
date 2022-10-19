@@ -7,11 +7,13 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
-@NoArgsConstructor
-@Embeddable
 @Getter
+@Setter
+@Embeddable
+@NoArgsConstructor
 public class RoleName {
 
     private static final int MAX_LENGTH = 20;
@@ -31,10 +33,6 @@ public class RoleName {
                     value + "는 " + MAX_LENGTH + "자를 넘을 수 없습니다."
             );
         }
-    }
-
-    public String getValue() {
-        return value;
     }
 
     @Override
@@ -60,6 +58,4 @@ public class RoleName {
                 "value='" + value + '\'' +
                 '}';
     }
-
-
 }

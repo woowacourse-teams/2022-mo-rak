@@ -36,6 +36,12 @@ public class RoleService {
     private final TeamMemberRepository teamMemberRepository;
     private final RoleRepository roleRepository;
 
+    @TransactionalEventListener
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void createDefaultRole(TeamCreateEvent event) {
+        roleRepository.save(new Role(event.getTeamCode()));
+    }
+
     public RoleNameResponses findRoleNames(String teamCode, Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
@@ -47,12 +53,6 @@ public class RoleService {
         return RoleNameResponses.from(role.getRoleNames());
     }
 
-    @TransactionalEventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void createDefaultRole(TeamCreateEvent event) {
-        roleRepository.save(new Role(event.getTeamCode()));
-    }
-
     public void editRoleNames(String teamCode, Long memberId, List<String> names) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
@@ -62,13 +62,6 @@ public class RoleService {
 
         Role role = findRoleByTeamCode(teamCode);
         role.updateNames(names);
-    }
-
-    private void validateMemberInTeam(Team team, Member member) {
-        if (!teamMemberRepository.existsByTeamAndMember(team, member)) {
-            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, team.getId(),
-                    member.getId());
-        }
     }
 
     public Long matchRoleAndMember(String teamCode, Long memberId) {
@@ -91,13 +84,6 @@ public class RoleService {
                 .collect(Collectors.toList());
     }
 
-    private Role findRoleByTeamCode(String teamCode) {
-        return roleRepository.findByTeamCode(teamCode).orElseThrow(() -> new RoleNotFoundException(
-                CustomErrorCode.ROLE_NOT_FOUND_ERROR,
-                teamCode + " 의 팀 코드에 해당하는 역할정하기를 찾을 수 없습니다"
-        ));
-    }
-
     public RolesResponse findHistories(String teamCode, Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
@@ -107,5 +93,19 @@ public class RoleService {
 
         Role role = findRoleByTeamCode(teamCode);
         return RolesResponse.from(role.findAllGroupByDate());
+    }
+
+    private Role findRoleByTeamCode(String teamCode) {
+        return roleRepository.findByTeamCode(teamCode).orElseThrow(() -> new RoleNotFoundException(
+                CustomErrorCode.ROLE_NOT_FOUND_ERROR,
+                teamCode + " 의 팀 코드에 해당하는 역할정하기를 찾을 수 없습니다"
+        ));
+    }
+
+    private void validateMemberInTeam(Team team, Member member) {
+        if (!teamMemberRepository.existsByTeamAndMember(team, member)) {
+            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, team.getId(),
+                    member.getId());
+        }
     }
 }

@@ -117,6 +117,25 @@ public class RoleAcceptanceTest extends AcceptanceTest {
         );
     }
 
+    @Test
+    void 중복된_역할이_있을_때_역할을_매칭한다() {
+        // given
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
+        String otherToken = tokenProvider.createToken(String.valueOf(2L));
+        그룹_참가를_요청한다(teamInvitationLocation, otherToken);
+
+        RoleNameEditRequest roleNameEditRequest = new RoleNameEditRequest(List.of("엘사모", "엘사모"));
+        역할정하기_이름_목록_수정(roleNameEditRequest);
+
+        // when
+        ExtractableResponse<Response> response = 역할_매칭을_요청();
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
+                () -> assertThat(response.header("Location")).contains(teamLocation + "/roles/")
+        );
+    }
 
     @Test
     void 역할을_매칭하는데_역할이_멤버보다_많을_경우_BAD_REQUEST를_응답한다() {

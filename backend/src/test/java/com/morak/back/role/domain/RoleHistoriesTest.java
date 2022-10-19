@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -18,10 +17,10 @@ class RoleHistoriesTest {
         RoleName 서기 = new RoleName("서기");
         RoleHistories roleHistories = new RoleHistories();
 
-        RoleHistory history1 = new RoleHistory(now, Map.of(데일리_마스터, 1L));
-        RoleHistory history2 = new RoleHistory(now.plusSeconds(10), Map.of(서기, 2L));
-        RoleHistory history3 = new RoleHistory(now.minusDays(1), Map.of(데일리_마스터, 2L));
-        RoleHistory history4 = new RoleHistory(now.minusDays(1).plusSeconds(10), Map.of(서기, 1L));
+        RoleHistory history1 = new RoleHistory(now, List.of(new RoleMatchResult(데일리_마스터, 1L)));
+        RoleHistory history2 = new RoleHistory(now.plusSeconds(10), List.of(new RoleMatchResult(서기, 2L)));
+        RoleHistory history3 = new RoleHistory(now.minusDays(1), List.of(new RoleMatchResult(데일리_마스터, 2L)));
+        RoleHistory history4 = new RoleHistory(now.minusDays(1).plusSeconds(10), List.of(new RoleMatchResult(서기, 1L)));
 
         roleHistories.add(history1);
         roleHistories.add(history2);
@@ -30,6 +29,7 @@ class RoleHistoriesTest {
 
         // when
         List<RoleHistory> histories = roleHistories.findAllGroupByDate();
+
         // then
         Assertions.assertAll(
                 () -> assertThat(histories).hasSize(2),

@@ -1,5 +1,6 @@
 package com.morak.back.role.application.dto;
 
+import com.morak.back.role.domain.RoleMatchResult;
 import java.util.Map.Entry;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,10 @@ public class RoleResponse {
 
     public static RoleResponse from(Entry<String, Long> matchResult) {
         return new RoleResponse(matchResult.getValue(), matchResult.getKey());
+    }
+
+    public static RoleResponse from(RoleMatchResult matchResult) {
+        return new RoleResponse(matchResult.getMemberId(), matchResult.getRoleName().getValue());
     }
 
     @Override
