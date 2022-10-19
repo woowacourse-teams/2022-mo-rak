@@ -1,6 +1,6 @@
+DROP TABLE IF EXISTS role_match_result;
 DROP TABLE IF EXISTS role_history;
 DROP TABLE IF EXISTS role_name;
-DROP TABLE IF EXISTS role_match_result;
 DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS select_member;
 DROP TABLE IF EXISTS poll_item;
@@ -60,34 +60,34 @@ CREATE TABLE team_invitation
 
 CREATE TABLE poll
 (
-    id            bigint NOT NULL AUTO_INCREMENT,
-    allowed_count int    not null,
+    id            bigint   NOT NULL AUTO_INCREMENT,
+    allowed_count int      not null,
     anonymous     boolean,
     code          varchar(255),
     host_id       bigint,
     status        varchar(255),
-    team_id     bigint,
+    team_id       bigint,
     title         varchar(255),
-    closed_at datetime     NOT NULL,
-    created_at datetime     NOT NULL,
-    updated_at datetime     NOT NULL,
+    closed_at     datetime NOT NULL,
+    created_at    datetime NOT NULL,
+    updated_at    datetime NOT NULL,
     primary key (id)
 );
 
 create table poll_item
 (
-    id          bigint NOT NULL AUTO_INCREMENT,
-    subject     varchar(255),
+    id      bigint NOT NULL AUTO_INCREMENT,
+    subject varchar(255),
     poll_id bigint not null,
     primary key (id)
 );
 
 create table select_member
 (
-    poll_item_id bigint NOT NULL,
-    description      varchar(255) not null,
-    values_key       bigint not null,
-    primary key (poll_item_id, values_key)
+    poll_item_id bigint       NOT NULL,
+    description  varchar(255) not null,
+    member_id    bigint       not null,
+    primary key (poll_item_id, member_id)
 );
 
 CREATE INDEX `index_poll` ON `poll` (`closed_at`);

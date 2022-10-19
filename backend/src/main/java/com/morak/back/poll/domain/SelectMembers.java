@@ -10,7 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyJoinColumn;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,8 +23,8 @@ public class SelectMembers {
             name = "select_member",
             joinColumns = @JoinColumn(name = "poll_item_id")
     )
-    @MapKeyColumn(name = "member_id")
-    @Column(name = "description")
+    @MapKeyJoinColumn(name = "member_id")
+    @Column(name = "description", nullable = false)
     private Map<Member, String> values;
 
     @Builder

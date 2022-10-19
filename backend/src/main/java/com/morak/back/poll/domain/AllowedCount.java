@@ -29,11 +29,11 @@ public class AllowedCount {
         }
     }
 
-    public boolean isGraterThan(int itemCount) {
+    public boolean isGreaterThan(int itemCount) {
         return this.value > itemCount;
     }
 
-    public boolean isLessThan(int itemCount) {
+    public boolean isGreaterThanOrEqual(int itemCount) {
         return this.value >= itemCount;
     }
 }

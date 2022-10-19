@@ -92,10 +92,10 @@ public class PollInfo {
     }
 
     public boolean isAllowedCountGraterThan(int itemCount) {
-        return this.allowedCount.isGraterThan(itemCount);
+        return this.allowedCount.isGreaterThan(itemCount);
     }
 
     public boolean isAllowedCountLessThan(int itemCount) {
-        return this.allowedCount.isLessThan(itemCount);
+        return this.allowedCount.isGreaterThanOrEqual(itemCount);
     }
 }
