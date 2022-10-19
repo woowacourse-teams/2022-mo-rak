@@ -1,13 +1,7 @@
-import {
-  StyledContainer,
-  StyledMenuIcon,
-  StyledCloseButton,
-  StyledDrawer
-} from './NavbarFooter.styles';
+import { StyledContainer, StyledMenuIcon } from './NavbarFooter.styles';
 import Home from '../../../../assets/home.svg';
 import MenuImg from '../../../../assets/menu.svg';
 import Poll from '../../../../assets/poll.svg';
-import CloseButton from '../../../../assets/close-button.svg';
 import Appointment from '../../../../assets/calendar-clock.svg';
 import Role from '../../../../assets/role.svg';
 import { useNavigate } from 'react-router-dom';
@@ -15,14 +9,7 @@ import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import useMenuContext from '../../../../hooks/useMenuContext';
 import { Group } from '../../../../types/group';
 import { Menu } from '../../../../types/menu';
-import Divider from '../../../../components/Divider/Divider';
-import NavbarDrawerFeaturesSection from '../NavbarDrawerFeaturesSection/NavbarDrawerFeaturesSection';
-import NavbarDrawerMembersProfileSection from '../NavbarDrawerMembersProfileSection/NavbarDrawerMembersProfileSection';
-import NavbarDrawerGroupsSection from '../NavbarDrawerGroupsSection/NavbarDrawerGroupsSection';
-import NavbarDrawerBottomSection from '../NavbarDrawerBottomSection/NavbarDrawerBottomSection';
-import NavbarDrawerModals from '../NavbarDrawerModals/NavbarDrawerModals';
-
-import { useState } from 'react';
+import NavbarDrawer from '../NavbarDrawer/NavbarDrawer';
 
 type Props = {
   groupCode: Group['code'];
@@ -30,14 +17,9 @@ type Props = {
 };
 
 function NavbarFooter({ groupCode, groups }: Props) {
-  const { activeMenu, isDrawerVisible } = useMenuContext();
+  const { activeMenu } = useMenuContext();
   const menuDispatch = useMenuDispatchContext();
   const navigate = useNavigate();
-  const [activeModalMenu, setActiveModalMenu] = useState<null | string>(null);
-
-  const handleCloseDrawer = () => {
-    menuDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: false });
-  };
 
   const handleSetActiveDrawer = () => {
     menuDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: true });
@@ -52,11 +34,6 @@ function NavbarFooter({ groupCode, groups }: Props) {
       return;
     }
     navigate(`/groups/${groupCode}/${menu}`);
-  };
-
-  const handleSetActiveModalMenu = (menu: null | string) => () => {
-    setActiveModalMenu(menu);
-    menuDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: false });
   };
 
   return (
@@ -83,37 +60,7 @@ function NavbarFooter({ groupCode, groups }: Props) {
         </button>
       </StyledContainer>
 
-      {/* 메뉴리스트 */}
-      <StyledDrawer isVisible={isDrawerVisible}>
-        <StyledCloseButton onClick={handleCloseDrawer}>
-          <img src={CloseButton} alt="메뉴닫기" />
-        </StyledCloseButton>
-
-        <NavbarDrawerGroupsSection
-          closeDrawer={handleCloseDrawer}
-          onClickMenu={handleSetActiveModalMenu}
-          groupCode={groupCode}
-          groups={groups}
-        />
-
-        <Divider />
-        <NavbarDrawerFeaturesSection closeDrawer={handleCloseDrawer} groupCode={groupCode} />
-
-        <Divider />
-        <NavbarDrawerMembersProfileSection groupCode={groupCode} />
-
-        <Divider />
-        <NavbarDrawerBottomSection onClickMenu={handleSetActiveModalMenu} groupCode={groupCode} />
-      </StyledDrawer>
-
-      {/* TODO: 모달이 모여있음  */}
-      {/* TODO: portal 사용 */}
-      {/* TODO: 모달이 기존과 같음 */}
-      <NavbarDrawerModals
-        activeModalMenu={activeModalMenu}
-        closeModal={handleSetActiveModalMenu(null)}
-        groupCode={groupCode}
-      />
+      <NavbarDrawer groupCode={groupCode} groups={groups} />
     </>
   );
 }
