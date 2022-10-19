@@ -1,0 +1,75 @@
+node {
+    stage('check-out') {
+        // Get some code from a GitHub repository
+        git url: 'https://github.com/woowacourse-teams/2022-mo-rak.git',
+            branch: 'main'
+    }
+
+    stage('build') {
+        dir ('./backend') {
+            sh './gradlew clean build'
+        }
+    }
+
+    stage('deploy') {
+        dir ('./backend/build/libs') {
+            sh 'scp -i /var/lib/jenkins/key-morak.pem ./*.jar ubuntu@192.168.1.123:/home/ubuntu'
+            sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@192.168.1.123 "sh /home/ubuntu/start_service.sh 2>/dev/null"'
+        }
+    }
+
+    stage('swap') {
+        withEnv(['TEMP=1']) {
+            OUTPUT = sh ( script: '''#!/bin/bash
+                        IP_LIST=( "192.168.1.88" "192.168.1.105" )
+
+                        SIZE=${#IP_LIST[@]}
+                        PORT_A=8080
+                        PORT_B=8081
+
+                        PREVIOUS_PORT_LIST=()
+                        NEXT_PORT_LIST=()
+
+                        for IP in ${IP_LIST[@]}
+                        do
+                            if curl -s -I -X OPTIONS "http://${IP}:${PORT_A}" > /dev/null; then
+                                PREVIOUS_PORT_LIST+=("${PORT_A}")
+                                NEXT_PORT_LIST+=("${PORT_B}")
+                            else
+                                PREVIOUS_PORT_LIST+=("${PORT_B}")
+                                NEXT_PORT_LIST+=("${PORT_A}")
+                            fi
+                        done
+
+                        for index in $(seq ${SIZE})
+                        do
+                            PREVIOUS=${PREVIOUS_PORT_LIST[index-1]}
+                            NEXT=${NEXT_PORT_LIST[index-1]}
+                            IP=${IP_LIST[index-1]}
+
+                            ssh -i /var/lib/jenkins/key-morak.pem ubuntu@"${IP}" "sh /home/ubuntu/deploy/kill.sh ${PREVIOUS} 1>/dev/null 2>/dev/null"
+                            ssh -i /var/lib/jenkins/key-morak.pem ubuntu@"${IP}" "sh /home/ubuntu/deploy/start_service.sh ${NEXT} 1>/dev/null 2>/dev/null"
+                        done
+
+                        for index in $(seq ${SIZE})
+                        do
+                            echo "${IP_LIST[index-1]}:${NEXT_PORT_LIST[index-1]}"
+                        done
+                        ''',
+                    returnStdout: true
+            ).trim()
+            OUTPUT = OUTPUT.split("\n")
+
+            echo "result is : ${OUTPUT}"
+        }
+    }
+
+    stage('route') {
+        withEnv(['WS_IP=192.168.1.79']) {
+            echo "URL_A=${OUTPUT[0]}"
+            echo "URL_B=${OUTPUT[1]}"
+
+            sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@"${WS_IP}" "bash /home/ubuntu/route.sh ' + OUTPUT[0] + ' ' + OUTPUT[1] + '"'
+        }
+    }
+}
