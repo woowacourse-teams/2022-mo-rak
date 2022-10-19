@@ -84,7 +84,7 @@ class AppointmentServiceTest {
         DEFAULT_BUILDER = Appointment.builder()
                 .title("회식 날짜")
                 .description("필참입니다.")
-                .teamCode(모락)
+                .teamCode(Code.generate((length) -> 모락))
                 .hostId(에덴)
                 .startDate(today.plusDays(1))
                 .endDate(today.plusDays(5))
@@ -171,7 +171,7 @@ class AppointmentServiceTest {
 
         // when
         AppointmentResponse actual = appointmentService.findAppointment(
-                appointment.getTeamCode(), appointment.getHostId(), appointment.getCode()
+                appointment.getTeamCode().getCode(), appointment.getHostId(), appointment.getCode()
         );
 
         AppointmentResponse expected = AppointmentResponse.from(appointment, 1L);
@@ -194,7 +194,7 @@ class AppointmentServiceTest {
         // then
         assertThatNoException().isThrownBy(
                 () -> appointmentService.selectAvailableTimes(
-                        appointment.getTeamCode(),
+                        appointment.getTeamCode().getCode(),
                         appointment.getHostId(),
                         appointment.getCode(),
                         requests
@@ -220,7 +220,7 @@ class AppointmentServiceTest {
         // then
         assertThatNoException().isThrownBy(
                 () -> appointmentService.selectAvailableTimes(
-                        appointment.getTeamCode(),
+                        appointment.getTeamCode().getCode(),
                         appointment.getHostId(),
                         appointment.getCode(),
                         requests
@@ -241,7 +241,7 @@ class AppointmentServiceTest {
 
         // when
         List<RecommendationResponse> recommendationResponses = appointmentService.recommendAvailableTimes(
-                appointment.getTeamCode(),
+                appointment.getTeamCode().getCode(),
                 appointment.getHostId(),
                 appointment.getCode()
         );
@@ -267,7 +267,7 @@ class AppointmentServiceTest {
 
         // when
         appointmentService.closeAppointment(
-                appointment.getTeamCode(),
+                appointment.getTeamCode().getCode(),
                 appointment.getHostId(),
                 appointment.getCode()
         );
@@ -283,7 +283,7 @@ class AppointmentServiceTest {
 
         // when
         appointmentService.deleteAppointment(
-                appointment.getTeamCode(),
+                appointment.getTeamCode().getCode(),
                 appointment.getHostId(),
                 appointment.getCode()
         );

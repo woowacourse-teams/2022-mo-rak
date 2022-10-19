@@ -51,7 +51,7 @@ class AppointmentRepositoryTest {
                 .code(Code.generate(length -> "FJn3ND26"))
                 .closedAt(now.plusDays(1))
                 .hostId(memberId)
-                .teamCode(teamCode)
+                .teamCode(Code.generate((length) -> teamCode))
                 .now(now);
     }
 
@@ -74,7 +74,7 @@ class AppointmentRepositoryTest {
         appointmentRepository.save(appointment);
 
         // when
-        List<Appointment> appointments = appointmentRepository.findAllByMenuTeamCode(teamCode);
+        List<Appointment> appointments = appointmentRepository.findAllByTeamCode(teamCode);
 
         // then
         Assertions.assertAll(

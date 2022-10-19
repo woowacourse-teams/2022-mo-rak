@@ -79,7 +79,7 @@ class AppointmentSchedulerTest {
                 .code(Code.generate(length -> "MyCode12"))
                 .closedAt(past)
                 .hostId(1L)
-                .teamCode("MoraK123")
+                .teamCode(Code.generate((length) -> "MoraK123"))
                 .now(past)
                 .build()
         );

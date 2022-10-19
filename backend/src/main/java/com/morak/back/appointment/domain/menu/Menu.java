@@ -2,6 +2,8 @@ package com.morak.back.appointment.domain.menu;
 
 import com.morak.back.core.domain.Code;
 import java.time.LocalDateTime;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.EnumType;
@@ -14,11 +16,14 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Menu {
 
-    private String teamCode;
+    @Embedded
+    @AttributeOverride(name = "code", column = @Column(name = "team_code"))
+    private Code teamCode;
 
     private Long hostId;
 
     @Embedded
+    @AttributeOverride(name = "code", column = @Column(name = "code"))
     private Code code;
 
     @Embedded
@@ -33,7 +38,7 @@ public class Menu {
     @Embedded
     private ClosedAt closedAt;
 
-    public Menu(String teamCode, Long hostId, Code code, String title, String description, MenuStatus status,
+    public Menu(Code teamCode, Long hostId, Code code, String title, String description, MenuStatus status,
                 ClosedAt closedAt) {
         this.teamCode = teamCode;
         this.hostId = hostId;
@@ -53,7 +58,7 @@ public class Menu {
     }
 
     public boolean isBelongedTo(String otherTeamCode) {
-        return this.teamCode.equals(otherTeamCode);
+        return this.teamCode.isEqualTo(otherTeamCode);
     }
 
     public boolean isClosed() {

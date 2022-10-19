@@ -18,7 +18,7 @@ class AvailableTimeTest {
         // given
         Appointment appointment = Appointment.builder()
                 .hostId(1L)
-                .teamCode("testTeam")
+                .teamCode(Code.generate((length) -> "testTeam"))
                 .code(Code.generate(length -> "ABCD1234"))
                 .title("스터디 회의 날짜 정하기")
                 .description("필참!!")
@@ -50,7 +50,7 @@ class AvailableTimeTest {
         // given
         Appointment appointment = Appointment.builder()
                 .hostId(1L)
-                .teamCode("testTeam")
+                .teamCode(Code.generate((length) -> "testTeam"))
                 .code(Code.generate(length -> "ABCD1234"))
                 .title("스터디 회의 날짜 정하기")
                 .description("필참!!")

@@ -31,4 +31,8 @@ public class Code {
             );
         }
     }
+
+    public boolean isEqualTo(final String other) {
+        return this.code.equals(other);
+    }
 }

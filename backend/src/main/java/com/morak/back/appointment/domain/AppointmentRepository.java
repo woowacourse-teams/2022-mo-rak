@@ -12,7 +12,8 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
 
     Appointment save(Appointment appointment);
 
-    List<Appointment> findAllByMenuTeamCode(String teamCode);
+    @Query("SELECT a FROM Appointment a WHERE a.menu.teamCode.code = :teamCode")
+    List<Appointment> findAllByTeamCode(@Param("teamCode") String teamCode);
 
     @Query("select a from Appointment a where a.menu.code.code = :code")
     Optional<Appointment> findByCode(@Param("code") String code);

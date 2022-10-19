@@ -51,7 +51,7 @@ public class AppointmentCreateRequest {
 
     public Appointment toAppointment(String teamCode, Long hostId, Code code, LocalDateTime now) {
         return Appointment.builder()
-                .teamCode(teamCode)
+                .teamCode(Code.generate((length) -> teamCode))
                 .hostId(hostId)
                 .title(this.title)
                 .description(this.description)

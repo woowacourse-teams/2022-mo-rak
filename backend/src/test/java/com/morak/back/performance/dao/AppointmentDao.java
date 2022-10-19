@@ -26,7 +26,7 @@ public class AppointmentDao {
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1, appointments.get(i).getTeamCode());
+                        ps.setString(1, appointments.get(i).getTeamCode().getCode());
                         ps.setLong(2, appointments.get(i).getHostId());
                         ps.setString(3, appointments.get(i).getTitle());
                         ps.setString(4, appointments.get(i).getDescription());

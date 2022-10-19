@@ -30,7 +30,7 @@ public class AppointmentSelectTest {
 
         DEFAULT_BUILDER = Appointment.builder()
                 .hostId(1L)
-                .teamCode("TEAMcode")
+                .teamCode(Code.generate((length) -> "TEAMcode"))
                 .title("스터디 회의 날짜 정하기")
                 .description("필참!!")
                 .code(Code.generate(length -> "MoraK123"))

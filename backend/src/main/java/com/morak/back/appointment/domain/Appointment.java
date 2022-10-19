@@ -9,18 +9,16 @@ import com.morak.back.appointment.domain.recommend.AppointmentTime;
 import com.morak.back.appointment.domain.timeperiod.TimePeriod;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
+import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.core.domain.BaseEntity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -62,7 +60,7 @@ public class Appointment extends BaseEntity {
     private DurationMinutes durationMinutes;
 
     @Builder
-    private Appointment(Long id, String teamCode, Long hostId, String title, String description, LocalDate startDate,
+    private Appointment(Long id, Code teamCode, Long hostId, String title, String description, LocalDate startDate,
                         LocalDate endDate, LocalTime startTime, LocalTime endTime, int durationHours,
                         int durationMinutes, Code code, LocalDateTime closedAt, LocalDateTime now) {
         super(id);

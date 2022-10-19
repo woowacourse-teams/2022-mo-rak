@@ -77,7 +77,7 @@ public class AppointmentService {
                 .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
         validateMemberInTeam(team, member);
 
-        return appointmentRepository.findAllByMenuTeamCode(teamCode)
+        return appointmentRepository.findAllByTeamCode(teamCode)
                 .stream()
                 .map(AppointmentAllResponse::from)
                 .sorted()
@@ -210,9 +210,14 @@ public class AppointmentService {
 
     private void notifyStatusAll(List<Appointment> appointmentsToBeClosed) {
         Map<String, String> teamMessages = appointmentsToBeClosed.stream().collect(
-                Collectors.groupingBy(Appointment::getTeamCode, Collectors.mapping(
-                        appointment -> MessageFormatter.formatClosed(FormattableData.from(appointment)),
-                        Collectors.joining("\n"))));
+                Collectors.groupingBy(
+                        appointment -> appointment.getTeamCode().getCode(),
+                        Collectors.mapping(
+                                appointment -> MessageFormatter.formatClosed(FormattableData.from(appointment)),
+                                Collectors.joining("\n")
+                        )
+                )
+        );
         notificationService.notifyAllMenuStatus(teamMessages);
     }
 
