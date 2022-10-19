@@ -2,9 +2,12 @@ package com.morak.back.appointment.acceptance;
 
 import static com.morak.back.AuthSupporter.toHeader;
 import static com.morak.back.SimpleRestAssured.delete;
+import static com.morak.back.SimpleRestAssured.extractCodeNumber;
 import static com.morak.back.SimpleRestAssured.get;
 import static com.morak.back.SimpleRestAssured.patch;
+import static com.morak.back.SimpleRestAssured.post;
 import static com.morak.back.SimpleRestAssured.put;
+import static com.morak.back.SimpleRestAssured.toObject;
 import static com.morak.back.SimpleRestAssured.toObjectList;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.MINUTES_UNIT으로_나눠지지않는_durationMinute_약속잡기_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.durationHour이_25인_약속잡기_요청_데이터;
@@ -19,7 +22,6 @@ import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.범위_16_20_약속잡기_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.범위_16_24_약속잡기_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.범위_하루종일_약속잡기_요청_데이터;
-import static com.morak.back.appointment.AppointmentCreateRequestFixture.설명이_너무긴_약속잡기_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.약속_잡기_범위_시작과_끝나는_시간이_30분으로_안나눠지는_약속잡기_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.약속_잡기_범위_시작시간이_끝나는_시간과_같은_약속잡기_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.약속_잡기_범위_시작시간이_끝나는_시간보다_이른_약속잡기_요청_데이터;
@@ -29,11 +31,10 @@ import static com.morak.back.appointment.AppointmentCreateRequestFixture.총_진
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
-import com.morak.back.SimpleRestAssured;
-import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
+import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.application.TokenProvider;
@@ -104,7 +105,6 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
 
     static AppointmentCreateRequest[] getInvalidPropertyAppointmentCreateRequest() {
         return new AppointmentCreateRequest[]{
-                설명이_너무긴_약속잡기_요청_데이터,
                 제목이_없는_약속잡기_요청_데이터
         };
     }
@@ -217,7 +217,7 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(SimpleRestAssured.extractCodeNumber(response))
+        assertThat(extractCodeNumber(response))
                 .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR.getNumber());
     }
 
@@ -265,7 +265,7 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(SimpleRestAssured.extractCodeNumber(response))
+        assertThat(extractCodeNumber(response))
                 .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR.getNumber());
     }
 
@@ -351,7 +351,7 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                () -> assertThat(extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.INVALID_PROPERTY_ERROR.getNumber())
         );
     }
@@ -365,7 +365,7 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(SimpleRestAssured.extractCodeNumber(response)).startsWith("31")
+                () -> assertThat(extractCodeNumber(response)).startsWith("31")
         );
     }
 
@@ -395,12 +395,12 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
         String otherUserToken = tokenProvider.createToken(String.valueOf(4L));
 
         // when
-        ExtractableResponse<Response> response = SimpleRestAssured.get(otherPath, toHeader(otherUserToken));
+        ExtractableResponse<Response> response = get(otherPath, toHeader(otherUserToken));
 
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
-                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                () -> assertThat(extractCodeNumber(response))
                         .isEqualTo(CustomErrorCode.APPOINTMENT_TEAM_MISMATCHED_ERROR.getNumber())
         );
     }
@@ -465,27 +465,27 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = 약속잡기_마감확인을_요청한다(location);
+        AppointmentStatusResponse statusResponse = toObject(response, AppointmentStatusResponse.class);
 
         // then
-        SimpleRestAssured.toObject(response, MenuStatus.class);
-        // 여기 테스트 다시 확인
+        assertThat(statusResponse.getStatus()).isEqualTo("OPEN");
     }
 
     private ExtractableResponse<Response> 약속잡기_마감확인을_요청한다(String location) {
-        return SimpleRestAssured.get(location + "/status", toHeader(accessToken));
+        return get(location + "/status", toHeader(accessToken));
     }
 
     private ExtractableResponse<Response> 약속잡기_생성을_요청한다(AppointmentCreateRequest request) {
-        return SimpleRestAssured.post(APPOINTMENT_BASE_PATH, request,
+        return post(APPOINTMENT_BASE_PATH, request,
                 toHeader(accessToken));
     }
 
     private ExtractableResponse<Response> 약속잡기_목록_조회를_요청한다() {
-        return SimpleRestAssured.get(APPOINTMENT_BASE_PATH, toHeader(accessToken));
+        return get(APPOINTMENT_BASE_PATH, toHeader(accessToken));
     }
 
     private ExtractableResponse<Response> 약속잡기_단건_조회를_요청한다(String location) {
-        return SimpleRestAssured.get(location, toHeader(accessToken));
+        return get(location, toHeader(accessToken));
     }
 
     private ExtractableResponse<Response> 약속잡기_가능_시간_선택을_요청한다(String location, List<AvailableTimeRequest> requests) {

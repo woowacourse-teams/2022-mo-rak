@@ -30,17 +30,6 @@ public class AppointmentCreateRequestFixture {
             0,
             LocalDateTime.now().plusDays(1));
 
-    public static AppointmentCreateRequest 설명이_너무긴_약속잡기_요청_데이터 = new AppointmentCreateRequest(
-            "모락 회식 날짜 및 시간",
-            "a".repeat(1001),
-            LocalDate.now().plusDays(1),
-            LocalDate.now().plusDays(8),
-            LocalTime.of(16, 0),
-            LocalTime.of(20, 0),
-            1,
-            0,
-            LocalDateTime.now().plusDays(1));
-
     public static AppointmentCreateRequest 과거_날짜로_생성_요청된_약속잡기_요청_데이터 = new AppointmentCreateRequest(
             "모락 회식 날짜 및 시간",
             "필참입니다.",
