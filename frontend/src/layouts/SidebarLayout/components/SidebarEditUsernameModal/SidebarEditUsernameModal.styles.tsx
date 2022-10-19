@@ -71,12 +71,6 @@ const StyledForm = styled.form(
   `
 );
 
-const StyledButtonGroup = styled.div`
-  display: flex;
-  width: 40%;
-  gap: 2rem;
-`;
-
 export {
   StyledTop,
   StyledLogo,
@@ -84,6 +78,5 @@ export {
   StyledCloseIcon,
   StyledTriangle,
   StyledBottom,
-  StyledForm,
-  StyledButtonGroup
+  StyledForm
 };

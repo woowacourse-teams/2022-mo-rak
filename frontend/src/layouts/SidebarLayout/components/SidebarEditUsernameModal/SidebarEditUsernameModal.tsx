@@ -6,20 +6,17 @@ import {
   StyledTriangle,
   StyledCloseIcon,
   StyledTitle,
-  StyledForm,
-  StyledButtonGroup
+  StyledForm
 } from './SidebarEditUsernameModal.styles';
 import Close from '../../../../assets/close-button.svg';
 import EditWithSmile from '../../../../assets/edit-with-smile.svg';
-import Input from '../../../../components/Input/Input';
-import Button from '../../../../components/Button/Button';
-import TextField from '../../../../components/TextField/TextField';
-import { useTheme } from '@emotion/react';
 import { FormEvent } from 'react';
 import useInput from '../../../../hooks/useInput';
 import { editUsername } from '../../../../api/auth';
 import { AxiosError } from 'axios';
 import useAuthDispatchContext from '../../../../hooks/useAuthDispatchContext';
+import SidebarEditUsernameModalButtonGroup from '../SidebarEditUsernameModalButtonGroup/SidebarEditUsernameModalButtonGroup';
+import SidebarEditUsernameModalUsernameInput from '../SidebarEditUsernameModalUsernameInput/SidebarEditUsernameModalUsernameInput';
 
 type Props = {
   isVisible: boolean;
@@ -27,12 +24,10 @@ type Props = {
 };
 
 function SidebarEditUsernameModal({ isVisible, close }: Props) {
-  const theme = useTheme();
-  const [username, handleUsername, resetUsername] = useInput('');
-  // TODO: dispatch 네이밍 컨벤션
   const authDispatch = useAuthDispatchContext();
+  const [username, handleUsername, resetUsername] = useInput('');
 
-  const handleSubmitUserName = async (e: FormEvent<HTMLFormElement>) => {
+  const handleEditUserName = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -56,53 +51,20 @@ function SidebarEditUsernameModal({ isVisible, close }: Props) {
   return (
     // TODO: props drilling 발생
     <Modal isVisible={isVisible} close={close}>
-      <StyledForm onSubmit={handleSubmitUserName}>
+      <StyledForm onSubmit={handleEditUserName}>
         <StyledTop>
+          {/* TODO: Icon vs logo?? */}
           <StyledLogo src={EditWithSmile} alt="edit-logo" />
           <StyledTitle>닉네임 수정하기</StyledTitle>
           <StyledCloseIcon onClick={close} src={Close} alt="close-button" />
           <StyledTriangle />
         </StyledTop>
         <StyledBottom>
-          <TextField
-            variant="filled"
-            colorScheme={theme.colors.WHITE_100}
-            borderRadius="1.2rem"
-            padding="1.6rem 5rem"
-            width="70%"
-          >
-            <Input
-              value={username}
-              onChange={handleUsername}
-              fontSize="1.6rem"
-              required
-              autoFocus
-            />
-          </TextField>
-          <StyledButtonGroup>
-            <Button
-              variant="filled"
-              colorScheme={theme.colors.GRAY_400}
-              width="50%"
-              padding="1.6rem 3.2rem"
-              borderRadius="1.2rem"
-              fontSize="1.6rem"
-              onClick={close}
-            >
-              취소
-            </Button>
-            <Button
-              variant="filled"
-              colorScheme={theme.colors.YELLOW_200}
-              padding="1.6rem 3.2rem"
-              width="50%"
-              borderRadius="1.2rem"
-              fontSize="1.6rem"
-              type="submit"
-            >
-              변경
-            </Button>
-          </StyledButtonGroup>
+          <SidebarEditUsernameModalUsernameInput
+            username={username}
+            onChangeUsername={handleUsername}
+          />
+          <SidebarEditUsernameModalButtonGroup />
         </StyledBottom>
       </StyledForm>
     </Modal>
