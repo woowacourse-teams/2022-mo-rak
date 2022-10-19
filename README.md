@@ -1,6 +1,6 @@
 <p align="center">
       <a href="https://mo-rak.com/" target="_blank">    
-            <img src="https://user-images.githubusercontent.com/45311765/195138388-4251bc8f-3f97-4e4f-976e-a2dee418097f.png"/>
+            <img src="https://user-images.githubusercontent.com/79205414/194690088-90f39269-d6bf-472e-a633-a9de19a94904.png" width="300"/>
       </a>
 </p>
 
@@ -10,27 +10,28 @@
 
 모임이 편해진다! <br>
 
-[모락](https://mo-rak.com/)을 통해 모임을 즐겨보세요 😎 <br> <br> <br>
+[모락](https://mo-rak.com/)을 통해 모임을 즐겨보세요 🎉 <br> <br> <br>
 
 </div>
 
 <br>
-<br>
 
 # 🔎 소개 
 
-모임 단위로 즐길 수 있어요!
+**모락은 모임에서 필요한 기능들을 한 곳에서 제공**함으로써,
+
+사람들이 **모임에 더욱 몰입**할 수 있게 도와주는 것을 목표로 하고 있어요!
 
 모락이 모임을 더 편하고, 즐겁게 할 수 있도록 도와줄게요 👍
 
 
-## 🗳 우리 투표하자!
+### 🗳 우리 투표하자!
 
-![모락-약속투표하기2](https://user-images.githubusercontent.com/79205414/194995561-c7eba34e-0455-4e5e-afb8-f056c28cb793.gif)
+![모락-투표하기](https://user-images.githubusercontent.com/79205414/194995574-eab0b766-ea99-4129-b0ac-d7c8bf95671a.gif)
 
 ### ⏰ 우리 언제 모여?
 
-![모락-투표하기](https://user-images.githubusercontent.com/79205414/194995574-eab0b766-ea99-4129-b0ac-d7c8bf95671a.gif)
+![모락-약속투표하기2](https://user-images.githubusercontent.com/79205414/194995561-c7eba34e-0455-4e5e-afb8-f056c28cb793.gif)
 
 <br>
 <br>
