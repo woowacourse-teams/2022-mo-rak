@@ -32,6 +32,10 @@
 
 ![모락-약속투표하기2](https://user-images.githubusercontent.com/79205414/194995561-c7eba34e-0455-4e5e-afb8-f056c28cb793.gif)
 
+### 👑 오늘 무슨 역할이야?
+
+![모락-약속투표하기2](https://user-images.githubusercontent.com/79205414/194995561-c7eba34e-0455-4e5e-afb8-f056c28cb793.gif)
+
 <br>
 <br>
 
