@@ -17,6 +17,7 @@ import com.morak.back.role.domain.RoleHistory;
 import com.morak.back.role.domain.RoleName;
 import com.morak.back.role.domain.RoleNames;
 import com.morak.back.role.domain.RoleRepository;
+import com.morak.back.role.exception.RoleDomainLogicException;
 import com.morak.back.role.exception.RoleNotFoundException;
 import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
@@ -149,6 +150,19 @@ class RoleServiceTest {
                 .isInstanceOf(RoleNotFoundException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.ROLE_NOT_FOUND_ERROR);
+    }
+
+    @Test
+    void 역할을_매칭하는데_역할이_멤버보다_많을_경우_예외를_던진다() {
+        // given
+        roleRepository.save(new Role(team.getCode()));
+        roleService.editRoleNames(team.getCode(), member.getId(), List.of("서기", "타임키퍼"));
+
+        // when & then
+        assertThatThrownBy(() -> roleService.matchRoleAndMember(team.getCode(), member.getId()))
+                .isInstanceOf(RoleDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.ROLE_NAMES_MAX_SIZE_ERROR);
     }
 
     @Test
