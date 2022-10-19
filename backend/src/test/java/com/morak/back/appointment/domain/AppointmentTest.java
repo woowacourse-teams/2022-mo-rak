@@ -15,8 +15,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class AppointmentTest {
 
@@ -147,5 +151,248 @@ class AppointmentTest {
 
         // then
         assertThat(minutes).isEqualTo(0);
+    }
+
+    @Test
+    void 약속잡기_가능시간을_선택할_때_약속잡기가_이미_마감되었으면_예외를_던진다() {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER.build();
+        appointment.close(memberId);
+
+        LocalDate today = now.toLocalDate();
+
+        // when & then
+        assertThatThrownBy(() -> appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(1), LocalTime.of(16, 0))),
+                memberId,
+                now
+        ))
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR);
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {0L, 6L})
+    void 중간_약속잡기_가능시간을_선택할_때_약속잡기의_기간을_벗어나면_예외를_던진다(long plusDay) {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER.build();
+
+        LocalDate today = now.toLocalDate();
+
+        // when & then
+        assertThatThrownBy(() -> appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(plusDay), LocalTime.of(16, 0))),
+                memberId,
+                now
+        ))
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "13, 30",
+            "20, 0"
+    })
+    void 중간_약속잡기_가능시간을_선택할_때_약속잡기의_시간을_벗어나면_예외를_던진다(int hour, int minute) {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER.build();
+
+        LocalDate today = now.toLocalDate();
+
+        // when & then
+        assertThatThrownBy(() -> appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(1), LocalTime.of(hour, minute))),
+                memberId,
+                now
+        ))
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR);
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {0L, 6L})
+    void 자정까지_약속잡기_가능시간을_선택할_때_약속잡기의_기간을_벗어나면_예외를_던진다(long plusDay) {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        LocalDate today = now.toLocalDate();
+
+        // when & then
+        assertThatThrownBy(() -> appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(plusDay), LocalTime.of(16, 0))),
+                memberId,
+                now
+        ))
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"13, 30", "0, 0"})
+    void 자정까지_약속잡기_가능시간을_선택할_때_약속잡기의_시간을_벗어나면_예외를_던진다(int hour, int minute) {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        LocalDate today = now.toLocalDate();
+
+        // when & then
+        assertThatThrownBy(() -> appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(5), LocalTime.of(hour, minute))),
+                memberId,
+                now
+        ))
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR);
+
+    }
+
+
+    @ParameterizedTest
+    @CsvSource({
+            "1, 0, 0",
+            "5, 23, 30"
+    })
+    void 하루종일_5일동안_약속잡기_가능시간을_선택할_때_약속잡기의_경계값_안쪽에_들어올_수_있다(int plusDay, int hour, int minute) {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER
+                .startTime(LocalTime.of(0, 0))
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        LocalDate today = now.toLocalDate();
+
+        // when & then
+        assertThatNoException().isThrownBy(
+                (() -> appointment.selectAvailableTime(
+                        Set.of(LocalDateTime.of(today.plusDays(5), LocalTime.of(hour, minute))),
+                        memberId,
+                        now
+                ))
+        );
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0, 23, 30",
+            "6, 0, 0"
+    })
+    void 하루종일_5일동안_약속잡기_가능시간을_선택할_때_약속잡기의_경계값을_벗어나면_예외를_던진다(int plusDay, int hour, int minute) {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER
+                .startTime(LocalTime.of(0, 0))
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        LocalDate today = now.toLocalDate();
+
+        // when & then
+        assertThatThrownBy(() -> appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(plusDay), LocalTime.of(hour, minute))),
+                memberId,
+                now
+        ))
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1, 0, 0",
+            "1, 23, 30"
+    })
+    void 하루종일_하루동안_약속잡기_가능시간을_선택할_때_약속잡기의_경계값_안쪽에_들어올_수_있다(int plusDay, int hour, int minute) {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER
+                .endDate(now.toLocalDate().plusDays(1))
+                .startTime(LocalTime.of(0, 0))
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        LocalDate today = now.toLocalDate();
+
+        // when & then
+        assertThatNoException().isThrownBy(
+                () -> appointment.selectAvailableTime(
+                        Set.of(LocalDateTime.of(today.plusDays(plusDay), LocalTime.of(hour, minute))),
+                        memberId,
+                        now
+                ));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0, 23, 30",
+            "2, 0, 0"
+    })
+    void 하루종일_하루동안_약속잡기_가능시간을_선택할_때_약속잡기의_경계값을_벗어나면_예외를_던진다(int plusDay, int hour, int minute) {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER
+                .endDate(now.toLocalDate().plusDays(1))
+                .startTime(LocalTime.of(0, 0))
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        LocalDate today = now.toLocalDate();
+
+        // when & then
+        assertThatThrownBy(() -> appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(plusDay), LocalTime.of(hour, minute))),
+                memberId,
+                now
+        ))
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0, 23, 30", // 전혀 다른날
+            "1, 0, 0", // 같은날, 다른시간
+            "1, 23, 0", // 시작 시간 경계
+            "2, 0, 0" // 마지막 시간 경계
+    })
+    void 하루동안_삼십분짜리_약속잡기_가능시간을_선택할_때_약속잡기의_경계값을_벗어나면_예외를_던진다(int plusDay, int hour, int minute) {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER
+                .endDate(now.toLocalDate().plusDays(1))
+                .startTime(LocalTime.of(23, 30))
+                .endTime(LocalTime.of(0, 0))
+                .durationHours(0)
+                .durationMinutes(30)
+                .build();
+
+        LocalDate today = now.toLocalDate();
+
+        // when & then
+        assertThatThrownBy(() -> appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(plusDay), LocalTime.of(hour, minute))),
+                memberId,
+                now
+        ))
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR);
     }
 }
