@@ -120,11 +120,7 @@ class PollServiceTest {
     @Test
     void 투표를_생성_시_멤버가_팀에_속해있지_않는_경우_예외를_던진다() {
         // given
-        Member 차리 = memberRepository.save(Member.builder()
-                .oauthId("leechari")
-                .name("이찬주")
-                .profileUrl("http://lee-profile.com")
-                .build());
+        Member 차리 = saveOtherMember();
 
         // when & then
         assertThatThrownBy(() -> pollService.createPoll(team.getCode(), 차리.getId(), pollCreateRequest))
@@ -278,15 +274,11 @@ class PollServiceTest {
         // given
         String pollCode = 투표를_초기화하고_코드를_받아온다();
 
-        Member 차리 = memberRepository.save(Member.builder()
-                .oauthId("leechari")
-                .name("이찬주")
-                .profileUrl("http://lee-profile.com")
-                .build());
-        teamMemberRepository.save(new TeamMember(null, team, 차리));
+        Member otherMember = saveOtherMember();
+        teamMemberRepository.save(new TeamMember(null, team, otherMember));
 
         // when
-        List<PollResponse> polls = pollService.findPolls(team.getCode(), 차리.getId());
+        List<PollResponse> polls = pollService.findPolls(team.getCode(), otherMember.getId());
 
         // then
         assertThat(polls)
@@ -307,6 +299,14 @@ class PollServiceTest {
                                         0)
                         )
                 );
+    }
+
+    private Member saveOtherMember() {
+        return memberRepository.save(Member.builder()
+                .oauthId("leechari")
+                .name("이찬주")
+                .profileUrl("http://lee-profile.com")
+                .build());
     }
 
     @Test
@@ -386,14 +386,10 @@ class PollServiceTest {
     void 투표진행_시_멤버가_해당_투표_팀_소속이_아니면_예외를_던진다() {
         // given
         String pollCode = 투표를_초기화하고_코드를_받아온다();
-        Member 차리 = memberRepository.save(Member.builder()
-                .oauthId("leechari")
-                .name("이찬주")
-                .profileUrl("http://lee-profile.com")
-                .build());
+        Member otherMember = saveOtherMember();
 
         // when & then
-        assertThatThrownBy(() -> pollService.doPoll(team.getCode(), 차리.getId(), pollCode,
+        assertThatThrownBy(() -> pollService.doPoll(team.getCode(), otherMember.getId(), pollCode,
                 List.of(new PollResultRequest(1L, "그냥뇨"),
                         new PollResultRequest(2L, "ㅋ"))))
                 .isInstanceOf(TeamAuthorizationException.class)
@@ -752,17 +748,13 @@ class PollServiceTest {
     @Test
     void 투표_삭제_시_호스트가_아니면_예외를_던진다() {
         // given
-        Member 차리 = memberRepository.save(Member.builder()
-                .oauthId("leechari")
-                .name("이찬주")
-                .profileUrl("http://lee-profile.com")
-                .build());
+        Member otherMember = saveOtherMember();
         String pollCode = 투표를_초기화하고_코드를_받아온다();
 
-        teamMemberRepository.save(new TeamMember(null, team, 차리));
+        teamMemberRepository.save(new TeamMember(null, team, otherMember));
 
         // when & then
-        assertThatThrownBy(() -> pollService.deletePoll(team.getCode(), 차리.getId(), pollCode))
+        assertThatThrownBy(() -> pollService.deletePoll(team.getCode(), otherMember.getId(), pollCode))
                 .isInstanceOf(PollAuthorizationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_HOST_MISMATCHED_ERROR);
@@ -815,17 +807,13 @@ class PollServiceTest {
     @Test
     void 투표_종료_시_호스트가_아니면_예외를_던진다() {
         // given
-        Member 차리 = memberRepository.save(Member.builder()
-                .oauthId("leechari")
-                .name("이찬주")
-                .profileUrl("http://lee-profile.com")
-                .build());
+        Member otherMember = saveOtherMember();
         String pollCode = 투표를_초기화하고_코드를_받아온다();
 
-        teamMemberRepository.save(new TeamMember(null, team, 차리));
+        teamMemberRepository.save(new TeamMember(null, team, otherMember));
 
         // when & then
-        assertThatThrownBy(() -> pollService.closePoll(team.getCode(), 차리.getId(), pollCode))
+        assertThatThrownBy(() -> pollService.closePoll(team.getCode(), otherMember.getId(), pollCode))
                 .isInstanceOf(PollAuthorizationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_HOST_MISMATCHED_ERROR);

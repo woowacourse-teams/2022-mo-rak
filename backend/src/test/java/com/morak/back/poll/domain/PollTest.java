@@ -10,6 +10,7 @@ import static org.assertj.core.api.Assertions.entry;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.poll.domain.PollInfo.PollInfoBuilder;
 import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollItemNotFoundException;
@@ -26,30 +27,17 @@ class PollTest {
     private final Team team = createTeam(1L, "모락", "12345678");
     private final Member member = createMember(1L, "엘리");
     private final Member otherMember = createMember(2L, "에덴");
+    private final String descriptionA = "삼겹살이 젤루 맛남!";
+    private final String descriptionB = "꼬소한 회가 좋아!";
+    private final String descriptionC = "우리팀 사람들이 좋아함!";
 
     private Poll poll;
     private PollItem itemA;
     private PollItem itemB;
     private PollItem itemC;
-    private String descriptionA = "삼겹살이 젤루 맛남!";
-    private String descriptionB = "꼬소한 회가 좋아!";
-    private String descriptionC = "우리팀 사람들이 좋아함!";
 
     @BeforeEach
     void setUp() {
-        PollInfo info = PollInfo.builder()
-                .codeGenerator(l -> "12345678")
-                .title("모락 회식 메뉴")
-                .anonymous(false)
-                .allowedCount(2)
-                .teamId(team.getId())
-                .hostId(member.getId())
-                .status(PollStatus.OPEN)
-                .closedAt(SystemDateTime.builder()
-                        .dateTime(TIME_OF_2022_05_12_12_30)
-                        .now(TIME_OF_2022_05_12_12_00)
-                        .build())
-                .build();
         itemA = PollItem.builder()
                 .id(1L)
                 .subject("삼겹살")
@@ -63,7 +51,7 @@ class PollTest {
                 .subject("이자카야")
                 .build();
         poll = Poll.builder()
-                .pollInfo(info)
+                .pollInfo(defaultPollInfoBuilder().build())
                 .pollItems(List.of(itemA, itemB, itemC))
                 .build();
     }
@@ -71,14 +59,7 @@ class PollTest {
     @Test
     void 투표_생성시_마감_시간이_현재보다_이전이면_예외를_던진다() {
         // when & then
-        assertThatThrownBy(() -> PollInfo.builder()
-                .codeGenerator(l -> "12345678")
-                .title("모락 회식 메뉴")
-                .anonymous(false)
-                .allowedCount(2)
-                .teamId(team.getId())
-                .hostId(member.getId())
-                .status(PollStatus.OPEN)
+        assertThatThrownBy(() -> defaultPollInfoBuilder()
                 .closedAt(SystemDateTime.builder()
                         .dateTime(TIME_OF_2022_05_12_12_00)
                         .now(TIME_OF_2022_05_12_12_30)
@@ -92,18 +73,8 @@ class PollTest {
     @Test
     void 투표_생성시_투표_항목_개수가_허용_개수보다_적으면_예외를_던진다() {
         // given
-        PollInfo info = PollInfo.builder()
-                .codeGenerator(l -> "12345678")
-                .title("모락 회식 메뉴")
-                .anonymous(false)
+        PollInfo info = defaultPollInfoBuilder()
                 .allowedCount(4)
-                .teamId(team.getId())
-                .hostId(member.getId())
-                .status(PollStatus.OPEN)
-                .closedAt(SystemDateTime.builder()
-                        .dateTime(TIME_OF_2022_05_12_12_30)
-                        .now(TIME_OF_2022_05_12_12_00)
-                        .build())
                 .build();
 
         // when & then
@@ -266,5 +237,20 @@ class PollTest {
                 .isInstanceOf(PollItemNotFoundException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_ITEM_NOT_FOUND_ERROR);
+    }
+
+    private PollInfoBuilder defaultPollInfoBuilder() {
+        return PollInfo.builder()
+                .codeGenerator(l -> "12345678")
+                .title("모락 회식 메뉴")
+                .anonymous(false)
+                .allowedCount(2)
+                .teamId(team.getId())
+                .hostId(member.getId())
+                .status(PollStatus.OPEN)
+                .closedAt(SystemDateTime.builder()
+                        .dateTime(TIME_OF_2022_05_12_12_30)
+                        .now(TIME_OF_2022_05_12_12_00)
+                        .build());
     }
 }
