@@ -1,4 +1,4 @@
-package com.morak.back.brandnew.domain;
+package com.morak.back.poll.domain;
 
 import java.time.LocalDateTime;
 import javax.persistence.Embeddable;

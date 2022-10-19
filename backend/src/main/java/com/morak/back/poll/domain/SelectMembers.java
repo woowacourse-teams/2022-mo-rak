@@ -1,4 +1,4 @@
-package com.morak.back.brandnew.domain;
+package com.morak.back.poll.domain;
 
 import com.morak.back.auth.domain.Member;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class SelectMembers {
     @Column(name = "description")
     @CollectionTable(
             name = "select_member",
-            joinColumns = @JoinColumn(name = "new_poll_item_id")
+            joinColumns = @JoinColumn(name = "poll_item_id")
     )
     private Map<Member, String> values;
 

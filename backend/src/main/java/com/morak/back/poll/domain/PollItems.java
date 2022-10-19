@@ -1,4 +1,4 @@
-package com.morak.back.brandnew.domain;
+package com.morak.back.poll.domain;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.exception.CustomErrorCode;
@@ -20,11 +20,11 @@ import lombok.NoArgsConstructor;
 public class PollItems {
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "new_poll_id", nullable = false, updatable = false)
-    private List<NewPollItem> values;
+    @JoinColumn(name = "poll_id", nullable = false, updatable = false)
+    private List<PollItem> values;
 
     @Builder
-    public PollItems(List<NewPollItem> values) {
+    public PollItems(List<PollItem> values) {
         this.values = values;
     }
 
@@ -37,13 +37,13 @@ public class PollItems {
         }
     }
 
-    public void doPoll(Member member, Map<NewPollItem, String> data) {
-        for (NewPollItem pollItem : values) {
+    public void doPoll(Member member, Map<PollItem, String> data) {
+        for (PollItem pollItem : values) {
             addOrRemove(pollItem, member, data);
         }
     }
 
-    private void addOrRemove(NewPollItem pollItem, Member member, Map<NewPollItem, String> data) {
+    private void addOrRemove(PollItem pollItem, Member member, Map<PollItem, String> data) {
         if (data.containsKey(pollItem)) {
             pollItem.addSelectMember(member, data.get(pollItem));
             return;
@@ -53,7 +53,7 @@ public class PollItems {
 
     public int countSelectMembers() {
         return (int) values.stream()
-                .map(NewPollItem::getOnlyMembers)
+                .map(PollItem::getOnlyMembers)
                 .flatMap(Collection::stream)
                 .distinct()
                 .count();

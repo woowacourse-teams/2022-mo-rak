@@ -37,11 +37,11 @@ public class FormattableData {
         return new FormattableData(
                 "poll",
                 "투표",
-                poll.getTeam().getName(),
-                poll.getTitle(),
-                poll.getCode(),
-                poll.getTeam().getCode(),
-                poll.getClosedAt()
+                String.valueOf(poll.getPollInfo().getTeamId()),
+                poll.getPollInfo().getTitle(),
+                poll.getPollInfo().getCode(),
+                String.valueOf(poll.getPollInfo().getTeamId()),
+                poll.getPollInfo().getClosedAt().getDateTime()
         );
     }
 }

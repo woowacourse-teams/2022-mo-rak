@@ -175,7 +175,7 @@ class PollControllerTest extends ControllerTest {
         MemberResultResponse memberResultResponse1 = new MemberResultResponse(0L, "", "", "위니가_회를_참_좋아해요.");
         MemberResultResponse memberResultResponse2 = new MemberResultResponse(0L, "", "", "해리가_삼겹살을_정말_좋아해요.");
 
-        given(pollService.findPollItemResults(anyString(), anyLong(), anyString()))
+        given(pollService.findPollResults(anyString(), anyLong(), anyString()))
                 .willReturn(List.of(
                         new PollItemResultResponse(1L, 1, List.of(memberResultResponse1), "회"),
                         new PollItemResultResponse(2L, 1, List.of(memberResultResponse2), "삼겹살"),
@@ -207,7 +207,7 @@ class PollControllerTest extends ControllerTest {
         MemberResultResponse memberResultResponse2 = new MemberResultResponse(2L, "리엘", "ellie-profile-image-url",
                 "해리가_삼겹살을_정말_좋아해요.");
 
-        given(pollService.findPollItemResults(anyString(), anyLong(), anyString()))
+        given(pollService.findPollResults(anyString(), anyLong(), anyString()))
                 .willReturn(List.of(
                         new PollItemResultResponse(1L, 1, List.of(memberResultResponse1), "회"),
                         new PollItemResultResponse(2L, 1, List.of(memberResultResponse2), "삼겹살"),

@@ -72,7 +72,7 @@ public class PollController {
     public ResponseEntity<List<PollItemResultResponse>> findPollResult(@PathVariable String groupCode,
                                                                        @Auth Long memberId,
                                                                        @PathVariable String pollCode) {
-        return ResponseEntity.ok(pollService.findPollItemResults(groupCode, memberId, pollCode));
+        return ResponseEntity.ok(pollService.findPollResults(groupCode, memberId, pollCode));
     }
 
     @DeleteMapping("/{pollCode}")

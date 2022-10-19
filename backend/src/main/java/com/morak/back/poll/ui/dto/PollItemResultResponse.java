@@ -1,10 +1,8 @@
 package com.morak.back.poll.ui.dto;
 
 import com.morak.back.auth.domain.Member;
-import com.morak.back.brandnew.domain.NewPollItem;
-import com.morak.back.brandnew.domain.SelectMembers;
 import com.morak.back.poll.domain.PollItem;
-import com.morak.back.poll.domain.PollResult;
+import com.morak.back.poll.domain.SelectMembers;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -22,22 +20,7 @@ public class PollItemResultResponse {
     private List<MemberResultResponse> members;
     private String subject;
 
-    public static PollItemResultResponse of(PollItem pollItem) {
-        return new PollItemResultResponse(
-                pollItem.getId(),
-                pollItem.getPollResults().size(),
-                toMemberResponses(pollItem.getResultsByAnonymous()),
-                pollItem.getSubject()
-        );
-    }
-
-    private static List<MemberResultResponse> toMemberResponses(List<PollResult> results) {
-        return results.stream()
-                .map(result -> MemberResultResponse.of(result.getMember(), result.getDescription()))
-                .collect(Collectors.toList());
-    }
-
-    public static PollItemResultResponse of(NewPollItem pollItem, Boolean anonymous) {
+    public static PollItemResultResponse of(PollItem pollItem, Boolean anonymous) {
         return new PollItemResultResponse(
                 pollItem.getId(),
                 pollItem.getOnlyMembers().size(),

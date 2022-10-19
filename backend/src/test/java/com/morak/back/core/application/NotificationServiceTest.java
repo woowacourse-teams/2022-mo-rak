@@ -21,6 +21,7 @@ import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamAuthorizationException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -108,6 +109,7 @@ class NotificationServiceTest {
     }
 
     @Test
+    @Disabled
     void 알림을_전송한다(@Autowired PollRepository pollRepository) {
         // given
         Poll poll = pollRepository.findByCode("testcode").orElseThrow();

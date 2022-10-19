@@ -1,4 +1,4 @@
-package com.morak.back.brandnew;
+package com.morak.back.poll;
 
 import java.time.LocalDateTime;
 

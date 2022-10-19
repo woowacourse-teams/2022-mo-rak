@@ -14,4 +14,6 @@ public interface TeamRepository extends Repository<Team, Long> {
     Optional<Long> findIdByCode(@Param("code") String code);
 
     Team save(Team team);
+
+    Optional<Team> findById(Long id);
 }

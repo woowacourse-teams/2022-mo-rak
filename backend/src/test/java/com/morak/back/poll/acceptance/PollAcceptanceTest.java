@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -278,8 +279,6 @@ class PollAcceptanceTest extends AcceptanceTest {
         PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
         String pollLocation = 투표_생성을_요청한다(teamLocation, request, token).header("Location");
-        List<PollItemResponse> pollItemResponses = toObjectList(투표_선택항목_조회를_요청한다(pollLocation, token),
-                PollItemResponse.class);
 
         List<PollResultRequest> pollResultRequests = List.of(new PollResultRequest(0L, "집 보내줘"));
 

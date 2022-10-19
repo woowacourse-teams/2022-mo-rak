@@ -1,9 +1,8 @@
-package com.morak.back.brandnew.domain;
+package com.morak.back.poll.domain;
 
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import javax.persistence.Embeddable;
@@ -27,7 +26,7 @@ public class PollInfo {
     private Boolean anonymous;
 
     @Embedded
-    private NewAllowedCount allowedCount;
+    private AllowedCount allowedCount;
 
     private Long teamId;
 
@@ -46,7 +45,7 @@ public class PollInfo {
         this.code = Code.generate(codeGenerator);
         this.title = title;
         this.anonymous = anonymous;
-        this.allowedCount = new NewAllowedCount(allowedCount);
+        this.allowedCount = new AllowedCount(allowedCount);
         this.teamId = teamId;
         this.hostId = hostId;
         this.status = status;

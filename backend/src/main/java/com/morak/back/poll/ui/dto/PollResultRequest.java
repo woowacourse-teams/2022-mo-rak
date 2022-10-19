@@ -1,6 +1,6 @@
 package com.morak.back.poll.ui.dto;
 
-import com.morak.back.brandnew.domain.NewPollItem;
+import com.morak.back.poll.domain.PollItem;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class PollResultRequest {
     @NotNull(message = "poll Item description은 null 일 수 없습니다.")
     private String description;
 
-    public NewPollItem toPollItem() {
-        return new NewPollItem(id);
+    public PollItem toPollItem() {
+        return new PollItem(id);
     }
 }

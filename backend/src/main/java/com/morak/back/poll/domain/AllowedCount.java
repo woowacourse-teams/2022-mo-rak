@@ -1,4 +1,4 @@
-package com.morak.back.brandnew.domain;
+package com.morak.back.poll.domain;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Embeddable
-public class NewAllowedCount {
+public class AllowedCount {
 
     @Column(name = "allowed_count")
     private int value;
 
-    public NewAllowedCount(int value) {
+    public AllowedCount(int value) {
         validateAllowedCount(value);
         this.value = value;
     }

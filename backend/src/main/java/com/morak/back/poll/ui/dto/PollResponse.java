@@ -2,7 +2,6 @@ package com.morak.back.poll.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.morak.back.auth.domain.Member;
-import com.morak.back.brandnew.domain.NewPoll;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollStatus;
 import java.time.LocalDateTime;
@@ -37,22 +36,7 @@ public class PollResponse implements Comparable<PollResponse> {
 
     private Integer count;
 
-    public static PollResponse from(Poll poll, Member member) {
-        return new PollResponse(
-                poll.getId(),
-                poll.getTitle(),
-                poll.getAllowedPollCount(),
-                poll.getIsAnonymous(),
-                poll.getStatus().name(),
-                poll.getCreatedAt(),
-                poll.getClosedAt(),
-                poll.getCode(),
-                poll.isHost(member),
-                poll.getCount()
-        );
-    }
-
-    public static PollResponse from(Long memberId, NewPoll poll) {
+    public static PollResponse from(Long memberId, Poll poll) {
         return new PollResponse(
                 poll.getId(),
                 poll.getPollInfo().getTitle(),

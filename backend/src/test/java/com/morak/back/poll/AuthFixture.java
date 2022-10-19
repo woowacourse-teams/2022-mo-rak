@@ -1,4 +1,4 @@
-package com.morak.back.brandnew;
+package com.morak.back.poll;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
