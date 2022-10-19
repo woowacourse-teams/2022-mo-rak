@@ -23,11 +23,9 @@ type MenuAction = SetActiveMenuAction | SetIsVisibleGroupsModalAction | ToggleGr
 
 const initialState = {
   activeMenu: 'poll',
+  // TODO: isGroupsModalVisible이 맞지 않을까?? 모달이 보이냐 vs 보이는 모달이냐의 차이
   isVisibleGroupsModal: false
 } as const;
-
-const MenuContext = createContext<MenuState | null>(null);
-const MenuDispatchContext = createContext<Dispatch<MenuAction> | null>(null);
 
 function menuReducer(state: MenuState, action: MenuAction): MenuState {
   switch (action.type) {
@@ -50,6 +48,9 @@ function menuReducer(state: MenuState, action: MenuAction): MenuState {
       return state;
   }
 }
+
+const MenuContext = createContext<MenuState | null>(null);
+const MenuDispatchContext = createContext<Dispatch<MenuAction> | null>(null);
 
 function MenuProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(menuReducer, initialState);

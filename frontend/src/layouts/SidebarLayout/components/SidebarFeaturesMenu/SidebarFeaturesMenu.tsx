@@ -10,7 +10,6 @@ import { Menu } from '../../../../types/menu';
 import { Group } from '../../../../types/group';
 import {
   StyledMenuHeader,
-  StyledContainer,
   StyledMenuIcon,
   StyledMenuTitle,
   StyledMenu
@@ -22,17 +21,17 @@ type Props = {
 
 function SidebarFeaturesMenu({ groupCode }: Props) {
   const { activeMenu } = useMenuContext();
-  const dispatch = useMenuDispatchContext();
+  const menuDispatch = useMenuDispatchContext();
   const navigate = useNavigate();
 
   // TODO: 함수 역할에 맞게 분리 (navigate 역할 분리)
   const handleActiveMenu = (menu: Menu) => () => {
-    dispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
+    menuDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
     navigate(`/groups/${groupCode}/${menu}`);
   };
 
   return (
-    <StyledContainer>
+    <>
       <StyledMenuHeader>기능</StyledMenuHeader>
       <FlexContainer flexDirection="column">
         <StyledMenu onClick={handleActiveMenu('poll')} isActive={activeMenu === 'poll'}>
@@ -51,7 +50,7 @@ function SidebarFeaturesMenu({ groupCode }: Props) {
           <StyledMenuTitle>역할 정하기</StyledMenuTitle>
         </StyledMenu>
       </FlexContainer>
-    </StyledContainer>
+    </>
   );
 }
 

@@ -39,7 +39,7 @@ const getRandomPastelColor = () =>
 
 function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
   const navigate = useNavigate();
-  const dispatch = useMenuDispatchContext();
+  const menuDispatch = useMenuDispatchContext();
   const { isVisibleGroupsModal } = useMenuContext();
   const profileColor = getRandomPastelColor();
   const currentGroup = groups.find((group) => group.code === groupCode);
@@ -52,11 +52,11 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
   };
 
   const handleToggleGroupsModal = () => {
-    dispatch({ type: 'TOGGLE_GROUPS_MODAL' });
+    menuDispatch({ type: 'TOGGLE_GROUPS_MODAL' });
   };
 
   const closeGroupsModal = () => {
-    dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
+    menuDispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
   };
 
   const handleNavigateGroup = (groupCode: Group['code'], groupName: Group['name']) => () => {

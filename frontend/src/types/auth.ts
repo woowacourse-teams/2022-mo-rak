@@ -1,7 +1,7 @@
 import { Member } from './group';
 
-type EditUserNameRequest = {
+type EditUsernameRequest = {
   name: Member['name'];
 };
 
-export { EditUserNameRequest };
+export { EditUsernameRequest };

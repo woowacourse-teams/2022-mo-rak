@@ -17,8 +17,9 @@ import TextField from '../../../../components/TextField/TextField';
 import { useTheme } from '@emotion/react';
 import { FormEvent } from 'react';
 import useInput from '../../../../hooks/useInput';
-import { editUserName } from '../../../../api/auth';
+import { editUsername } from '../../../../api/auth';
 import { AxiosError } from 'axios';
+import useAuthDispatchContext from '../../../../hooks/useAuthDispatchContext';
 
 type Props = {
   isVisible: boolean;
@@ -28,12 +29,15 @@ type Props = {
 function SidebarEditUsernameModal({ isVisible, close }: Props) {
   const theme = useTheme();
   const [username, handleUsername, resetUsername] = useInput('');
+  // TODO: dispatch 네이밍 컨벤션
+  const authDispatch = useAuthDispatchContext();
 
   const handleSubmitUserName = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      await editUserName({ name: username });
+      await editUsername({ name: username });
+      authDispatch({ type: 'SET_NAME', payload: username });
       alert('닉네임이 변경되었습니다.');
       resetUsername();
       close();

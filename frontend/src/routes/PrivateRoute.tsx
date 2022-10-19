@@ -6,12 +6,12 @@ import { getLocalStorageItem } from '../utils/storage';
 
 function PrivateRoute() {
   const token = getLocalStorageItem('token');
-  const dispatch = useAuthDispatchContext();
+  const authDispatch = useAuthDispatchContext();
 
   useEffect(() => {
     (async () => {
       const res = await getUser();
-      dispatch({ type: 'SET_AUTH', payload: res.data });
+      authDispatch({ type: 'SET_AUTH', payload: res.data });
     })();
   }, [token]);
 
