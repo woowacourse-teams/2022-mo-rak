@@ -244,10 +244,14 @@ public class AppointmentService {
 
     private void notifyStatusAll(List<Appointment> appointmentsToBeClosed) {
         Map<String, String> teamMessages = appointmentsToBeClosed.stream()
-                .collect(Collectors.toMap(
-                        Appointment::getTeamCode,
-                        appointment -> MessageFormatter.formatClosed(FormattableData.from(appointment))
-                ));
+                .collect(Collectors.groupingBy(
+                                Appointment::getTeamCode,
+                                Collectors.mapping(
+                                        appointment -> MessageFormatter.formatClosed(FormattableData.from(appointment)),
+                                        Collectors.joining("\n")
+                                )
+                        )
+                );
         notificationService.notifyAllMenuStatus(teamMessages);
     }
 

@@ -86,7 +86,7 @@ public class NotificationService {
         List<SlackWebhook> webhooks = findAllToBeNotified(teamMessages);
 
         return webhooks.stream()
-                .collect(Collectors.toMap(Function.identity(), webhook -> teamMessages.get(webhook.getTeam())));
+                .collect(Collectors.toMap(Function.identity(), webhook -> teamMessages.get(webhook.getTeam().getCode())));
     }
 
     private List<SlackWebhook> findAllToBeNotified(Map<String, String> teamMessages) {
