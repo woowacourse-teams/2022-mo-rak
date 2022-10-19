@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import notFound from '../../assets/not-found-animation.json';
 import Button from '../../components/Button/Button';
 import FlexContainer from '../../components/FlexContainer/FlexContainer';
-import { StyledGuid, StyledContainer } from './ErrorPage.styles';
+import { StyledDescription, StyledContainer } from './ErrorPage.styles';
 
 type NavigateFunctionOverload = {
   (location: string): () => void;
@@ -23,11 +23,11 @@ function ErrorPage() {
   return (
     <StyledContainer>
       <div>{notFoundAnimation.View}</div>
-      <StyledGuid>
+      <StyledDescription>
         찾을 수 없는 페이지입니다.
         <br />
         요청하신 페이지가 사라졌거나, 잘못된 경로로 들어오셨어요 :)
-      </StyledGuid>
+      </StyledDescription>
       <FlexContainer gap="1.2rem">
         <Button
           variant="filled"
