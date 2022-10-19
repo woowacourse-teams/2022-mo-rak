@@ -12,6 +12,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @ToString
 public class AppointmentTime {
+
     private final LocalDateTime startDateTime;
     private final int durationMinutes;
 
