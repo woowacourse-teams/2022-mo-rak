@@ -1,4 +1,4 @@
-import { StyledBottomMenu } from './NavbarDrawerBottomSection.styles';
+import { StyledContainer } from './NavbarDrawerBottomSection.styles';
 import NavbarSlackMenu from '../NavbarSlackMenu/NavbarSlackMenu';
 import NavbarInvitationMenu from '../NavbarInvitationMenu/NavbarInvitationMenu';
 import NavbarLogoutMenu from '../NavbarLogoutMenu/NavbarLogoutMenu';
@@ -11,11 +11,11 @@ type Props = {
 
 function NavbarDrawerBottomSection({ onClickMenu, groupCode }: Props) {
   return (
-    <StyledBottomMenu>
+    <StyledContainer>
       <NavbarSlackMenu onClick={onClickMenu('slack')} />
       <NavbarInvitationMenu groupCode={groupCode} />
       <NavbarLogoutMenu />
-    </StyledBottomMenu>
+    </StyledContainer>
   );
 }
 
