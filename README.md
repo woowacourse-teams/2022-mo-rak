@@ -14,7 +14,6 @@
 
 </div>
 
-<br>
 
 # 🔎 소개 
 
@@ -88,12 +87,16 @@
 
 # ⚙️ 인프라
 
+> 사용한 기술 스택과 인프라 구조는 다음과 같아요.  
+
 ![image](https://user-images.githubusercontent.com/45311765/196595945-41b38977-343c-451d-a1b2-af0a6e895c89.png)
 
 <br>
 <br>
 
 # 📸 볼거리
+
+> 모락의 재미있는 브이로그와 데모 영상들을 감상해보세요!
 
 |[모락 브이로그](https://www.youtube.com/watch?v=sLBxjoZ6gKA)|[1차 데모](https://www.youtube.com/watch?v=R7JO6cLeyhU)|[2차 데모](https://www.youtube.com/watch?v=G4uQTNYNanY)|
 | :-: | :-: | :-: |
