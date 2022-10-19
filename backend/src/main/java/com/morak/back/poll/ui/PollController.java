@@ -2,11 +2,11 @@ package com.morak.back.poll.ui;
 
 import com.morak.back.auth.support.Auth;
 import com.morak.back.poll.application.PollService;
-import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemResponse;
-import com.morak.back.poll.ui.dto.PollItemResultResponse;
-import com.morak.back.poll.ui.dto.PollResponse;
-import com.morak.back.poll.ui.dto.PollResultRequest;
+import com.morak.back.poll.application.dto.PollCreateRequest;
+import com.morak.back.poll.application.dto.PollItemResponse;
+import com.morak.back.poll.application.dto.PollItemResultResponse;
+import com.morak.back.poll.application.dto.PollResponse;
+import com.morak.back.poll.application.dto.PollResultRequest;
 import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;

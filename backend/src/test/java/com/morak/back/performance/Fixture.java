@@ -6,8 +6,8 @@ import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_
 
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.auth.domain.Member;
-import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollResultRequest;
+import com.morak.back.poll.application.dto.PollCreateRequest;
+import com.morak.back.poll.application.dto.PollResultRequest;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import java.time.LocalDateTime;
 import java.util.List;

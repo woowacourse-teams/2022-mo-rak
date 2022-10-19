@@ -8,9 +8,9 @@ import static com.morak.back.SimpleRestAssured.post;
 import static com.morak.back.SimpleRestAssured.put;
 import static com.morak.back.SimpleRestAssured.toObjectList;
 
-import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemResponse;
-import com.morak.back.poll.ui.dto.PollResultRequest;
+import com.morak.back.poll.application.dto.PollCreateRequest;
+import com.morak.back.poll.application.dto.PollItemResponse;
+import com.morak.back.poll.application.dto.PollResultRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;

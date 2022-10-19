@@ -1,7 +1,6 @@
-package com.morak.back.poll.ui.dto;
+package com.morak.back.poll.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollStatus;
 import java.time.LocalDateTime;

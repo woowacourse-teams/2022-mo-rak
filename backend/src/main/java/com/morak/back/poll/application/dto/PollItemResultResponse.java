@@ -1,4 +1,4 @@
-package com.morak.back.poll.ui.dto;
+package com.morak.back.poll.application.dto;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.domain.PollItem;

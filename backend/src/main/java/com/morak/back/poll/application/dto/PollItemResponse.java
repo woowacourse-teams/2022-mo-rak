@@ -1,7 +1,6 @@
-package com.morak.back.poll.ui.dto;
+package com.morak.back.poll.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.domain.PollItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
