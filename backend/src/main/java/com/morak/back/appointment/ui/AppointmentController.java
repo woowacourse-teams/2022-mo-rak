@@ -88,7 +88,8 @@ public class AppointmentController {
     public ResponseEntity<AppointmentStatusResponse> findAppointmentStatus(@PathVariable String groupCode,
                                                                            @Auth Long memberId,
                                                                            @PathVariable String appointmentCode) {
-        AppointmentStatusResponse response = appointmentService.findAppointmentStatus(groupCode, memberId, appointmentCode);
+        AppointmentStatusResponse response = appointmentService.findAppointmentStatus(groupCode, memberId,
+                appointmentCode);
         return ResponseEntity.ok(response);
     }
 }

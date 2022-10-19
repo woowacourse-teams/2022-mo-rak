@@ -1,6 +1,7 @@
 package com.morak.back.poll.domain;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollItemNotFoundException;
@@ -21,10 +22,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class Poll extends BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Embedded
     private PollInfo pollInfo;

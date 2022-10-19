@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "poll_item")
 public class PollItem {
 
     @Id

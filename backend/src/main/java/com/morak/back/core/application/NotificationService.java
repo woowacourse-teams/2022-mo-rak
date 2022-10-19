@@ -77,19 +77,19 @@ public class NotificationService {
     }
 
     @Transactional(readOnly = true)
-    public void notifyAllMenuStatus(Map<Team, String> teamMessages) {
+    public void notifyAllMenuStatus(Map<String, String> teamMessages) {
         Map<SlackWebhook, String> webHookMessages = mapWebhookToMessage(teamMessages);
         webHookMessages.forEach((webhook, message) -> notifyMenuStatus(webhook.getTeam(), message));
     }
 
-    private Map<SlackWebhook, String> mapWebhookToMessage(Map<Team, String> teamMessages) {
+    private Map<SlackWebhook, String> mapWebhookToMessage(Map<String, String> teamMessages) {
         List<SlackWebhook> webhooks = findAllToBeNotified(teamMessages);
 
         return webhooks.stream()
-                .collect(Collectors.toMap(Function.identity(), webhook -> teamMessages.get(webhook.getTeam())));
+                .collect(Collectors.toMap(Function.identity(), webhook -> teamMessages.get(webhook.getTeam().getCode())));
     }
 
-    private List<SlackWebhook> findAllToBeNotified(Map<Team, String> teamMessages) {
+    private List<SlackWebhook> findAllToBeNotified(Map<String, String> teamMessages) {
         return slackWebhookRepository.findAllByTeams(teamMessages.keySet());
     }
 }

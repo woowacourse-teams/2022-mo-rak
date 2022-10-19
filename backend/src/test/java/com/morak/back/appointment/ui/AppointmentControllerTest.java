@@ -159,12 +159,10 @@ class AppointmentControllerTest extends ControllerTest {
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}";
         List<AvailableTimeRequest> requests = List.of(
                 new AvailableTimeRequest(
-                        LocalDateTime.of(2022, 8, 6, 16, 0),
-                        LocalDateTime.of(2022, 8, 6, 16, 30)
+                        LocalDateTime.of(2022, 8, 6, 16, 0)
                 ),
                 new AvailableTimeRequest(
-                        LocalDateTime.of(2022, 8, 6, 16, 30),
-                        LocalDateTime.of(2022, 8, 6, 17, 0)
+                        LocalDateTime.of(2022, 8, 6, 16, 30)
                 )
         );
 
@@ -266,7 +264,6 @@ class AppointmentControllerTest extends ControllerTest {
                 ));
     }
 
-    // TODO: 2022/07/27 범용적이게 변형 후 상속한 ControllerTest로 이전해야함!
     private ResultActions get(String path, String groupCode) throws Exception {
         return mockMvc.perform(RestDocumentationRequestBuilders.get(path, groupCode)
                 .header("Authorization", "bearer access.token"));

@@ -9,6 +9,7 @@ import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +112,11 @@ class SlackWebhookRepositoryTest {
         }
 
         // when
-        List<SlackWebhook> webhooks = webhookRepository.findAllByTeams(teams);
+        List<SlackWebhook> webhooks = webhookRepository.findAllByTeams(
+                teams.stream()
+                        .map(Team::getCode)
+                        .collect(Collectors.toList())
+        );
 
         // then
         assertThat(webhooks).hasSize(iterationCount);

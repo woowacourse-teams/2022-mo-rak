@@ -161,7 +161,8 @@ public class PollService {
                         poll -> teamRepository.findById(poll.getPollInfo().getTeamId()).orElseThrow(),
                         poll -> MessageFormatter.formatClosed(FormattableData.from(poll))
                 ));
-        notificationService.notifyAllMenuStatus(teamMessages);
+        // todo : 이벤트 방식으로 전환하기.
+//        notificationService.notifyAllMenuStatus(teamMessages);
     }
 
     private Team findTeamByCode(String teamCode) {

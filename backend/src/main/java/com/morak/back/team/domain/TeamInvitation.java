@@ -1,7 +1,7 @@
 package com.morak.back.team.domain;
 
 import com.morak.back.core.domain.Code;
-import com.morak.back.poll.domain.BaseEntity;
+import com.morak.back.core.domain.BaseEntity;
 import java.time.LocalDateTime;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -23,10 +23,6 @@ public class TeamInvitation extends BaseEntity {
 
     private static final long DEFAULT_EXPIRED_MINUTES = 2 * 24 * 60L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull(message = "team은 null 일 수 없습니다.")
     private Team team;
@@ -41,7 +37,7 @@ public class TeamInvitation extends BaseEntity {
 
     @Builder
     private TeamInvitation(Long id, Team team, Code code, ExpiredTime expiredAt) {
-        this.id = id;
+        super(id);
         this.team = team;
         this.code = code;
         this.expiredAt = initializeExpiredAt(expiredAt);

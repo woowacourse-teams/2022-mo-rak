@@ -1,16 +1,12 @@
 package com.morak.back.auth.domain;
 
+import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.support.Generated;
-import com.morak.back.poll.domain.BaseEntity;
 import java.util.Objects;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,9 +14,7 @@ import org.hibernate.validator.constraints.URL;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Builder
 public class Member extends BaseEntity {
 
     @Transient
@@ -31,9 +25,13 @@ public class Member extends BaseEntity {
             "https://user-images.githubusercontent.com/45311765/179645488-2d8c29c8-f8ed-43e9-9951-b30e82ead5ed.png"
     );
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Builder
+    public Member(final Long id, final String oauthId, final String name, final String profileUrl) {
+        super(id);
+        this.oauthId = oauthId;
+        this.name = name;
+        this.profileUrl = profileUrl;
+    }
 
     @NotBlank(message = "oauthId 는 blank 일 수 없습니다.")
     @Size(min = 1, max = 255, message = "oauthId의 길이는 1 ~ 255 사이여야합니다.")
