@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 class RoleHistoriesTest {
 
-
     @Test
     void 날짜별로_최신의_히스토리만_반환한다() {
         // given

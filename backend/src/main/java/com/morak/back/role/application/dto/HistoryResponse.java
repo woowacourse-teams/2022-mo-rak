@@ -32,8 +32,6 @@ public class HistoryResponse {
     private static Map<String, Long> getMatchResult(RoleHistory roleHistory) {
         return roleHistory.getMatchResult()
                 .entrySet().stream()
-                .collect(Collectors.toMap(
-                        it -> it.getKey().getValue(), Entry::getValue
-                ));
+                .collect(Collectors.toMap(entry -> entry.getKey().getValue(), Entry::getValue));
     }
 }

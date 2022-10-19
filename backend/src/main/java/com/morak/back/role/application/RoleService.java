@@ -32,11 +32,10 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class RoleService {
 
     private final TeamRepository teamRepository;
+    private final MemberRepository memberRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final RoleRepository roleRepository;
-    private final MemberRepository memberRepository;
 
-    // -- A
     public RoleNameResponses findRoleNames(String teamCode, Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
@@ -45,7 +44,6 @@ public class RoleService {
         validateMemberInTeam(team, member);
 
         Role role = findRoleByTeamCode(teamCode);
-
         return RoleNameResponses.from(role.getRoleNames());
     }
 
@@ -73,7 +71,7 @@ public class RoleService {
         }
     }
 
-    public Long match(String teamCode, Long memberId) {
+    public Long matchRoleAndMember(String teamCode, Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
@@ -108,7 +106,6 @@ public class RoleService {
         validateMemberInTeam(team, member);
 
         Role role = findRoleByTeamCode(teamCode);
-
         return RolesResponse.from(role.findAllGroupByDate());
     }
 }

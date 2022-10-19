@@ -44,10 +44,10 @@ public class RoleNames {
 
     public Map<RoleName, Long> match(List<Long> memberIds) {
         validateMemberCount(memberIds.size());
-        return IntStream.range(0, values.size())
+        return IntStream.range(0, this.values.size())
                 .boxed()
                 .collect(Collectors.toMap(
-                        values::get,
+                        this.values::get,
                         memberIds::get
                 ));
     }

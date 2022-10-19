@@ -7,6 +7,8 @@ import static com.morak.back.SimpleRestAssured.post;
 import static com.morak.back.SimpleRestAssured.put;
 import static com.morak.back.SimpleRestAssured.toObject;
 import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_생성을_요청한다;
+import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_참가를_요청한다;
+import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_초대코드_생성을_요청한다;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
@@ -31,8 +33,8 @@ public class RoleAcceptanceTest extends AcceptanceTest {
 
     @Autowired
     private TokenProvider tokenProvider;
-    private String token;
 
+    private String token;
     private String teamLocation;
 
     @BeforeEach
@@ -42,17 +44,16 @@ public class RoleAcceptanceTest extends AcceptanceTest {
         teamLocation = 그룹_생성을_요청한다(new TeamCreateRequest("그룹"), token).header("Location");
     }
 
-
     @Test
     void 역할_목록을_조회한다() {
         // when
-        ExtractableResponse<Response> response = 역할_이름들을_조회(token);
+        ExtractableResponse<Response> response = 역할_이름들을_조회();
         RoleNameResponses roleNameResponses = toObject(response, RoleNameResponses.class);
 
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(roleNameResponses.getRoles()).containsExactly("데일리 마스터", "반장", "청소부")
+                () -> assertThat(roleNameResponses.getRoles()).containsExactly("데일리 마스터")
         );
     }
 
@@ -75,7 +76,7 @@ public class RoleAcceptanceTest extends AcceptanceTest {
         RoleNameEditRequest request = new RoleNameEditRequest(List.of("서기", "타임키퍼"));
 
         // when
-        ExtractableResponse<Response> response = 역할정하기_이름_목록_수정(request, token);
+        ExtractableResponse<Response> response = 역할정하기_이름_목록_수정(request);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -84,7 +85,7 @@ public class RoleAcceptanceTest extends AcceptanceTest {
     @Test
     void 역할을_매칭한다() {
         // when
-        ExtractableResponse<Response> response = 역할_매칭을_요청(token);
+        ExtractableResponse<Response> response = 역할_매칭을_요청();
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -94,36 +95,34 @@ public class RoleAcceptanceTest extends AcceptanceTest {
     @Test
     void 역할_히스토리를_조회한다() {
         // given
-        String[] splitLocation = teamLocation.split("/");
-        String teamCode = splitLocation[splitLocation.length - 1];
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
+        String otherToken = tokenProvider.createToken(String.valueOf(2L));
+        그룹_참가를_요청한다(teamInvitationLocation, otherToken);
 
-        RoleNameEditRequest request = new RoleNameEditRequest(List.of("서기", "타임키퍼"));
-        역할정하기_이름_목록_수정(request, token);
-
-        역할_매칭을_요청(token);
-        역할_매칭을_요청(token);
+        역할_매칭을_요청();
+        역할_매칭을_요청();
 
         // when
-        ExtractableResponse<Response> response = 역할_히스토리를_조회(token);
+        ExtractableResponse<Response> response = 역할_히스토리를_조회();
         RolesResponse rolesResponse = toObject(response, RolesResponse.class);
 
         // then
         assertThat(rolesResponse.getRoles()).hasSize(1);
     }
 
-    private ExtractableResponse<Response> 역할_매칭을_요청(String token) {
+    private ExtractableResponse<Response> 역할_이름들을_조회() {
+        return get(teamLocation + "/roles/names", toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 역할정하기_이름_목록_수정(RoleNameEditRequest request) {
+        return put(teamLocation + "/roles/names", request, toHeader(token));
+    }
+
+    private ExtractableResponse<Response> 역할_매칭을_요청() {
         return post(teamLocation + "/roles", toHeader(token));
     }
 
-    private ExtractableResponse<Response> 역할정하기_이름_목록_수정(RoleNameEditRequest request, String token) {
-        return put("/api/groups/MoraK123/roles/names", request, toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 역할_이름들을_조회(String token) {
-        return get("/api/groups/MoraK123/roles/names", toHeader(token));
-    }
-
-    private ExtractableResponse<Response> 역할_히스토리를_조회(String token) {
+    private ExtractableResponse<Response> 역할_히스토리를_조회() {
         return get(teamLocation + "/roles/histories", toHeader(token));
     }
 }

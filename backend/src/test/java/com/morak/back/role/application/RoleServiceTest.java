@@ -53,7 +53,7 @@ class RoleServiceTest {
         this.teamMemberRepository = teamMemberRepository;
         this.roleRepository = roleRepository;
 
-        roleService = new RoleService(teamRepository, teamMemberRepository, roleRepository, memberRepository);
+        roleService = new RoleService(teamRepository, memberRepository, teamMemberRepository, roleRepository);
     }
 
     @BeforeEach
@@ -93,47 +93,44 @@ class RoleServiceTest {
     @Test
     void 역할의_이름_목록을_수정한다() {
         // given
-        String teamCode = "MoraK123";
-        Long memberId = 1L;
+        roleRepository.save(new Role(team.getCode()));
 
         // when
-        roleService.editRoleNames(teamCode, memberId, List.of("서기", "타임키퍼"));
+        roleService.editRoleNames(team.getCode(), member.getId(), List.of("서기", "타임키퍼"));
 
         // then
-        Role role = roleRepository.findByTeamCode(teamCode).orElseThrow();
-        assertThat(role.getRoleNames().getValues()).containsExactly(new RoleName("서기"), new RoleName("타임키퍼"));
+        Role role = roleRepository.findByTeamCode(team.getCode()).orElseThrow();
+        assertThat(role.getRoleNames().getValues()).containsExactly(
+                new RoleName("서기"),
+                new RoleName("타임키퍼")
+        );
     }
 
     @Test
     void 역할정하기가_존재하지_않고_역할의_이름_목록을_수정하면_예외를_던진다() {
-        // given
-        String teamCode = "Betrayed";
-        Long memberId = 4L;
-
         // when & then
-        assertThatThrownBy(() -> roleService.editRoleNames(teamCode, memberId, List.of("서기", "타임키퍼")))
+        assertThatThrownBy(() -> roleService.editRoleNames(team.getCode(), member.getId(), List.of("서기", "타임키퍼")))
                 .isInstanceOf(RoleNotFoundException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.ROLE_NOT_FOUND_ERROR);
     }
 
-    // -- C
     @Test
     void 역할을_매칭한다() {
         // given
-        Member ellie = memberRepository.save(Member.builder()
+        Member otherMember = memberRepository.save(Member.builder()
                 .oauthId("ellie-oauth-id")
                 .name("한해리")
                 .profileUrl("http://ellie-profile.com")
                 .build());
-        teamMemberRepository.save(new TeamMember(null, team, ellie));
+        teamMemberRepository.save(new TeamMember(null, team, otherMember));
 
         Role role = new Role(team.getCode());
         roleRepository.save(role);
         int beforeSize = role.getRoleHistories().getValues().size();
 
         // when
-        roleService.match(team.getCode(), member.getId());
+        roleService.matchRoleAndMember(team.getCode(), member.getId());
 
         roleRepository.flush(); // 테스트에서는 flush()를 해야 history의 id 값을 얻어올 수 있다.
 
@@ -148,19 +145,16 @@ class RoleServiceTest {
     @Test
     void 역할을_매칭하는데_역할이_존재하지_않을_경우_예외를_던진다() {
         // when & then
-        assertThatThrownBy(() -> roleService.match(team.getCode(), member.getId()))
+        assertThatThrownBy(() -> roleService.matchRoleAndMember(team.getCode(), member.getId()))
                 .isInstanceOf(RoleNotFoundException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.ROLE_NOT_FOUND_ERROR);
     }
 
-
-    // -- D
     @Test
     void 역할_히스토리_목록을_조회한다() {
         // given
-        Role role = getRole();
-        roleRepository.save(role);
+        saveRolewithHistories();
         roleRepository.flush();
 
         // when
@@ -179,7 +173,7 @@ class RoleServiceTest {
         );
     }
 
-    private Role getRole() {
+    private Role saveRolewithHistories() {
         String 데일리_마스터 = "데일리 마스터";
         String 서기 = "서기";
         LocalDateTime now = LocalDateTime.of(2022, 10, 14, 22, 52);
@@ -197,16 +191,14 @@ class RoleServiceTest {
         roleHistories.add(history2);
         roleHistories.add(history3);
         roleHistories.add(history4);
-        return new Role(team.getCode(), RoleNames.from(List.of(데일리_마스터, 서기)), roleHistories);
+        
+        return roleRepository.save(new Role(team.getCode(), RoleNames.from(List.of(데일리_마스터, 서기)), roleHistories));
     }
 
     @Test
     void 팀에_역할이_존재하지_않는_경우_예외를_던진다() {
-        // given
-        String teamCode = team.getCode();
-
         // when & then
-        assertThatThrownBy(() -> roleService.findHistories(teamCode, member.getId()))
+        assertThatThrownBy(() -> roleService.findHistories(team.getCode(), member.getId()))
                 .isInstanceOf(RoleNotFoundException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.ROLE_NOT_FOUND_ERROR);
