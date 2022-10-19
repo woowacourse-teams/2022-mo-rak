@@ -12,7 +12,9 @@ import static com.morak.back.team.acceptance.TeamAcceptanceTest.그룹_초대코
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
+import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.application.dto.RoleNameEditRequest;
 import com.morak.back.role.application.dto.RoleNameResponses;
 import com.morak.back.role.application.dto.RolesResponse;
@@ -45,6 +47,19 @@ public class RoleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    void 그룹_생성시_역할_정하기를_생성한다(@Autowired RoleRepository roleRepository) {
+        // given
+        String[] splitLocation = teamLocation.split("/");
+        String teamCode = splitLocation[splitLocation.length - 1];
+
+        // when
+        Optional<Role> optionalRole = roleRepository.findByTeamCode(teamCode);
+
+        // then
+        assertThat(optionalRole).isPresent();
+    }
+
+    @Test
     void 역할_목록을_조회한다() {
         // when
         ExtractableResponse<Response> response = 역할_이름들을_조회();
@@ -58,16 +73,24 @@ public class RoleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 그룹_생성시_역할_정하기를_생성한다(@Autowired RoleRepository roleRepository) {
+    void 역할이_여러개일_때_역할_목록을_조회한다() {
         // given
-        String[] splitLocation = teamLocation.split("/");
-        String teamCode = splitLocation[splitLocation.length - 1];
+        String teamInvitationLocation = 그룹_초대코드_생성을_요청한다(teamLocation, token).header("Location");
+        String otherToken = tokenProvider.createToken(String.valueOf(2L));
+        그룹_참가를_요청한다(teamInvitationLocation, otherToken);
+
+        RoleNameEditRequest roleNameEditRequest = new RoleNameEditRequest(List.of("서기", "타임키퍼"));
+        역할정하기_이름_목록_수정(roleNameEditRequest);
 
         // when
-        Optional<Role> optionalRole = roleRepository.findByTeamCode(teamCode);
+        ExtractableResponse<Response> response = 역할_이름들을_조회();
+        RoleNameResponses roleNameResponses = toObject(response, RoleNameResponses.class);
 
         // then
-        assertThat(optionalRole).isPresent();
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(roleNameResponses.getRoles()).containsExactly("서기", "타임키퍼")
+        );
     }
 
     @Test
@@ -88,8 +111,28 @@ public class RoleAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 역할_매칭을_요청();
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(response.header("Location")).contains(teamLocation + "/roles/");
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
+                () -> assertThat(response.header("Location")).contains(teamLocation + "/roles/")
+        );
+    }
+
+
+    @Test
+    void 역할을_매칭하는데_역할이_멤버보다_많을_경우_BAD_REQUEST를_응답한다() {
+        // given
+        RoleNameEditRequest roleNameEditRequest = new RoleNameEditRequest(List.of("서기", "타임키퍼"));
+        역할정하기_이름_목록_수정(roleNameEditRequest);
+
+        // when
+        ExtractableResponse<Response> response = 역할_매칭을_요청();
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(SimpleRestAssured.extractCodeNumber(response))
+                        .isEqualTo(CustomErrorCode.ROLE_NAMES_MAX_SIZE_ERROR.getNumber())
+        );
     }
 
     @Test
@@ -107,7 +150,10 @@ public class RoleAcceptanceTest extends AcceptanceTest {
         RolesResponse rolesResponse = toObject(response, RolesResponse.class);
 
         // then
-        assertThat(rolesResponse.getRoles()).hasSize(1);
+        Assertions.assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(rolesResponse.getRoles()).hasSize(1)
+        );
     }
 
     private ExtractableResponse<Response> 역할_이름들을_조회() {
