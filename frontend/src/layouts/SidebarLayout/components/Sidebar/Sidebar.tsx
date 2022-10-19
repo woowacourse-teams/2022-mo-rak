@@ -15,6 +15,7 @@ import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMen
 import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
 import SidebarLogoutMenu from '../SidebarLogoutMenu/SidebarLogoutMenu';
 import { StyledContainer, StyledLogo, StyledBottomMenu } from './Sidebar.styles';
+import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ function Sidebar() {
     <>
       <StyledContainer>
         <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+        {/* NOTE: menu보다는 section이 어떨까? SidebarGroupSection */}
         <SidebarGroupsMenu
           onClickMenu={handleActiveModalMenu}
           groupCode={groupCode}
@@ -56,10 +58,16 @@ function Sidebar() {
         />
 
         <Divider />
-        <SidebarFeaturesMenu groupCode={groupCode} />
+        {/* NOTE: SidebarFeatureSection */}
+        <MarginContainer margin="2.8rem 0">
+          <SidebarFeaturesMenu groupCode={groupCode} />
+        </MarginContainer>
 
         <Divider />
-        <SidebarMembersProfileMenu />
+        {/* NOTE: SidebarMemberSection */}
+        <MarginContainer margin="2.8rem 0">
+          <SidebarMembersProfileMenu />
+        </MarginContainer>
 
         <StyledBottomMenu>
           <SidebarSlackMenu onClick={handleActiveModalMenu('slack')} />
@@ -70,6 +78,7 @@ function Sidebar() {
 
       {/* TODO: 모달이 모여있음  */}
       {/* TODO: portal 사용 */}
+      {/* NOTE: SidebarModals로 해도 되지 않을까? */}
       <SidebarMenuModals
         activeModalMenu={activeModalMenu}
         closeModal={handleActiveModalMenu(null)}

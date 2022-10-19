@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import Close from '../../../../assets/close-button.svg';
-import Edit from '../../../../assets/edit.svg';
+import Edit from '../../../../assets/edit-with-smile.svg';
 import {
   StyledForm,
   StyledLogo,
