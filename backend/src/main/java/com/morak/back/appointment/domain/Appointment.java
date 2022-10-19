@@ -15,10 +15,12 @@ import com.morak.back.core.domain.BaseEntity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -140,16 +142,15 @@ public class Appointment extends BaseEntity {
                 .count();
     }
 
-    // TODO: 2022/10/17 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!여기까지
     public List<AppointmentTime> getAppointmentTimes() {
         List<AppointmentTime> times = new ArrayList<>();
 
         LocalDate endDate = datePeriod.getEndDate();
         LocalDate date = datePeriod.getStartDate();
+
         for (; !date.isAfter(endDate); date = date.plusDays(1L)) {
             times.addAll(getAppointmentPerDate(date));
         }
-
         return times;
     }
 
@@ -160,6 +161,7 @@ public class Appointment extends BaseEntity {
         LocalTime endTime = timePeriod.getEndTime();
         int durationMinutes = this.durationMinutes.getDurationMinutes();
         long duration = (long) durationMinutes - MINUTES_UNIT;
+
         for (; !startTime.plusMinutes(duration).isAfter(endTime); startTime = startTime.plusMinutes(MINUTES_UNIT)) {
             times.add(new AppointmentTime(LocalDateTime.of(date, startTime), durationMinutes));
         }

@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.appointment.domain.menu.MenuStatus;
+import com.morak.back.appointment.domain.recommend.AppointmentTime;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.domain.Code;
@@ -13,6 +14,7 @@ import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -109,6 +111,18 @@ class AppointmentTest {
                 .isInstanceOf(AppointmentAuthorizationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 약속잡기의_약속시간_후보를_얻어온다() {
+        // given
+        Appointment appointment = DEFAULT_BUILDER.build();
+
+        // when
+        List<AppointmentTime> appointmentTimes = appointment.getAppointmentTimes();
+
+        // then
+        assertThat(appointmentTimes).hasSize(5 * 8);
     }
 
     @Test
