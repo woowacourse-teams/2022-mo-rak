@@ -16,11 +16,11 @@ import useMenuContext from '../../../../hooks/useMenuContext';
 import { Group } from '../../../../types/group';
 import { Menu } from '../../../../types/menu';
 import Divider from '../../../../components/Divider/Divider';
-import NavbarFeaturesSection from '../NavbarFeaturesSection/NavbarFeaturesSection';
-import NavbarMembersProfileSection from '../NavbarMembersProfileSection/NavbarMembersProfileSection';
-import NavbarGroupsSection from '../NavbarGroupsSection/NavbarGroupsSection';
-import NavbarBottomSection from '../NavbarBottomSection/NavbarBottomSection';
-import NavbarFooterModals from '../NavbarFooterModals/NavbarFooterModals';
+import NavbarDrawerFeaturesSection from '../NavbarDrawerFeaturesSection/NavbarDrawerFeaturesSection';
+import NavbarDrawerMembersProfileSection from '../NavbarDrawerMembersProfileSection/NavbarDrawerMembersProfileSection';
+import NavbarDrawerGroupsSection from '../NavbarDrawerGroupsSection/NavbarDrawerGroupsSection';
+import NavbarDrawerBottomSection from '../NavbarDrawerBottomSection/NavbarDrawerBottomSection';
+import NavbarDrawerModals from '../NavbarDrawerModals/NavbarDrawerModals';
 
 import { useState } from 'react';
 
@@ -89,7 +89,7 @@ function NavbarFooter({ groupCode, groups }: Props) {
           <img src={CloseButton} alt="메뉴닫기" />
         </StyledCloseButton>
 
-        <NavbarGroupsSection
+        <NavbarDrawerGroupsSection
           closeDrawer={handleCloseDrawer}
           onClickMenu={handleSetActiveModalMenu}
           groupCode={groupCode}
@@ -97,20 +97,19 @@ function NavbarFooter({ groupCode, groups }: Props) {
         />
 
         <Divider />
-
-        <NavbarFeaturesSection closeDrawer={handleCloseDrawer} groupCode={groupCode} />
-
-        <Divider />
-        <NavbarMembersProfileSection groupCode={groupCode} />
+        <NavbarDrawerFeaturesSection closeDrawer={handleCloseDrawer} groupCode={groupCode} />
 
         <Divider />
-        <NavbarBottomSection onClickMenu={handleSetActiveModalMenu} groupCode={groupCode} />
+        <NavbarDrawerMembersProfileSection groupCode={groupCode} />
+
+        <Divider />
+        <NavbarDrawerBottomSection onClickMenu={handleSetActiveModalMenu} groupCode={groupCode} />
       </StyledDrawer>
 
       {/* TODO: 모달이 모여있음  */}
       {/* TODO: portal 사용 */}
       {/* TODO: 모달이 기존과 같음 */}
-      <NavbarFooterModals
+      <NavbarDrawerModals
         activeModalMenu={activeModalMenu}
         closeModal={handleSetActiveModalMenu(null)}
         groupCode={groupCode}

@@ -14,14 +14,14 @@ import {
   StyledMenuIcon,
   StyledMenuTitle,
   StyledMenu
-} from './NavbarFeaturesSection.styles';
+} from './NavbarDrawerFeaturesSection.styles';
 
 type Props = {
   groupCode: Group['code'];
   closeDrawer: () => void;
 };
 
-function NavbarFeaturesSection({ closeDrawer, groupCode }: Props) {
+function NavbarDrawerFeaturesSection({ closeDrawer, groupCode }: Props) {
   const { activeMenu } = useMenuContext();
   const dispatch = useMenuDispatchContext();
   const navigate = useNavigate();
@@ -57,4 +57,4 @@ function NavbarFeaturesSection({ closeDrawer, groupCode }: Props) {
   );
 }
 
-export default NavbarFeaturesSection;
+export default NavbarDrawerFeaturesSection;

@@ -30,7 +30,7 @@ import {
   StyledLinkIcon,
   StyledButton,
   StyledSmallLogo
-} from './NavbarFooterModals.styles';
+} from './NavbarDrawerModals.styles';
 
 type Props = {
   activeModalMenu: string | null;
@@ -38,7 +38,7 @@ type Props = {
   groupCode: Group['code'];
 };
 
-function NavbarFooterModals({ activeModalMenu, closeModal, groupCode }: Props) {
+function NavbarDrawerModals({ activeModalMenu, closeModal, groupCode }: Props) {
   const [groupName, handleGroupName, resetGroupName] = useInput('');
   const [invitationCode, handleInvitationCode, resetInvitationCode] = useInput('');
   const [slackUrl, handleSlackUrl, resetSlackUrl] = useInput('');
@@ -241,4 +241,4 @@ function NavbarFooterModals({ activeModalMenu, closeModal, groupCode }: Props) {
   );
 }
 
-export default NavbarFooterModals;
+export default NavbarDrawerModals;

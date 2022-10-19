@@ -17,7 +17,7 @@ import {
   StyledLeaveGroupButton,
   StyledPlusImage,
   StyledLeaveImage
-} from './NavbarGroupsSection.styles';
+} from './NavbarDrawerGroupsSection.styles';
 
 type Props = {
   groupCode: Group['code'];
@@ -29,7 +29,7 @@ type Props = {
 const getRandomPastelColor = () =>
   `hsl(${360 * Math.random()},${25 + 70 * Math.random()}%,${85 + 10 * Math.random()}%)`;
 
-function NavbarGroupsSection({ closeDrawer, onClickMenu, groupCode, groups }: Props) {
+function NavbarDrawerGroupsSection({ closeDrawer, onClickMenu, groupCode, groups }: Props) {
   const navigate = useNavigate();
   const profileColor = getRandomPastelColor();
 
@@ -87,4 +87,4 @@ function NavbarGroupsSection({ closeDrawer, onClickMenu, groupCode, groups }: Pr
     </StyledContainer>
   );
 }
-export default NavbarGroupsSection;
+export default NavbarDrawerGroupsSection;
