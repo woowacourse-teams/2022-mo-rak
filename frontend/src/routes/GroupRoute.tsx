@@ -15,12 +15,10 @@ function GroupRoute() {
 
   useEffect(() => {
     (async () => {
-      try {
-        const res = await getGroupMembers(groupCode);
-        groupMembersDispatch({ type: 'SET_GROUP_MEMBERS', payload: res.data });
-      } catch (err) {}
+      const res = await getGroupMembers(groupCode);
+      groupMembersDispatch({ type: 'SET_GROUP_MEMBERS', payload: res.data });
     })();
-  }, [activeMenu, authState]);
+  }, [activeMenu, authState, groupCode]);
 
   return <Outlet />;
 }
