@@ -1,7 +1,11 @@
 import styled from '@emotion/styled';
 
-const StyledMemberListContainer = styled.div`
-  margin: 2.8rem 0;
+const StyledGroupMembersContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  overflow-y: auto;
+  max-height: 36rem;
 `;
 
 const StyledMenuHeader = styled.div`
@@ -10,13 +14,31 @@ const StyledMenuHeader = styled.div`
   margin-bottom: 2rem;
 `;
 
-const StyledName = styled.div`
+const StyledUsername = styled.div`
   font-size: 1.6rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0.4rem 0;
 `;
 
-const StyledContainer = styled.div`
-  overflow-y: auto;
-  max-height: 36rem;
+const StyledUsernameContainer = styled.div`
+  width: 60%;
+  overflow: hidden;
+  display: flex;
 `;
 
-export { StyledMemberListContainer, StyledMenuHeader, StyledName, StyledContainer };
+const StyledEditIcon = styled.img`
+  width: 1.6rem;
+  position: absolute;
+  right: 10%;
+  cursor: pointer;
+`;
+
+export {
+  StyledMenuHeader,
+  StyledUsername,
+  StyledGroupMembersContainer,
+  StyledEditIcon,
+  StyledUsernameContainer
+};
