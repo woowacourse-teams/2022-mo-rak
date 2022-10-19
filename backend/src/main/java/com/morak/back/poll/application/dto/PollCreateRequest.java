@@ -1,5 +1,6 @@
 package com.morak.back.poll.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollInfo;
@@ -29,9 +30,9 @@ public class PollCreateRequest {
     @NotNull(message = "allowedPollCount 는 null 일 수 없습니다.")
     private Integer allowedPollCount;
 
-    // TODO: 2022/10/13 anonymous  로 바꾸기
     @NotNull(message = "isAnonymous 는 null 일 수 없습니다.")
-    private Boolean isAnonymous;
+    @JsonProperty("isAnonymous")
+    private Boolean anonymous;
 
     @Future(message = "closedAt은 미래여야 합니다.")
     private LocalDateTime closedAt;
@@ -43,7 +44,7 @@ public class PollCreateRequest {
         PollInfo pollInfo = PollInfo.builder()
                 .codeGenerator(new RandomCodeGenerator())
                 .title(title)
-                .anonymous(isAnonymous)
+                .anonymous(anonymous)
                 .allowedCount(allowedPollCount)
                 .teamId(teamId)
                 .hostId(hostId)
