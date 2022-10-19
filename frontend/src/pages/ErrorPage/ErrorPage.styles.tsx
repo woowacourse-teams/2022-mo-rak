@@ -9,10 +9,4 @@ const StyledContainer = styled.div`
   gap: 2rem;
 `;
 
-const StyledDescription = styled.p`
-  text-align: center;
-  font-size: 2rem;
-  line-height: 2.8rem;
-`;
-
-export { StyledContainer, StyledDescription };
+export { StyledContainer };
