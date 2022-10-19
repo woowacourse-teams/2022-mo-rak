@@ -16,7 +16,7 @@ const StyledContainer = styled.div(
 );
 
 const StyledLogo = styled.img`
-  width: 10rem;
+  width: 8rem;
   cursor: pointer;
 `;
 
