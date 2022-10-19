@@ -1,5 +1,6 @@
 package com.morak.back.role.domain;
 
+import com.morak.back.core.support.Generated;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +40,7 @@ public class RoleHistory implements Comparable<RoleHistory> {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -52,11 +54,13 @@ public class RoleHistory implements Comparable<RoleHistory> {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(getDateTime(), getMatchResults());
     }
 
     @Override
+    @Generated
     public int compareTo(RoleHistory other) {
         if (this.dateTime.isBefore(other.dateTime)) {
             return -1;

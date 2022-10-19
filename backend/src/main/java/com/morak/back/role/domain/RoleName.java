@@ -1,6 +1,7 @@
 package com.morak.back.role.domain;
 
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.support.Generated;
 import com.morak.back.role.exception.RoleDomainLogicException;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -36,6 +37,7 @@ public class RoleName {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -48,14 +50,8 @@ public class RoleName {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(value);
-    }
-
-    @Override
-    public String toString() {
-        return "RoleName{" +
-                "value='" + value + '\'' +
-                '}';
     }
 }

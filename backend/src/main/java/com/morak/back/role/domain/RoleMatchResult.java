@@ -1,5 +1,6 @@
 package com.morak.back.role.domain;
 
+import com.morak.back.core.support.Generated;
 import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ public class RoleMatchResult {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -37,6 +39,7 @@ public class RoleMatchResult {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(roleName, memberId);
     }

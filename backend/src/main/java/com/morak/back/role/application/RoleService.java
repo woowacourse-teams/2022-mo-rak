@@ -4,6 +4,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.support.Generated;
 import com.morak.back.role.application.dto.RoleNameResponses;
 import com.morak.back.role.application.dto.RolesResponse;
 import com.morak.back.role.domain.RandomShuffleStrategy;
@@ -38,6 +39,7 @@ public class RoleService {
 
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Generated
     public void createDefaultRole(TeamCreateEvent event) {
         roleRepository.save(new Role(event.getTeamCode()));
     }
