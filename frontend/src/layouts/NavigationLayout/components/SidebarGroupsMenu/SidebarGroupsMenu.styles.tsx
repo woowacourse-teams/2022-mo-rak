@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 const StyledMenuHeader = styled.div`
   font-size: 1.6rem;
   text-align: left;
-  margin-bottom: 2rem;
+  padding-bottom: 2rem;
 `;
 
 const StyledGroupsModalContainer = styled.div<{ isVisible: boolean }>(
@@ -60,10 +60,9 @@ const StyledGroupProfile = styled.div<CSSProperties>(
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 8rem;
-  height: 8rem;
+  width: 10rem;
+  height: 10rem;
   border-radius: 1.2rem;
-  font-family: 'Nanum Gothic', sans-serif;
   background: ${backgroundColor};
 `
 );
@@ -77,13 +76,12 @@ const StyledGroupFirstCharacter = styled.div(
 
 const StyledGroupName = styled.div`
   font-size: 1.6rem;
-  margin-bottom: 1.2rem;
 `;
 
 const StyledGroupContainer = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 2.8rem;
+  height: 15%;
 `;
 
 const StyledGroup = styled.div<{ isActive: boolean }>(
@@ -92,8 +90,8 @@ const StyledGroup = styled.div<{ isActive: boolean }>(
   gap: 2rem;
   align-items: center;
   padding: 2rem;
-  text-decoration: none;
   margin: 1.2rem;
+  text-decoration: none;
   color: ${theme.colors.BLACK_100};
   cursor: pointer;
 

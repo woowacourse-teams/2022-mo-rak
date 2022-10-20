@@ -4,6 +4,7 @@ import { PrivateRoute } from './routes/PrivateRoute';
 import { MenuRoute } from './routes/MenuRoute';
 import NavigationLayout from './layouts/NavigationLayout/NavigationLayout';
 import GroupRoute from './routes/GroupRoute';
+import ErrorPage from './pages/ErrorPage/ErrorPage';
 
 const PollMainPage = lazy(() => import('./pages/PollMainPage/PollMainPage'));
 const PollCreatePage = lazy(() => import('./pages/PollCreatePage/PollCreatePage'));
@@ -74,7 +75,7 @@ function App() {
             </Route>
           </Route>
 
-          <Route path="*" element={<div>error</div>} />
+          <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
     </Suspense>

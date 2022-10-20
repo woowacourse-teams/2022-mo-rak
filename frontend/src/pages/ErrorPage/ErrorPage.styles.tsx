@@ -2,9 +2,11 @@ import styled from '@emotion/styled';
 
 const StyledContainer = styled.div`
   height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
 `;
 
 export { StyledContainer };

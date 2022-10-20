@@ -16,21 +16,25 @@ const StyledContainer = styled.div(
 `
 );
 
+const StyledLogoContainer = styled.div`
+  height: 10%;
+`;
+
 const StyledLogo = styled.img`
   display: block;
-  margin: 2rem auto;
-  width: 16rem;
+  margin: 0 auto;
+  height: 100%;
+  max-height: 16rem;
   aspect-ratio: 16 / 9;
   cursor: pointer;
-  padding-right: 4rem;
+  padding: 2rem 4rem 2rem 0;
 `;
 
 const StyledBottomMenu = styled.div`
-  position: absolute;
-  bottom: 4rem;
+  height: 15%;
   display: flex;
   flex-direction: column;
   gap: 2rem;
 `;
 
-export { StyledContainer, StyledLogo, StyledBottomMenu };
+export { StyledContainer, StyledLogo, StyledBottomMenu, StyledLogoContainer };

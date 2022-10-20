@@ -3,6 +3,7 @@ import Poll from '../../../../assets/poll.svg';
 import Appointment from '../../../../assets/calendar-clock.svg';
 import Role from '../../../../assets/role.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
+import Divider from '../../../../components/Divider/Divider';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import useMenuContext from '../../../../hooks/useMenuContext';
 import { Menu } from '../../../../types/menu';
@@ -33,6 +34,7 @@ function SidebarFeaturesMenu({ groupCode }: Props) {
 
   return (
     <StyledContainer>
+      <Divider />
       <StyledMenuHeader>기능</StyledMenuHeader>
       <FlexContainer flexDirection="column">
         <StyledMenu onClick={handleActiveMenu('poll')} isActive={activeMenu === 'poll'}>
