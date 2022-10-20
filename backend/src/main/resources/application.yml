@@ -16,7 +16,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "prometheus"
     health:
       show-details: always
   metrics:
