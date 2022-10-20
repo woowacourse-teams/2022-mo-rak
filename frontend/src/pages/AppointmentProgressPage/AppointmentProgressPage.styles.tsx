@@ -9,6 +9,8 @@ const StyledContainer = styled.div`
   gap: 8rem;
 `;
 
+const StyledLoadingContainer = styled.div``;
+
 const StyledLeftContainer = styled.div`
   display: flex;
   width: 45.2rem;
