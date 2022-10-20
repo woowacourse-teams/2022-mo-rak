@@ -141,7 +141,9 @@ tasks.named('jacocoTestCoverageVerification') {
                     '**.RestSlackClient',
                     '**.*Config',
                     '**.*Performance*',
-                    '**.Proxy*'
+                    '**.Proxy*',
+                    '**.*Request',
+                    '**.*Response'
             ]
         }
 
