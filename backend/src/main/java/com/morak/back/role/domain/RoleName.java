@@ -1,17 +1,21 @@
 package com.morak.back.role.domain;
 
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.support.Generated;
 import com.morak.back.role.exception.RoleDomainLogicException;
 import java.util.Objects;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-@NoArgsConstructor
-@Embeddable
 @Getter
+@Embeddable
+@NoArgsConstructor
+@Access(AccessType.FIELD)
 public class RoleName {
 
     private static final int MAX_LENGTH = 20;
@@ -33,11 +37,8 @@ public class RoleName {
         }
     }
 
-    public String getValue() {
-        return value;
-    }
-
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -50,16 +51,8 @@ public class RoleName {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(value);
     }
-
-    @Override
-    public String toString() {
-        return "RoleName{" +
-                "value='" + value + '\'' +
-                '}';
-    }
-
-
 }

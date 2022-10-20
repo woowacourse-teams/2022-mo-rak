@@ -15,7 +15,7 @@ function MainFeatureMenuContainer() {
   };
 
   return (
-    <FlexContainer justifyContent="center" gap="8rem">
+    <FlexContainer justifyContent="center" gap="8rem" flexWrap="wrap">
       <MainFeatureMenu onClick={handleNavigate('poll')} name="투표하기" img={Poll} />
       <MainFeatureMenu onClick={handleNavigate('appointment')} name="약속잡기" img={Appointment} />
       <MainFeatureMenu onClick={handleNavigate('role')} name="역할 정하기" img={Role} />

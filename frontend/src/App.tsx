@@ -2,8 +2,9 @@ import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { MenuRoute } from './routes/MenuRoute';
-import SidebarLayout from './layouts/SidebarLayout/SidebarLayout';
+import NavigationLayout from './layouts/NavigationLayout/NavigationLayout';
 import GroupRoute from './routes/GroupRoute';
+import ErrorPage from './pages/ErrorPage/ErrorPage';
 
 const PollMainPage = lazy(() => import('./pages/PollMainPage/PollMainPage'));
 const PollCreatePage = lazy(() => import('./pages/PollCreatePage/PollCreatePage'));
@@ -36,7 +37,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="init" element={<GroupInitPage />} />
 
-            <Route element={<SidebarLayout />}>
+            <Route element={<NavigationLayout />}>
               <Route path="groups/:groupCode">
                 <Route element={<GroupRoute />}>
                   <Route element={<MenuRoute menu="main" />}>
@@ -74,7 +75,7 @@ function App() {
             </Route>
           </Route>
 
-          <Route path="*" element={<div>error</div>} />
+          <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
     </Suspense>

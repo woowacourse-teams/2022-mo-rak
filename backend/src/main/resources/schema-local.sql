@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS role_match_result;
 DROP TABLE IF EXISTS role_history;
 DROP TABLE IF EXISTS role_name;
+DROP TABLE IF EXISTS role_match_result;
 DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS poll_result;
 DROP TABLE IF EXISTS poll_item;
@@ -154,6 +154,7 @@ CREATE TABLE slack_webhook
     FOREIGN KEY (team_id) REFERENCES team (id)
 );
 
+
 CREATE TABLE role
 (
     `id`        BIGINT       NOT NULL AUTO_INCREMENT,
@@ -166,13 +167,13 @@ CREATE TABLE role_match_result
     `role_history_id` BIGINT       NOT NULL,
     `member_id`       BIGINT       NOT NULL,
     `role_name`       VARCHAR(255) NOT NULL,
-    PRIMARY KEY (`role_history_id`, `role_name`)
+    PRIMARY KEY (`role_history_id`, `member_id`, `role_name`)
 );
 
 CREATE TABLE role_name
 (
     `role_id`   BIGINT       NOT NULL,
-    `role_name` VARCHAR(255) NOT NULL
+    `name` VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE role_history
