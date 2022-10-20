@@ -173,7 +173,7 @@ CREATE TABLE role_match_result
 CREATE TABLE role_name
 (
     `role_id`   BIGINT       NOT NULL,
-    `role_name` VARCHAR(255) NOT NULL
+    `name` VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE role_history

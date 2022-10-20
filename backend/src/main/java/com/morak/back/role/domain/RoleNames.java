@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.persistence.AttributeOverride;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -20,6 +22,7 @@ public class RoleNames {
 
     @ElementCollection
     @CollectionTable(name = "role_name", joinColumns = @JoinColumn(name = "role_id"))
+    @AttributeOverride(name = "value", column = @Column(name = "name"))
     private List<RoleName> values = new ArrayList<>();
 
     public RoleNames(List<RoleName> values) {
