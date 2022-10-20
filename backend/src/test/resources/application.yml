@@ -11,7 +11,11 @@ spring:
       add-mappings: false
 
 cors:
-  allowedOrigin: "*"
+  allowed-origin: "*"
+
+monitoring:
+  prometheus:
+    origin: localhost
 
 ---
 

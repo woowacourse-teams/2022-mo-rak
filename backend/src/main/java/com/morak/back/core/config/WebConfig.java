@@ -13,9 +13,12 @@ public class WebConfig implements WebMvcConfigurer {
     public static final String ALLOWED_METHOD_NAMES = "GET,HEAD,POST,PUT,DELETE,TRACE,OPTIONS,PATCH";
 
     private final String allowedOrigin;
+    private final String prometheusOrigin;
 
-    public WebConfig(@Value("${cors.allowedOrigin}") String allowedOrigin) {
+    public WebConfig(@Value("${cors.allowed-origin}") String allowedOrigin,
+                     @Value("${monitoring.prometheus.origin}") String prometheusOrigin) {
         this.allowedOrigin = allowedOrigin;
+        this.prometheusOrigin = prometheusOrigin;
     }
 
     @Override
@@ -24,6 +27,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(allowedOrigin)
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","))
                 .exposedHeaders(HttpHeaders.LOCATION);
+
+        registry.addMapping("/actuator/**")
+                .allowedOrigins(prometheusOrigin)
+                .allowedMethods("GET", "HEAD", "OPTIONS");
     }
 
     @Override
