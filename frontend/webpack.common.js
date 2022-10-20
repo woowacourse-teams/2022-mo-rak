@@ -23,8 +23,7 @@ module.exports = {
       'process.env': JSON.stringify(process.env)
     })
   ],
-  // TODO: loader 정리
-  // TODO: asset test 파일 형식 필요없는 거 제거
+
   module: {
     rules: [
       {
@@ -33,24 +32,8 @@ module.exports = {
         exclude: /(node_modules)/
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        test: /\.(svg|woff)$/i,
         type: 'asset'
-      },
-      {
-        test: /\.(js)$/i,
-        exclude: /(node_modules)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env',
-              '@babel/preset-react',
-              {
-                runtime: 'automatic'
-              }
-            ]
-          }
-        }
       }
     ]
   },

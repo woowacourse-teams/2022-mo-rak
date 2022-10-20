@@ -1,18 +1,19 @@
-import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAppointment, progressAppointment } from '../../api/appointment';
-import { GroupInterface } from '../../types/group';
+import { Group } from '../../types/group';
+import { AvailableTimes, Appointment, GetAppointmentResponse } from '../../types/appointment';
+import Calendar from '../../components/Calendar/Calendar';
+import AppointmentProgressHeader from './components/AppointmentProgressHeader/AppointmentProgressHeader';
+import AppointmentProgressTimePicker from './components/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
+import AppointmentProgressButtonGroup from './components/AppointmentProgressButtonGroup/AppointmentProgressButtonGroup';
+import FlexContainer from '../../components/FlexContainer/FlexContainer';
 import {
-  AvailableTimes,
-  AppointmentInterface,
-  getAppointmentResponse
-} from '../../types/appointment';
-import Calendar from '../../components/@common/Calendar/Calendar';
-import AppointmentProgressHeader from '../../components/AppointmentProgress/AppointmentProgressHeader/AppointmentProgressHeader';
-import AppointmentProgressTimePicker from '../../components/AppointmentProgress/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
-import AppointmentProgressButtonGroup from '../../components/AppointmentProgress/AppointmentProgressButtonGroup/AppointmentProgressButtonGroup';
-import FlexContainer from '../../components/@common/FlexContainer/FlexContainer';
+  StyledContainer,
+  StyledLeftContainer,
+  StyledRightContainer
+} from './AppointmentProgressPage.styles';
+import { AxiosError } from 'axios';
 
 // TODO: 중복됨 제거
 const getPlusOneDate = (date: string) => {
@@ -30,28 +31,21 @@ const getMinusOneDate = (date: string) => {
   return currentDate.toISOString().split('T')[0];
 };
 
-// TODO: 리팩토링 (데모데이때문에 급하게 함)
+// TODO: 리팩토링
 // TODO: 페이지 추상화
+// TODO: 사용자 경험 향상을 위해, 과거의 시간은 선택할 수 없도록 disabled 필요
 function AppointmentProgressPage() {
   const navigate = useNavigate();
   const { groupCode, appointmentCode } = useParams() as {
-    groupCode: GroupInterface['code'];
-    appointmentCode: AppointmentInterface['code'];
+    groupCode: Group['code'];
+    appointmentCode: Appointment['code'];
   };
-
-  const [appointment, setAppointment] = useState<getAppointmentResponse>();
-  // TODO: 가장 빠른 날짜가 기본값으로 설정되도록 해주자
-  const [selectedDate, setSelectedDate] = useState(''); // version="select"에서, 사용자가 선택한 날짜
+  const [appointment, setAppointment] = useState<GetAppointmentResponse>();
+  const [selectedDate, setSelectedDate] = useState('');
   const [availableTimes, setAvailableTimes] = useState<AvailableTimes>([]);
 
   // TODO: 로직 효율화
   const handleAvailableTimes = (start: string, end: string) => () => {
-    if (!selectedDate) {
-      alert('날짜를 선택해주세요!');
-
-      return;
-    }
-
     const endSelectedDate = end === '12:00AM' ? getPlusOneDate(selectedDate) : selectedDate;
 
     const isSelected = availableTimes.find(
@@ -82,10 +76,36 @@ function AppointmentProgressPage() {
   const handleProgressAppointment = async () => {
     try {
       await progressAppointment(groupCode, appointmentCode, availableTimes);
-
       navigate(`/groups/${groupCode}/appointment/${appointmentCode}/result`);
     } catch (err) {
-      console.log(err);
+      if (err instanceof AxiosError) {
+        const errCode = err.response?.data.codeNumber;
+
+        if (errCode === '4000') {
+        }
+
+        switch (errCode) {
+          case '4000': {
+            alert('현재보다 과거의 시간을 선택할 수 없습니다');
+
+            break;
+          }
+
+          case '3100': {
+            alert('마감된 약속잡기이므로 약속잡기를 진행할 수 없습니다');
+            navigate(`/groups/${groupCode}/appointment`);
+
+            break;
+          }
+
+          case '3300': {
+            alert('존재하지 않는 약속잡기이므로 약속잡기를 진행할 수 없습니다');
+            navigate(`/groups/${groupCode}/appointment`);
+
+            break;
+          }
+        }
+      }
     }
   };
 
@@ -99,9 +119,17 @@ function AppointmentProgressPage() {
 
           return;
         }
+
         setAppointment(res.data);
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          const errCode = err.response?.data.codeNumber;
+
+          if (errCode === '3300') {
+            alert('존재하지 않는 약속잡기입니다.');
+            navigate(`/groups/${groupCode}/appointment`);
+          }
+        }
       }
     })();
   }, []);
@@ -111,10 +139,8 @@ function AppointmentProgressPage() {
   // NOTE: 이렇게 Left,Right가 있을 때는 어떻게 추상화 레벨을 맞춰줄까?...
   return (
     <StyledContainer>
-      <FlexContainer flexDirection='column' gap="2rem">
-        <AppointmentProgressHeader
-          appointment={appointment}
-        />
+      <FlexContainer flexDirection="column" gap="2rem">
+        <AppointmentProgressHeader appointment={appointment} />
         <FlexContainer gap="4rem">
           <StyledLeftContainer>
             <Calendar
@@ -146,28 +172,5 @@ function AppointmentProgressPage() {
     </StyledContainer>
   );
 }
-
-const StyledContainer = styled.div`
-  width: calc(100% - 36.4rem);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8rem;
-`;
-
-const StyledLeftContainer = styled.div`
-  display: flex;
-  width: 45.2rem;
-  flex-direction: column;
-  gap: 1.8rem;
-`;
-
-const StyledRightContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  align-items: center;
-`;
 
 export default AppointmentProgressPage;

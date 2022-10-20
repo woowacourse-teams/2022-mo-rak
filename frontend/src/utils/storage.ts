@@ -1,20 +1,19 @@
-const getLocalStorageItem = (key: string) => {
+const getLocalStorageItem = <T = unknown>(key: string): T => {
   const value = localStorage.getItem(key);
 
   return value ? JSON.parse(value) : null;
 };
 
-const getSessionStorageItem = (key: string) => {
+const getSessionStorageItem = <T = unknown>(key: string): T => {
   const value = sessionStorage.getItem(key);
 
   return value ? JSON.parse(value) : null;
 };
 
-// TODO: <T>에 default 값을 넣어주는 건 어떨까?
-const saveLocalStorageItem = <T>(key: string, value: T | Array<T>) =>
+const saveLocalStorageItem = <T = unknown>(key: string, value: T | Array<T>) =>
   localStorage.setItem(key, JSON.stringify(value));
 
-const saveSessionStorageItem = <T>(key: string, value: T | Array<T>) =>
+const saveSessionStorageItem = <T = unknown>(key: string, value: T | Array<T>) =>
   sessionStorage.setItem(key, JSON.stringify(value));
 
 const removeLocalStorageItem = (key: string) => localStorage.removeItem(key);

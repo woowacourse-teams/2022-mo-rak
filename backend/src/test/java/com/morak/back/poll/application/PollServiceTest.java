@@ -579,9 +579,9 @@ class PollServiceTest {
         // when & then
         assertThatThrownBy(() -> pollService.doPoll(team.getCode(), member.getId(), poll.getCode(),
                 List.of(new PollResultRequest(invalidPollItemId, "그냥뇨"))))
-                .isInstanceOf(PollAuthorizationException.class)
+                .isInstanceOf(PollNotFoundException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_ITEM_MISMATCHED_ERROR);
+                .isEqualTo(CustomErrorCode.POLL_NOT_FOUND_ERROR);
     }
 
     @Test

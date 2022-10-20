@@ -2,12 +2,15 @@ package com.morak.back.auth.ui;
 
 import com.morak.back.auth.application.OAuthService;
 import com.morak.back.auth.support.Auth;
+import com.morak.back.auth.ui.dto.ChangeNameRequest;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +32,13 @@ public class OAuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MemberResponse> findMe(@Auth Long id) {
-        return ResponseEntity.ok(oAuthService.findMember(id));
+    public ResponseEntity<MemberResponse> findMe(@Auth Long memberId) {
+        return ResponseEntity.ok(oAuthService.findMember(memberId));
+    }
+
+    @PatchMapping("/me/name")
+    public ResponseEntity<Void> changeName(@Auth Long memberId, @Valid @RequestBody ChangeNameRequest request) {
+        oAuthService.changeName(memberId, request);
+        return ResponseEntity.ok().build();
     }
 }

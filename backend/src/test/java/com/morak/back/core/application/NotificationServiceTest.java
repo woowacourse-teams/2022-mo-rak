@@ -56,7 +56,7 @@ class NotificationServiceTest {
     @BeforeEach
     void setUp() {
         team = teamRepository.findByCode("MoraK123").orElseThrow();
-        member = teamMemberRepository.findAllByTeamId(team.getId()).get(0).getMember();
+        member = teamMemberRepository.findAllByTeam(team).get(0).getMember();
     }
 
     @Test
@@ -97,8 +97,8 @@ class NotificationServiceTest {
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
 
         // when
-        Member otherMember = teamMemberRepository.findAllByTeamId(
-                teamRepository.findByCode("Betrayed").orElseThrow().getId()
+        Member otherMember = teamMemberRepository.findAllByTeam(
+                teamRepository.findByCode("Betrayed").orElseThrow()
         ).get(0).getMember();
 
         // then

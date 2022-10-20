@@ -51,7 +51,10 @@ class PollItemRepositoryTest {
     @Test
     void 투표_id로_투표_선택_항목을_조회한다() {
         // given
-        List<PollItem> pollItems = pollItemRepository.findAllByPollId(1L);
+        Poll poll = Poll.builder()
+                .id(1L)
+                .build();
+        List<PollItem> pollItems = pollItemRepository.findAllByPoll(poll);
 
         // when & then
         Assertions.assertAll(
