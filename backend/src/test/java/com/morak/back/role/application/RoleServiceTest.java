@@ -125,6 +125,20 @@ class RoleServiceTest {
     }
 
     @Test
+    void 역할의_이름_목록을_수정할_때_멤버가_팀에_속하지_않는_경우_예외를_던진다() {
+        // given
+        Member otherMember = saveOtherMember();
+
+        roleRepository.save(new Role(team.getCode()));
+
+        // when & then
+        assertThatThrownBy(() -> roleService.editRoleNames(team.getCode(), otherMember.getId(), List.of("서기", "타임키퍼")))
+                .isInstanceOf(TeamAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
     void 중복된_이름으로_역할의_이름_목록을_수정한다() {
         // given
         roleRepository.save(new Role(team.getCode()));
