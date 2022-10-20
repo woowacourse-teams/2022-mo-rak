@@ -31,7 +31,6 @@ const StyledLogo = styled.img`
 `;
 
 const StyledBottomMenu = styled.div`
-  height: 15%;
   display: flex;
   flex-direction: column;
   gap: 2rem;
