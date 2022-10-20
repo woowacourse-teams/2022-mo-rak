@@ -31,7 +31,6 @@ function AppointmentResultRanking({
     <StyledResultBox>
       {appointmentRecommendation.map(
         (
-          // TODO: destructuring에 관하여 일관성 살펴보기
           {
             rank,
             recommendStartDateTime,
