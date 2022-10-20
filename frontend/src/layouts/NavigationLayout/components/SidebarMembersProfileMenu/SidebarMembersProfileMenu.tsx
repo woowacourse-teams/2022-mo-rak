@@ -1,6 +1,7 @@
 import Avatar from '../../../../components/Avatar/Avatar';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import {
+  StyledContainer,
   StyledMenuHeader,
   StyledUsername,
   StyledGroupMembersContainer,
@@ -10,7 +11,7 @@ import {
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 import Edit from '../../../../assets/edit.svg';
 import useModal from '../../../../hooks/useModal';
-import SidebarEditUsernameModal from '../SidebarEditUsernameModal/SidebarEditUsernameModal';
+import SidebarEditUsernameModal from '../../../SidebarLayout/components/SidebarEditUsernameModal/SidebarEditUsernameModal';
 import useAuthContext from '../../../../hooks/useAuthContext';
 import Divider from '../../../../components/Divider/Divider';
 
@@ -22,7 +23,7 @@ function SidebarMembersProfileMenu() {
     useModal();
 
   return (
-    <StyledMemberListContainer>
+    <StyledContainer>
       <Divider />
       <StyledMenuHeader>멤버 목록 ({groupMembersCount})</StyledMenuHeader>
       <StyledGroupMembersContainer>
@@ -42,7 +43,7 @@ function SidebarMembersProfileMenu() {
         isVisible={isEditUsernameModalVisible}
         close={handleCloseEditUsernameModal}
       />
-    </>
+    </StyledContainer>
   );
 }
 

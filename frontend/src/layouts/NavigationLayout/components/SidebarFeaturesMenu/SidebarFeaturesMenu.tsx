@@ -10,6 +10,7 @@ import { Menu } from '../../../../types/menu';
 
 import { Group } from '../../../../types/group';
 import {
+  StyledContainer,
   StyledMenuHeader,
   StyledMenuIcon,
   StyledMenuTitle,
@@ -52,7 +53,7 @@ function SidebarFeaturesMenu({ groupCode }: Props) {
           <StyledMenuTitle>역할 정하기</StyledMenuTitle>
         </StyledMenu>
       </FlexContainer>
-    </>
+    </StyledContainer>
   );
 }
 

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledMemberListContainer = styled.div`
+const StyledGroupMembersContainer = styled.div`
   height: 35%;
 `;
 
@@ -31,7 +31,13 @@ const StyledEditIcon = styled.img`
   cursor: pointer;
 `;
 
+const StyledContainer = styled.div`
+  overflow-y: auto;
+  height: 80%;
+`;
+
 export {
+  StyledContainer,
   StyledMenuHeader,
   StyledUsername,
   StyledGroupMembersContainer,
