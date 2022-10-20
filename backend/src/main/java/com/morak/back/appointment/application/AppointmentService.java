@@ -33,6 +33,7 @@ import com.morak.back.team.exception.TeamNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -63,7 +64,7 @@ public class AppointmentService {
         validateMemberInTeam(team, member);
 
         Appointment appointment = appointmentRepository.save(
-                request.toAppointment(teamCode, memberId, Code.generate(CODE_GENERATOR), systemTime.now()));
+                request.toAppointment(Code.generate((length) -> teamCode), memberId, Code.generate(CODE_GENERATOR), systemTime.now()));
         notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(appointment)));
 
         return appointment.getCode();
@@ -118,11 +119,17 @@ public class AppointmentService {
         withTeamValidation(
                 appointment -> {
                     appointment.selectAvailableTime(
-                            requests.stream().map(AvailableTimeRequest::getStart).collect(Collectors.toSet()),
+                            toStartDateTime(requests),
                             memberId,
                             systemTime.now());
                     return null;
                 }, teamCode, appointmentCode);
+    }
+
+    private Set<LocalDateTime> toStartDateTime(List<AvailableTimeRequest> requests) {
+        return requests.stream()
+                .map(AvailableTimeRequest::getStart)
+                .collect(Collectors.toSet());
     }
 
     @Transactional(readOnly = true)

@@ -49,9 +49,9 @@ public class AppointmentCreateRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime closedAt;
 
-    public Appointment toAppointment(String teamCode, Long hostId, Code code, LocalDateTime now) {
+    public Appointment toAppointment(Code teamCode, Long hostId, Code code, LocalDateTime now) {
         return Appointment.builder()
-                .teamCode(Code.generate((length) -> teamCode))
+                .teamCode(teamCode)
                 .hostId(hostId)
                 .title(this.title)
                 .description(this.description)
