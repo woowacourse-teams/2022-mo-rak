@@ -11,6 +11,34 @@ spring:
   web:
     resources:
       add-mappings: false
+  datasource:
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 3000
+server:
+  tomcat:
+    accept-count: 200
+    max-connections: 400
+    threads:
+      max: 10
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+cors:
+  allowed-origin: ${ALLOWED_ORIGIN}
+
+monitoring:
+  prometheus:
+    origin: ${PROMETHEUS_ORIGIN}
 
 ---
 
@@ -23,6 +51,8 @@ spring:
     url: jdbc:mysql://${DATABASE_HOST}:3306/${DATABASE_NAME}?serverTimezone=Asia/Seoul&character_set_server=utf8mb4
     username: ${USERNAME}
     password: ${PASSWORD}
+  application:
+    name: morak-prd
 
 ---
 
@@ -42,6 +72,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  application:
+    name: morak-dev
 
 ---
 
@@ -62,12 +94,20 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  application:
+    name: morak-local
+
 logging:
   level:
     org:
       springframework:
         transaction.interceptor: TRACE
+cors:
+  allowed-origin: "*"
 
+monitoring:
+  prometheus:
+    origin: localhost
 ---
 
 security:
@@ -90,4 +130,3 @@ logging:
   slack:
     error-url: ${SLACK_ERROR_URL}
   config: classpath:logback-spring.xml
-

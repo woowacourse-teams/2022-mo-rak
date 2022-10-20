@@ -78,15 +78,16 @@ const StyledGlitterImage = styled.img`
 `;
 
 const StyledPollImage = styled.img`
-  width: 12rem;
+  width: 11.2rem;
 `;
 
 const StyledAppointmentImage = styled.img`
   width: 12rem;
 `;
 
-const StyledUndefinedImage = styled.img`
+const StyledRoleImage = styled.img`
   width: 12rem;
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(194deg) brightness(102%) contrast(101%);
 `;
 
 export {
@@ -96,7 +97,7 @@ export {
   StyledContainer,
   StyledFeatureName,
   StyledGlitterImage,
-  StyledUndefinedImage,
+  StyledRoleImage,
   StyledPollImage,
   StyledHighlightImage,
   StyledSubTitle,
