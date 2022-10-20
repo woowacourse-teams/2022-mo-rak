@@ -20,6 +20,7 @@ import com.morak.back.team.exception.TeamAuthorizationException;
 import com.morak.back.team.exception.TeamNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Generated;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -38,6 +39,7 @@ public class RoleService {
 
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Generated
     public void createDefaultRole(TeamCreateEvent event) {
         roleRepository.save(new Role(event.getTeamCode()));
     }
