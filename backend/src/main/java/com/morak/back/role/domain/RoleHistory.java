@@ -60,7 +60,6 @@ public class RoleHistory implements Comparable<RoleHistory> {
     }
 
     @Override
-    @Generated
     public int compareTo(RoleHistory other) {
         if (this.dateTime.isBefore(other.dateTime)) {
             return -1;
