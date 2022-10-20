@@ -89,6 +89,7 @@ const StyledGroup = styled.div<{ isActive: boolean }>(
   gap: 2rem;
   align-items: center;
   padding: 2rem;
+  margin: 1.2rem;
   text-decoration: none;
   color: ${theme.colors.BLACK_100};
   cursor: pointer;
