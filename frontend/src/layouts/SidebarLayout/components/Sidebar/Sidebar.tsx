@@ -15,6 +15,7 @@ import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMen
 import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
 import SidebarLogoutMenu from '../SidebarLogoutMenu/SidebarLogoutMenu';
 import { StyledContainer, StyledLogo, StyledBottomMenu } from './Sidebar.styles';
+import CenteredSpinner from '../../../../components/CenteredSpinner/CenteredSpinner';
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -43,33 +44,36 @@ function Sidebar() {
     })();
   }, [groupCode]);
 
-  if (isLoading) return <div>로딩중</div>;
-
   return (
     <>
       <StyledContainer>
-        <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
-        <SidebarGroupsMenu
-          onClickMenu={handleActiveModalMenu}
-          groupCode={groupCode}
-          groups={groups}
-        />
+        {isLoading ? (
+          <CenteredSpinner width="40%" />
+        ) : (
+          <>
+            <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+            <SidebarGroupsMenu
+              onClickMenu={handleActiveModalMenu}
+              groupCode={groupCode}
+              groups={groups}
+            />
 
-        <Divider />
-        <SidebarFeaturesMenu groupCode={groupCode} />
+            <Divider />
+            <SidebarFeaturesMenu groupCode={groupCode} />
 
-        <Divider />
-        <SidebarMembersProfileMenu />
+            <Divider />
+            <SidebarMembersProfileMenu />
 
-        <StyledBottomMenu>
-          <SidebarSlackMenu onClick={handleActiveModalMenu('slack')} />
-          <SidebarInvitationMenu groupCode={groupCode} />
-          <SidebarLogoutMenu />
-        </StyledBottomMenu>
+            <StyledBottomMenu>
+              <SidebarSlackMenu onClick={handleActiveModalMenu('slack')} />
+              <SidebarInvitationMenu groupCode={groupCode} />
+              <SidebarLogoutMenu />
+            </StyledBottomMenu>
+          </>
+        )}
       </StyledContainer>
 
-      {/* TODO: 모달이 모여있음  */}
-      {/* TODO: portal 사용 */}
+      {/* TODO: 모달이 모여있음 / portal 사용  */}
       <SidebarMenuModals
         activeModalMenu={activeModalMenu}
         closeModal={handleActiveModalMenu(null)}
