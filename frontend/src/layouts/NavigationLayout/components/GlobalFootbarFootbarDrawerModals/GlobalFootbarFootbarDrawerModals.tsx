@@ -30,15 +30,15 @@ import {
   StyledLinkIcon,
   StyledButton,
   StyledSmallLogo
-} from './SidebarModals.styles';
+} from './GlobalFootbarFootbarDrawerModals.styles';
 
 type Props = {
-  activeModal: string | null;
+  activeModalMenu: string | null;
   closeModal: () => void;
   groupCode: Group['code'];
 };
 
-function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
+function GlobalFootbarFootbarDrawerModals({ activeModalMenu, closeModal, groupCode }: Props) {
   const [groupName, handleGroupName, resetGroupName] = useInput('');
   const [invitationCode, handleInvitationCode, resetInvitationCode] = useInput('');
   const [slackUrl, handleSlackUrl, resetSlackUrl] = useInput('');
@@ -53,7 +53,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
       const groupCode = res.headers.location.split('groups/')[1];
 
       navigate(`/groups/${groupCode}`);
-      dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
+      dispatch({ type: 'SET_IS_GROUPS_MODAL_VISIBLE', payload: false });
       resetGroupName();
       closeModal();
     } catch (err) {
@@ -76,7 +76,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
       const groupCode = res.headers.location.split('/groups/')[1];
 
       navigate(`/groups/${groupCode}`);
-      dispatch({ type: 'SET_IS_VISIBLE_GROUPS_MODAL', payload: false });
+      dispatch({ type: 'SET_IS_GROUPS_MODAL_VISIBLE', payload: false });
       resetInvitationCode();
       closeModal();
     } catch (err) {
@@ -104,12 +104,12 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
   const handleLinkSlack = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const slack: LinkSlackRequest = {
+    const slackUrlData: LinkSlackRequest = {
       url: slackUrl
     };
 
     try {
-      await linkSlack(slack, groupCode);
+      await linkSlack(slackUrlData, groupCode);
       alert('슬랙 채널과 연동이 완료되었습니다 🎉');
       resetSlackUrl();
       closeModal();
@@ -129,15 +129,13 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
     <>
       {/* TODO: 모달 컴포넌트 3개로 나눠줘야할듯 */}
       {/* 슬랙 연동 */}
-      <Modal isVisible={activeModal === 'slack'} close={closeModal}>
+      <Modal isVisible={activeModalMenu === 'slack'} close={closeModal}>
         {/* 슬랙 메뉴 */}
         <StyledModalFormContainer onSubmit={handleLinkSlack}>
           <StyledTop>
             <StyledSlackLogo src={Slack} alt="slack-logo" />
             <StyledHeaderText>슬랙 채널과 연동해보세요!</StyledHeaderText>
-            <StyledGuideText>
-              슬랙 채널과 연동하면, 그룹의 새소식을 슬랙으로 받아볼 수 있어요
-            </StyledGuideText>
+            <StyledGuideText>그룹의 새소식을 슬랙으로 받아볼 수 있어요</StyledGuideText>
             <StyledCloseButton onClick={closeModal} src={Close} alt="close-button" />
             <StyledTriangle />
           </StyledTop>
@@ -153,7 +151,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
                 <Input
                   value={slackUrl}
                   onChange={handleSlackUrl}
-                  placeholder="슬랙 채널 url 입력 후, 확인버튼을 누르면 연동 끝!"
+                  placeholder="연동 할 슬랙 채널 url"
                   fontSize="1.6rem"
                   required
                   autoFocus
@@ -167,7 +165,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
       </Modal>
 
       {/* 그룹 생성 */}
-      <Modal isVisible={activeModal === 'create'} close={closeModal}>
+      <Modal isVisible={activeModalMenu === 'create'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleCreateGroup}>
           <StyledTop>
             <StyledSmallLogo src={Logo} alt="logo" />
@@ -204,12 +202,12 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
       </Modal>
 
       {/* 그룹 참가 */}
-      <Modal isVisible={activeModal === 'participate'} close={closeModal}>
+      <Modal isVisible={activeModalMenu === 'participate'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleParticipateGroup}>
           <StyledTop>
             <StyledSmallLogo src={Logo} alt="logo" />
             <StyledHeaderText>그룹 참가</StyledHeaderText>
-            <StyledGuideText>새로운 그룹에도 참가해보세요</StyledGuideText>
+            <StyledGuideText>새로운 그룹에 참가해보세요</StyledGuideText>
             <StyledCloseButton onClick={closeModal} src={Close} alt="close-button" />
             <StyledTriangle />
           </StyledTop>
@@ -243,4 +241,4 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
   );
 }
 
-export default SidebarModals;
+export default GlobalFootbarFootbarDrawerModals;

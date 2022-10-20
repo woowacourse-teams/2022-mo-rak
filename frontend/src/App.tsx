@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { MenuRoute } from './routes/MenuRoute';
-import SidebarLayout from './layouts/SidebarLayout/SidebarLayout';
+import NavigationLayout from './layouts/NavigationLayout/NavigationLayout';
 import GroupRoute from './routes/GroupRoute';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
 
@@ -37,7 +37,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="init" element={<GroupInitPage />} />
 
-            <Route element={<SidebarLayout />}>
+            <Route element={<NavigationLayout />}>
               <Route path="groups/:groupCode">
                 <Route element={<GroupRoute />}>
                   <Route element={<MenuRoute menu="main" />}>

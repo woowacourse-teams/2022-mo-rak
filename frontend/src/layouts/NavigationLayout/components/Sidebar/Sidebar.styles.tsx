@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import responsive from '../../../../utils/responsive';
 
 const StyledContainer = styled.div(
   ({ theme }) => `
@@ -9,6 +10,9 @@ const StyledContainer = styled.div(
   z-index: 1; 
   background: ${theme.colors.WHITE_100};
   padding-left: 4rem;
+  gap: 2rem;
+  
+  ${responsive.mobile(`display: none`)}
 `
 );
 
@@ -27,7 +31,6 @@ const StyledLogo = styled.img`
 `;
 
 const StyledBottomMenu = styled.div`
-  height: 15%;
   display: flex;
   flex-direction: column;
   gap: 2rem;
