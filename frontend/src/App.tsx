@@ -4,6 +4,7 @@ import { PrivateRoute } from './routes/PrivateRoute';
 import { MenuRoute } from './routes/MenuRoute';
 import SidebarLayout from './layouts/SidebarLayout/SidebarLayout';
 import GroupRoute from './routes/GroupRoute';
+import FallbackPage from './pages/FallbackPage/FallbackPage';
 
 const PollMainPage = lazy(() => import('./pages/PollMainPage/PollMainPage'));
 const PollCreatePage = lazy(() => import('./pages/PollCreatePage/PollCreatePage'));
@@ -28,7 +29,7 @@ const RoleMainPage = lazy(() => import('./pages/RoleMainPage/RoleMainPage'));
 function App() {
   return (
     // TODO: 로딩 UI 필요
-    <Suspense fallback={<div>로딩중</div>}>
+    <Suspense fallback={<FallbackPage />}>
       <Routes>
         <Route path="/">
           <Route index element={<LandingPage />} />
