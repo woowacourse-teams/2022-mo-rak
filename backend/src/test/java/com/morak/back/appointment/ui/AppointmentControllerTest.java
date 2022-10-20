@@ -2,6 +2,11 @@ package com.morak.back.appointment.ui;
 
 import static com.morak.back.ApiDocumentUtils.getDocumentRequest;
 import static com.morak.back.ApiDocumentUtils.getDocumentResponse;
+import static com.morak.back.SimpleMockMvc.delete;
+import static com.morak.back.SimpleMockMvc.get;
+import static com.morak.back.SimpleMockMvc.patch;
+import static com.morak.back.SimpleMockMvc.post;
+import static com.morak.back.SimpleMockMvc.put;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -25,8 +30,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(AppointmentController.class)
@@ -56,7 +59,7 @@ class AppointmentControllerTest extends ControllerTest {
         given(appointmentService.createAppointment(anyString(), anyLong(), any())).willReturn("KDIs23K3");
 
         // when
-        ResultActions response = post(path, GROUP_CODE, request);
+        ResultActions response = post(mockMvc, path, GROUP_CODE, request);
 
         // then
         response
@@ -101,7 +104,7 @@ class AppointmentControllerTest extends ControllerTest {
         given(appointmentService.findAppointments(anyString(), anyLong())).willReturn(List.of(response1, response2));
 
         // when
-        ResultActions response = get(path, GROUP_CODE);
+        ResultActions response = get(mockMvc, path, GROUP_CODE);
 
         // then
         response
@@ -139,7 +142,7 @@ class AppointmentControllerTest extends ControllerTest {
         given(appointmentService.findAppointment(anyString(), anyLong(), anyString())).willReturn(findResponse);
 
         // when
-        ResultActions response = get(path, GROUP_CODE, APPOINTMENT_CODE);
+        ResultActions response = get(mockMvc, path, GROUP_CODE, APPOINTMENT_CODE);
 
         // then
         response
@@ -167,7 +170,7 @@ class AppointmentControllerTest extends ControllerTest {
         );
 
         // when
-        ResultActions response = put(path, GROUP_CODE, APPOINTMENT_CODE, requests);
+        ResultActions response = put(mockMvc, path, GROUP_CODE, APPOINTMENT_CODE, requests);
 
         // then
         response
@@ -188,7 +191,7 @@ class AppointmentControllerTest extends ControllerTest {
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}/recommendation";
 
         // when
-        ResultActions response = get(path, GROUP_CODE, APPOINTMENT_CODE);
+        ResultActions response = get(mockMvc, path, GROUP_CODE, APPOINTMENT_CODE);
 
         response
                 .andExpect(status().isOk())
@@ -208,7 +211,7 @@ class AppointmentControllerTest extends ControllerTest {
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}/close";
 
         // when
-        ResultActions response = patch(path, GROUP_CODE, APPOINTMENT_CODE);
+        ResultActions response = patch(mockMvc, path, GROUP_CODE, APPOINTMENT_CODE);
 
         // then
         response
@@ -229,7 +232,7 @@ class AppointmentControllerTest extends ControllerTest {
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}";
 
         // when
-        ResultActions response = delete(path, GROUP_CODE, APPOINTMENT_CODE);
+        ResultActions response = delete(mockMvc, path, GROUP_CODE, APPOINTMENT_CODE);
 
         // then
         response
@@ -250,7 +253,7 @@ class AppointmentControllerTest extends ControllerTest {
         String path = "/api/groups/{groupCode}/appointments/{appointmentCode}/status";
 
         // when
-        ResultActions response = get(path, GROUP_CODE, APPOINTMENT_CODE);
+        ResultActions response = get(mockMvc, path, GROUP_CODE, APPOINTMENT_CODE);
 
         // then
         response.andExpect(status().isOk())
@@ -262,39 +265,5 @@ class AppointmentControllerTest extends ControllerTest {
                                 parameterWithName("appointmentCode").description("약속잡기_코드")
                         )
                 ));
-    }
-
-    private ResultActions get(String path, String groupCode) throws Exception {
-        return mockMvc.perform(RestDocumentationRequestBuilders.get(path, groupCode)
-                .header("Authorization", "bearer access.token"));
-    }
-
-    private ResultActions get(String path, String groupCode, String appointmentCode) throws Exception {
-        return mockMvc.perform(RestDocumentationRequestBuilders.get(path, groupCode, appointmentCode)
-                .header("Authorization", "bearer access.token"));
-    }
-
-    private ResultActions post(String path, String groupCode, Object request) throws Exception {
-        return mockMvc.perform(RestDocumentationRequestBuilders.post(path, groupCode)
-                .header("Authorization", "bearer access.token")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)));
-    }
-
-    private ResultActions put(String path, String groupCode, String appointmentCode, Object request) throws Exception {
-        return mockMvc.perform(RestDocumentationRequestBuilders.put(path, groupCode, appointmentCode)
-                .header("Authorization", "bearer access.token")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)));
-    }
-
-    private ResultActions patch(String path, String groupCode, String appointmentCode) throws Exception {
-        return mockMvc.perform(RestDocumentationRequestBuilders.patch(path, groupCode, appointmentCode)
-                .header("Authorization", "bearer access.token"));
-    }
-
-    private ResultActions delete(String path, String groupCode, String appointmentCode) throws Exception {
-        return mockMvc.perform(RestDocumentationRequestBuilders.delete(path, groupCode, appointmentCode)
-                .header("Authorization", "bearer access.token"));
     }
 }

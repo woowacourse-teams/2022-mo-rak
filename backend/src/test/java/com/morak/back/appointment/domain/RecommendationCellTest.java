@@ -19,29 +19,11 @@ import org.junit.jupiter.api.Test;
 
 class RecommendationCellTest {
 
-    private AppointmentBuilder DEFAULT_BUILDER;
-
     private LocalDateTime now;
 
     @BeforeEach
     void setUp() {
-        LocalDate today = LocalDate.now();
         now = LocalDateTime.now();
-
-        DEFAULT_BUILDER = Appointment.builder()
-                .hostId(1L)
-                .teamCode(Code.generate((length) -> "TEAMcode"))
-                .title("스터디 회의 날짜 정하기")
-                .description("필참!!")
-                .code(Code.generate(length -> "MoraK123"))
-                .startDate(today.plusDays(1))
-                .endDate(today.plusDays(5))
-                .startTime(LocalTime.of(14, 0))
-                .endTime(LocalTime.of(18, 30))
-                .durationHours(1)
-                .durationMinutes(0)
-                .now(now)
-                .closedAt(now.plusDays(1));
     }
 
     @Test
