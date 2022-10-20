@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyledTitle } from './PollResultContainer.styles';
+import { StyledTitle, StyledLoadingContainer } from './PollResultContainer.styles';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import Box from '../../../../components/Box/Box';
@@ -23,6 +23,7 @@ import PollResultProgress from '../PollResultProgress/PollResultProgress';
 import PollResultStatus from '../PollResultStatus/PollResultStatus';
 import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
 import { AxiosError } from 'axios';
+import CenteredSpinner from '../../../../components/CenteredSpinner/CenteredSpinner';
 
 function PollResultContainer() {
   const navigate = useNavigate();
@@ -114,7 +115,9 @@ function PollResultContainer() {
           />
         </>
       ) : (
-        <div>로딩중</div>
+        <StyledLoadingContainer>
+          <CenteredSpinner width="15%" />
+        </StyledLoadingContainer>
       )}
     </Box>
   );
