@@ -2,6 +2,7 @@ package com.morak.back.role.domain;
 
 import com.morak.back.core.support.Generated;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CollectionTable;
@@ -32,7 +33,7 @@ public class RoleHistory implements Comparable<RoleHistory> {
             name = "role_match_result",
             joinColumns = @JoinColumn(name = "role_history_id")
     )
-    private List<RoleMatchResult> matchResults;
+    private List<RoleMatchResult> matchResults = new ArrayList<>();
 
     public RoleHistory(LocalDateTime dateTime, List<RoleMatchResult> matchResults) {
         this.dateTime = dateTime;

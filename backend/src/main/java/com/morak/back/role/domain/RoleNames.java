@@ -2,6 +2,7 @@ package com.morak.back.role.domain;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.exception.RoleDomainLogicException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -19,7 +20,7 @@ public class RoleNames {
 
     @ElementCollection
     @CollectionTable(name = "role_name", joinColumns = @JoinColumn(name = "role_id"))
-    private List<RoleName> values;
+    private List<RoleName> values = new ArrayList<>();
 
     public RoleNames(List<RoleName> values) {
         validateMinSize(values.size());

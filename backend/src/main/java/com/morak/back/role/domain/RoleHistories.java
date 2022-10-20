@@ -10,21 +10,19 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
+@NoArgsConstructor
 public class RoleHistories {
 
     @OneToMany(cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     @JoinColumn(name = "role_id", nullable = false, updatable = false)
-    private List<RoleHistory> values;
+    private List<RoleHistory> values = new ArrayList<>();
 
     private RoleHistories(List<RoleHistory> values) {
         this.values = values;
-    }
-
-    public RoleHistories() {
-        this(new ArrayList<>());
     }
 
     public void add(RoleHistory roleHistory) {
