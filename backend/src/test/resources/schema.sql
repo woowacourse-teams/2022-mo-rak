@@ -15,32 +15,32 @@ DROP TABLE IF EXISTS member;
 
 CREATE TABLE member
 (
-    `id`          bigint       NOT NULL AUTO_INCREMENT,
-    `oauth_id`    varchar(255) NOT NULL UNIQUE,
-    `name`        varchar(255) NOT NULL,
-    `profile_url` varchar(255) NOT NULL,
-    `created_at`  datetime     NOT NULL,
-    `updated_at`  datetime     NOT NULL,
+    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
+    `oauth_id`    VARCHAR(255) NOT NULL UNIQUE,
+    `name`        VARCHAR(255) NOT NULL,
+    `profile_url` VARCHAR(255) NOT NULL,
+    `created_at`  DATETIME     NOT NULL,
+    `updated_at`  DATETIME     NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE team
 (
-    `id`         bigint       NOT NULL AUTO_INCREMENT,
-    `name`       varchar(255) NOT NULL,
-    `code`       varchar(255) NOT NULL UNIQUE,
-    `created_at` datetime     NOT NULL,
-    `updated_at` datetime     NOT NULL,
+    `id`         BIGINT       NOT NULL AUTO_INCREMENT,
+    `name`       VARCHAR(255) NOT NULL,
+    `code`       VARCHAR(255) NOT NULL UNIQUE,
+    `created_at` DATETIME     NOT NULL,
+    `updated_at` DATETIME     NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE team_member
 (
-    `id`         bigint   NOT NULL AUTO_INCREMENT,
-    `team_id`    bigint   NOT NULL,
-    `member_id`  bigint   NOT NULL,
-    `created_at` datetime NOT NULL,
-    `updated_at` datetime NOT NULL,
+    `id`         BIGINT   NOT NULL AUTO_INCREMENT,
+    `team_id`    BIGINT   NOT NULL,
+    `member_id`  BIGINT   NOT NULL,
+    `created_at` DATETIME NOT NULL,
+    `updated_at` DATETIME NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (team_id) REFERENCES team (id),
     FOREIGN KEY (member_id) REFERENCES member (id)
@@ -48,29 +48,29 @@ CREATE TABLE team_member
 
 CREATE TABLE team_invitation
 (
-    `id`         bigint       NOT NULL AUTO_INCREMENT,
-    `team_id`    bigint       NOT NULL,
-    `code`       varchar(255) NOT NULL UNIQUE,
-    `expired_at` datetime     NOT NULL,
-    `created_at` datetime     NOT NULL,
-    `updated_at` datetime     NOT NULL,
+    `id`         BIGINT       NOT NULL AUTO_INCREMENT,
+    `team_id`    BIGINT       NOT NULL,
+    `code`       VARCHAR(255) NOT NULL UNIQUE,
+    `expired_at` DATETIME     NOT NULL,
+    `created_at` DATETIME     NOT NULL,
+    `updated_at` DATETIME     NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (team_id) REFERENCES team (id)
 );
 
 CREATE TABLE `poll`
 (
-    `id`                 bigint       NOT NULL AUTO_INCREMENT,
-    `team_id`            bigint       NOT NULL,
-    `host_id`            bigint       NOT NULL,
-    `title`              varchar(255) NOT NULL,
-    `allowed_poll_count` int          NOT NULL,
-    `is_anonymous`       boolean      NOT NULL,
-    `status`             varchar(255) NOT NULL,
-    `created_at`         datetime     NOT NULL,
-    `updated_at`         datetime     NOT NULL,
-    `closed_at`          datetime     NOT NULL,
-    `code`               varchar(255) NOT NULL UNIQUE,
+    `id`                 BIGINT       NOT NULL AUTO_INCREMENT,
+    `team_id`            BIGINT       NOT NULL,
+    `host_id`            BIGINT       NOT NULL,
+    `title`              VARCHAR(255) NOT NULL,
+    `allowed_poll_count` INT          NOT NULL,
+    `is_anonymous`       BOOLEAN      NOT NULL,
+    `status`             VARCHAR(255) NOT NULL,
+    `created_at`         DATETIME     NOT NULL,
+    `updated_at`         DATETIME     NOT NULL,
+    `closed_at`          DATETIME     NOT NULL,
+    `code`               VARCHAR(255) NOT NULL UNIQUE,
     PRIMARY KEY (id),
     FOREIGN KEY (team_id) REFERENCES team (id),
     FOREIGN KEY (host_id) REFERENCES member (id)
@@ -80,23 +80,23 @@ CREATE INDEX `index_poll` ON `poll` (`closed_at`);
 
 CREATE TABLE `poll_item`
 (
-    `id`         bigint       NOT NULL AUTO_INCREMENT,
-    `poll_id`    bigint       NOT NULL,
-    `subject`    varchar(255) NOT NULL,
-    `created_at` datetime     NOT NULL,
-    `updated_at` datetime     NOT NULL,
+    `id`         BIGINT       NOT NULL AUTO_INCREMENT,
+    `poll_id`    BIGINT       NOT NULL,
+    `subject`    VARCHAR(255) NOT NULL,
+    `created_at` DATETIME     NOT NULL,
+    `updated_at` DATETIME     NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (poll_id) REFERENCES poll (id)
 );
 
 CREATE TABLE poll_result
 (
-    `id`           bigint        NOT NULL AUTO_INCREMENT,
-    `poll_item_id` bigint        NOT NULL,
-    `member_id`    bigint        NOT NULL,
-    `description`  varchar(1000) NOT NULL,
-    `created_at`   datetime      NOT NULL,
-    `updated_at`   datetime      NOT NULL,
+    `id`           BIGINT        NOT NULL AUTO_INCREMENT,
+    `poll_item_id` BIGINT        NOT NULL,
+    `member_id`    BIGINT        NOT NULL,
+    `description`  VARCHAR(1000) NOT NULL,
+    `created_at`   DATETIME      NOT NULL,
+    `updated_at`   DATETIME      NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (member_id) REFERENCES member (id),
     FOREIGN KEY (poll_item_id) REFERENCES poll_item (id)
@@ -167,19 +167,19 @@ CREATE TABLE role_match_result
     `role_history_id` BIGINT       NOT NULL,
     `member_id`       BIGINT       NOT NULL,
     `role_name`       VARCHAR(255) NOT NULL,
-    PRIMARY KEY (`role_history_id`, `role_name`)
+    PRIMARY KEY (`role_history_id`, `member_id`, `role_name`)
 );
 
 CREATE TABLE role_name
 (
-    `role_id`   BIGINT       NOT NULL,
-    `role_name` VARCHAR(255) NOT NULL
+    `role_id` BIGINT       NOT NULL,
+    `name`    VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE role_history
 (
-    `id`        BIGINT    NOT NULL AUTO_INCREMENT,
-    `date_time` TIMESTAMP NOT NULL,
-    `role_id`   BIGINT    NOT NULL,
+    `id`        BIGINT   NOT NULL AUTO_INCREMENT,
+    `date_time` DATETIME NOT NULL,
+    `role_id`   BIGINT   NOT NULL,
     PRIMARY KEY (`id`)
 );

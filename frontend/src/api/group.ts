@@ -1,22 +1,27 @@
-import { groupInstance as axios } from './axios';
+import { privateGroupsAxiosInstance } from './axios';
 import { Group } from '../types/group';
 
-const getGroups = () => axios.get('');
+const getGroups = () => privateGroupsAxiosInstance.get('');
 
-const getGroupMembers = (groupCode: Group['code']) => axios.get(`/${groupCode}/members`);
+const getGroupMembers = (groupCode: Group['code']) =>
+  privateGroupsAxiosInstance.get(`/${groupCode}/members`);
 
 // TODO: '' 해결해야할듯
-const createGroup = (name: Group['name']) => axios.post('', { name });
+const createGroup = (name: Group['name']) => privateGroupsAxiosInstance.post('', { name });
 
-const createInvitationCode = (groupCode: Group['code']) => axios.post(`/${groupCode}/invitation`);
+const createInvitationCode = (groupCode: Group['code']) =>
+  privateGroupsAxiosInstance.post(`/${groupCode}/invitation`);
 
-const participateGroup = (invitationCode: string) => axios.post(`/in/${invitationCode}`);
+const participateGroup = (invitationCode: string) =>
+  privateGroupsAxiosInstance.post(`/in/${invitationCode}`);
 
-const getIsJoinedGroup = (invitationCode: string) => axios.get(`/in/${invitationCode}`);
+const getIsJoinedGroup = (invitationCode: string) =>
+  privateGroupsAxiosInstance.get(`/in/${invitationCode}`);
 
-const getDefaultGroup = () => axios.get('/default');
+const getDefaultGroup = () => privateGroupsAxiosInstance.get('/default');
 
-const leaveGroup = (groupCode: Group['code']) => axios.delete(`/out/${groupCode}`);
+const leaveGroup = (groupCode: Group['code']) =>
+  privateGroupsAxiosInstance.delete(`/out/${groupCode}`);
 
 export {
   getGroups,

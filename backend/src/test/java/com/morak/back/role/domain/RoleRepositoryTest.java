@@ -14,10 +14,6 @@ class RoleRepositoryTest {
     @Autowired
     private RoleRepository roleRepository;
 
-    // -- A
-
-    // -- B
-
     @Test
     void 역할_이름을_수정한다() {
         // given
@@ -34,10 +30,4 @@ class RoleRepositoryTest {
                 () -> assertThat(values).containsExactly(new RoleName("서기"), new RoleName("타임키퍼"))
         );
     }
-
-    // -- C
-
-    // -- D
-
-
 }
