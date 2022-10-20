@@ -30,6 +30,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -150,7 +151,7 @@ class RoleServiceTest {
     }
 
     @Test
-    void 역할을_매칭한다() {
+    void 역할을_매칭한다(@Autowired EntityManager em) {
         // given
         Member otherMember = saveOtherMember();
         teamMemberRepository.save(new TeamMember(null, team, otherMember));
@@ -162,7 +163,7 @@ class RoleServiceTest {
         // when
         roleService.matchRoleAndMember(team.getCode(), member.getId());
 
-        roleRepository.flush(); // 테스트에서는 flush()를 해야 history의 id 값을 얻어올 수 있다.
+        em.flush(); // 테스트에서는 flush()를 해야 history의 id 값을 얻어올 수 있다.
 
         // then
         RoleHistories afterHistories = role.getRoleHistories();
@@ -173,7 +174,7 @@ class RoleServiceTest {
     }
 
     @Test
-    void 중복된_역할이_있을_때_역할을_매칭한다() {
+    void 중복된_역할이_있을_때_역할을_매칭한다(@Autowired EntityManager em) {
         // given
         Member otherMember = saveOtherMember();
         teamMemberRepository.save(new TeamMember(null, team, otherMember));
@@ -186,7 +187,7 @@ class RoleServiceTest {
         // when
         roleService.matchRoleAndMember(team.getCode(), member.getId());
 
-        roleRepository.flush();
+        em.flush();
 
         // then
         RoleHistories afterHistories = role.getRoleHistories();
@@ -219,10 +220,10 @@ class RoleServiceTest {
     }
 
     @Test
-    void 역할_히스토리_목록을_조회한다() {
+    void 역할_히스토리_목록을_조회한다(@Autowired EntityManager em) {
         // given
         saveRolewithHistories();
-        roleRepository.flush();
+        em.flush();
 
         // when
         RolesResponse rolesResponse = roleService.findHistories(team.getCode(), member.getId());
