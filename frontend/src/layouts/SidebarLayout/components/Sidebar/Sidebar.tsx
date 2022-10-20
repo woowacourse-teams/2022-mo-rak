@@ -50,7 +50,6 @@ function Sidebar() {
     <>
       <StyledContainer>
         <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
-        {/* NOTE: menu보다는 section이 어떨까? SidebarGroupSection */}
         <SidebarGroupsMenu
           onClickMenu={handleActiveModalMenu}
           groupCode={groupCode}
@@ -78,7 +77,6 @@ function Sidebar() {
 
       {/* TODO: 모달이 모여있음  */}
       {/* TODO: portal 사용 */}
-      {/* NOTE: SidebarModals로 해도 되지 않을까? */}
       <SidebarMenuModals
         activeModalMenu={activeModalMenu}
         closeModal={handleActiveModalMenu(null)}

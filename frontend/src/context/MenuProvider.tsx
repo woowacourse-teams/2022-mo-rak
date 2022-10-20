@@ -23,7 +23,6 @@ type MenuAction = SetActiveMenuAction | SetIsVisibleGroupsModalAction | ToggleGr
 
 const initialState = {
   activeMenu: 'poll',
-  // TODO: isGroupsModalVisible이 맞지 않을까?? 모달이 보이냐 vs 보이는 모달이냐의 차이
   isVisibleGroupsModal: false
 } as const;
 
