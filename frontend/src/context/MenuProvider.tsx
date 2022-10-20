@@ -38,9 +38,6 @@ const initialState = {
   isGroupsModalVisible: false
 } as const;
 
-const MenuContext = createContext<MenuState | null>(null);
-const MenuDispatchContext = createContext<Dispatch<MenuAction> | null>(null);
-
 function menuReducer(state: MenuState, action: MenuAction): MenuState {
   switch (action.type) {
     case 'SET_ACTIVE_MENU':
@@ -68,7 +65,9 @@ function menuReducer(state: MenuState, action: MenuAction): MenuState {
   }
 }
 
-// TODO: Navigation으로 변경?
+const MenuContext = createContext<MenuState | null>(null);
+const MenuDispatchContext = createContext<Dispatch<MenuAction> | null>(null);
+
 function MenuProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(menuReducer, initialState);
 

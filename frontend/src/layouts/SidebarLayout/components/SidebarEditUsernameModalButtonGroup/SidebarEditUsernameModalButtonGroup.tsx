@@ -1,20 +1,20 @@
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import Button from '../../../../components/Button/Button';
 import { useTheme } from '@emotion/react';
-import { MouseEventHandler } from 'react';
+import { StyledContainer } from './SidebarEditUsernameModalButtonGroup.styles';
+import Button from '../../../../components/Button/Button';
 
 type Props = {
-  onClickCancelButton: MouseEventHandler<HTMLButtonElement>;
+  onClickCancelButton: () => void;
 };
 
-function RoleMainRoleEditModalButtonGroup({ onClickCancelButton }: Props) {
+function SidebarEditUsernameModalButtonGroup({ onClickCancelButton }: Props) {
   const theme = useTheme();
+
   return (
-    <FlexContainer gap="2rem">
+    <StyledContainer>
       <Button
         variant="filled"
         colorScheme={theme.colors.GRAY_400}
-        width="14rem"
+        width="50%"
         padding="1.6rem 3.2rem"
         borderRadius="1.2rem"
         fontSize="1.6rem"
@@ -25,16 +25,16 @@ function RoleMainRoleEditModalButtonGroup({ onClickCancelButton }: Props) {
       <Button
         variant="filled"
         colorScheme={theme.colors.YELLOW_200}
-        width="14rem"
         padding="1.6rem 3.2rem"
+        width="50%"
         borderRadius="1.2rem"
         fontSize="1.6rem"
         type="submit"
       >
-        확인
+        변경
       </Button>
-    </FlexContainer>
+    </StyledContainer>
   );
 }
 
-export default RoleMainRoleEditModalButtonGroup;
+export default SidebarEditUsernameModalButtonGroup;
