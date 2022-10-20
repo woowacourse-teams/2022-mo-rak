@@ -72,10 +72,10 @@ class RoleTest {
                         new TemporalUnitWithinOffset(1, ChronoUnit.SECONDS)
                 ),
                 () -> assertThat(actual.getMatchResults()).hasSize(2),
-                () -> assertThat(actual.getMatchResults()).isEqualTo(List.of(
-                        new RoleMatchResult(new RoleName("데일리 마스터"), 1L),
-                        new RoleMatchResult(new RoleName("서기"), 2L))
-                )
+                () -> assertThat(actual.getMatchResults().get(0).getRoleName()).isEqualTo(new RoleName("데일리 마스터")),
+                () -> assertThat(actual.getMatchResults().get(0).getMemberId()).isEqualTo(1L),
+                () -> assertThat(actual.getMatchResults().get(1).getRoleName()).isEqualTo(new RoleName("서기")),
+                () -> assertThat(actual.getMatchResults().get(1).getMemberId()).isEqualTo(2L)
         );
     }
 
@@ -96,11 +96,12 @@ class RoleTest {
                         new TemporalUnitWithinOffset(1, ChronoUnit.SECONDS)
                 ),
                 () -> assertThat(actual.getMatchResults()).hasSize(3),
-                () -> assertThat(actual.getMatchResults()).isEqualTo(List.of(
-                        new RoleMatchResult(new RoleName("데일리 마스터"), 1L),
-                        new RoleMatchResult(new RoleName("서기"), 2L),
-                        new RoleMatchResult(new RoleName("서기"), 3L))
-                )
+                () -> assertThat(actual.getMatchResults().get(0).getRoleName()).isEqualTo(new RoleName("데일리 마스터")),
+                () -> assertThat(actual.getMatchResults().get(0).getMemberId()).isEqualTo(1L),
+                () -> assertThat(actual.getMatchResults().get(1).getRoleName()).isEqualTo(new RoleName("서기")),
+                () -> assertThat(actual.getMatchResults().get(1).getMemberId()).isEqualTo(2L),
+                () -> assertThat(actual.getMatchResults().get(2).getRoleName()).isEqualTo(new RoleName("서기")),
+                () -> assertThat(actual.getMatchResults().get(2).getMemberId()).isEqualTo(3L)
         );
     }
 

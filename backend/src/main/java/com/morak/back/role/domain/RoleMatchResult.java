@@ -1,7 +1,5 @@
 package com.morak.back.role.domain;
 
-import com.morak.back.core.support.Generated;
-import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -23,24 +21,5 @@ public class RoleMatchResult {
     public RoleMatchResult(RoleName roleName, Long memberId) {
         this.roleName = roleName;
         this.memberId = memberId;
-    }
-
-    @Override
-    @Generated
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        RoleMatchResult that = (RoleMatchResult) o;
-        return Objects.equals(roleName, that.roleName) && Objects.equals(memberId, that.memberId);
-    }
-
-    @Override
-    @Generated
-    public int hashCode() {
-        return Objects.hash(roleName, memberId);
     }
 }
