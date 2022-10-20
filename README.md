@@ -34,7 +34,7 @@
 
 ### 👑 오늘 무슨 역할이야?
 
-![모락-역할정하기](https://user-images.githubusercontent.com/45311765/196706030-fc67a256-1422-45db-a2e1-665be7e2491a.GIF)
+![모락-역할정하기](https://user-images.githubusercontent.com/79205414/196872928-6577e22e-f0eb-4bf9-9259-c1590d0c5151.gif)
 
 <br>
 <br>
