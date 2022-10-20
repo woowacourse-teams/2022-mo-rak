@@ -4,17 +4,18 @@ import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
 import com.morak.back.role.exception.RoleDomainLogicException;
 import java.util.Objects;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @Getter
-@Setter
 @Embeddable
 @NoArgsConstructor
+@Access(AccessType.FIELD)
 public class RoleName {
 
     private static final int MAX_LENGTH = 20;
