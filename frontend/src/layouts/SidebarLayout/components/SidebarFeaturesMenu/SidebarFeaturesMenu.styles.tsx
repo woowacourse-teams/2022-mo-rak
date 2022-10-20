@@ -3,11 +3,11 @@ import styled from '@emotion/styled';
 const StyledMenuHeader = styled.div`
   font-size: 1.6rem;
   text-align: left;
-  margin-bottom: 2rem;
+  padding: 2rem 0;
 `;
 
 const StyledContainer = styled.div`
-  margin: 2.8rem 0;
+  height: 25%;
 `;
 
 const StyledMenuIcon = styled.img`

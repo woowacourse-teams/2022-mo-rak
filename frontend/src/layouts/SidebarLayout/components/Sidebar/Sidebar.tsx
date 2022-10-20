@@ -5,30 +5,34 @@ import Logo from '../../../../assets/logo.svg';
 import { getGroups } from '../../../../api/group';
 import { Group } from '../../../../types/group';
 
-import Divider from '../../../../components/Divider/Divider';
 import SidebarGroupsMenu from '../SidebarGroupsMenu/SidebarGroupsMenu';
-import SidebarMenuModals from '../SidebarMenuModals/SidebarMenuModals';
+import SidebarModals from '../SidebarModals/SidebarModals';
 
 import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembersProfileMenu';
 import SidebarFeaturesMenu from '../SidebarFeaturesMenu/SidebarFeaturesMenu';
 import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
 import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
 import SidebarLogoutMenu from '../SidebarLogoutMenu/SidebarLogoutMenu';
-import { StyledContainer, StyledLogo, StyledBottomMenu } from './Sidebar.styles';
+import {
+  StyledContainer,
+  StyledLogo,
+  StyledBottomMenu,
+  StyledLogoContainer
+} from './Sidebar.styles';
 
 function Sidebar() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<Group>>([]);
-  const [activeModalMenu, setActiveModalMenu] = useState<null | string>(null);
+  const [activeModal, setActiveModal] = useState<null | string>(null);
   const { groupCode } = useParams() as { groupCode: Group['code'] };
 
   const handleNavigate = (location: string) => () => {
     navigate(location);
   };
 
-  const handleActiveModalMenu = (menu: null | string) => () => {
-    setActiveModalMenu(menu);
+  const handleActiveModal = (menu: null | string) => () => {
+    setActiveModal(menu);
   };
 
   useEffect(() => {
@@ -48,21 +52,15 @@ function Sidebar() {
   return (
     <>
       <StyledContainer>
-        <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
-        <SidebarGroupsMenu
-          onClickMenu={handleActiveModalMenu}
-          groupCode={groupCode}
-          groups={groups}
-        />
+        <StyledLogoContainer>
+          <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+        </StyledLogoContainer>
 
-        <Divider />
+        <SidebarGroupsMenu onClickMenu={handleActiveModal} groupCode={groupCode} groups={groups} />
         <SidebarFeaturesMenu groupCode={groupCode} />
-
-        <Divider />
         <SidebarMembersProfileMenu />
-
         <StyledBottomMenu>
-          <SidebarSlackMenu onClick={handleActiveModalMenu('slack')} />
+          <SidebarSlackMenu onClick={handleActiveModal('slack')} />
           <SidebarInvitationMenu groupCode={groupCode} />
           <SidebarLogoutMenu />
         </StyledBottomMenu>
@@ -70,9 +68,9 @@ function Sidebar() {
 
       {/* TODO: 모달이 모여있음  */}
       {/* TODO: portal 사용 */}
-      <SidebarMenuModals
-        activeModalMenu={activeModalMenu}
-        closeModal={handleActiveModalMenu(null)}
+      <SidebarModals
+        activeModal={activeModal}
+        closeModal={handleActiveModal(null)}
         groupCode={groupCode}
       />
     </>

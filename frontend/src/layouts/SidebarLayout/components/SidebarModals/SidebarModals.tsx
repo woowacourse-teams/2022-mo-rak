@@ -30,15 +30,15 @@ import {
   StyledLinkIcon,
   StyledButton,
   StyledSmallLogo
-} from './SidebarMenuModals.styles';
+} from './SidebarModals.styles';
 
 type Props = {
-  activeModalMenu: string | null;
+  activeModal: string | null;
   closeModal: () => void;
   groupCode: Group['code'];
 };
 
-function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
+function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
   const [groupName, handleGroupName, resetGroupName] = useInput('');
   const [invitationCode, handleInvitationCode, resetInvitationCode] = useInput('');
   const [slackUrl, handleSlackUrl, resetSlackUrl] = useInput('');
@@ -129,7 +129,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
     <>
       {/* TODO: 모달 컴포넌트 3개로 나눠줘야할듯 */}
       {/* 슬랙 연동 */}
-      <Modal isVisible={activeModalMenu === 'slack'} close={closeModal}>
+      <Modal isVisible={activeModal === 'slack'} close={closeModal}>
         {/* 슬랙 메뉴 */}
         <StyledModalFormContainer onSubmit={handleLinkSlack}>
           <StyledTop>
@@ -167,7 +167,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
       </Modal>
 
       {/* 그룹 생성 */}
-      <Modal isVisible={activeModalMenu === 'create'} close={closeModal}>
+      <Modal isVisible={activeModal === 'create'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleCreateGroup}>
           <StyledTop>
             <StyledSmallLogo src={Logo} alt="logo" />
@@ -204,7 +204,7 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
       </Modal>
 
       {/* 그룹 참가 */}
-      <Modal isVisible={activeModalMenu === 'participate'} close={closeModal}>
+      <Modal isVisible={activeModal === 'participate'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleParticipateGroup}>
           <StyledTop>
             <StyledSmallLogo src={Logo} alt="logo" />
@@ -243,4 +243,4 @@ function SidebarMenuModals({ activeModalMenu, closeModal, groupCode }: Props) {
   );
 }
 
-export default SidebarMenuModals;
+export default SidebarModals;
