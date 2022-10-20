@@ -67,7 +67,7 @@ function PollResultContainer() {
   }, []);
 
   return (
-    <Box width="84.4rem" padding="6.4rem 4.8rem">
+    <Box width="84.4rem" minHeight="60rem" padding="6.4rem 4.8rem">
       {poll ? (
         <>
           <FlexContainer justifyContent="end">
