@@ -15,7 +15,7 @@ import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMen
 import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
 import SidebarLogoutMenu from '../SidebarLogoutMenu/SidebarLogoutMenu';
 import { StyledContainer, StyledLogo, StyledBottomMenu } from './Sidebar.styles';
-import CenteredSpinner from '../../../../components/CenteredSpinner/CenteredSpinner';
+import Spinner from '../../../../components/Spinner/Spinner';
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ function Sidebar() {
     <>
       <StyledContainer>
         {isLoading ? (
-          <CenteredSpinner width="40%" />
+          <Spinner width="40%" placement="center" />
         ) : (
           <>
             <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />

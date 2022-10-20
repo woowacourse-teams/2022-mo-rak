@@ -23,7 +23,7 @@ import PollResultProgress from '../PollResultProgress/PollResultProgress';
 import PollResultStatus from '../PollResultStatus/PollResultStatus';
 import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
 import { AxiosError } from 'axios';
-import CenteredSpinner from '../../../../components/CenteredSpinner/CenteredSpinner';
+import Spinner from '../../../../components/Spinner/Spinner';
 
 function PollResultContainer() {
   const navigate = useNavigate();
@@ -116,7 +116,7 @@ function PollResultContainer() {
         </>
       ) : (
         <StyledLoadingContainer>
-          <CenteredSpinner width="15%" />
+          <Spinner width="15%" placement="center" />
         </StyledLoadingContainer>
       )}
     </Box>

@@ -18,7 +18,7 @@ import {
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 import { Group } from '../../../../types/group';
 import { AxiosError } from 'axios';
-import CenteredSpinner from '../../../../components/CenteredSpinner/CenteredSpinner';
+import Spinner from '../../../../components/Spinner/Spinner';
 
 const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
   pollItems
@@ -181,7 +181,7 @@ function PollProgressForm() {
         </form>
       ) : (
         <StyledLoadingContainer>
-          <CenteredSpinner width="15%" />
+          <Spinner width="15%" placement="center" />
         </StyledLoadingContainer>
       )}
     </Box>

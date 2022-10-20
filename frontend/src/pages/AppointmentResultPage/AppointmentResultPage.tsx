@@ -14,7 +14,7 @@ import AppointmentResultAvailableMembers from './components/AppointmentResultAva
 import AppointmentResultButtonGroup from './components/AppointmentResultButtonGroup/AppointmentResultButtonGroup';
 import AppointmentResultHeader from './components/AppointmentResultHeader/AppointmentResultHeader';
 import { AxiosError } from 'axios';
-import CenteredSpinner from '../../components/CenteredSpinner/CenteredSpinner';
+import Spinner from '../../components/Spinner/Spinner';
 
 function AppointmentResultPage() {
   const navigate = useNavigate();
@@ -98,7 +98,7 @@ function AppointmentResultPage() {
           />
         </FlexContainer>
       ) : (
-        <CenteredSpinner width="15%" />
+        <Spinner width="15%" placement="center" />
       )}
     </StyledContainer>
   );

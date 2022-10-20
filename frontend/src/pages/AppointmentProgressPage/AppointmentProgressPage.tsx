@@ -14,7 +14,7 @@ import {
   StyledRightContainer
 } from './AppointmentProgressPage.styles';
 import { AxiosError } from 'axios';
-import CenteredSpinner from '../../components/CenteredSpinner/CenteredSpinner';
+import Spinner from '../../components/Spinner/Spinner';
 
 // TODO: 중복됨 제거
 const getPlusOneDate = (date: string) => {
@@ -170,7 +170,7 @@ function AppointmentProgressPage() {
           </FlexContainer>
         </FlexContainer>
       ) : (
-        <CenteredSpinner width="15%" />
+        <Spinner width="15%" placement="center" />
       )}
     </StyledContainer>
   );

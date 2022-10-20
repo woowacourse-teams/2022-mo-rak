@@ -1,10 +1,10 @@
-import CenteredSpinner from '../../components/CenteredSpinner/CenteredSpinner';
+import Spinner from '../../components/Spinner/Spinner';
 import { StyledContainer } from './FallbackPage.styles';
 
 function FallbackPage() {
   return (
     <StyledContainer>
-      <CenteredSpinner width="10%" />
+      <Spinner width="10%" placement="center" />
     </StyledContainer>
   );
 }

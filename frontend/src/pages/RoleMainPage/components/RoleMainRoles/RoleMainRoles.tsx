@@ -2,7 +2,7 @@ import { useTheme } from '@emotion/react';
 import TextField from '../../../../components/TextField/TextField';
 import { StyledName, StyledContainer, StyledRoleContainer } from './RoleMainRoles.styles';
 import { EditRolesRequest } from '../../../../types/role';
-import CenteredSpinner from '../../../../components/CenteredSpinner/CenteredSpinner';
+import Spinner from '../../../../components/Spinner/Spinner';
 
 type Props = {
   roles: EditRolesRequest['roles'];
@@ -29,7 +29,7 @@ function RoleMainRoles({ roles }: Props) {
           );
         })
       ) : (
-        <CenteredSpinner width="5%" />
+        <Spinner width="5%" placement="center" />
       )}
     </StyledContainer>
   );
