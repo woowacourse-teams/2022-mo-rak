@@ -9,6 +9,10 @@ spring:
   web:
     resources:
       add-mappings: false
+
+cors:
+  allowedOrigin: "*"
+
 ---
 
 spring:
