@@ -8,7 +8,7 @@ const StyledTop = styled.div`
   padding: 2.4rem 0;
 `;
 
-const StyledLogo = styled.img`
+const StyledIcon = styled.img`
   width: 4rem;
   margin: 0 auto;
   margin-bottom: 2rem;
@@ -73,7 +73,7 @@ const StyledForm = styled.form(
 
 export {
   StyledTop,
-  StyledLogo,
+  StyledIcon,
   StyledTitle,
   StyledCloseIcon,
   StyledTriangle,

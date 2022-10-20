@@ -1,7 +1,7 @@
 import Modal from '../../../../components/Modal/Modal';
 import {
   StyledTop,
-  StyledLogo,
+  StyledIcon,
   StyledBottom,
   StyledTriangle,
   StyledCloseIcon,
@@ -53,8 +53,7 @@ function SidebarEditUsernameModal({ isVisible, close }: Props) {
     <Modal isVisible={isVisible} close={close}>
       <StyledForm onSubmit={handleEditUserName}>
         <StyledTop>
-          {/* TODO: Icon vs logo?? */}
-          <StyledLogo src={EditWithSmile} alt="edit-logo" />
+          <StyledIcon src={EditWithSmile} alt="edit-logo" />
           <StyledTitle>닉네임 수정하기</StyledTitle>
           <StyledCloseIcon onClick={close} src={Close} alt="close-button" />
           <StyledTriangle />
