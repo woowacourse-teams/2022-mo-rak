@@ -89,7 +89,11 @@ const style = css`
     }
   }
 
+<<<<<<< HEAD
   @media screen and (min-width: 1700px) {
+=======
+  @media screen and (max-width: 1366px) {
+>>>>>>> c2416ea (design: 반응형 폰트 사이즈 조정)
     html {
       font-size: 9px;
     }
