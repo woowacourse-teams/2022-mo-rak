@@ -16,6 +16,10 @@ const StyledContainer = styled.div(
 `
 );
 
+const StyledLogoContainer = styled.div`
+  height: 10%;
+`;
+
 const StyledLogo = styled.img`
   display: block;
   margin: 2rem auto;
@@ -31,4 +35,4 @@ const StyledBottomMenu = styled.div`
   gap: 2rem;
 `;
 
-export { StyledContainer, StyledLogo, StyledBottomMenu };
+export { StyledContainer, StyledLogo, StyledBottomMenu, StyledLogoContainer };

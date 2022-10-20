@@ -78,7 +78,6 @@ const StyledBottom = styled.div(
   `
 );
 
-
 export {
   StyledForm,
   StyledLogo,
@@ -87,6 +86,5 @@ export {
   StyledCloseButton,
   StyledTriangle,
   StyledBottom,
-  // StyledRolesContainer,
   StyledDescription
 };

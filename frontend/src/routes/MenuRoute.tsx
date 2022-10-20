@@ -8,10 +8,10 @@ type Props = {
 };
 
 function MenuRoute({ menu }: Props) {
-  const dispatch = useMenuDispatchContext();
+  const menuDispatch = useMenuDispatchContext();
 
   useEffect(() => {
-    dispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
+    menuDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
   }, []);
 
   return <Outlet />;
