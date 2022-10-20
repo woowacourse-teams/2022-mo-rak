@@ -1,20 +1,30 @@
 node {
     stage('check-out') {
         // Get some code from a GitHub repository
+        slackSend (channel: "jenkins", color: "good",  message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
         git url: 'https://github.com/woowacourse-teams/2022-mo-rak.git',
             branch: 'dev'
     }
 
     stage('build') {
         dir ('./backend') {
-            sh './gradlew clean build'
+            try {
+                sh './gradlew clean build'
+                slackSend (channel: "jenkins", color: "good",  message: "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            } catch(e) {
+                slackSend (channel: "jenkins", color: "warning",  message: "Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            }
         }
     }
 
     stage('deploy') {
         dir ('./backend/build/libs') {
-            sh 'scp -i /var/lib/jenkins/key-morak.pem ./*.jar ubuntu@192.168.1.123:/home/ubuntu'
-            sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@192.168.1.123 "sh /home/ubuntu/start_service.sh 2>/dev/null"'
+            try {
+                sh 'scp -i /var/lib/jenkins/key-morak.pem ./*.jar ubuntu@192.168.1.123:/home/ubuntu'
+                sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@192.168.1.123 "sh /home/ubuntu/start_service.sh 2>/dev/null"'
+            } catch(e) {
+                slackSend (channel: "jenkins", color: "warning", message: "Deploy Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            }
         }
     }
 }
