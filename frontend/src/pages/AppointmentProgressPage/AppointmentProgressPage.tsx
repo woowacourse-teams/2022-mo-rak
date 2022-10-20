@@ -170,7 +170,7 @@ function AppointmentProgressPage() {
           </FlexContainer>
         </FlexContainer>
       ) : (
-        <CenteredSpinner width="20%" />
+        <CenteredSpinner width="15%" />
       )}
     </StyledContainer>
   );
