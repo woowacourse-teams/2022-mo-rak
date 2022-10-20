@@ -14,6 +14,7 @@ import AppointmentResultAvailableMembers from './components/AppointmentResultAva
 import AppointmentResultButtonGroup from './components/AppointmentResultButtonGroup/AppointmentResultButtonGroup';
 import AppointmentResultHeader from './components/AppointmentResultHeader/AppointmentResultHeader';
 import { AxiosError } from 'axios';
+import CenteredSpinner from '../../components/CenteredSpinner/CenteredSpinner';
 
 function AppointmentResultPage() {
   const navigate = useNavigate();
@@ -64,39 +65,41 @@ function AppointmentResultPage() {
     })();
   }, []);
 
-  if (!appointment) return <div>로딩중입니다.</div>;
-
   return (
     <StyledContainer>
-      <FlexContainer flexDirection="column" gap="4rem">
-        <AppointmentResultHeader
-          groupCode={groupCode}
-          appointmentCode={appointmentCode}
-          title={appointment.title}
-          isClosed={appointment.isClosed}
-          closedAt={appointment.closedAt}
-        />
-        <FlexContainer gap="4rem">
-          <AppointmentResultRanking
-            appointmentRecommendation={appointmentRecommendation}
-            clickedRecommendation={clickedRecommendation}
-            onClickRank={handleShowParticipant}
+      {appointment ? (
+        <FlexContainer flexDirection="column" gap="4rem">
+          <AppointmentResultHeader
+            groupCode={groupCode}
+            appointmentCode={appointmentCode}
+            title={appointment.title}
+            isClosed={appointment.isClosed}
+            closedAt={appointment.closedAt}
           />
-          <AppointmentResultAvailableMembers
+          <FlexContainer gap="4rem">
+            <AppointmentResultRanking
+              appointmentRecommendation={appointmentRecommendation}
+              clickedRecommendation={clickedRecommendation}
+              onClickRank={handleShowParticipant}
+            />
+            <AppointmentResultAvailableMembers
+              appointmentRecommendation={appointmentRecommendation}
+              clickedRecommendation={clickedRecommendation}
+            />
+          </FlexContainer>
+          <AppointmentResultButtonGroup
+            groupCode={groupCode}
             appointmentRecommendation={appointmentRecommendation}
-            clickedRecommendation={clickedRecommendation}
+            appointmentCode={appointmentCode}
+            isClosed={appointment.isClosed}
+            title={appointment.title}
+            isHost={appointment.isHost}
+            setIsClosed={setIsClosed}
           />
         </FlexContainer>
-        <AppointmentResultButtonGroup
-          groupCode={groupCode}
-          appointmentRecommendation={appointmentRecommendation}
-          appointmentCode={appointmentCode}
-          isClosed={appointment.isClosed}
-          title={appointment.title}
-          isHost={appointment.isHost}
-          setIsClosed={setIsClosed}
-        />
-      </FlexContainer>
+      ) : (
+        <CenteredSpinner width="15%" />
+      )}
     </StyledContainer>
   );
 }
