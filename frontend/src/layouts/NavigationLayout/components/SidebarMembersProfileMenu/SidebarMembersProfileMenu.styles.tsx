@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 
 const StyledGroupMembersContainer = styled.div`
-  height: 35%;
+  overflow-y: auto;
+  height: 80%;
 `;
 
 const StyledMenuHeader = styled.div`
@@ -32,8 +33,7 @@ const StyledEditIcon = styled.img`
 `;
 
 const StyledContainer = styled.div`
-  overflow-y: auto;
-  height: 80%;
+  height: 35%;
 `;
 
 export {
