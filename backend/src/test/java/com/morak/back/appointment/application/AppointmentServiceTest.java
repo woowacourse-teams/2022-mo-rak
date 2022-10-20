@@ -240,7 +240,7 @@ class AppointmentServiceTest {
         appointment.selectAvailableTime(Set.of(select1, select2, select3, select4), 에덴, now);
 
         // when
-        List<RecommendationResponse> recommendationResponses = appointmentService.recommendAvailableTimes(
+        List<RecommendationResponse> recommendationResponses = appointmentService.recommendAppointmentTimes(
                 appointment.getTeamCode().getCode(),
                 appointment.getHostId(),
                 appointment.getCode()

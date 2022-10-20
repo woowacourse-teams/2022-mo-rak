@@ -126,8 +126,8 @@ public class AppointmentService {
     }
 
     @Transactional(readOnly = true)
-    public List<RecommendationResponse> recommendAvailableTimes(String teamCode, Long memberId,
-                                                                String appointmentCode) {
+    public List<RecommendationResponse> recommendAppointmentTimes(String teamCode, Long memberId,
+                                                                  String appointmentCode) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)

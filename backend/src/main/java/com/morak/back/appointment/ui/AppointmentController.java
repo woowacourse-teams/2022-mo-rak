@@ -62,10 +62,10 @@ public class AppointmentController {
     }
 
     @GetMapping("/{appointmentCode}/recommendation")
-    public ResponseEntity<List<RecommendationResponse>> recommendAppointments(@PathVariable String groupCode,
-                                                                              @Auth Long memberId,
-                                                                              @PathVariable String appointmentCode) {
-        return ResponseEntity.ok(appointmentService.recommendAvailableTimes(groupCode, memberId, appointmentCode));
+    public ResponseEntity<List<RecommendationResponse>> recommendAppointmentTimes(@PathVariable String groupCode,
+                                                                                  @Auth Long memberId,
+                                                                                  @PathVariable String appointmentCode) {
+        return ResponseEntity.ok(appointmentService.recommendAppointmentTimes(groupCode, memberId, appointmentCode));
     }
 
     @PatchMapping("/{appointmentCode}/close")
