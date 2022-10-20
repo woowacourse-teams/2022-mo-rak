@@ -68,6 +68,7 @@ function menuReducer(state: MenuState, action: MenuAction): MenuState {
   }
 }
 
+// TODO: Navigation으로 변경?
 function MenuProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(menuReducer, initialState);
 

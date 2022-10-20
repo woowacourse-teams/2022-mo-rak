@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Logo from '../../assets/logo.svg';
+import Logo from '../../../../assets/logo.svg';
 
-import { getGroups } from '../../api/group';
-import { Group } from '../../types/group';
+import { getGroups } from '../../../../api/group';
+import { Group } from '../../../../types/group';
 
-import Divider from '../../components/Divider/Divider';
-import SidebarGroupsMenu from './components/SidebarGroupsMenu/SidebarGroupsMenu';
-import SidebarMenuModals from './components/SidebarMenuModals/SidebarMenuModals';
+import Divider from '../../../../components/Divider/Divider';
+import SidebarGroupsMenu from '../SidebarGroupsMenu/SidebarGroupsMenu';
+import SidebarMenuModals from '../SidebarMenuModals/SidebarMenuModals';
 
-import SidebarMembersProfileMenu from './components/SidebarMembersProfileMenu/SidebarMembersProfileMenu';
-import SidebarFeaturesMenu from './components/SidebarFeaturesMenu/SidebarFeaturesMenu';
-import SidebarInvitationMenu from './components/SidebarInvitationMenu/SidebarInvitationMenu';
-import SidebarSlackMenu from './components/SidebarSlackMenu/SidebarSlackMenu';
-import SidebarLogoutMenu from './components/SidebarLogoutMenu/SidebarLogoutMenu';
-import { StyledContainer, StyledLogo, StyledBottomMenu } from './SidebarLayout.styles';
+import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembersProfileMenu';
+import SidebarFeaturesMenu from '../SidebarFeaturesMenu/SidebarFeaturesMenu';
+import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
+import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
+import SidebarLogoutMenu from '../SidebarLogoutMenu/SidebarLogoutMenu';
+import { StyledContainer, StyledLogo, StyledBottomMenu } from './Sidebar.styles';
 
-function SidebarLayout() {
+function Sidebar() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<Group>>([]);
@@ -79,4 +79,4 @@ function SidebarLayout() {
   );
 }
 
-export default SidebarLayout;
+export default Sidebar;

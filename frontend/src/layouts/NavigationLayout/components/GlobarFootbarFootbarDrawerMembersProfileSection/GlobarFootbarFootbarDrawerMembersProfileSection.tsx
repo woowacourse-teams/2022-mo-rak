@@ -8,13 +8,13 @@ import {
   StyledMenuHeader,
   StyledName,
   StyledContainer
-} from './NavbarDrawerMembersProfileSection.styles';
+} from './GlobarFootbarFootbarDrawerMembersProfileSection.styles';
 
 type Props = {
   groupCode: Group['code'];
 };
 
-function NavbarDrawerMembersProfileSection({ groupCode }: Props) {
+function GlobalFootbarFootbarDrawerMembersProfileSection({ groupCode }: Props) {
   const [groupMembers, setGroupMembers] = useState<Array<Member>>([]);
   const groupMembersCount = groupMembers.length;
 
@@ -42,4 +42,4 @@ function NavbarDrawerMembersProfileSection({ groupCode }: Props) {
   );
 }
 
-export default NavbarDrawerMembersProfileSection;
+export default GlobalFootbarFootbarDrawerMembersProfileSection;

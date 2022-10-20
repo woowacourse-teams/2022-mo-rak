@@ -1,9 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import Leave from '../../../../assets/leave.svg';
 import { removeLocalStorageItem } from '../../../../utils/storage';
-import { StyledContainer, StyledLeaveImage, StyledText } from './NavbarLogoutMenu.styles';
+import {
+  StyledContainer,
+  StyledLeaveImage,
+  StyledText
+} from './GlobalFootbarFootbarDrawerBottomSectionLogoutMenu.styles';
 
-function NavbarLogoutMenu() {
+function GlobalFootbarFootbarDrawerBottomSectionLogoutMenu() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -21,4 +25,4 @@ function NavbarLogoutMenu() {
   );
 }
 
-export default NavbarLogoutMenu;
+export default GlobalFootbarFootbarDrawerBottomSectionLogoutMenu;

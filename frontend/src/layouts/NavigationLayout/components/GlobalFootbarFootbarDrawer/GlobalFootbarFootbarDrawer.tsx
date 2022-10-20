@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
-import { StyledContainer, StyledCloseButton } from './NavbarDrawer.styles';
+import { StyledContainer, StyledCloseButton } from './GlobalFootbarFootbarDrawer.styles';
 import CloseButton from '../../../../assets/close-button.svg';
 import Divider from '../../../../components/Divider/Divider';
-import NavbarDrawerFeaturesSection from '../NavbarDrawerFeaturesSection/NavbarDrawerFeaturesSection';
-import NavbarDrawerMembersProfileSection from '../NavbarDrawerMembersProfileSection/NavbarDrawerMembersProfileSection';
-import NavbarDrawerGroupsSection from '../NavbarDrawerGroupsSection/NavbarDrawerGroupsSection';
-import NavbarDrawerBottomSection from '../NavbarDrawerBottomSection/NavbarDrawerBottomSection';
-import NavbarDrawerModals from '../NavbarDrawerModals/NavbarDrawerModals';
+import GlobalFootbarFootbarDrawerFeaturesSection from '../GlobalFootbarFootbarDrawerFeaturesSection/GlobalFootbarFootbarDrawerFeaturesSection';
+import GlobalFootbarFootbarDrawerMembersProfileSection from '../GlobarFootbarFootbarDrawerMembersProfileSection/GlobarFootbarFootbarDrawerMembersProfileSection';
+import GlobalFootbarFootbarDrawerGroupsSection from '../GlobalFootbarFootbarDrawerGroupsSection/GlobalFootbarFootbarDrawerGroupsSection';
+import GlobalFootbarFootbarDrawerBottomSection from '../GlobalFootbarFootbarDrawerBottomSection/GlobalFootbarFootbarDrawerBottomSection';
+import NavbarDrawerModals from '../GlobalFootbarFootbarDrawerModals/GlobalFootbarFootbarDrawerModals';
 import useMenuContext from '../../../../hooks/useMenuContext';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import { Group } from '../../../../types/group';
@@ -18,7 +18,7 @@ type Props = {
   groups: Array<Group>;
 };
 
-function NavbarDrawer({ groupCode, groups }: Props) {
+function GlobalFootbarFootbarDrawer({ groupCode, groups }: Props) {
   const { isDrawerVisible } = useMenuContext();
   const menuDispatch = useMenuDispatchContext();
   const [activeModalMenu, setActiveModalMenu] = useState<null | string>(null);
@@ -39,7 +39,7 @@ function NavbarDrawer({ groupCode, groups }: Props) {
           <img src={CloseButton} alt="메뉴닫기" />
         </StyledCloseButton>
 
-        <NavbarDrawerGroupsSection
+        <GlobalFootbarFootbarDrawerGroupsSection
           closeDrawer={handleCloseDrawer}
           onClickMenu={handleSetActiveModalMenu}
           groupCode={groupCode}
@@ -47,13 +47,19 @@ function NavbarDrawer({ groupCode, groups }: Props) {
         />
 
         <Divider />
-        <NavbarDrawerFeaturesSection closeDrawer={handleCloseDrawer} groupCode={groupCode} />
+        <GlobalFootbarFootbarDrawerFeaturesSection
+          closeDrawer={handleCloseDrawer}
+          groupCode={groupCode}
+        />
 
         <Divider />
-        <NavbarDrawerMembersProfileSection groupCode={groupCode} />
+        <GlobalFootbarFootbarDrawerMembersProfileSection groupCode={groupCode} />
 
         <Divider />
-        <NavbarDrawerBottomSection onClickMenu={handleSetActiveModalMenu} groupCode={groupCode} />
+        <GlobalFootbarFootbarDrawerBottomSection
+          onClickMenu={handleSetActiveModalMenu}
+          groupCode={groupCode}
+        />
       </StyledContainer>
 
       {/* TODO: 모달이 모여있음  */}
@@ -68,4 +74,4 @@ function NavbarDrawer({ groupCode, groups }: Props) {
   );
 }
 
-export default NavbarDrawer;
+export default GlobalFootbarFootbarDrawer;

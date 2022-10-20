@@ -1,4 +1,4 @@
-import { StyledContainer, StyledMenuIcon } from './NavbarFooter.styles';
+import { StyledContainer, StyledMenuIcon } from './GlobalFootbarFootbar.styles';
 import Home from '../../../../assets/home.svg';
 import MenuImg from '../../../../assets/menu.svg';
 import Poll from '../../../../assets/poll.svg';
@@ -9,14 +9,14 @@ import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import useMenuContext from '../../../../hooks/useMenuContext';
 import { Group } from '../../../../types/group';
 import { Menu } from '../../../../types/menu';
-import NavbarDrawer from '../NavbarDrawer/NavbarDrawer';
+import GlobalFootbarFootbarDrawer from '../GlobalFootbarFootbarDrawer/GlobalFootbarFootbarDrawer';
 
 type Props = {
   groupCode: Group['code'];
   groups: Array<Group>;
 };
 
-function NavbarFooter({ groupCode, groups }: Props) {
+function GlobalFootbarFootbar({ groupCode, groups }: Props) {
   const { activeMenu } = useMenuContext();
   const menuDispatch = useMenuDispatchContext();
   const navigate = useNavigate();
@@ -60,9 +60,9 @@ function NavbarFooter({ groupCode, groups }: Props) {
         </button>
       </StyledContainer>
 
-      <NavbarDrawer groupCode={groupCode} groups={groups} />
+      <GlobalFootbarFootbarDrawer groupCode={groupCode} groups={groups} />
     </>
   );
 }
 
-export default NavbarFooter;
+export default GlobalFootbarFootbar;

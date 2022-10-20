@@ -3,18 +3,18 @@ import FlexContainer from '../../components/FlexContainer/FlexContainer';
 import { GroupMembersProvider } from '../../context/GroupMembersProvider';
 import { MenuProvider } from '../../context/MenuProvider';
 import useDeviceState from '../../hooks/useDeviceState';
-import NavbarLayout from '../NavbarLayout/NavbarLayout';
-import SidebarLayout from '../SidebarLayout/SidebarLayout';
+import GlobalFootbar from './components/GlobalFootbar/GlobalFootbar';
+import Sidebar from './components/Sidebar/Sidebar';
 
-function Layout() {
+function NavigationLayout() {
   const isMobile = useDeviceState();
-  const menuLayout = isMobile ? <NavbarLayout /> : <SidebarLayout />;
+  const navigationBar = isMobile ? <GlobalFootbar /> : <Sidebar />;
 
   return (
     <FlexContainer>
       <MenuProvider>
         <GroupMembersProvider>
-          {menuLayout}
+          {navigationBar}
           <Outlet />
         </GroupMembersProvider>
       </MenuProvider>
@@ -22,4 +22,4 @@ function Layout() {
   );
 }
 
-export default Layout;
+export default NavigationLayout;

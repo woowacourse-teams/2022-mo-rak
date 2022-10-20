@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Group } from '../../types/group';
-import NavbarHeader from './components/NavbarHeader/NavbarHeader';
-import NavbarFooter from './components/NavbarFooter/NavbarFooter';
-import { getGroups } from '../../api/group';
+import { Group } from '../../../../types/group';
+import GlobalFootbarGlobalbar from '../GlobalFootbarGlobalbar/GlobalFootbarGlobalbar';
+import GlobalFootbarFootbar from '../GlobalFootbarFootbar/GlobalFootbarFootbar';
+import { getGroups } from '../../../../api/group';
 
-function NavbarLayout() {
+function GlobalFootbar() {
   const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<Array<Group>>([]);
 
@@ -29,10 +29,10 @@ function NavbarLayout() {
 
   return (
     <>
-      <NavbarHeader groups={groups} groupCode={groupCode} />
-      <NavbarFooter groups={groups} groupCode={groupCode} />
+      <GlobalFootbarGlobalbar groups={groups} groupCode={groupCode} />
+      <GlobalFootbarFootbar groups={groups} groupCode={groupCode} />
     </>
   );
 }
 
-export default NavbarLayout;
+export default GlobalFootbar;

@@ -5,7 +5,7 @@ import {
   StyledProfileContainer,
   StyledName,
   StyledCurrentGroupContainer
-} from './NavbarHeader.styles';
+} from './GlobalFootbarGlobalbar.styles';
 import Logo from '../../../../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { Group } from '../../../../types/group';
@@ -15,7 +15,7 @@ type Props = {
   groups: Array<Group>;
 };
 
-function NavbarHeader({ groups, groupCode }: Props) {
+function GlobalFootbarGlobalbar({ groups, groupCode }: Props) {
   const navigate = useNavigate();
   const currentGroup = groups.find((group) => group.code === groupCode);
 
@@ -38,4 +38,4 @@ function NavbarHeader({ groups, groupCode }: Props) {
   );
 }
 
-export default NavbarHeader;
+export default GlobalFootbarGlobalbar;

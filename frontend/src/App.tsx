@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { MenuRoute } from './routes/MenuRoute';
-import Layout from './layouts/Layout/Layout';
+import NavigationLayout from './layouts/NavigationLayout/NavigationLayout';
 import GroupRoute from './routes/GroupRoute';
 
 const PollMainPage = lazy(() => import('./pages/PollMainPage/PollMainPage'));
@@ -36,7 +36,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="init" element={<GroupInitPage />} />
 
-            <Route element={<Layout />}>
+            <Route element={<NavigationLayout />}>
               <Route path="groups/:groupCode">
                 <Route element={<GroupRoute />}>
                   <Route element={<MenuRoute menu="main" />}>
@@ -55,7 +55,7 @@ function App() {
                   <Route element={<MenuRoute menu="appointment" />}>
                     <Route path="appointment">
                       <Route index element={<AppointmentMainPage />} />
-                      <Route path ="create" element={<AppointmentCreatePage />} />
+                      <Route path="create" element={<AppointmentCreatePage />} />
                       <Route
                         path=":appointmentCode/progress"
                         element={<AppointmentProgressPage />}

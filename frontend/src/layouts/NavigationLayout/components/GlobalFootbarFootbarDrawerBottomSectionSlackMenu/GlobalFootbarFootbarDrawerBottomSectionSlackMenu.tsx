@@ -1,12 +1,16 @@
 import { MouseEventHandler } from 'react';
 import Slack from '../../../../assets/slack.svg';
-import { StyledContainer, StyledSlackLogo, StyledText } from './NavbarSlackMenu.styles';
+import {
+  StyledContainer,
+  StyledSlackLogo,
+  StyledText
+} from './GlobalFootbarFootbarDrawerBottomSectionSlackMenu.styles';
 
 type Props = {
   onClick: MouseEventHandler<HTMLButtonElement>;
 };
 
-function NavbarSlackMenu({ onClick }: Props) {
+function GlobalFootbarFootbarDrawerBottomSectionSlackMenu({ onClick }: Props) {
   return (
     <StyledContainer onClick={onClick}>
       <StyledSlackLogo src={Slack} alt="slack-icon" />
@@ -15,4 +19,4 @@ function NavbarSlackMenu({ onClick }: Props) {
   );
 }
 
-export default NavbarSlackMenu;
+export default GlobalFootbarFootbarDrawerBottomSectionSlackMenu;

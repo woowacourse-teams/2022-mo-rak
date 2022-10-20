@@ -6,13 +6,13 @@ import {
   StyledInvitationLink,
   StyledInvitationText,
   StyledPlusIcon
-} from './NavbarInvitationMenu.styles';
+} from './GlobalFootbarFootbarDrawerBottomSectionInvitationMenu.styles';
 
 type Props = {
   groupCode: Group['code'];
 };
 
-function NavbarInvitationMenu({ groupCode }: Props) {
+function GlobalFootbarFootbarDrawerBottomSectionInvitationMenu({ groupCode }: Props) {
   const handleCopyInvitationCode = async () => {
     const res = await createInvitationCode(groupCode);
     const invitationCode = res.headers.location.split('groups/in/')[1];
@@ -35,4 +35,4 @@ function NavbarInvitationMenu({ groupCode }: Props) {
   );
 }
 
-export default NavbarInvitationMenu;
+export default GlobalFootbarFootbarDrawerBottomSectionInvitationMenu;
