@@ -19,6 +19,7 @@ import {
   StyledBottomMenu,
   StyledLogoContainer
 } from './Sidebar.styles';
+import Spinner from '../../../../components/Spinner/Spinner';
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -47,23 +48,30 @@ function Sidebar() {
     })();
   }, [groupCode]);
 
-  if (isLoading) return <div>로딩중</div>;
-
   return (
     <>
       <StyledContainer>
-        <StyledLogoContainer>
-          <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
-        </StyledLogoContainer>
-
-        <SidebarGroupsMenu onClickMenu={handleActiveModal} groupCode={groupCode} groups={groups} />
-        <SidebarFeaturesMenu groupCode={groupCode} />
-        <SidebarMembersProfileMenu />
-        <StyledBottomMenu>
-          <SidebarSlackMenu onClick={handleActiveModal('slack')} />
-          <SidebarInvitationMenu groupCode={groupCode} />
-          <SidebarLogoutMenu />
-        </StyledBottomMenu>
+        {isLoading ? (
+          <Spinner width="40%" placement="center" />
+        ) : (
+          <>
+            <StyledLogoContainer>
+              <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+            </StyledLogoContainer>
+            <SidebarGroupsMenu
+              onClickMenu={handleActiveModal}
+              groupCode={groupCode}
+              groups={groups}
+            />
+            <SidebarFeaturesMenu groupCode={groupCode} />
+            <SidebarMembersProfileMenu />
+            <StyledBottomMenu>
+              <SidebarSlackMenu onClick={handleActiveModal('slack')} />
+              <SidebarInvitationMenu groupCode={groupCode} />
+              <SidebarLogoutMenu />
+            </StyledBottomMenu>
+          </>
+        )}
       </StyledContainer>
 
       {/* TODO: 모달이 모여있음  */}

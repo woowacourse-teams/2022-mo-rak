@@ -14,10 +14,8 @@ function RoleMainPage() {
   });
 
   const fetchRolesHistories = async () => {
-    try {
-      const res = await getRolesHistories(groupCode);
-      setRolesHistories(res.data);
-    } catch (err) {}
+    const res = await getRolesHistories(groupCode);
+    setRolesHistories(res.data);
   };
 
   useEffect(() => {
