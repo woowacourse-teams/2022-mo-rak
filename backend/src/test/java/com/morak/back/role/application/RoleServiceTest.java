@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
+import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.application.dto.RoleNameResponses;
@@ -26,6 +27,7 @@ import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamAuthorizationException;
+import com.morak.back.team.exception.TeamNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -106,6 +108,30 @@ class RoleServiceTest {
                 .isInstanceOf(TeamAuthorizationException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 역할_이름_목록을_조회할_때_멤버가_없는_경우_예외를_던진다() {
+        // given
+        roleRepository.save(new Role(team.getCode()));
+
+        // when & then
+        assertThatThrownBy(() -> roleService.editRoleNames(team.getCode(), 100L, List.of("서기", "타임키퍼")))
+                .isInstanceOf(MemberNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR);
+    }
+
+    @Test
+    void 역할_이름_목록을_조회할_때_팀이_없는_경우_예외를_던진다() {
+        // given
+        roleRepository.save(new Role(team.getCode()));
+
+        // when & then
+        assertThatThrownBy(() -> roleService.editRoleNames("123456ll", member.getId(), List.of("서기", "타임키퍼")))
+                .isInstanceOf(TeamNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
 
     @Test

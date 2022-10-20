@@ -43,10 +43,8 @@ public class RoleService {
     }
 
     public RoleNameResponses findRoleNames(String teamCode, Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
+        Member member = findMemberById(memberId);
+        Team team = findTeamByCode(teamCode);
         validateMemberInTeam(team, member);
 
         Role role = findRoleByTeamCode(teamCode);
@@ -54,10 +52,8 @@ public class RoleService {
     }
 
     public void editRoleNames(String teamCode, Long memberId, List<String> names) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
+        Member member = findMemberById(memberId);
+        Team team = findTeamByCode(teamCode);
         validateMemberInTeam(team, member);
 
         Role role = findRoleByTeamCode(teamCode);
@@ -65,10 +61,8 @@ public class RoleService {
     }
 
     public Long matchRoleAndMember(String teamCode, Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
+        Member member = findMemberById(memberId);
+        Team team = findTeamByCode(teamCode);
         validateMemberInTeam(team, member);
 
         List<Long> memberIds = findMemberIds(team);
@@ -85,14 +79,22 @@ public class RoleService {
     }
 
     public RolesResponse findHistories(String teamCode, Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
+        Member member = findMemberById(memberId);
+        Team team = findTeamByCode(teamCode);
         validateMemberInTeam(team, member);
 
         Role role = findRoleByTeamCode(teamCode);
         return RolesResponse.from(role.findAllGroupByDate());
+    }
+
+    private Member findMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
+    }
+
+    private Team findTeamByCode(String teamCode) {
+        return teamRepository.findByCode(teamCode)
+                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
     }
 
     private Role findRoleByTeamCode(String teamCode) {
