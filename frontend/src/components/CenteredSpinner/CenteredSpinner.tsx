@@ -7,11 +7,11 @@ type Props = {
   width: CSSProperties['width'];
 };
 
-function Spinner({ width }: Props) {
+function CenteredSpinner({ width }: Props) {
   // TODO: lottie 네이밍 통일
   const spinnerLottie = useLottie({ animationData: spinnerAnimation }, { width });
 
   return <StyledContainer>{spinnerLottie.View}</StyledContainer>;
 }
 
-export default Spinner;
+export default CenteredSpinner;
