@@ -62,7 +62,7 @@ public class RoleAcceptanceTest extends AcceptanceTest {
     @Test
     void 역할_목록을_조회한다() {
         // when
-        ExtractableResponse<Response> response = 역할_이름들을_조회();
+        ExtractableResponse<Response> response = 역할_이름들을_조회한다();
         RoleNameResponses roleNameResponses = toObject(response, RoleNameResponses.class);
 
         // then
@@ -80,10 +80,10 @@ public class RoleAcceptanceTest extends AcceptanceTest {
         그룹_참가를_요청한다(teamInvitationLocation, otherToken);
 
         RoleNameEditRequest roleNameEditRequest = new RoleNameEditRequest(List.of("서기", "타임키퍼"));
-        역할정하기_이름_목록_수정(roleNameEditRequest);
+        역할정하기_이름_목록_수정을_요청한다(roleNameEditRequest);
 
         // when
-        ExtractableResponse<Response> response = 역할_이름들을_조회();
+        ExtractableResponse<Response> response = 역할_이름들을_조회한다();
         RoleNameResponses roleNameResponses = toObject(response, RoleNameResponses.class);
 
         // then
@@ -99,7 +99,7 @@ public class RoleAcceptanceTest extends AcceptanceTest {
         RoleNameEditRequest request = new RoleNameEditRequest(List.of("서기", "타임키퍼"));
 
         // when
-        ExtractableResponse<Response> response = 역할정하기_이름_목록_수정(request);
+        ExtractableResponse<Response> response = 역할정하기_이름_목록_수정을_요청한다(request);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -108,7 +108,7 @@ public class RoleAcceptanceTest extends AcceptanceTest {
     @Test
     void 역할을_매칭한다() {
         // when
-        ExtractableResponse<Response> response = 역할_매칭을_요청();
+        ExtractableResponse<Response> response = 역할_매칭을_요청한다();
 
         // then
         Assertions.assertAll(
@@ -125,10 +125,10 @@ public class RoleAcceptanceTest extends AcceptanceTest {
         그룹_참가를_요청한다(teamInvitationLocation, otherToken);
 
         RoleNameEditRequest roleNameEditRequest = new RoleNameEditRequest(List.of("엘사모", "엘사모"));
-        역할정하기_이름_목록_수정(roleNameEditRequest);
+        역할정하기_이름_목록_수정을_요청한다(roleNameEditRequest);
 
         // when
-        ExtractableResponse<Response> response = 역할_매칭을_요청();
+        ExtractableResponse<Response> response = 역할_매칭을_요청한다();
 
         // then
         Assertions.assertAll(
@@ -141,10 +141,10 @@ public class RoleAcceptanceTest extends AcceptanceTest {
     void 역할을_매칭하는데_역할이_멤버보다_많을_경우_BAD_REQUEST를_응답한다() {
         // given
         RoleNameEditRequest roleNameEditRequest = new RoleNameEditRequest(List.of("서기", "타임키퍼"));
-        역할정하기_이름_목록_수정(roleNameEditRequest);
+        역할정하기_이름_목록_수정을_요청한다(roleNameEditRequest);
 
         // when
-        ExtractableResponse<Response> response = 역할_매칭을_요청();
+        ExtractableResponse<Response> response = 역할_매칭을_요청한다();
 
         // then
         Assertions.assertAll(
@@ -161,11 +161,11 @@ public class RoleAcceptanceTest extends AcceptanceTest {
         String otherToken = tokenProvider.createToken(String.valueOf(2L));
         그룹_참가를_요청한다(teamInvitationLocation, otherToken);
 
-        역할_매칭을_요청();
-        역할_매칭을_요청();
+        역할_매칭을_요청한다();
+        역할_매칭을_요청한다();
 
         // when
-        ExtractableResponse<Response> response = 역할_히스토리를_조회();
+        ExtractableResponse<Response> response = 역할_히스토리_조회를_요청한다();
         RolesResponse rolesResponse = toObject(response, RolesResponse.class);
 
         // then
@@ -175,19 +175,19 @@ public class RoleAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    private ExtractableResponse<Response> 역할_이름들을_조회() {
+    private ExtractableResponse<Response> 역할_이름들을_조회한다() {
         return get(teamLocation + "/roles/names", toHeader(token));
     }
 
-    private ExtractableResponse<Response> 역할정하기_이름_목록_수정(RoleNameEditRequest request) {
+    private ExtractableResponse<Response> 역할정하기_이름_목록_수정을_요청한다(RoleNameEditRequest request) {
         return put(teamLocation + "/roles/names", request, toHeader(token));
     }
 
-    private ExtractableResponse<Response> 역할_매칭을_요청() {
+    private ExtractableResponse<Response> 역할_매칭을_요청한다() {
         return post(teamLocation + "/roles", toHeader(token));
     }
 
-    private ExtractableResponse<Response> 역할_히스토리를_조회() {
+    private ExtractableResponse<Response> 역할_히스토리_조회를_요청한다() {
         return get(teamLocation + "/roles/histories", toHeader(token));
     }
 }

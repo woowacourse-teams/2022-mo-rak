@@ -44,7 +44,7 @@ public class RoleNames {
     public List<RoleMatchResult> match(List<Long> memberIds) {
         validateMemberCount(memberIds.size());
         return IntStream.range(0, this.values.size())
-                .mapToObj(idx -> new RoleMatchResult(this.values.get(idx), memberIds.get(idx)))
+                .mapToObj(index -> new RoleMatchResult(this.values.get(index), memberIds.get(index)))
                 .collect(Collectors.toList());
     }
 
