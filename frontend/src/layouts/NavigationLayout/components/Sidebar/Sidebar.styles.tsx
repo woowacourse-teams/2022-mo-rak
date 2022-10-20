@@ -16,18 +16,13 @@ const StyledContainer = styled.div(
 `
 );
 
-const StyledLogoContainer = styled.div`
-  height: 10%;
-`;
-
 const StyledLogo = styled.img`
   display: block;
-  margin: 0 auto;
-  height: 100%;
-  max-height: 16rem;
+  margin: 2rem auto;
+  width: 14rem;
   aspect-ratio: 16 / 9;
   cursor: pointer;
-  padding: 2rem 4rem 2rem 0;
+  padding-right: 4rem;
 `;
 
 const StyledBottomMenu = styled.div`
@@ -36,4 +31,4 @@ const StyledBottomMenu = styled.div`
   gap: 2rem;
 `;
 
-export { StyledContainer, StyledLogo, StyledBottomMenu, StyledLogoContainer };
+export { StyledContainer, StyledLogo, StyledBottomMenu };

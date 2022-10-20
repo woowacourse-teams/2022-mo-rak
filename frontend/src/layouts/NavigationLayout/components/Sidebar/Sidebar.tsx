@@ -13,12 +13,8 @@ import SidebarFeaturesMenu from '../SidebarFeaturesMenu/SidebarFeaturesMenu';
 import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
 import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
 import SidebarLogoutMenu from '../SidebarLogoutMenu/SidebarLogoutMenu';
-import {
-  StyledContainer,
-  StyledLogo,
-  StyledBottomMenu,
-  StyledLogoContainer
-} from './Sidebar.styles';
+import { StyledContainer, StyledLogo, StyledBottomMenu } from './Sidebar.styles';
+import Divider from '../../../../components/Divider/Divider';
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -52,12 +48,13 @@ function Sidebar() {
   return (
     <>
       <StyledContainer>
-        <StyledLogoContainer>
-          <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
-        </StyledLogoContainer>
-
+        <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
         <SidebarGroupsMenu onClickMenu={handleActiveModal} groupCode={groupCode} groups={groups} />
+        <Divider />
+
         <SidebarFeaturesMenu groupCode={groupCode} />
+        <Divider />
+
         <SidebarMembersProfileMenu />
         <StyledBottomMenu>
           <SidebarSlackMenu onClick={handleActiveModal('slack')} />

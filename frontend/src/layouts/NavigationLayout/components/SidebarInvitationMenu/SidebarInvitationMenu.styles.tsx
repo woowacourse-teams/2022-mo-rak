@@ -5,6 +5,7 @@ const StyledInvitationLink = styled.button`
   align-items: center;
   gap: 1.2rem;
   font-size: 1.6rem;
+  padding: 0.4rem;
 `;
 
 const StyledInvitationText = styled.p`
