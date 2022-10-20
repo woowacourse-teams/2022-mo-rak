@@ -29,7 +29,7 @@ const StyledRoleResultContainer = styled.div`
   height: 32rem;
 `;
 
-const StyledDateContainer = styled.div`
+const StyledDatesContainer = styled.div`
   padding: 0 1.2rem;
   display: flex;
   flex-direction: column;
@@ -71,7 +71,7 @@ export {
   StyledTitle,
   StyledRole,
   StyledRoleContainer,
-  StyledDateContainer,
+  StyledDatesContainer,
   StyledRoleResultContainer,
   StyledDate,
   StyledEmptyText
