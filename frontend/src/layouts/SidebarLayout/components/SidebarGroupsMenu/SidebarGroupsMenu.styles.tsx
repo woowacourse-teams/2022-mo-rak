@@ -62,7 +62,6 @@ const StyledGroupProfile = styled.div<CSSProperties>(
   width: 10rem;
   height: 10rem;
   border-radius: 1.2rem;
-  font-family: 'Nanum Gothic', sans-serif;
   background: ${backgroundColor};
 `
 );
