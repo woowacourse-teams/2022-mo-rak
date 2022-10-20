@@ -13,6 +13,7 @@ node {
                 slackSend (channel: "jenkins", color: "good",  message: "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
             } catch(e) {
                 slackSend (channel: "jenkins", color: "warning",  message: "Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                throw e
             }
         }
     }
@@ -46,9 +47,42 @@ node {
                     NEXT=${NEXT_PORT_LIST[index-1]}
                     IP=${IP_LIST[index-1]}
 
-                    ssh -i /var/lib/jenkins/key-morak.pem ubuntu@"${IP}" "sh /home/ubuntu/deploy/kill.sh ${PREVIOUS} 1>/dev/null 2>/dev/null"
                     ssh -i /var/lib/jenkins/key-morak.pem ubuntu@"${IP}" "sh /home/ubuntu/deploy/start_service.sh ${NEXT} 1>/dev/null 2>/dev/null"
                 done
+
+
+                for retry in $(seq 10)
+                do
+                    COUNT=0
+                    for index in $(seq ${SIZE})
+                    do
+                        IP=${IP_LIST[index-1]}
+                        NEXT=${NEXT_PORT_LIST[index-1]}
+                        if curl -s -I -X OPTIONS "http://${IP}:${PORT_A}" > /dev/null; then
+                            COUNT=$(($COUNT + 1))
+                        fi
+                    done
+
+                    if [ $COUNT -eq $SIZE ]
+                    then
+                        break
+                    fi
+
+                    if [ $retry -eq 10 ]
+                    then
+                        exit 1
+                    fi
+
+                    sleep 5
+                done
+
+                for index in $(seq ${SIZE})
+                do
+                    IP=${IP_LIST[index-1]}
+                    PREVIOUS=${PREVIOUS_PORT_LIST[index-1]}
+                    ssh -i /var/lib/jenkins/key-morak.pem ubuntu@"${IP}" "sh /home/ubuntu/deploy/kill.sh ${PREVIOUS} 1>/dev/null 2>/dev/null"
+                done
+
 
                 for index in $(seq ${SIZE})
                 do
@@ -63,6 +97,7 @@ node {
                 slackSend (channel: "jenkins", color: "good", message: "Deploy Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
             } catch(e) {
                 slackSend (channel: "jenkins", color: "warning", message: "Deploy Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                throw e
             }
 
     }
@@ -76,6 +111,7 @@ node {
                 slackSend (channel: "jenkins", color: "good",  message: "Route Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
             } catch(e) {
                 slackSend (channel: "jenkins", color: "warning",  message: "Route Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                throw e
             }
     }
 }
