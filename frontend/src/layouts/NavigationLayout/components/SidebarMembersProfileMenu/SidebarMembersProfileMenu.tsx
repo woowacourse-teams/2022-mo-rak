@@ -1,12 +1,12 @@
 import Avatar from '../../../../components/Avatar/Avatar';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import {
   StyledContainer,
   StyledMenuHeader,
   StyledUsername,
   StyledGroupMembersContainer,
   StyledEditIcon,
-  StyledUsernameContainer
+  StyledUsernameContainer,
+  StyledGroupMemberContainer
 } from './SidebarMembersProfileMenu.styles';
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 import Edit from '../../../../assets/edit.svg';
@@ -26,7 +26,7 @@ function SidebarMembersProfileMenu() {
       <StyledMenuHeader>멤버 목록 ({groupMembersCount})</StyledMenuHeader>
       <StyledGroupMembersContainer>
         {groupMembers.map(({ id, profileUrl, name }) => (
-          <FlexContainer key={`${name}-${profileUrl}`} alignItems="center" gap="2rem">
+          <StyledGroupMemberContainer key={`${name}-${profileUrl}`}>
             <Avatar profileUrl={profileUrl} width="4rem" />
             <StyledUsernameContainer>
               <StyledUsername>{name}</StyledUsername>
@@ -34,7 +34,7 @@ function SidebarMembersProfileMenu() {
                 <StyledEditIcon src={Edit} onClick={handleOpenEditUsernameModal} />
               )}
             </StyledUsernameContainer>
-          </FlexContainer>
+          </StyledGroupMemberContainer>
         ))}
       </StyledGroupMembersContainer>
       <SidebarEditUsernameModal
