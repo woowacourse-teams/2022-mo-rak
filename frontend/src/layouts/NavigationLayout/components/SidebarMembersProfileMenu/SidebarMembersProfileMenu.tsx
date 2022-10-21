@@ -11,7 +11,7 @@ import {
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 import Edit from '../../../../assets/edit.svg';
 import useModal from '../../../../hooks/useModal';
-import SidebarEditUsernameModal from '../../../SidebarLayout/components/SidebarEditUsernameModal/SidebarEditUsernameModal';
+import SidebarEditUsernameModal from '../SidebarEditUsernameModal/SidebarEditUsernameModal';
 import useAuthContext from '../../../../hooks/useAuthContext';
 
 function SidebarMembersProfileMenu() {

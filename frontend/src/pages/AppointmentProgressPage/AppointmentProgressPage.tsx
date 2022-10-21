@@ -82,9 +82,6 @@ function AppointmentProgressPage() {
       if (err instanceof AxiosError) {
         const errCode = err.response?.data.codeNumber;
 
-        if (errCode === '4000') {
-        }
-
         switch (errCode) {
           case '4000': {
             alert('현재보다 과거의 시간을 선택할 수 없습니다');

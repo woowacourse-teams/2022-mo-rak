@@ -47,7 +47,8 @@ function Calendar({
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
-  const isCurrentMonth = new Date().getMonth() === currentMonth;
+  const isCurrentMonth =
+    new Date().getMonth() === currentMonth && new Date().getFullYear() === currentYear;
 
   const formatDate = (day: number) =>
     `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${day
