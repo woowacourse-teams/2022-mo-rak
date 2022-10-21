@@ -1,16 +1,10 @@
-// type Props = {
-//   pollItem
-//   participants
-//   description
-// };
-
 import Modal from '../../../../components/Modal/Modal';
 import {
-  StyledForm,
+  StyledParticipantsContainer,
   StyledIcon,
   StyledTitle,
   StyledTop,
-  StyledCloseButton,
+  StyledCloseIcon,
   StyledBottom,
   StyledParticipantContainer,
   StyledParticipantDescription
@@ -18,65 +12,39 @@ import {
 import Close from '../../../../assets/close-button.svg';
 import Poll from '../../../../assets/poll.svg';
 import Avatar from '../../../../components/Avatar/Avatar';
+import { Members, PollItem } from '../../../../types/poll';
 
-function PollResultParticipantModal() {
+type Props = {
+  isVisible: boolean;
+  close: () => void;
+  participants: Members;
+  subject: PollItem['subject'];
+};
+
+function PollResultParticipantModal({ isVisible, close, participants, subject }: Props) {
+  const participantsLength = participants.length;
+
   return (
-    <Modal isVisible={true} close={() => {}}>
-      <StyledForm onSubmit={() => {}}>
+    <Modal isVisible={isVisible} close={close}>
+      <StyledParticipantsContainer>
         <StyledTop>
-          <StyledIcon src={Poll} alt="poll-logo" />
-          <StyledTitle>서브웨이(4명)</StyledTitle>
-          <StyledCloseButton onClick={close} src={Close} alt="close-button" />
-          {/* TODO: 화면 깨져서 주석으로 처리 */}
-          {/* <StyledTriangle /> */}
+          <StyledCloseIcon onClick={close} src={Close} alt="close-icon" />
+          <StyledIcon src={Poll} alt="poll-icon" />
+          <StyledTitle>
+            {subject} ({participantsLength}표)
+          </StyledTitle>
         </StyledTop>
         <StyledBottom>
-          <StyledParticipantContainer>
-            <Avatar
-              width="20%"
-              name="배달이"
-              profileUrl="https://mblogthumb-phinf.pstatic.net/MjAxOTA1MTdfMjg5/MDAxNTU4MDU5MjY3NzI0.La9iCTKSS9Cue6MbMeNSJADSkjSr0VMPlAsIdQYGjoYg.q_VK0tw6okzVQOBJbXGKFFGJkLJUqLVT26CZ9qe29Xcg.PNG.smartbaedal/%ED%97%A4%ED%97%A4%EB%B0%B0%EB%8B%AC%EC%9D%B4_%EC%9E%90%EB%A5%B8%EA%B2%83.png?type=w800"
-            />
-            <StyledParticipantDescription>
-              lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem
-              ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem
-              ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum
-            </StyledParticipantDescription>
-          </StyledParticipantContainer>
-          <StyledParticipantContainer>
-            <Avatar
-              width="20%"
-              name="배달이"
-              profileUrl="https://mblogthumb-phinf.pstatic.net/MjAxOTA1MTdfMjg5/MDAxNTU4MDU5MjY3NzI0.La9iCTKSS9Cue6MbMeNSJADSkjSr0VMPlAsIdQYGjoYg.q_VK0tw6okzVQOBJbXGKFFGJkLJUqLVT26CZ9qe29Xcg.PNG.smartbaedal/%ED%97%A4%ED%97%A4%EB%B0%B0%EB%8B%AC%EC%9D%B4_%EC%9E%90%EB%A5%B8%EA%B2%83.png?type=w800"
-            />
-            <StyledParticipantDescription>efef</StyledParticipantDescription>
-          </StyledParticipantContainer>
-          <StyledParticipantContainer>
-            <Avatar
-              width="20%"
-              name="배달이"
-              profileUrl="https://mblogthumb-phinf.pstatic.net/MjAxOTA1MTdfMjg5/MDAxNTU4MDU5MjY3NzI0.La9iCTKSS9Cue6MbMeNSJADSkjSr0VMPlAsIdQYGjoYg.q_VK0tw6okzVQOBJbXGKFFGJkLJUqLVT26CZ9qe29Xcg.PNG.smartbaedal/%ED%97%A4%ED%97%A4%EB%B0%B0%EB%8B%AC%EC%9D%B4_%EC%9E%90%EB%A5%B8%EA%B2%83.png?type=w800"
-            />
-            <StyledParticipantDescription>efef</StyledParticipantDescription>
-          </StyledParticipantContainer>
-          <StyledParticipantContainer>
-            <Avatar
-              width="20%"
-              name="배달이"
-              profileUrl="https://mblogthumb-phinf.pstatic.net/MjAxOTA1MTdfMjg5/MDAxNTU4MDU5MjY3NzI0.La9iCTKSS9Cue6MbMeNSJADSkjSr0VMPlAsIdQYGjoYg.q_VK0tw6okzVQOBJbXGKFFGJkLJUqLVT26CZ9qe29Xcg.PNG.smartbaedal/%ED%97%A4%ED%97%A4%EB%B0%B0%EB%8B%AC%EC%9D%B4_%EC%9E%90%EB%A5%B8%EA%B2%83.png?type=w800"
-            />
-            <StyledParticipantDescription>efef</StyledParticipantDescription>
-          </StyledParticipantContainer>
-          <StyledParticipantContainer>
-            <Avatar
-              width="20%"
-              name="배달이"
-              profileUrl="https://mblogthumb-phinf.pstatic.net/MjAxOTA1MTdfMjg5/MDAxNTU4MDU5MjY3NzI0.La9iCTKSS9Cue6MbMeNSJADSkjSr0VMPlAsIdQYGjoYg.q_VK0tw6okzVQOBJbXGKFFGJkLJUqLVT26CZ9qe29Xcg.PNG.smartbaedal/%ED%97%A4%ED%97%A4%EB%B0%B0%EB%8B%AC%EC%9D%B4_%EC%9E%90%EB%A5%B8%EA%B2%83.png?type=w800"
-            />
-            <StyledParticipantDescription>efef</StyledParticipantDescription>
-          </StyledParticipantContainer>
+          {participants.map(({ id, name, profileUrl, description }) => {
+            return (
+              <StyledParticipantContainer key={`${id}-${description}`}>
+                <Avatar width="15%" name={name} profileUrl={profileUrl} />
+                <StyledParticipantDescription>{description}</StyledParticipantDescription>
+              </StyledParticipantContainer>
+            );
+          })}
         </StyledBottom>
-      </StyledForm>
+      </StyledParticipantsContainer>
     </Modal>
   );
 }
