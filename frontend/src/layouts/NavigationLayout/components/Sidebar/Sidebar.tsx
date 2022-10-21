@@ -19,6 +19,7 @@ import {
   StyledBottomMenu,
   StyledLogoContainer
 } from './Sidebar.styles';
+import Divider from '../../../../components/Divider/Divider';
 import Spinner from '../../../../components/Spinner/Spinner';
 
 function Sidebar() {
@@ -63,7 +64,11 @@ function Sidebar() {
               groupCode={groupCode}
               groups={groups}
             />
+            <Divider />
+
             <SidebarFeaturesMenu groupCode={groupCode} />
+            <Divider />
+
             <SidebarMembersProfileMenu />
             <StyledBottomMenu>
               <SidebarSlackMenu onClick={handleActiveModal('slack')} />
