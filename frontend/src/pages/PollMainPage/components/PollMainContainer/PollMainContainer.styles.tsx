@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 const StyledContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 3.2rem;
 `;
 
 const StyledTitle = styled.h1`
@@ -30,4 +29,18 @@ const StyledGuide = styled.p(
 `
 );
 
-export { StyledContainer, StyledGuide, StyledTitle, StyledLottieContainer };
+const StyledPollContainer = styled.div`
+  padding: 1rem;
+  width: calc(100% / 3);
+
+  // TODO: 목록 리팩토링
+  @media (max-width: 1250px) {
+    width: calc(100% / 2);
+  }
+
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
+`;
+
+export { StyledContainer, StyledGuide, StyledTitle, StyledLottieContainer, StyledPollContainer };

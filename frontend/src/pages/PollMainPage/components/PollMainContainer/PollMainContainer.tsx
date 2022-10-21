@@ -3,7 +3,8 @@ import {
   StyledContainer,
   StyledGuide,
   StyledTitle,
-  StyledLottieContainer
+  StyledLottieContainer,
+  StyledPollContainer
 } from './PollMainContainer.styles';
 import { useParams } from 'react-router-dom';
 import { useLottie } from 'lottie-react';
@@ -46,27 +47,25 @@ function PollMainContainer() {
   return (
     <StyledContainer>
       {polls.map(({ status, title, code, isAnonymous, allowedPollCount, closedAt, count }) => (
-        <Box
-          key={code}
-          width="36.4rem"
-          padding="2.8rem"
-          filter={status === 'CLOSED' ? 'grayscale(1)' : 'none'}
-        >
-          <FlexContainer justifyContent="end">
-            <PollMainStatus status={status} />
-          </FlexContainer>
-          <StyledTitle>{title}</StyledTitle>
-          <PollMainProgress currentParticipants={count} />
-          <MarginContainer margin="0 0 1.6rem">
-            {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
-            <PollMainDetail
-              isAnonymous={isAnonymous}
-              allowedPollCount={allowedPollCount}
-              closedAt={closedAt}
-            />
-          </MarginContainer>
-          <PollMainButtonGroup pollCode={code} status={status} />
-        </Box>
+        // TODO: StyledPollContainer 를 삭제해주거나 Box와 합쳐주기
+        <StyledPollContainer key={code}>
+          <Box width="100%" padding="2.8rem" filter={status === 'CLOSED' ? 'grayscale(1)' : 'none'}>
+            <FlexContainer justifyContent="end">
+              <PollMainStatus status={status} />
+            </FlexContainer>
+            <StyledTitle>{title}</StyledTitle>
+            <PollMainProgress currentParticipants={count} />
+            <MarginContainer margin="0 0 1.6rem">
+              {/* TODO: 'detail' 컴포넌트명 변경 고민(전체 페이지 수정 필요) */}
+              <PollMainDetail
+                isAnonymous={isAnonymous}
+                allowedPollCount={allowedPollCount}
+                closedAt={closedAt}
+              />
+            </MarginContainer>
+            <PollMainButtonGroup pollCode={code} status={status} />
+          </Box>
+        </StyledPollContainer>
       ))}
     </StyledContainer>
   );
