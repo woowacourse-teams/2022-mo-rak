@@ -7,6 +7,7 @@ const StyledParticipantCount = styled.div`
   right: 1.2rem;
   top: 1.2rem;
   cursor: pointer;
+  display: flex;
 `;
 
 const StyledUserIcon = styled.img`
