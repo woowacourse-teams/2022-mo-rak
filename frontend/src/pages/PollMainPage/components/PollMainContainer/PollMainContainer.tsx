@@ -47,6 +47,7 @@ function PollMainContainer() {
   return (
     <StyledContainer>
       {polls.map(({ status, title, code, isAnonymous, allowedPollCount, closedAt, count }) => (
+        // TODO: StyledPollContainer 를 삭제해주거나 Box와 합쳐주기
         <StyledPollContainer key={code}>
           <Box width="100%" padding="2.8rem" filter={status === 'CLOSED' ? 'grayscale(1)' : 'none'}>
             <FlexContainer justifyContent="end">

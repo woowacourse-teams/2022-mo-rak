@@ -46,6 +46,7 @@ function AppointmentMainContainer() {
     <StyledContainer>
       {appointments.map(
         ({ code, title, durationHours, durationMinutes, count, isClosed, closedAt }) => (
+          // TODO: StyledPollContainer 를 삭제해주거나 Box와 합쳐주기
           <StyledAppointmentContainer key={code}>
             <Box width="100%" padding="2.8rem" filter={isClosed ? 'grayscale(1)' : 'none'}>
               <FlexContainer justifyContent="end">
