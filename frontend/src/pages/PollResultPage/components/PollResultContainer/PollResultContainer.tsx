@@ -45,6 +45,13 @@ function PollResultContainer() {
   const [pollItems, setPollItems] = useState<getPollItemsResponse>([]);
   const theme = useTheme();
 
+  const setStatus = (status: Poll['status']) => {
+    // TODO: if appointment가 맞나?...없을 수도 있어서 undefined error가 발생
+    if (poll) {
+      setPoll({ ...poll, status });
+    }
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -137,6 +144,7 @@ function PollResultContainer() {
             pollCode={poll.code}
             groupCode={groupCode}
             pollItems={pollItems}
+            setStatus={setStatus}
           />
         </>
       ) : (
