@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { StyledTitle } from './PollProgressForm.styles';
+import { StyledTitle, StyledLoadingContainer } from './PollProgressForm.styles';
 import Box from '../../../../components/Box/Box';
 import Divider from '../../../../components/Divider/Divider';
 import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
@@ -18,6 +18,7 @@ import {
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
 import { Group } from '../../../../types/group';
 import { AxiosError } from 'axios';
+import Spinner from '../../../../components/Spinner/Spinner';
 
 const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
   pollItems
@@ -37,7 +38,7 @@ function PollProgressForm() {
   const [pollItems, setPollItems] = useState<getPollItemsResponse>([]);
   const [selectedPollItems, setSelectedPollItems] = useState<Array<SelectedPollItem>>([]);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleProgressPoll = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (selectedPollItems.length <= 0) {
@@ -141,10 +142,8 @@ function PollProgressForm() {
 
   useEffect(() => {
     (async (pollCode: Poll['code']) => {
-      try {
-        const res = await getPollItems(pollCode, groupCode);
-        setPollItems(res.data);
-      } catch (err) {}
+      const res = await getPollItems(pollCode, groupCode);
+      setPollItems(res.data);
     })(pollCode);
   }, []);
 
@@ -155,9 +154,9 @@ function PollProgressForm() {
   }, [pollItems]);
 
   return (
-    <Box width="84.4rem" padding="6.4rem 4.8rem">
+    <Box width="84.4rem" minHeight="60rem" padding="6.4rem 4.8rem">
       {poll ? (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleProgressPoll}>
           <MarginContainer margin="0 0 4rem 0">
             <StyledTitle>{poll.title}</StyledTitle>
             <Divider />
@@ -168,7 +167,7 @@ function PollProgressForm() {
               allowedPollCount={poll.allowedPollCount}
             />
           </MarginContainer>
-          <MarginContainer margin="0 0 23.6rem 0">
+          <MarginContainer margin="0 0 15.2rem 0">
             <PollProgressItemGroup
               pollItems={pollItems}
               selectedPollItems={selectedPollItems}
@@ -181,7 +180,9 @@ function PollProgressForm() {
           <PollProgressButtonGroup pollCode={pollCode} isHost={poll.isHost} groupCode={groupCode} />
         </form>
       ) : (
-        <div>로딩중</div>
+        <StyledLoadingContainer>
+          <Spinner width="15%" placement="center" />
+        </StyledLoadingContainer>
       )}
     </Box>
   );

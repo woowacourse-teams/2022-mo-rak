@@ -6,7 +6,7 @@ import {
   StyledTitle,
   StyledRole,
   StyledRoleContainer,
-  StyledDateContainer,
+  StyledDatesContainer,
   StyledRoleResultContainer,
   StyledDate,
   StyledEmptyText
@@ -22,6 +22,7 @@ type Props = { rolesHistories: GetRolesHistoriesResponse };
 function RoleMainResult({ rolesHistories }: Props) {
   const [activeIdx, setActiveIdx] = useState(0);
   const { groupMembers } = useGroupMembersContext();
+
   const handleShowResult = (idx: number) => () => {
     setActiveIdx(idx);
   };
@@ -61,7 +62,7 @@ function RoleMainResult({ rolesHistories }: Props) {
         <>
           <StyledTitle>이전 결과</StyledTitle>
           <Divider />
-          <StyledDateContainer>
+          <StyledDatesContainer>
             {rolesHistories.roles.map((history, idx) => (
               <StyledDate
                 key={`${idx}-${history}`}
@@ -71,7 +72,7 @@ function RoleMainResult({ rolesHistories }: Props) {
                 {history.date}
               </StyledDate>
             ))}
-          </StyledDateContainer>
+          </StyledDatesContainer>
         </>
       </Box>
     </FlexContainer>

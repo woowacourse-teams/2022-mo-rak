@@ -20,6 +20,7 @@ type Props = {
   onChangeText: (pollId: number) => ChangeEventHandler<HTMLInputElement>;
 };
 
+// TODO: 이렇게 밖으로 빼는 게 맞나
 const getSelectedPollItem = (pollId: Poll['id'], selectedPollItems: Array<SelectedPollItem>) =>
   selectedPollItems.find((selectedPollItem) => selectedPollItem.id === pollId);
 
@@ -82,7 +83,7 @@ function PollProgressItemGroup({
                   color={theme.colors.BLACK_100}
                   fontSize="1.6rem"
                   placeholder="선택한 이유는?"
-                  value={selectedPollItem?.description}
+                  value={selectedPollItem?.description ?? ''}
                   onChange={onChangeText(id)}
                   aria-label={`${subject}-description`}
                 />

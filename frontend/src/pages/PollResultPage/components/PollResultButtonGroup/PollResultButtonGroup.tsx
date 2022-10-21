@@ -11,12 +11,20 @@ import { AxiosError } from 'axios';
 type Props = {
   pollCode: Poll['code'];
   status: Poll['status'];
+  setStatus: (status: Poll['status']) => void;
   isHost: getPollResponse['isHost'];
   groupCode: Group['code'];
   pollItems: getPollItemsResponse;
 };
 
-function PollResultButtonGroup({ pollCode, status, isHost, groupCode, pollItems }: Props) {
+function PollResultButtonGroup({
+  pollCode,
+  status,
+  setStatus,
+  isHost,
+  groupCode,
+  pollItems
+}: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
   const isProgressedPoll = pollItems.some((pollItem) => pollItem.isSelected);
@@ -44,14 +52,14 @@ function PollResultButtonGroup({ pollCode, status, isHost, groupCode, pollItems 
     if (window.confirm('투표를 마감하시겠습니까?')) {
       try {
         await closePoll(pollCode, groupCode);
-        navigate(`/groups/${groupCode}/poll`);
+        setStatus('CLOSED');
       } catch (err) {
         if (err instanceof AxiosError) {
           const errCode = err.response?.data.codeNumber;
 
           if (errCode === '2100') {
             alert('이미 마감된 투표입니다');
-            navigate(`/groups/${groupCode}/poll`);
+            setStatus('CLOSED');
           }
         }
       }

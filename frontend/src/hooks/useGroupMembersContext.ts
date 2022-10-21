@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { GroupMembersContext } from '../context/GroupMembersProvider';
+
 function useGroupMembersContext() {
   const context = useContext(GroupMembersContext);
 

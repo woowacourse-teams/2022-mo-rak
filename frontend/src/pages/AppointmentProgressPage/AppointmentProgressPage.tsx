@@ -14,6 +14,7 @@ import {
   StyledRightContainer
 } from './AppointmentProgressPage.styles';
 import { AxiosError } from 'axios';
+import Spinner from '../../components/Spinner/Spinner';
 
 // TODO: 중복됨 제거
 const getPlusOneDate = (date: string) => {
@@ -81,9 +82,6 @@ function AppointmentProgressPage() {
       if (err instanceof AxiosError) {
         const errCode = err.response?.data.codeNumber;
 
-        if (errCode === '4000') {
-        }
-
         switch (errCode) {
           case '4000': {
             alert('현재보다 과거의 시간을 선택할 수 없습니다');
@@ -134,41 +132,43 @@ function AppointmentProgressPage() {
     })();
   }, []);
 
-  if (!appointment) return <div>로딩중입니다</div>;
-
   // NOTE: 이렇게 Left,Right가 있을 때는 어떻게 추상화 레벨을 맞춰줄까?...
   return (
     <StyledContainer>
-      <FlexContainer flexDirection="column" gap="2rem">
-        <AppointmentProgressHeader appointment={appointment} />
-        <FlexContainer gap="4rem">
-          <StyledLeftContainer>
-            <Calendar
-              version="select"
-              startDate={appointment.startDate}
-              endDate={
-                appointment.endTime === '12:00AM'
-                  ? getMinusOneDate(appointment.endDate)
-                  : appointment.endDate
-              }
-              selectedDate={selectedDate}
-              // TODO: setSelectedDate를 넘겨주는 것이 아니라 onClickDay 같이 해주는 게 어떨까? props를 받는 Calendar 컴포넌트에서는
-              // 위에서 어떤 함수가 내려오는 지 정확한 이름을 알 필요가 없다. 바깥에는 onClickDay 같이 소통할 수 있는 인터페이스만 제공해주면 될뿐
-              setSelectedDate={setSelectedDate}
-            />
-          </StyledLeftContainer>
-          <StyledRightContainer>
-            <AppointmentProgressTimePicker
-              startTime={appointment.startTime}
-              endTime={appointment.endTime}
-              selectedDate={selectedDate}
-              onClickTime={handleAvailableTimes}
-              availableTimes={availableTimes}
-            />
-            <AppointmentProgressButtonGroup onClickProgress={handleProgressAppointment} />
-          </StyledRightContainer>
+      {appointment ? (
+        <FlexContainer flexDirection="column" gap="2rem">
+          <AppointmentProgressHeader appointment={appointment} />
+          <FlexContainer gap="4rem">
+            <StyledLeftContainer>
+              <Calendar
+                version="select"
+                startDate={appointment.startDate}
+                endDate={
+                  appointment.endTime === '12:00AM'
+                    ? getMinusOneDate(appointment.endDate)
+                    : appointment.endDate
+                }
+                selectedDate={selectedDate}
+                // TODO: setSelectedDate를 넘겨주는 것이 아니라 onClickDay 같이 해주는 게 어떨까? props를 받는 Calendar 컴포넌트에서는
+                // 위에서 어떤 함수가 내려오는 지 정확한 이름을 알 필요가 없다. 바깥에는 onClickDay 같이 소통할 수 있는 인터페이스만 제공해주면 될뿐
+                setSelectedDate={setSelectedDate}
+              />
+            </StyledLeftContainer>
+            <StyledRightContainer>
+              <AppointmentProgressTimePicker
+                startTime={appointment.startTime}
+                endTime={appointment.endTime}
+                selectedDate={selectedDate}
+                onClickTime={handleAvailableTimes}
+                availableTimes={availableTimes}
+              />
+              <AppointmentProgressButtonGroup onClickProgress={handleProgressAppointment} />
+            </StyledRightContainer>
+          </FlexContainer>
         </FlexContainer>
-      </FlexContainer>
+      ) : (
+        <Spinner width="15%" placement="center" />
+      )}
     </StyledContainer>
   );
 }
