@@ -13,7 +13,6 @@ import Edit from '../../../../assets/edit.svg';
 import useModal from '../../../../hooks/useModal';
 import SidebarEditUsernameModal from '../SidebarEditUsernameModal/SidebarEditUsernameModal';
 import useAuthContext from '../../../../hooks/useAuthContext';
-import Divider from '../../../../components/Divider/Divider';
 
 function SidebarMembersProfileMenu() {
   const { groupMembers } = useGroupMembersContext();
@@ -24,7 +23,6 @@ function SidebarMembersProfileMenu() {
 
   return (
     <StyledContainer>
-      <Divider />
       <StyledMenuHeader>멤버 목록 ({groupMembersCount})</StyledMenuHeader>
       <StyledGroupMembersContainer>
         {groupMembers.map(({ id, profileUrl, name }) => (

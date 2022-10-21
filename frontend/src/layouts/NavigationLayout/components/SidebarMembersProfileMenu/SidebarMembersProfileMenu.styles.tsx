@@ -1,14 +1,13 @@
 import styled from '@emotion/styled';
 
 const StyledGroupMembersContainer = styled.div`
-  overflow-y: auto;
-  height: 80%;
+  margin: 2.8rem 0;
 `;
 
 const StyledMenuHeader = styled.div`
   font-size: 1.6rem;
   text-align: left;
-  padding: 2rem 0;
+  margin-bottom: 2rem;
 `;
 
 const StyledUsername = styled.div`
@@ -33,7 +32,9 @@ const StyledEditIcon = styled.img`
 `;
 
 const StyledContainer = styled.div`
-  height: 35%;
+  overflow-y: auto;
+  height: 20vh;
+  margin: 2.8rem 0;
 `;
 
 export {
