@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
 
 const StyledGroupMembersContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
   margin: 2.8rem 0;
 `;
 
