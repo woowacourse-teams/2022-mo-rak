@@ -31,10 +31,12 @@ type getPollResponse = Poll & {
 };
 
 type getPollsResponse = Array<getPollResponse>;
+// TODO: 타입명 변경해야할듯... Member에 description이 들어가는데 그냥 Members?!
+type Members = Array<Member & Pick<SelectedPollItem, 'description'>>;
 
 type getPollResultResponse = Array<
   PollItem & {
-    members: Array<Member & Pick<SelectedPollItem, 'description'>>;
+    members: Members;
     count: number;
   }
 >;
@@ -43,6 +45,7 @@ type getPollItemsResponse = Array<PollItem & { isSelected: boolean; description:
 
 export {
   Poll,
+  Members,
   createPollRequest,
   PollItem,
   getPollResponse,

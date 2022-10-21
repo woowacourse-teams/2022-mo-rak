@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledForm = styled.form(
+const StyledParticipantsContainer = styled.div(
   ({ theme }) => `
   width: 68rem;
   height: 56rem;
@@ -9,16 +9,20 @@ const StyledForm = styled.form(
   `
 );
 
-const StyledLogo = styled.img`
+const StyledIcon = styled.img`
   width: 4rem;
-  margin: 0 auto;
   margin-bottom: 2rem;
+  /* TODO: 이렇게 filter를 통해서 바꿔주는 것 vs 애초에 이미지를 가지는 것 */
+  filter: invert(96%) sepia(69%) saturate(7252%) hue-rotate(320deg) brightness(100%) contrast(96%);
 `;
 
 const StyledTitle = styled.p`
   font-size: 2rem;
   text-align: center;
   margin-bottom: 0.8rem;
+  overflow-y: auto;
+  width: 90%;
+  padding: 0.4rem 0;
 `;
 
 const StyledDescription = styled.p`
@@ -30,13 +34,13 @@ const StyledDescription = styled.p`
 const StyledTop = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   position: relative;
   height: 25%;
   padding-top: 2.4rem;
+  align-items: center;
 `;
 
-const StyledCloseButton = styled.img`
+const StyledCloseIcon = styled.img`
   position: absolute;
   right: 2.4rem;
   top: 2.4rem;
@@ -49,19 +53,6 @@ const StyledCloseButton = styled.img`
     transition: all 0.3s linear;
   }
 `;
-
-const StyledTriangle = styled.div(
-  ({ theme }) => `
-  position: absolute;
-  border-left: 2rem solid transparent;
-  border-right: 2rem solid transparent;
-  border-top: 2rem solid ${theme.colors.WHITE_100};
-  width: 0;
-  bottom: -2.8rem;
-  right: 50%;
-  transform: translate(50%, -50%);
-`
-);
 
 const StyledBottom = styled.div(
   ({ theme }) => `
@@ -78,13 +69,37 @@ const StyledBottom = styled.div(
   `
 );
 
+const StyledParticipantContainer = styled.div`
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+`;
+
+const StyledParticipantDescription = styled.p(
+  ({ theme }) => `
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${theme.colors.WHITE_100};
+  border-radius: 2rem;
+  font-size: 1.6rem;
+  padding: 2rem;
+  word-break: break-all;
+`
+);
+
 export {
-  StyledForm,
-  StyledLogo,
+  StyledParticipantsContainer,
+  StyledIcon,
   StyledTitle,
   StyledTop,
-  StyledCloseButton,
-  StyledTriangle,
+  StyledCloseIcon,
   StyledBottom,
-  StyledDescription
+  StyledDescription,
+  StyledParticipantContainer,
+  StyledParticipantDescription
 };
