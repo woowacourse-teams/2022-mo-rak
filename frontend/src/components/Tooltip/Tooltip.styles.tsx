@@ -23,7 +23,7 @@ const StyledContentContainer = styled.div<
     background: ${backgroundColor ? backgroundColor : theme.colors.PURPLE_50}; 
     width: ${width}rem;
     border-radius: 1.2rem;
-    padding: 1.6rem;
+    padding: 2rem;
 
     &::after {
       content: "";

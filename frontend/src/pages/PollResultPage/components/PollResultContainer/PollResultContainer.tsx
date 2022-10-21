@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { StyledTitle, StyledLoadingContainer } from './PollResultContainer.styles';
+import {
+  StyledTitle,
+  StyledLoadingContainer,
+  StyledHelpIconContainer,
+  StyledHelpIcon,
+  StyledDescription
+} from './PollResultContainer.styles';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import Box from '../../../../components/Box/Box';
@@ -24,6 +30,9 @@ import PollResultStatus from '../PollResultStatus/PollResultStatus';
 import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
 import { AxiosError } from 'axios';
 import Spinner from '../../../../components/Spinner/Spinner';
+import Tooltip from '../../../../components/Tooltip/Tooltip';
+import Question from '../../../../assets/question.svg';
+import { useTheme } from '@emotion/react';
 
 function PollResultContainer() {
   const navigate = useNavigate();
@@ -34,6 +43,7 @@ function PollResultContainer() {
   const [poll, setPoll] = useState<getPollResponse>();
   const [pollResult, setPollResult] = useState<getPollResultResponse>([]);
   const [pollItems, setPollItems] = useState<getPollItemsResponse>([]);
+  const theme = useTheme();
 
   useEffect(() => {
     (async () => {
@@ -73,7 +83,7 @@ function PollResultContainer() {
         <>
           <FlexContainer justifyContent="end">
             <MarginContainer margin="0 0 1.4rem 0">
-              <FlexContainer gap="1.2rem" alignItems="center">
+              <FlexContainer gap="1.2rem" alignItems="center" justifyContent="flex-end">
                 <PollResultShareLink
                   groupCode={groupCode}
                   pollCode={pollCode}
@@ -81,6 +91,21 @@ function PollResultContainer() {
                 />
                 <PollResultStatus status={poll.status} />
               </FlexContainer>
+              <MarginContainer margin="1.2rem 0 0">
+                <Tooltip
+                  content="사람 아이콘을 클릭해보세요. 항목별로 투표 한 사람들과 이유를 볼 수 있어요 👀"
+                  width="32"
+                  placement="bottom"
+                  backgroundColor={theme.colors.PURPLE_50}
+                >
+                  <FlexContainer gap="1.2rem" alignItems="center">
+                    <StyledHelpIconContainer>
+                      <StyledHelpIcon src={Question} alt="help-icon" />
+                    </StyledHelpIconContainer>
+                    <StyledDescription>투표 한 사람 확인</StyledDescription>
+                  </FlexContainer>
+                </Tooltip>
+              </MarginContainer>
             </MarginContainer>
           </FlexContainer>
           <MarginContainer margin="0 0 1.4rem 0">

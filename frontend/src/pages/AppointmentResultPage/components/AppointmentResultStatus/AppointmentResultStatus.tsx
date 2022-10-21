@@ -14,7 +14,7 @@ function AppointmentResultStatus({ isClosed }: Props) {
     <TextField
       variant="filled"
       width="12.8rem"
-      padding="1.6rem 0"
+      padding="2.6rem 0"
       borderRadius="1.2rem"
       colorScheme={isClosed ? theme.colors.GRAY_400 : theme.colors.PURPLE_100}
     >
