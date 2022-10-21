@@ -9,10 +9,11 @@ const StyledForm = styled.form(
   `
 );
 
-const StyledLogo = styled.img`
+const StyledIcon = styled.img`
   width: 4rem;
   margin: 0 auto;
   margin-bottom: 2rem;
+  filter: invert(96%) sepia(69%) saturate(7252%) hue-rotate(320deg) brightness(100%) contrast(96%);
 `;
 
 const StyledTitle = styled.p`
@@ -78,13 +79,37 @@ const StyledBottom = styled.div(
   `
 );
 
+const StyledParticipantContainer = styled.div`
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+`;
+
+const StyledParticipantDescription = styled.p(
+  ({ theme }) => `
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${theme.colors.WHITE_100};
+  border-radius: 2rem;
+  font-size: 1.6rem;
+  padding: 4rem 2rem;
+`
+);
+
 export {
   StyledForm,
-  StyledLogo,
+  StyledIcon,
   StyledTitle,
   StyledTop,
   StyledCloseButton,
   StyledTriangle,
   StyledBottom,
-  StyledDescription
+  StyledDescription,
+  StyledParticipantContainer,
+  StyledParticipantDescription
 };

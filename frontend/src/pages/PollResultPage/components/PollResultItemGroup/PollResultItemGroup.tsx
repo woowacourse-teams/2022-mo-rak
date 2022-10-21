@@ -22,6 +22,8 @@ import UserPurple from '../../../../assets/user-purple.svg';
 import UserWhite from '../../../../assets/user-white.svg';
 import PollParticipantModal from '../PollParticipantModal/PollParticipantModal';
 import TextField from '../../../../components/TextField/TextField';
+import Modal from '../../../../components/Modal/Modal';
+import PollResultParticipantModal from '../PollResultParticipantModal/PollResultParticipantModal';
 
 type Props = {
   status: Poll['status'];
@@ -92,7 +94,7 @@ function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
                   {count}
                 </StyledUserCount>
               </FlexContainer>
-              {activePollItem === id && <PollParticipantModal participants={members} />}
+              {activePollItem === id && <PollResultParticipantModal />}
             </StyledParticipantCount>
           </TextField>
         );
