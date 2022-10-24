@@ -165,6 +165,36 @@ class AppointmentServiceTest {
     }
 
     @Test
+    void 약속잡기_목록_조회_시_진행한_사람의_수를_계산하며_없으면_0이다() {
+        // given & when
+        List<AppointmentAllResponse> responses = appointmentService.findAppointments("MoraK123", 1L);
+
+        // then
+        assertThat(responses.get(0).getCount()).isEqualTo(0);
+    }
+
+    @Test
+    void 약속잡기_목록_조회_시_진행한_사람의_수를_계산한다() {
+        // given
+        Appointment appointment = appointmentRepository.save(약속잡기_현재부터_1일에서_5일_14시_20시);
+        AvailableTimeRequest availableTimeRequest = new AvailableTimeRequest(
+                LocalDateTime.of(now.toLocalDate().plusDays(1), LocalTime.of(16, 0))
+        );
+        appointmentService.selectAvailableTimes(
+                appointment.getTeamCode(),
+                appointment.getHostId(),
+                appointment.getCode(),
+                List.of(availableTimeRequest)
+        );
+
+        // when
+        List<AppointmentAllResponse> responses = appointmentService.findAppointments("MoraK123", 1L);
+
+        // then
+        assertThat(responses.get(0).getCount()).isEqualTo(1);
+    }
+
+    @Test
     void 약속잡기_단건을_조회한다() {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_현재부터_1일에서_5일_14시_20시);

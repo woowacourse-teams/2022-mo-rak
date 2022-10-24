@@ -51,15 +51,6 @@ class AppointmentTest {
     }
 
     @Test
-    void 사용자가_시간을_선택하지않았다면_선택_인원은_0이다() {
-        // when
-        Appointment appointment = DEFAULT_BUILDER.build();
-
-        // then
-        assertThat(appointment.getCount()).isEqualTo(0);
-    }
-
-    @Test
     void 약속잡기_생성시_약속잡기_시간이_진행_시간보다_짧으면_예외를_던진다() {
         // when & then
         assertThatThrownBy(

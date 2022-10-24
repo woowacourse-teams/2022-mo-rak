@@ -3,7 +3,9 @@ package com.morak.back.appointment.ui.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.appointment.domain.AvailableTime;
 import java.time.LocalDateTime;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,8 +45,15 @@ public class AppointmentAllResponse implements Comparable<AppointmentAllResponse
                 appointment.parseMinutes(),
                 appointment.getClosedAt(),
                 appointment.isClosed(),
-                appointment.getCount()
+                countSelectMembers(appointment.getAvailableTimes())
         );
+    }
+
+    private static int countSelectMembers(Set<AvailableTime> availableTimes) {
+        return (int) availableTimes.stream()
+                .map(AvailableTime::getMemberId)
+                .distinct()
+                .count();
     }
 
     @Override

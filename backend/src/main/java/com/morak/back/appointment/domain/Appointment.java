@@ -120,13 +120,6 @@ public class Appointment extends BaseEntity {
                 && now.isBefore(dateTime);
     }
 
-    public int getCount() {
-        return (int) availableTimes.stream()
-                .map(AvailableTime::getMemberId)
-                .distinct()
-                .count();
-    }
-
     public List<AppointmentTime> getAppointmentTimes() {
         List<AppointmentTime> times = new ArrayList<>();
 
