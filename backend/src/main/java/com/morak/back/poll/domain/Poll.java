@@ -83,10 +83,6 @@ public class Poll extends BaseEntity {
         }
     }
 
-    public int countSelectMembers() {
-        return pollItems.countSelectMembers();
-    }
-
     public void close(Long memberId) {
         menu.close(memberId);
     }

@@ -55,14 +55,6 @@ public class PollItems {
         pollItem.remove(member);
     }
 
-    public int countSelectMembers() {
-        return (int) values.stream()
-                .map(PollItem::getOnlyMembers)
-                .flatMap(Collection::stream)
-                .distinct()
-                .count();
-    }
-
     public boolean containsAll(Collection<PollItem> items) {
         return this.values.containsAll(items);
     }

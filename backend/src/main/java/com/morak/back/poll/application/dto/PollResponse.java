@@ -2,8 +2,11 @@ package com.morak.back.poll.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.morak.back.poll.domain.Poll;
+import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollStatus;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,8 +49,16 @@ public class PollResponse implements Comparable<PollResponse> {
                 poll.getClosedAt(),
                 poll.getCode(),
                 poll.isHost(memberId),
-                poll.countSelectMembers()
+                countSelectMembers(poll.getPollItems())
         );
+    }
+
+    private static int countSelectMembers(List<PollItem> pollItems) {
+        return (int) pollItems.stream()
+                .map(PollItem::getOnlyMembers)
+                .flatMap(Collection::stream)
+                .distinct()
+                .count();
     }
 
     @Override
