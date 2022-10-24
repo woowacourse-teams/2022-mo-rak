@@ -7,26 +7,27 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
-import com.morak.back.poll.domain.SystemDateTime;
-import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.slack.FakeApiReceiver;
 import com.morak.back.core.domain.slack.FakeSlackClient;
 import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
+import com.morak.back.core.exception.AuthorizationException;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.poll.domain.PollStatus;
-import com.morak.back.poll.exception.PollAuthorizationException;
-import com.morak.back.poll.exception.PollDomainLogicException;
-import com.morak.back.poll.exception.PollItemNotFoundException;
-import com.morak.back.poll.exception.PollNotFoundException;
 import com.morak.back.poll.application.dto.MemberResultResponse;
 import com.morak.back.poll.application.dto.PollCreateRequest;
 import com.morak.back.poll.application.dto.PollItemResponse;
 import com.morak.back.poll.application.dto.PollItemResultResponse;
 import com.morak.back.poll.application.dto.PollResponse;
 import com.morak.back.poll.application.dto.PollResultRequest;
+import com.morak.back.poll.domain.PollRepository;
+import com.morak.back.poll.domain.PollStatus;
+import com.morak.back.poll.domain.SystemDateTime;
+import com.morak.back.poll.exception.PollAuthorizationException;
+import com.morak.back.poll.exception.PollDomainLogicException;
+import com.morak.back.poll.exception.PollItemNotFoundException;
+import com.morak.back.poll.exception.PollNotFoundException;
 import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMember;
@@ -671,7 +672,8 @@ class PollServiceTest {
                 new PollResultRequest(1L, "그냥뇨"),
                 new PollResultRequest(3L, "ㅋ"));
         pollService.doPoll(team.getCode(), member.getId(), pollCode, pollResultRequests);
-        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollResults(team.getCode(), member.getId(), pollCode);
+        List<PollItemResultResponse> pollItemResultResponses = pollService.findPollResults(team.getCode(),
+                member.getId(), pollCode);
         Member anonymous = Member.getAnonymousMember();
 
         // then
@@ -821,9 +823,9 @@ class PollServiceTest {
 
         // when & then
         assertThatThrownBy(() -> pollService.closePoll(team.getCode(), otherMember.getId(), pollCode))
-                .isInstanceOf(PollAuthorizationException.class)
+                .isInstanceOf(AuthorizationException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_HOST_MISMATCHED_ERROR);
+                .isEqualTo(CustomErrorCode.HOST_MISMATCHED_ERROR);
     }
 
     @Test

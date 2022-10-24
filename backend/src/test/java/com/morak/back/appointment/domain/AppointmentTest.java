@@ -7,9 +7,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.domain.recommend.AppointmentTime;
-import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.exception.AuthorizationException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -112,9 +112,9 @@ class AppointmentTest {
 
         // when & then
         assertThatThrownBy(() -> appointment.close(2L))
-                .isInstanceOf(AppointmentAuthorizationException.class)
+                .isInstanceOf(AuthorizationException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR);
+                .isEqualTo(CustomErrorCode.HOST_MISMATCHED_ERROR);
     }
 
     @Test

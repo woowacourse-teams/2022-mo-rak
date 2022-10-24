@@ -9,7 +9,6 @@ import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.domain.menu.Title;
 import com.morak.back.appointment.domain.recommend.AppointmentTime;
 import com.morak.back.appointment.domain.timeperiod.TimePeriod;
-import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.domain.Code;
@@ -104,15 +103,6 @@ public class Appointment extends BaseEntity {
             throw new AppointmentDomainLogicException(
                     CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR,
                     menu.getCode() + "코드의 약속잡기는 마감되었습니다."
-            );
-        }
-    }
-
-    private void validateHost(Long memberId) {
-        if (!menu.isHost(memberId)) {
-            throw new AppointmentAuthorizationException(
-                    CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR,
-                    memberId + "번 멤버는 " + menu.getCode() + "코드의 약속잡기의 호스트가 아닙니다."
             );
         }
     }

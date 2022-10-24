@@ -64,7 +64,8 @@ public class AppointmentService {
         validateMemberInTeam(team, member);
 
         Appointment appointment = appointmentRepository.save(
-                request.toAppointment(Code.generate((length) -> teamCode), memberId, Code.generate(CODE_GENERATOR), systemTime.now()));
+                request.toAppointment(Code.generate((length) -> teamCode), memberId, Code.generate(CODE_GENERATOR),
+                        systemTime.now()));
         notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(appointment)));
 
         return AppointmentResponse.from(appointment, memberId);
@@ -183,7 +184,7 @@ public class AppointmentService {
 
     private void validateHost(Long memberId, Appointment appointment) {
         if (!appointment.isHost(memberId)) {
-            throw new AppointmentAuthorizationException(CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR,
+            throw new AppointmentAuthorizationException(CustomErrorCode.APPOINTMENT_HOST_MISMATCHED_ERROR,
                     memberId + "번 멤버는 " + appointment.getCode() + "코드의 약속잡기의 호스트가 아닙니다.");
         }
     }

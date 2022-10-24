@@ -51,17 +51,22 @@ public enum CustomErrorCode {
     AVAILABLETIME_DURATION_NOT_MINUTES_UNIT_ERROR("3116", "약속잡기 선택 진행 시간은 30분 단위여야 합니다."),
     APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR("3117", "약속잡기 마감 시간은 현재 시간과 마지막 날짜/시간 사이여야 합니다."),
 
-    APPOINTMENT_MEMBER_MISMATCHED_ERROR("3200", "멤버가 약속잡기의 호스트가 아닙니다."),
+    APPOINTMENT_HOST_MISMATCHED_ERROR("3200", "멤버가 약속잡기의 호스트가 아닙니다."),
     APPOINTMENT_TEAM_MISMATCHED_ERROR("3201", "약속잡기가 그룹에 속해있지 않습니다."),
     APPOINTMENT_NOT_FOUND_ERROR("3300", "요청한 약속잡기를 찾을 수 없습니다."),
 
     INVALID_PROPERTY_ERROR("4000", "잘못된 값이 입력되었습니다."),
+
     PAST_CLOSED_TIME_ERROR("4100", "마감 시간은 과거일 수 없습니다."),
     DESCRIPTION_OUT_OF_LENGTH_ERROR("4101", "설명의 길이가 너무 깁니다."),
     MENU_ALREADY_CLOSED_ERROR("4102", "이미 마감된 상태입니다."),
     TITLE_LENGTH_OUT_OF_RANGE_ERROR("4103", "제목의 길이가 올바르지 않습니다."),
-    CODE_LENGTH_ERROR("4104","코드의 길이가 올바르지 않습니다."),
+    CODE_LENGTH_ERROR("4104", "코드의 길이가 올바르지 않습니다."),
+
+    HOST_MISMATCHED_ERROR("4201", "호스트가 아닙니다."),
+
     API_NOT_FOUND_ERROR("4300", "요청한 API가 존재하지 않습니다"),
+
     NOTIFICATION_INVALID_URL_ERROR("4400", "알림 요청 URL이 잘못되었습니다."),
     NOTIFICATION_REQUEST_FAILURE_ERROR("4401", "요청 결과에 실패했습니다."),
     NOTIFICATION_SCHEDULING_FAILURE_ERROR("4402", "스케줄링 실행 중 실패했습니다."),

@@ -15,8 +15,8 @@ import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.domain.menu.Title;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.exception.AuthorizationException;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollItemNotFoundException;
 import com.morak.back.team.domain.Team;
@@ -192,9 +192,9 @@ class PollTest {
     void 호스트가_아닌_멤버가_투표를_종료하는_경우_예외를_던진다() {
         // when & then
         assertThatThrownBy(() -> poll.close(otherMember.getId()))
-                .isInstanceOf(PollAuthorizationException.class)
+                .isInstanceOf(AuthorizationException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_HOST_MISMATCHED_ERROR);
+                .isEqualTo(CustomErrorCode.HOST_MISMATCHED_ERROR);
     }
 
     @Test

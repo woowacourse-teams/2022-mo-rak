@@ -1,10 +1,8 @@
 package com.morak.back.appointment.domain.menu;
 
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.exception.AuthorizationException;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.poll.domain.SystemDateTime;
-import com.morak.back.poll.exception.PollAuthorizationException;
-import com.morak.back.poll.exception.PollDomainLogicException;
 import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -55,12 +53,11 @@ public class Menu {
         status = status.close();
     }
 
-    // todo : change exception
     private void validateHost(Long memberId) {
         if (!hostId.equals(memberId)) {
-            throw new PollAuthorizationException(
-                    CustomErrorCode.POLL_HOST_MISMATCHED_ERROR,
-                    memberId + "번 멤버는 " + getCode() + " 코드 투표의 호스트가 아닙니다."
+            throw new AuthorizationException(
+                    CustomErrorCode.HOST_MISMATCHED_ERROR,
+                    memberId + "번 멤버는 " + getCode() + " 코드에 해당하는 도메인의 호스트가 아닙니다."
             );
         }
     }
