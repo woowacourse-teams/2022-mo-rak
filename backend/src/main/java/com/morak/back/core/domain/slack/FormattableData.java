@@ -25,10 +25,10 @@ public class FormattableData {
         return new FormattableData(
                 "appointment",
                 "약속잡기",
-                appointment.getTeamCode().getCode(),
+                appointment.getTeamCode(),
                 appointment.getTitle(),
                 appointment.getCode(),
-                appointment.getTeamCode().getCode(),
+                appointment.getTeamCode(),
                 appointment.getClosedAt()
         );
     }
@@ -37,11 +37,11 @@ public class FormattableData {
         return new FormattableData(
                 "poll",
                 "투표",
-                String.valueOf(poll.getPollInfo().getTeamId()),
-                poll.getPollInfo().getTitle(),
-                poll.getPollInfo().getCode(),
-                String.valueOf(poll.getPollInfo().getTeamId()),
-                poll.getPollInfo().getClosedAt().getDateTime()
+                String.valueOf(poll.getTeamCode()),
+                poll.getTitle(),
+                poll.getCode(),
+                String.valueOf(poll.getTeamCode()),
+                poll.getClosedAt()
         );
     }
 }

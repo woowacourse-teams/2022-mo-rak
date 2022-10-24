@@ -56,7 +56,22 @@ class AppointmentControllerTest extends ControllerTest {
                 30,
                 LocalDateTime.now().plusDays(1));
 
-        given(appointmentService.createAppointment(anyString(), anyLong(), any())).willReturn("KDIs23K3");
+        AppointmentResponse appointmentResponse = new AppointmentResponse(
+                1L,
+                APPOINTMENT_CODE,
+                "모락 회식 날짜 및 시간",
+                "필참입니다.",
+                2,
+                30,
+                LocalDate.now().plusDays(1),
+                LocalDate.now().plusDays(2),
+                LocalTime.of(16, 0),
+                LocalTime.of(20, 0),
+                LocalDateTime.now().plusMinutes(30),
+                false,
+                true
+        );
+        given(appointmentService.createAppointment(anyString(), anyLong(), any())).willReturn(appointmentResponse);
 
         // when
         ResultActions response = post(mockMvc, path, GROUP_CODE, request);
@@ -64,7 +79,7 @@ class AppointmentControllerTest extends ControllerTest {
         // then
         response
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/api/groups/MoraK123/appointments/KDIs23K3"))
+                .andExpect(header().string("Location", "/api/groups/MoraK123/appointments/" + APPOINTMENT_CODE))
                 .andDo(document("appointment/create-appointment",
                         getDocumentRequest(),
                         getDocumentResponse(),

@@ -10,20 +10,20 @@ import org.springframework.data.repository.query.Param;
 
 public interface PollRepository extends JpaRepository<Poll, Long> {
 
-    @Query("select p from Poll p where p.pollInfo.code.code = :code")
+    @Query("select p from Poll p where p.menu.code.code = :code")
     Optional<Poll> findByCode(@Param("code") String code);
 
     @Query("select p "
             + "from Poll p "
             + "join fetch p.pollItems.values pi "
             + "left join pi.selectMembers.values "
-            + "where p.pollInfo.code.code = :code")
+            + "where p.menu.code.code = :code")
     Optional<Poll> findFetchedByCode(@Param("code") String pollCode);
 
-    @Query("select p from Poll p inner join Team  t on t.id = p.pollInfo.teamId  where p.pollInfo.status = 'OPEN' and p.pollInfo.closedAt <= :thresholdDateTime")
+    @Query("select p from Poll p inner join Team  t on t.code = p.menu.teamCode  where p.menu.status = 'OPEN' and p.menu.closedAt <= :thresholdDateTime")
     List<Poll> findAllToBeClosed(@Param("thresholdDateTime") LocalDateTime thresholdDateTime);
 
     @Modifying
-    @Query("update Poll p set p.pollInfo.status = 'CLOSED' where p in :polls")
+    @Query("update Poll p set p.menu.status = 'CLOSED' where p in :polls")
     void closeAll(@Param("polls") Iterable<Poll> polls);
 }

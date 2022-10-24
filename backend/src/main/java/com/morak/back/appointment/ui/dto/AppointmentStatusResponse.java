@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public class AppointmentStatusResponse {
 
-    private MenuStatus status;
+    private String status;
 }

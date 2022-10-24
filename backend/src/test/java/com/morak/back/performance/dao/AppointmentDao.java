@@ -21,31 +21,31 @@ public class AppointmentDao {
     }
 
     public void batchInsertAppointment(List<Appointment> appointments) {
-        jdbcTemplate.batchUpdate(
-                "INSERT INTO appointment (team_code, host_id, title, description, start_date, end_date, start_time, end_time, duration_minutes, status, code, closed_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now());",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1, appointments.get(i).getTeamCode().getCode());
-                        ps.setLong(2, appointments.get(i).getHostId());
-                        ps.setString(3, appointments.get(i).getTitle());
-                        ps.setString(4, appointments.get(i).getDescription());
-                        ps.setObject(5, appointments.get(i).getStartDate());
-                        ps.setObject(6, appointments.get(i).getEndDate());
-                        ps.setObject(7, appointments.get(i).getStartTime());
-                        ps.setObject(8, appointments.get(i).getEndTime());
-                        ps.setInt(9, appointments.get(i).getDurationMinutes());
-                        ps.setString(10, appointments.get(i).getStatus().name());
-                        ps.setString(11, appointments.get(i).getCode());
-                        ps.setObject(12, appointments.get(i).getClosedAt());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return appointments.size();
-                    }
-                }
-        );
+//        jdbcTemplate.batchUpdate(
+//                "INSERT INTO appointment (team_code, host_id, title, description, start_date, end_date, start_time, end_time, duration_minutes, status, code, closed_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now());",
+//                new BatchPreparedStatementSetter() {
+//                    @Override
+//                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+//                        ps.setString(1, appointments.get(i).getTeamCode());
+//                        ps.setLong(2, appointments.get(i).getHostId());
+//                        ps.setString(3, appointments.get(i).getTitle());
+//                        ps.setString(4, appointments.get(i).getDescription());
+//                        ps.setObject(5, appointments.get(i).getStartDate());
+//                        ps.setObject(6, appointments.get(i).getEndDate());
+//                        ps.setObject(7, appointments.get(i).getStartTime());
+//                        ps.setObject(8, appointments.get(i).getEndTime());
+//                        ps.setInt(9, appointments.get(i).getDurationMinutes());
+//                        ps.setString(10, appointments.get(i).getStatus().name());
+//                        ps.setString(11, appointments.get(i).getCode());
+//                        ps.setObject(12, appointments.get(i).getClosedAt());
+//                    }
+//
+//                    @Override
+//                    public int getBatchSize() {
+//                        return appointments.size();
+//                    }
+//                }
+//        );
     }
 
     public void batchInsertAvailableTime(List<AvailableTime> availableTimes) {

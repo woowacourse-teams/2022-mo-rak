@@ -8,9 +8,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
 
+import com.morak.back.appointment.domain.menu.ClosedAt;
+import com.morak.back.appointment.domain.menu.Menu;
+import com.morak.back.appointment.domain.menu.Menu.MenuBuilder;
+import com.morak.back.appointment.domain.menu.MenuStatus;
+import com.morak.back.appointment.domain.menu.Title;
 import com.morak.back.auth.domain.Member;
+import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.poll.domain.PollInfo.PollInfoBuilder;
 import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollItemNotFoundException;
@@ -51,19 +56,19 @@ class PollTest {
                 .subject("이자카야")
                 .build();
         poll = Poll.builder()
-                .pollInfo(defaultPollInfoBuilder().build())
+                .menu(defaultMenuBuilder().build())
                 .pollItems(List.of(itemA, itemB, itemC))
+                .anonymous(false)
+                .allowedCount(2)
                 .build();
     }
 
     @Test
     void 투표_생성시_마감_시간이_현재보다_이전이면_예외를_던진다() {
         // when & then
-        assertThatThrownBy(() -> defaultPollInfoBuilder()
-                .closedAt(SystemDateTime.builder()
-                        .dateTime(TIME_OF_2022_05_12_12_00)
-                        .now(TIME_OF_2022_05_12_12_30)
-                        .build())
+        // todo : change exception
+        assertThatThrownBy(() -> defaultMenuBuilder()
+                .closedAt(new ClosedAt(TIME_OF_2022_05_12_12_00, TIME_OF_2022_05_12_12_30))
                 .build())
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
@@ -73,14 +78,14 @@ class PollTest {
     @Test
     void 투표_생성시_투표_항목_개수가_허용_개수보다_적으면_예외를_던진다() {
         // given
-        PollInfo info = defaultPollInfoBuilder()
-                .allowedCount(4)
+        Menu info = defaultMenuBuilder()
                 .build();
 
         // when & then
         assertThatThrownBy(() -> poll = Poll.builder()
-                .pollInfo(info)
+                .menu(info)
                 .pollItems(List.of(itemA, itemB, itemC))
+                .allowedCount(4)
                 .build())
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
@@ -120,9 +125,9 @@ class PollTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(itemA.getSelectMembers().getValues()).hasSize(0),
+                () -> assertThat(itemA.getSelectMembers().getValues()).isEmpty(),
                 () -> assertThat(itemB.getSelectMembers().getValues()).containsExactly(entry(member, descriptionB)),
-                () -> assertThat(itemC.getSelectMembers().getValues()).hasSize(0)
+                () -> assertThat(itemC.getSelectMembers().getValues()).isEmpty()
         );
     }
 
@@ -180,7 +185,7 @@ class PollTest {
         poll.close(member.getId());
 
         // then
-        assertThat(poll.getPollInfo().getStatus()).isEqualTo(PollStatus.CLOSED);
+        assertThat(poll.getStatus()).isEqualTo(PollStatus.CLOSED.name());
     }
 
     @Test
@@ -198,6 +203,7 @@ class PollTest {
         poll.close(member.getId());
 
         // when & then
+        // todo : change exception
         assertThatThrownBy(() -> poll.close(member.getId()))
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
@@ -239,18 +245,14 @@ class PollTest {
                 .isEqualTo(CustomErrorCode.POLL_ITEM_NOT_FOUND_ERROR);
     }
 
-    private PollInfoBuilder defaultPollInfoBuilder() {
-        return PollInfo.builder()
-                .codeGenerator(l -> "12345678")
-                .title("모락 회식 메뉴")
-                .anonymous(false)
-                .allowedCount(2)
-                .teamId(team.getId())
+    private MenuBuilder defaultMenuBuilder() {
+        return Menu.builder()
+                .code(Code.generate(l -> "12345678"))
+                .title(new Title("모락 회식 메뉴"))
+                .teamCode(Code.generate((s) -> team.getCode()))
                 .hostId(member.getId())
-                .status(PollStatus.OPEN)
-                .closedAt(SystemDateTime.builder()
-                        .dateTime(TIME_OF_2022_05_12_12_30)
-                        .now(TIME_OF_2022_05_12_12_00)
-                        .build());
+                .status(MenuStatus.OPEN)
+                .closedAt(new ClosedAt(TIME_OF_2022_05_12_12_30, TIME_OF_2022_05_12_12_00)
+                );
     }
 }

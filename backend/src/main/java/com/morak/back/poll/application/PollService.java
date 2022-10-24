@@ -43,13 +43,13 @@ public class PollService {
 
     private final NotificationService notificationService;
 
-    public String createPoll(String teamCode, Long memberId, PollCreateRequest request) {
+    public PollResponse createPoll(String teamCode, Long memberId, PollCreateRequest request) {
         Member member = findMemberById(memberId);
         Team team = findTeamByCode(teamCode);
         validateMemberInTeam(team, member);
 
-        Poll poll = request.toPoll(team.getId(), memberId);
-        return pollRepository.save(poll).getPollInfo().getCode();
+        Poll poll = request.toPoll(team.getCode(), memberId);
+        return PollResponse.from(memberId, pollRepository.save(poll));
     }
 
     @Transactional(readOnly = true)
@@ -100,7 +100,7 @@ public class PollService {
         Poll poll = findPollByCode(pollCode);
         return poll.getPollItems()
                 .stream()
-                .map(pollItem -> PollItemResultResponse.of(pollItem, poll.getPollInfo().isAnonymous()))
+                .map(pollItem -> PollItemResultResponse.of(pollItem, poll.getAnonymous()))
                 .collect(Collectors.toList());
     }
 
@@ -111,15 +111,15 @@ public class PollService {
 
         Poll poll = findPollByCode(pollCode);
         validatePollInTeam(team, poll);
-        validateHost(member, poll);
+        validateHost(memberId, poll);
         pollRepository.delete(poll);
     }
 
-    private void validateHost(Member member, Poll poll) {
-        if (!poll.isHost(member)) {
+    private void validateHost(Long memberId, Poll poll) {
+        if (!poll.isHost(memberId)) {
             throw new PollAuthorizationException(
                     CustomErrorCode.POLL_HOST_MISMATCHED_ERROR,
-                    member.getId() + "번 멤버는 " + poll.getPollInfo().getCode() + " 코드 투표의 호스트가 아닙니다."
+                    memberId + "번 멤버는 " + poll.getCode() + " 코드 투표의 호스트가 아닙니다."
             );
         }
     }
@@ -158,7 +158,7 @@ public class PollService {
     private void notifyStatusAll(List<Poll> pollsToBeClosed) {
         Map<Team, String> teamMessages = pollsToBeClosed.stream()
                 .collect(Collectors.toMap(
-                        poll -> teamRepository.findById(poll.getPollInfo().getTeamId()).orElseThrow(),
+                        poll -> teamRepository.findByCode(poll.getTeamCode()).orElseThrow(),
                         poll -> MessageFormatter.formatClosed(FormattableData.from(poll))
                 ));
         // todo : 이벤트 방식으로 전환하기.
@@ -188,9 +188,9 @@ public class PollService {
     }
 
     private void validatePollInTeam(Team findTeam, Poll poll) {
-        if (!poll.isBelongedTo(findTeam.getId())) {
+        if (!poll.isBelongedTo(findTeam.getCode())) {
             throw new PollAuthorizationException(CustomErrorCode.POLL_TEAM_MISMATCHED_ERROR,
-                    poll.getPollInfo().getCode() + " 코드의 투표는 " + findTeam.getCode() + " 코드의 팀에 속해있지 않습니다."
+                    poll.getCode() + " 코드의 투표는 " + findTeam.getCode() + " 코드의 팀에 속해있지 않습니다."
             );
         }
     }

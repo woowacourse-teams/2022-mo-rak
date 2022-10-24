@@ -31,12 +31,12 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @PostMapping
-    public ResponseEntity<Void> createAppointment(@PathVariable String groupCode,
+    public ResponseEntity<AppointmentResponse> createAppointment(@PathVariable String groupCode,
                                                   @Auth Long memberId,
                                                   @Valid @RequestBody AppointmentCreateRequest request) {
-        String appointmentCode = appointmentService.createAppointment(groupCode, memberId, request);
-        return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/appointments/" + appointmentCode))
-                .build();
+        AppointmentResponse response = appointmentService.createAppointment(groupCode, memberId, request);
+        return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/appointments/" + response.getCode()))
+                .body(response);
     }
 
     @GetMapping

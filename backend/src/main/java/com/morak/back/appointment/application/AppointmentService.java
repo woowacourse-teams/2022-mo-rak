@@ -56,7 +56,7 @@ public class AppointmentService {
 
     private final SystemTime systemTime;
 
-    public String createAppointment(String teamCode, Long memberId, AppointmentCreateRequest request) {
+    public AppointmentResponse createAppointment(String teamCode, Long memberId, AppointmentCreateRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = teamRepository.findByCode(teamCode)
@@ -67,7 +67,7 @@ public class AppointmentService {
                 request.toAppointment(Code.generate((length) -> teamCode), memberId, Code.generate(CODE_GENERATOR), systemTime.now()));
         notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(appointment)));
 
-        return appointment.getCode();
+        return AppointmentResponse.from(appointment, memberId);
     }
 
     @Transactional(readOnly = true)
@@ -100,13 +100,6 @@ public class AppointmentService {
         );
     }
 
-
-    private void validateAppointmentInTeam(String teamCode, Appointment appointment) {
-        if (!appointment.isBelongedTo(teamCode)) {
-            throw new AppointmentAuthorizationException(CustomErrorCode.APPOINTMENT_TEAM_MISMATCHED_ERROR,
-                    String.format("%s 코드의 약속잡기는 %s 코드의 팀에 속해있지 않습니다.", appointment.getCode(), teamCode));
-        }
-    }
 
     public void selectAvailableTimes(String teamCode, Long memberId, String appointmentCode,
                                      List<AvailableTimeRequest> requests) {
@@ -218,7 +211,7 @@ public class AppointmentService {
     private void notifyStatusAll(List<Appointment> appointmentsToBeClosed) {
         Map<String, String> teamMessages = appointmentsToBeClosed.stream().collect(
                 Collectors.groupingBy(
-                        appointment -> appointment.getTeamCode().getCode(),
+                        Appointment::getTeamCode,
                         Collectors.mapping(
                                 appointment -> MessageFormatter.formatClosed(FormattableData.from(appointment)),
                                 Collectors.joining("\n")
@@ -249,5 +242,12 @@ public class AppointmentService {
         validateAppointmentInTeam(teamCode, appointment);
 
         return function.apply(appointment);
+    }
+
+    private void validateAppointmentInTeam(String teamCode, Appointment appointment) {
+        if (!appointment.isBelongedTo(teamCode)) {
+            throw new AppointmentAuthorizationException(CustomErrorCode.APPOINTMENT_TEAM_MISMATCHED_ERROR,
+                    String.format("%s 코드의 약속잡기는 %s 코드의 팀에 속해있지 않습니다.", appointment.getCode(), teamCode));
+        }
     }
 }

@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,10 +112,16 @@ class PollServiceTest {
         );
 
         // when
-        String pollCode = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest);
+        PollResponse pollResponse = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest);
 
         // then
-        assertThat(pollCode).hasSize(8);
+        Assertions.assertAll(
+                () -> assertThat(pollResponse.getTitle()).isEqualTo(pollCreateRequest.getTitle()),
+                () -> assertThat(pollResponse.getAllowedPollCount()).isEqualTo(pollCreateRequest.getAllowedPollCount()),
+                () -> assertThat(pollResponse.getIsAnonymous()).isEqualTo(pollCreateRequest.getAnonymous()),
+                () -> assertThat(pollResponse.getClosedAt()).isEqualTo(pollCreateRequest.getClosedAt()),
+                () -> assertThat(pollResponse.getCode()).isNotNull()
+        );
     }
 
     @Test
@@ -158,7 +165,7 @@ class PollServiceTest {
                                 null,
                                 pollCreateRequest.getTitle(),
                                 pollCreateRequest.getAllowedPollCount(),
-                                pollCreateRequest.isAnonymous(),
+                                pollCreateRequest.getAnonymous(),
                                 OPEN.name(),
                                 null,
                                 pollCreateRequest.getClosedAt(),
@@ -182,7 +189,7 @@ class PollServiceTest {
                 List.of("항목1", "항목2")
         );
 
-        String pollCode2 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest2);
+        String pollCode2 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest2).getCode();
 
         // when
         pollService.closePoll(team.getCode(), member.getId(), pollCode);
@@ -198,7 +205,7 @@ class PollServiceTest {
                                         null,
                                         pollCreateRequest2.getTitle(),
                                         pollCreateRequest2.getAllowedPollCount(),
-                                        pollCreateRequest2.isAnonymous(),
+                                        pollCreateRequest2.getAnonymous(),
                                         OPEN.name(),
                                         null,
                                         pollCreateRequest2.getClosedAt(),
@@ -209,7 +216,7 @@ class PollServiceTest {
                                         null,
                                         pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
-                                        pollCreateRequest.isAnonymous(),
+                                        pollCreateRequest.getAnonymous(),
                                         CLOSED.name(),
                                         null,
                                         pollCreateRequest.getClosedAt(),
@@ -231,7 +238,7 @@ class PollServiceTest {
                 List.of("item1", "item2")
         );
 
-        String pollCode1 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest1);
+        String pollCode1 = pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest1).getCode();
 
         // when
         pollService.closePoll(team.getCode(), member.getId(), pollCode);
@@ -248,7 +255,7 @@ class PollServiceTest {
                                         null,
                                         pollCreateRequest1.getTitle(),
                                         pollCreateRequest1.getAllowedPollCount(),
-                                        pollCreateRequest1.isAnonymous(),
+                                        pollCreateRequest1.getAnonymous(),
                                         CLOSED.name(),
                                         null,
                                         pollCreateRequest1.getClosedAt(),
@@ -258,7 +265,7 @@ class PollServiceTest {
                                 new PollResponse(null,
                                         pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
-                                        pollCreateRequest.isAnonymous(),
+                                        pollCreateRequest.getAnonymous(),
                                         CLOSED.name(),
                                         null,
                                         pollCreateRequest.getClosedAt(),
@@ -290,7 +297,7 @@ class PollServiceTest {
                                         null,
                                         pollCreateRequest.getTitle(),
                                         pollCreateRequest.getAllowedPollCount(),
-                                        pollCreateRequest.isAnonymous(),
+                                        pollCreateRequest.getAnonymous(),
                                         OPEN.name(),
                                         null,
                                         pollCreateRequest.getClosedAt(),
@@ -436,7 +443,7 @@ class PollServiceTest {
         String pollCode = 투표를_초기화하고_코드를_받아온다();
         String otherPollCode = pollService.createPoll(team.getCode(), member.getId(), new PollCreateRequest(
                 "축구하실분", 1, false, new SystemDateTime(LocalDateTime.now()).getDateTime().plusDays(1), List.of("풋살")
-        ));
+        )).getCode();
 
         // when & then
         assertThatThrownBy(() -> pollService.doPoll(team.getCode(), member.getId(), pollCode,
@@ -487,7 +494,7 @@ class PollServiceTest {
                         null,
                         pollCreateRequest.getTitle(),
                         pollCreateRequest.getAllowedPollCount(),
-                        pollCreateRequest.isAnonymous(),
+                        pollCreateRequest.getAnonymous(),
                         OPEN.name(),
                         LocalDateTime.now(),
                         pollCreateRequest.getClosedAt(),
@@ -657,7 +664,7 @@ class PollServiceTest {
                 List.of("삼겹살", "회", "쌈밥정식")
         );
 
-        String pollCode = pollService.createPoll(team.getCode(), member.getId(), anonymousPollCreateRequest);
+        String pollCode = pollService.createPoll(team.getCode(), member.getId(), anonymousPollCreateRequest).getCode();
 
         // when
         List<PollResultRequest> pollResultRequests = List.of(
@@ -833,6 +840,6 @@ class PollServiceTest {
     }
 
     private String 투표를_초기화하고_코드를_받아온다() {
-        return pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest);
+        return pollService.createPoll(team.getCode(), member.getId(), pollCreateRequest).getCode();
     }
 }

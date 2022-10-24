@@ -122,10 +122,10 @@ class AppointmentServiceTest {
         );
 
         // when
-        String createdAppointmentCode = appointmentService.createAppointment("MoraK123", 1L, request);
+        AppointmentResponse appointment = appointmentService.createAppointment("MoraK123", 1L, request);
 
         // then
-        assertThat(createdAppointmentCode).hasSize(8);
+        assertThat(appointment.getId()).isNotNull();
     }
 
     @Test
@@ -171,7 +171,7 @@ class AppointmentServiceTest {
 
         // when
         AppointmentResponse actual = appointmentService.findAppointment(
-                appointment.getTeamCode().getCode(), appointment.getHostId(), appointment.getCode()
+                appointment.getTeamCode(), appointment.getHostId(), appointment.getCode()
         );
 
         AppointmentResponse expected = AppointmentResponse.from(appointment, 1L);
@@ -194,7 +194,7 @@ class AppointmentServiceTest {
         // then
         assertThatNoException().isThrownBy(
                 () -> appointmentService.selectAvailableTimes(
-                        appointment.getTeamCode().getCode(),
+                        appointment.getTeamCode(),
                         appointment.getHostId(),
                         appointment.getCode(),
                         requests
@@ -220,7 +220,7 @@ class AppointmentServiceTest {
         // then
         assertThatNoException().isThrownBy(
                 () -> appointmentService.selectAvailableTimes(
-                        appointment.getTeamCode().getCode(),
+                        appointment.getTeamCode(),
                         appointment.getHostId(),
                         appointment.getCode(),
                         requests
@@ -241,7 +241,7 @@ class AppointmentServiceTest {
 
         // when
         List<RecommendationResponse> recommendationResponses = appointmentService.recommendAppointmentTimes(
-                appointment.getTeamCode().getCode(),
+                appointment.getTeamCode(),
                 appointment.getHostId(),
                 appointment.getCode()
         );
@@ -267,13 +267,13 @@ class AppointmentServiceTest {
 
         // when
         appointmentService.closeAppointment(
-                appointment.getTeamCode().getCode(),
+                appointment.getTeamCode(),
                 appointment.getHostId(),
                 appointment.getCode()
         );
 
         // then
-        assertThat(약속잡기_현재부터_1일에서_5일_14시_20시.getStatus()).isEqualTo(CLOSED);
+        assertThat(약속잡기_현재부터_1일에서_5일_14시_20시.getStatus()).isEqualTo(CLOSED.name());
     }
 
     @Test
@@ -283,7 +283,7 @@ class AppointmentServiceTest {
 
         // when
         appointmentService.deleteAppointment(
-                appointment.getTeamCode().getCode(),
+                appointment.getTeamCode(),
                 appointment.getHostId(),
                 appointment.getCode()
         );
@@ -302,7 +302,7 @@ class AppointmentServiceTest {
                 약속잡기_현재부터_1일에서_5일_14시_20시.getCode());
 
         // then
-        assertThat(status.getStatus()).isEqualTo(MenuStatus.OPEN);
+        assertThat(status.getStatus()).isEqualTo(MenuStatus.OPEN.name());
     }
 
     @Test
@@ -316,6 +316,6 @@ class AppointmentServiceTest {
                 약속잡기_현재부터_1일에서_5일_14시_20시.getCode());
 
         // then
-        assertThat(status.getStatus()).isEqualTo(MenuStatus.CLOSED);
+        assertThat(status.getStatus()).isEqualTo(MenuStatus.CLOSED.name());
     }
 }

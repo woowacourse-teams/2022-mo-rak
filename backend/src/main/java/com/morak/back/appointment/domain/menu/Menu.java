@@ -1,6 +1,10 @@
 package com.morak.back.appointment.domain.menu;
 
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.poll.domain.SystemDateTime;
+import com.morak.back.poll.exception.PollAuthorizationException;
+import com.morak.back.poll.exception.PollDomainLogicException;
 import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -8,12 +12,14 @@ import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor
 @Getter
+@Builder
 public class Menu {
 
     @Embedded
@@ -29,40 +35,50 @@ public class Menu {
     @Embedded
     private Title title;
 
-    @Embedded
-    private Description description;
-
     @Enumerated(value = EnumType.STRING)
     private MenuStatus status;
 
     @Embedded
     private ClosedAt closedAt;
 
-    public Menu(Code teamCode, Long hostId, Code code, String title, String description, MenuStatus status,
-                ClosedAt closedAt) {
+    public Menu(Code teamCode, Long hostId, Code code, Title title, MenuStatus status, ClosedAt closedAt) {
         this.teamCode = teamCode;
         this.hostId = hostId;
         this.code = code;
-        this.title = new Title(title);
-        this.description = new Description(description);
+        this.title = title;
         this.status = status;
         this.closedAt = closedAt;
     }
 
-    public void close() {
-        this.status = MenuStatus.CLOSED;
+    public void close(Long memberId) {
+        validateHost(memberId);
+        status = status.close();
     }
 
-    public boolean isHost(Long memberId) {
-        return this.hostId.equals(memberId);
-    }
-
-    public boolean isBelongedTo(String otherTeamCode) {
-        return this.teamCode.isEqualTo(otherTeamCode);
+    // todo : change exception
+    private void validateHost(Long memberId) {
+        if (!hostId.equals(memberId)) {
+            throw new PollAuthorizationException(
+                    CustomErrorCode.POLL_HOST_MISMATCHED_ERROR,
+                    memberId + "번 멤버는 " + getCode() + " 코드 투표의 호스트가 아닙니다."
+            );
+        }
     }
 
     public boolean isClosed() {
         return this.status.isClosed();
+    }
+
+    public Boolean isHost(Long memberId) {
+        return this.hostId.equals(memberId);
+    }
+
+    public boolean isBelongedTo(String teamCode) {
+        return this.teamCode.isEqualTo(teamCode);
+    }
+
+    public String getTeamCode() {
+        return this.teamCode.getCode();
     }
 
     public String getCode() {
@@ -73,11 +89,12 @@ public class Menu {
         return this.title.getTitle();
     }
 
-    public String getDescription() {
-        return this.description.getDescription();
-    }
-
     public LocalDateTime getClosedAt() {
         return this.closedAt.getClosedAt();
     }
+
+    public String getStatus() {
+        return this.status.name();
+    }
+
 }

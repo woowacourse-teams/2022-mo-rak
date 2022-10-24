@@ -3,8 +3,10 @@ package com.morak.back.appointment.domain;
 import static com.morak.back.core.exception.CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR;
 
 import com.morak.back.appointment.domain.dateperiod.DatePeriod;
+import com.morak.back.appointment.domain.menu.Description;
 import com.morak.back.appointment.domain.menu.Menu;
 import com.morak.back.appointment.domain.menu.MenuStatus;
+import com.morak.back.appointment.domain.menu.Title;
 import com.morak.back.appointment.domain.recommend.AppointmentTime;
 import com.morak.back.appointment.domain.timeperiod.TimePeriod;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
@@ -27,8 +29,8 @@ import javax.persistence.JoinColumn;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Delegate;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class Appointment extends BaseEntity {
@@ -44,19 +46,18 @@ public class Appointment extends BaseEntity {
     private final Set<AvailableTime> availableTimes = new HashSet<>();
 
     @Embedded
-    @Delegate
     private Menu menu;
 
     @Embedded
-    @Delegate
+    private Description description;
+
+    @Embedded
     private DatePeriod datePeriod;
 
     @Embedded
-    @Delegate
     private TimePeriod timePeriod;
 
     @Embedded
-    @Delegate
     private DurationMinutes durationMinutes;
 
     @Builder
@@ -64,8 +65,9 @@ public class Appointment extends BaseEntity {
                         LocalDate endDate, LocalTime startTime, LocalTime endTime, int durationHours,
                         int durationMinutes, Code code, LocalDateTime closedAt, LocalDateTime now) {
         super(id);
-        this.menu = new Menu(teamCode, hostId, code, title, description, MenuStatus.OPEN,
+        this.menu = new Menu(teamCode, hostId, code, new Title(title), MenuStatus.OPEN,
                 new AppointmentClosedAt(closedAt, now, endDate, endTime));
+        this.description = new Description(description);
         this.datePeriod = new DatePeriod(startDate, endDate, now.toLocalDate());
         this.timePeriod = new TimePeriod(startTime, endTime);
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
@@ -98,24 +100,19 @@ public class Appointment extends BaseEntity {
     }
 
     private void validateOpen() {
-        if (isClosed()) {
+        if (menu.isClosed()) {
             throw new AppointmentDomainLogicException(
                     CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR,
-                    getCode() + "코드의 약속잡기는 마감되었습니다."
+                    menu.getCode() + "코드의 약속잡기는 마감되었습니다."
             );
         }
     }
 
-    public void close(Long memberId) {
-        validateHost(memberId);
-        menu.close();
-    }
-
     private void validateHost(Long memberId) {
-        if (!isHost(memberId)) {
+        if (!menu.isHost(memberId)) {
             throw new AppointmentAuthorizationException(
                     CustomErrorCode.APPOINTMENT_MEMBER_MISMATCHED_ERROR,
-                    memberId + "번 멤버는 " + getCode() + "코드의 약속잡기의 호스트가 아닙니다."
+                    memberId + "번 멤버는 " + menu.getCode() + "코드의 약속잡기의 호스트가 아닙니다."
             );
         }
     }
@@ -123,7 +120,7 @@ public class Appointment extends BaseEntity {
     private void validateSelectTime(LocalDateTime now, LocalDateTime dateTime) {
         if (!isDateTimeBetween(dateTime, now)) {
             throw new AppointmentDomainLogicException(AVAILABLETIME_OUT_OF_RANGE_ERROR,
-                    getCode() + "코드의 약속잡기에" + dateTime + "은 선택할 수 없는 시간입니다.");
+                    menu.getCode() + "코드의 약속잡기에" + dateTime + "은 선택할 수 없는 시간입니다.");
         }
     }
 
@@ -164,5 +161,74 @@ public class Appointment extends BaseEntity {
             times.add(new AppointmentTime(LocalDateTime.of(date, startTime), durationMinutes));
         }
         return times;
+    }
+
+    // todo : change exception
+    public void close(Long memberId) {
+        menu.close(memberId);
+    }
+
+    public boolean isHost(Long memberId) {
+        return menu.isHost(memberId);
+    }
+
+    public boolean isBelongedTo(String teamCode) {
+        return menu.isBelongedTo(teamCode);
+    }
+
+    public int parseHours() {
+        return durationMinutes.parseHours();
+    }
+
+    public int parseMinutes() {
+        return durationMinutes.parseMinutes();
+    }
+
+    public String getCode() {
+        return menu.getCode();
+    }
+
+    public String getTeamCode() {
+        return menu.getTeamCode();
+    }
+
+    public Long getHostId() {
+        return menu.getHostId();
+    }
+
+    public String getTitle() {
+        return menu.getTitle();
+    }
+
+    public String getDescription() {
+        return this.description.getDescription();
+    }
+
+    public LocalDate getStartDate() {
+        return this.datePeriod.getStartDate();
+    }
+
+    public LocalDate getEndDate() {
+        return this.datePeriod.getEndDate();
+    }
+
+    public LocalTime getStartTime() {
+        return this.timePeriod.getStartTime();
+    }
+
+    public LocalTime getEndTime() {
+        return this.timePeriod.getEndTime();
+    }
+
+    public LocalDateTime getClosedAt() {
+        return this.menu.getClosedAt();
+    }
+
+    public boolean isClosed() {
+        return this.menu.isClosed();
+    }
+
+    public String getStatus() {
+        return this.menu.getStatus();
     }
 }

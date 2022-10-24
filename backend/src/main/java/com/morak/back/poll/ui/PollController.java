@@ -32,11 +32,12 @@ public class PollController {
     private final PollService pollService;
 
     @PostMapping
-    public ResponseEntity<Void> createPoll(@PathVariable String groupCode,
+    public ResponseEntity<PollResponse> createPoll(@PathVariable String groupCode,
                                            @Auth Long memberId,
                                            @Valid @RequestBody PollCreateRequest request) {
-        String pollCode = pollService.createPoll(groupCode, memberId, request);
-        return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/polls/" + pollCode)).build();
+        PollResponse pollResponse = pollService.createPoll(groupCode, memberId, request);
+        return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/polls/" + pollResponse.getCode()))
+                .body(pollResponse);
     }
 
     @PutMapping("/{pollCode}")

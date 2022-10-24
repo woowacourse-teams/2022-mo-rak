@@ -99,7 +99,7 @@ class AppointmentTest {
         appointment.close(hostId);
 
         // then
-        assertThat(appointment.getStatus()).isEqualTo(MenuStatus.CLOSED);
+        assertThat(appointment.getStatus()).isEqualTo(MenuStatus.CLOSED.name());
     }
 
     @Test

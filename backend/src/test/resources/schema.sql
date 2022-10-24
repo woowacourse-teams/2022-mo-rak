@@ -66,7 +66,7 @@ CREATE TABLE poll
     code          varchar(255),
     host_id       bigint,
     status        varchar(255),
-    team_id       bigint,
+    team_code     varchar(255),
     title         varchar(255),
     closed_at     datetime NOT NULL,
     created_at    datetime NOT NULL,

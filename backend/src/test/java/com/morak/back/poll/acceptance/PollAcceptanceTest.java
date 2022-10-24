@@ -310,7 +310,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .ignoringFields("id", "createdAt")
                         .isEqualTo(
                                 List.of(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
-                                        request.isAnonymous(),
+                                        request.getAnonymous(),
                                         PollStatus.OPEN.name(), null, request.getClosedAt().withNano(0), pollCode, true, 0))
                         )
         );
@@ -353,7 +353,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("id", "createdAt")
                         .isEqualTo(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
-                                request.isAnonymous(),
+                                request.getAnonymous(),
                                 PollStatus.OPEN.name(), null, request.getClosedAt().withNano(0), pollCode, true, 0))
         );
     }
@@ -391,7 +391,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("id", "createdAt")
                         .isEqualTo(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
-                                request.isAnonymous(),
+                                request.getAnonymous(),
                                 PollStatus.OPEN.name(), null, request.getClosedAt().withNano(0), pollCode, true, 2))
         );
     }

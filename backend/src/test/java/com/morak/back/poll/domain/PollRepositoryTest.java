@@ -4,6 +4,10 @@ import static com.morak.back.poll.DateTimeFixture.TIME_OF_2022_05_12_12_00;
 import static com.morak.back.poll.DateTimeFixture.TIME_OF_2022_05_12_12_30;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.morak.back.appointment.domain.menu.ClosedAt;
+import com.morak.back.appointment.domain.menu.Menu;
+import com.morak.back.appointment.domain.menu.MenuStatus;
+import com.morak.back.appointment.domain.menu.Title;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
@@ -41,7 +45,7 @@ class PollRepositoryTest {
     @Test
     void 코드로_투표를_불러온다() {
         // when
-        Poll foundPoll = pollRepository.findByCode(poll.getPollInfo().getCode()).orElseThrow();
+        Poll foundPoll = pollRepository.findByCode(poll.getCode()).orElseThrow();
 
         // then
         assertThat(foundPoll).isEqualTo(poll);
@@ -50,7 +54,7 @@ class PollRepositoryTest {
     @Test
     void 코드로_투표를_불러온다_fetched() {
         // when
-        Poll foundPoll = pollRepository.findFetchedByCode(poll.getPollInfo().getCode()).orElseThrow();
+        Poll foundPoll = pollRepository.findFetchedByCode(poll.getCode()).orElseThrow();
 
         // then
         assertThat(foundPoll).isEqualTo(poll);
@@ -78,18 +82,13 @@ class PollRepositoryTest {
     private Poll savePoll() {
         return pollRepository.save(
                 Poll.builder()
-                        .pollInfo(PollInfo.builder()
-                                .codeGenerator(l -> "12345678")
-                                .title("모락 회식 메뉴")
-                                .anonymous(false)
-                                .allowedCount(2)
-                                .teamId(team.getId())
+                        .menu(Menu.builder()
+                                .code(Code.generate(l -> "12345678"))
+                                .title(new Title("모락 회식 메뉴"))
+                                .teamCode(Code.generate((s) -> team.getCode()))
                                 .hostId(member.getId())
-                                .status(PollStatus.OPEN)
-                                .closedAt(SystemDateTime.builder()
-                                        .dateTime(TIME_OF_2022_05_12_12_30)
-                                        .now(TIME_OF_2022_05_12_12_00)
-                                        .build())
+                                .status(MenuStatus.OPEN)
+                                .closedAt(new ClosedAt(TIME_OF_2022_05_12_12_30, TIME_OF_2022_05_12_12_00))
                                 .build()
                         )
                         .pollItems(List.of(
@@ -97,6 +96,8 @@ class PollRepositoryTest {
                                 PollItem.builder().subject("회").build(),
                                 PollItem.builder().subject("이자카야").build()
                         ))
+                        .allowedCount(2)
+                        .anonymous(false)
                         .build()
         );
     }

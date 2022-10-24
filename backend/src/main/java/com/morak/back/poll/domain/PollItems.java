@@ -3,6 +3,7 @@ package com.morak.back.poll.domain;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -21,18 +22,21 @@ public class PollItems {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "poll_id", nullable = false, updatable = false)
-    private List<PollItem> values;
+    private List<PollItem> values = new ArrayList<>();
+
+    private AllowedCount allowedCount;
 
     @Builder
-    public PollItems(List<PollItem> values) {
+    public PollItems(List<PollItem> values, AllowedCount allowedCount) {
         this.values = values;
+        this.allowedCount = allowedCount;
     }
 
-    public void validateCount(PollInfo pollInfo) {
-        if (this.values.isEmpty() || pollInfo.isAllowedCountGraterThan(this.values.size())) {
+    public void validateCount() {
+        if (this.values.isEmpty() || this.allowedCount.isGreaterThan(this.values.size())) {
             throw new PollDomainLogicException(
                     CustomErrorCode.POLL_ITEM_COUNT_OUT_OF_RANGE_ERROR,
-                    "투표 항목의 개수(" + values.size() + ")는 " + pollInfo.getAllowedCount().getValue() + "개 이상여야합니다."
+                    "투표 항목의 개수(" + values.size() + ")는 " + this.allowedCount.getValue() + "개 이상여야합니다."
             );
         }
     }
@@ -59,7 +63,15 @@ public class PollItems {
                 .count();
     }
 
-    public boolean containsAll(Collection<?> items) {
+    public boolean containsAll(Collection<PollItem> items) {
         return this.values.containsAll(items);
+    }
+
+    public boolean isAllowedCount(int itemCount) {
+        return itemCount >= 1 && isAllowedCountGreaterThanOrEqual(itemCount);
+    }
+
+    private boolean isAllowedCountGreaterThanOrEqual(int itemCount) {
+        return this.allowedCount.isGreaterThanOrEqual(itemCount);
     }
 }

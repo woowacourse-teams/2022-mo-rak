@@ -4,7 +4,9 @@ import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.DomainLogicException;
 
 public enum MenuStatus {
-    OPEN, CLOSED;
+
+    OPEN,
+    CLOSED;
 
     public Boolean isClosed() {
         return this.equals(CLOSED);

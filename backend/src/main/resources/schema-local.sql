@@ -61,7 +61,7 @@ CREATE TABLE team_invitation
 CREATE TABLE `poll`
 (
     `id`                 bigint       NOT NULL AUTO_INCREMENT,
-    `team_id`            bigint       NOT NULL,
+    `team_code`            varchar(255)       NOT NULL,
     `host_id`            bigint       NOT NULL,
     `title`              varchar(255) NOT NULL,
     `allowed_poll_count` int          NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE `poll`
     `closed_at`          datetime     NOT NULL,
     `code`               varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id),
-    FOREIGN KEY (team_id) REFERENCES team (id),
+#     FOREIGN KEY (team_id) REFERENCES team (id),
     FOREIGN KEY (host_id) REFERENCES member (id)
 );
 

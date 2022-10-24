@@ -38,14 +38,14 @@ public class PollResponse implements Comparable<PollResponse> {
     public static PollResponse from(Long memberId, Poll poll) {
         return new PollResponse(
                 poll.getId(),
-                poll.getPollInfo().getTitle(),
-                poll.getPollInfo().getAllowedCount().getValue(),
-                poll.getPollInfo().isAnonymous(),
-                poll.getPollInfo().getStatus().name(),
+                poll.getTitle(),
+                poll.getAllowedCount().getValue(),
+                poll.getAnonymous(),
+                poll.getStatus(),
                 poll.getCreatedAt(),
-                poll.getPollInfo().getClosedAt().getDateTime(),
-                poll.getPollInfo().getCode(),
-                poll.getPollInfo().isHost(memberId),
+                poll.getClosedAt(),
+                poll.getCode(),
+                poll.isHost(memberId),
                 poll.countSelectMembers()
         );
     }

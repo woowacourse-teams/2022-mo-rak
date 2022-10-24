@@ -89,7 +89,7 @@ class AppointmentSchedulerTest {
         entityManager.refresh(appointment);
 
         // then
-        assertThat(appointment.getStatus()).isEqualTo(MenuStatus.CLOSED);
+        assertThat(appointment.getStatus()).isEqualTo(MenuStatus.CLOSED.name());
         String message = receiver.getMessage();
         assertThat(message).contains("마감");
         System.out.println("message = " + message);

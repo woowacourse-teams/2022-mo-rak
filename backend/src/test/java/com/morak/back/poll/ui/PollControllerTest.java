@@ -47,7 +47,9 @@ class PollControllerTest extends ControllerTest {
         PollCreateRequest pollCreateRequest = new PollCreateRequest("회식_메뉴", 2, false, LocalDateTime.now().plusDays(1),
                 List.of("회", "삼겹살", "꿔바로우"));
 
-        given(pollService.createPoll(anyString(), anyLong(), any(PollCreateRequest.class))).willReturn("abCD1234");
+        PollResponse pollResponse = new PollResponse(1L, "회식_메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
+                LocalDateTime.now().plusDays(3), pollCode, true, 0);
+        given(pollService.createPoll(anyString(), anyLong(), any(PollCreateRequest.class))).willReturn(pollResponse);
 
         // when
         ResultActions response = mockMvc.perform(post("/api/groups/{groupCode}/polls", groupCode)
@@ -58,7 +60,7 @@ class PollControllerTest extends ControllerTest {
         // then
         response
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/api/groups/" + groupCode + "/polls/abCD1234"))
+                .andExpect(header().string("Location", "/api/groups/" + groupCode + "/polls/" + pollCode))
                 .andDo(document("poll/poll-create",
                         getDocumentRequest(),
                         getDocumentResponse(),
@@ -125,7 +127,7 @@ class PollControllerTest extends ControllerTest {
         // given
         given(pollService.findPoll(anyString(), anyLong(), anyString()))
                 .willReturn(new PollResponse(1L, "회식_메뉴", 2, false, "OPEN", LocalDateTime.now().minusDays(1),
-                        LocalDateTime.now().plusDays(3), groupCode, true, 0));
+                        LocalDateTime.now().plusDays(3), pollCode, true, 0));
 
         // when
         ResultActions response = mockMvc.perform(get("/api/groups/{groupCode}/polls/{pollCode}", groupCode, pollCode)

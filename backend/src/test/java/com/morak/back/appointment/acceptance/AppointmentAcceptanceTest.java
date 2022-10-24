@@ -462,7 +462,7 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
         AppointmentStatusResponse statusResponse = toObject(response, AppointmentStatusResponse.class);
 
         // then
-        assertThat(statusResponse.getStatus()).isEqualTo(MenuStatus.OPEN);
+        assertThat(statusResponse.getStatus()).isEqualTo(MenuStatus.OPEN.name());
     }
 
     private ExtractableResponse<Response> 약속잡기_마감확인을_요청한다(String location) {

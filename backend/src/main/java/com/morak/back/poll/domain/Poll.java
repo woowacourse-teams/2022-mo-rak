@@ -1,10 +1,12 @@
 package com.morak.back.poll.domain;
 
+import com.morak.back.appointment.domain.menu.Menu;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollItemNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,21 +23,27 @@ import lombok.NoArgsConstructor;
 public class Poll extends BaseEntity {
 
     @Embedded
-    private PollInfo pollInfo;
+    private Menu menu;
 
     @Embedded
     private PollItems pollItems;
 
+    private Boolean anonymous;
+
+    // TODO: 2022/10/21 Menu 를 어디서 생성해줄까?
+
     @Builder
-    public Poll(PollInfo pollInfo, List<PollItem> pollItems) {
-        this(null, pollInfo, PollItems.builder().values(pollItems).build());
+    public Poll(Menu menu, List<PollItem> pollItems, Boolean anonymous, Integer allowedCount) {
+        this(null, menu, PollItems.builder().values(pollItems).allowedCount(new AllowedCount(allowedCount)).build(),
+                anonymous);
     }
 
-    protected Poll(Long id, PollInfo pollInfo, PollItems pollItems) {
-        pollItems.validateCount(pollInfo);
+    private Poll(Long id, Menu menu, PollItems pollItems, Boolean anonymous) {
+        pollItems.validateCount();
         this.id = id;
-        this.pollInfo = pollInfo;
+        this.menu = menu;
         this.pollItems = pollItems;
+        this.anonymous = anonymous;
     }
 
     public void doPoll(Member member, Map<PollItem, String> data) {
@@ -58,19 +66,19 @@ public class Poll extends BaseEntity {
     }
 
     private void validateState() {
-        if (pollInfo.isClosed()) {
+        if (menu.isClosed()) {
             throw new PollDomainLogicException(
                     CustomErrorCode.POLL_ALREADY_CLOSED_ERROR,
-                    pollInfo.getCode() + " 코드의 투표는 종료되었습니다."
+                    menu.getCode() + " 코드의 투표는 종료되었습니다."
             );
         }
     }
 
     private void validateAllowedCount(int itemCount) {
-        if (!pollInfo.isAllowedCount(itemCount)) {
+        if (!pollItems.isAllowedCount(itemCount)) {
             throw new PollDomainLogicException(
                     CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR,
-                    pollInfo.getCode() + "번 투표에 " + itemCount + "개의 투표 항목을 선택할 수 없습니다."
+                    this.id + "번 투표에 " + itemCount + "개의 투표 항목을 선택할 수 없습니다."
             );
         }
     }
@@ -80,18 +88,50 @@ public class Poll extends BaseEntity {
     }
 
     public void close(Long memberId) {
-        pollInfo.close(memberId);
+        menu.close(memberId);
     }
 
     public List<PollItem> getPollItems() {
         return this.pollItems.getValues();
     }
 
-    public boolean isBelongedTo(Long teamId) {
-        return this.pollInfo.getTeamId().equals(teamId);
+    public AllowedCount getAllowedCount() {
+        return this.pollItems.getAllowedCount();
     }
 
-    public boolean isHost(final Member member) {
-        return getPollInfo().isHost(member.getId());
+    public boolean isBelongedTo(String teamCode) {
+        return this.menu.isBelongedTo(teamCode);
+    }
+
+    public boolean isHost(final Long memberId) {
+        return this.menu.isHost(memberId);
+    }
+
+    public String getCode() {
+        return menu.getCode();
+    }
+
+    public String getTeamCode() {
+        return menu.getTeamCode();
+    }
+
+    public Long getHostId() {
+        return menu.getHostId();
+    }
+
+    public String getTitle() {
+        return menu.getTitle();
+    }
+
+    public LocalDateTime getClosedAt() {
+        return this.menu.getClosedAt();
+    }
+
+    public boolean isClosed() {
+        return this.menu.isClosed();
+    }
+
+    public String getStatus() {
+        return this.menu.getStatus();
     }
 }
