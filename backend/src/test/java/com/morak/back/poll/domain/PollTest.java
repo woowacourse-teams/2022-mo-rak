@@ -17,6 +17,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.AuthorizationException;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.exception.DomainLogicException;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollItemNotFoundException;
 import com.morak.back.team.domain.Team;
@@ -66,13 +67,12 @@ class PollTest {
     @Test
     void 투표_생성시_마감_시간이_현재보다_이전이면_예외를_던진다() {
         // when & then
-        // todo : change exception
         assertThatThrownBy(() -> defaultMenuBuilder()
                 .closedAt(new ClosedAt(TIME_OF_2022_05_12_12_00, TIME_OF_2022_05_12_12_30))
                 .build())
-                .isInstanceOf(PollDomainLogicException.class)
+                .isInstanceOf(DomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_CLOSED_AT_OUT_OF_RANGE_ERROR);
+                .isEqualTo(CustomErrorCode.PAST_CLOSED_TIME_ERROR);
     }
 
     @Test
@@ -203,11 +203,10 @@ class PollTest {
         poll.close(member.getId());
 
         // when & then
-        // todo : change exception
         assertThatThrownBy(() -> poll.close(member.getId()))
-                .isInstanceOf(PollDomainLogicException.class)
+                .isInstanceOf(DomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_ALREADY_CLOSED_ERROR);
+                .isEqualTo(CustomErrorCode.MENU_ALREADY_CLOSED_ERROR);
     }
 
     @Test

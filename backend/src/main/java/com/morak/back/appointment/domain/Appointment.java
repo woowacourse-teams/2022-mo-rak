@@ -153,7 +153,6 @@ public class Appointment extends BaseEntity {
         return times;
     }
 
-    // todo : change exception
     public void close(Long memberId) {
         menu.close(memberId);
     }
