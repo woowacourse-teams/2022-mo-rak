@@ -3,6 +3,7 @@ package com.morak.back.auth.domain;
 import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.support.Generated;
 import java.util.Objects;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
@@ -26,16 +27,15 @@ public class Member extends BaseEntity {
     );
 
     @Builder
-    public Member(final Long id, final String oauthId, final String name, final String profileUrl) {
+    public Member(Long id, String oauthId, String name, String profileUrl) {
         super(id);
-        this.oauthId = oauthId;
+        this.oauthId = new OAuthId(oauthId);
         this.name = name;
         this.profileUrl = profileUrl;
     }
 
-    @NotBlank(message = "oauthId 는 blank 일 수 없습니다.")
-    @Size(min = 1, max = 255, message = "oauthId의 길이는 1 ~ 255 사이여야합니다.")
-    private String oauthId;
+    @Embedded
+    private OAuthId oauthId;
 
     @NotBlank(message = "name 은 blank 일 수 없습니다.")
     @Size(min = 1, max = 255, message = "name의 길이는 1 ~ 255 사이여야합니다.")
@@ -54,8 +54,11 @@ public class Member extends BaseEntity {
         this.name = name;
     }
 
+    public String getOauthId() {
+        return this.oauthId.getValue();
+    }
+
     @Override
-    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -64,8 +67,8 @@ public class Member extends BaseEntity {
             return false;
         }
         Member member = (Member) o;
-        return Objects.equals(id, member.getId()) && Objects.equals(oauthId, member.getOauthId())
-                && Objects.equals(name, member.getName()) && Objects.equals(profileUrl, member.getProfileUrl());
+        return Objects.equals(oauthId, member.oauthId) && Objects.equals(name, member.name)
+                && Objects.equals(profileUrl, member.profileUrl);
     }
 
     @Override

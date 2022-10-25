@@ -30,9 +30,10 @@ public class AuthFixture {
                 .code(Code.generate(l -> code)).build();
     }
 
-    public static Member createMember(long id, String name) {
+    public static Member createMember(long id, String oAuthId, String name) {
         return Member.builder()
                 .id(id)
+                .oauthId(oAuthId)
                 .name(name)
                 .build();
     }

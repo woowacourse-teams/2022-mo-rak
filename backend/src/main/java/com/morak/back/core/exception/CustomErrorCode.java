@@ -9,9 +9,14 @@ import lombok.Getter;
 public enum CustomErrorCode {
 
     EXPIRED_AUTHORIZATION_ERROR("0200", "이미 만료된 토큰입니다."),
+    OAUTH_ID_BLANK_ERROR("0100", "OAuthId는 공백일 수 없습니다."),
+    OAUTH_ID_LENGTH_ERROR("0101", "OAuthId의 길이가 올바르지 않습니다."),
+    MEMBER_NAME_LENGTH_ERROR("0102", "멤버의 이름 길이가 올바르지 않습니다."),
+    MEMBER_NAME_BLANK_ERROR("0103", "멤버의 이름은 공백일 수 없습니다."),
     INVALID_AUTHORIZATION_ERROR("0201", "인증되지 않은 토큰입니다."),
     GITHUB_AUTHORIZATION_ERROR("0202", "깃허브 인증에 실패했습니다."),
     EMPTY_AUTHORIZATION_ERROR("0203", "인증 토큰이 존재하지 않습니다"),
+
 
     MEMBER_NOT_FOUND_ERROR("0300", "요청한 멤버를 찾을 수 없습니다."),
 

@@ -95,6 +95,7 @@ class TeamServiceTest {
 
         Member invalidMember = Member.builder()
                 .id(9999999L)
+                .oauthId("oauthId")
                 .build();
 
         // when & then

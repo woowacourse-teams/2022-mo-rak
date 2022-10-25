@@ -31,8 +31,8 @@ import org.junit.jupiter.api.Test;
 class PollTest {
 
     private final Team team = createTeam(1L, "모락", "12345678");
-    private final Member member = createMember(1L, "엘리");
-    private final Member otherMember = createMember(2L, "에덴");
+    private final Member member = createMember(1L, "ellieOAuthId", "엘리");
+    private final Member otherMember = createMember(2L, "edenOAuthId", "에덴");
     private final String descriptionA = "삼겹살이 젤루 맛남!";
     private final String descriptionB = "꼬소한 회가 좋아!";
     private final String descriptionC = "우리팀 사람들이 좋아함!";
@@ -251,7 +251,6 @@ class PollTest {
                 .teamCode(Code.generate((s) -> team.getCode()))
                 .hostId(member.getId())
                 .status(MenuStatus.OPEN)
-                .closedAt(new ClosedAt(TIME_OF_2022_05_12_12_30, TIME_OF_2022_05_12_12_00)
-                );
+                .closedAt(new ClosedAt(TIME_OF_2022_05_12_12_30, TIME_OF_2022_05_12_12_00));
     }
 }

@@ -119,36 +119,6 @@ class MemberRepositoryTest {
     }
 
     @Test
-    void 길이가_0인_oauthId는_저장할_수_없다() {
-        // given
-        Member member = Member.builder()
-                .oauthId("")
-                .name("name")
-                .profileUrl("http://")
-                .build();
-
-        // when & then
-        assertThatThrownBy(() -> memberRepository.save(member))
-                .isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
-    void 길이가_255이상인_oauthId는_저장할_수_없다() {
-        // given
-        String oauthId = "1".repeat(256);
-
-        Member member = Member.builder()
-                .oauthId(oauthId)
-                .name("name")
-                .profileUrl("http://")
-                .build();
-
-        // when & then
-        assertThatThrownBy(() -> memberRepository.save(member))
-                .isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
     void 길이가_0인_profileUrl는_저장할_수_없다() {
         // given
         Member member = Member.builder()
