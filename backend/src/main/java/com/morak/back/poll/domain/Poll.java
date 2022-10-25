@@ -62,11 +62,20 @@ public class Poll extends BaseEntity {
     }
 
     public void doPoll(Member member, Map<PollItem, String> data) {
-        validateState();
-        validateAllowedCount(data.size());
+        validateStatusOpen();
         validateExistItem(data.keySet());
+        validatePollCountAllowed(data.size());
 
         pollItems.doPoll(member, data);
+    }
+
+    private void validateStatusOpen() {
+        if (menu.isClosed()) {
+            throw new PollDomainLogicException(
+                    CustomErrorCode.POLL_ALREADY_CLOSED_ERROR,
+                    menu.getCode() + " 코드의 투표는 종료되었습니다."
+            );
+        }
     }
 
     private void validateExistItem(Set<PollItem> selectItems) {
@@ -80,20 +89,11 @@ public class Poll extends BaseEntity {
         }
     }
 
-    private void validateState() {
-        if (menu.isClosed()) {
-            throw new PollDomainLogicException(
-                    CustomErrorCode.POLL_ALREADY_CLOSED_ERROR,
-                    menu.getCode() + " 코드의 투표는 종료되었습니다."
-            );
-        }
-    }
-
-    private void validateAllowedCount(int itemCount) {
-        if (!pollItems.isAllowedCount(itemCount)) {
+    private void validatePollCountAllowed(int itemCount) {
+        if (!pollItems.isPollCountAllowed(itemCount)) {
             throw new PollDomainLogicException(
                     CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR,
-                    this.id + "번 투표에 " + itemCount + "개의 투표 항목을 선택할 수 없습니다."
+                    this.id + "번 투표에 " + getAllowedCount().getValue() + "개 보다 많은(" + itemCount + ") 투표 항목을 선택할 수 없습니다."
             );
         }
     }
