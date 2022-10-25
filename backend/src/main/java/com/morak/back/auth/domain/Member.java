@@ -5,16 +5,11 @@ import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.URL;
 
 @Entity
 @NoArgsConstructor
-@Getter
 public class Member extends BaseEntity {
 
     @Transient
@@ -31,18 +26,16 @@ public class Member extends BaseEntity {
     @Embedded
     private Name name;
 
+    @Embedded
+    private ProfileUrl profileUrl;
+
     @Builder
     public Member(Long id, String oauthId, String name, String profileUrl) {
         super(id);
         this.oauthId = new OAuthId(oauthId);
         this.name = new Name(name);
-        this.profileUrl = profileUrl;
+        this.profileUrl = new ProfileUrl(profileUrl);
     }
-
-    @NotBlank(message = "profileUrl은 blank 일 수 없습니다.")
-    @Size(min = 1, max = 255, message = "profileUrl의 길이는 1 ~ 255 사이여야합니다.")
-    @URL(regexp = "^(http).*", message = "profileUrl은 http로 시작해야 합니다.")
-    private String profileUrl;
 
     public static Member getAnonymousMember() {
         return ANONYMOUS_MEMBER;
@@ -58,6 +51,10 @@ public class Member extends BaseEntity {
 
     public String getName() {
         return this.name.getValue();
+    }
+
+    public String getProfileUrl() {
+        return this.profileUrl.getValue();
     }
 
     @Override

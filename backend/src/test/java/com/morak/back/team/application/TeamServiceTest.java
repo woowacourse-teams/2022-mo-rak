@@ -97,6 +97,7 @@ class TeamServiceTest {
                 .id(9999999L)
                 .oauthId("oauthId")
                 .name("없는 멤버")
+                .profileUrl("https://avatars.githubusercontent.com/u/79205414?v=4")
                 .build();
 
         // when & then
