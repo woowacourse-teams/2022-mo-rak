@@ -5,9 +5,7 @@ import static com.morak.back.poll.DateTimeFixture.TIME_OF_2022_05_12_12_30;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.appointment.domain.menu.ClosedAt;
-import com.morak.back.appointment.domain.menu.Menu;
 import com.morak.back.appointment.domain.menu.MenuStatus;
-import com.morak.back.appointment.domain.menu.Title;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
@@ -82,15 +80,12 @@ class PollRepositoryTest {
     private Poll savePoll() {
         return pollRepository.save(
                 Poll.builder()
-                        .menu(Menu.builder()
-                                .code(Code.generate(l -> "12345678"))
-                                .title(new Title("모락 회식 메뉴"))
-                                .teamCode(Code.generate((s) -> team.getCode()))
-                                .hostId(member.getId())
-                                .status(MenuStatus.OPEN)
-                                .closedAt(new ClosedAt(TIME_OF_2022_05_12_12_30, TIME_OF_2022_05_12_12_00))
-                                .build()
-                        )
+                        .code(Code.generate(l -> "12345678"))
+                        .title("모락 회식 메뉴")
+                        .teamCode(Code.generate((s) -> team.getCode()))
+                        .hostId(member.getId())
+                        .status(MenuStatus.OPEN)
+                        .closedAt(new ClosedAt(TIME_OF_2022_05_12_12_30, TIME_OF_2022_05_12_12_00))
                         .pollItems(List.of(
                                 PollItem.builder().subject("삼겹살").build(),
                                 PollItem.builder().subject("회").build(),

@@ -1,8 +1,12 @@
 package com.morak.back.poll.domain;
 
+import com.morak.back.appointment.domain.menu.ClosedAt;
 import com.morak.back.appointment.domain.menu.Menu;
+import com.morak.back.appointment.domain.menu.MenuStatus;
+import com.morak.back.appointment.domain.menu.Title;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.BaseEntity;
+import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollItemNotFoundException;
@@ -30,18 +34,28 @@ public class Poll extends BaseEntity {
 
     private boolean anonymous;
 
-    // TODO: 2022/10/21 Poll 인자를 낱개로 ㄱ
-
     @Builder
-    public Poll(Menu menu, List<PollItem> pollItems, boolean anonymous, Integer allowedCount) {
+    public Poll(Code teamCode, Long hostId, Code code, String title, MenuStatus status, ClosedAt closedAt,
+                List<PollItem> pollItems, int allowedCount, boolean anonymous) {
         this(null,
-                menu,
-                PollItems.builder().values(pollItems).allowedCount(new AllowedCount(allowedCount)).build(),
-                anonymous);
+                Menu.builder()
+                        .teamCode(teamCode)
+                        .hostId(hostId)
+                        .code(code)
+                        .title(new Title(title))
+                        .status(status)
+                        .closedAt(closedAt)
+                        .build(),
+                PollItems.builder()
+                        .values(pollItems)
+                        .allowedCount(new AllowedCount(allowedCount))
+                        .build(),
+                anonymous
+        );
     }
 
     private Poll(Long id, Menu menu, PollItems pollItems, boolean anonymous) {
-        this.id = id;
+        super(id);
         this.menu = menu;
         this.pollItems = pollItems;
         this.anonymous = anonymous;
