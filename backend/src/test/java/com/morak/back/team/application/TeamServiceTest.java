@@ -3,6 +3,7 @@ package com.morak.back.team.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
@@ -45,6 +46,9 @@ class TeamServiceTest {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
+    @Autowired
+    private SystemTime systemTime;
+
     private TeamService teamService;
 
     private Member member;
@@ -58,7 +62,8 @@ class TeamServiceTest {
                 memberRepository,
                 teamMemberRepository,
                 teamInvitationRepository,
-                eventPublisher
+                eventPublisher,
+                systemTime
         );
 
         member = memberRepository.save(Member.builder()

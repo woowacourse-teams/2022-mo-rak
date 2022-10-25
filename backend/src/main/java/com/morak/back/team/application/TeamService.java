@@ -1,5 +1,6 @@
 package com.morak.back.team.application;
 
+import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
@@ -41,6 +42,8 @@ public class TeamService {
     private final TeamMemberRepository teamMemberRepository;
     private final TeamInvitationRepository teamInvitationRepository;
     private final ApplicationEventPublisher eventPublisher;
+
+    private final SystemTime systemTime;
 
     public String createTeam(Long memberId, TeamCreateRequest request) {
         Team team = Team.builder()
@@ -130,7 +133,7 @@ public class TeamService {
     }
 
     private void validateNotExpired(TeamInvitation teamInvitation) {
-        if (teamInvitation.isExpired()) {
+        if (teamInvitation.isExpired(systemTime)) {
             throw new TeamDomainLogicException(
                     CustomErrorCode.TEAM_INVITATION_EXPIRED_ERROR,
                     teamInvitation.getCode() + "는 만료된 초대코드입니다."
