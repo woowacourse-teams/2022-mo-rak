@@ -30,15 +30,6 @@ public class ExpiredTime {
         this.expiredAt = expiredAt;
     }
 
-    private void validateMinutesPositive(long minutes) {
-        if (minutes < 0) {
-            throw new TeamDomainLogicException(
-                    CustomErrorCode.TEAM_INVITATION_EXPIRED_ERROR,
-                    "초대코드 만료 시간은 현재보다 미래여야 합니다."
-            );
-        }
-    }
-
     private void validateFuture(LocalDateTime expiredAt, SystemTime systemTime) {
         LocalDateTime now = systemTime.now();
         if (expiredAt.isBefore(now)) {

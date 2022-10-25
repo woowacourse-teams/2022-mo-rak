@@ -41,8 +41,4 @@ public class TeamInvitation extends BaseEntity {
     public String getCode() {
         return code.getCode();
     }
-
-    public LocalDateTime getExpiredAt() {
-        return expiredAt.getExpiredAt();
-    }
 }
