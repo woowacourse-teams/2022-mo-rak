@@ -21,7 +21,7 @@ public class AppointmentCreateRequest {
     private String title;
 
     @NotNull
-    private String description;
+    private String subTitle;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -54,7 +54,7 @@ public class AppointmentCreateRequest {
                 .teamCode(teamCode)
                 .hostId(hostId)
                 .title(this.title)
-                .description(this.description)
+                .subTitle(this.subTitle)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
                 .startTime(this.startTime)

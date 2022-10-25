@@ -98,7 +98,7 @@ CREATE TABLE appointment
     `team_code`        VARCHAR(255) NOT NULL,
     `host_id`          BIGINT       NOT NULL,
     `title`            VARCHAR(255) NOT NULL,
-    `description`      VARCHAR(255) NOT NULL,
+    `sub_title`      VARCHAR(255) NOT NULL,
     `start_date`       DATE         NOT NULL,
     `end_date`         DATE         NOT NULL,
     `start_time`       TIME         NOT NULL,

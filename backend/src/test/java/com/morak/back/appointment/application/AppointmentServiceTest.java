@@ -83,7 +83,7 @@ class AppointmentServiceTest {
 
         DEFAULT_BUILDER = Appointment.builder()
                 .title("회식 날짜")
-                .description("필참입니다.")
+                .subTitle("필참입니다.")
                 .teamCode(Code.generate((length) -> 모락))
                 .hostId(에덴)
                 .startDate(today.plusDays(1))

@@ -3,7 +3,7 @@ package com.morak.back.appointment.domain;
 import static com.morak.back.core.exception.CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR;
 
 import com.morak.back.appointment.domain.dateperiod.DatePeriod;
-import com.morak.back.appointment.domain.menu.Description;
+import com.morak.back.appointment.domain.menu.SubTitle;
 import com.morak.back.appointment.domain.menu.Menu;
 import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.domain.menu.Title;
@@ -48,7 +48,7 @@ public class Appointment extends BaseEntity {
     private Menu menu;
 
     @Embedded
-    private Description description;
+    private SubTitle subTitle;
 
     @Embedded
     private DatePeriod datePeriod;
@@ -60,13 +60,13 @@ public class Appointment extends BaseEntity {
     private DurationMinutes durationMinutes;
 
     @Builder
-    private Appointment(Long id, Code teamCode, Long hostId, String title, String description, LocalDate startDate,
+    private Appointment(Long id, Code teamCode, Long hostId, String title, String subTitle, LocalDate startDate,
                         LocalDate endDate, LocalTime startTime, LocalTime endTime, int durationHours,
                         int durationMinutes, Code code, LocalDateTime closedAt, LocalDateTime now) {
         super(id);
         this.menu = new Menu(teamCode, hostId, code, new Title(title), MenuStatus.OPEN,
                 new AppointmentClosedAt(closedAt, now, endDate, endTime));
-        this.description = new Description(description);
+        this.subTitle = new SubTitle(subTitle);
         this.datePeriod = new DatePeriod(startDate, endDate, now.toLocalDate());
         this.timePeriod = new TimePeriod(startTime, endTime);
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
@@ -182,8 +182,8 @@ public class Appointment extends BaseEntity {
         return menu.getTitle();
     }
 
-    public String getDescription() {
-        return this.description.getDescription();
+    public String getSubTitle() {
+        return this.subTitle.getSubTitle();
     }
 
     public LocalDate getStartDate() {

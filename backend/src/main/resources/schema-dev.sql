@@ -60,20 +60,20 @@ CREATE TABLE team_invitation
 
 CREATE TABLE `poll`
 (
-    `id`                 bigint       NOT NULL AUTO_INCREMENT,
-    `team_code`          varchar(255) NOT NULL,
-    `host_id`            bigint       NOT NULL,
-    `title`              varchar(255) NOT NULL,
-    `allowed_poll_count` int          NOT NULL,
-    `is_anonymous`       boolean      NOT NULL,
-    `status`             varchar(255) NOT NULL,
-    `created_at`         datetime     NOT NULL,
-    `updated_at`         datetime     NOT NULL,
-    `closed_at`          datetime     NOT NULL,
-    `code`               varchar(255) NOT NULL UNIQUE,
-    PRIMARY KEY (id),
+    `id`            bigint       NOT NULL AUTO_INCREMENT,
+    `team_code`     varchar(255) NOT NULL,
+    `host_id`       bigint       NOT NULL,
+    `title`         varchar(255) NOT NULL,
+    `allowed_count` int          NOT NULL,
+    `anonymous`     boolean      NOT NULL,
+    `status`        varchar(255) NOT NULL,
+    `created_at`    datetime     NOT NULL,
+    `updated_at`    datetime     NOT NULL,
+    `closed_at`     datetime     NOT NULL,
+    `code`          varchar(255) NOT NULL UNIQUE,
+    PRIMARY KEY (id)
 --     FOREIGN KEY (team_code) REFERENCES team (id),
-    FOREIGN KEY (host_id) REFERENCES member (id)
+--     FOREIGN KEY (host_id) REFERENCES member (id)
 );
 
 CREATE INDEX `index_poll` ON `poll` (`closed_at`);
@@ -108,7 +108,7 @@ CREATE TABLE appointment
     `team_code`        VARCHAR(255) NOT NULL,
     `host_id`          BIGINT       NOT NULL,
     `title`            VARCHAR(255) NOT NULL,
-    `description`      VARCHAR(255) NOT NULL,
+    `sub_title`        VARCHAR(255) NOT NULL,
     `start_date`       DATE         NOT NULL,
     `end_date`         DATE         NOT NULL,
     `start_time`       TIME         NOT NULL,

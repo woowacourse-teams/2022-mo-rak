@@ -21,7 +21,7 @@ public class AppointmentAllResponse implements Comparable<AppointmentAllResponse
 
     private String title;
 
-    private String description;
+    private String subTitle;
 
     private Integer durationHours;
 
@@ -40,7 +40,7 @@ public class AppointmentAllResponse implements Comparable<AppointmentAllResponse
                 appointment.getId(),
                 appointment.getCode(),
                 appointment.getTitle(),
-                appointment.getDescription(),
+                appointment.getSubTitle(),
                 appointment.parseHours(),
                 appointment.parseMinutes(),
                 appointment.getClosedAt(),

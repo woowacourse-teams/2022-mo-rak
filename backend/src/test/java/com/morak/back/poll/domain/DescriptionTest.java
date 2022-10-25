@@ -4,7 +4,7 @@ import static com.morak.back.core.exception.CustomErrorCode.DESCRIPTION_OUT_OF_L
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.appointment.domain.menu.Description;
+import com.morak.back.appointment.domain.menu.SubTitle;
 import com.morak.back.core.exception.DomainLogicException;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ class DescriptionTest {
         String description = "ㅋ".repeat(1001);
 
         // when & then
-        assertThatThrownBy(() -> new com.morak.back.appointment.domain.menu.Description(description))
+        assertThatThrownBy(() -> new SubTitle(description))
                 .isInstanceOf(DomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(DESCRIPTION_OUT_OF_LENGTH_ERROR);
@@ -28,6 +28,6 @@ class DescriptionTest {
         String description = "";
 
         // when & then
-        assertThatNoException().isThrownBy(() -> new Description(description));
+        assertThatNoException().isThrownBy(() -> new SubTitle(description));
     }
 }

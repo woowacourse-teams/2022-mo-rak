@@ -22,7 +22,7 @@ public class AppointmentResponse {
 
     private String title;
 
-    private String description;
+    private String subTitle;
 
     private Integer durationHours;
 
@@ -53,7 +53,7 @@ public class AppointmentResponse {
                 appointment.getId(),
                 appointment.getCode(),
                 appointment.getTitle(),
-                appointment.getDescription(),
+                appointment.getSubTitle(),
                 appointment.parseHours(),
                 appointment.parseMinutes(),
                 appointment.getStartDate(),
@@ -76,7 +76,7 @@ public class AppointmentResponse {
         }
         AppointmentResponse that = (AppointmentResponse) o;
         return Objects.equals(id, that.id) && Objects.equals(code, that.code)
-                && Objects.equals(title, that.title) && Objects.equals(description, that.description)
+                && Objects.equals(title, that.title) && Objects.equals(subTitle, that.subTitle)
                 && Objects.equals(durationHours, that.durationHours) && Objects.equals(durationMinutes,
                 that.durationMinutes) && Objects.equals(startDate, that.startDate) && Objects.equals(
                 endDate, that.endDate) && Objects.equals(startTime, that.startTime) && Objects.equals(
@@ -86,7 +86,7 @@ public class AppointmentResponse {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, code, title, description, durationHours, durationMinutes, startDate, endDate, startTime,
+        return Objects.hash(id, code, title, subTitle, durationHours, durationMinutes, startDate, endDate, startTime,
                 endTime, closedAt, closed, isHost);
     }
 }

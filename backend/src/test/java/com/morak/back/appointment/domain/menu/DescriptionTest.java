@@ -15,7 +15,7 @@ class DescriptionTest {
         String description = "ㅋ".repeat(1001);
 
         // when & then
-        assertThatThrownBy(() -> new Description(description))
+        assertThatThrownBy(() -> new SubTitle(description))
                 .isInstanceOf(DomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(DESCRIPTION_OUT_OF_LENGTH_ERROR);
@@ -27,6 +27,6 @@ class DescriptionTest {
         String description = "";
 
         // when & then
-        assertThatNoException().isThrownBy(() -> new Description(description));
+        assertThatNoException().isThrownBy(() -> new SubTitle(description));
     }
 }

@@ -69,7 +69,7 @@ class AppointmentSchedulerTest {
 
         Appointment appointment = appointmentRepository.save(Appointment.builder()
                 .title("스터디 회의 날짜 정하기")
-                .description("필참!!")
+                .subTitle("필참!!")
                 .startDate(now.toLocalDate().plusDays(1))
                 .endDate(now.toLocalDate().plusDays(5))
                 .startTime(LocalTime.of(14, 0))

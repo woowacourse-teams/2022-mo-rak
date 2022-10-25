@@ -45,7 +45,7 @@ VALUES (1, 3, now(), now());
 -- INSERT INTO poll_result (poll_item_id, member_id, description, created_at, updated_at)
 -- VALUES (3, 2, '에덴이 시켰어요', now(), now());
 
-INSERT INTO appointment (team_code, host_id, title, description, start_date, end_date, start_time, end_time,
+INSERT INTO appointment (team_code, host_id, title, sub_title, start_date, end_date, start_time, end_time,
                          duration_minutes, status, code, closed_at, created_at, updated_at)
 VALUES ('MoraK123', 2, '발표 준비 날짜 정하기', '데모 데이 발표 준비를 위한..', '2122-08-01', '2122-08-04', '13:00:00', '22:00:00', 60, 'OPEN',
         'FEsd23C1', '2022-07-31T23:59:00', now(), now());

@@ -29,7 +29,7 @@ class RecommendationCellsTest {
 
         DEFAULT_BUILDER = Appointment.builder()
                 .title("회식 날짜")
-                .description("필참입니다.")
+                .subTitle("필참입니다.")
                 .code(Code.generate(length -> "FJn3ND26"))
                 .closedAt(LocalDateTime.now().plusDays(1))
                 .startDate(today.plusDays(1))

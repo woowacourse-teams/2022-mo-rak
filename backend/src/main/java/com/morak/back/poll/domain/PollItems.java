@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import lombok.Builder;
@@ -24,6 +25,7 @@ public class PollItems {
     @JoinColumn(name = "poll_id", nullable = false, updatable = false)
     private List<PollItem> values = new ArrayList<>();
 
+    @Embedded
     private AllowedCount allowedCount;
 
     @Builder

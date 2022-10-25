@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @Embeddable
 @NoArgsConstructor
-public class Description {
+public class SubTitle {
 
     private static final int MAX_LENGTH = 1000;
 
-    private String description;
+    private String subTitle;
 
-    public Description(String description) {
-        validateLength(description);
-        this.description = description;
+    public SubTitle(String subTitle) {
+        validateLength(subTitle);
+        this.subTitle = subTitle;
     }
 
     private void validateLength(String value) {

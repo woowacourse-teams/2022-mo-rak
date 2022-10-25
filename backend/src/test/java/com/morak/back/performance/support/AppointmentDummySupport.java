@@ -44,7 +44,7 @@ public class AppointmentDummySupport {
 //                                .team(Team.builder().id(teamIndex).build())
 //                                .host(MEMBER_ID1)
                                 .title("더미 약속잡기" + appointmentIndex)
-                                .description("더미 약속잡기 설명")
+                                .subTitle("더미 약속잡기 설명")
                                 .startDate(LocalDate.now().plusDays(1))
                                 .endDate(LocalDate.now().plusDays(8))
                                 .startTime(LocalTime.of(16, 0))

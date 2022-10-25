@@ -40,7 +40,7 @@ class AppointmentRepositoryTest {
 
         DEFAULT_BUILDER = Appointment.builder()
                 .title("스터디 회의 날짜 정하기")
-                .description("필참!!")
+                .subTitle("필참!!")
                 .startDate(today.plusDays(1))
                 .endDate(today.plusDays(5))
                 .startTime(LocalTime.of(14, 0))
