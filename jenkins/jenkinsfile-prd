@@ -47,6 +47,7 @@ node {
                     NEXT=${NEXT_PORT_LIST[index-1]}
                     IP=${IP_LIST[index-1]}
 
+                    scp -i /var/lib/jenkins/key-morak.pem ./backend/build/libs/*.jar ubuntu@"${IP}":/home/ubuntu/deploy 1>/dev/null 2>/dev/null
                     ssh -i /var/lib/jenkins/key-morak.pem ubuntu@"${IP}" "sh /home/ubuntu/deploy/start_service.sh ${NEXT} 1>/dev/null 2>/dev/null"
                 done
 

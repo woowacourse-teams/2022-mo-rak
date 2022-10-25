@@ -20,8 +20,8 @@ node {
     stage('deploy') {
         dir ('./backend/build/libs') {
             try {
-                sh 'scp -i /var/lib/jenkins/key-morak.pem ./*.jar ubuntu@192.168.1.123:/home/ubuntu'
-                sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@192.168.1.123 "sh /home/ubuntu/start_service.sh 2>/dev/null"'
+                sh 'scp -i /var/lib/jenkins/key-morak.pem ./*.jar ubuntu@${DEV_WAS_IP}:/home/ubuntu'
+                sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@${DEV_WAS_IP} "sh /home/ubuntu/start_service.sh 2>/dev/null"'
             } catch(e) {
                 slackSend (channel: "jenkins", color: "warning", message: "Deploy Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
             }

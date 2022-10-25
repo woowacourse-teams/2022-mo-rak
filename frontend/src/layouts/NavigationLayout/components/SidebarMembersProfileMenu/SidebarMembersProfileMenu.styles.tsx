@@ -40,11 +40,19 @@ const StyledContainer = styled.div`
   margin: 2.8rem 0;
 `;
 
+const StyledGroupMemberContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+`;
+
 export {
   StyledContainer,
   StyledMenuHeader,
   StyledUsername,
   StyledGroupMembersContainer,
   StyledEditIcon,
-  StyledUsernameContainer
+  StyledUsernameContainer,
+  StyledGroupMemberContainer
 };
