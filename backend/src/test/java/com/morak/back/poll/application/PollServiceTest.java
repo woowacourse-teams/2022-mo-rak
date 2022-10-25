@@ -23,7 +23,6 @@ import com.morak.back.poll.application.dto.PollResponse;
 import com.morak.back.poll.application.dto.PollResultRequest;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollStatus;
-import com.morak.back.poll.domain.SystemDateTime;
 import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollItemNotFoundException;
@@ -442,9 +441,6 @@ class PollServiceTest {
     void 투표를_진행_시_투표항목이_투표소속이_아니면_예외를_던진다() {
         // given
         String pollCode = 투표를_초기화하고_코드를_받아온다();
-        String otherPollCode = pollService.createPoll(team.getCode(), member.getId(), new PollCreateRequest(
-                "축구하실분", 1, false, new SystemDateTime(LocalDateTime.now()).getDateTime().plusDays(1), List.of("풋살")
-        )).getCode();
 
         // when & then
         assertThatThrownBy(() -> pollService.doPoll(team.getCode(), member.getId(), pollCode,

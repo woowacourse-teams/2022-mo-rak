@@ -28,12 +28,12 @@ public class PollItems {
 
     @Builder
     public PollItems(List<PollItem> values, AllowedCount allowedCount) {
-        validateCount(values, allowedCount);
+        validateCountAllowed(values, allowedCount);
         this.values = values;
         this.allowedCount = allowedCount;
     }
 
-    private void validateCount(List<PollItem> values, AllowedCount allowedCount) {
+    private void validateCountAllowed(List<PollItem> values, AllowedCount allowedCount) {
         if (values.isEmpty() || allowedCount.isGreaterThan(values.size())) {
             throw new PollDomainLogicException(
                     CustomErrorCode.POLL_ITEM_COUNT_OUT_OF_RANGE_ERROR,
@@ -48,6 +48,10 @@ public class PollItems {
         }
     }
 
+    public boolean isPollCountAllowed(int itemCount) {
+        return itemCount >= 1 && this.allowedCount.isGreaterThanOrEqual(itemCount);
+    }
+
     private void addOrRemove(PollItem pollItem, Member member, Map<PollItem, String> data) {
         if (data.containsKey(pollItem)) {
             pollItem.addSelectMember(member, data.get(pollItem));
@@ -58,13 +62,5 @@ public class PollItems {
 
     public boolean containsAll(Collection<PollItem> items) {
         return this.values.containsAll(items);
-    }
-
-    public boolean isAllowedCount(int itemCount) {
-        return itemCount >= 1 && isAllowedCountGreaterThanOrEqual(itemCount);
-    }
-
-    private boolean isAllowedCountGreaterThanOrEqual(int itemCount) {
-        return this.allowedCount.isGreaterThanOrEqual(itemCount);
     }
 }

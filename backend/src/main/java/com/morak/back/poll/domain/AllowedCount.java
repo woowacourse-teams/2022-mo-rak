@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class AllowedCount {
 
+    private static final int MIN_COUNT = 1;
+
     @Column(name = "allowed_count")
     private int value;
 
@@ -21,10 +23,10 @@ public class AllowedCount {
     }
 
     private void validateAllowedCount(int allowedCount) {
-        if (allowedCount < 1) {
+        if (allowedCount < MIN_COUNT) {
             throw new PollDomainLogicException(
                     CustomErrorCode.POLL_ALLOWED_COUNT_MIN_ERROR,
-                    "투표 선택 허용 개수(" + allowedCount + ")는 1개 이상이어야 합니다."
+                    "투표 선택 허용 개수(" + allowedCount + ")는 " + MIN_COUNT + "개 이상이어야 합니다."
             );
         }
     }

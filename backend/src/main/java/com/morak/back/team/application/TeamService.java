@@ -1,5 +1,6 @@
 package com.morak.back.team.application;
 
+import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
@@ -8,6 +9,7 @@ import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.team.domain.ExpiredTime;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamCreateEvent;
 import com.morak.back.team.domain.TeamInvitation;
@@ -42,21 +44,24 @@ public class TeamService {
     private final TeamInvitationRepository teamInvitationRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    private final SystemTime systemTime;
+
     public String createTeam(Long memberId, TeamCreateRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = Team.builder()
                 .name(request.getName())
                 .code(Code.generate(CODE_GENERATOR))
                 .build();
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team savedTeam = teamRepository.save(team);
-        eventPublisher.publishEvent(new TeamCreateEvent(savedTeam.getCode()));
 
         TeamMember teamMember = TeamMember.builder()
                 .team(savedTeam)
                 .member(member)
                 .build();
         teamMemberRepository.save(teamMember);
+
+        eventPublisher.publishEvent(new TeamCreateEvent(savedTeam.getCode()));
         return savedTeam.getCode();
     }
 
@@ -71,6 +76,7 @@ public class TeamService {
                 TeamInvitation.builder()
                         .code(Code.generate(CODE_GENERATOR))
                         .team(team)
+                        .expiredAt(new ExpiredTime(systemTime))
                         .build()
         );
         return savedTeamInvitation.getCode();
@@ -88,8 +94,6 @@ public class TeamService {
 
     @Transactional(readOnly = true)
     public InvitationJoinedResponse isJoined(Long memberId, String invitationCode) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         TeamInvitation teamInvitation = teamInvitationRepository
                 .findByCode(invitationCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeamInvitation(
@@ -100,6 +104,8 @@ public class TeamService {
         validateNotExpired(teamInvitation);
 
         Team team = teamInvitation.getTeam();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
 
         boolean isJoined = teamMemberRepository.existsByTeamAndMember(team, member);
         return new InvitationJoinedResponse(team.getCode(), team.getName(), isJoined);
@@ -116,9 +122,9 @@ public class TeamService {
                 );
         validateNotExpired(teamInvitation);
 
+        Team team = teamInvitation.getTeam();
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamInvitation.getTeam();
         validateNotJoined(team, member);
 
         teamMemberRepository.save(
@@ -131,7 +137,7 @@ public class TeamService {
     }
 
     private void validateNotExpired(TeamInvitation teamInvitation) {
-        if (teamInvitation.isExpired()) {
+        if (teamInvitation.isExpired(systemTime)) {
             throw new TeamDomainLogicException(
                     CustomErrorCode.TEAM_INVITATION_EXPIRED_ERROR,
                     teamInvitation.getCode() + "는 만료된 초대코드입니다."
@@ -216,13 +222,5 @@ public class TeamService {
                         )
                 );
         return TeamResponse.from(teamMember.getTeam());
-    }
-
-    private TeamMember findFirstTeamMember(Long memberId, List<TeamMember> teamMembers) {
-        return teamMembers.stream()
-                .min(Comparator.comparingLong(TeamMember::getId))
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(
-                        CustomErrorCode.TEAM_NOT_FOUND_ERROR, memberId + "번의 멤버가 속해있는 팀이 없습니다."
-                ));
     }
 }

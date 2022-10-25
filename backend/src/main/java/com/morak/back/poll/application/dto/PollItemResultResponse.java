@@ -2,8 +2,8 @@ package com.morak.back.poll.application.dto;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.poll.domain.PollItem;
-import com.morak.back.poll.domain.SelectMembers;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -29,9 +29,9 @@ public class PollItemResultResponse {
         );
     }
 
-    private static List<MemberResultResponse> toMemberResponsesByAnonymous(SelectMembers selectMembers,
+    private static List<MemberResultResponse> toMemberResponsesByAnonymous(Map<Member, String> selectMembers,
                                                                            MemberViewStrategy strategy) {
-        return selectMembers.getValues().entrySet().stream()
+        return selectMembers.entrySet().stream()
                 .map(entry -> MemberResultResponse.of(strategy.viewMemberFrom(entry), entry.getValue()))
                 .collect(Collectors.toList());
     }

@@ -3,6 +3,7 @@ package com.morak.back.team.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
@@ -21,6 +22,7 @@ import com.morak.back.team.exception.TeamNotFoundException;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import com.morak.back.team.ui.dto.TeamResponse;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,22 +32,48 @@ import org.springframework.context.ApplicationEventPublisher;
 @ServiceTest
 class TeamServiceTest {
 
-    @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
     private TeamRepository teamRepository;
-
-    @Autowired
     private TeamMemberRepository teamMemberRepository;
-
-    @Autowired
     private TeamInvitationRepository teamInvitationRepository;
-
-    @Autowired
     private ApplicationEventPublisher eventPublisher;
+    private SystemTime systemTime;
 
     private TeamService teamService;
+    private TeamService oldTeamService;
+
+    @Autowired
+    public TeamServiceTest(
+            MemberRepository memberRepository,
+            TeamRepository teamRepository,
+            TeamMemberRepository teamMemberRepository,
+            TeamInvitationRepository teamInvitationRepository,
+            ApplicationEventPublisher eventPublisher
+    ) {
+        this.memberRepository = memberRepository;
+        this.teamRepository = teamRepository;
+        this.teamMemberRepository = teamMemberRepository;
+        this.teamInvitationRepository = teamInvitationRepository;
+        this.eventPublisher = eventPublisher;
+
+        this.teamService = new TeamService(
+                teamRepository,
+                memberRepository,
+                teamMemberRepository,
+                teamInvitationRepository,
+                eventPublisher,
+                new SystemTime(LocalDateTime.now())
+        );
+
+        this.oldTeamService = new TeamService(
+                teamRepository,
+                memberRepository,
+                teamMemberRepository,
+                teamInvitationRepository,
+                eventPublisher,
+                new SystemTime(LocalDateTime.now().minusDays(3))
+        );
+    }
 
     private Member member;
 
@@ -53,14 +81,6 @@ class TeamServiceTest {
 
     @BeforeEach
     void setUp() {
-        teamService = new TeamService(
-                teamRepository,
-                memberRepository,
-                teamMemberRepository,
-                teamInvitationRepository,
-                eventPublisher
-        );
-
         member = memberRepository.save(Member.builder()
                 .id(null)
                 .name("송상민")
@@ -185,20 +205,18 @@ class TeamServiceTest {
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.TEAM_INVITATION_NOT_FOUND_ERROR);
     }
-    // TODO: 2022/08/11 시간 목킹
-//    @Test
-//    void 그룹_가입시_초대코드가_만료된_경우_예외를_던진다() {
-//        // given
-//        String invitationCode = teamService.createInvitationCode(member.getId(), team.getCode());
-//
-//        // when
-//
-//        // then
-//        assertThatThrownBy(() -> teamService.isJoined(member.getId(), invitationCode))
-//                .isInstanceOf(TeamDomainLogicException.class)
-//                .extracting("code")
-//                .isEqualTo(CustomErrorCode.TEAM_INVITATION_EXPIRED_ERROR);
-//    }
+
+    @Test
+    void 그룹_가입시_초대코드가_만료된_경우_예외를_던진다() {
+        // given
+        String invitationCode = oldTeamService.createInvitationCode(member.getId(), team.getCode());
+
+        // when & then
+        assertThatThrownBy(() -> teamService.isJoined(member.getId(), invitationCode))
+                .isInstanceOf(TeamDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.TEAM_INVITATION_EXPIRED_ERROR);
+    }
 
 
     @Test
@@ -253,24 +271,6 @@ class TeamServiceTest {
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.MEMBER_NOT_FOUND_ERROR);
     }
-    // TODO: 2022/08/11 시간 목킹
-//    @Test
-//    void 그룹_가입시_초대코드가_만료된_경우_예외를_던진다() {
-//        // given
-//        TeamInvitation expiredTeamInvitation = TeamInvitation.builder()
-//                .team(team)
-//                .code(code)
-//                .expiredAt(ExpiredTime.withMinute(-30L))
-//                .build();
-//
-//        given(teamInvitationRepository.findByCode(anyString())).willReturn(Optional.of(expiredTeamInvitation));
-//
-//        // when & then
-//        assertThatThrownBy(() -> teamService.join(member.getId(), expiredTeamInvitation.getCode()))
-//                .isInstanceOf(TeamDomainLogicException.class)
-//                .extracting("code")
-//                .isEqualTo(CustomErrorCode.TEAM_INVITATION_EXPIRED_ERROR);
-//    }
 
     @Test
     void 그룹_목록을_조회한다() {
