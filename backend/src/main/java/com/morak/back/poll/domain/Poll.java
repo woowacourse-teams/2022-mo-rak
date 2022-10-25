@@ -28,18 +28,19 @@ public class Poll extends BaseEntity {
     @Embedded
     private PollItems pollItems;
 
-    private Boolean anonymous;
+    private boolean anonymous;
 
-    // TODO: 2022/10/21 Menu 를 어디서 생성해줄까?
+    // TODO: 2022/10/21 Poll 인자를 낱개로 ㄱ
 
     @Builder
-    public Poll(Menu menu, List<PollItem> pollItems, Boolean anonymous, Integer allowedCount) {
-        this(null, menu, PollItems.builder().values(pollItems).allowedCount(new AllowedCount(allowedCount)).build(),
+    public Poll(Menu menu, List<PollItem> pollItems, boolean anonymous, Integer allowedCount) {
+        this(null,
+                menu,
+                PollItems.builder().values(pollItems).allowedCount(new AllowedCount(allowedCount)).build(),
                 anonymous);
     }
 
-    private Poll(Long id, Menu menu, PollItems pollItems, Boolean anonymous) {
-        pollItems.validateCount();
+    private Poll(Long id, Menu menu, PollItems pollItems, boolean anonymous) {
         this.id = id;
         this.menu = menu;
         this.pollItems = pollItems;

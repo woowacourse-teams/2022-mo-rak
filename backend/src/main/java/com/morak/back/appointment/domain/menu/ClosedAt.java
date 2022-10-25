@@ -25,9 +25,4 @@ public class ClosedAt {
                     "마감 시각" + dateTime + "은 현재" + now + "보다 나중이어야 합니다.");
         }
     }
-
-    // todo : SystemTime을 주입받아야하는지 확인
-    public boolean isBeforeNow() {
-        return closedAt.isBefore(LocalDateTime.now());
-    }
 }

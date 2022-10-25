@@ -28,15 +28,16 @@ public class PollItems {
 
     @Builder
     public PollItems(List<PollItem> values, AllowedCount allowedCount) {
+        validateCount(values, allowedCount);
         this.values = values;
         this.allowedCount = allowedCount;
     }
 
-    public void validateCount() {
-        if (this.values.isEmpty() || this.allowedCount.isGreaterThan(this.values.size())) {
+    private void validateCount(List<PollItem> values, AllowedCount allowedCount) {
+        if (values.isEmpty() || allowedCount.isGreaterThan(values.size())) {
             throw new PollDomainLogicException(
                     CustomErrorCode.POLL_ITEM_COUNT_OUT_OF_RANGE_ERROR,
-                    "투표 항목의 개수(" + values.size() + ")는 " + this.allowedCount.getValue() + "개 이상여야합니다."
+                    "투표 항목의 개수(" + values.size() + ")는 " + allowedCount.getValue() + "개 이상여야합니다."
             );
         }
     }
