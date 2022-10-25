@@ -92,9 +92,9 @@ class PollTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(itemA.getSelectMembers().getValues()).containsExactly(entry(member, descriptionA)),
-                () -> assertThat(itemB.getSelectMembers().getValues()).hasSize(0),
-                () -> assertThat(itemC.getSelectMembers().getValues()).containsExactly(entry(member, descriptionC))
+                () -> assertThat(itemA.getSelectMembers()).containsExactly(entry(member, descriptionA)),
+                () -> assertThat(itemB.getSelectMembers()).hasSize(0),
+                () -> assertThat(itemC.getSelectMembers()).containsExactly(entry(member, descriptionC))
         );
     }
 
@@ -113,9 +113,9 @@ class PollTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(itemA.getSelectMembers().getValues()).isEmpty(),
-                () -> assertThat(itemB.getSelectMembers().getValues()).containsExactly(entry(member, descriptionB)),
-                () -> assertThat(itemC.getSelectMembers().getValues()).isEmpty()
+                () -> assertThat(itemA.getSelectMembers()).isEmpty(),
+                () -> assertThat(itemB.getSelectMembers()).containsExactly(entry(member, descriptionB)),
+                () -> assertThat(itemC.getSelectMembers()).isEmpty()
         );
     }
 
@@ -135,11 +135,11 @@ class PollTest {
 
         // then
         Assertions.assertAll(
-                () -> assertThat(itemA.getSelectMembers().getValues()).containsOnly(entry(member, descriptionA),
+                () -> assertThat(itemA.getSelectMembers()).containsOnly(entry(member, descriptionA),
                         entry(otherMember, descriptionA)),
-                () -> assertThat(itemB.getSelectMembers().getValues()).containsExactly(
+                () -> assertThat(itemB.getSelectMembers()).containsExactly(
                         entry(otherMember, descriptionB)),
-                () -> assertThat(itemC.getSelectMembers().getValues()).containsExactly(entry(member, descriptionC))
+                () -> assertThat(itemC.getSelectMembers()).containsExactly(entry(member, descriptionC))
         );
     }
 
