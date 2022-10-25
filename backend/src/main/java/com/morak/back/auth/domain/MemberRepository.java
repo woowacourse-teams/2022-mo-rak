@@ -13,6 +13,4 @@ public interface MemberRepository extends Repository<Member, Long> {
     Member save(Member member);
 
     Optional<Member> findById(Long memberId);
-
-    void flush();
 }

@@ -67,7 +67,6 @@ public class OAuthService {
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
 
         member.changeName(request.getName());
-        memberRepository.flush();
     }
 }
 

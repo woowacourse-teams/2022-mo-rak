@@ -89,36 +89,6 @@ class MemberRepositoryTest {
     }
 
     @Test
-    void 길이가_0인_이름은_저장할_수_없다() {
-        // given
-        Member member = Member.builder()
-                .oauthId("1234")
-                .name("")
-                .profileUrl("http://")
-                .build();
-
-        // when & then
-        assertThatThrownBy(() -> memberRepository.save(member))
-                .isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
-    void 길이가_255이상인_이름은_저장할_수_없다() {
-        // given
-        String name = "1".repeat(256);
-
-        Member member = Member.builder()
-                .oauthId("1234")
-                .name(name)
-                .profileUrl("http://")
-                .build();
-
-        // when & then
-        assertThatThrownBy(() -> memberRepository.save(member))
-                .isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
     void 길이가_0인_profileUrl는_저장할_수_없다() {
         // given
         Member member = Member.builder()

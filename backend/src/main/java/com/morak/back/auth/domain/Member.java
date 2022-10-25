@@ -1,7 +1,6 @@
 package com.morak.back.auth.domain;
 
 import com.morak.back.core.domain.BaseEntity;
-import com.morak.back.core.support.Generated;
 import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -26,20 +25,19 @@ public class Member extends BaseEntity {
             "https://user-images.githubusercontent.com/45311765/179645488-2d8c29c8-f8ed-43e9-9951-b30e82ead5ed.png"
     );
 
+    @Embedded
+    private OAuthId oauthId;
+
+    @Embedded
+    private Name name;
+
     @Builder
     public Member(Long id, String oauthId, String name, String profileUrl) {
         super(id);
         this.oauthId = new OAuthId(oauthId);
-        this.name = name;
+        this.name = new Name(name);
         this.profileUrl = profileUrl;
     }
-
-    @Embedded
-    private OAuthId oauthId;
-
-    @NotBlank(message = "name 은 blank 일 수 없습니다.")
-    @Size(min = 1, max = 255, message = "name의 길이는 1 ~ 255 사이여야합니다.")
-    private String name;
 
     @NotBlank(message = "profileUrl은 blank 일 수 없습니다.")
     @Size(min = 1, max = 255, message = "profileUrl의 길이는 1 ~ 255 사이여야합니다.")
@@ -51,11 +49,15 @@ public class Member extends BaseEntity {
     }
 
     public void changeName(String name) {
-        this.name = name;
+        this.name = new Name(name);
     }
 
     public String getOauthId() {
         return this.oauthId.getValue();
+    }
+
+    public String getName() {
+        return this.name.getValue();
     }
 
     @Override
@@ -72,9 +74,8 @@ public class Member extends BaseEntity {
     }
 
     @Override
-    @Generated
     public int hashCode() {
-        return Objects.hash(id, oauthId, name, profileUrl);
+        return Objects.hash(oauthId, name, profileUrl);
     }
 
     public boolean isSameId(Long memberId) {
