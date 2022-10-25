@@ -26,6 +26,7 @@ public enum CustomErrorCode {
     POLL_ITEM_COUNT_OUT_OF_RANGE_ERROR("2103", "투표 선택 항목의 개수가 올바르지 않습니다."),
     POLL_ALLOWED_COUNT_MIN_ERROR("2104", "투표 선택 허용 개수는 1개 이상이어야 합니다."),
     POLL_SUBJECT_LENGTH_ERROR("2105", "투표 항목 이름의 길이가 올바르지 않습니다."),
+    POLL_DESCRIPTION_LENGTH_ERROR("2106", "투표 선택 이유의 길이가 올바르지 않습니다."),
 
     POLL_TEAM_MISMATCHED_ERROR("2200", "투표가 그룹에 속해있지 않습니다."),
     POLL_HOST_MISMATCHED_ERROR("2201", "투표의 호스트가 아닙니다."),

@@ -85,7 +85,7 @@ create table poll_item
 create table select_member
 (
     poll_item_id bigint       NOT NULL,
-    description  varchar(255) not null,
+    description  varchar(1000) not null,
     member_id    bigint       not null,
     primary key (poll_item_id, member_id)
 );

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -39,7 +40,7 @@ public class PollItem {
     )
     @MapKeyJoinColumn(name = "member_id")
     @Column(name = "description", nullable = false)
-    private Map<Member, String> selectMembers = new HashMap<>();
+    private Map<Member, Description> selectMembers = new HashMap<>();
 
     public PollItem(Long id) {
         this(id, null, new HashMap<>());
@@ -50,7 +51,7 @@ public class PollItem {
         this(id, new Subject(subject), new HashMap<>());
     }
 
-    private PollItem(Long id, Subject subject, Map<Member, String> selectMembers) {
+    private PollItem(Long id, Subject subject, Map<Member, Description> selectMembers) {
         this.id = id;
         this.subject = subject;
         this.selectMembers = selectMembers;
@@ -61,7 +62,7 @@ public class PollItem {
     }
 
     public void addSelectMember(Member member, String description) {
-        selectMembers.put(member, description);
+        selectMembers.put(member, new Description(description));
     }
 
     public void remove(Member member) {
@@ -80,13 +81,22 @@ public class PollItem {
     public String getDescriptionFrom(Long memberId) {
         return selectMembers.entrySet().stream()
                 .filter(entry -> entry.getKey().isSameId(memberId))
-                .map(Entry::getValue)
+                .map(entry -> entry.getValue().getValue())
                 .findFirst()
                 .orElse("");
     }
 
     public String getSubject() {
         return this.subject.getValue();
+    }
+
+    public Map<Member, String> getSelectMembers() {
+        return this.selectMembers.entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Entry::getKey,
+                        entry -> entry.getValue().getValue()
+                ));
     }
 
     @Override
