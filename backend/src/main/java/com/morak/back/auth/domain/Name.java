@@ -35,7 +35,7 @@ public class Name {
         if (length < MIN_LENGTH || length > MAX_LENGTH) {
             throw new MemberDomainLogicException(
                     CustomErrorCode.OAUTH_ID_LENGTH_ERROR,
-                    "멤버 이름의 길이 " + length + "는 " + MIN_LENGTH + "이상, " + MAX_LENGTH + "이하여야 합니다.");
+                    "멤버 이름 " + value + "는 길이가" + MIN_LENGTH + "이상, " + MAX_LENGTH + "이하여야 합니다.");
         }
     }
 

@@ -36,7 +36,7 @@ public class OAuthId {
         if (length < MIN_LENGTH || length > MAX_LENGTH) {
             throw new MemberDomainLogicException(
                     CustomErrorCode.OAUTH_ID_LENGTH_ERROR,
-                    "OAuthId의 길이 " + length + "는 " + MIN_LENGTH + "이상, " + MAX_LENGTH + "이하여야 합니다.");
+                    "OAuthId " + value + "의 길이는 " + MIN_LENGTH + "이상, " + MAX_LENGTH + "이하여야 합니다.");
         }
     }
 
