@@ -9,6 +9,7 @@ import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.team.domain.ExpiredTime;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamCreateEvent;
 import com.morak.back.team.domain.TeamInvitation;
@@ -46,18 +47,20 @@ public class TeamService {
     private final SystemTime systemTime;
 
     public String createTeam(Long memberId, TeamCreateRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         Team team = Team.builder()
                 .name(request.getName())
                 .code(Code.generate(CODE_GENERATOR))
                 .build();
         Team savedTeam = teamRepository.save(team);
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
+
         TeamMember teamMember = TeamMember.builder()
                 .team(savedTeam)
                 .member(member)
                 .build();
         teamMemberRepository.save(teamMember);
+
         eventPublisher.publishEvent(new TeamCreateEvent(savedTeam.getCode()));
         return savedTeam.getCode();
     }
@@ -73,6 +76,7 @@ public class TeamService {
                 TeamInvitation.builder()
                         .code(Code.generate(CODE_GENERATOR))
                         .team(team)
+                        .expiredAt(new ExpiredTime(systemTime))
                         .build()
         );
         return savedTeamInvitation.getCode();
@@ -90,8 +94,6 @@ public class TeamService {
 
     @Transactional(readOnly = true)
     public InvitationJoinedResponse isJoined(Long memberId, String invitationCode) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
         TeamInvitation teamInvitation = teamInvitationRepository
                 .findByCode(invitationCode)
                 .orElseThrow(() -> TeamNotFoundException.ofTeamInvitation(
@@ -102,6 +104,8 @@ public class TeamService {
         validateNotExpired(teamInvitation);
 
         Team team = teamInvitation.getTeam();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
 
         boolean isJoined = teamMemberRepository.existsByTeamAndMember(team, member);
         return new InvitationJoinedResponse(team.getCode(), team.getName(), isJoined);
@@ -118,9 +122,9 @@ public class TeamService {
                 );
         validateNotExpired(teamInvitation);
 
+        Team team = teamInvitation.getTeam();
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamInvitation.getTeam();
         validateNotJoined(team, member);
 
         teamMemberRepository.save(
