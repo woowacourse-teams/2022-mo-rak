@@ -47,16 +47,15 @@ public class TeamService {
                 .name(request.getName())
                 .code(Code.generate(CODE_GENERATOR))
                 .build();
+        Team savedTeam = teamRepository.save(team);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team savedTeam = teamRepository.save(team);
-        eventPublisher.publishEvent(new TeamCreateEvent(savedTeam.getCode()));
-
         TeamMember teamMember = TeamMember.builder()
                 .team(savedTeam)
                 .member(member)
                 .build();
         teamMemberRepository.save(teamMember);
+        eventPublisher.publishEvent(new TeamCreateEvent(savedTeam.getCode()));
         return savedTeam.getCode();
     }
 
@@ -216,13 +215,5 @@ public class TeamService {
                         )
                 );
         return TeamResponse.from(teamMember.getTeam());
-    }
-
-    private TeamMember findFirstTeamMember(Long memberId, List<TeamMember> teamMembers) {
-        return teamMembers.stream()
-                .min(Comparator.comparingLong(TeamMember::getId))
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(
-                        CustomErrorCode.TEAM_NOT_FOUND_ERROR, memberId + "번의 멤버가 속해있는 팀이 없습니다."
-                ));
     }
 }
