@@ -6,7 +6,6 @@ import com.morak.back.core.support.Generated;
 import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +20,6 @@ public class Team extends BaseEntity {
     private String name;
 
     @Embedded
-    @Valid
     private Code code;
 
     @Builder

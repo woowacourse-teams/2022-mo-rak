@@ -15,7 +15,7 @@ public class TeamNotFoundException extends ResourceNotFoundException {
 
     public static TeamNotFoundException ofTeamInvitation(CustomErrorCode code, String invitationCode) {
         return new TeamNotFoundException(
-            code, invitationCode + "초대 코드에 해당하는 팀은 찾을 수 없습니다."
+                code, invitationCode + "초대 코드에 해당하는 팀은 찾을 수 없습니다."
         );
     }
 }
