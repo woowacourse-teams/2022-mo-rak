@@ -10,16 +10,14 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.morak.back.ControllerTest;
 import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.ui.dto.SlackWebhookCreateRequest;
-import com.morak.back.poll.ui.ControllerTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-@WebMvcTest(NotificationController.class)
 class NotificationControllerTest extends ControllerTest {
 
     @MockBean

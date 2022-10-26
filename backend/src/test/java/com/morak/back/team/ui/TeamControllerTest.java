@@ -16,8 +16,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.morak.back.ControllerTest;
 import com.morak.back.auth.ui.dto.MemberResponse;
-import com.morak.back.poll.ui.ControllerTest;
 import com.morak.back.team.application.TeamService;
 import com.morak.back.team.ui.dto.InvitationJoinedResponse;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
@@ -25,14 +25,12 @@ import com.morak.back.team.ui.dto.TeamResponse;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-@WebMvcTest(TeamController.class)
 class TeamControllerTest extends ControllerTest {
 
-    @MockBean
+    @Autowired
     private TeamService teamService;
 
     @BeforeEach

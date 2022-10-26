@@ -12,22 +12,20 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.morak.back.ControllerTest;
 import com.morak.back.auth.application.OAuthService;
 import com.morak.back.auth.ui.dto.ChangeNameRequest;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import com.morak.back.auth.ui.dto.SigninRequest;
 import com.morak.back.auth.ui.dto.SigninResponse;
-import com.morak.back.poll.ui.ControllerTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-@WebMvcTest(OAuthController.class)
 class OAuthControllerTest extends ControllerTest {
 
-    @MockBean
+    @Autowired
     private OAuthService oAuthService;
 
     @Test

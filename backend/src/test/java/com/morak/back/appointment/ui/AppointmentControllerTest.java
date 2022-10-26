@@ -17,28 +17,26 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.morak.back.ControllerTest;
 import com.morak.back.appointment.application.AppointmentService;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
-import com.morak.back.poll.ui.ControllerTest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 
-@WebMvcTest(AppointmentController.class)
 class AppointmentControllerTest extends ControllerTest {
 
     private static final String GROUP_CODE = "MoraK123";
     private static final String APPOINTMENT_CODE = "FJn3ND26";
 
-    @MockBean
+    @Autowired
     private AppointmentService appointmentService;
 
     @Test
