@@ -25,6 +25,7 @@ public enum CustomErrorCode {
 
     TEAM_INVITATION_EXPIRED_ERROR("1100", "만료된 초대코드입니다."),
     TEAM_ALREADY_JOINED_ERROR("1101", "멤버가 그룹에 이미 속해있습니다."),
+    TEAM_NAME_ERROR("1102", "팀의 이름이 너무 길거나 공백입니다."),
     TEAM_MEMBER_MISMATCHED_ERROR("1200", "멤버가 그룹에 속해있지 않습니다."),
     TEAM_NOT_FOUND_ERROR("1300", "요청한 그룹을 찾을 수 없습니다."),
     TEAM_INVITATION_NOT_FOUND_ERROR("1301", "요청한 그룹 초대코드를 찾을 수 없습니다."),

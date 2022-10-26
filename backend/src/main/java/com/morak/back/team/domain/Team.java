@@ -6,7 +6,6 @@ import com.morak.back.core.support.Generated;
 import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +15,18 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Team extends BaseEntity {
 
-    @NotBlank(message = "그룹 이름은 빈 값일 수 없습니다.")
-    private String name;
+    @Embedded
+    private Name name;
 
     @Embedded
     private Code code;
 
     @Builder
     private Team(Long id, String name, Code code) {
+        this(id, new Name(name), code);
+    }
+
+    private Team(Long id, Name name, Code code) {
         super(id);
         this.name = name;
         this.code = code;
@@ -31,6 +34,10 @@ public class Team extends BaseEntity {
 
     public String getCode() {
         return code.getCode();
+    }
+
+    public String getName() {
+        return name.getName();
     }
 
     @Override
