@@ -1,10 +1,10 @@
 package com.morak.back.poll.domain;
 
-import com.morak.back.auth.domain.Member;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CollectionTable;
@@ -16,7 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.MapKeyColumn;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,9 +38,9 @@ public class PollItem {
             name = "select_member",
             joinColumns = @JoinColumn(name = "poll_item_id")
     )
-    @MapKeyJoinColumn(name = "member_id")
+    @MapKeyColumn(name = "member_id")
     @Column(name = "description", nullable = false)
-    private Map<Member, Description> selectMembers = new HashMap<>();
+    private Map<Long, Description> selectMembers = new HashMap<>();
 
     public PollItem(Long id) {
         this(id, null, new HashMap<>());
@@ -51,46 +51,47 @@ public class PollItem {
         this(id, new Subject(subject), new HashMap<>());
     }
 
-    private PollItem(Long id, Subject subject, Map<Member, Description> selectMembers) {
+    private PollItem(Long id, Subject subject, Map<Long, Description> selectMembers) {
         this.id = id;
         this.subject = subject;
         this.selectMembers = selectMembers;
     }
 
-    public Set<Member> getOnlyMembers() {
+    public Set<Long> getOnlyMembers() {
         return selectMembers.keySet();
     }
 
-    public void addSelectMember(Member member, String description) {
-        selectMembers.put(member, new Description(description));
+    public void addSelectMember(Long memberId, String description) {
+        selectMembers.put(memberId, new Description(description));
     }
 
-    public void remove(Member member) {
-        selectMembers.remove(member);
+    public void remove(Long memberId) {
+        selectMembers.remove(memberId);
     }
 
-    public Integer countSelectMembers() {
+    public int countSelectMembers() {
         return selectMembers.size();
     }
 
     public Boolean isSelectedBy(Long memberId) {
-        return selectMembers.keySet().stream()
-                .anyMatch(member -> member.isSameId(memberId));
+        return selectMembers.containsKey(memberId);
     }
 
     public String getDescriptionFrom(Long memberId) {
-        return selectMembers.entrySet().stream()
-                .filter(entry -> entry.getKey().isSameId(memberId))
-                .map(entry -> entry.getValue().getValue())
-                .findFirst()
-                .orElse("");
+        Optional<Description> description = Optional.ofNullable(selectMembers.get(memberId));
+
+        if (description.isPresent()) {
+            return description.get().getValue();
+        }
+
+        return "";
     }
 
     public String getSubject() {
         return this.subject.getValue();
     }
 
-    public Map<Member, String> getSelectMembers() {
+    public Map<Long, String> getSelectMembers() {
         return this.selectMembers.entrySet()
                 .stream()
                 .collect(Collectors.toMap(

@@ -90,13 +90,13 @@ class PollTest {
         selectData.put(itemC, descriptionC);
 
         // when
-        poll.doPoll(member, selectData);
+        poll.doPoll(member.getId(), selectData);
 
         // then
         Assertions.assertAll(
-                () -> assertThat(itemA.getSelectMembers()).containsExactly(entry(member, descriptionA)),
+                () -> assertThat(itemA.getSelectMembers()).containsExactly(entry(member.getId(), descriptionA)),
                 () -> assertThat(itemB.getSelectMembers()).hasSize(0),
-                () -> assertThat(itemC.getSelectMembers()).containsExactly(entry(member, descriptionC))
+                () -> assertThat(itemC.getSelectMembers()).containsExactly(entry(member.getId(), descriptionC))
         );
     }
 
@@ -106,17 +106,17 @@ class PollTest {
         Map<PollItem, String> selectData1 = new HashMap<>();
         selectData1.put(itemA, descriptionA);
         selectData1.put(itemC, descriptionC);
-        poll.doPoll(member, selectData1);
+        poll.doPoll(member.getId(), selectData1);
 
         // when
         Map<PollItem, String> selectData2 = new HashMap<>();
         selectData2.put(itemB, descriptionB);
-        poll.doPoll(member, selectData2);
+        poll.doPoll(member.getId(), selectData2);
 
         // then
         Assertions.assertAll(
                 () -> assertThat(itemA.getSelectMembers()).isEmpty(),
-                () -> assertThat(itemB.getSelectMembers()).containsExactly(entry(member, descriptionB)),
+                () -> assertThat(itemB.getSelectMembers()).containsExactly(entry(member.getId(), descriptionB)),
                 () -> assertThat(itemC.getSelectMembers()).isEmpty()
         );
     }
@@ -127,21 +127,21 @@ class PollTest {
         Map<PollItem, String> selectData1 = new HashMap<>();
         selectData1.put(itemA, descriptionA);
         selectData1.put(itemC, descriptionC);
-        poll.doPoll(member, selectData1);
+        poll.doPoll(member.getId(), selectData1);
 
         // when
         Map<PollItem, String> selectData2 = new HashMap<>();
         selectData2.put(itemA, descriptionA);
         selectData2.put(itemB, descriptionB);
-        poll.doPoll(otherMember, selectData2);
+        poll.doPoll(otherMember.getId(), selectData2);
 
         // then
         Assertions.assertAll(
-                () -> assertThat(itemA.getSelectMembers()).containsOnly(entry(member, descriptionA),
-                        entry(otherMember, descriptionA)),
+                () -> assertThat(itemA.getSelectMembers()).containsOnly(entry(member.getId(), descriptionA),
+                        entry(otherMember.getId(), descriptionA)),
                 () -> assertThat(itemB.getSelectMembers()).containsExactly(
-                        entry(otherMember, descriptionB)),
-                () -> assertThat(itemC.getSelectMembers()).containsExactly(entry(member, descriptionC))
+                        entry(otherMember.getId(), descriptionB)),
+                () -> assertThat(itemC.getSelectMembers()).containsExactly(entry(member.getId(), descriptionC))
         );
     }
 
@@ -154,7 +154,7 @@ class PollTest {
         selectData.put(itemC, descriptionC);
 
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, selectData))
+        assertThatThrownBy(() -> poll.doPoll(member.getId(), selectData))
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR);
@@ -163,7 +163,7 @@ class PollTest {
     @Test
     void 투표하는_선택_항목의_개수가_0개인_경우_예외를_던진다() {
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, new HashMap<>()))
+        assertThatThrownBy(() -> poll.doPoll(member.getId(), new HashMap<>()))
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR);
@@ -209,7 +209,7 @@ class PollTest {
         selectData.put(itemC, descriptionC);
 
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, selectData))
+        assertThatThrownBy(() -> poll.doPoll(member.getId(), selectData))
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_ALREADY_CLOSED_ERROR);
@@ -228,7 +228,7 @@ class PollTest {
         selectData.put(itemD, "");
 
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, selectData))
+        assertThatThrownBy(() -> poll.doPoll(member.getId(), selectData))
                 .isInstanceOf(PollItemNotFoundException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_ITEM_NOT_FOUND_ERROR);

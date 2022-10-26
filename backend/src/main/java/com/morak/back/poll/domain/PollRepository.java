@@ -26,4 +26,7 @@ public interface PollRepository extends JpaRepository<Poll, Long> {
     @Modifying
     @Query("update Poll p set p.menu.status = 'CLOSED' where p in :polls")
     void closeAll(@Param("polls") Iterable<Poll> polls);
+
+    @Query("select p from Poll p where p.menu.teamCode.code = :teamCode")
+    List<Poll> findAllByTeamCode(@Param("teamCode") String teamCode);
 }

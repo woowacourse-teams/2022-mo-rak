@@ -20,20 +20,30 @@ public class PollItemResultResponse {
     private List<MemberResultResponse> members;
     private String subject;
 
-    public static PollItemResultResponse of(PollItem pollItem, Boolean anonymous) {
+    public static PollItemResultResponse of(PollItem pollItem, List<Member> members, Boolean anonymous) {
         return new PollItemResultResponse(
                 pollItem.getId(),
                 pollItem.countSelectMembers(),
-                toMemberResponsesByAnonymous(pollItem.getSelectMembers(), pickStrategy(anonymous)),
+                toMemberResponsesByAnonymous(pollItem.getSelectMembers(), members, pickStrategy(anonymous)),
                 pollItem.getSubject()
         );
     }
 
-    private static List<MemberResultResponse> toMemberResponsesByAnonymous(Map<Member, String> selectMembers,
+    private static List<MemberResultResponse> toMemberResponsesByAnonymous(Map<Long, String> selectMembers,
+                                                                           List<Member> members,
                                                                            MemberViewStrategy strategy) {
+
         return selectMembers.entrySet().stream()
+                .map(entry -> Map.entry(findMemberById(members, entry.getKey()), entry.getValue()))
                 .map(entry -> MemberResultResponse.of(strategy.viewMemberFrom(entry), entry.getValue()))
                 .collect(Collectors.toList());
+    }
+
+    private static Member findMemberById(List<Member> members, Long memberId) {
+        return members.stream()
+                .filter(member -> member.isSameId(memberId))
+                .findFirst()
+                .orElseThrow();
     }
 
     private static MemberViewStrategy pickStrategy(boolean anonymous) {

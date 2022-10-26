@@ -4,7 +4,6 @@ import com.morak.back.appointment.domain.menu.ClosedAt;
 import com.morak.back.appointment.domain.menu.Menu;
 import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.domain.menu.Title;
-import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
@@ -61,12 +60,12 @@ public class Poll extends BaseEntity {
         this.anonymous = anonymous;
     }
 
-    public void doPoll(Member member, Map<PollItem, String> data) {
+    public void doPoll(Long memberId, Map<PollItem, String> data) {
         validateStatusOpen();
         validateExistItem(data.keySet());
         validatePollCountAllowed(data.size());
 
-        pollItems.doPoll(member, data);
+        pollItems.doPoll(memberId, data);
     }
 
     private void validateStatusOpen() {

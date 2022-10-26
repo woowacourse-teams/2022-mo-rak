@@ -1,6 +1,5 @@
 package com.morak.back.poll.domain;
 
-import com.morak.back.auth.domain.Member;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import java.util.ArrayList;
@@ -44,9 +43,9 @@ public class PollItems {
         }
     }
 
-    public void doPoll(Member member, Map<PollItem, String> data) {
+    public void doPoll(Long memberId, Map<PollItem, String> data) {
         for (PollItem pollItem : values) {
-            addOrRemove(pollItem, member, data);
+            addOrRemove(pollItem, memberId, data);
         }
     }
 
@@ -54,12 +53,12 @@ public class PollItems {
         return itemCount >= 1 && this.allowedCount.isGreaterThanOrEqual(itemCount);
     }
 
-    private void addOrRemove(PollItem pollItem, Member member, Map<PollItem, String> data) {
+    private void addOrRemove(PollItem pollItem, Long memberId, Map<PollItem, String> data) {
         if (data.containsKey(pollItem)) {
-            pollItem.addSelectMember(member, data.get(pollItem));
+            pollItem.addSelectMember(memberId, data.get(pollItem));
             return;
         }
-        pollItem.remove(member);
+        pollItem.remove(memberId);
     }
 
     public boolean containsAll(Collection<PollItem> items) {
