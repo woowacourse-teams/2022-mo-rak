@@ -9,7 +9,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@DataJpaTest
+@DataJpaTest // (includeFilters = @Filter(classes = Service.class))
 @Sql(scripts = {"classpath:schema.sql", "classpath:data.sql"})
 public @interface ServiceTest {
 }

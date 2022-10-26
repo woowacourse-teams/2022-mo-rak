@@ -14,8 +14,6 @@ import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
-import com.morak.back.auth.domain.MemberRepository;
-import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
@@ -24,17 +22,13 @@ import com.morak.back.core.domain.slack.FormattableData;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
 import com.morak.back.core.util.MessageFormatter;
-import com.morak.back.team.domain.Team;
+import com.morak.back.core.application.AuthorizationService;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
-import com.morak.back.team.domain.TeamRepository;
-import com.morak.back.team.exception.TeamAuthorizationException;
-import com.morak.back.team.exception.TeamNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,76 +42,68 @@ public class AppointmentService {
     private static final CodeGenerator CODE_GENERATOR = new RandomCodeGenerator();
 
     private final AppointmentRepository appointmentRepository;
-    private final MemberRepository memberRepository;
-    private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
-
     private final NotificationService notificationService;
-
     private final SystemTime systemTime;
+    private final AuthorizationService authorizationService;
 
     public AppointmentResponse createAppointment(String teamCode, Long memberId, AppointmentCreateRequest request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team, member);
-
-        Appointment appointment = appointmentRepository.save(
-                request.toAppointment(Code.generate((length) -> teamCode), memberId, Code.generate(CODE_GENERATOR),
-                        systemTime.now()));
-        notificationService.notifyMenuStatus(team, MessageFormatter.formatOpen(FormattableData.from(appointment)));
-
-        return AppointmentResponse.from(appointment, memberId);
+        return authorizationService.withTeamMemberValidation(
+                () -> AppointmentResponse.from(appointmentRepository.save(
+                        request.toAppointment(
+                                Code.generate((length) -> teamCode),
+                                memberId,
+                                Code.generate(CODE_GENERATOR),
+                                systemTime.now()
+                        )
+                ), memberId), teamCode, memberId
+        );
     }
 
     @Transactional(readOnly = true)
     public List<AppointmentAllResponse> findAppointments(String teamCode, Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team, member);
-
-        return appointmentRepository.findAllByTeamCode(teamCode)
-                .stream()
-                .map(AppointmentAllResponse::from)
-                .sorted()
-                .collect(Collectors.toList());
+        return authorizationService.withTeamMemberValidation(
+                () -> appointmentRepository.findAllByTeamCode(teamCode)
+                        .stream()
+                        .map(AppointmentAllResponse::from)
+                        .sorted()
+                        .collect(Collectors.toList()), teamCode, memberId
+        );
     }
 
     @Transactional(readOnly = true)
     public AppointmentResponse findAppointment(String teamCode, Long memberId, String appointmentCode) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team, member);
-
-        return withTeamValidation(
-                appointment -> AppointmentResponse.from(appointment, memberId),
-                teamCode,
-                appointmentCode
+        return authorizationService.withTeamMemberValidation(
+                () -> {
+                    Appointment appointment = findAppointmentInTeam(teamCode, appointmentCode);
+                    return AppointmentResponse.from(appointment, memberId);
+                }, teamCode, memberId
         );
     }
 
+    private Appointment findAppointmentInTeam(String teamCode, String appointmentCode) {
+        Appointment appointment = appointmentRepository.findByCode(appointmentCode).orElseThrow(
+                () -> AppointmentNotFoundException.ofAppointment(
+                        CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR,
+                        appointmentCode
+                )
+        );
+        validateAppointmentInTeam(teamCode, appointment);
+        return appointment;
+    }
 
     public void selectAvailableTimes(String teamCode, Long memberId, String appointmentCode,
                                      List<AvailableTimeRequest> requests) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team, member);
-
-        withTeamValidation(
-                appointment -> {
+        authorizationService.withTeamMemberValidation(
+                () -> {
+                    Appointment appointment = findAppointmentInTeam(teamCode, appointmentCode);
                     appointment.selectAvailableTime(
                             toStartDateTime(requests),
                             memberId,
                             systemTime.now());
                     return null;
-                }, teamCode, appointmentCode);
+                }, teamCode, memberId
+        );
     }
 
     private Set<LocalDateTime> toStartDateTime(List<AvailableTimeRequest> requests) {
@@ -129,56 +115,59 @@ public class AppointmentService {
     @Transactional(readOnly = true)
     public List<RecommendationResponse> recommendAppointmentTimes(String teamCode, Long memberId,
                                                                   String appointmentCode) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team, member);
+        return authorizationService.withTeamMemberValidation(
+                () -> {
+                    Appointment appointment = findAppointmentInTeam(teamCode, appointmentCode);
+                    List<Member> members = findMembersByTeamCode(teamCode);
 
-        return withTeamValidation(appointment -> {
-            List<Member> members = teamMemberRepository.findAllByTeam(team)
-                    .stream()
-                    .map(TeamMember::getMember)
-                    .collect(Collectors.toList());
+                    RecommendationCells cells = RecommendationCells.of(appointment, toMemberIds(members));
+                    List<RankRecommendation> recommendations = cells.recommend(appointment.getAvailableTimes());
 
-            RecommendationCells cells = RecommendationCells.of(appointment, members.stream()
-                    .map(Member::getId)
-                    .collect(Collectors.toList()));
-            List<RankRecommendation> recommendations = cells.recommend(appointment.getAvailableTimes());
+                    return toRecommendationResponses(members, recommendations);
+                }, teamCode, memberId
+        );
+    }
 
-            return recommendations.stream()
-                    .map(recommendation -> RecommendationResponse.of(recommendation, members))
-                    .collect(Collectors.toList());
-        }, teamCode, appointmentCode);
+    private List<Member> findMembersByTeamCode(String teamCode) {
+        return teamMemberRepository.findAllByTeamCode(teamCode)
+                .stream()
+                .map(TeamMember::getMember)
+                .collect(Collectors.toList());
+    }
+
+    private List<Long> toMemberIds(List<Member> members) {
+        return members.stream()
+                .map(Member::getId)
+                .collect(Collectors.toList());
+    }
+
+    private List<RecommendationResponse> toRecommendationResponses(List<Member> members,
+                                                                   List<RankRecommendation> recommendations) {
+        return recommendations.stream()
+                .map(recommendation -> RecommendationResponse.of(recommendation, members))
+                .collect(Collectors.toList());
     }
 
     public void closeAppointment(String teamCode, Long memberId, String appointmentCode) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team, member);
-
-        withTeamValidation(appointment -> {
-            appointment.close(memberId);
-            notificationService.notifyMenuStatus(team,
-                    MessageFormatter.formatClosed(FormattableData.from(appointment)));
-            return null;
-        }, teamCode, appointmentCode);
+        authorizationService.withTeamMemberValidation(
+                () -> {
+                    Appointment appointment = findAppointmentInTeam(teamCode, appointmentCode);
+                    appointment.close(memberId);
+//                    notificationService.notifyMenuStatus(team,
+//                            MessageFormatter.formatClosed(FormattableData.from(appointment)));
+                    return null;
+                }, teamCode, memberId
+        );
     }
 
     public void deleteAppointment(String teamCode, Long memberId, String appointmentCode) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team, member);
-
-        withTeamValidation(appointment -> {
+        authorizationService.withTeamMemberValidation(
+                () -> {
+                    Appointment appointment = findAppointmentInTeam(teamCode, appointmentCode);
                     validateHost(memberId, appointment);
                     appointmentRepository.delete(appointment);
                     return null;
-                }, teamCode, appointmentCode
+                }, teamCode, memberId
         );
     }
 
@@ -186,13 +175,6 @@ public class AppointmentService {
         if (!appointment.isHost(memberId)) {
             throw new AppointmentAuthorizationException(CustomErrorCode.APPOINTMENT_HOST_MISMATCHED_ERROR,
                     memberId + "번 멤버는 " + appointment.getCode() + "코드의 약속잡기의 호스트가 아닙니다.");
-        }
-    }
-
-    private void validateMemberInTeam(Team team, Member member) {
-        if (!teamMemberRepository.existsByTeamAndMember(team, member)) {
-            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, team.getId(),
-                    member.getId());
         }
     }
 
@@ -223,26 +205,12 @@ public class AppointmentService {
     }
 
     public AppointmentStatusResponse findAppointmentStatus(String teamCode, Long memberId, String appointmentCode) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-        Team team = teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
-        validateMemberInTeam(team, member);
-
-        return withTeamValidation(
-                appointment -> new AppointmentStatusResponse(appointment.getStatus()),
-                teamCode,
-                appointmentCode
+        return authorizationService.withTeamMemberValidation(
+                () -> {
+                    Appointment appointment = findAppointmentInTeam(teamCode, appointmentCode);
+                    return new AppointmentStatusResponse(appointment.getStatus());
+                }, teamCode, memberId
         );
-    }
-
-    public <R> R withTeamValidation(Function<Appointment, R> function, String teamCode, String appointmentCode) {
-        Appointment appointment = appointmentRepository.findByCode(appointmentCode).orElseThrow(
-                () -> AppointmentNotFoundException.ofAppointment(CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR,
-                        appointmentCode));
-        validateAppointmentInTeam(teamCode, appointment);
-
-        return function.apply(appointment);
     }
 
     private void validateAppointmentInTeam(String teamCode, Appointment appointment) {

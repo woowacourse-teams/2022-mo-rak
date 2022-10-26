@@ -15,6 +15,7 @@ import com.morak.back.core.domain.slack.FakeSlackClient;
 import com.morak.back.core.domain.slack.SlackClient;
 import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.support.ServiceTest;
+import com.morak.back.core.application.AuthorizationService;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import java.time.LocalDateTime;
@@ -50,14 +51,16 @@ class AppointmentSchedulerTest {
                 slackWebhookRepository,
                 memberRepository
         );
+        AuthorizationService authorizationService = new AuthorizationService(
+                teamRepository, memberRepository, teamMemberRepository
+        );
         this.appointmentScheduler = new AppointmentScheduler(
                 new AppointmentService(
                         appointmentRepository,
-                        memberRepository,
-                        teamRepository,
                         teamMemberRepository,
                         notificationService,
-                        systemTime
+                        systemTime,
+                        authorizationService
                 ));
         this.now = systemTime.now();
     }
