@@ -1,6 +1,7 @@
 package com.morak.back.team.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
@@ -151,5 +152,23 @@ class TeamMemberRepositoryTest {
         TeamMember findTeamMember = teamMemberRepository.findByTeamAndMember(team, member).orElseThrow();
         // then
         assertThat(findTeamMember).isEqualTo(teamMember);
+    }
+
+    @Test
+    void team_code와_member_id로_team_member를_삭제한다(@Autowired EntityManager entityManager) {
+        // given
+        TeamMember teamMember = teamMemberRepository.save(TeamMember.builder()
+                .member(member)
+                .team(team)
+                .build());
+
+        teamMemberRepository.deleteByTeamCodeAndMemberId(team.getCode(), member.getId());
+        entityManager.flush();
+
+        // when
+        Optional<TeamMember> teamAndMember = teamMemberRepository.findByTeamAndMember(team, member);
+
+        // then
+        assertThat(teamAndMember).isEmpty();
     }
 }
