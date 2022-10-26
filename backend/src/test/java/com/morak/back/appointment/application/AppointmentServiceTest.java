@@ -17,19 +17,10 @@ import com.morak.back.appointment.ui.dto.AppointmentResponse;
 import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
-import com.morak.back.auth.domain.MemberRepository;
-import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
-import com.morak.back.core.domain.slack.FakeApiReceiver;
-import com.morak.back.core.domain.slack.FakeSlackClient;
-import com.morak.back.core.domain.slack.SlackClient;
-import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.support.ServiceTest;
-import com.morak.back.core.application.AuthorizationService;
-import com.morak.back.team.domain.TeamMemberRepository;
-import com.morak.back.team.domain.TeamRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -43,10 +34,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 class AppointmentServiceTest {
 
     private final AppointmentRepository appointmentRepository;
-
     private final AppointmentService appointmentService;
-
     private final SystemTime systemTime;
+
+    @Autowired
+    public AppointmentServiceTest(
+            AppointmentRepository appointmentRepository,
+            AppointmentService appointmentService,
+            SystemTime systemTime
+    ) {
+        this.appointmentRepository = appointmentRepository;
+        this.appointmentService = appointmentService;
+        this.systemTime = systemTime;
+    }
 
     private AppointmentBuilder DEFAULT_BUILDER;
 
@@ -56,24 +56,6 @@ class AppointmentServiceTest {
     private LocalDate today;
 
     private Appointment 약속잡기_현재부터_1일에서_5일_14시_20시;
-
-    @Autowired
-    public AppointmentServiceTest(AppointmentRepository appointmentRepository,
-                                  MemberRepository memberRepository, TeamRepository teamRepository,
-                                  TeamMemberRepository teamMemberRepository,
-                                  SlackWebhookRepository slackWebhookRepository) {
-        this.appointmentRepository = appointmentRepository;
-        this.systemTime = new SystemTime(LocalDateTime.now());
-
-        SlackClient slackClient = new FakeSlackClient(new FakeApiReceiver());
-        NotificationService notificationService = new NotificationService(slackClient, teamRepository,
-                teamMemberRepository,
-                slackWebhookRepository, memberRepository);
-        AuthorizationService authorizationService = new AuthorizationService(teamRepository, memberRepository,
-                teamMemberRepository);
-        this.appointmentService = new AppointmentService(appointmentRepository, teamMemberRepository,
-                notificationService, systemTime, authorizationService);
-    }
 
     @BeforeEach
     void setUp() {

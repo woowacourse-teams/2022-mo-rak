@@ -7,12 +7,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
-import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.domain.slack.FakeApiReceiver;
-import com.morak.back.core.domain.slack.FakeSlackClient;
-import com.morak.back.core.domain.slack.SlackClient;
-import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.core.exception.AuthorizationException;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.application.dto.MemberResultResponse;
@@ -21,7 +16,6 @@ import com.morak.back.poll.application.dto.PollItemResponse;
 import com.morak.back.poll.application.dto.PollItemResultResponse;
 import com.morak.back.poll.application.dto.PollResponse;
 import com.morak.back.poll.application.dto.PollResultRequest;
-import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollDomainLogicException;
@@ -49,33 +43,24 @@ class PollServiceTest {
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
-
     private final PollService pollService;
+
+    @Autowired
+    public PollServiceTest(
+            MemberRepository memberRepository,
+            TeamRepository teamRepository,
+            TeamMemberRepository teamMemberRepository,
+            PollService pollService
+    ) {
+        this.memberRepository = memberRepository;
+        this.teamRepository = teamRepository;
+        this.teamMemberRepository = teamMemberRepository;
+        this.pollService = pollService;
+    }
 
     private Member member;
     private Team team;
     private PollCreateRequest pollCreateRequest;
-
-    @Autowired
-    public PollServiceTest(MemberRepository memberRepository, TeamRepository teamRepository,
-                           TeamMemberRepository teamMemberRepository, PollRepository pollRepository,
-                           SlackWebhookRepository slackWebhookRepository) {
-        this.memberRepository = memberRepository;
-        this.teamRepository = teamRepository;
-        this.teamMemberRepository = teamMemberRepository;
-        FakeApiReceiver receiver = new FakeApiReceiver();
-        SlackClient slackClient = new FakeSlackClient(receiver);
-        NotificationService notificationService = new NotificationService(slackClient, teamRepository,
-                teamMemberRepository,
-                slackWebhookRepository, memberRepository);
-        this.pollService = new PollService(
-                pollRepository,
-                memberRepository,
-                teamRepository,
-                teamMemberRepository,
-                notificationService
-        );
-    }
 
     @BeforeEach
     void setup() {

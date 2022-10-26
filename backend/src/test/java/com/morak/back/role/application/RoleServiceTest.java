@@ -42,19 +42,23 @@ class RoleServiceTest {
 
     private final RoleService roleService;
 
-    private Member member;
-    private Team team;
-
     @Autowired
-    public RoleServiceTest(MemberRepository memberRepository, TeamRepository teamRepository,
-                           TeamMemberRepository teamMemberRepository, RoleRepository roleRepository) {
+    public RoleServiceTest(
+            MemberRepository memberRepository,
+            TeamRepository teamRepository,
+            TeamMemberRepository teamMemberRepository,
+            RoleRepository roleRepository,
+            RoleService roleService
+    ) {
         this.memberRepository = memberRepository;
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.roleRepository = roleRepository;
-
-        roleService = new RoleService(teamRepository, teamMemberRepository, roleRepository, memberRepository);
+        this.roleService = roleService;
     }
+
+    private Member member;
+    private Team team;
 
     @BeforeEach
     void setup() {

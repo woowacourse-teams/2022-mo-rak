@@ -31,6 +31,7 @@ import static com.morak.back.appointment.AppointmentCreateRequestFixture.총_진
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
+import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.appointment.domain.menu.MenuStatus;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
@@ -39,10 +40,10 @@ import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.application.TokenProvider;
+import com.morak.back.core.domain.FakeSystemTime;
 import com.morak.back.core.exception.CustomErrorCode;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -59,11 +60,18 @@ import org.springframework.http.HttpStatus;
 class AppointmentAcceptanceTest extends AcceptanceTest {
 
     private static final String APPOINTMENT_BASE_PATH = "/api/groups/MoraK123/appointments";
+    private static final SystemTime SYSTEM_TIME = new FakeSystemTime();
 
     private String accessToken;
 
     @Autowired
-    private TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
+
+
+    @Autowired
+    public AppointmentAcceptanceTest(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
 
     private static List<Arguments> getAvailableTimeRequest() {
         return List.of(
@@ -197,7 +205,7 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
         String location = 약속잡기_생성을_요청한다(범위_16_20_약속잡기_요청_데이터).header("Location");
 
         AvailableTimeRequest availableTimeRequest = new AvailableTimeRequest(
-                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(startHour, startMinute))
+                LocalDateTime.of(SYSTEM_TIME.now().toLocalDate().plusDays(1), LocalTime.of(startHour, startMinute))
         );
 
         // when
@@ -227,7 +235,8 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
         String location = 약속잡기_생성을_요청한다(범위_16_24_약속잡기_요청_데이터).header("Location");
 
         AvailableTimeRequest availableTimeRequest = new AvailableTimeRequest(
-                LocalDateTime.of(LocalDate.now().plusDays(startDate), LocalTime.of(startHour, startMinute))
+                LocalDateTime.of(SYSTEM_TIME.now().toLocalDate().plusDays(startDate),
+                        LocalTime.of(startHour, startMinute))
         );
 
         // when
@@ -250,7 +259,8 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
         String location = 약속잡기_생성을_요청한다(범위_16_24_약속잡기_요청_데이터).header("Location");
 
         AvailableTimeRequest availableTimeRequest = new AvailableTimeRequest(
-                LocalDateTime.of(LocalDate.now().plusDays(startDate), LocalTime.of(startHour, startMinute))
+                LocalDateTime.of(SYSTEM_TIME.now().toLocalDate().plusDays(startDate),
+                        LocalTime.of(startHour, startMinute))
         );
 
         // when
@@ -470,8 +480,7 @@ class AppointmentAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 약속잡기_생성을_요청한다(AppointmentCreateRequest request) {
-        return post(APPOINTMENT_BASE_PATH, request,
-                toHeader(accessToken));
+        return post(APPOINTMENT_BASE_PATH, request, toHeader(accessToken));
     }
 
     private ExtractableResponse<Response> 약속잡기_목록_조회를_요청한다() {

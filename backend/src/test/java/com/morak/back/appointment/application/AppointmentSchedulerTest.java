@@ -7,20 +7,13 @@ import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.appointment.domain.menu.MenuStatus;
-import com.morak.back.auth.domain.MemberRepository;
-import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.slack.FakeApiReceiver;
-import com.morak.back.core.domain.slack.FakeSlackClient;
-import com.morak.back.core.domain.slack.SlackClient;
-import com.morak.back.core.domain.slack.SlackWebhookRepository;
 import com.morak.back.support.ServiceTest;
-import com.morak.back.core.application.AuthorizationService;
-import com.morak.back.team.domain.TeamMemberRepository;
-import com.morak.back.team.domain.TeamRepository;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
@@ -32,37 +25,26 @@ class AppointmentSchedulerTest {
     private final AppointmentRepository appointmentRepository;
     private final FakeApiReceiver receiver;
     private final AppointmentScheduler appointmentScheduler;
-    private final LocalDateTime now;
+    private final SystemTime systemTime;
 
     @Autowired
-    public AppointmentSchedulerTest(AppointmentRepository appointmentRepository,
-                                    MemberRepository memberRepository, TeamRepository teamRepository,
-                                    TeamMemberRepository teamMemberRepository,
-                                    SlackWebhookRepository slackWebhookRepository,
-                                    SystemTime systemTime) {
+    public AppointmentSchedulerTest(
+            AppointmentRepository appointmentRepository,
+            FakeApiReceiver receiver,
+            AppointmentScheduler appointmentScheduler,
+            SystemTime systemTime
+    ) {
         this.appointmentRepository = appointmentRepository;
-        this.receiver = new FakeApiReceiver();
-        SlackClient slackClient = new FakeSlackClient(receiver);
+        this.receiver = receiver;
+        this.appointmentScheduler = appointmentScheduler;
+        this.systemTime = systemTime;
+    }
 
-        NotificationService notificationService = new NotificationService(
-                slackClient,
-                teamRepository,
-                teamMemberRepository,
-                slackWebhookRepository,
-                memberRepository
-        );
-        AuthorizationService authorizationService = new AuthorizationService(
-                teamRepository, memberRepository, teamMemberRepository
-        );
-        this.appointmentScheduler = new AppointmentScheduler(
-                new AppointmentService(
-                        appointmentRepository,
-                        teamMemberRepository,
-                        notificationService,
-                        systemTime,
-                        authorizationService
-                ));
-        this.now = systemTime.now();
+    private LocalDateTime now;
+
+    @BeforeEach
+    void setUp() {
+        now = systemTime.now();
     }
 
     @Test
