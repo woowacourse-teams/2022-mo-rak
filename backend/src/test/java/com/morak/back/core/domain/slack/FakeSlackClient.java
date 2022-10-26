@@ -2,11 +2,9 @@ package com.morak.back.core.domain.slack;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.ExternalException;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
+import com.morak.back.support.FakeBean;
 
-@Component
-@Primary
+@FakeBean
 public class FakeSlackClient implements SlackClient {
 
     private FakeApiReceiver receiver;

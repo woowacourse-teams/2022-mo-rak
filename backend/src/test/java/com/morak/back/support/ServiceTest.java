@@ -5,11 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.stereotype.Service;
 import org.springframework.test.context.jdbc.Sql;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@DataJpaTest // (includeFilters = @Filter(classes = Service.class))
+@DataJpaTest(includeFilters = @Filter(classes = {Service.class, FakeBean.class}))
 @Sql(scripts = {"classpath:schema.sql", "classpath:data.sql"})
 public @interface ServiceTest {
 }
