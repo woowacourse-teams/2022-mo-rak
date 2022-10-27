@@ -29,9 +29,10 @@ class TeamInvitationTest {
     @Test
     void 만료된_시간인지_확인한다() {
         // given
+        SystemTime oldSystemTime = new SystemTime(systemTime.now().minusMinutes(10));
         TeamInvitation teamInvitation = TeamInvitation.builder()
                 .code(Code.generate(length -> "abcd1234"))
-                .expiredAt(new ExpiredTime(-10L, systemTime))
+                .expiredAt(new ExpiredTime(oldSystemTime.now().plusMinutes(5), oldSystemTime))
                 .build();
 
         // when

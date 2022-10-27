@@ -44,4 +44,22 @@ class ExpiredTimeTest {
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.TEAM_INVITATION_EXPIRED_ERROR);
     }
+
+    @Test
+    void 만료시각이_과거가_아니라면_false를_반환한다() {
+        ExpiredTime expiredTime = new ExpiredTime(systemTime);
+
+        boolean isBefore = expiredTime.isBefore(systemTime.now().minusDays(5));
+
+        assertThat(isBefore).isFalse();
+    }
+
+    @Test
+    void 만료시각이_과거라면_true를_반환한다() {
+        ExpiredTime expiredTime = new ExpiredTime(systemTime);
+
+        boolean isBefore = expiredTime.isBefore(systemTime.now().plusDays(5));
+
+        assertThat(isBefore).isTrue();
+    }
 }

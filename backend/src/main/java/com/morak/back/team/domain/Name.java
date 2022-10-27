@@ -1,6 +1,7 @@
 package com.morak.back.team.domain;
 
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.support.Generated;
 import com.morak.back.team.exception.TeamDomainLogicException;
 import java.util.Objects;
 import javax.persistence.Embeddable;
@@ -31,6 +32,7 @@ public class Name {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -43,6 +45,7 @@ public class Name {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(name);
     }

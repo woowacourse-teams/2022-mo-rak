@@ -22,7 +22,7 @@ public class ExpiredTime {
     }
 
     public ExpiredTime(long minutes, SystemTime systemTime) {
-        this.expiredAt = systemTime.now().plusMinutes(minutes);
+        this(systemTime.now().plusMinutes(minutes), systemTime);
     }
 
     public ExpiredTime(LocalDateTime expiredAt, SystemTime systemTime) {
