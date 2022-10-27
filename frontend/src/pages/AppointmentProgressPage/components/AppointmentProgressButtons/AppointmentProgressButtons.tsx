@@ -6,7 +6,7 @@ type Props = {
   onClickProgress: MouseEventHandler<HTMLButtonElement>;
 };
 
-function AppointmentProgressButtonGroup({ onClickProgress }: Props) {
+function AppointmentProgressButtons({ onClickProgress }: Props) {
   const theme = useTheme();
 
   return (
@@ -22,4 +22,4 @@ function AppointmentProgressButtonGroup({ onClickProgress }: Props) {
   );
 }
 
-export default AppointmentProgressButtonGroup;
+export default AppointmentProgressButtons;

@@ -11,7 +11,7 @@ import { Group } from '../../types/group';
 import FlexContainer from '../../components/FlexContainer/FlexContainer';
 import AppointmentResultRanking from './components/AppointmentResultRanking/AppointmentResultRanking';
 import AppointmentResultAvailableMembers from './components/AppointmentResultAvailableMembers/AppointmentResultAvailableMembers';
-import AppointmentResultButtonGroup from './components/AppointmentResultButtonGroup/AppointmentResultButtonGroup';
+import AppointmentResultButtons from './components/AppointmentResultButtons/AppointmentResultButtons';
 import AppointmentResultHeader from './components/AppointmentResultHeader/AppointmentResultHeader';
 import { AxiosError } from 'axios';
 import Spinner from '../../components/Spinner/Spinner';
@@ -87,7 +87,7 @@ function AppointmentResultPage() {
               clickedRecommendation={clickedRecommendation}
             />
           </FlexContainer>
-          <AppointmentResultButtonGroup
+          <AppointmentResultButtons
             groupCode={groupCode}
             appointmentRecommendation={appointmentRecommendation}
             appointmentCode={appointmentCode}

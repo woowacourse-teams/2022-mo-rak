@@ -15,7 +15,7 @@ import useInput from '../../../../hooks/useInput';
 import { editUsername } from '../../../../api/auth';
 import { AxiosError } from 'axios';
 import useAuthDispatchContext from '../../../../hooks/useAuthDispatchContext';
-import SidebarEditUsernameModalButtonGroup from '../SidebarEditUsernameModalButtonGroup/SidebarEditUsernameModalButtonGroup';
+import SidebarEditUsernameModalButtons from '../SidebarEditUsernameModalButtons/SidebarEditUsernameModalButtons';
 import SidebarEditUsernameModalUsernameInput from '../SidebarEditUsernameModalUsernameInput/SidebarEditUsernameModalUsernameInput';
 
 type Props = {
@@ -63,7 +63,7 @@ function SidebarEditUsernameModal({ isVisible, close }: Props) {
             username={username}
             onChangeUsername={handleUsername}
           />
-          <SidebarEditUsernameModalButtonGroup onClickCancelButton={close} />
+          <SidebarEditUsernameModalButtons onClickCancelButton={close} />
         </StyledBottom>
       </StyledForm>
     </Modal>

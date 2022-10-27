@@ -6,7 +6,7 @@ import { AvailableTimes, Appointment, GetAppointmentResponse } from '../../types
 import Calendar from '../../components/Calendar/Calendar';
 import AppointmentProgressHeader from './components/AppointmentProgressHeader/AppointmentProgressHeader';
 import AppointmentProgressTimePicker from './components/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
-import AppointmentProgressButtonGroup from './components/AppointmentProgressButtonGroup/AppointmentProgressButtonGroup';
+import AppointmentProgressButtons from './components/AppointmentProgressButtons/AppointmentProgressButtons';
 import FlexContainer from '../../components/FlexContainer/FlexContainer';
 import {
   StyledContainer,
@@ -162,7 +162,7 @@ function AppointmentProgressPage() {
                 onClickTime={handleAvailableTimes}
                 availableTimes={availableTimes}
               />
-              <AppointmentProgressButtonGroup onClickProgress={handleProgressAppointment} />
+              <AppointmentProgressButtons onClickProgress={handleProgressAppointment} />
             </StyledRightContainer>
           </FlexContainer>
         </FlexContainer>

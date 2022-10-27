@@ -19,7 +19,7 @@ import { getPolls } from '../../../../api/poll';
 import { getPollsResponse } from '../../../../types/poll';
 import { Group } from '../../../../types/group';
 
-import PollMainButtonGroup from '../PollMainButtonGroup/PollMainButtonGroup';
+import PollMainButtons from '../PollMainButtons/PollMainButtons';
 import emptyLottie from '../../../../assets/empty-animation.json';
 
 function PollMainContainer() {
@@ -63,7 +63,7 @@ function PollMainContainer() {
                 closedAt={closedAt}
               />
             </MarginContainer>
-            <PollMainButtonGroup pollCode={code} status={status} />
+            <PollMainButtons pollCode={code} status={status} />
           </Box>
         </StyledPollContainer>
       ))}

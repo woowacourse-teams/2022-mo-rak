@@ -2,7 +2,7 @@ import { useTheme } from '@emotion/react';
 import { useParams } from 'react-router-dom';
 import Button from '../../../../components/Button/Button';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { StyledAnimationContainer } from './RoleMainButtonGroup.styles';
+import { StyledAnimationContainer } from './RoleMainButtons.styles';
 import { Group } from '../../../../types/group';
 import { useState } from 'react';
 import { useLottie } from 'lottie-react';
@@ -15,7 +15,7 @@ type Props = {
   onClickEditRolesButton: () => void;
 };
 
-function RoleMainButtonGroup({ onClickAllocateRolesButton, onClickEditRolesButton }: Props) {
+function RoleMainButtons({ onClickAllocateRolesButton, onClickEditRolesButton }: Props) {
   const theme = useTheme();
   const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [isFireworkAnimationVisible, setIsFireworkAnimationVisible] = useState(false);
@@ -96,4 +96,4 @@ function RoleMainButtonGroup({ onClickAllocateRolesButton, onClickEditRolesButto
   );
 }
 
-export default RoleMainButtonGroup;
+export default RoleMainButtons;

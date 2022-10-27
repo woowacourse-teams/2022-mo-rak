@@ -9,7 +9,7 @@ type Props = {
   status: Poll['status'];
 };
 
-function PollMainButtonGroup({ pollCode, status }: Props) {
+function PollMainButtons({ pollCode, status }: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -50,4 +50,4 @@ function PollMainButtonGroup({ pollCode, status }: Props) {
   );
 }
 
-export default PollMainButtonGroup;
+export default PollMainButtons;

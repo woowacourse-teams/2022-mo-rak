@@ -19,7 +19,7 @@ import { AxiosError } from 'axios';
 import { EditRolesRequest } from '../../../../types/role';
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
 import RoleMainRoleEditModalInputGroup from '../RoleMainRoleEditModalInputGroup/RoleMainRoleEditModalInputGroup';
-import RoleMainRoleEditModalButtonGroup from '../RoleMainRoleEditModalButtonGroup/RoleMainRoleEditModalButtonGroup';
+import RoleMainRoleEditModalButtons from '../RoleMainRoleEditModalButtons/RoleMainRoleEditModalButtons';
 
 type Props = {
   close: () => void;
@@ -101,7 +101,7 @@ function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
             onClickDeleteButton={handleDeleteRoleInput}
             onClickAddButton={handleAddRoleInput}
           />
-          <RoleMainRoleEditModalButtonGroup onClickCancelButton={close} />
+          <RoleMainRoleEditModalButtons onClickCancelButton={close} />
         </StyledBottom>
       </StyledForm>
     </Modal>

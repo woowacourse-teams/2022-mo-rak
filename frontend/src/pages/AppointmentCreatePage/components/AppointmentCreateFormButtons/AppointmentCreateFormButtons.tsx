@@ -7,7 +7,7 @@ type Props = {
   onCancel: MouseEventHandler<HTMLButtonElement>;
 };
 
-function AppointmentCreateFormButtonGroup({ onCancel }: Props) {
+function AppointmentCreateFormButtons({ onCancel }: Props) {
   const theme = useTheme();
 
   return (
@@ -34,4 +34,4 @@ function AppointmentCreateFormButtonGroup({ onCancel }: Props) {
   );
 }
 
-export default memo(AppointmentCreateFormButtonGroup, () => true);
+export default memo(AppointmentCreateFormButtons, () => true);

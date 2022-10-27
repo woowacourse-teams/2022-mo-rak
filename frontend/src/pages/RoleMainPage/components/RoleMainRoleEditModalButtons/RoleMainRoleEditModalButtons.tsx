@@ -7,7 +7,7 @@ type Props = {
   onClickCancelButton: MouseEventHandler<HTMLButtonElement>;
 };
 
-function RoleMainRoleEditModalButtonGroup({ onClickCancelButton }: Props) {
+function RoleMainRoleEditModalButtons({ onClickCancelButton }: Props) {
   const theme = useTheme();
   return (
     <FlexContainer gap="2rem">
@@ -37,4 +37,4 @@ function RoleMainRoleEditModalButtonGroup({ onClickCancelButton }: Props) {
   );
 }
 
-export default RoleMainRoleEditModalButtonGroup;
+export default RoleMainRoleEditModalButtons;

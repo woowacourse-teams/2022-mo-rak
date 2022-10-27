@@ -9,7 +9,7 @@ type Props = {
   isClosed: boolean;
 };
 
-function AppointmentMainButtonGroup({ appointmentCode, isClosed }: Props) {
+function AppointmentMainButtons({ appointmentCode, isClosed }: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -47,4 +47,4 @@ function AppointmentMainButtonGroup({ appointmentCode, isClosed }: Props) {
   );
 }
 
-export default AppointmentMainButtonGroup;
+export default AppointmentMainButtons;

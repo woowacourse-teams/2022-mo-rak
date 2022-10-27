@@ -10,7 +10,7 @@ import { getAppointments } from '../../../../api/appointment';
 import AppointmentMainStatus from '../AppointmentMainStatus/AppointmentMainStatus';
 import AppointmentMainProgress from '../AppointmentMainProgress/AppointmentMainProgress';
 import AppointmentMainDetail from '../AppointmentMainDetail/AppointmentMainDetail';
-import AppointmentMainButtonGroup from '../AppointmentMainButtonGroup/AppointmentMainButtonGroup';
+import AppointmentMainButtons from '../AppointmentMainButtons/AppointmentMainButtons';
 import emptyLottie from '../../../../assets/empty-animation.json';
 import {
   StyledContainer,
@@ -63,7 +63,7 @@ function AppointmentMainContainer() {
                   closedAt={closedAt}
                 />
               </MarginContainer>
-              <AppointmentMainButtonGroup appointmentCode={code} isClosed={isClosed} />
+              <AppointmentMainButtons appointmentCode={code} isClosed={isClosed} />
             </Box>
           </StyledAppointmentContainer>
         )

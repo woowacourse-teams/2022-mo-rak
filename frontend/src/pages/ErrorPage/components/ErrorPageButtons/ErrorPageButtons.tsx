@@ -9,7 +9,7 @@ type NavigateFunctionOverload = {
   (location: number): () => void;
 };
 
-function ErrorPageButtonGroup() {
+function ErrorPageButtons() {
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -43,4 +43,4 @@ function ErrorPageButtonGroup() {
   );
 }
 
-export default ErrorPageButtonGroup;
+export default ErrorPageButtons;

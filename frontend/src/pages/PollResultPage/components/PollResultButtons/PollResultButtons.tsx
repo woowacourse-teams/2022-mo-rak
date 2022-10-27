@@ -17,14 +17,7 @@ type Props = {
   pollItems: getPollItemsResponse;
 };
 
-function PollResultButtonGroup({
-  pollCode,
-  status,
-  setStatus,
-  isHost,
-  groupCode,
-  pollItems
-}: Props) {
+function PollResultButtons({ pollCode, status, setStatus, isHost, groupCode, pollItems }: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
   const isProgressedPoll = pollItems.some((pollItem) => pollItem.isSelected);
@@ -151,4 +144,4 @@ function PollResultButtonGroup({
   );
 }
 
-export default PollResultButtonGroup;
+export default PollResultButtons;

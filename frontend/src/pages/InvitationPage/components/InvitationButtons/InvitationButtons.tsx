@@ -13,7 +13,7 @@ type Props = {
   groupCode: Group['code'];
 };
 
-function InvitationButtonGroup({ navigate, invitationCode, groupCode }: Props) {
+function InvitationButtons({ navigate, invitationCode, groupCode }: Props) {
   const theme = useTheme();
 
   const handleParticipateGroup = async () => {
@@ -64,4 +64,4 @@ function InvitationButtonGroup({ navigate, invitationCode, groupCode }: Props) {
   );
 }
 
-export default InvitationButtonGroup;
+export default InvitationButtons;

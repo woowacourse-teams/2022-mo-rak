@@ -15,7 +15,7 @@ import MarginContainer from '../../../../components/MarginContainer/MarginContai
 
 import PollResultItemGroup from '../PollResultItemGroup/PollResultItemGroup';
 import PollResultDetail from '../PollResultDetail/PollResultDetail';
-import PollResultButtonGroup from '../PollResultButtonGroup/PollResultButtonGroup';
+import PollResultButtons from '../PollResultButtons/PollResultButtons';
 import { getPoll, getPollResult, getPollItems } from '../../../../api/poll';
 import {
   Poll,
@@ -138,7 +138,7 @@ function PollResultContainer() {
               />
             </FlexContainer>
           </MarginContainer>
-          <PollResultButtonGroup
+          <PollResultButtons
             isHost={poll.isHost}
             status={poll.status}
             pollCode={poll.code}

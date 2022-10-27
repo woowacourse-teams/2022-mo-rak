@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { Group } from '../../../../types/group';
 import { EditRolesRequest } from '../../../../types/role';
 import { AxiosError } from 'axios';
-import RoleMainButtonGroup from '../RoleMainButtonGroup/RoleMainButtonGroup';
+import RoleMainButtons from '../RoleMainButtons/RoleMainButtons';
 
 type Props = {
   onClickAllocateRolesButton: () => void;
@@ -46,7 +46,7 @@ function RoleMainProgress({ onClickAllocateRolesButton }: Props) {
   return (
     <>
       <RoleMainRoles roles={roles} />
-      <RoleMainButtonGroup
+      <RoleMainButtons
         onClickAllocateRolesButton={onClickAllocateRolesButton}
         onClickEditRolesButton={handleOpenRoleEditModal}
       />

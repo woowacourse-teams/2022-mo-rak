@@ -1,12 +1,12 @@
 import { useTheme } from '@emotion/react';
-import { StyledContainer } from './SidebarEditUsernameModalButtonGroup.styles';
+import { StyledContainer } from './SidebarEditUsernameModalButtons.styles';
 import Button from '../../../../components/Button/Button';
 
 type Props = {
   onClickCancelButton: () => void;
 };
 
-function SidebarEditUsernameModalButtonGroup({ onClickCancelButton }: Props) {
+function SidebarEditUsernameModalButtons({ onClickCancelButton }: Props) {
   const theme = useTheme();
 
   return (
@@ -37,4 +37,4 @@ function SidebarEditUsernameModalButtonGroup({ onClickCancelButton }: Props) {
   );
 }
 
-export default SidebarEditUsernameModalButtonGroup;
+export default SidebarEditUsernameModalButtons;

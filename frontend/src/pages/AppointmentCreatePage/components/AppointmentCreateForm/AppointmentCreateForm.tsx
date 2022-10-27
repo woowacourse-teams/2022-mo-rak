@@ -2,7 +2,7 @@ import { FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import Box from '../../../../components/Box/Box';
-import AppointmentCreateFormButtonGroup from '../AppointmentCreateFormButtonGroup/AppointmentCreateFormButtonGroup';
+import AppointmentCreateFormButtons from '../AppointmentCreateFormButtons/AppointmentCreateFormButtons';
 import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
 import AppointmentCreateFormDescriptionInput from '../AppointmentCreateFormDescriptionInput/AppointmentCreateFormDescriptionInput';
 import AppointmentCreateFormDurationInput from '../AppointmentCreateFormDurationInput/AppointmentCreateFormDurationInput';
@@ -152,7 +152,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
         </FlexContainer>
       </Box>
       {/* NOTE: onCancel로 받아주는 게 맞을까? */}
-      <AppointmentCreateFormButtonGroup onCancel={handleNavigateAppointmentMain} />
+      <AppointmentCreateFormButtons onCancel={handleNavigateAppointmentMain} />
     </StyledForm>
   );
 }

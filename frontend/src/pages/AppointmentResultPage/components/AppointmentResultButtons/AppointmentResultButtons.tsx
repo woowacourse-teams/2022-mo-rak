@@ -15,7 +15,7 @@ import { closeAppointment, deleteAppointment } from '../../../../api/appointment
 import Button from '../../../../components/Button/Button';
 import { getFormattedDateTime } from '../../../../utils/date';
 import questionImg from '../../../../assets/question.svg';
-import { StyledHelpIconContainer, StyledHelpIcon } from './AppointmentResultButtonGroup.styles';
+import { StyledHelpIconContainer, StyledHelpIcon } from './AppointmentResultButtons.styles';
 
 type Props = {
   groupCode: Group['code'];
@@ -27,7 +27,7 @@ type Props = {
   setIsClosed: (isClosed: Appointment['isClosed']) => void;
 };
 
-function AppointmentResultButtonGroup({
+function AppointmentResultButtons({
   groupCode,
   appointmentCode,
   isClosed,
@@ -189,4 +189,4 @@ function AppointmentResultButtonGroup({
   );
 }
 
-export default AppointmentResultButtonGroup;
+export default AppointmentResultButtons;

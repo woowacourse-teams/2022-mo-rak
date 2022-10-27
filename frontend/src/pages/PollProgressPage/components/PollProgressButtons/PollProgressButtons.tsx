@@ -13,7 +13,7 @@ type Props = {
   groupCode: Group['code'];
 };
 
-function PollProgressButtonGroup({ pollCode, isHost, groupCode }: Props) {
+function PollProgressButtons({ pollCode, isHost, groupCode }: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -64,4 +64,4 @@ function PollProgressButtonGroup({ pollCode, isHost, groupCode }: Props) {
   );
 }
 
-export default PollProgressButtonGroup;
+export default PollProgressButtons;
