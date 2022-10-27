@@ -35,9 +35,9 @@ function PollResultParticipantModal({ isVisible, close, participants, subject }:
           </StyledTitle>
         </StyledTop>
         <StyledBottom>
-          {participants.map(({ id, name, profileUrl, description }) => {
+          {participants.map(({ name, profileUrl, description }, idx) => {
             return (
-              <StyledParticipantContainer key={`${id}-${description}`}>
+              <StyledParticipantContainer key={idx}>
                 <Avatar width="15%" name={name} profileUrl={profileUrl} />
                 <StyledParticipantDescription>{description}</StyledParticipantDescription>
               </StyledParticipantContainer>
