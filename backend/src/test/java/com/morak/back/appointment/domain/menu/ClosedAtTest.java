@@ -4,6 +4,7 @@ import static com.morak.back.core.exception.CustomErrorCode.PAST_CLOSED_TIME_ERR
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.core.domain.menu.ClosedAt;
 import com.morak.back.core.exception.DomainLogicException;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

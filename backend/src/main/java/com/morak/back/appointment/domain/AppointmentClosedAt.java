@@ -1,6 +1,6 @@
 package com.morak.back.appointment.domain;
 
-import com.morak.back.appointment.domain.menu.ClosedAt;
+import com.morak.back.core.domain.menu.ClosedAt;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalDate;
