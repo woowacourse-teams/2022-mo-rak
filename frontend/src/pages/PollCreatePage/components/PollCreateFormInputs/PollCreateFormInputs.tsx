@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, MouseEvent, ChangeEvent, memo } from 'react';
 
 import { useTheme } from '@emotion/react';
 
-import { StyledDeleteIcon } from './PollCreateFormInputGroup.styles';
+import { StyledDeleteIcon } from './PollCreateFormInputs.styles';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import Input from '../../../../components/Input/Input';
 import TextField from '../../../../components/TextField/TextField';
@@ -17,7 +17,7 @@ type Props = {
   setPollItems: Dispatch<SetStateAction<Array<PollItem['subject']>>>;
 };
 
-function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
+function PollCreateFormInputs({ pollItems, setPollItems }: Props) {
   const theme = useTheme();
 
   const handleAddPollItem = (e: MouseEvent<HTMLButtonElement>) => {
@@ -94,4 +94,4 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
   );
 }
 
-export default memo(PollCreateFormInputGroup, (prev, next) => prev.pollItems === next.pollItems);
+export default memo(PollCreateFormInputs, (prev, next) => prev.pollItems === next.pollItems);

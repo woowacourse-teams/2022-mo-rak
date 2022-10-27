@@ -7,7 +7,7 @@ import {
   StyledCheckIcon,
   StyledUserCount,
   StyledSubject
-} from './PollResultItemGroup.styles';
+} from './PollResultItems.styles';
 import {
   Poll,
   PollItem,
@@ -43,7 +43,7 @@ const getWinningPollItemIds = (pollResult: getPollResultResponse) => {
 const getSelectedPollItemIds = (pollItems: getPollItemsResponse) =>
   pollItems.filter((pollItem) => pollItem.isSelected).map((pollItem) => pollItem.id);
 
-function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
+function PollResultItems({ status, pollResult, pollItems }: Props) {
   const theme = useTheme();
   const [activeMembers, setActiveMembers] = useState<Members>([]);
   const [activeSubject, setActiveSubject] = useState<PollItem['subject']>('');
@@ -122,4 +122,4 @@ function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
   );
 }
 
-export default PollResultItemGroup;
+export default PollResultItems;

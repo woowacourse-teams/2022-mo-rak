@@ -1,7 +1,7 @@
 import { ChangeEventHandler } from 'react';
 
 import { useTheme } from '@emotion/react';
-import { StyledDescription } from './PollProgressItemGroup.styles';
+import { StyledDescription } from './PollProgressItems.styles';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 
 import { Poll, SelectedPollItem, getPollItemsResponse } from '../../../../types/poll';
@@ -24,7 +24,7 @@ type Props = {
 const getSelectedPollItem = (pollId: Poll['id'], selectedPollItems: Array<SelectedPollItem>) =>
   selectedPollItems.find((selectedPollItem) => selectedPollItem.id === pollId);
 
-function PollProgressItemGroup({
+function PollProgressItems({
   pollItems,
   selectedPollItems,
   onChangeCheckbox,
@@ -96,4 +96,4 @@ function PollProgressItemGroup({
   );
 }
 
-export default PollProgressItemGroup;
+export default PollProgressItems;

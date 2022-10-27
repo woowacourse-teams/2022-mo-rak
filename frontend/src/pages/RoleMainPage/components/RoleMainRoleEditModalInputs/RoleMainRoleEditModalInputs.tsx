@@ -3,7 +3,7 @@ import { useTheme } from '@emotion/react';
 import Button from '../../../../components/Button/Button';
 import Input from '../../../../components/Input/Input';
 import TextField from '../../../../components/TextField/TextField';
-import { StyledBinIcon } from './RoleMainRoleEditModalInputGroup.styles';
+import { StyledBinIcon } from './RoleMainRoleEditModalInputs.styles';
 import binImg from '../../../../assets/bin.svg';
 import { EditRolesRequest } from '../../../../types/role';
 
@@ -13,7 +13,7 @@ type Props = {
   onClickDeleteButton: (targetIdx: number) => () => void;
   onClickAddButton: () => void;
 };
-function RoleMainRoleEditModalInputGroup({
+function RoleMainRoleEditModalInputs({
   roles,
   onChangeRoleInput,
   onClickDeleteButton,
@@ -55,4 +55,4 @@ function RoleMainRoleEditModalInputGroup({
   );
 }
 
-export default RoleMainRoleEditModalInputGroup;
+export default RoleMainRoleEditModalInputs;

@@ -7,7 +7,7 @@ import Box from '../../../../components/Box/Box';
 import Divider from '../../../../components/Divider/Divider';
 import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
 
-import PollCreateFormInputGroup from '../PollCreateFormInputGroup/PollCreateFormInputGroup';
+import PollCreateFormInputs from '../PollCreateFormInputs/PollCreateFormInputs';
 import PollCreateDetail from '../PollCreateDetail/PollCreateDetail';
 import PollCreateFormSubmitButton from '../PollCreateFormSubmitButton/PollCreateFormSubmitButton';
 import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateFormTitleInput';
@@ -114,7 +114,7 @@ function PollCreateForm() {
         </MarginContainer>
         <MarginContainer margin="0 0 4rem 0">
           {/* NOTE: setPollItems를 넘겨주는 게 맞을까? 다른 것들은 handle함수를 만들어서 내려주는 데 일관성이 여기서 깨지는 것 같다  */}
-          <PollCreateFormInputGroup pollItems={pollItems} setPollItems={setPollItems} />
+          <PollCreateFormInputs pollItems={pollItems} setPollItems={setPollItems} />
         </MarginContainer>
         <PollCreateFormSubmitButton />
       </form>

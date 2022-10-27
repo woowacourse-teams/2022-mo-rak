@@ -13,7 +13,7 @@ import Divider from '../../../../components/Divider/Divider';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
 
-import PollResultItemGroup from '../PollResultItemGroup/PollResultItemGroup';
+import PollResultItems from '../PollResultItems/PollResultItems';
 import PollResultDetail from '../PollResultDetail/PollResultDetail';
 import PollResultButtons from '../PollResultButtons/PollResultButtons';
 import { getPoll, getPollResult, getPollItems } from '../../../../api/poll';
@@ -131,11 +131,7 @@ function PollResultContainer() {
           </MarginContainer>
           <MarginContainer margin="0 0 15.2rem 0">
             <FlexContainer flexDirection="column" gap="1.2rem">
-              <PollResultItemGroup
-                status={poll.status}
-                pollResult={pollResult}
-                pollItems={pollItems}
-              />
+              <PollResultItems status={poll.status} pollResult={pollResult} pollItems={pollItems} />
             </FlexContainer>
           </MarginContainer>
           <PollResultButtons
