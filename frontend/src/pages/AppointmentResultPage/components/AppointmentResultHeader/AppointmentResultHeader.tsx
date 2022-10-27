@@ -15,10 +15,10 @@ import {
 } from './AppointmentResultHeader.styles';
 import Tooltip from '../../../../components/Tooltip/Tooltip';
 import Question from '../../../../assets/question.svg';
+import { useTheme } from '@emotion/react';
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);
-
   return date.toLocaleString('ko-KR', {
     year: 'numeric',
     month: 'long',
@@ -38,6 +38,8 @@ type Props = {
 };
 
 function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, closedAt }: Props) {
+  const theme = useTheme();
+
   const handleCopyInvitationLink = () => {
     const baseLink = `${process.env.CLIENT_URL}/groups/${groupCode}/appointment/${appointmentCode}`;
 
@@ -74,6 +76,8 @@ function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, 
             content="공동 1등이 나오면, 마감 이후 재투표를 빠르게 진행할 수 있어요!"
             width="28"
             placement="bottom"
+            fontSize="1.6rem"
+            backgroundColor={theme.colors.GRAY_200}
           >
             <FlexContainer gap="2rem" alignItems="center">
               <StyledDescription>공동 1등이 나오면 어떻게하나요?</StyledDescription>
