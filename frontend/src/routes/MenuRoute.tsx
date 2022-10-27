@@ -12,7 +12,7 @@ function MenuRoute({ menu }: Props) {
 
   useEffect(() => {
     menuDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
-  }, []);
+  }, [menu]);
 
   return <Outlet />;
 }
