@@ -5,7 +5,11 @@ import TextField from '../../../../components/TextField/TextField';
 import Select from '../../../../components/Select/Select';
 import { createRange } from '../../../../utils/createRange';
 import { Time } from '../../../../types/appointment';
-import { StyledContent, StyledLabel } from './AppointmentCreateFormDurationInput.styles';
+import {
+  StyledTitle,
+  StyledContent,
+  StyledLabel
+} from './AppointmentCreateFormDurationInput.styles';
 
 type Props = {
   duration: Omit<Time, 'period'>;
@@ -16,56 +20,59 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
   const { hour, minute } = duration;
 
   return (
-    <FlexContainer alignItems="end" gap="1.2rem">
-      <TextField
-        variant="outlined"
-        colorScheme={theme.colors.PURPLE_100}
-        borderRadius="1.2rem"
-        padding="0.4rem 0.8rem"
-        width="6rem"
-      >
-        <Select
-          id="hour"
-          onChange={onChange}
-          value={hour}
-          name="hour"
-          aria-label="appointment-duration-hour"
-          required
+    <>
+      <StyledTitle>진행 시간 설정</StyledTitle>
+      <FlexContainer alignItems="end" gap="1.2rem">
+        <TextField
+          variant="outlined"
+          colorScheme={theme.colors.PURPLE_100}
+          borderRadius="1.2rem"
+          padding="0.4rem 0.8rem"
+          width="6rem"
         >
-          <option value="">--</option>
-          {createRange({
-            size: 25
-          }).map((hour: number) => (
-            <option key={hour} value={hour}>
-              {hour}
-            </option>
-          ))}
-        </Select>
-      </TextField>
-      <StyledLabel htmlFor="hour">시간</StyledLabel>
-      <TextField
-        variant="outlined"
-        colorScheme={theme.colors.PURPLE_100}
-        borderRadius="1.2rem"
-        padding="0.4rem 0.8rem"
-        width="9.2rem"
-      >
-        <Select
-          id="minute"
-          onChange={onChange}
-          value={minute}
-          name="minute"
-          fontSize="2.4rem"
-          aria-label="appointment-duration-minute"
-          required
+          <Select
+            id="hour"
+            onChange={onChange}
+            value={hour}
+            name="hour"
+            aria-label="appointment-duration-hour"
+            required
+          >
+            <option value="">--</option>
+            {createRange({
+              size: 25
+            }).map((hour: number) => (
+              <option key={hour} value={hour}>
+                {hour}
+              </option>
+            ))}
+          </Select>
+        </TextField>
+        <StyledLabel htmlFor="hour">시간</StyledLabel>
+        <TextField
+          variant="outlined"
+          colorScheme={theme.colors.PURPLE_100}
+          borderRadius="1.2rem"
+          padding="0.4rem 0.8rem"
+          width="9.2rem"
         >
-          <option value="00">00</option>
-          <option value="30">30</option>
-        </Select>
-      </TextField>
-      <StyledLabel htmlFor="minute">분</StyledLabel>
-      <StyledContent>동안 진행</StyledContent>
-    </FlexContainer>
+          <Select
+            id="minute"
+            onChange={onChange}
+            value={minute}
+            name="minute"
+            fontSize="2.4rem"
+            aria-label="appointment-duration-minute"
+            required
+          >
+            <option value="00">00</option>
+            <option value="30">30</option>
+          </Select>
+        </TextField>
+        <StyledLabel htmlFor="minute">분</StyledLabel>
+        <StyledContent>동안 진행</StyledContent>
+      </FlexContainer>
+    </>
   );
 }
 
