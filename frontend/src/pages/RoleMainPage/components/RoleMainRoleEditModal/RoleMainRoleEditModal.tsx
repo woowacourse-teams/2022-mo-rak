@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import Close from '../../../../assets/close-button.svg';
-import Edit from '../../../../assets/edit-with-smile.svg';
+import closeButtonImg from '../../../../assets/close-button.svg';
+import editWithSmileImg from '../../../../assets/edit-with-smile.svg';
 import {
   StyledForm,
   StyledLogo,
@@ -88,10 +88,10 @@ function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
     <Modal isVisible={true} close={close}>
       <StyledForm onSubmit={handleAllocateRoles}>
         <StyledTop>
-          <StyledLogo src={Edit} alt="edit-logo" />
+          <StyledLogo src={editWithSmileImg} alt="edit-logo" />
           <StyledTitle>역할 목록 수정하기</StyledTitle>
           <StyledDescription>역할의 개수가 멤버수보다 많을 수는 없어요!</StyledDescription>
-          <StyledCloseButton onClick={close} src={Close} alt="close-button" />
+          <StyledCloseButton onClick={close} src={closeButtonImg} alt="close-button" />
           <StyledTriangle />
         </StyledTop>
         <StyledBottom>

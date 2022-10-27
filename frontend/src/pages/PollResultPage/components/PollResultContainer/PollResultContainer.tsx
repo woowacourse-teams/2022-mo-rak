@@ -31,7 +31,7 @@ import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
 import { AxiosError } from 'axios';
 import Spinner from '../../../../components/Spinner/Spinner';
 import Tooltip from '../../../../components/Tooltip/Tooltip';
-import Question from '../../../../assets/question.svg';
+import questionImg from '../../../../assets/question.svg';
 import { useTheme } from '@emotion/react';
 
 function PollResultContainer() {
@@ -107,7 +107,7 @@ function PollResultContainer() {
                 >
                   <FlexContainer gap="1.2rem" alignItems="center">
                     <StyledHelpIconContainer>
-                      <StyledHelpIcon src={Question} alt="help-icon" />
+                      <StyledHelpIcon src={questionImg} alt="help-icon" />
                     </StyledHelpIconContainer>
                     <StyledDescription>투표 한 사람 확인</StyledDescription>
                   </FlexContainer>

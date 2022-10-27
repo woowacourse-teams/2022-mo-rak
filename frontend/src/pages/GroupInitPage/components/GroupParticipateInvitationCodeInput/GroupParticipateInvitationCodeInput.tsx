@@ -2,7 +2,7 @@ import { useTheme } from '@emotion/react';
 import { ChangeEventHandler } from 'react';
 import TextField from '../../../../components/TextField/TextField';
 import Input from '../../../../components/Input/Input';
-import Participate from '../../../../assets/participate.svg';
+import participateImg from '../../../../assets/participate.svg';
 import { StyledParticipateIcon } from './GroupParticipateInvitationCodeInput.styles';
 
 type Props = {
@@ -22,7 +22,7 @@ function GroupParticipateInvitationCodeInput({ invitationCode, handleInvitationC
       borderRadius="10px 0 0 10px"
       padding="2.8rem 8rem"
     >
-      <StyledParticipateIcon src={Participate} alt="participate-group-icon" />
+      <StyledParticipateIcon src={participateImg} alt="participate-group-icon" />
       <Input
         placeholder="코드를 입력해주세요!"
         value={invitationCode}

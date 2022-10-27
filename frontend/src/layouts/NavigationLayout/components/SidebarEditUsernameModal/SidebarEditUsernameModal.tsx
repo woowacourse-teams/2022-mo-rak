@@ -8,8 +8,8 @@ import {
   StyledTitle,
   StyledForm
 } from './SidebarEditUsernameModal.styles';
-import Close from '../../../../assets/close-button.svg';
-import EditWithSmile from '../../../../assets/edit-with-smile.svg';
+import closeButtonImg from '../../../../assets/close-button.svg';
+import editWithSmileImg from '../../../../assets/edit-with-smile.svg';
 import { FormEvent } from 'react';
 import useInput from '../../../../hooks/useInput';
 import { editUsername } from '../../../../api/auth';
@@ -53,9 +53,9 @@ function SidebarEditUsernameModal({ isVisible, close }: Props) {
     <Modal isVisible={isVisible} close={close}>
       <StyledForm onSubmit={handleEditUserName}>
         <StyledTop>
-          <StyledIcon src={EditWithSmile} alt="edit-logo" />
+          <StyledIcon src={editWithSmileImg} alt="edit-logo" />
           <StyledTitle>닉네임 수정하기</StyledTitle>
-          <StyledCloseIcon onClick={close} src={Close} alt="close-button" />
+          <StyledCloseIcon onClick={close} src={closeButtonImg} alt="close-button" />
           <StyledTriangle />
         </StyledTop>
         <StyledBottom>

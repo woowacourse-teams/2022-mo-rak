@@ -1,9 +1,9 @@
 import { StyledContainer, StyledMenuIcon } from './GlobalFootbarFootbar.styles';
-import Home from '../../../../assets/home.svg';
-import MenuImg from '../../../../assets/menu.svg';
-import Poll from '../../../../assets/poll.svg';
-import Appointment from '../../../../assets/calendar-clock.svg';
-import Role from '../../../../assets/role.svg';
+import homeImg from '../../../../assets/home.svg';
+import menuImg from '../../../../assets/menu.svg';
+import pollImg from '../../../../assets/poll.svg';
+import calendarClockImg from '../../../../assets/calendar-clock.svg';
+import roleImg from '../../../../assets/role.svg';
 import { useNavigate } from 'react-router-dom';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
 import useMenuContext from '../../../../hooks/useMenuContext';
@@ -40,23 +40,23 @@ function GlobalFootbarFootbar({ groupCode, groups }: Props) {
     <>
       <StyledContainer>
         <button onClick={handleSetActiveMenu('main')}>
-          <StyledMenuIcon src={Home} isActive={activeMenu === 'main'} alt="main-page" />
+          <StyledMenuIcon src={homeImg} isActive={activeMenu === 'main'} alt="main-page" />
         </button>
         <button onClick={handleSetActiveDrawer}>
-          <StyledMenuIcon src={MenuImg} alt="메뉴 목록" />
+          <StyledMenuIcon src={menuImg} alt="메뉴 목록" />
         </button>
         <button onClick={handleSetActiveMenu('poll')}>
-          <StyledMenuIcon src={Poll} isActive={activeMenu === 'poll'} alt="투표하기 메뉴" />
+          <StyledMenuIcon src={pollImg} isActive={activeMenu === 'poll'} alt="투표하기 메뉴" />
         </button>
         <button onClick={handleSetActiveMenu('appointment')}>
           <StyledMenuIcon
-            src={Appointment}
+            src={calendarClockImg}
             isActive={activeMenu === 'appointment'}
             alt="약속잡기 메뉴"
           />
         </button>
         <button onClick={handleSetActiveMenu('role')}>
-          <StyledMenuIcon src={Role} isActive={activeMenu === 'role'} alt="역할정하기 메뉴" />
+          <StyledMenuIcon src={roleImg} isActive={activeMenu === 'role'} alt="역할정하기 메뉴" />
         </button>
       </StyledContainer>
 

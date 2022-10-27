@@ -2,7 +2,7 @@ import { ChangeEventHandler, memo } from 'react';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { Time } from '../../../../types/appointment';
 import AppointmentCreateFormTimeInput from '../AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput';
-import Question from '../../../../assets/question.svg';
+import questionImg from '../../../../assets/question.svg';
 import Tooltip from '../../../../components/Tooltip/Tooltip';
 import {
   StyledTitle,
@@ -34,7 +34,7 @@ function AppointmentCreateFormTimeLimitInput({
           placement="right"
         >
           <StyledHelpIconContainer>
-            <StyledHelpIcon src={Question} alt="help-icon" />
+            <StyledHelpIcon src={questionImg} alt="help-icon" />
           </StyledHelpIconContainer>
         </Tooltip>
       </FlexContainer>

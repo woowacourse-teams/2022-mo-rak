@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import ServiceLogo from '../../../../assets/service-logo.svg';
+import serviceLogoImg from '../../../../assets/service-logo.svg';
 
 import { getGroups } from '../../../../api/group';
 import { Group } from '../../../../types/group';
@@ -58,8 +58,8 @@ function Sidebar() {
           <>
             <StyledLogoContainer>
               <StyledLogo
-                src={ServiceLogo}
-                alt={ServiceLogo}
+                src={serviceLogoImg}
+                alt={serviceLogoImg}
                 onClick={handleNavigate(`/groups/${groupCode}`)}
               />
             </StyledLogoContainer>

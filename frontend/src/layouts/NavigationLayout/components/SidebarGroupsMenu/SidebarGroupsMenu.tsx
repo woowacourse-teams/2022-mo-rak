@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import Setting from '../../../../assets/setting.svg';
-import Menu from '../../../../assets/menu.svg';
-import Plus from '../../../../assets/plus.svg';
-import Leave from '../../../../assets/leave.svg';
+import settingImg from '../../../../assets/setting.svg';
+import menuImg from '../../../../assets/menu.svg';
+import plusImg from '../../../../assets/plus.svg';
+import leaveImg from '../../../../assets/leave.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { leaveGroup } from '../../../../api/group';
 import { Group } from '../../../../types/group';
@@ -77,8 +77,8 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
           <StyledGroupName>{currentGroup?.name}</StyledGroupName>
         </FlexContainer>
         <StyledGroupIconGroup>
-          <StyledSettingIcon src={Setting} />
-          <StyledGroupsModalIcon src={Menu} onClick={handleToggleGroupsModal} />
+          <StyledSettingIcon src={settingImg} />
+          <StyledGroupsModalIcon src={menuImg} onClick={handleToggleGroupsModal} />
         </StyledGroupIconGroup>
       </FlexContainer>
 
@@ -105,15 +105,15 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
         </StyledGroupsModalBox>
 
         <StyledParticipateNewGroupButton onClick={onClickMenu('participate')}>
-          <StyledPlusImage src={Plus} alt="participate-new-group-button" />
+          <StyledPlusImage src={plusImg} alt="participate-new-group-button" />
           <StyledButtonText>새로운 그룹 참가</StyledButtonText>
         </StyledParticipateNewGroupButton>
         <StyledCreateNewGroupButton onClick={onClickMenu('create')}>
-          <StyledPlusImage src={Plus} alt="create-new-group-button" />
+          <StyledPlusImage src={plusImg} alt="create-new-group-button" />
           <StyledButtonText>새로운 그룹 생성</StyledButtonText>
         </StyledCreateNewGroupButton>
         <StyledLeaveGroupButton onClick={handleLeaveGroup}>
-          <StyledLeaveImage src={Leave} alt="group-leave-button" />
+          <StyledLeaveImage src={leaveImg} alt="group-leave-button" />
           <StyledButtonText>그룹 나가기</StyledButtonText>
         </StyledLeaveGroupButton>
       </StyledGroupsModalContainer>

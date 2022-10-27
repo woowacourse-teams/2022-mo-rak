@@ -14,11 +14,11 @@ import {
   StyledIntroductionTitleContainer
 } from './LandingFeatureIntroductionSection.styles';
 
-import Glitter from '../../../../assets/glitter.svg';
-import Highlight from '../../../../assets/highlight.svg';
-import Poll from '../../../../assets/poll-small.svg';
-import Appointment from '../../../../assets/time.svg';
-import Role from '../../../../assets/role.svg';
+import glitterImg from '../../../../assets/glitter.svg';
+import highlightImg from '../../../../assets/highlight.svg';
+import pollSmallImg from '../../../../assets/poll-small.svg';
+import timeImg from '../../../../assets/time.svg';
+import roleImg from '../../../../assets/role.svg';
 import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
 type Props = HTMLAttributes<HTMLDivElement>;
@@ -36,23 +36,23 @@ function LandingFeatureIntroductionSection({ id }: Props) {
       <StyledFeaturesContainer>
         <div>
           <StyledFeatureCircle>
-            <StyledPollImage src={Poll} alt="poll" />
-            <StyledHighlightImage src={Highlight} alt="highlight" />
+            <StyledPollImage src={pollSmallImg} alt="poll" />
+            <StyledHighlightImage src={highlightImg} alt="highlight" />
           </StyledFeatureCircle>
           <StyledFeatureName>투표하기</StyledFeatureName>
         </div>
 
         <div>
           <StyledFeatureCircle>
-            <StyledAppointmentImage src={Appointment} alt="appointment" />
+            <StyledAppointmentImage src={timeImg} alt="appointment" />
           </StyledFeatureCircle>
           <StyledFeatureName>약속잡기</StyledFeatureName>
         </div>
 
         <div>
           <StyledFeatureCircle>
-            <StyledRoleImage src={Role} alt="role" />
-            <StyledGlitterImage src={Glitter} alt="glitter" />
+            <StyledRoleImage src={roleImg} alt="role" />
+            <StyledGlitterImage src={glitterImg} alt="glitter" />
           </StyledFeatureCircle>
           <StyledFeatureName>역할 정하기</StyledFeatureName>
         </div>

@@ -4,7 +4,7 @@ import Button from '../../../../components/Button/Button';
 import Input from '../../../../components/Input/Input';
 import TextField from '../../../../components/TextField/TextField';
 import { StyledBinIcon } from './RoleMainRoleEditModalInputGroup.styles';
-import Bin from '../../../../assets/bin.svg';
+import binImg from '../../../../assets/bin.svg';
 import { EditRolesRequest } from '../../../../types/role';
 
 type Props = {
@@ -39,7 +39,7 @@ function RoleMainRoleEditModalInputGroup({
             required
             autoFocus
           />
-          <StyledBinIcon src={Bin} alt="bin-icon" onClick={onClickDeleteButton(idx)} />
+          <StyledBinIcon src={binImg} alt="bin-icon" onClick={onClickDeleteButton(idx)} />
         </TextField>
       ))}
       <Button

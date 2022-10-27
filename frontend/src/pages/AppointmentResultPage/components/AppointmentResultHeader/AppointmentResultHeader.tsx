@@ -1,5 +1,5 @@
 import { Appointment } from '../../../../types/appointment';
-import LinkIcon from '../../../../assets/link.svg';
+import linkImg from '../../../../assets/link.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { writeClipboard } from '../../../../utils/clipboard';
 import AppointmentResultStatus from '../AppointmentResultStatus/AppointmentResultStatus';
@@ -14,7 +14,7 @@ import {
   StyledDescription
 } from './AppointmentResultHeader.styles';
 import Tooltip from '../../../../components/Tooltip/Tooltip';
-import Question from '../../../../assets/question.svg';
+import questionImg from '../../../../assets/question.svg';
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);
@@ -59,7 +59,7 @@ function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, 
       {/* TODO: 리팩토링 */}
       <FlexContainer gap="1.2rem">
         {/* TODO: Input 컴포넌트 width 100%에 대해 고민해보고 추후 해결되면 사용해주자 */}
-        <StyledLinkIcon src={LinkIcon} alt="link" onClick={handleCopyInvitationLink} />
+        <StyledLinkIcon src={linkImg} alt="link" onClick={handleCopyInvitationLink} />
         <StyledTitle>{title}</StyledTitle>
       </FlexContainer>
       <FlexContainer justifyContent="space-between">
@@ -78,7 +78,7 @@ function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, 
             <FlexContainer gap="2rem" alignItems="center">
               <StyledDescription>공동 1등이 나오면 어떻게하나요?</StyledDescription>
               <StyledHelpIconContainer>
-                <StyledHelpIcon src={Question} alt="help-icon" />
+                <StyledHelpIcon src={questionImg} alt="help-icon" />
               </StyledHelpIconContainer>
             </FlexContainer>
           </Tooltip>

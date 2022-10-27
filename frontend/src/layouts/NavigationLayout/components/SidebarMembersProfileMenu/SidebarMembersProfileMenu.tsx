@@ -9,7 +9,7 @@ import {
   StyledGroupMemberContainer
 } from './SidebarMembersProfileMenu.styles';
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
-import Edit from '../../../../assets/edit.svg';
+import editImg from '../../../../assets/edit.svg';
 import useModal from '../../../../hooks/useModal';
 import SidebarEditUsernameModal from '../SidebarEditUsernameModal/SidebarEditUsernameModal';
 import useAuthContext from '../../../../hooks/useAuthContext';
@@ -31,7 +31,7 @@ function SidebarMembersProfileMenu() {
             <StyledUsernameContainer>
               <StyledUsername>{name}</StyledUsername>
               {id === authState.id && (
-                <StyledEditIcon src={Edit} onClick={handleOpenEditUsernameModal} />
+                <StyledEditIcon src={editImg} onClick={handleOpenEditUsernameModal} />
               )}
             </StyledUsernameContainer>
           </StyledGroupMemberContainer>

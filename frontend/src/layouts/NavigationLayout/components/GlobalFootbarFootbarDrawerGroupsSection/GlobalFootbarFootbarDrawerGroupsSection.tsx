@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import Plus from '../../../../assets/plus.svg';
-import Leave from '../../../../assets/leave.svg';
+import plusImg from '../../../../assets/plus.svg';
+import leaveImg from '../../../../assets/leave.svg';
 import { leaveGroup } from '../../../../api/group';
 import { Group } from '../../../../types/group';
 import {
@@ -78,15 +78,15 @@ function GlobalFootbarFootbarDrawerGroupsSection({
       </StyledGroupsModalBox>
 
       <StyledParticipateNewGroupButton onClick={onClickMenu('participate')}>
-        <StyledPlusImage src={Plus} alt="participate-new-group-button" />
+        <StyledPlusImage src={plusImg} alt="participate-new-group-button" />
         <StyledButtonText>새로운 그룹 참가</StyledButtonText>
       </StyledParticipateNewGroupButton>
       <StyledCreateNewGroupButton onClick={onClickMenu('create')}>
-        <StyledPlusImage src={Plus} alt="create-new-group-button" />
+        <StyledPlusImage src={plusImg} alt="create-new-group-button" />
         <StyledButtonText>새로운 그룹 생성</StyledButtonText>
       </StyledCreateNewGroupButton>
       <StyledLeaveGroupButton onClick={handleLeaveGroup}>
-        <StyledLeaveImage src={Leave} alt="group-leave-button" />
+        <StyledLeaveImage src={leaveImg} alt="group-leave-button" />
         <StyledButtonText>그룹 나가기</StyledButtonText>
       </StyledLeaveGroupButton>
     </StyledContainer>

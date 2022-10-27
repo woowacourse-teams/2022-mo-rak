@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { StyledContainer, StyledCloseButton } from './GlobalFootbarFootbarDrawer.styles';
-import CloseButton from '../../../../assets/close-button.svg';
+import closeButtonImg from '../../../../assets/close-button.svg';
 import Divider from '../../../../components/Divider/Divider';
 import GlobalFootbarFootbarDrawerFeaturesSection from '../GlobalFootbarFootbarDrawerFeaturesSection/GlobalFootbarFootbarDrawerFeaturesSection';
 import GlobalFootbarFootbarDrawerMembersProfileSection from '../GlobarFootbarFootbarDrawerMembersProfileSection/GlobarFootbarFootbarDrawerMembersProfileSection';
@@ -36,7 +36,7 @@ function GlobalFootbarFootbarDrawer({ groupCode, groups }: Props) {
     <>
       <StyledContainer isVisible={isDrawerVisible}>
         <StyledCloseButton onClick={handleCloseDrawer}>
-          <img src={CloseButton} alt="메뉴닫기" />
+          <img src={closeButtonImg} alt="메뉴닫기" />
         </StyledCloseButton>
 
         <GlobalFootbarFootbarDrawerGroupsSection

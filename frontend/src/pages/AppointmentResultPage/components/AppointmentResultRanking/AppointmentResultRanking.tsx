@@ -1,6 +1,6 @@
 import { MouseEventHandler } from 'react';
 
-import Crown from '../../../../assets/crown.svg';
+import crownImg from '../../../../assets/crown.svg';
 import { AppointmentRecommendation } from '../../../../types/appointment';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { getFormattedDateTime } from '../../../../utils/date';
@@ -49,7 +49,7 @@ function AppointmentResultRanking({
             <FlexContainer justifyContent="space-between" alignItems="center">
               {/* TODO: 상수화 */}
               {rank === 1 ? (
-                <StyledCrownIcon src={Crown} alt="crown" />
+                <StyledCrownIcon src={crownImg} alt="crown" />
               ) : (
                 // TODO: Text라는 suffix에 대해서 일관성 살펴보기
                 <StyledResultText>{rank}</StyledResultText>

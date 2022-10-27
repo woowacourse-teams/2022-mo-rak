@@ -14,7 +14,7 @@ import {
 import { closeAppointment, deleteAppointment } from '../../../../api/appointment';
 import Button from '../../../../components/Button/Button';
 import { getFormattedDateTime } from '../../../../utils/date';
-import Question from '../../../../assets/question.svg';
+import questionImg from '../../../../assets/question.svg';
 import { StyledHelpIconContainer, StyledHelpIcon } from './AppointmentResultButtonGroup.styles';
 
 type Props = {
@@ -165,7 +165,7 @@ function AppointmentResultButtonGroup({
                 backgroundColor={theme.colors.GRAY_300}
               >
                 <StyledHelpIconContainer>
-                  <StyledHelpIcon src={Question} alt="help-icon" />
+                  <StyledHelpIcon src={questionImg} alt="help-icon" />
                 </StyledHelpIconContainer>
               </Tooltip>
             </FlexContainer>

@@ -1,4 +1,4 @@
-import ServiceLogo from '../../../../assets/service-logo.svg';
+import serviceLogoImg from '../../../../assets/service-logo.svg';
 
 import GroupCreateForm from '../GroupCreateForm/GroupCreateForm';
 import GroupParticipateForm from '../GroupParticipateForm/GroupParticipateForm';
@@ -16,7 +16,7 @@ function GroupInitContainer() {
   return (
     <StyledContainer>
       <StyledTopContainer>
-        <StyledLogo src={ServiceLogo} alt="logo" />
+        <StyledLogo src={serviceLogoImg} alt="logo" />
         <StyledBigText>새로운 그룹에 참여해볼까요?</StyledBigText>
         <StyledSmallText>
           아직 그룹이 없네요. <br />

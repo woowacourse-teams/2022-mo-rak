@@ -8,7 +8,7 @@ import Input from '../../../../components/Input/Input';
 import TextField from '../../../../components/TextField/TextField';
 import Button from '../../../../components/Button/Button';
 
-import Bin from '../../../../assets/bin.svg';
+import binImg from '../../../../assets/bin.svg';
 import { PollItem } from '../../../../types/poll';
 
 type Props = {
@@ -77,7 +77,7 @@ function PollCreateFormInputGroup({ pollItems, setPollItems }: Props) {
               aria-label={`poll-input${idx}`}
               required
             />
-            <StyledDeleteIcon src={Bin} alt="bin" onClick={handleDeletePollItem(idx)} />
+            <StyledDeleteIcon src={binImg} alt="bin" onClick={handleDeletePollItem(idx)} />
           </FlexContainer>
         </TextField>
       ))}

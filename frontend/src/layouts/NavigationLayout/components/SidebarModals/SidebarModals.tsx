@@ -7,11 +7,11 @@ import Input from '../../../../components/Input/Input';
 import Modal from '../../../../components/Modal/Modal';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import theme from '../../../../styles/theme';
-import Slack from '../../../../assets/slack.svg';
-import Plus from '../../../../assets/plus.svg';
-import LinkIcon from '../../../../assets/link.svg';
-import Close from '../../../../assets/close-button.svg';
-import ServiceLogo from '../../../../assets/service-logo.svg';
+import slackImg from '../../../../assets/slack.svg';
+import plusImg from '../../../../assets/plus.svg';
+import linkImg from '../../../../assets/link.svg';
+import closeButtonImg from '../../../../assets/close-button.svg';
+import serviceLogoImg from '../../../../assets/service-logo.svg';
 import { Group } from '../../../../types/group';
 import { createGroup, participateGroup } from '../../../../api/group';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
@@ -133,12 +133,12 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
         {/* 슬랙 메뉴 */}
         <StyledModalFormContainer onSubmit={handleLinkSlack}>
           <StyledTop>
-            <StyledSlackLogo src={Slack} alt="slack-logo" />
+            <StyledSlackLogo src={slackImg} alt="slack-logo" />
             <StyledHeaderText>슬랙 채널과 연동해보세요!</StyledHeaderText>
             <StyledGuideText>
               슬랙 채널과 연동하면, 그룹의 새소식을 슬랙으로 받아볼 수 있어요
             </StyledGuideText>
-            <StyledCloseButton onClick={closeModal} src={Close} alt="close-button" />
+            <StyledCloseButton onClick={closeModal} src={closeButtonImg} alt="close-button" />
             <StyledTriangle />
           </StyledTop>
           <StyledBottom>
@@ -158,7 +158,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
                   required
                   autoFocus
                 />
-                <StyledLinkIcon src={LinkIcon} alt="link-icon" />
+                <StyledLinkIcon src={linkImg} alt="link-icon" />
               </TextField>
               <StyledButton>확인</StyledButton>
             </FlexContainer>
@@ -170,10 +170,10 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
       <Modal isVisible={activeModal === 'create'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleCreateGroup}>
           <StyledTop>
-            <StyledSmallLogo src={ServiceLogo} alt="logo" />
+            <StyledSmallLogo src={serviceLogoImg} alt="logo" />
             <StyledHeaderText>그룹 생성</StyledHeaderText>
             <StyledGuideText>새로운 그룹을 빠르고 쉽게 생성해보세요</StyledGuideText>
-            <StyledCloseButton onClick={closeModal} src={Close} alt="close-button" />
+            <StyledCloseButton onClick={closeModal} src={closeButtonImg} alt="close-button" />
             <StyledTriangle />
           </StyledTop>
           <StyledBottom>
@@ -195,7 +195,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
                   required
                   autoFocus
                 />
-                <StyledLinkIcon src={Plus} alt="plus-icon" />
+                <StyledLinkIcon src={plusImg} alt="plus-icon" />
               </TextField>
               <StyledButton>생성하기</StyledButton>
             </FlexContainer>
@@ -207,10 +207,10 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
       <Modal isVisible={activeModal === 'participate'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleParticipateGroup}>
           <StyledTop>
-            <StyledSmallLogo src={ServiceLogo} alt="logo" />
+            <StyledSmallLogo src={serviceLogoImg} alt="logo" />
             <StyledHeaderText>그룹 참가</StyledHeaderText>
             <StyledGuideText>새로운 그룹에도 참가해보세요</StyledGuideText>
-            <StyledCloseButton onClick={closeModal} src={Close} alt="close-button" />
+            <StyledCloseButton onClick={closeModal} src={closeButtonImg} alt="close-button" />
             <StyledTriangle />
           </StyledTop>
           <StyledBottom>
@@ -232,7 +232,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
                   required
                   autoFocus
                 />
-                <StyledLinkIcon src={Plus} alt="plus-icon" />
+                <StyledLinkIcon src={plusImg} alt="plus-icon" />
               </TextField>
               <StyledButton>참가하기</StyledButton>
             </FlexContainer>

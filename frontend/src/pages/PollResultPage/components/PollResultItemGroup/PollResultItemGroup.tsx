@@ -15,11 +15,11 @@ import {
   getPollResultResponse,
   getPollItemsResponse
 } from '../../../../types/poll';
-import Crown from '../../../../assets/crown.svg';
-import Check from '../../../../assets/check.svg';
+import crownImg from '../../../../assets/crown.svg';
+import checkImg from '../../../../assets/check.svg';
+import userPurpleImg from '../../../../assets/user-purple.svg';
+import userWhiteImg from '../../../../assets/user-white.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import UserPurple from '../../../../assets/user-purple.svg';
-import UserWhite from '../../../../assets/user-white.svg';
 import TextField from '../../../../components/TextField/TextField';
 import PollResultParticipantModal from '../PollResultParticipantModal/PollResultParticipantModal';
 import useModal from '../../../../hooks/useModal';
@@ -80,9 +80,13 @@ function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
             aria-label={`poll-result-${subject}`}
           >
             {status === 'OPEN' ? (
-              <StyledCheckIcon checked={selectedPollItemIds.includes(id)} src={Check} alt="check" />
+              <StyledCheckIcon
+                checked={selectedPollItemIds.includes(id)}
+                src={checkImg}
+                alt="check"
+              />
             ) : (
-              <StyledCrownIcon isWinningPollItem={isWinningPollItem} src={Crown} alt="crown" />
+              <StyledCrownIcon isWinningPollItem={isWinningPollItem} src={crownImg} alt="crown" />
             )}
             <StyledSubject
               status={status}
@@ -93,7 +97,7 @@ function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
             </StyledSubject>
             <StyledParticipantCount onClick={handleShowParticipant(members, subject)}>
               <StyledUserIcon
-                src={status === 'CLOSED' && isWinningPollItem ? UserWhite : UserPurple}
+                src={status === 'CLOSED' && isWinningPollItem ? userWhiteImg : userPurpleImg}
                 alt="user"
               />
               <StyledUserCount
