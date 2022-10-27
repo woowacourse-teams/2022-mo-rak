@@ -11,7 +11,7 @@ const StyledContainer = styled.div<{ isVisible: boolean }>(
   top: 0;
   left: 0;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
 `
 );
 

@@ -2,8 +2,11 @@ import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { MenuRoute } from './routes/MenuRoute';
-import SidebarLayout from './layouts/SidebarLayout/SidebarLayout';
+import NavigationLayout from './layouts/NavigationLayout/NavigationLayout';
 import GroupRoute from './routes/GroupRoute';
+import ErrorPage from './pages/ErrorPage/ErrorPage';
+import { AuthProvider } from './context/AuthProvider';
+import FallbackPage from './pages/FallbackPage/FallbackPage';
 
 const PollMainPage = lazy(() => import('./pages/PollMainPage/PollMainPage'));
 const PollCreatePage = lazy(() => import('./pages/PollCreatePage/PollCreatePage'));
@@ -28,15 +31,21 @@ const RoleMainPage = lazy(() => import('./pages/RoleMainPage/RoleMainPage'));
 function App() {
   return (
     // TODO: 로딩 UI 필요
-    <Suspense fallback={<div>로딩중</div>}>
+    <Suspense fallback={<FallbackPage />}>
       <Routes>
         <Route path="/">
           <Route index element={<LandingPage />} />
           <Route path="invite/:invitationCode" element={<InvitationPage />} />
-          <Route element={<PrivateRoute />}>
+          <Route
+            element={
+              <AuthProvider>
+                <PrivateRoute />
+              </AuthProvider>
+            }
+          >
             <Route path="init" element={<GroupInitPage />} />
 
-            <Route element={<SidebarLayout />}>
+            <Route element={<NavigationLayout />}>
               <Route path="groups/:groupCode">
                 <Route element={<GroupRoute />}>
                   <Route element={<MenuRoute menu="main" />}>
@@ -74,7 +83,7 @@ function App() {
             </Route>
           </Route>
 
-          <Route path="*" element={<div>error</div>} />
+          <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
     </Suspense>

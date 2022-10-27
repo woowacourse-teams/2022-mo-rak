@@ -1,8 +1,10 @@
 import { createContext, useReducer, PropsWithChildren, Dispatch } from 'react';
 import { Menu } from '../types/menu';
+
 type MenuState = {
   activeMenu: Menu;
-  isVisibleGroupsModal: boolean;
+  isDrawerVisible: boolean;
+  isGroupsModalVisible: boolean;
 };
 
 type SetActiveMenuAction = {
@@ -10,8 +12,13 @@ type SetActiveMenuAction = {
   payload: Menu;
 };
 
-type SetIsVisibleGroupsModalAction = {
-  type: 'SET_IS_VISIBLE_GROUPS_MODAL';
+type SetIsGroupsModalVisibleAction = {
+  type: 'SET_IS_GROUPS_MODAL_VISIBLE';
+  payload: boolean;
+};
+
+type SetIsDrawerVisibleAction = {
+  type: 'SET_IS_DRAWER_VISIBLE';
   payload: boolean;
 };
 
@@ -19,15 +26,17 @@ type ToggleGroupsModalAction = {
   type: 'TOGGLE_GROUPS_MODAL';
 };
 
-type MenuAction = SetActiveMenuAction | SetIsVisibleGroupsModalAction | ToggleGroupsModalAction;
+type MenuAction =
+  | SetActiveMenuAction
+  | SetIsGroupsModalVisibleAction
+  | ToggleGroupsModalAction
+  | SetIsDrawerVisibleAction;
 
 const initialState = {
   activeMenu: 'poll',
-  isVisibleGroupsModal: false
+  isDrawerVisible: false,
+  isGroupsModalVisible: false
 } as const;
-
-const MenuContext = createContext<MenuState | null>(null);
-const MenuDispatchContext = createContext<Dispatch<MenuAction> | null>(null);
 
 function menuReducer(state: MenuState, action: MenuAction): MenuState {
   switch (action.type) {
@@ -36,20 +45,28 @@ function menuReducer(state: MenuState, action: MenuAction): MenuState {
         ...state,
         activeMenu: action.payload
       };
-    case 'SET_IS_VISIBLE_GROUPS_MODAL':
+    case 'SET_IS_GROUPS_MODAL_VISIBLE':
       return {
         ...state,
-        isVisibleGroupsModal: action.payload
+        isGroupsModalVisible: action.payload
       };
     case 'TOGGLE_GROUPS_MODAL':
       return {
         ...state,
-        isVisibleGroupsModal: !state.isVisibleGroupsModal
+        isGroupsModalVisible: !state.isGroupsModalVisible
+      };
+    case 'SET_IS_DRAWER_VISIBLE':
+      return {
+        ...state,
+        isDrawerVisible: action.payload
       };
     default:
       return state;
   }
 }
+
+const MenuContext = createContext<MenuState | null>(null);
+const MenuDispatchContext = createContext<Dispatch<MenuAction> | null>(null);
 
 function MenuProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(menuReducer, initialState);

@@ -11,17 +11,18 @@ import {
 import {
   Poll,
   PollItem,
+  Members,
   getPollResultResponse,
   getPollItemsResponse
 } from '../../../../types/poll';
 import Crown from '../../../../assets/crown.svg';
 import Check from '../../../../assets/check.svg';
-
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import UserPurple from '../../../../assets/user-purple.svg';
 import UserWhite from '../../../../assets/user-white.svg';
-import PollParticipantModal from '../PollParticipantModal/PollParticipantModal';
 import TextField from '../../../../components/TextField/TextField';
+import PollResultParticipantModal from '../PollResultParticipantModal/PollResultParticipantModal';
+import useModal from '../../../../hooks/useModal';
 
 type Props = {
   status: Poll['status'];
@@ -29,6 +30,7 @@ type Props = {
   pollItems: getPollItemsResponse;
 };
 
+// TODO: 이렇게 함수를 밖에 꺼내놓는 게 낫나
 const getWinningPollItemIds = (pollResult: getPollResultResponse) => {
   const pollItemCounts = pollResult.map((pollItem) => pollItem.count);
   const maxCount = Math.max(...pollItemCounts);
@@ -43,13 +45,24 @@ const getSelectedPollItemIds = (pollItems: getPollItemsResponse) =>
 
 function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
   const theme = useTheme();
-  const [activePollItem, setActivePollItem] = useState(0);
+  const [activeMembers, setActiveMembers] = useState<Members>([]);
+  const [activeSubject, setActiveSubject] = useState<PollItem['subject']>('');
   const selectedPollItemIds = getSelectedPollItemIds(pollItems);
   const winningPollItemIds = getWinningPollItemIds(pollResult);
+  const [
+    isPollResultParticipantModalVisible,
+    openPollResultParticipantModal,
+    closePollResultParticipantModal
+  ] = useModal();
 
-  // TODO: 뭐지? 살펴보기
-  const handleShowParticipant = (pollItemId: PollItem['id']) => () => {
-    setActivePollItem(pollItemId);
+  const handleShowParticipant = (members: Members, subject: PollItem['subject']) => () => {
+    const isParticipantExist = members.length >= 1;
+
+    if (!isParticipantExist) return;
+
+    setActiveMembers(members);
+    setActiveSubject(subject);
+    openPollResultParticipantModal();
   };
 
   return (
@@ -78,25 +91,29 @@ function PollResultItemGroup({ status, pollResult, pollItems }: Props) {
             >
               {subject}
             </StyledSubject>
-            <StyledParticipantCount onClick={handleShowParticipant(id)}>
-              <FlexContainer>
-                <StyledUserIcon
-                  src={status === 'CLOSED' && isWinningPollItem ? UserWhite : UserPurple}
-                  alt="user"
-                />
-                <StyledUserCount
-                  status={status}
-                  isWinningPollItem={isWinningPollItem}
-                  aria-label={`${subject}-count`}
-                >
-                  {count}
-                </StyledUserCount>
-              </FlexContainer>
-              {activePollItem === id && <PollParticipantModal participants={members} />}
+            <StyledParticipantCount onClick={handleShowParticipant(members, subject)}>
+              <StyledUserIcon
+                src={status === 'CLOSED' && isWinningPollItem ? UserWhite : UserPurple}
+                alt="user"
+              />
+              <StyledUserCount
+                status={status}
+                isWinningPollItem={isWinningPollItem}
+                aria-label={`${subject}-count`}
+              >
+                {count}
+              </StyledUserCount>
             </StyledParticipantCount>
           </TextField>
         );
       })}
+
+      <PollResultParticipantModal
+        isVisible={isPollResultParticipantModalVisible}
+        close={closePollResultParticipantModal}
+        participants={activeMembers}
+        subject={activeSubject}
+      />
     </FlexContainer>
   );
 }

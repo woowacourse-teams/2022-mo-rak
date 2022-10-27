@@ -7,7 +7,7 @@ import {
 
 type Path = 'auth' | 'groups';
 
-const axiosInstanceGenerator = (path: Path, isAuthRequired = true) => {
+const axiosInstanceGenerator = (path: Path) => (isAuthRequired: boolean) => {
   const instance = axios.create({
     baseURL: `${process.env.BASE_API_URL}/${path}`,
     headers: { 'Content-Type': 'application/json' }
@@ -68,7 +68,8 @@ const axiosInstanceGenerator = (path: Path, isAuthRequired = true) => {
   return instance;
 };
 
-const authInstance = axiosInstanceGenerator('auth', false);
-const groupInstance = axiosInstanceGenerator('groups');
+const publicAuthAxiosInstance = axiosInstanceGenerator('auth')(false);
+const privateAuthAxiosInstance = axiosInstanceGenerator('auth')(true);
+const privateGroupsAxiosInstance = axiosInstanceGenerator('groups')(true);
 
-export { authInstance, groupInstance };
+export { publicAuthAxiosInstance, privateAuthAxiosInstance, privateGroupsAxiosInstance };

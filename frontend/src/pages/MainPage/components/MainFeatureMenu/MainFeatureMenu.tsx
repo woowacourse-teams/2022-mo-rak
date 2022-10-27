@@ -25,9 +25,3 @@ function MainFeatureMenu({ onClick, name, img }: Props) {
 }
 
 export default MainFeatureMenu;
-
-<StyledContainer>
-  <div>
-    <a href=""></a>
-  </div>
-</StyledContainer>;

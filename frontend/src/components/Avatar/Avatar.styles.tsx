@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { CSSProperties } from 'react';
 
-const StyledUserProfile = styled.div<CSSProperties>(
+const StyledContainer = styled.div<CSSProperties>(
   ({ width }) => `
   display: flex;
   flex-direction: column;
@@ -26,4 +26,4 @@ const StyledUserName = styled.p<CSSProperties>(
 `
 );
 
-export { StyledUserProfile, StyledUserImage, StyledUserName };
+export { StyledContainer, StyledUserImage, StyledUserName };

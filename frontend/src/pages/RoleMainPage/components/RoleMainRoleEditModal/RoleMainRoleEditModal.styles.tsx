@@ -74,10 +74,9 @@ const StyledBottom = styled.div(
     flex-direction: column;
     align-items: center;
     gap: 2.4rem;
-    overflow-y: scroll;
+    overflow-y: auto;
   `
 );
-
 
 export {
   StyledForm,
@@ -87,6 +86,5 @@ export {
   StyledCloseButton,
   StyledTriangle,
   StyledBottom,
-  // StyledRolesContainer,
   StyledDescription
 };

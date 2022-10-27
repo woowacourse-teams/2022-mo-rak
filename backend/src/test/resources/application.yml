@@ -9,6 +9,14 @@ spring:
   web:
     resources:
       add-mappings: false
+
+cors:
+  allowed-origin: "*"
+
+monitoring:
+  prometheus:
+    origin: localhost
+
 ---
 
 spring:

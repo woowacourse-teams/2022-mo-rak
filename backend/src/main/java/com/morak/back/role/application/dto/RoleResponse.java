@@ -1,5 +1,7 @@
 package com.morak.back.role.application.dto;
 
+import com.morak.back.core.support.Generated;
+import com.morak.back.role.domain.RoleMatchResult;
 import java.util.Map.Entry;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
@@ -18,7 +20,12 @@ public class RoleResponse {
         return new RoleResponse(matchResult.getValue(), matchResult.getKey());
     }
 
+    public static RoleResponse from(RoleMatchResult matchResult) {
+        return new RoleResponse(matchResult.getMemberId(), matchResult.getRoleName().getValue());
+    }
+
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -31,6 +38,7 @@ public class RoleResponse {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(memberId, name);
     }
