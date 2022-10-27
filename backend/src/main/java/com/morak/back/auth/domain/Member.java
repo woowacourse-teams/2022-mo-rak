@@ -1,6 +1,7 @@
 package com.morak.back.auth.domain;
 
 import com.morak.back.core.domain.BaseEntity;
+import com.morak.back.core.support.Generated;
 import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -58,6 +59,7 @@ public class Member extends BaseEntity {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
