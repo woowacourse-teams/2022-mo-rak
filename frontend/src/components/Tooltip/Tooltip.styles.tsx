@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 
 const StyledContainer = styled.div`
   position: relative;
-  z-index: 1;
 `;
 
 const StyledContentTrigger = styled.div`
