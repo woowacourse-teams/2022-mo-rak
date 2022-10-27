@@ -48,7 +48,7 @@ function App() {
             <Route element={<NavigationLayout />}>
               <Route path="groups/:groupCode">
                 <Route element={<GroupRoute />}>
-                  <Route element={<MenuRoute menu="main" />}>
+                  <Route element={<MenuRoute menu="" />}>
                     <Route index element={<MainPage />} />
                   </Route>
 

@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import FlexContainer from '../../components/FlexContainer/FlexContainer';
 import { GroupMembersProvider } from '../../context/GroupMembersProvider';
-import { MenuProvider } from '../../context/MenuProvider';
+import { NavigationBarProvider } from '../../context/NavigationBarProvider';
 import useDeviceState from '../../hooks/useDeviceState';
 import GlobalFootbar from './components/GlobalFootbar/GlobalFootbar';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -12,12 +12,12 @@ function NavigationLayout() {
 
   return (
     <FlexContainer>
-      <MenuProvider>
+      <NavigationBarProvider>
         <GroupMembersProvider>
           {navigationBar}
           <Outlet />
         </GroupMembersProvider>
-      </MenuProvider>
+      </NavigationBarProvider>
     </FlexContainer>
   );
 }

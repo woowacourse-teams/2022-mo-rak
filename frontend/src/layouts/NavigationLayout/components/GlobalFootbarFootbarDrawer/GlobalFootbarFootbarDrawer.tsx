@@ -8,8 +8,8 @@ import GlobalFootbarFootbarDrawerMembersProfileSection from '../GlobarFootbarFoo
 import GlobalFootbarFootbarDrawerGroupsSection from '../GlobalFootbarFootbarDrawerGroupsSection/GlobalFootbarFootbarDrawerGroupsSection';
 import GlobalFootbarFootbarDrawerBottomSection from '../GlobalFootbarFootbarDrawerBottomSection/GlobalFootbarFootbarDrawerBottomSection';
 import NavbarDrawerModals from '../GlobalFootbarFootbarDrawerModals/GlobalFootbarFootbarDrawerModals';
-import useMenuContext from '../../../../hooks/useMenuContext';
-import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
+import useNavigationBarContext from '../../../../hooks/useNavigationBarContext';
+import useNavigationBarDispatchContext from '../../../../hooks/useNavigationBarDispatchContext';
 import { Group } from '../../../../types/group';
 
 // TODO: props drilling 발생 (groups)
@@ -19,17 +19,17 @@ type Props = {
 };
 
 function GlobalFootbarFootbarDrawer({ groupCode, groups }: Props) {
-  const { isDrawerVisible } = useMenuContext();
-  const menuDispatch = useMenuDispatchContext();
+  const { isDrawerVisible } = useNavigationBarContext();
+  const navigationBarDispatch = useNavigationBarDispatchContext();
   const [activeModalMenu, setActiveModalMenu] = useState<null | string>(null);
 
   const handleCloseDrawer = () => {
-    menuDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: false });
+    navigationBarDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: false });
   };
 
   const handleSetActiveModalMenu = (menu: null | string) => () => {
     setActiveModalMenu(menu);
-    menuDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: false });
+    navigationBarDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: false });
   };
 
   return (
