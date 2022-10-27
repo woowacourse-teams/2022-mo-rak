@@ -118,12 +118,10 @@ CREATE INDEX `index_appointment` ON `appointment` (`closed_at`);
 
 CREATE TABLE appointment_available_time
 (
-    `id`              BIGINT   NOT NULL AUTO_INCREMENT,
     `appointment_id`  BIGINT   NOT NULL,
     `member_id`       BIGINT   NOT NULL,
     `start_date_time` DATETIME NOT NULL,
     `created_at`      DATETIME NOT NULL,
-    PRIMARY KEY (id),
     FOREIGN KEY (appointment_id) REFERENCES appointment (id),
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
