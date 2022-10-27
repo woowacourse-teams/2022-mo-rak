@@ -1,4 +1,4 @@
-package com.morak.back.appointment.domain.menu;
+package com.morak.back.appointment.domain;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.DomainLogicException;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SubTitle {
 
-    private static final int MAX_LENGTH = 1000;
+    private static final int MAX_LENGTH = 255;
 
     private String subTitle;
 
