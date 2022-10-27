@@ -11,6 +11,7 @@ import {
   StyledContent,
   StyledHeader
 } from './AppointmentCreateFormTimeLimitInput.styles';
+import { useTheme } from '@emotion/react';
 
 type Props = {
   startTime: Time;
@@ -25,6 +26,8 @@ function AppointmentCreateFormTimeLimitInput({
   onChangeStartTime,
   onChangeEndTime
 }: Props) {
+  const theme = useTheme();
+
   return (
     <>
       <StyledHeader>
@@ -32,8 +35,9 @@ function AppointmentCreateFormTimeLimitInput({
         <Tooltip
           content="오전 12:00 ~ 오전 12:00(다음날)은 하루종일을 의미합니다."
           width="28"
-          placement="right"
+          placement="bottom"
           fontSize="1.6rem"
+          backgroundColor={theme.colors.GRAY_200}
         >
           <StyledHelpIconContainer>
             <StyledHelpIcon src={Question} alt="help-icon" />
