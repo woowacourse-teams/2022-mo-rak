@@ -3,7 +3,7 @@ import { StyledLogo, StyledTitle } from './InvitationContainer.styles';
 import { AxiosError } from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Box from '../../../../components/Box/Box';
-import Logo from '../../../../assets/logo.svg';
+import ServiceLogo from '../../../../assets/service-logo.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import InvitationButtonGroup from '../InvitationButtonGroup/InvitationButtonGroup';
 import { getIsJoinedGroup } from '../../../../api/group';
@@ -53,7 +53,7 @@ function InvitationContainer() {
         alignItems="center"
         gap="6.6rem"
       >
-        <StyledLogo src={Logo} alt="logo" />
+        <StyledLogo src={ServiceLogo} alt="logo" />
         {!isLoading ? (
           <>
             <StyledTitle>

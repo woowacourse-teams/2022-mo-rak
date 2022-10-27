@@ -17,7 +17,7 @@ import {
   StyledAnchor
 } from './LandingMainSection.styles';
 
-import Logo from '../../../../assets/logo.svg';
+import ServiceLogo from '../../../../assets/service-logo.svg';
 import Smile from '../../../../assets/smile.svg';
 import Line from '../../../../assets/line.svg';
 import Blob from '../../../../assets/blob.svg';
@@ -32,7 +32,7 @@ function LandingMainSection({ id }: Props) {
   return (
     <StyledContainer id={id}>
       <LandingNavbar />
-      <StyledLogo src={Logo} alt="logo" />
+      <StyledLogo src={ServiceLogo} alt="logo" />
 
       <FlexContainer flexDirection="column" gap="2rem">
         <StyledSubTitle>모락이 해줄게요</StyledSubTitle>

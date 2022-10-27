@@ -11,7 +11,7 @@ import Slack from '../../../../assets/slack.svg';
 import Plus from '../../../../assets/plus.svg';
 import LinkIcon from '../../../../assets/link.svg';
 import Close from '../../../../assets/close-button.svg';
-import Logo from '../../../../assets/logo.svg';
+import ServiceLogo from '../../../../assets/service-logo.svg';
 import { Group } from '../../../../types/group';
 import { createGroup, participateGroup } from '../../../../api/group';
 import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
@@ -170,7 +170,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
       <Modal isVisible={activeModal === 'create'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleCreateGroup}>
           <StyledTop>
-            <StyledSmallLogo src={Logo} alt="logo" />
+            <StyledSmallLogo src={ServiceLogo} alt="logo" />
             <StyledHeaderText>그룹 생성</StyledHeaderText>
             <StyledGuideText>새로운 그룹을 빠르고 쉽게 생성해보세요</StyledGuideText>
             <StyledCloseButton onClick={closeModal} src={Close} alt="close-button" />
@@ -207,7 +207,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
       <Modal isVisible={activeModal === 'participate'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleParticipateGroup}>
           <StyledTop>
-            <StyledSmallLogo src={Logo} alt="logo" />
+            <StyledSmallLogo src={ServiceLogo} alt="logo" />
             <StyledHeaderText>그룹 참가</StyledHeaderText>
             <StyledGuideText>새로운 그룹에도 참가해보세요</StyledGuideText>
             <StyledCloseButton onClick={closeModal} src={Close} alt="close-button" />

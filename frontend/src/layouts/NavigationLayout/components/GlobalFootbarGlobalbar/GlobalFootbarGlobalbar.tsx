@@ -6,7 +6,7 @@ import {
   StyledName,
   StyledCurrentGroupContainer
 } from './GlobalFootbarGlobalbar.styles';
-import Logo from '../../../../assets/logo.svg';
+import ServiceLogo from '../../../../assets/service-logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { Group } from '../../../../types/group';
 
@@ -25,7 +25,11 @@ function GlobalFootbarGlobalbar({ groups, groupCode }: Props) {
 
   return (
     <StyledContainer>
-      <StyledLogo src={Logo} alt={Logo} onClick={handleNavigate(`/groups/${groupCode}`)} />
+      <StyledLogo
+        src={ServiceLogo}
+        alt={ServiceLogo}
+        onClick={handleNavigate(`/groups/${groupCode}`)}
+      />
       {currentGroup && (
         <StyledCurrentGroupContainer>
           <StyledName>🎉 {currentGroup.name}</StyledName>
