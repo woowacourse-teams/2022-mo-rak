@@ -1,6 +1,7 @@
 package com.morak.back.appointment.domain;
 
 import com.morak.back.core.domain.BaseElement;
+import com.morak.back.core.support.Generated;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Embeddable;
@@ -25,6 +26,7 @@ public class AvailableTime extends BaseElement {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;

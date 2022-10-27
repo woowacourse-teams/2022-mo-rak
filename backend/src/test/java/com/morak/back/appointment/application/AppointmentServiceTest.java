@@ -3,6 +3,7 @@ package com.morak.back.appointment.application;
 import static com.morak.back.appointment.domain.menu.MenuStatus.CLOSED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -11,6 +12,8 @@ import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.appointment.domain.menu.MenuStatus;
+import com.morak.back.appointment.exception.AppointmentAuthorizationException;
+import com.morak.back.appointment.exception.AppointmentNotFoundException;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
@@ -20,6 +23,7 @@ import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.support.ServiceTest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -196,6 +200,19 @@ class AppointmentServiceTest {
     }
 
     @Test
+    void 약속잡기_단건_조회할_약속잡기_코드가_존재하지_않는다면_라면_예외를_던진다() {
+        // given
+        String invalidCode = "invalid1";
+
+        // when & then
+        assertThatThrownBy(() -> appointmentService.findAppointment(모락, 에덴, invalidCode))
+                .isInstanceOf(AppointmentNotFoundException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_NOT_FOUND_ERROR);
+    }
+
+
+    @Test
     void 약속잡기_가능시간을_선택한다() {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_현재부터_1일에서_5일_14시_20시);
@@ -306,6 +323,24 @@ class AppointmentServiceTest {
         // then
         assertThat(appointmentRepository.findByCode(appointment.getCode())).isEmpty();
     }
+
+    @Test
+    void 약속잡기_삭제_시_호스트가_아니면_예외를_던진다() {
+        // given
+        Appointment appointment = appointmentRepository.save(약속잡기_현재부터_1일에서_5일_14시_20시);
+        Long notHostId = 2L;
+
+        // when & then
+        assertThatThrownBy(() -> appointmentService.deleteAppointment(
+                appointment.getTeamCode(),
+                notHostId,
+                appointment.getCode()
+        )).isInstanceOf(AppointmentAuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_HOST_MISMATCHED_ERROR);
+
+    }
+
 
     @Test
     void 약속잡기가_진행중인지_확인한다() {
