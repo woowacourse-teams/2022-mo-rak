@@ -39,13 +39,6 @@ public class RoleService {
         );
     }
 
-    private Role findRoleByTeamCode(String teamCode) {
-        return roleRepository.findByTeamCode(teamCode).orElseThrow(() -> new RoleNotFoundException(
-                CustomErrorCode.ROLE_NOT_FOUND_ERROR,
-                teamCode + " 의 팀 코드에 해당하는 역할정하기를 찾을 수 없습니다"
-        ));
-    }
-
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void createDefaultRole(TeamCreateEvent event) {
@@ -62,7 +55,7 @@ public class RoleService {
         );
     }
 
-    public Long match(String teamCode, Long memberId) {
+    public Long matchRoleAndMember(String teamCode, Long memberId) {
         return authorizationService.withTeamMemberValidation(
                 () -> {
                     List<Long> memberIds = findMemberIds(teamCode);
@@ -87,5 +80,12 @@ public class RoleService {
                     return RolesResponse.from(role.findAllGroupByDate());
                 }, teamCode, memberId
         );
+    }
+
+    private Role findRoleByTeamCode(String teamCode) {
+        return roleRepository.findByTeamCode(teamCode).orElseThrow(() -> new RoleNotFoundException(
+                CustomErrorCode.ROLE_NOT_FOUND_ERROR,
+                teamCode + " 의 팀 코드에 해당하는 역할정하기를 찾을 수 없습니다"
+        ));
     }
 }

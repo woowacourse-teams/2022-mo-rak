@@ -3,6 +3,7 @@ package com.morak.back.appointment.domain.menu;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.DomainLogicException;
 import org.junit.jupiter.api.Test;

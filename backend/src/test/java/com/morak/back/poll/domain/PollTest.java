@@ -8,8 +8,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
 
-import com.morak.back.appointment.domain.menu.ClosedAt;
-import com.morak.back.appointment.domain.menu.MenuStatus;
+import com.morak.back.core.domain.menu.ClosedAt;
+import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.AuthorizationException;

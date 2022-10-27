@@ -78,9 +78,8 @@ class RoleControllerTest extends ControllerTest {
     @Test
     void 역할을_정한다() throws Exception {
         // given
-        String groupCode = "rlgHKPj3";
         Long roleId = 1L;
-        given(roleService.match(anyString(), anyLong())).willReturn(roleId);
+        given(roleService.matchRoleAndMember(anyString(), anyLong())).willReturn(roleId);
 
         // when
         ResultActions response = mockMvc.perform(post("/api/groups/{groupCode}/roles", groupCode)
@@ -100,16 +99,17 @@ class RoleControllerTest extends ControllerTest {
     @Test
     void 역할_히스토리를_조회한다() throws Exception {
         // given
-        String groupCode = "rlgHKPj3";
-        Long roleId = 1L;
         RoleResponse 서기 = new RoleResponse(1L, "서기");
         RoleResponse 카메라맨 = new RoleResponse(2L, "카메라맨");
-        HistoryResponse historyResponse1 = new HistoryResponse(LocalDate.of(2022, 10, 15), List.of(서기, 카메라맨));
-        HistoryResponse historyResponse2 = new HistoryResponse(LocalDate.of(2022, 10, 14), List.of(서기, 카메라맨));
-        RolesResponse roleResponse = new RolesResponse(
-                List.of(historyResponse1, historyResponse2
-                )
+        HistoryResponse historyResponse1 = new HistoryResponse(
+                LocalDate.of(2022, 10, 15),
+                List.of(서기, 카메라맨)
         );
+        HistoryResponse historyResponse2 = new HistoryResponse(
+                LocalDate.of(2022, 10, 14),
+                List.of(서기, 카메라맨)
+        );
+        RolesResponse roleResponse = new RolesResponse(List.of(historyResponse1, historyResponse2));
         given(roleService.findHistories(anyString(), anyLong())).willReturn(roleResponse);
 
         // when
@@ -125,5 +125,4 @@ class RoleControllerTest extends ControllerTest {
                         pathParameters(parameterWithName("groupCode").description("그룹_코드"))
                 ));
     }
-
 }

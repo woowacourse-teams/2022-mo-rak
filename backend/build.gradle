@@ -51,6 +51,12 @@ dependencies {
     // 랜덤 코드 생성
     implementation 'org.apache.commons:commons-lang3:3.12.0'
 
+    // 액츄에이터
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // prometheus
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
     // 테스트
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
@@ -142,7 +148,9 @@ tasks.named('jacocoTestCoverageVerification') {
                     '**.RestSlackClient',
                     '**.*Config',
                     '**.*Performance*',
-                    '**.Proxy*'
+                    '**.Proxy*',
+                    '**.*Response',
+                    '**.*Request'
             ]
         }
 

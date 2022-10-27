@@ -6,7 +6,7 @@ import com.morak.back.appointment.config.AppointmentConfig;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.SystemTime;
-import com.morak.back.appointment.domain.menu.MenuStatus;
+import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.slack.FakeApiReceiver;
 import com.morak.back.support.ServiceTest;

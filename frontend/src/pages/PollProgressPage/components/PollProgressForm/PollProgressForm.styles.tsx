@@ -7,4 +7,8 @@ const StyledTitle = styled.h1(
 `
 );
 
-export { StyledTitle };
+const StyledLoadingContainer = styled.div`
+  height: 60rem;
+`;
+
+export { StyledTitle, StyledLoadingContainer };

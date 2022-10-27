@@ -1,5 +1,6 @@
 package com.morak.back.poll.domain;
 
+import com.morak.back.core.support.Generated;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -101,6 +102,7 @@ public class PollItem {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -113,6 +115,7 @@ public class PollItem {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(getId());
     }

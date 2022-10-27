@@ -3,10 +3,9 @@ package com.morak.back.appointment.domain;
 import static com.morak.back.core.exception.CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR;
 
 import com.morak.back.appointment.domain.dateperiod.DatePeriod;
-import com.morak.back.appointment.domain.menu.SubTitle;
-import com.morak.back.appointment.domain.menu.Menu;
-import com.morak.back.appointment.domain.menu.MenuStatus;
-import com.morak.back.appointment.domain.menu.Title;
+import com.morak.back.core.domain.menu.Menu;
+import com.morak.back.core.domain.menu.MenuStatus;
+import com.morak.back.core.domain.menu.Title;
 import com.morak.back.appointment.domain.recommend.AppointmentTime;
 import com.morak.back.appointment.domain.timeperiod.TimePeriod;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;

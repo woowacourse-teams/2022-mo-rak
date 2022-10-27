@@ -2,11 +2,13 @@ package com.morak.back.role.domain;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.exception.RoleDomainLogicException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.persistence.AttributeOverride;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -20,7 +22,8 @@ public class RoleNames {
 
     @ElementCollection
     @CollectionTable(name = "role_name", joinColumns = @JoinColumn(name = "role_id"))
-    private List<RoleName> values;
+    @AttributeOverride(name = "value", column = @Column(name = "name"))
+    private List<RoleName> values = new ArrayList<>();
 
     public RoleNames(List<RoleName> values) {
         validateMinSize(values.size());
@@ -42,14 +45,11 @@ public class RoleNames {
         }
     }
 
-    public Map<RoleName, Long> match(List<Long> memberIds) {
+    public List<RoleMatchResult> match(List<Long> memberIds) {
         validateMemberCount(memberIds.size());
-        return IntStream.range(0, values.size())
-                .boxed()
-                .collect(Collectors.toMap(
-                        values::get,
-                        memberIds::get
-                ));
+        return IntStream.range(0, this.values.size())
+                .mapToObj(index -> new RoleMatchResult(this.values.get(index), memberIds.get(index)))
+                .collect(Collectors.toList());
     }
 
     private void validateMemberCount(int size) {

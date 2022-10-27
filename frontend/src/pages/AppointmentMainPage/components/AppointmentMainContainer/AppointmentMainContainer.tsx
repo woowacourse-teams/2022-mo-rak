@@ -16,7 +16,8 @@ import {
   StyledContainer,
   StyledTitle,
   LottieContainer,
-  StyledGuide
+  StyledGuide,
+  StyledAppointmentContainer
 } from './AppointmentMainContainer.styles';
 
 function AppointmentMainContainer() {
@@ -45,28 +46,26 @@ function AppointmentMainContainer() {
     <StyledContainer>
       {appointments.map(
         ({ code, title, durationHours, durationMinutes, count, isClosed, closedAt }) => (
-          <Box
-            key={code}
-            width="36.4rem"
-            padding="2.8rem"
-            filter={isClosed ? 'grayscale(1)' : 'none'}
-          >
-            <FlexContainer justifyContent="end">
-              <AppointmentMainStatus isClosed={isClosed} />
-            </FlexContainer>
-            <StyledTitle>{title}</StyledTitle>
-            <MarginContainer margin="0 0 0.4rem">
-              <AppointmentMainProgress count={count} />
-            </MarginContainer>
-            <MarginContainer margin="0 0 1.6rem">
-              <AppointmentMainDetail
-                durationHours={durationHours}
-                durationMinutes={durationMinutes}
-                closedAt={closedAt}
-              />
-            </MarginContainer>
-            <AppointmentMainButtonGroup appointmentCode={code} isClosed={isClosed} />
-          </Box>
+          // TODO: StyledPollContainer 를 삭제해주거나 Box와 합쳐주기
+          <StyledAppointmentContainer key={code}>
+            <Box width="100%" padding="2.8rem" filter={isClosed ? 'grayscale(1)' : 'none'}>
+              <FlexContainer justifyContent="end">
+                <AppointmentMainStatus isClosed={isClosed} />
+              </FlexContainer>
+              <StyledTitle>{title}</StyledTitle>
+              <MarginContainer margin="0 0 0.4rem">
+                <AppointmentMainProgress count={count} />
+              </MarginContainer>
+              <MarginContainer margin="0 0 1.6rem">
+                <AppointmentMainDetail
+                  durationHours={durationHours}
+                  durationMinutes={durationMinutes}
+                  closedAt={closedAt}
+                />
+              </MarginContainer>
+              <AppointmentMainButtonGroup appointmentCode={code} isClosed={isClosed} />
+            </Box>
+          </StyledAppointmentContainer>
         )
       )}
     </StyledContainer>

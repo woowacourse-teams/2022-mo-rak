@@ -3,6 +3,7 @@ package com.morak.back.appointment.domain.menu;
 import static com.morak.back.core.exception.CustomErrorCode.TITLE_LENGTH_OUT_OF_RANGE_ERROR;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.core.domain.menu.Title;
 import com.morak.back.core.exception.DomainLogicException;
 import org.junit.jupiter.api.Test;
 

@@ -1,11 +1,10 @@
 package com.morak.back.poll.domain;
 
-import static com.morak.back.core.exception.CustomErrorCode.DESCRIPTION_OUT_OF_LENGTH_ERROR;
+import static com.morak.back.core.exception.CustomErrorCode.POLL_DESCRIPTION_LENGTH_ERROR;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.appointment.domain.menu.SubTitle;
-import com.morak.back.core.exception.DomainLogicException;
+import com.morak.back.poll.exception.PollDomainLogicException;
 import org.junit.jupiter.api.Test;
 
 class DescriptionTest {
@@ -16,10 +15,10 @@ class DescriptionTest {
         String description = "ㅋ".repeat(1001);
 
         // when & then
-        assertThatThrownBy(() -> new SubTitle(description))
-                .isInstanceOf(DomainLogicException.class)
+        assertThatThrownBy(() -> new Description(description))
+                .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(DESCRIPTION_OUT_OF_LENGTH_ERROR);
+                .isEqualTo(POLL_DESCRIPTION_LENGTH_ERROR);
     }
 
     @Test
@@ -28,6 +27,6 @@ class DescriptionTest {
         String description = "";
 
         // when & then
-        assertThatNoException().isThrownBy(() -> new SubTitle(description));
+        assertThatNoException().isThrownBy(() -> new Description(description));
     }
 }

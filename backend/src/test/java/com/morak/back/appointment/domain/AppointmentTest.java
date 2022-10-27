@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
-import com.morak.back.appointment.domain.menu.MenuStatus;
+import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.appointment.domain.recommend.AppointmentTime;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.domain.Code;

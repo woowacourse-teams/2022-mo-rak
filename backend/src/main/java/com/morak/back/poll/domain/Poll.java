@@ -1,9 +1,9 @@
 package com.morak.back.poll.domain;
 
-import com.morak.back.appointment.domain.menu.ClosedAt;
-import com.morak.back.appointment.domain.menu.Menu;
-import com.morak.back.appointment.domain.menu.MenuStatus;
-import com.morak.back.appointment.domain.menu.Title;
+import com.morak.back.core.domain.menu.ClosedAt;
+import com.morak.back.core.domain.menu.Menu;
+import com.morak.back.core.domain.menu.MenuStatus;
+import com.morak.back.core.domain.menu.Title;
 import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;

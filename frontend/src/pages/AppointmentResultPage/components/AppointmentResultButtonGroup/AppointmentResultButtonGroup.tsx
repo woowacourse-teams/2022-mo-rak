@@ -128,9 +128,9 @@ function AppointmentResultButtonGroup({
             <Button
               variant="filled"
               colorScheme={theme.colors.GRAY_400}
-              width="22rem"
+              width="20rem"
               padding="2rem 0"
-              fontSize="3.2rem"
+              fontSize="2.4rem"
               onClick={handleCloseAppointment}
             >
               마감
@@ -140,9 +140,9 @@ function AppointmentResultButtonGroup({
           <Button
             variant="filled"
             colorScheme={theme.colors.GRAY_400}
-            width="22rem"
+            width="20rem"
             padding="2rem 0"
-            fontSize="3.2rem"
+            fontSize="2.4rem"
             onClick={handleDeleteAppointment}
           >
             삭제
@@ -153,7 +153,7 @@ function AppointmentResultButtonGroup({
                 variant="filled"
                 colorScheme={theme.colors.YELLOW_100}
                 padding="2rem 3.2rem"
-                fontSize="3.2rem"
+                fontSize="2.4rem"
                 onClick={handleCreateNewPoll}
               >
                 공동 1등 재투표
@@ -177,9 +177,9 @@ function AppointmentResultButtonGroup({
         <Button
           variant="filled"
           colorScheme={theme.colors.PURPLE_100}
-          width="22rem"
+          width="20rem"
           padding="2rem 0"
-          fontSize="3.2rem"
+          fontSize="2.4rem"
           onClick={handleNavigate(`/groups/${groupCode}/appointment/${appointmentCode}/progress`)}
         >
           가능시간수정
