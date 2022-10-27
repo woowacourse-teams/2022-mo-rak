@@ -11,7 +11,7 @@ import AppointmentMainStatus from '../AppointmentMainStatus/AppointmentMainStatu
 import AppointmentMainProgress from '../AppointmentMainProgress/AppointmentMainProgress';
 import AppointmentMainDetail from '../AppointmentMainDetail/AppointmentMainDetail';
 import AppointmentMainButtonGroup from '../AppointmentMainButtonGroup/AppointmentMainButtonGroup';
-import emptyAnimation from '../../../../assets/empty-animation.json';
+import emptyLottie from '../../../../assets/empty-animation.json';
 import {
   StyledContainer,
   StyledTitle,
@@ -21,7 +21,7 @@ import {
 } from './AppointmentMainContainer.styles';
 
 function AppointmentMainContainer() {
-  const emptyLottie = useLottie({ animationData: emptyAnimation }, { width: '60rem' });
+  const emptyAnimation = useLottie({ animationData: emptyLottie }, { width: '60rem' });
   const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [appointments, setAppointments] = useState<GetAppointmentsResponse>([]);
 
@@ -36,7 +36,7 @@ function AppointmentMainContainer() {
     return (
       <>
         {/* TODO: 재사용 가능하지 않을까한다! */}
-        <LottieContainer>{emptyLottie.View}</LottieContainer>
+        <LottieContainer>{emptyAnimation.View}</LottieContainer>
         <StyledGuide>첫 약속잡기를 만들어보세요!</StyledGuide>
       </>
     );

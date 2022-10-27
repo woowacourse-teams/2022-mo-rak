@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useLottie } from 'lottie-react';
 import { allocateRoles } from '../../../../api/role';
 import { AxiosError } from 'axios';
-import firework from '../../../../assets/firework-animation.json';
+import fireworkLottie from '../../../../assets/firework-animation.json';
 
 type Props = {
   onClickAllocateRolesButton: () => void;
@@ -21,7 +21,7 @@ function RoleMainButtonGroup({ onClickAllocateRolesButton, onClickEditRolesButto
   const [isFireworkAnimationVisible, setIsFireworkAnimationVisible] = useState(false);
   const fireworkAnimation = useLottie(
     {
-      animationData: firework,
+      animationData: fireworkLottie,
       autoplay: false
     },
     {
