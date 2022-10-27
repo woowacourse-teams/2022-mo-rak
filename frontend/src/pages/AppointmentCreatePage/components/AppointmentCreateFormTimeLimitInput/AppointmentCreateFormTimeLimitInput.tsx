@@ -8,7 +8,8 @@ import {
   StyledTitle,
   StyledHelpIconContainer,
   StyledHelpIcon,
-  StyledContent
+  StyledContent,
+  StyledHeader
 } from './AppointmentCreateFormTimeLimitInput.styles';
 
 type Props = {
@@ -26,7 +27,7 @@ function AppointmentCreateFormTimeLimitInput({
 }: Props) {
   return (
     <>
-      <FlexContainer gap="2rem">
+      <StyledHeader>
         <StyledTitle>가능 시간 제한 설정</StyledTitle>
         <Tooltip
           content="오전 12:00 ~ 오전 12:00(다음날)은 하루종일을 의미합니다."
@@ -37,7 +38,7 @@ function AppointmentCreateFormTimeLimitInput({
             <StyledHelpIcon src={Question} alt="help-icon" />
           </StyledHelpIconContainer>
         </Tooltip>
-      </FlexContainer>
+      </StyledHeader>
 
       <FlexContainer alignItems="center" gap="2.8rem">
         <AppointmentCreateFormTimeInput
