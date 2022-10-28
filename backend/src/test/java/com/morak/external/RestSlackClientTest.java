@@ -2,9 +2,9 @@ package com.morak.external;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-import com.morak.back.core.domain.slack.RestSlackClient;
-import com.morak.back.core.domain.slack.SlackClient;
-import com.morak.back.core.domain.slack.SlackWebhook;
+import com.morak.back.notification.domain.slack.RestSlackClient;
+import com.morak.back.notification.domain.slack.SlackClient;
+import com.morak.back.notification.domain.slack.SlackWebhook;
 import com.morak.back.team.domain.Team;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

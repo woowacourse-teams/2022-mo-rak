@@ -1,4 +1,4 @@
-package com.morak.back.core.domain.slack;
+package com.morak.back.notification.domain.slack;
 
 public interface SlackClient {
 

@@ -14,14 +14,14 @@ import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
-import com.morak.back.core.application.NotificationService;
+import com.morak.back.notification.application.WebhookService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
-import com.morak.back.core.domain.slack.FormattableData;
+import com.morak.back.notification.domain.slack.FormattableData;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
-import com.morak.back.core.util.MessageFormatter;
+import com.morak.back.notification.util.MessageFormatter;
 import com.morak.back.core.application.AuthorizationService;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
@@ -43,7 +43,7 @@ public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final TeamMemberRepository teamMemberRepository;
-    private final NotificationService notificationService;
+    private final WebhookService webhookService;
     private final SystemTime systemTime;
     private final AuthorizationService authorizationService;
 
@@ -201,7 +201,7 @@ public class AppointmentService {
                         )
                 )
         );
-        notificationService.notifyAllMenuStatus(teamMessages);
+        webhookService.notifyAllMenuStatus(teamMessages);
     }
 
     public AppointmentStatusResponse findAppointmentStatus(String teamCode, Long memberId, String appointmentCode) {

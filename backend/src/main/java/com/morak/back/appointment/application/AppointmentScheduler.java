@@ -3,7 +3,6 @@ package com.morak.back.appointment.application;
 import com.morak.back.core.support.Generated;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service

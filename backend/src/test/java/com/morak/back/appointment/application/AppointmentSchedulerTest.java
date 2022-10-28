@@ -8,7 +8,7 @@ import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.domain.slack.FakeApiReceiver;
+import com.morak.back.notification.domain.slack.FakeApiReceiver;
 import com.morak.back.support.ServiceTest;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

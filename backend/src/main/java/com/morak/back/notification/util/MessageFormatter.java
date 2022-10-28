@@ -1,6 +1,6 @@
-package com.morak.back.core.util;
+package com.morak.back.notification.util;
 
-import com.morak.back.core.domain.slack.FormattableData;
+import com.morak.back.notification.domain.slack.FormattableData;
 import com.morak.back.core.support.Generated;
 import java.time.format.DateTimeFormatter;
 import lombok.AccessLevel;

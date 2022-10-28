@@ -11,8 +11,8 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.morak.back.ControllerTest;
-import com.morak.back.core.application.NotificationService;
-import com.morak.back.core.ui.dto.SlackWebhookCreateRequest;
+import com.morak.back.notification.application.WebhookService;
+import com.morak.back.notification.application.dto.SlackWebhookCreateRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -21,14 +21,14 @@ import org.springframework.test.web.servlet.ResultActions;
 class NotificationControllerTest extends ControllerTest {
 
     @MockBean
-    private NotificationService notificationService;
+    private WebhookService webhookService;
 
     @Test
     void 슬랙_웹훅을_등록한다() throws Exception {
         // given
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest("https://hooks.slack.com/services/");
 
-        given(notificationService.saveSlackWebhook(anyString(), anyLong(), any(SlackWebhookCreateRequest.class)))
+        given(webhookService.saveSlackWebhook(anyString(), anyLong(), any(SlackWebhookCreateRequest.class)))
                 .willReturn(1L);
 
         // when

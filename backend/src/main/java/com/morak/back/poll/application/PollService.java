@@ -2,7 +2,7 @@ package com.morak.back.poll.application;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.application.AuthorizationService;
-import com.morak.back.core.application.NotificationService;
+import com.morak.back.notification.application.WebhookService;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
 import com.morak.back.poll.application.dto.PollCreateRequest;
@@ -32,7 +32,7 @@ public class PollService {
 
     private final PollRepository pollRepository;
     private final TeamMemberRepository teamMemberRepository;
-    private final NotificationService notificationService;
+    private final WebhookService webhookService;
     private final AuthorizationService authorizationService;
 
     public PollResponse createPoll(String teamCode, Long memberId, PollCreateRequest request) {

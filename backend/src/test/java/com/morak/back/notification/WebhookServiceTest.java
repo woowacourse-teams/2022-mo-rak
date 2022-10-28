@@ -1,15 +1,16 @@
-package com.morak.back.core.application;
+package com.morak.back.notification;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
-import com.morak.back.core.domain.slack.FakeApiReceiver;
-import com.morak.back.core.domain.slack.FormattableData;
-import com.morak.back.core.domain.slack.SlackWebhook;
-import com.morak.back.core.domain.slack.SlackWebhookRepository;
-import com.morak.back.core.ui.dto.SlackWebhookCreateRequest;
-import com.morak.back.core.util.MessageFormatter;
+import com.morak.back.notification.domain.slack.FakeApiReceiver;
+import com.morak.back.notification.domain.slack.FormattableData;
+import com.morak.back.notification.domain.slack.SlackWebhook;
+import com.morak.back.notification.domain.slack.SlackWebhookRepository;
+import com.morak.back.notification.application.dto.SlackWebhookCreateRequest;
+import com.morak.back.notification.util.MessageFormatter;
+import com.morak.back.notification.application.WebhookService;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.support.ServiceTest;
@@ -23,27 +24,27 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @ServiceTest
-class NotificationServiceTest {
+class WebhookServiceTest {
 
     private final FakeApiReceiver receiver;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final SlackWebhookRepository slackWebhookRepository;
-    private final NotificationService notificationService;
+    private final WebhookService webhookService;
 
     @Autowired
-    public NotificationServiceTest(
+    public WebhookServiceTest(
             FakeApiReceiver receiver,
             TeamRepository teamRepository,
             TeamMemberRepository teamMemberRepository,
             SlackWebhookRepository slackWebhookRepository,
-            NotificationService notificationService
+            WebhookService webhookService
     ) {
         this.receiver = receiver;
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.slackWebhookRepository = slackWebhookRepository;
-        this.notificationService = notificationService;
+        this.webhookService = webhookService;
     }
 
     private Team team;
@@ -62,7 +63,7 @@ class NotificationServiceTest {
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
 
         // when
-        Long webhookId = notificationService.saveSlackWebhook(team.getCode(), member.getId(), request);
+        Long webhookId = webhookService.saveSlackWebhook(team.getCode(), member.getId(), request);
 
         // then
         assertThat(webhookId).isNotNull();
@@ -80,7 +81,7 @@ class NotificationServiceTest {
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
 
         // when
-        Long webhookId = notificationService.saveSlackWebhook(team.getCode(), member.getId(), request);
+        Long webhookId = webhookService.saveSlackWebhook(team.getCode(), member.getId(), request);
 
         // then
         assertThat(webhookId).isNotEqualTo(savedWebhook.getId());
@@ -99,7 +100,7 @@ class NotificationServiceTest {
 
         // then
         assertThatThrownBy(
-                () -> notificationService.saveSlackWebhook(team.getCode(), otherMember.getId(), request)
+                () -> webhookService.saveSlackWebhook(team.getCode(), otherMember.getId(), request)
         ).isInstanceOf(TeamAuthorizationException.class);
     }
 
@@ -110,7 +111,7 @@ class NotificationServiceTest {
         Poll poll = pollRepository.findByCode("testcode").orElseThrow();
 
         // when
-        notificationService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(poll)));
+        webhookService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(poll)));
 
         // then
         String message = receiver.getMessage();
