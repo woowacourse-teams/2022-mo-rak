@@ -7,6 +7,7 @@ import { Group } from '../../../../types/group';
 import { EditRolesRequest } from '../../../../types/role';
 import { AxiosError } from 'axios';
 import RoleMainButtons from '../RoleMainButtons/RoleMainButtons';
+import useModal from '../../../../hooks/useModal';
 
 type Props = {
   onClickAllocateRolesButton: () => void;
@@ -15,15 +16,7 @@ type Props = {
 function RoleMainProgress({ onClickAllocateRolesButton }: Props) {
   const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [roles, setRoles] = useState<EditRolesRequest['roles']>([]);
-  const [isRoleEditModalVisible, setIsRoleEditModalVisible] = useState(false);
-
-  const handleCloseRoleEditModal = () => {
-    setIsRoleEditModalVisible(false);
-  };
-
-  const handleOpenRoleEditModal = () => {
-    setIsRoleEditModalVisible(true);
-  };
+  const [isRoleEditModalVisible, handleOpenRoleEditModal, handleCloseRoleEditModal] = useModal();
 
   const fetchRoles = async () => {
     try {
