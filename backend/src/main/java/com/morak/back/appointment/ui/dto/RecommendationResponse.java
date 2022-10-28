@@ -1,7 +1,7 @@
 package com.morak.back.appointment.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.morak.back.appointment.domain.RankRecommendation;
+import com.morak.back.appointment.domain.recommend.RankRecommendation;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.ui.dto.MemberResponse;
 import java.time.LocalDateTime;
@@ -24,25 +24,28 @@ public class RecommendationResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mma", locale = "en_US")
     private LocalDateTime recommendEndDateTime;
 
-    // TODO: 2022/07/27 기존의 MemberResponse를 쓰기 위해 memberId를 id로 변경해서 사용하고 있음!
     private List<MemberResponse> availableMembers;
 
     private List<MemberResponse> unavailableMembers;
 
-    public static RecommendationResponse from(RankRecommendation rankRecommendation) {
+    public static RecommendationResponse of(RankRecommendation recommendation, List<Member> members) {
         return new RecommendationResponse(
-                rankRecommendation.getRank(),
-                rankRecommendation.getDateTimePeriod().getStartDateTime(),
-                rankRecommendation.getDateTimePeriod().getEndDateTime(),
-                toMemberResponses(rankRecommendation.getAvailableMembers()),
-                toMemberResponses(rankRecommendation.getUnavailableMembers())
+                recommendation.getRank(),
+                recommendation.getStartDateTime(),
+                recommendation.getEndDateTime(),
+                recommendation.getAvailableMembers().stream()
+                        .map(memberId -> MemberResponse.from(findMember(memberId, members)))
+                        .collect(Collectors.toList()),
+                recommendation.getUnavailableMembers().stream()
+                        .map(memberId -> MemberResponse.from(findMember(memberId, members)))
+                        .collect(Collectors.toList())
         );
     }
 
-    private static List<MemberResponse> toMemberResponses(List<Member> members) {
-        return members
-                .stream()
-                .map(MemberResponse::from)
-                .collect(Collectors.toList());
+    private static Member findMember(Long memberId, List<Member> members) {
+        return members.stream()
+                .filter(member -> memberId.equals(member.getId()))
+                .findAny()
+                .orElseThrow();
     }
 }

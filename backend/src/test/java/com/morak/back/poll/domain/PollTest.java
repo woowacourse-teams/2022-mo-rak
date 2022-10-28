@@ -1,17 +1,26 @@
 package com.morak.back.poll.domain;
 
+import static com.morak.back.poll.AuthFixture.createMember;
+import static com.morak.back.poll.AuthFixture.createTeam;
+import static com.morak.back.poll.DateTimeFixture.TIME_OF_2022_05_12_12_00;
+import static com.morak.back.poll.DateTimeFixture.TIME_OF_2022_05_12_12_30;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.Assertions.entry;
 
+import com.morak.back.core.domain.menu.ClosedAt;
+import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.exception.AuthorizationException;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.poll.exception.PollAuthorizationException;
+import com.morak.back.core.exception.DomainLogicException;
+import com.morak.back.poll.domain.Poll.PollBuilder;
 import com.morak.back.poll.exception.PollDomainLogicException;
+import com.morak.back.poll.exception.PollItemNotFoundException;
 import com.morak.back.team.domain.Team;
-import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +28,15 @@ import org.junit.jupiter.api.Test;
 
 class PollTest {
 
-    private Team team;
-    private Member member;
+    private final Team team = createTeam(1L, "모락", "12345678");
+    private final Member member = createMember(1L, "ellieOAuthId", "엘리",
+            "https://avatars.githubusercontent.com/u/79205414?v=4");
+    private final Member otherMember = createMember(2L, "edenOAuthId", "에덴",
+            "https://avatars.githubusercontent.com/u/79205414?v=4");
+    private final String descriptionA = "삼겹살이 젤루 맛남!";
+    private final String descriptionB = "꼬소한 회가 좋아!";
+    private final String descriptionC = "우리팀 사람들이 좋아함!";
+
     private Poll poll;
     private PollItem itemA;
     private PollItem itemB;
@@ -28,161 +44,126 @@ class PollTest {
 
     @BeforeEach
     void setUp() {
-        team = Team.builder()
-                .id(1L)
-                .name("team1")
-                .code(Code.generate(length -> "abcd1234")).build();
-        member = Member.builder()
-                .id(1L)
-                .oauthId("12345678")
-                .name("ellie")
-                .profileUrl("http://ellie-profile.com")
-                .build();
-        poll = Poll.builder()
-                .id(1L)
-                .team(team)
-                .host(member)
-                .title("title")
-                .allowedPollCount(2)
-                .isAnonymous(true)
-                .status(PollStatus.OPEN)
-                .closedAt(LocalDateTime.now().plusDays(1L))
-                .code(Code.generate(length -> "ABCD1234"))
-                .build();
         itemA = PollItem.builder()
                 .id(1L)
-                .poll(poll)
-                .subject("sub1")
+                .subject("삼겹살")
                 .build();
         itemB = PollItem.builder()
                 .id(2L)
-                .poll(poll)
-                .subject("sub2")
+                .subject("회")
                 .build();
         itemC = PollItem.builder()
                 .id(3L)
-                .poll(poll)
-                .subject("sub3")
+                .subject("이자카야")
                 .build();
-        poll.addItem(itemA);
-        poll.addItem(itemB);
-        poll.addItem(itemC);
+        poll = defaultPollBuilder()
+                .build();
     }
 
     @Test
-    void POJO객체의_count는_항상_0이다() {
-        // when
-        Integer count = poll.getCount();
+    void 투표_생성시_마감_시간이_현재보다_이전이면_예외를_던진다() {
+        // when & then
+        assertThatThrownBy(() -> defaultPollBuilder()
+                .closedAt(new ClosedAt(TIME_OF_2022_05_12_12_00, TIME_OF_2022_05_12_12_30))
+                .build())
+                .isInstanceOf(DomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.PAST_CLOSED_TIME_ERROR);
+    }
 
-        // then
-        assertThat(count).isEqualTo(0);
+    @Test
+    void 투표_생성시_투표_항목_개수가_허용_개수보다_적으면_예외를_던진다() {
+        // when & then
+        assertThatThrownBy(() -> poll = defaultPollBuilder()
+                .allowedCount(4)
+                .build())
+                .isInstanceOf(PollDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.POLL_ITEM_COUNT_OUT_OF_RANGE_ERROR);
     }
 
     @Test
     void 투표를_진행한다() {
         // given
-        Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
-        String description1 = "거의_다_왔어요!";
-        String description2 = "힘내!";
-        mappedItemAndDescription.put(itemB, description1);
-        mappedItemAndDescription.put(itemC, description2);
+        Map<PollItem, String> selectData = new HashMap<>();
+        selectData.put(itemA, descriptionA);
+        selectData.put(itemC, descriptionC);
 
         // when
-        poll.doPoll(member, mappedItemAndDescription);
+        poll.doPoll(member.getId(), selectData);
 
         // then
         Assertions.assertAll(
-                () -> assertThat(itemA.getPollResults()).hasSize(0),
-                () -> assertThat(itemB.getPollResults()).extracting("member", "description")
-                        .containsExactly(tuple(member, description1)),
-                () -> assertThat(itemC.getPollResults()).extracting("member", "description")
-                        .containsExactly(tuple(member, description2))
+                () -> assertThat(itemA.getSelectMembers()).containsExactly(entry(member.getId(), descriptionA)),
+                () -> assertThat(itemB.getSelectMembers()).hasSize(0),
+                () -> assertThat(itemC.getSelectMembers()).containsExactly(entry(member.getId(), descriptionC))
         );
     }
 
     @Test
     void 재투표를_진행한다() {
         // given
-        Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
-        mappedItemAndDescription.put(itemB, "거의_다왔어요!");
-        mappedItemAndDescription.put(itemC, "힘내!");
-        poll.doPoll(member, mappedItemAndDescription);
-
-        Map<PollItem, String> reMappedItemAndDescription = new HashMap<>();
-        String description1 = "화장실_다녀오세요.";
-        String description2 = "거의_다왔어요!";
-        reMappedItemAndDescription.put(itemA, description1);
-        reMappedItemAndDescription.put(itemB, description2);
+        Map<PollItem, String> selectData1 = new HashMap<>();
+        selectData1.put(itemA, descriptionA);
+        selectData1.put(itemC, descriptionC);
+        poll.doPoll(member.getId(), selectData1);
 
         // when
-        poll.doPoll(member, reMappedItemAndDescription);
+        Map<PollItem, String> selectData2 = new HashMap<>();
+        selectData2.put(itemB, descriptionB);
+        poll.doPoll(member.getId(), selectData2);
 
         // then
         Assertions.assertAll(
-                () -> assertThat(itemA.getPollResults()).extracting("member", "description")
-                        .containsExactly(tuple(member, description1)),
-                () -> assertThat(itemB.getPollResults()).extracting("member", "description")
-                        .containsExactly(tuple(member, description2)),
-                () -> assertThat(itemC.getPollResults()).hasSize(0)
+                () -> assertThat(itemA.getSelectMembers()).isEmpty(),
+                () -> assertThat(itemB.getSelectMembers()).containsExactly(entry(member.getId(), descriptionB)),
+                () -> assertThat(itemC.getSelectMembers()).isEmpty()
         );
     }
 
     @Test
     void 여러명의_멤버가_투표를_진행한다() {
         // given
-        Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
-        String description1 = "거의_다왔어요!";
-        String description2 = "힘내!";
-        mappedItemAndDescription.put(itemB, description1);
-        mappedItemAndDescription.put(itemC, description2);
-        poll.doPoll(member, mappedItemAndDescription);
-
-
-        Member otherMember = Member.builder()
-                .id(2L)
-                .oauthId("otherMem")
-                .name("other")
-                .profileUrl("http://seongwoo-profile.com")
-                .build();
-        Map<PollItem, String> reMappedItemAndDescription = new HashMap<>();
-        String description3 = "화장실_다녀오세요.";
-        String description4 = "거의_다왔어요!";
-        reMappedItemAndDescription.put(itemA, description3);
-        reMappedItemAndDescription.put(itemB, description4);
+        Map<PollItem, String> selectData1 = new HashMap<>();
+        selectData1.put(itemA, descriptionA);
+        selectData1.put(itemC, descriptionC);
+        poll.doPoll(member.getId(), selectData1);
 
         // when
-        poll.doPoll(otherMember, reMappedItemAndDescription);
+        Map<PollItem, String> selectData2 = new HashMap<>();
+        selectData2.put(itemA, descriptionA);
+        selectData2.put(itemB, descriptionB);
+        poll.doPoll(otherMember.getId(), selectData2);
 
         // then
         Assertions.assertAll(
-                () -> assertThat(itemA.getPollResults()).extracting("member", "description")
-                        .containsExactly(tuple(otherMember, description3)),
-                () -> assertThat(itemB.getPollResults()).extracting("member", "description")
-                        .containsExactly(tuple(member, description1), tuple(otherMember, description4)),
-                () -> assertThat(itemC.getPollResults()).extracting("member", "description")
-                        .containsExactly(tuple(member, description2))
+                () -> assertThat(itemA.getSelectMembers()).containsOnly(entry(member.getId(), descriptionA),
+                        entry(otherMember.getId(), descriptionA)),
+                () -> assertThat(itemB.getSelectMembers()).containsExactly(
+                        entry(otherMember.getId(), descriptionB)),
+                () -> assertThat(itemC.getSelectMembers()).containsExactly(entry(member.getId(), descriptionC))
         );
     }
 
     @Test
-    void 가능한_복수_응답_개수를_초과하는_경우_예외를_던진다() {
+    void 투표하는_선택_항목의_개수가_허용_개수보다_많으면_예외를_던진다() {
         // given
-        Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
-        mappedItemAndDescription.put(itemA, "화장실_다녀오세요.");
-        mappedItemAndDescription.put(itemB, "거의_다왔어요!");
-        mappedItemAndDescription.put(itemC, "힘내!!");
+        Map<PollItem, String> selectData = new HashMap<>();
+        selectData.put(itemA, descriptionA);
+        selectData.put(itemB, descriptionB);
+        selectData.put(itemC, descriptionC);
 
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
+        assertThatThrownBy(() -> poll.doPoll(member.getId(), selectData))
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR);
     }
 
     @Test
-    void 응답_개수가_0인_경우_예외를_던진다() {
+    void 투표하는_선택_항목의_개수가_0개인_경우_예외를_던진다() {
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, new HashMap<>()))
+        assertThatThrownBy(() -> poll.doPoll(member.getId(), new HashMap<>()))
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_COUNT_OUT_OF_RANGE_ERROR);
@@ -191,102 +172,78 @@ class PollTest {
     @Test
     void 호스트가_투표를_종료한다() {
         // when
-        poll.close(member);
+        poll.close(member.getId());
 
         // then
-        assertThat(poll.getStatus()).isEqualTo(PollStatus.CLOSED);
+        assertThat(poll.getStatus()).isEqualTo(PollStatus.CLOSED.name());
     }
 
     @Test
     void 호스트가_아닌_멤버가_투표를_종료하는_경우_예외를_던진다() {
+        // when & then
+        assertThatThrownBy(() -> poll.close(otherMember.getId()))
+                .isInstanceOf(AuthorizationException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.HOST_MISMATCHED_ERROR);
+    }
+
+    @Test
+    void 종료된_투표를_종료하는_경우_예외를_던진다() {
         // given
-        Member member = Member.builder()
-                .id(100L)
-                .oauthId("174837283")
-                .name("ohzzi")
-                .profileUrl("http://wrong-member")
-                .build();
+        poll.close(member.getId());
 
         // when & then
-        assertThatThrownBy(() -> poll.close(member))
-                .isInstanceOf(PollAuthorizationException.class)
+        assertThatThrownBy(() -> poll.close(member.getId()))
+                .isInstanceOf(DomainLogicException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_HOST_MISMATCHED_ERROR);
+                .isEqualTo(CustomErrorCode.MENU_ALREADY_CLOSED_ERROR);
     }
 
     @Test
-    void 이미_투표가_종료된_상태에서_다시_종료하는_경우_예외를_던진다() {
+    void 종료된_투표에_투표를_진행하려고_하면_예외를_던진다() {
         // given
-        poll.close(member);
+        poll.close(member.getId());
 
-        // then
-        assertThatThrownBy(() -> poll.close(member))
+        Map<PollItem, String> selectData = new HashMap<>();
+        selectData.put(itemA, descriptionA);
+        selectData.put(itemC, descriptionC);
+
+        // when & then
+        assertThatThrownBy(() -> poll.doPoll(member.getId(), selectData))
                 .isInstanceOf(PollDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_ALREADY_CLOSED_ERROR);
     }
 
     @Test
-    void 종료된_투표에_투표를_하면_예외를_던진다() {
+    void 투표에_속하지_않은_선택항목에_투표하려는_경우_예외를_던진다() {
         // given
-        Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
-        mappedItemAndDescription.put(itemA, "화장실_다녀오세요.");
-        mappedItemAndDescription.put(itemB, "거의_다왔어요!");
-
-        // when
-        poll.close(member);
-
-        // then
-        assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
-                .isInstanceOf(PollDomainLogicException.class)
-                .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_ALREADY_CLOSED_ERROR);
-    }
-
-    @Test
-    void 투표에_속하지_않은_선택항목을_투표하는_경우_예외를_던진다() {
-        // given
-        Poll otherPoll = Poll.builder().build();
-
         PollItem itemD = PollItem.builder()
                 .id(4L)
-                .subject("sub4")
-                .poll(otherPoll)
+                .subject("서브웨이")
                 .build();
-        Map<PollItem, String> mappedItemAndDescription = new HashMap<>();
-        mappedItemAndDescription.put(itemA, "빨강_프링글스는_별로야");
-        mappedItemAndDescription.put(itemD, "프링글스는_초록_프링글스지");
+
+        Map<PollItem, String> selectData = new HashMap<>();
+        selectData.put(itemC, descriptionC);
+        selectData.put(itemD, "");
 
         // when & then
-        assertThatThrownBy(() -> poll.doPoll(member, mappedItemAndDescription))
-                .isInstanceOf(PollAuthorizationException.class)
+        assertThatThrownBy(() -> poll.doPoll(member.getId(), selectData))
+                .isInstanceOf(PollItemNotFoundException.class)
                 .extracting("code")
-                .isEqualTo(CustomErrorCode.POLL_ITEM_MISMATCHED_ERROR);
+                .isEqualTo(CustomErrorCode.POLL_ITEM_NOT_FOUND_ERROR);
     }
 
-    @Test
-    void 멤버가_투표의_호스트면_true를_반환한다() {
-        // when
-        boolean isHost = poll.isHost(member);
-
-        // then
-        assertThat(isHost).isTrue();
-    }
-
-    @Test
-    void 멤버가_투표의_호스트가_아니면_false를_반환한다() {
-        // given
-        Member member = Member.builder()
-                .id(3L)
-                .oauthId("13579246")
-                .name("bkr")
-                .profileUrl("http://bkr-profile.com")
-                .build();
-
-        // when
-        boolean isHost = poll.isHost(member);
-
-        // then
-        assertThat(isHost).isFalse();
+    private PollBuilder defaultPollBuilder() {
+        return Poll.builder()
+                .code(Code.generate(l -> "12345678"))
+                .title("모락 회식 메뉴")
+                .teamCode(Code.generate((s) -> team.getCode()))
+                .hostId(member.getId())
+                .status(MenuStatus.OPEN)
+                .closedAt(new ClosedAt(TIME_OF_2022_05_12_12_30, TIME_OF_2022_05_12_12_00))
+                .pollItems(List.of(itemA, itemB, itemC))
+                .anonymous(false)
+                .allowedCount(2);
     }
 }

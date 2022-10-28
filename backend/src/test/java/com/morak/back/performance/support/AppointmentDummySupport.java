@@ -41,10 +41,10 @@ public class AppointmentDummySupport {
         return Stream.iterate(1L, i -> i <= teamSize, i -> i + 1)
                 .flatMap(teamIndex -> IntStream.rangeClosed(1, appointmentSizePerTeam)
                         .mapToObj(appointmentIndex -> Appointment.builder()
-                                .team(Team.builder().id(teamIndex).build())
-                                .host(MEMBER_ID1)
+//                                .team(Team.builder().id(teamIndex).build())
+//                                .host(MEMBER_ID1)
                                 .title("더미 약속잡기" + appointmentIndex)
-                                .description("더미 약속잡기 설명")
+                                .subTitle("더미 약속잡기 설명")
                                 .startDate(LocalDate.now().plusDays(1))
                                 .endDate(LocalDate.now().plusDays(8))
                                 .startTime(LocalTime.of(16, 0))
@@ -76,12 +76,9 @@ public class AppointmentDummySupport {
                 for (int hour = 16; hour <= 19; hour++) {
                     availableTimes.add(
                             AvailableTime.builder()
-                                    .appointment(appointment)
-                                    .member(MEMBER_ID1)
+//                                    .member(MEMBER_ID1)
                                     .startDateTime(
                                             LocalDateTime.of(LocalDate.now().plusDays(day), LocalTime.of(hour, 0)))
-                                    .endDateTime(
-                                            LocalDateTime.of(LocalDate.now().plusDays(day), LocalTime.of(hour, 30)))
                                     .build()
                     );
                 }

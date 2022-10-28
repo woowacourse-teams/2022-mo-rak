@@ -1,7 +1,10 @@
 package com.morak.back.core.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.exception.DomainLogicException;
 import org.junit.jupiter.api.Test;
 
 class CodeTest {
@@ -28,4 +31,17 @@ class CodeTest {
         // then
         assertThat(code.getCode()).matches("[\\dA-z]{8}");
     }
+
+    @Test
+    void Code의_길이가_8을_넘어가면_예외를_던진다() {
+        // given
+        String randomCode = "ㅋ".repeat(9);
+
+        // when & then
+        assertThatThrownBy(() -> Code.generate((length) -> randomCode))
+                .isInstanceOf(DomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.CODE_LENGTH_ERROR);
+    }
+
 }

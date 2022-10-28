@@ -31,12 +31,12 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @PostMapping
-    public ResponseEntity<Void> createAppointment(@PathVariable String groupCode,
+    public ResponseEntity<AppointmentResponse> createAppointment(@PathVariable String groupCode,
                                                   @Auth Long memberId,
                                                   @Valid @RequestBody AppointmentCreateRequest request) {
-        String appointmentCode = appointmentService.createAppointment(groupCode, memberId, request);
-        return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/appointments/" + appointmentCode))
-                .build();
+        AppointmentResponse response = appointmentService.createAppointment(groupCode, memberId, request);
+        return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/appointments/" + response.getCode()))
+                .body(response);
     }
 
     @GetMapping
@@ -62,10 +62,10 @@ public class AppointmentController {
     }
 
     @GetMapping("/{appointmentCode}/recommendation")
-    public ResponseEntity<List<RecommendationResponse>> recommendAppointments(@PathVariable String groupCode,
-                                                                              @Auth Long memberId,
-                                                                              @PathVariable String appointmentCode) {
-        return ResponseEntity.ok(appointmentService.recommendAvailableTimes(groupCode, memberId, appointmentCode));
+    public ResponseEntity<List<RecommendationResponse>> recommendAppointmentTimes(@PathVariable String groupCode,
+                                                                                  @Auth Long memberId,
+                                                                                  @PathVariable String appointmentCode) {
+        return ResponseEntity.ok(appointmentService.recommendAppointmentTimes(groupCode, memberId, appointmentCode));
     }
 
     @PatchMapping("/{appointmentCode}/close")
@@ -88,7 +88,8 @@ public class AppointmentController {
     public ResponseEntity<AppointmentStatusResponse> findAppointmentStatus(@PathVariable String groupCode,
                                                                            @Auth Long memberId,
                                                                            @PathVariable String appointmentCode) {
-        AppointmentStatusResponse response = appointmentService.findAppointmentStatus(groupCode, memberId, appointmentCode);
+        AppointmentStatusResponse response = appointmentService.findAppointmentStatus(groupCode, memberId,
+                appointmentCode);
         return ResponseEntity.ok(response);
     }
 }

@@ -24,12 +24,16 @@ class OAuthServiceTest {
     private final OAuthService oAuthService;
 
     @Autowired
-    public OAuthServiceTest(MemberRepository memberRepository) {
-        this.oAuthClient = new FakeOAuthClient();
-        this.tokenProvider =
-                new JwtTokenProvider("9875a0b4ee6605257509be56c0c0db8ac7657c56e008b2d0087efece6e0accd8", 3600000L);
+    public OAuthServiceTest(
+            OAuthClient oAuthClient,
+            TokenProvider tokenProvider,
+            MemberRepository memberRepository,
+            OAuthService oAuthService
+    ) {
+        this.oAuthClient = oAuthClient;
+        this.tokenProvider = tokenProvider;
         this.memberRepository = memberRepository;
-        this.oAuthService = new OAuthService(memberRepository, oAuthClient, tokenProvider);
+        this.oAuthService = oAuthService;
     }
 
     @Test

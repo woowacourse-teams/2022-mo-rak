@@ -16,7 +16,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.morak.back.poll.ui.ControllerTest;
+import com.morak.back.ControllerTest;
 import com.morak.back.role.application.RoleService;
 import com.morak.back.role.application.dto.HistoryResponse;
 import com.morak.back.role.application.dto.RoleNameEditRequest;
@@ -26,17 +26,15 @@ import com.morak.back.role.application.dto.RolesResponse;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-@WebMvcTest(RoleController.class)
 class RoleControllerTest extends ControllerTest {
 
     private final String groupCode = "rlgHKPj3";
 
-    @MockBean
+    @Autowired
     private RoleService roleService;
 
     @Test

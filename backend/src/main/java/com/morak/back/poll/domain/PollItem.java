@@ -1,86 +1,122 @@
 package com.morak.back.poll.domain;
 
-import com.morak.back.auth.domain.Member;
-import java.util.ArrayList;
-import java.util.List;
+import com.morak.back.core.support.Generated;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
-import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.MapKeyColumn;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@NoArgsConstructor
 @Getter
-public class PollItem extends BaseEntity {
+@NoArgsConstructor
+@Entity
+public class PollItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    @NotNull(message = "poll 은 null 일 수 없습니다.")
-    private Poll poll;
+    @Embedded
+    private Subject subject;
 
-    @NotBlank(message = "subject 는 blank 일 수 없습니다.")
-    @Size(min = 1, max = 255, message = "투표 항목 주제의 길이는 1~255자여아 합니다.")
-    private String subject;
+    @ElementCollection
+    @CollectionTable(
+            name = "select_member",
+            joinColumns = @JoinColumn(name = "poll_item_id")
+    )
+    @MapKeyColumn(name = "member_id")
+    @Column(name = "description", nullable = false)
+    private Map<Long, Description> selectMembers = new HashMap<>();
 
-    @OneToMany(mappedBy = "pollItem", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PollResult> pollResults = new ArrayList<>();
+    public PollItem(Long id) {
+        this(id, null, new HashMap<>());
+    }
 
     @Builder
-    private PollItem(Long id, Poll poll, String subject) {
+    public PollItem(Long id, String subject) {
+        this(id, new Subject(subject), new HashMap<>());
+    }
+
+    private PollItem(Long id, Subject subject, Map<Long, Description> selectMembers) {
         this.id = id;
-        this.poll = poll;
         this.subject = subject;
-        poll.addItem(this);
+        this.selectMembers = selectMembers;
     }
 
-    public void addPollResult(Member member, String description) {
-        PollResult pollResult = PollResult.builder()
-                .pollItem(this)
-                .member(member)
-                .description(description)
-                .build();
-        pollResults.add(pollResult);
+    public Set<Long> getOnlyMembers() {
+        return selectMembers.keySet();
     }
 
-    public void deletePollResultIfPollMember(Member member) {
-        pollResults.removeIf(pollResult -> pollResult.isSameMember(member));
+    public void addSelectMember(Long memberId, String description) {
+        selectMembers.put(memberId, new Description(description));
     }
 
-    public List<PollResult> getResultsByAnonymous() {
-        if (poll.getIsAnonymous()) {
-            return pollResults.stream()
-                    .map(PollResult::fromAnonymous)
-                    .collect(Collectors.toList());
+    public void remove(Long memberId) {
+        selectMembers.remove(memberId);
+    }
+
+    public int countSelectMembers() {
+        return selectMembers.size();
+    }
+
+    public Boolean isSelectedBy(Long memberId) {
+        return selectMembers.containsKey(memberId);
+    }
+
+    public String getDescriptionFrom(Long memberId) {
+        Optional<Description> description = Optional.ofNullable(selectMembers.get(memberId));
+
+        if (description.isPresent()) {
+            return description.get().getValue();
         }
-        return pollResults;
+
+        return "";
     }
 
-    public Boolean isSelectedBy(Member member) {
-        return pollResults.stream()
-                .anyMatch(result -> result.isSameMember(member));
+    public String getSubject() {
+        return this.subject.getValue();
     }
 
-    public String getDescriptionFrom(Member member) {
-        return pollResults.stream()
-                .filter(result -> result.isSameMember(member))
-                .map(PollResult::getDescription)
-                .findFirst()
-                .orElse("");
+    public Map<Long, String> getSelectMembers() {
+        return this.selectMembers.entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Entry::getKey,
+                        entry -> entry.getValue().getValue()
+                ));
+    }
+
+    @Override
+    @Generated
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || !(o instanceof PollItem)) {
+            return false;
+        }
+        PollItem that = (PollItem) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    @Generated
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

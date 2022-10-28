@@ -1,8 +1,8 @@
 package com.morak.back.core.domain.slack;
 
-import org.springframework.stereotype.Component;
+import com.morak.back.support.FakeBean;
 
-@Component
+@FakeBean
 public class FakeApiReceiver {
 
     private String message;

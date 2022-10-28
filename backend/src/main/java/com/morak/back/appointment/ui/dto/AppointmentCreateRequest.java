@@ -2,9 +2,7 @@ package com.morak.back.appointment.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.morak.back.appointment.domain.Appointment;
-import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.Code;
-import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,7 +21,7 @@ public class AppointmentCreateRequest {
     private String title;
 
     @NotNull
-    private String description;
+    private String subTitle;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -51,12 +49,12 @@ public class AppointmentCreateRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime closedAt;
 
-    public Appointment toAppointment(Team team, Member member, Code code) {
+    public Appointment toAppointment(Code teamCode, Long hostId, Code code, LocalDateTime now) {
         return Appointment.builder()
-                .team(team)
-                .host(member)
+                .teamCode(teamCode)
+                .hostId(hostId)
                 .title(this.title)
-                .description(this.description)
+                .subTitle(this.subTitle)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
                 .startTime(this.startTime)
@@ -65,6 +63,7 @@ public class AppointmentCreateRequest {
                 .durationMinutes(this.durationMinutes)
                 .closedAt(this.closedAt)
                 .code(code)
+                .now(now)
                 .build();
     }
 }

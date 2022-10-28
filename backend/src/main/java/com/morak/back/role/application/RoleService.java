@@ -1,8 +1,6 @@
 package com.morak.back.role.application;
 
-import com.morak.back.auth.domain.Member;
-import com.morak.back.auth.domain.MemberRepository;
-import com.morak.back.auth.exception.MemberNotFoundException;
+import com.morak.back.core.application.AuthorizationService;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.role.application.dto.RoleNameResponses;
 import com.morak.back.role.application.dto.RolesResponse;
@@ -11,13 +9,9 @@ import com.morak.back.role.domain.Role;
 import com.morak.back.role.domain.RoleHistory;
 import com.morak.back.role.domain.RoleRepository;
 import com.morak.back.role.exception.RoleNotFoundException;
-import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamCreateEvent;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
-import com.morak.back.team.domain.TeamRepository;
-import com.morak.back.team.exception.TeamAuthorizationException;
-import com.morak.back.team.exception.TeamNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -31,10 +25,19 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class RoleService {
 
-    private final TeamRepository teamRepository;
-    private final MemberRepository memberRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final RoleRepository roleRepository;
+
+    private final AuthorizationService authorizationService;
+
+    public RoleNameResponses findRoleNames(String teamCode, Long memberId) {
+        return authorizationService.withTeamMemberValidation(
+                () -> {
+                    Role role = findRoleByTeamCode(teamCode);
+                    return RoleNameResponses.from(role.getRoleNames());
+                }, teamCode, memberId
+        );
+    }
 
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -42,59 +45,41 @@ public class RoleService {
         roleRepository.save(new Role(event.getTeamCode()));
     }
 
-    public RoleNameResponses findRoleNames(String teamCode, Long memberId) {
-        Member member = findMemberById(memberId);
-        Team team = findTeamByCode(teamCode);
-        validateMemberInTeam(team, member);
-
-        Role role = findRoleByTeamCode(teamCode);
-        return RoleNameResponses.from(role.getRoleNames());
-    }
-
     public void editRoleNames(String teamCode, Long memberId, List<String> names) {
-        Member member = findMemberById(memberId);
-        Team team = findTeamByCode(teamCode);
-        validateMemberInTeam(team, member);
-
-        Role role = findRoleByTeamCode(teamCode);
-        role.updateNames(names);
+        authorizationService.withTeamMemberValidation(
+                () -> {
+                    Role role = findRoleByTeamCode(teamCode);
+                    role.updateNames(names);
+                    return null;
+                }, teamCode, memberId
+        );
     }
 
     public Long matchRoleAndMember(String teamCode, Long memberId) {
-        Member member = findMemberById(memberId);
-        Team team = findTeamByCode(teamCode);
-        validateMemberInTeam(team, member);
-
-        List<Long> memberIds = findMemberIds(team);
-        Role role = findRoleByTeamCode(teamCode);
-        RoleHistory roleHistory = role.matchMembers(memberIds, new RandomShuffleStrategy());
-        return roleHistory.getId();
+        return authorizationService.withTeamMemberValidation(
+                () -> {
+                    List<Long> memberIds = findMemberIds(teamCode);
+                    Role role = findRoleByTeamCode(teamCode);
+                    RoleHistory roleHistory = role.matchMembers(memberIds, new RandomShuffleStrategy());
+                    return roleHistory.getId();
+                }, teamCode, memberId
+        );
     }
 
-    private List<Long> findMemberIds(Team team) {
-        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeam(team);
+    private List<Long> findMemberIds(String teamCode) {
+        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamCode(teamCode);
         return teamMembers.stream()
                 .map(teamMember -> teamMember.getMember().getId())
                 .collect(Collectors.toList());
     }
 
     public RolesResponse findHistories(String teamCode, Long memberId) {
-        Member member = findMemberById(memberId);
-        Team team = findTeamByCode(teamCode);
-        validateMemberInTeam(team, member);
-
-        Role role = findRoleByTeamCode(teamCode);
-        return RolesResponse.from(role.findAllGroupByDate());
-    }
-
-    private Member findMemberById(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> MemberNotFoundException.of(CustomErrorCode.MEMBER_NOT_FOUND_ERROR, memberId));
-    }
-
-    private Team findTeamByCode(String teamCode) {
-        return teamRepository.findByCode(teamCode)
-                .orElseThrow(() -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode));
+        return authorizationService.withTeamMemberValidation(
+                () -> {
+                    Role role = findRoleByTeamCode(teamCode);
+                    return RolesResponse.from(role.findAllGroupByDate());
+                }, teamCode, memberId
+        );
     }
 
     private Role findRoleByTeamCode(String teamCode) {
@@ -102,12 +87,5 @@ public class RoleService {
                 CustomErrorCode.ROLE_NOT_FOUND_ERROR,
                 teamCode + " 의 팀 코드에 해당하는 역할정하기를 찾을 수 없습니다"
         ));
-    }
-
-    private void validateMemberInTeam(Team team, Member member) {
-        if (!teamMemberRepository.existsByTeamAndMember(team, member)) {
-            throw TeamAuthorizationException.of(CustomErrorCode.TEAM_MEMBER_MISMATCHED_ERROR, team.getId(),
-                    member.getId());
-        }
     }
 }

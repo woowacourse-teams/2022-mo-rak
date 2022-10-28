@@ -17,12 +17,12 @@ import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.domain.PollStatus;
-import com.morak.back.poll.ui.dto.MemberResultResponse;
-import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemResponse;
-import com.morak.back.poll.ui.dto.PollItemResultResponse;
-import com.morak.back.poll.ui.dto.PollResponse;
-import com.morak.back.poll.ui.dto.PollResultRequest;
+import com.morak.back.poll.application.dto.MemberResultResponse;
+import com.morak.back.poll.application.dto.PollCreateRequest;
+import com.morak.back.poll.application.dto.PollItemResponse;
+import com.morak.back.poll.application.dto.PollItemResultResponse;
+import com.morak.back.poll.application.dto.PollResponse;
+import com.morak.back.poll.application.dto.PollResultRequest;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -101,8 +101,6 @@ class PollAcceptanceTest extends AcceptanceTest {
                 Arguments.of(
                         new PollCreateRequest(" ", 1, false, LocalDateTime.now().plusDays(1), List.of("항목1", "항목2"))),
                 Arguments.of(new PollCreateRequest("투표_제목", null, false, LocalDateTime.now().plusDays(1),
-                        List.of("항목1", "항목2"))),
-                Arguments.of(new PollCreateRequest("투표_제목", 1, null, LocalDateTime.now().plusDays(1),
                         List.of("항목1", "항목2"))),
                 Arguments.of(new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().minusDays(1),
                         List.of("항목1", "항목2"))),
@@ -278,8 +276,6 @@ class PollAcceptanceTest extends AcceptanceTest {
         PollCreateRequest request = new PollCreateRequest("투표_제목", 1, false, LocalDateTime.now().plusDays(1),
                 List.of("항목1", "항목2"));
         String pollLocation = 투표_생성을_요청한다(teamLocation, request, token).header("Location");
-        List<PollItemResponse> pollItemResponses = toObjectList(투표_선택항목_조회를_요청한다(pollLocation, token),
-                PollItemResponse.class);
 
         List<PollResultRequest> pollResultRequests = List.of(new PollResultRequest(0L, "집 보내줘"));
 
@@ -314,7 +310,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .ignoringFields("id", "createdAt")
                         .isEqualTo(
                                 List.of(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
-                                        request.getIsAnonymous(),
+                                        request.getAnonymous(),
                                         PollStatus.OPEN.name(), null, request.getClosedAt().withNano(0), pollCode, true, 0))
                         )
         );
@@ -357,7 +353,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("id", "createdAt")
                         .isEqualTo(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
-                                request.getIsAnonymous(),
+                                request.getAnonymous(),
                                 PollStatus.OPEN.name(), null, request.getClosedAt().withNano(0), pollCode, true, 0))
         );
     }
@@ -395,7 +391,7 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("id", "createdAt")
                         .isEqualTo(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
-                                request.getIsAnonymous(),
+                                request.getAnonymous(),
                                 PollStatus.OPEN.name(), null, request.getClosedAt().withNano(0), pollCode, true, 2))
         );
     }
@@ -555,7 +551,7 @@ class PollAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표_결과_조회를_요청한다(pollLocation, token);
         List<PollItemResultResponse> pollItemResultResponses = toObjectList(response, PollItemResultResponse.class);
 
-        Member anonymous = Member.getAnonymous();
+        Member anonymous = Member.getAnonymousMember();
         // then
         Assertions.assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),

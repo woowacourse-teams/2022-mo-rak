@@ -2,13 +2,11 @@ package com.morak.back.auth.application;
 
 import com.morak.back.auth.application.dto.OAuthAccessTokenResponse;
 import com.morak.back.auth.application.dto.OAuthMemberInfoResponse;
-import org.springframework.context.annotation.Primary;
+import com.morak.back.support.FakeBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
-@Component
-@Primary
+@FakeBean
 public class FakeOAuthClient implements OAuthClient {
 
     public static final String ACCESS_TOKEN = "FAKE-ACCESS-TOKEN";

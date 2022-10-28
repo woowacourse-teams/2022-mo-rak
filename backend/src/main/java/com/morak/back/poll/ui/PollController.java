@@ -2,11 +2,11 @@ package com.morak.back.poll.ui;
 
 import com.morak.back.auth.support.Auth;
 import com.morak.back.poll.application.PollService;
-import com.morak.back.poll.ui.dto.PollCreateRequest;
-import com.morak.back.poll.ui.dto.PollItemResponse;
-import com.morak.back.poll.ui.dto.PollItemResultResponse;
-import com.morak.back.poll.ui.dto.PollResponse;
-import com.morak.back.poll.ui.dto.PollResultRequest;
+import com.morak.back.poll.application.dto.PollCreateRequest;
+import com.morak.back.poll.application.dto.PollItemResponse;
+import com.morak.back.poll.application.dto.PollItemResultResponse;
+import com.morak.back.poll.application.dto.PollResponse;
+import com.morak.back.poll.application.dto.PollResultRequest;
 import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
@@ -32,11 +32,12 @@ public class PollController {
     private final PollService pollService;
 
     @PostMapping
-    public ResponseEntity<Void> createPoll(@PathVariable String groupCode,
+    public ResponseEntity<PollResponse> createPoll(@PathVariable String groupCode,
                                            @Auth Long memberId,
                                            @Valid @RequestBody PollCreateRequest request) {
-        String pollCode = pollService.createPoll(groupCode, memberId, request);
-        return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/polls/" + pollCode)).build();
+        PollResponse pollResponse = pollService.createPoll(groupCode, memberId, request);
+        return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/polls/" + pollResponse.getCode()))
+                .body(pollResponse);
     }
 
     @PutMapping("/{pollCode}")
@@ -72,7 +73,7 @@ public class PollController {
     public ResponseEntity<List<PollItemResultResponse>> findPollResult(@PathVariable String groupCode,
                                                                        @Auth Long memberId,
                                                                        @PathVariable String pollCode) {
-        return ResponseEntity.ok(pollService.findPollItemResults(groupCode, memberId, pollCode));
+        return ResponseEntity.ok(pollService.findPollResults(groupCode, memberId, pollCode));
     }
 
     @DeleteMapping("/{pollCode}")

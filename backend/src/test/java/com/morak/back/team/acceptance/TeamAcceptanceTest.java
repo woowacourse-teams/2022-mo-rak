@@ -567,7 +567,7 @@ public class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     void 없는_그룹_탈퇴_요청을_보내면_NOT_FOUND가_반환된다() {
         // given
-        String otherToken = tokenProvider.createToken(String.valueOf(0L));
+        String otherToken = tokenProvider.createToken(String.valueOf(5L));
         String invalidTeamCode = "invalidTeamCode";
 
         // when

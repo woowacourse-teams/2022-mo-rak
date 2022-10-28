@@ -1,17 +1,19 @@
 package com.morak.back.poll.domain;
 
+import static com.morak.back.poll.DateTimeFixture.TIME_OF_2022_05_12_12_00;
+import static com.morak.back.poll.DateTimeFixture.TIME_OF_2022_05_12_12_30;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.morak.back.core.domain.menu.ClosedAt;
+import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.auth.domain.Member;
+import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
 import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
-import java.time.LocalDateTime;
+import com.morak.back.team.domain.TeamRepository;
 import java.util.List;
-import java.util.Optional;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,158 +21,79 @@ import org.springframework.beans.factory.annotation.Autowired;
 class PollRepositoryTest {
 
     @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private TeamRepository teamRepository;
+
+    @Autowired
     private PollRepository pollRepository;
 
-    @Autowired
-    private PollItemRepository pollItemRepository;
+    private Team team;
+    private Member member;
+    private Poll poll;
 
-    @Autowired
-    private PollResultRepository pollResultRepository;
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    // TODO: 2022/08/14 data.sql의존
-    @Test
-    void 투표를_저장한다() {
-        // given
-        Team team = Team.builder()
-                .id(1L)
-                .build();
-        Member member = Member.builder()
-                .id(1L)
-                .build();
-        Poll poll = Poll.builder()
-                .team(team)
-                .host(member)
-                .title("test-title")
-                .isAnonymous(false)
-                .allowedPollCount(1)
-                .status(PollStatus.OPEN)
-                .closedAt(LocalDateTime.now().plusDays(1L))
-                .code(Code.generate(length -> "unique99"))
-                .build();
-
-        // when
-        Poll savedPoll = pollRepository.save(poll);
-
-        // then
-        assertThat(savedPoll)
-                .usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(poll);
-    }
-
-    // TODO: 2022/08/11 data.sql 의존 제거
-    @Test
-    void 팀으로_투표_목록을_조회한다() {
-        // given
-        Team team = Team.builder()
-                .id(1L)
-                .build();
-
-        // when
-        List<Poll> polls = pollRepository.findAllByTeam(team);
-
-        // then
-        assertThat(polls).hasSize(1);
-    }
-
-    // TODO: 2022/08/11 data.sql 의존
-    @Test
-    void 투표_단건을_조회한다() {
-        // given
-        Poll poll = pollRepository.findByCode("testcode").orElseThrow();
-
-        // when & then
-        Assertions.assertAll(
-                () -> assertThat(poll.getTitle()).isEqualTo("test-poll-title"),
-                () -> assertThat(poll.getHost().getId()).isEqualTo(1L)
-        );
-    }
-
-    // TODO: 2022/08/11 data.sql 의존
-    @Test
-    void 잘못된_팀_code로_조회할_경우_null을_반환한다() {
-        // given
-        Optional<Poll> poll = pollRepository.findByCode("chaleeleeeee");
-
-        // when & then
-        assertThat(poll).isEmpty();
+    @BeforeEach
+    void setUp() {
+        team = saveTeam();
+        member = saveMember();
+        poll = savePoll();
     }
 
     @Test
-    void 포뮬라를_적용해_count를_불러온다() {
-        // given
-        Team team = Team.builder()
-                .id(1L)
-                .build();
-        Member member = Member.builder()
-                .id(1L)
-                .build();
-
-        Poll poll = Poll.builder()
-                .team(team)
-                .host(member)
-                .title("테스트 투표")
-                .isAnonymous(false)
-                .allowedPollCount(1)
-                .status(PollStatus.OPEN)
-                .closedAt(LocalDateTime.now().plusDays(1L))
-                .code(Code.generate(length -> "unique99"))
-                .build();
-        pollRepository.save(poll);
-
-        PollItem 테스트_선택_항목1 = PollItem.builder()
-                .poll(poll)
-                .subject("테스트 선택 항목1")
-                .build();
-        PollItem 테스트_선택_항목2 = PollItem.builder()
-                .poll(poll)
-                .subject("테스트 선택 항목2")
-                .build();
-        pollItemRepository.saveAll(List.of(테스트_선택_항목1, 테스트_선택_항목2));
-
-        PollResult 테스트_선택_항목1에_대한_이유 = PollResult.builder()
-                .pollItem(테스트_선택_항목1)
-                .member(member)
-                .description("테스트 선택 항목1에 대한 이유")
-                .build();
-        pollResultRepository.saveAll(List.of(테스트_선택_항목1에_대한_이유));
-
-        entityManager.detach(poll);
-
+    void 코드로_투표를_불러온다() {
         // when
         Poll foundPoll = pollRepository.findByCode(poll.getCode()).orElseThrow();
 
         // then
-        assertThat(foundPoll.getCount()).isEqualTo(1);
+        assertThat(foundPoll).isEqualTo(poll);
     }
 
     @Test
-    void 종료할_투표를_가져온다() {
-        // given
-        LocalDateTime now = LocalDateTime.now();
-
+    void 코드로_투표를_불러온다_fetched() {
         // when
-        List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(now);
+        Poll foundPoll = pollRepository.findFetchedByCode(poll.getCode()).orElseThrow();
 
         // then
-        assertThat(pollsToBeClosed).hasSize(1);
+        assertThat(foundPoll).isEqualTo(poll);
     }
 
-    @Test
-    void ID목록으로_투표를_종료한다() {
-        // given
-        Poll poll = pollRepository.findByCode("testcode").orElseThrow();
+    private Team saveTeam() {
+        return teamRepository.save(
+                Team.builder()
+                        .code(Code.generate(l -> "teamcode"))
+                        .name("모락")
+                        .build()
+        );
+    }
 
-        // when
-        pollRepository.closeAll(List.of(poll));
-        entityManager.flush();
-        entityManager.detach(poll);
+    private Member saveMember() {
+        return memberRepository.save(
+                Member.builder()
+                        .oauthId("test-oauth-id")
+                        .name("엘리")
+                        .profileUrl("http://test-profile.png")
+                        .build()
+        );
+    }
 
-        // then
-        assertThat(pollRepository.findByCode("testcode").get().getStatus())
-                .isEqualTo(PollStatus.CLOSED);
+    private Poll savePoll() {
+        return pollRepository.save(
+                Poll.builder()
+                        .code(Code.generate(l -> "12345678"))
+                        .title("모락 회식 메뉴")
+                        .teamCode(Code.generate((s) -> team.getCode()))
+                        .hostId(member.getId())
+                        .status(MenuStatus.OPEN)
+                        .closedAt(new ClosedAt(TIME_OF_2022_05_12_12_30, TIME_OF_2022_05_12_12_00))
+                        .pollItems(List.of(
+                                PollItem.builder().subject("삼겹살").build(),
+                                PollItem.builder().subject("회").build(),
+                                PollItem.builder().subject("이자카야").build()
+                        ))
+                        .allowedCount(2)
+                        .anonymous(false)
+                        .build()
+        );
     }
 }
