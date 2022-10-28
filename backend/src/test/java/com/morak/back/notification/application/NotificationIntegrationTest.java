@@ -4,8 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.appointment.application.AppointmentService;
 import com.morak.back.appointment.domain.Appointment;
-import com.morak.back.appointment.domain.AppointmentClosedEvent;
-import com.morak.back.appointment.domain.AppointmentOpenEvent;
+import com.morak.back.appointment.domain.AppointmentEvent;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
@@ -60,7 +59,7 @@ public class NotificationIntegrationTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(appointment.getId()).isNotNull(),
-                () -> assertThat(eventListener.hasEvent(AppointmentOpenEvent.class)).isTrue()
+                () -> assertThat(eventListener.hasEvent(AppointmentEvent.class)).isTrue()
         );
     }
 
@@ -72,7 +71,7 @@ public class NotificationIntegrationTest {
         Appointment appointment = appointmentRepository.findByCode(APPOINTMENT_CODE).orElseThrow();
         Assertions.assertAll(
                 () -> assertThat(appointment.isClosed()).isTrue(),
-                () -> assertThat(eventListener.hasEvent(AppointmentClosedEvent.class)).isTrue()
+                () -> assertThat(eventListener.hasEvent(AppointmentEvent.class)).isTrue()
         );
     }
 }

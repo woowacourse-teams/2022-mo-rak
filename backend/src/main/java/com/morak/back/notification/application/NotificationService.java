@@ -1,8 +1,7 @@
 package com.morak.back.notification.application;
 
 import com.morak.back.appointment.domain.Appointment;
-import com.morak.back.appointment.domain.AppointmentClosedEvent;
-import com.morak.back.appointment.domain.AppointmentOpenEvent;
+import com.morak.back.appointment.domain.AppointmentEvent;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.core.domain.MenuEvent;
 import com.morak.back.core.domain.menu.Menu;
@@ -29,28 +28,25 @@ public class NotificationService {
 
     private final SlackWebhookRepository slackWebhookRepository;
     private final TeamRepository teamRepository;
-    private final AppointmentRepository appointmentRepository;
-    private final PollRepository pollRepository;
     private final SlackClient slackClient;
 
-    @TransactionalEventListener
+    @TransactionalEventListener(condition = "#{!event.closed}")
     @Async
-    public void notifyTeamAppointmentOpen(AppointmentOpenEvent event) {
+    public void notifyTeamAppointmentOpen(AppointmentEvent event) {
         // todo : 비동기일때 예외 발생시 로그가 찍히는지 확인
         notifyTeam(event, NotificationMessageRequest::fromAppointmentOpen);
     }
 
-    @TransactionalEventListener
+    @TransactionalEventListener(condition = "#{event.closed}")
     @Async
-    public void notifyTeamAppointmentClosed(AppointmentClosedEvent event) {
+    public void notifyTeamAppointmentClosed(AppointmentEvent event) {
         notifyTeam(event, NotificationMessageRequest::fromAppointmentClosed);
     }
 
-    private void notifyTeam(MenuEvent event, BiFunction<Menu, Team, NotificationMessageRequest> requestBiFunction) {
+    private void notifyTeam(MenuEvent event, BiFunction<MenuEvent, Team, NotificationMessageRequest> requestBiFunction) {
         SlackWebhook webhook = slackWebhookRepository.findByTeamCode(event.getTeamCode()).orElseThrow();
-        Appointment appointment = appointmentRepository.findByCode(event.getCode()).orElseThrow();
         Team team = teamRepository.findByCode(event.getTeamCode()).orElseThrow();
-        NotificationMessageRequest request = requestBiFunction.apply(appointment.getMenu(), team);
+        NotificationMessageRequest request = requestBiFunction.apply(event, team);
         slackClient.notifyMessage(webhook, request);
     }
 

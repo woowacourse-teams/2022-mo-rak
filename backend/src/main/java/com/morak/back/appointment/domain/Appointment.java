@@ -70,7 +70,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
         this.timePeriod = new TimePeriod(startTime, endTime);
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
         validateDurationAndPeriod(this.timePeriod, this.durationMinutes);
-        registerEvent(AppointmentOpenEvent.from(menu));
+        registerEvent(AppointmentEvent.from(menu));
     }
 
     private void validateDurationAndPeriod(TimePeriod timePeriod, DurationMinutes durationMinutes) {
@@ -148,7 +148,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
 
     public void close(Long memberId) {
         menu.close(memberId);
-        registerEvent(AppointmentClosedEvent.from(menu));
+        registerEvent(AppointmentEvent.from(menu));
     }
 
     public boolean isHost(Long memberId) {

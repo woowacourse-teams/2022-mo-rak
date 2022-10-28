@@ -1,5 +1,6 @@
 package com.morak.back.notification.application.dto;
 
+import com.morak.back.core.domain.MenuEvent;
 import com.morak.back.core.domain.menu.Menu;
 import com.morak.back.notification.util.MessageFormatter;
 import com.morak.back.team.domain.Team;
@@ -15,19 +16,19 @@ public class NotificationMessageRequest {
         this.message = message;
     }
 
-    public static NotificationMessageRequest fromAppointmentOpen(Menu menu, Team team) {
+    public static NotificationMessageRequest fromAppointmentOpen(MenuEvent event, Team team) {
         return new NotificationMessageRequest(String.join("\n",
-                MessageFormatter.formatOpenAnnouncement(team.getName(), APPOINTMENT_TYPE, menu.getCode()),
-                MessageFormatter.formatTime(menu.getClosedAt()),
-                MessageFormatter.formatProgressPage(menu.getTeamCode(), APPOINTMENT_TYPE, menu.getCode())
+                MessageFormatter.formatOpenAnnouncement(team.getName(), APPOINTMENT_TYPE, event.getCode()),
+                MessageFormatter.formatTime(event.getClosedAt()),
+                MessageFormatter.formatProgressPage(event.getTeamCode(), APPOINTMENT_TYPE, event.getCode())
         ));
     }
 
-    public static NotificationMessageRequest fromAppointmentClosed(Menu menu, Team team) {
+    public static NotificationMessageRequest fromAppointmentClosed(MenuEvent event, Team team) {
         return new NotificationMessageRequest(String.join("\n",
-                MessageFormatter.formatClosedAnnouncement(team.getName(), APPOINTMENT_TYPE, menu.getCode()),
-                MessageFormatter.formatTime(menu.getClosedAt()),
-                MessageFormatter.formatResultPage(menu.getTeamCode(), APPOINTMENT_TYPE, menu.getCode())
+                MessageFormatter.formatClosedAnnouncement(team.getName(), APPOINTMENT_TYPE, event.getCode()),
+                MessageFormatter.formatTime(event.getClosedAt()),
+                MessageFormatter.formatResultPage(event.getTeamCode(), APPOINTMENT_TYPE, event.getCode())
         ));
     }
 

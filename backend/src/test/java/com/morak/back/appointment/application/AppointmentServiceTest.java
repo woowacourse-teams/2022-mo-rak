@@ -368,4 +368,14 @@ class AppointmentServiceTest {
         // then
         assertThat(status.getStatus()).isEqualTo(MenuStatus.CLOSED.name());
     }
+
+    @Test
+    void 약속잡기_목록을_마감한다() {
+        // given
+        appointmentRepository.save(DEFAULT_BUILDER.closedAt(systemTime.now()).now(systemTime.now().minusDays(1)).build());
+
+        // when
+        appointmentService.closeAllBeforeNow();
+        // then
+    }
 }
