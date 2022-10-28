@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import useMenuDispatchContext from '../hooks/useMenuDispatchContext';
+import useNavigationBarDispatchContext from '../hooks/useNavigationBarDispatchContext';
 import { Menu } from '../types/menu';
 
 type Props = {
@@ -8,11 +8,11 @@ type Props = {
 };
 
 function MenuRoute({ menu }: Props) {
-  const menuDispatch = useMenuDispatchContext();
+  const navigationBarDispatch = useNavigationBarDispatchContext();
 
   useEffect(() => {
-    menuDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
-  }, []);
+    navigationBarDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
+  }, [menu]);
 
   return <Outlet />;
 }

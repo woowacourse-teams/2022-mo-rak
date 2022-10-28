@@ -1,7 +1,7 @@
 import { createContext, useReducer, PropsWithChildren, Dispatch } from 'react';
 import { Menu } from '../types/menu';
 
-type MenuState = {
+type NavigationBarState = {
   activeMenu: Menu;
   isDrawerVisible: boolean;
   isGroupsModalVisible: boolean;
@@ -26,7 +26,7 @@ type ToggleGroupsModalAction = {
   type: 'TOGGLE_GROUPS_MODAL';
 };
 
-type MenuAction =
+type NavigationBarAction =
   | SetActiveMenuAction
   | SetIsGroupsModalVisibleAction
   | ToggleGroupsModalAction
@@ -38,7 +38,10 @@ const initialState = {
   isGroupsModalVisible: false
 } as const;
 
-function menuReducer(state: MenuState, action: MenuAction): MenuState {
+function navigationBarReducer(
+  state: NavigationBarState,
+  action: NavigationBarAction
+): NavigationBarState {
   switch (action.type) {
     case 'SET_ACTIVE_MENU':
       return {
@@ -65,17 +68,19 @@ function menuReducer(state: MenuState, action: MenuAction): MenuState {
   }
 }
 
-const MenuContext = createContext<MenuState | null>(null);
-const MenuDispatchContext = createContext<Dispatch<MenuAction> | null>(null);
+const NavigationBarContext = createContext<NavigationBarState | null>(null);
+const NavigationBarDispatchContext = createContext<Dispatch<NavigationBarAction> | null>(null);
 
-function MenuProvider({ children }: PropsWithChildren) {
-  const [state, dispatch] = useReducer(menuReducer, initialState);
+function NavigationBarProvider({ children }: PropsWithChildren) {
+  const [state, dispatch] = useReducer(navigationBarReducer, initialState);
 
   return (
-    <MenuContext.Provider value={state}>
-      <MenuDispatchContext.Provider value={dispatch}>{children}</MenuDispatchContext.Provider>
-    </MenuContext.Provider>
+    <NavigationBarContext.Provider value={state}>
+      <NavigationBarDispatchContext.Provider value={dispatch}>
+        {children}
+      </NavigationBarDispatchContext.Provider>
+    </NavigationBarContext.Provider>
   );
 }
 
-export { MenuContext, MenuDispatchContext, MenuProvider };
+export { NavigationBarContext, NavigationBarDispatchContext, NavigationBarProvider };
