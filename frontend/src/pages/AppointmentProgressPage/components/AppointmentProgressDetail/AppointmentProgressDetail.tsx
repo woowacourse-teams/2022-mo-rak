@@ -12,7 +12,7 @@ type Props = {
 function AppointmentProgressDetail({ durationHours, durationMinutes, startTime, endTime }: Props) {
   return (
     <StyledDuration>
-      약속 진행시간: {getFormattedHourMinuteDuration(durationHours, durationMinutes)} ({startTime}~
+      진행 시간: {getFormattedHourMinuteDuration(durationHours, durationMinutes)} ({startTime}~
       {endTime})
     </StyledDuration>
   );

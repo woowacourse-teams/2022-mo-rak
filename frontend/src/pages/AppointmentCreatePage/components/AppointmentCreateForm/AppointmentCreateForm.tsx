@@ -125,7 +125,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
     // TODO: StyledForm처럼 컴포넌트의 역할을 담은 네이밍을 해줄 것인지? S
     // StyledContainer처럼 최상단은 무조건 StyledContainer로 해줄 것인지 컨벤션 정해서 통일
     <StyledForm onSubmit={handleCreateAppointment}>
-      <Box width="66rem" padding="5.2rem">
+      <Box width="66rem" padding="4.8rem" height="60rem">
         <FlexContainer flexDirection="column" gap="2rem">
           <AppointmentCreateFormTitleInput title={title} onChange={handleTitle} />
           <AppointmentCreateFormDescriptionInput
