@@ -29,7 +29,7 @@ function GlobalFootbarFootbar({ groupCode, groups }: Props) {
   const handleSetActiveMenu = (menu: Menu) => () => {
     navigationBarDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
 
-    if (menu === '') {
+    if (menu === null) {
       navigate(`/groups/${groupCode}`);
       return;
     }
@@ -39,8 +39,8 @@ function GlobalFootbarFootbar({ groupCode, groups }: Props) {
   return (
     <>
       <StyledContainer>
-        <button onClick={handleSetActiveMenu('')}>
-          <StyledMenuIcon src={Home} isActive={activeMenu === ''} alt="main-page" />
+        <button onClick={handleSetActiveMenu(null)}>
+          <StyledMenuIcon src={Home} isActive={activeMenu === null} alt="main-page" />
         </button>
         <button onClick={handleSetActiveDrawer}>
           <StyledMenuIcon src={MenuImg} alt="메뉴 목록" />

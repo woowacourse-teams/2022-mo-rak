@@ -11,6 +11,8 @@ function MainFeatureMenuContainer() {
   const navigate = useNavigate();
   // TODO: util로 빼기
   const handleNavigate = (location: Menu) => () => {
+    if (location === null) return;
+
     navigate(location);
   };
 
