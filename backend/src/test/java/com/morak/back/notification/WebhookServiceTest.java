@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ServiceTest
 class WebhookServiceTest {
 
-    private final FakeApiReceiver receiver;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final SlackWebhookRepository slackWebhookRepository;
@@ -40,7 +39,6 @@ class WebhookServiceTest {
             SlackWebhookRepository slackWebhookRepository,
             WebhookService webhookService
     ) {
-        this.receiver = receiver;
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.slackWebhookRepository = slackWebhookRepository;
@@ -104,18 +102,19 @@ class WebhookServiceTest {
         ).isInstanceOf(TeamAuthorizationException.class);
     }
 
-    @Test
-    @Disabled
-    void 알림을_전송한다(@Autowired PollRepository pollRepository) {
-        // given
-        Poll poll = pollRepository.findByCode("testcode").orElseThrow();
-
-        // when
-        webhookService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(poll)));
-
-        // then
-        String message = receiver.getMessage();
-        assertThat(message).contains("마감되었습니다");
-        System.out.println("message = " + message); // remained to debug
-    }
+    // todo : review this
+//    @Test
+//    @Disabled
+//    void 알림을_전송한다(@Autowired PollRepository pollRepository) {
+//        // given
+//        Poll poll = pollRepository.findByCode("testcode").orElseThrow();
+//
+//        // when
+//        webhookService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(poll)));
+//
+//        // then
+//        String message = receiver.getMessage();
+//        assertThat(message).contains("마감되었습니다");
+//        System.out.println("message = " + message); // remained to debug
+//    }
 }

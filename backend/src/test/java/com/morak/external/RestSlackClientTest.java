@@ -2,6 +2,7 @@ package com.morak.external;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
+import com.morak.back.notification.application.dto.NotificationMessageRequest;
 import com.morak.back.notification.domain.slack.RestSlackClient;
 import com.morak.back.notification.domain.slack.SlackClient;
 import com.morak.back.notification.domain.slack.SlackWebhook;
@@ -22,6 +23,8 @@ public class RestSlackClientTest {
         SlackWebhook webhook = new SlackWebhook(1L, new Team(), url);
 
         // then
-        assertThatNoException().isThrownBy(() -> client.notifyMessage(webhook, "test-in-backend-test-code"));
+        assertThatNoException().isThrownBy(
+                () -> client.notifyMessage(webhook, new NotificationMessageRequest("test-in-backend-test-code"))
+        );
     }
 }

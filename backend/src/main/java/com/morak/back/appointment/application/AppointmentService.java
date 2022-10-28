@@ -183,7 +183,7 @@ public class AppointmentService {
         List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(LocalDateTime.now());
 
         closeAll(appointmentsToBeClosed);
-        notifyStatusAll(appointmentsToBeClosed);
+//        notifyStatusAll(appointmentsToBeClosed);
     }
 
     private void closeAll(List<Appointment> appointmentsToBeClosed) {
@@ -191,6 +191,7 @@ public class AppointmentService {
                 appointmentsToBeClosed.stream().map(Appointment::getId).collect(Collectors.toList()));
     }
 
+    /*
     private void notifyStatusAll(List<Appointment> appointmentsToBeClosed) {
         Map<String, String> teamMessages = appointmentsToBeClosed.stream().collect(
                 Collectors.groupingBy(
@@ -204,6 +205,7 @@ public class AppointmentService {
         webhookService.notifyAllMenuStatus(teamMessages);
     }
 
+    */
     public AppointmentStatusResponse findAppointmentStatus(String teamCode, Long memberId, String appointmentCode) {
         return authorizationService.withTeamMemberValidation(
                 () -> {

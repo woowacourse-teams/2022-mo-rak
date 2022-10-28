@@ -2,6 +2,7 @@ package com.morak.back.notification.util;
 
 import com.morak.back.notification.domain.slack.FormattableData;
 import com.morak.back.core.support.Generated;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -10,50 +11,23 @@ import lombok.NoArgsConstructor;
 @Generated
 public class MessageFormatter {
 
-    public static String formatClosed(FormattableData data) {
-        return String.join("\n",
-                formatClosedAnnouncement(data),
-                formatTime(data),
-                formatResultPage(data)
-        );
+    public static String formatClosedAnnouncement(String teamName, String title, String menuName) {
+        return String.format("%s 팀의 %s %s 이(가) 마감되었습니다 🎉", teamName, title, menuName);
     }
 
-    private static String formatClosedAnnouncement(FormattableData data) {
-        return String.format("%s 팀의 %s %s 이(가) 마감되었습니다 🎉",
-                data.getTeamName(), data.getTitle(), data.getName()
-        );
+    public static String formatTime(LocalDateTime dateTime) {
+        return "마감시간 : " + dateTime.format(DateTimeFormatter.ofPattern("yyyy년MM월dd일 H시mm분ss초"));
     }
 
-    private static String formatTime(FormattableData data) {
-        return "마감시간 : " + data.getClosedAt()
-                .format(DateTimeFormatter.ofPattern("yyyy년MM월dd일 H시mm분ss초"));
+    public static String formatResultPage(String teamCode, String type, String code) {
+        return String.format("결과 확인하러 가기 ! -> https://mo-rak.com/groups/%s/%s/%s/result", teamCode, type, code);
     }
 
-    private static String formatResultPage(FormattableData data) {
-        return String.format(
-                "결과 확인하러 가기 ! -> https://mo-rak.com/groups/%s/%s/%s/result",
-                data.getTeamCode(), data.getType(), data.getCode()
-        );
+    public static String formatOpenAnnouncement(String teamName, String title, String menuName) {
+        return String.format("%s 팀의 %s %s 이(가) 생성되었습니다 🎉", teamName, title, menuName);
     }
 
-    public static String formatOpen(FormattableData data) {
-        return String.join("\n",
-                formatOpenAnnouncement(data),
-                formatTime(data),
-                formatProgressPage(data)
-        );
-    }
-
-    private static String formatOpenAnnouncement(FormattableData data) {
-        return String.format("%s 팀의 %s %s 이(가) 생성되었습니다 🎉",
-                data.getTeamName(), data.getTitle(), data.getName()
-        );
-    }
-
-    private static String formatProgressPage(FormattableData data) {
-        return String.format(
-                "진행하러 가기 ! -> https://mo-rak.com/groups/%s/%s/%s/progress",
-                data.getTeamCode(), data.getType(), data.getCode()
-        );
+    public static String formatProgressPage(String teamCode, String type, String code) {
+        return String.format("진행하러 가기 ! -> https://mo-rak.com/groups/%s/%s/%s/progress", teamCode, type, code);
     }
 }

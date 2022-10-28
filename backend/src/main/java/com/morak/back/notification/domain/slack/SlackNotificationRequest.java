@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class NotificationRequest {
+public class SlackNotificationRequest {
 
     private String username;
     private String text;
