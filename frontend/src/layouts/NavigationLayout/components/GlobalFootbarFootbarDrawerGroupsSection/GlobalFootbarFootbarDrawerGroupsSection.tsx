@@ -5,7 +5,7 @@ import { leaveGroup } from '../../../../api/group';
 import { Group } from '../../../../types/group';
 import {
   StyledMenuHeader,
-  StyledGroupsModalBox,
+  StyledGroups,
   StyledGroupProfile,
   StyledGroupFirstCharacter,
   StyledGroupName,
@@ -56,7 +56,7 @@ function GlobalFootbarFootbarDrawerGroupsSection({
   return (
     <StyledContainer>
       <StyledMenuHeader>그룹</StyledMenuHeader>
-      <StyledGroupsModalBox>
+      <StyledGroups>
         {groups.map((group) => {
           const isCurrentGroup = groupCode === group.code;
 
@@ -75,7 +75,7 @@ function GlobalFootbarFootbarDrawerGroupsSection({
             </StyledGroup>
           );
         })}
-      </StyledGroupsModalBox>
+      </StyledGroups>
 
       <StyledParticipateNewGroupButton onClick={onClickMenu('participate')}>
         <StyledPlusImage src={plusImg} alt="participate-new-group-button" />

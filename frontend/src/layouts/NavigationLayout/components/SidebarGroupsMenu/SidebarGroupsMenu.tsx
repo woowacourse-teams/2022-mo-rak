@@ -11,7 +11,7 @@ import useNavigationBarContext from '../../../../hooks/useNavigationBarContext';
 import {
   StyledMenuHeader,
   StyledGroupsModalContainer,
-  StyledGroupsModalBox,
+  StyledGroups,
   StyledSettingIcon,
   StyledGroupsModalIcon,
   StyledGroupProfile,
@@ -83,7 +83,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
       </FlexContainer>
 
       <StyledGroupsModalContainer isVisible={isGroupsModalVisible}>
-        <StyledGroupsModalBox>
+        <StyledGroups>
           {groups.map((group) => {
             const isCurrentGroup = groupCode === group.code;
 
@@ -102,7 +102,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
               </StyledGroup>
             );
           })}
-        </StyledGroupsModalBox>
+        </StyledGroups>
 
         <StyledParticipateNewGroupButton onClick={onClickMenu('participate')}>
           <StyledPlusImage src={plusImg} alt="participate-new-group-button" />
