@@ -13,9 +13,9 @@ import Divider from '../../../../components/Divider/Divider';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
 
-import PollResultItemGroup from '../PollResultItemGroup/PollResultItemGroup';
+import PollResultItems from '../PollResultItems/PollResultItems';
 import PollResultDetail from '../PollResultDetail/PollResultDetail';
-import PollResultButtonGroup from '../PollResultButtonGroup/PollResultButtonGroup';
+import PollResultButtons from '../PollResultButtons/PollResultButtons';
 import { getPoll, getPollResult, getPollItems } from '../../../../api/poll';
 import {
   Poll,
@@ -31,7 +31,7 @@ import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
 import { AxiosError } from 'axios';
 import Spinner from '../../../../components/Spinner/Spinner';
 import Tooltip from '../../../../components/Tooltip/Tooltip';
-import Question from '../../../../assets/question.svg';
+import questionImg from '../../../../assets/question.svg';
 import { useTheme } from '@emotion/react';
 
 function PollResultContainer() {
@@ -108,7 +108,7 @@ function PollResultContainer() {
                 >
                   <FlexContainer gap="1.2rem" alignItems="center">
                     <StyledHelpIconContainer>
-                      <StyledHelpIcon src={Question} alt="help-icon" />
+                      <StyledHelpIcon src={questionImg} alt="help-icon" />
                     </StyledHelpIconContainer>
                     <StyledDescription>투표 한 사람 확인</StyledDescription>
                   </FlexContainer>
@@ -132,14 +132,10 @@ function PollResultContainer() {
           </MarginContainer>
           <MarginContainer margin="0 0 15.2rem 0">
             <FlexContainer flexDirection="column" gap="1.2rem">
-              <PollResultItemGroup
-                status={poll.status}
-                pollResult={pollResult}
-                pollItems={pollItems}
-              />
+              <PollResultItems status={poll.status} pollResult={pollResult} pollItems={pollItems} />
             </FlexContainer>
           </MarginContainer>
-          <PollResultButtonGroup
+          <PollResultButtons
             isHost={poll.isHost}
             status={poll.status}
             pollCode={poll.code}

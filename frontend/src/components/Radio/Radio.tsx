@@ -1,7 +1,7 @@
 import { InputHTMLAttributes, PropsWithChildren } from 'react';
 import FlexContainer from '../FlexContainer/FlexContainer';
-import Check from '../../assets/check.svg';
-import NotCheck from '../../assets/not-check.svg';
+import checkImg from '../../assets/check.svg';
+import notCheckImg from '../../assets/not-check.svg';
 import { StyledContainerLabel, StyledInput, StyledRadio, StyledLabel } from './Radio.styles';
 
 type Props = {
@@ -13,7 +13,7 @@ function Radio({ id, name, children, checked, ...props }: Props) {
     <FlexContainer alignItems="center">
       <StyledContainerLabel htmlFor={id}>
         <StyledInput type="radio" id={id} name={name} {...props} checked={checked} />
-        <StyledRadio src={checked ? Check : NotCheck} alt="bin" />
+        <StyledRadio src={checked ? checkImg : notCheckImg} alt="bin" />
         <StyledLabel>{children}</StyledLabel>
       </StyledContainerLabel>
     </FlexContainer>

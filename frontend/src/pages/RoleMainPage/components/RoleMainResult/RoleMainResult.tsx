@@ -15,7 +15,7 @@ import Divider from '../../../../components/Divider/Divider';
 import { useState } from 'react';
 import { GetRolesHistoriesResponse } from '../../../../types/role';
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
-import DeletedUser from '../../../../assets/deleted-user.svg';
+import deletedUserImg from '../../../../assets/deleted-user.svg';
 
 type Props = { rolesHistories: GetRolesHistoriesResponse };
 
@@ -44,7 +44,7 @@ function RoleMainResult({ rolesHistories }: Props) {
                   <StyledRoleContainer key={memberId}>
                     <StyledRole>{name}</StyledRole>
                     <Avatar
-                      profileUrl={currentMember?.profileUrl ?? DeletedUser}
+                      profileUrl={currentMember?.profileUrl ?? deletedUserImg}
                       name={currentMember?.name ?? '탈퇴 회원'}
                       width="8rem"
                     />

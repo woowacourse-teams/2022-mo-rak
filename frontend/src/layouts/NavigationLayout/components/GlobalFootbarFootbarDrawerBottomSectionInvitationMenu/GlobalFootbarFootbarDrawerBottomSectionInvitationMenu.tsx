@@ -1,5 +1,5 @@
 import { Group } from '../../../../types/group';
-import Plus from '../../../../assets/plus.svg';
+import plusImg from '../../../../assets/plus.svg';
 import { createInvitationCode } from '../../../../api/group';
 import { writeClipboard } from '../../../../utils/clipboard';
 import {
@@ -29,7 +29,7 @@ function GlobalFootbarFootbarDrawerBottomSectionInvitationMenu({ groupCode }: Pr
 
   return (
     <StyledInvitationLink onClick={handleCopyInvitationCode}>
-      <StyledPlusIcon src={Plus} alt="invitation-link" />
+      <StyledPlusIcon src={plusImg} alt="invitation-link" />
       <StyledInvitationText>새로운 멤버 초대</StyledInvitationText>
     </StyledInvitationLink>
   );

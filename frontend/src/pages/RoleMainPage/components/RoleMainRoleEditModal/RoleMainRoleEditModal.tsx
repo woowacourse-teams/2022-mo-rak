@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import Close from '../../../../assets/close-button.svg';
-import Edit from '../../../../assets/edit-with-smile.svg';
+import closeButtonImg from '../../../../assets/close-button.svg';
+import editWithSmileImg from '../../../../assets/edit-with-smile.svg';
 import {
   StyledForm,
   StyledLogo,
@@ -18,8 +18,8 @@ import { Group } from '../../../../types/group';
 import { AxiosError } from 'axios';
 import { EditRolesRequest } from '../../../../types/role';
 import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
-import RoleMainRoleEditModalInputGroup from '../RoleMainRoleEditModalInputGroup/RoleMainRoleEditModalInputGroup';
-import RoleMainRoleEditModalButtonGroup from '../RoleMainRoleEditModalButtonGroup/RoleMainRoleEditModalButtonGroup';
+import RoleMainRoleEditModalInputs from '../RoleMainRoleEditModalInputs/RoleMainRoleEditModalInputs';
+import RoleMainRoleEditModalButtons from '../RoleMainRoleEditModalButtons/RoleMainRoleEditModalButtons';
 
 type Props = {
   close: () => void;
@@ -88,20 +88,20 @@ function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
     <Modal isVisible={true} close={close}>
       <StyledForm onSubmit={handleAllocateRoles}>
         <StyledTop>
-          <StyledLogo src={Edit} alt="edit-logo" />
+          <StyledLogo src={editWithSmileImg} alt="edit-logo" />
           <StyledTitle>역할 목록 수정하기</StyledTitle>
           <StyledDescription>역할의 개수가 멤버수보다 많을 수는 없어요!</StyledDescription>
-          <StyledCloseButton onClick={close} src={Close} alt="close-button" />
+          <StyledCloseButton onClick={close} src={closeButtonImg} alt="close-button" />
           <StyledTriangle />
         </StyledTop>
         <StyledBottom>
-          <RoleMainRoleEditModalInputGroup
+          <RoleMainRoleEditModalInputs
             roles={roles}
             onChangeRoleInput={handleSetRoles}
             onClickDeleteButton={handleDeleteRoleInput}
             onClickAddButton={handleAddRoleInput}
           />
-          <RoleMainRoleEditModalButtonGroup onClickCancelButton={close} />
+          <RoleMainRoleEditModalButtons onClickCancelButton={close} />
         </StyledBottom>
       </StyledForm>
     </Modal>

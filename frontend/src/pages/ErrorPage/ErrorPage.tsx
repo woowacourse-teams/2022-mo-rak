@@ -1,12 +1,12 @@
 import { StyledContainer } from './ErrorPage.styles';
-import ErrorPageButtonGroup from './components/ErrorPageButtonGroup/ErrorPageButtonGroup';
+import ErrorPageButtons from './components/ErrorPageButtons/ErrorPageButtons';
 import ErrorPageContainer from './components/ErrorPageContainer/ErrorPageContainer';
 
 function ErrorPage() {
   return (
     <StyledContainer>
       <ErrorPageContainer />
-      <ErrorPageButtonGroup />
+      <ErrorPageButtons />
     </StyledContainer>
   );
 }

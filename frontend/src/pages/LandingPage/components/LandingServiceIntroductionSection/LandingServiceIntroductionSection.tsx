@@ -8,8 +8,8 @@ import {
   StyledTitleContainer
 } from './LandingServiceIntroductionSection.styles';
 
-import Services from '../../../../assets/services.svg';
-import CircleHighlight from '../../../../assets/circle-highlight.svg';
+import servicesImg from '../../../../assets/services.svg';
+import circleHighlightImg from '../../../../assets/circle-highlight.svg';
 import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
 type Props = HTMLAttributes<HTMLDivElement>;
@@ -23,7 +23,7 @@ function LandingServiceIntroductionSection({ id }: Props) {
           분산된 서비스...
           <br />
           불편하지 않으셨나요?
-          <StyledHighlightImage src={CircleHighlight} alt="highlight" />
+          <StyledHighlightImage src={circleHighlightImg} alt="highlight" />
         </StyledTitle>
         <StyledSubTitle>
           투표 하기, 일정 정하기...
@@ -33,7 +33,7 @@ function LandingServiceIntroductionSection({ id }: Props) {
           모락에 모두 모여있어요!
         </StyledSubTitle>
       </StyledTitleContainer>
-      <StyledServicesImage src={Services} alt="services" />
+      <StyledServicesImage src={servicesImg} alt="services" />
     </StyledContainer>
   );
 }

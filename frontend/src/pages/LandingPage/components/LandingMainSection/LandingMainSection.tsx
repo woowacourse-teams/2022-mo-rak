@@ -17,12 +17,12 @@ import {
   StyledAnchor
 } from './LandingMainSection.styles';
 
-import Logo from '../../../../assets/logo.svg';
-import Smile from '../../../../assets/smile.svg';
-import Line from '../../../../assets/line.svg';
-import Blob from '../../../../assets/blob.svg';
-import GithubLogo from '../../../../assets/github-logo.svg';
-import Glitter from '../../../../assets/glitter.svg';
+import serviceLogoImg from '../../../../assets/service-logo.svg';
+import smileImg from '../../../../assets/smile.svg';
+import lineImg from '../../../../assets/line.svg';
+import blobImg from '../../../../assets/blob.svg';
+import githubLogoImg from '../../../../assets/github-logo.svg';
+import glitterImg from '../../../../assets/glitter.svg';
 import FlexContainer from '../../../../components//FlexContainer/FlexContainer';
 import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
@@ -32,14 +32,14 @@ function LandingMainSection({ id }: Props) {
   return (
     <StyledContainer id={id}>
       <LandingNavbar />
-      <StyledLogo src={Logo} alt="logo" />
+      <StyledLogo src={serviceLogoImg} alt="logo" />
 
       <FlexContainer flexDirection="column" gap="2rem">
         <StyledSubTitle>모락이 해줄게요</StyledSubTitle>
         <StyledTitle>
-          <StyledSmileImage src={Smile} alt="smile" />
-          <StyledLineImage src={Line} alt="line" />
-          <StyledGlitterImage src={Glitter} alt="glitter" />
+          <StyledSmileImage src={smileImg} alt="smile" />
+          <StyledLineImage src={lineImg} alt="line" />
+          <StyledGlitterImage src={glitterImg} alt="glitter" />
           모임을
           <br />
           즐겁게, 편하게!
@@ -48,14 +48,14 @@ function LandingMainSection({ id }: Props) {
           href={`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}`}
         >
           <StyledLoginContainer>
-            <StyledGithubLogo src={GithubLogo} alt="github-logo" />
+            <StyledGithubLogo src={githubLogoImg} alt="github-logo" />
             <StyledLoginText>GITHUB으로 로그인</StyledLoginText>
           </StyledLoginContainer>
         </StyledLink>
       </FlexContainer>
       <StyledNextSectionGuideContainer>
         <StyledBlobContainer>
-          <StyledBlobImage src={Blob} alt="blob" />
+          <StyledBlobImage src={blobImg} alt="blob" />
           <StyledAnchor href="#service-introduction-section">모락 소개</StyledAnchor>
         </StyledBlobContainer>
       </StyledNextSectionGuideContainer>

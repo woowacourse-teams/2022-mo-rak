@@ -17,7 +17,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
-      favicon: './src/assets/icon.ico'
+      favicon: './src/assets/service-logo.ico'
     }),
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(process.env)

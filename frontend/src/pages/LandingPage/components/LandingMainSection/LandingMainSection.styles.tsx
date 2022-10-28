@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Circle from '../../../../assets/half-circle.svg';
+import halfCircleImg from '../../../../assets/half-circle.svg';
 
 const StyledLink = styled.a`
   text-decoration: none;
@@ -47,7 +47,7 @@ const StyledContainer = styled.section`
   scroll-snap-align: start;
   position: relative;
   flex-direction: column;
-  background-image: url(${Circle});
+  background-image: url(${halfCircleImg});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom 0 right 0;

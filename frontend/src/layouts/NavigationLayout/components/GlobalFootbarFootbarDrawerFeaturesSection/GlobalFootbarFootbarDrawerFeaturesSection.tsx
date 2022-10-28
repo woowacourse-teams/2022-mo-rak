@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import Poll from '../../../../assets/poll.svg';
-import Appointment from '../../../../assets/calendar-clock.svg';
-import Role from '../../../../assets/role.svg';
+import pollImg from '../../../../assets/poll.svg';
+import calendarClockImg from '../../../../assets/calendar-clock.svg';
+import roleImg from '../../../../assets/role.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import useNavigationBarDispatchContext from '../../../../hooks/useNavigationBarDispatchContext';
 import useNavigationBarContext from '../../../../hooks/useNavigationBarContext';
@@ -38,18 +38,18 @@ function GlobalFootbarFootbarDrawerFeaturesSection({ closeDrawer, groupCode }: P
       <StyledMenuHeader>기능</StyledMenuHeader>
       <FlexContainer flexDirection="column">
         <StyledMenu onClick={handleActiveMenu('poll')} isActive={activeMenu === 'poll'}>
-          <StyledMenuIcon src={Poll} />
+          <StyledMenuIcon src={pollImg} />
           <StyledMenuTitle>투표하기</StyledMenuTitle>
         </StyledMenu>
         <StyledMenu
           onClick={handleActiveMenu('appointment')}
           isActive={activeMenu === 'appointment'}
         >
-          <StyledMenuIcon src={Appointment} />
+          <StyledMenuIcon src={calendarClockImg} />
           <StyledMenuTitle>약속잡기</StyledMenuTitle>
         </StyledMenu>
         <StyledMenu onClick={handleActiveMenu('role')} isActive={activeMenu === 'role'}>
-          <StyledMenuIcon src={Role} />
+          <StyledMenuIcon src={roleImg} />
           <StyledMenuTitle>역할 정하기</StyledMenuTitle>
         </StyledMenu>
       </FlexContainer>

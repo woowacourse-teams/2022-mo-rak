@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 
-import Poll from '../../../../assets/poll.svg';
-import Appointment from '../../../../assets/appointment.svg';
-import Role from '../../../../assets/role.svg';
+import pollImg from '../../../../assets/poll.svg';
+import appointmentImg from '../../../../assets/appointment.svg';
+import roleImg from '../../../../assets/role.svg';
 import MainFeatureMenu from '../MainFeatureMenu/MainFeatureMenu';
 import { Menu } from '../../../../types/menu';
 
@@ -18,9 +18,9 @@ function MainFeatureMenuContainer() {
 
   return (
     <FlexContainer justifyContent="center" gap="8rem" flexWrap="wrap">
-      <MainFeatureMenu onClick={handleNavigate('poll')} name="투표하기" img={Poll} />
-      <MainFeatureMenu onClick={handleNavigate('appointment')} name="약속잡기" img={Appointment} />
-      <MainFeatureMenu onClick={handleNavigate('role')} name="역할 정하기" img={Role} />
+      <MainFeatureMenu onClick={handleNavigate('poll')} name="투표하기" img={pollImg} />
+      <MainFeatureMenu onClick={handleNavigate('appointment')} name="약속잡기" img={appointmentImg} />
+      <MainFeatureMenu onClick={handleNavigate('role')} name="역할 정하기" img={roleImg} />
     </FlexContainer>
   );
 }

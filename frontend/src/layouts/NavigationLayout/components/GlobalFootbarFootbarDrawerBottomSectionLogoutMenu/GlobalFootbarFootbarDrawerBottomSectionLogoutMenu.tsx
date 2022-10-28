@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import Leave from '../../../../assets/leave.svg';
+import leaveImg from '../../../../assets/leave.svg';
 import { removeLocalStorageItem } from '../../../../utils/storage';
 import {
   StyledContainer,
@@ -19,7 +19,7 @@ function GlobalFootbarFootbarDrawerBottomSectionLogoutMenu() {
 
   return (
     <StyledContainer onClick={handleLogout}>
-      <StyledLeaveImage src={Leave} alt="group-leave-button" />
+      <StyledLeaveImage src={leaveImg} alt="group-leave-button" />
       <StyledText>로그아웃</StyledText>
     </StyledContainer>
   );

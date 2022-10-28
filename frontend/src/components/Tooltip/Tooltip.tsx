@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from 'react';
 import { useTheme } from '@emotion/react';
-import Close from '../../assets/close-button.svg';
+import closeButtonImg from '../../assets/close-button.svg';
 import {
   StyledContainer,
   StyledContentTrigger,
@@ -121,7 +121,7 @@ function Tooltip({
         backgroundColor={backgroundColor}
         placementStyle={placementStyle}
       >
-        <StyledCloseButton onClick={handleCloseContent} src={Close} alt="close-button" />
+        <StyledCloseButton onClick={handleCloseContent} src={closeButtonImg} alt="close-button" />
         <StyledContent fontSize={fontSize} color={fontColor}>
           {content}
         </StyledContent>

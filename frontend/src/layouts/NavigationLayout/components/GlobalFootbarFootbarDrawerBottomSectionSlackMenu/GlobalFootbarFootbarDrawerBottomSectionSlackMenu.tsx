@@ -1,5 +1,5 @@
 import { MouseEventHandler } from 'react';
-import Slack from '../../../../assets/slack.svg';
+import slackImg from '../../../../assets/slack.svg';
 import {
   StyledContainer,
   StyledSlackLogo,
@@ -13,7 +13,7 @@ type Props = {
 function GlobalFootbarFootbarDrawerBottomSectionSlackMenu({ onClick }: Props) {
   return (
     <StyledContainer onClick={onClick}>
-      <StyledSlackLogo src={Slack} alt="slack-icon" />
+      <StyledSlackLogo src={slackImg} alt="slack-icon" />
       <StyledText>슬랙 채널 연동</StyledText>
     </StyledContainer>
   );

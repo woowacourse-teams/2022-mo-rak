@@ -1,5 +1,5 @@
 import { StyledLink } from './PollResultShareLink.styles';
-import Link from '../../../../assets/link.svg';
+import linkImg from '../../../../assets/link.svg';
 import { Poll } from '../../../../types/poll';
 import { Group } from '../../../../types/group';
 
@@ -26,7 +26,7 @@ function PollResultShareLink({ groupCode, pollCode, status }: Props) {
     });
   };
 
-  return <StyledLink src={Link} alt="link" onClick={handleCopyShareLink} />;
+  return <StyledLink src={linkImg} alt="link" onClick={handleCopyShareLink} />;
 }
 
 export default PollResultShareLink;

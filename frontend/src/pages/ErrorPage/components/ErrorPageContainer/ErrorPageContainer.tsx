@@ -1,9 +1,9 @@
 import { useLottie } from 'lottie-react';
-import notFound from '../../../../assets/not-found-animation.json';
+import notFoundLottie from '../../../../assets/not-found-animation.json';
 import { StyledDescription } from './ErrorPageContainer.styles';
 
 function ErrorPageContainer() {
-  const notFoundAnimation = useLottie({ animationData: notFound }, { width: '40rem' });
+  const notFoundAnimation = useLottie({ animationData: notFoundLottie }, { width: '40rem' });
 
   return (
     <>

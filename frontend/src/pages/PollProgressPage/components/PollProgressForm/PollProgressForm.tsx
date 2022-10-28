@@ -5,9 +5,9 @@ import { StyledTitle, StyledLoadingContainer } from './PollProgressForm.styles';
 import Box from '../../../../components/Box/Box';
 import Divider from '../../../../components/Divider/Divider';
 import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
-import PollProgressButtonGroup from '../PollProgressButtonGroup/PollProgressButtonGroup';
+import PollProgressButtons from '../PollProgressButtons/PollProgressButtons';
 import { getPoll, progressPoll, getPollItems } from '../../../../api/poll';
-import PollProgressItemGroup from '../PollProgressItemGroup/PollProgressItemGroup';
+import PollProgressItems from '../PollProgressItems/PollProgressItems';
 import {
   Poll,
   SelectedPollItem,
@@ -168,7 +168,7 @@ function PollProgressForm() {
             />
           </MarginContainer>
           <MarginContainer margin="0 0 15.2rem 0">
-            <PollProgressItemGroup
+            <PollProgressItems
               pollItems={pollItems}
               selectedPollItems={selectedPollItems}
               allowedPollCount={poll.allowedPollCount}
@@ -177,7 +177,7 @@ function PollProgressForm() {
               onChangeText={handleDescription}
             />
           </MarginContainer>
-          <PollProgressButtonGroup pollCode={pollCode} isHost={poll.isHost} groupCode={groupCode} />
+          <PollProgressButtons pollCode={pollCode} isHost={poll.isHost} groupCode={groupCode} />
         </form>
       ) : (
         <StyledLoadingContainer>
