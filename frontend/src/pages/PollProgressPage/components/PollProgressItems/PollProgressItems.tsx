@@ -45,7 +45,6 @@ function PollProgressItems({
             <TextField
               colorScheme={theme.colors.PURPLE_100}
               padding="1.2rem 0"
-              width="74.4rem"
               variant="outlined"
               borderRadius="10px"
             >
@@ -74,7 +73,6 @@ function PollProgressItems({
             <StyledDescription isVisible={isSelectedPollItem}>
               <TextField
                 colorScheme={theme.colors.PURPLE_100}
-                width="74.4rem"
                 variant="outlined"
                 borderRadius="10px"
                 padding="1.2rem 0"
