@@ -148,8 +148,7 @@ public class AppointmentService {
                 () -> {
                     Appointment appointment = findAppointmentInTeam(teamCode, appointmentCode);
                     appointment.close(memberId);
-//                    notificationService.notifyMenuStatus(team,
-//                            MessageFormatter.formatClosed(FormattableData.from(appointment)));
+                    appointmentRepository.save(appointment);
                     return null;
                 }, teamCode, memberId
         );
