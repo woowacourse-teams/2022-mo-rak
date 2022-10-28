@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 
 const StyledContainer = styled.div`
   position: relative;
-  z-index: 1;
 `;
 
 const StyledContentTrigger = styled.div`
@@ -24,13 +23,6 @@ const StyledContentContainer = styled.div<
     width: ${width}rem;
     border-radius: 1.2rem;
     padding: 2rem;
-
-    &::after {
-      content: "";
-      position: absolute;
-      border-width: 0.8rem;
-      border-style: solid;
-    }
 `
 );
 
