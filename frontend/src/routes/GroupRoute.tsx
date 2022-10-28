@@ -4,13 +4,13 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { getGroupMembers } from '../api/group';
 import useAuthContext from '../hooks/useAuthContext';
 import useGroupMembersDispatchContext from '../hooks/useGroupMembersDispatchContext';
-import useMenuContext from '../hooks/useMenuContext';
+import useNavigationBarContext from '../hooks/useNavigationBarContext';
 import { Group } from '../types/group';
 
 function GroupRoute() {
   const navigate = useNavigate();
   const { groupCode } = useParams() as { groupCode: Group['code'] };
-  const menuState = useMenuContext();
+  const menuState = useNavigationBarContext();
   const authState = useAuthContext();
   const groupMembersDispatch = useGroupMembersDispatchContext();
   const activeMenu = menuState?.activeMenu;

@@ -5,8 +5,8 @@ import pollImg from '../../../../assets/poll.svg';
 import calendarClockImg from '../../../../assets/calendar-clock.svg';
 import roleImg from '../../../../assets/role.svg';
 import { useNavigate } from 'react-router-dom';
-import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
-import useMenuContext from '../../../../hooks/useMenuContext';
+import useNavigationBarDispatchContext from '../../../../hooks/useNavigationBarDispatchContext';
+import useNavigationBarContext from '../../../../hooks/useNavigationBarContext';
 import { Group } from '../../../../types/group';
 import { Menu } from '../../../../types/menu';
 import GlobalFootbarFootbarDrawer from '../GlobalFootbarFootbarDrawer/GlobalFootbarFootbarDrawer';
@@ -17,19 +17,19 @@ type Props = {
 };
 
 function GlobalFootbarFootbar({ groupCode, groups }: Props) {
-  const { activeMenu } = useMenuContext();
-  const menuDispatch = useMenuDispatchContext();
+  const { activeMenu } = useNavigationBarContext();
+  const navigationBarDispatch = useNavigationBarDispatchContext();
   const navigate = useNavigate();
 
   const handleSetActiveDrawer = () => {
-    menuDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: true });
+    navigationBarDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: true });
   };
 
   // TODO: 함수 역할에 맞게 분리 (navigate 역할 분리)
   const handleSetActiveMenu = (menu: Menu) => () => {
-    menuDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
+    navigationBarDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
 
-    if (menu === 'main') {
+    if (menu === null) {
       navigate(`/groups/${groupCode}`);
       return;
     }
@@ -39,8 +39,8 @@ function GlobalFootbarFootbar({ groupCode, groups }: Props) {
   return (
     <>
       <StyledContainer>
-        <button onClick={handleSetActiveMenu('main')}>
-          <StyledMenuIcon src={homeImg} isActive={activeMenu === 'main'} alt="main-page" />
+        <button onClick={handleSetActiveMenu(null)}>
+          <StyledMenuIcon src={homeImg} isActive={activeMenu === null} alt="main-page" />
         </button>
         <button onClick={handleSetActiveDrawer}>
           <StyledMenuIcon src={menuImg} alt="메뉴 목록" />

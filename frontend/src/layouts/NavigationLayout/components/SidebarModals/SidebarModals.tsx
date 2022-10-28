@@ -14,7 +14,7 @@ import closeButtonImg from '../../../../assets/close-button.svg';
 import serviceLogoImg from '../../../../assets/service-logo.svg';
 import { Group } from '../../../../types/group';
 import { createGroup, participateGroup } from '../../../../api/group';
-import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
+import useNavigationBarDispatchContext from '../../../../hooks/useNavigationBarDispatchContext';
 import { linkSlack } from '../../../../api/slack';
 import { LinkSlackRequest } from '../../../../types/slack';
 import useInput from '../../../../hooks/useInput';
@@ -42,7 +42,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
   const [groupName, handleGroupName, resetGroupName] = useInput('');
   const [invitationCode, handleInvitationCode, resetInvitationCode] = useInput('');
   const [slackUrl, handleSlackUrl, resetSlackUrl] = useInput('');
-  const menuDispatch = useMenuDispatchContext();
+  const navigationBarDispatch = useNavigationBarDispatchContext();
   const navigate = useNavigate();
 
   const handleCreateGroup = async (e: FormEvent<HTMLFormElement>) => {
@@ -53,7 +53,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
       const groupCode = res.headers.location.split('groups/')[1];
 
       navigate(`/groups/${groupCode}`);
-      menuDispatch({ type: 'SET_IS_GROUPS_MODAL_VISIBLE', payload: false });
+      navigationBarDispatch({ type: 'SET_IS_GROUPS_MODAL_VISIBLE', payload: false });
       resetGroupName();
       closeModal();
     } catch (err) {
@@ -76,7 +76,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
       const groupCode = res.headers.location.split('/groups/')[1];
 
       navigate(`/groups/${groupCode}`);
-      menuDispatch({ type: 'SET_IS_GROUPS_MODAL_VISIBLE', payload: false });
+      navigationBarDispatch({ type: 'SET_IS_GROUPS_MODAL_VISIBLE', payload: false });
       resetInvitationCode();
       closeModal();
     } catch (err) {

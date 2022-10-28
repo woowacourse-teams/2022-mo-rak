@@ -3,8 +3,8 @@ import pollImg from '../../../../assets/poll.svg';
 import calendarClockImg from '../../../../assets/calendar-clock.svg';
 import roleImg from '../../../../assets/role.svg';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import useMenuDispatchContext from '../../../../hooks/useMenuDispatchContext';
-import useMenuContext from '../../../../hooks/useMenuContext';
+import useNavigationBarDispatchContext from '../../../../hooks/useNavigationBarDispatchContext';
+import useNavigationBarContext from '../../../../hooks/useNavigationBarContext';
 import { Menu } from '../../../../types/menu';
 
 import { Group } from '../../../../types/group';
@@ -21,13 +21,13 @@ type Props = {
 };
 
 function SidebarFeaturesMenu({ groupCode }: Props) {
-  const { activeMenu } = useMenuContext();
-  const menuDispatch = useMenuDispatchContext();
+  const { activeMenu } = useNavigationBarContext();
+  const navigationBarDispatch = useNavigationBarDispatchContext();
   const navigate = useNavigate();
 
   // TODO: 함수 역할에 맞게 분리 (navigate 역할 분리)
   const handleActiveMenu = (menu: Menu) => () => {
-    menuDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
+    navigationBarDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
     navigate(`/groups/${groupCode}/${menu}`);
   };
 

@@ -1,3 +1,3 @@
-type Menu = 'poll' | 'appointment' | 'main' | 'role';
+type Menu = 'poll' | 'appointment' | 'role' | null;
 
 export { Menu };

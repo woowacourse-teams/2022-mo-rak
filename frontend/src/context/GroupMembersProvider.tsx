@@ -5,12 +5,12 @@ type GroupMembersState = {
   groupMembers: Array<Member>;
 };
 
-type SetActiveMenuAction = {
+type SetGroupMembersAction = {
   type: 'SET_GROUP_MEMBERS';
   payload: Array<Member>;
 };
 
-type GroupMembersAction = SetActiveMenuAction;
+type GroupMembersAction = SetGroupMembersAction;
 
 const GroupMembersContext = createContext<GroupMembersState | null>(null);
 const GroupMembersDispatchContext = createContext<Dispatch<GroupMembersAction> | null>(null);

@@ -104,6 +104,7 @@ function PollResultContainer() {
                   width="32"
                   placement="bottom"
                   backgroundColor={theme.colors.PURPLE_50}
+                  fontSize="1.6rem"
                 >
                   <FlexContainer gap="1.2rem" alignItems="center">
                     <StyledHelpIconContainer>
