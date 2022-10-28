@@ -75,7 +75,7 @@ function PollProgressItems({
                 colorScheme={theme.colors.PURPLE_100}
                 variant="outlined"
                 borderRadius="10px"
-                padding="1.2rem 0"
+                padding="1.2rem"
               >
                 <Input
                   color={theme.colors.BLACK_100}
