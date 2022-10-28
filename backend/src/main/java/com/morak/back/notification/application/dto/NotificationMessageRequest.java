@@ -15,11 +15,19 @@ public class NotificationMessageRequest {
         this.message = message;
     }
 
-    public static NotificationMessageRequest fromAppointment(Menu menu, Team team) {
+    public static NotificationMessageRequest fromAppointmentOpen(Menu menu, Team team) {
         return new NotificationMessageRequest(String.join("\n",
                 MessageFormatter.formatOpenAnnouncement(team.getName(), APPOINTMENT_TYPE, menu.getCode()),
                 MessageFormatter.formatTime(menu.getClosedAt()),
                 MessageFormatter.formatProgressPage(menu.getTeamCode(), APPOINTMENT_TYPE, menu.getCode())
+        ));
+    }
+
+    public static NotificationMessageRequest fromAppointmentClosed(Menu menu, Team team) {
+        return new NotificationMessageRequest(String.join("\n",
+                MessageFormatter.formatClosedAnnouncement(team.getName(), APPOINTMENT_TYPE, menu.getCode()),
+                MessageFormatter.formatTime(menu.getClosedAt()),
+                MessageFormatter.formatResultPage(menu.getTeamCode(), APPOINTMENT_TYPE, menu.getCode())
         ));
     }
 

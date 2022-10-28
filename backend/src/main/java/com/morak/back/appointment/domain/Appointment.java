@@ -148,6 +148,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
 
     public void close(Long memberId) {
         menu.close(memberId);
+        registerEvent(AppointmentClosedEvent.from(menu));
     }
 
     public boolean isHost(Long memberId) {
