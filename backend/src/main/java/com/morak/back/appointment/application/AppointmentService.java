@@ -1,7 +1,6 @@
 package com.morak.back.appointment.application;
 
 import com.morak.back.appointment.domain.Appointment;
-import com.morak.back.appointment.domain.AppointmentEvent;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.appointment.domain.recommend.RankRecommendation;
@@ -28,7 +27,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +41,6 @@ public class AppointmentService {
     private final TeamMemberRepository teamMemberRepository;
     private final SystemTime systemTime;
     private final AuthorizationService authorizationService;
-    private final ApplicationEventPublisher publisher;
 
     public AppointmentResponse createAppointment(String teamCode, Long memberId, AppointmentCreateRequest request) {
         return authorizationService.withTeamMemberValidation(
@@ -178,14 +175,9 @@ public class AppointmentService {
     @Generated
     public void closeAllBeforeNow() {
         List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(LocalDateTime.now());
-        closeAll(appointmentsToBeClosed);
-        appointmentsToBeClosed
-                .forEach(appointment -> publisher.publishEvent(AppointmentEvent.from(appointment.getMenu())));
-    }
-
-    private void closeAll(List<Appointment> appointmentsToBeClosed) {
-        appointmentRepository.closeAllByIds(
-                appointmentsToBeClosed.stream().map(Appointment::getId).collect(Collectors.toList()));
+        for (Appointment appointment : appointmentsToBeClosed) {
+            appointment.close(appointment.getHostId());
+        }
     }
 
     public AppointmentStatusResponse findAppointmentStatus(String teamCode, Long memberId, String appointmentCode) {

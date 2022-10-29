@@ -30,14 +30,14 @@ public class NotificationService {
     private final TeamRepository teamRepository;
     private final SlackClient slackClient;
 
-    @TransactionalEventListener(condition = "#{!event.closed}")
+    @TransactionalEventListener(condition = "#(!event.isClosed())")
     @Async
     public void notifyTeamAppointmentOpen(AppointmentEvent event) {
         // todo : 비동기일때 예외 발생시 로그가 찍히는지 확인
         notifyTeam(event, NotificationMessageRequest::fromAppointmentOpen);
     }
 
-    @TransactionalEventListener(condition = "#{event.closed}")
+    @TransactionalEventListener(condition = "#event.isClosed()")
     @Async
     public void notifyTeamAppointmentClosed(AppointmentEvent event) {
         notifyTeam(event, NotificationMessageRequest::fromAppointmentClosed);
@@ -49,35 +49,4 @@ public class NotificationService {
         NotificationMessageRequest request = requestBiFunction.apply(event, team);
         slackClient.notifyMessage(webhook, request);
     }
-
-    /*
-    @Transactional(readOnly = true)
-    public void notifyMenuStatus(Team team, String message) {
-        try {
-            slackWebhookRepository.findByTeam(team)
-                    .ifPresent(webhook -> slackClient.notifyMessage(webhook, message));
-        } catch (ExternalException e) {
-            logger.warn("슬랙 알림 요청 중 에러가 발생했습니다 : " + e.getMessage());
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public void notifyAllMenuStatus(Map<String, String> teamMessages) {
-        Map<SlackWebhook, String> webHookMessages = mapWebhookToMessage(teamMessages);
-        webHookMessages.forEach((webhook, message) -> notifyMenuStatus(webhook.getTeam(), message));
-    }
-
-    private Map<SlackWebhook, String> mapWebhookToMessage(Map<String, String> teamMessages) {
-        List<SlackWebhook> webhooks = findAllToBeNotified(teamMessages);
-
-        return webhooks.stream()
-                .collect(Collectors.toMap(Function.identity(),
-                        webhook -> teamMessages.get(webhook.getTeam().getCode())));
-    }
-
-    private List<SlackWebhook> findAllToBeNotified(Map<String, String> teamMessages) {
-        return slackWebhookRepository.findAllByTeams(teamMessages.keySet());
-    }
-     */
-
 }

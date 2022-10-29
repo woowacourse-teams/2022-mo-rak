@@ -122,30 +122,4 @@ class AppointmentRepositoryTest {
         // then
         assertThat(appointmentsToBeClosed).hasSize(1);
     }
-
-    // todo : review this
-
-//    @Test
-//    void 아이디_목록으로_약속잡기_목록을_종료한다(@Autowired EntityManager entityManager) {
-//        // given
-//        int iterationCount = 10;
-//        List<Appointment> appointments = new ArrayList<>();
-//
-//        for (int i = 0; i < iterationCount; i++) {
-//            String code = "zxcvabc" + i;
-//            Appointment savedAppointment = appointmentRepository.save(
-//                    DEFAULT_BUILDER.code(Code.generate(ignored -> code)).build()
-//            );
-//            appointments.add(savedAppointment);
-//        }
-//
-//        // when
-//        appointmentRepository.closeAllByIds(appointments.stream().map(BaseEntity::getId).collect(Collectors.toList()));
-//
-//        for (Appointment appointment : appointments) {
-//            entityManager.refresh(appointment);
-//        }
-//        // then
-//        assertThat(appointments).allMatch(Appointment::isClosed);
-//    }
 }

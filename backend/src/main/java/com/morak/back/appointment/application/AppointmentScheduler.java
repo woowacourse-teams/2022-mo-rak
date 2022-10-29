@@ -13,7 +13,7 @@ public class AppointmentScheduler {
 
     @Scheduled(cron = "0 0/1 * * * ?")
     @Generated
-    void scheduleAppointment() {
+    public void scheduleAppointment() {
         appointmentService.closeAllBeforeNow();
     }
 }

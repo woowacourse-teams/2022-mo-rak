@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class MessageFormatter {
 
     public static String formatClosedAnnouncement(String teamName, String title, String menuName) {
-        return String.format("%s 팀의 %s %s 이(가) 마감되었습니다 🎉", teamName, title, menuName);
+        return String.format("%s 팀의 %s '%s' 이(가) 마감되었습니다 🎉", teamName, title, menuName);
     }
 
     public static String formatTime(LocalDateTime dateTime) {

@@ -1,6 +1,5 @@
 package com.morak.back.core.domain;
 
-import com.morak.back.core.domain.menu.MenuStatus;
 import java.time.LocalDateTime;
 
 public class MenuEvent {
@@ -9,14 +8,14 @@ public class MenuEvent {
     private final String teamCode;
     private final String title;
     private final LocalDateTime closedAt;
-    private final boolean isClosed;
+    private final boolean closed;
 
-    public MenuEvent(String code, String teamCode, String title, LocalDateTime closedAt, boolean isClosed) {
+    public MenuEvent(String code, String teamCode, String title, LocalDateTime closedAt, boolean closed) {
         this.code = code;
         this.teamCode = teamCode;
         this.title = title;
         this.closedAt = closedAt;
-        this.isClosed = isClosed;
+        this.closed = closed;
     }
 
     public String getTeamCode() {
@@ -36,6 +35,6 @@ public class MenuEvent {
     }
 
     public boolean isClosed() {
-        return isClosed;
+        return closed;
     }
 }
