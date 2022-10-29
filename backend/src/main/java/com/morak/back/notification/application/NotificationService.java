@@ -9,6 +9,7 @@ import com.morak.back.notification.application.dto.NotificationMessageRequest;
 import com.morak.back.notification.domain.slack.SlackClient;
 import com.morak.back.notification.domain.slack.SlackWebhook;
 import com.morak.back.notification.domain.slack.SlackWebhookRepository;
+import com.morak.back.poll.domain.PollEvent;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamRepository;
@@ -32,8 +33,20 @@ public class NotificationService {
 
     @TransactionalEventListener(condition = "#(!event.isClosed())")
     @Async
-    public void notifyTeamAppointmentOpen(AppointmentEvent event) {
+    public void notifyTeamPollOpen(PollEvent event) {
         // todo : 비동기일때 예외 발생시 로그가 찍히는지 확인
+        notifyTeam(event, NotificationMessageRequest::fromPollOpen);
+    }
+
+    @TransactionalEventListener(condition = "#event.isClosed()")
+    @Async
+    public void notifyTeamPollClosed(PollEvent event) {
+        notifyTeam(event, NotificationMessageRequest::fromPollClosed);
+    }
+
+    @TransactionalEventListener(condition = "#(!event.isClosed())")
+    @Async
+    public void notifyTeamAppointmentOpen(AppointmentEvent event) {
         notifyTeam(event, NotificationMessageRequest::fromAppointmentOpen);
     }
 

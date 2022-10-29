@@ -506,15 +506,14 @@ class PollServiceTest {
                 List.of(new PollResultRequest(1L, "그냥그냥그냐앙~")));
 
         entityManager.flush();
-//        entityManager.detach(poll);
 
         // when
         PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), pollCode);
 
         // then
         assertThat(pollResponse)
-                .extracting("id", "count")
-                .containsExactly(1L, 2);
+                .extracting("code", "count")
+                .containsExactly(pollCode, 2);
     }
 
     @Test

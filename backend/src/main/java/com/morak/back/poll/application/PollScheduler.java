@@ -13,7 +13,7 @@ public class PollScheduler {
 
     @Scheduled(cron = "0 0/1 * * * ?")
     @Generated
-    void schedulePoll() {
-        pollService.notifyClosedByScheduled();
+    public void schedulePoll() {
+        pollService.closeAllBeforeNow();
     }
 }
