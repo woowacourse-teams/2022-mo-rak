@@ -15,6 +15,13 @@ import com.morak.back.poll.application.dto.PollResponse;
 import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollEvent;
 import com.morak.back.poll.domain.PollRepository;
+import com.morak.back.role.application.RoleService;
+import com.morak.back.role.domain.RandomShuffleStrategy;
+import com.morak.back.role.domain.Role;
+import com.morak.back.role.domain.RoleHistories;
+import com.morak.back.role.domain.RoleHistoryEvent;
+import com.morak.back.role.domain.RoleNames;
+import com.morak.back.role.domain.RoleRepository;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -38,6 +45,8 @@ public class NotificationEventTest {
     private final AppointmentRepository appointmentRepository;
     private final PollService pollService;
     private final PollRepository pollRepository;
+    private final RoleService roleService;
+    private final RoleRepository roleRepository;
     private final SystemTime systemTime;
     private final AnyEventListener eventListener;
 
@@ -47,6 +56,8 @@ public class NotificationEventTest {
             AppointmentRepository appointmentRepository,
             PollService pollService,
             PollRepository pollRepository,
+            RoleService roleService,
+            RoleRepository roleRepository,
             SystemTime systemTime,
             AnyEventListener eventListener
     ) {
@@ -54,6 +65,8 @@ public class NotificationEventTest {
         this.appointmentRepository = appointmentRepository;
         this.pollService = pollService;
         this.pollRepository = pollRepository;
+        this.roleService = roleService;
+        this.roleRepository = roleRepository;
         this.systemTime = systemTime;
         this.eventListener = eventListener;
     }
@@ -146,5 +159,16 @@ public class NotificationEventTest {
 
         // then
         assertThat(eventListener.hasEvent(AppointmentEvent.class)).isTrue();
+    }
+
+    @Test
+    void 역할정하기_매칭을하면_알림을_보낸다() {
+        // given
+        Role role = new Role(TEAM_CODE, RoleNames.from(List.of("데일리 마스터", "서기")), new RoleHistories());
+        roleRepository.save(role);
+        // when
+        roleService.matchRoleAndMember(TEAM_CODE, MEMBER_ID);
+        // then
+        assertThat(eventListener.hasEvent(RoleHistoryEvent.class)).isTrue();
     }
 }

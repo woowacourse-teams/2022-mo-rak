@@ -6,7 +6,9 @@ import com.morak.back.appointment.domain.AppointmentEvent;
 import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.notification.domain.slack.FakeApiReceiver;
 import com.morak.back.poll.domain.PollEvent;
+import com.morak.back.role.domain.RoleHistoryEvent;
 import com.morak.back.support.ServiceTest;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -82,6 +84,20 @@ class NotificationServiceTest {
         );
         // when
         notificationService.notifyTeamAppointmentClosed(event);
+        // then
+        assertThat(fakeApiReceiver.getMessage()).isNotEmpty();
+    }
+
+    @Test
+    void 역할정하기_매칭결과_알림을_보낸다() {
+        // given
+        RoleHistoryEvent event = new RoleHistoryEvent(
+                TEAM_CODE,
+                systemTime.now(),
+                Map.of(1L, "데일리마스터", 2L, "서기")
+        );
+        // when
+        notificationService.notifyTeamRoleHistory(event);
         // then
         assertThat(fakeApiReceiver.getMessage()).isNotEmpty();
     }

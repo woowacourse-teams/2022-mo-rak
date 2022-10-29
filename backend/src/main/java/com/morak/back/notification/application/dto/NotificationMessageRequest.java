@@ -1,15 +1,22 @@
 package com.morak.back.notification.application.dto;
 
+import com.morak.back.auth.domain.Member;
 import com.morak.back.core.domain.MenuEvent;
 import com.morak.back.notification.util.MessageFormatter;
 import com.morak.back.team.domain.Team;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class NotificationMessageRequest {
 
+    // todo : message formatter 역할 구분하기
     private static final String APPOINTMENT_TYPE = "appointment";
     private static final String APPOINTMENT_NAME = "약속잡기";
     private static final String POLL_TYPE = "poll";
     private static final String POLL_NAME = "투표";
+    private static final String NEW_LINE = "\n";
 
     private final String message;
 
@@ -33,19 +40,33 @@ public class NotificationMessageRequest {
         return formatClosed(event, team, POLL_TYPE, POLL_NAME);
     }
 
-    public static NotificationMessageRequest formatOpen(MenuEvent event, Team team, String type, String name) {
-        return new NotificationMessageRequest(String.join("\n",
+    private static NotificationMessageRequest formatOpen(MenuEvent event, Team team, String type, String name) {
+        return new NotificationMessageRequest(String.join(NEW_LINE,
                 MessageFormatter.formatOpenAnnouncement(team.getName(), event.getTitle(), name),
                 MessageFormatter.formatTime(event.getClosedAt()),
                 MessageFormatter.formatProgressPage(event.getTeamCode(), type, event.getCode())
         ));
     }
 
-    public static NotificationMessageRequest formatClosed(MenuEvent event, Team team, String type, String name) {
-        return new NotificationMessageRequest(String.join("\n",
+    private static NotificationMessageRequest formatClosed(MenuEvent event, Team team, String type, String name) {
+        return new NotificationMessageRequest(String.join(NEW_LINE,
                 MessageFormatter.formatClosedAnnouncement(team.getName(), event.getTitle(), name),
                 MessageFormatter.formatTime(event.getClosedAt()),
                 MessageFormatter.formatResultPage(event.getTeamCode(), type, event.getCode())
+        ));
+    }
+
+    public static NotificationMessageRequest fromRoleHistory(
+            LocalDateTime dateTime,
+            Team team,
+            Map<Member, String> roleNameByMembers
+    ) {
+        return new NotificationMessageRequest(String.join(NEW_LINE,
+                team.getName() + "의 역할이 정해졌습니다 🥳",
+                "생성 시각 : " + dateTime.format(DateTimeFormatter.ofPattern("yyyy년MM월dd일 H시mm분ss초")),
+                roleNameByMembers.entrySet().stream()
+                        .map(map -> map.getKey().getName() + " : " + map.getValue())
+                        .collect(Collectors.joining(NEW_LINE))
         ));
     }
 
