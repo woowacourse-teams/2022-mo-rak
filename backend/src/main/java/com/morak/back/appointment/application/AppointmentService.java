@@ -174,9 +174,10 @@ public class AppointmentService {
 
     @Generated
     public void closeAllBeforeNow() {
-        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(LocalDateTime.now());
+        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(systemTime.now());
         for (Appointment appointment : appointmentsToBeClosed) {
             appointment.close(appointment.getHostId());
+            appointmentRepository.save(appointment);
         }
     }
 

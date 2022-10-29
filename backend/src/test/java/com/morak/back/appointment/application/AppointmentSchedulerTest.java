@@ -6,13 +6,14 @@ import com.morak.back.appointment.config.AppointmentConfig;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.SystemTime;
-import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.notification.domain.slack.FakeApiReceiver;
 import com.morak.back.support.ServiceTest;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import javax.persistence.EntityManager;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +23,21 @@ import org.springframework.context.annotation.Import;
 @Import(AppointmentConfig.class)
 class AppointmentSchedulerTest {
 
+    private final AppointmentScheduler appointmentScheduler;
     private final AppointmentRepository appointmentRepository;
     private final FakeApiReceiver receiver;
-    private final AppointmentScheduler appointmentScheduler;
     private final SystemTime systemTime;
 
     @Autowired
     public AppointmentSchedulerTest(
+            AppointmentScheduler appointmentScheduler,
             AppointmentRepository appointmentRepository,
             FakeApiReceiver receiver,
-            AppointmentScheduler appointmentScheduler,
             SystemTime systemTime
     ) {
+        this.appointmentScheduler = appointmentScheduler;
         this.appointmentRepository = appointmentRepository;
         this.receiver = receiver;
-        this.appointmentScheduler = appointmentScheduler;
         this.systemTime = systemTime;
     }
 
@@ -65,17 +66,16 @@ class AppointmentSchedulerTest {
                 .closedAt(past)
                 .hostId(1L)
                 .teamCode(Code.generate((length) -> "MoraK123"))
-                .now(past)
+                .now(past.minusDays(1L))
                 .build()
         );
 
         // when
         appointmentScheduler.scheduleAppointment();
+        entityManager.flush();
         entityManager.refresh(appointment);
 
         // then
-        assertThat(appointment.getStatus()).isEqualTo(MenuStatus.CLOSED.name());
-        assertThat(receiver.getMessage()).isNotEmpty();
-        System.out.println("message = " + receiver.getMessage());
+        assertThat(appointment.getStatus()).isEqualTo(MenuStatus.CLOSED.name())
     }
 }
