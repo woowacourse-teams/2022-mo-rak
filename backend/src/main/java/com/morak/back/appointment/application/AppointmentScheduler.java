@@ -14,6 +14,6 @@ public class AppointmentScheduler {
     @Scheduled(cron = "0 0/1 * * * ?")
     @Generated
     void scheduleAppointment() {
-        appointmentService.notifyClosedBySchedule();
+        appointmentService.closeAllBeforeNow();
     }
 }

@@ -1,6 +1,7 @@
 package com.morak.back.appointment.application;
 
 import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.appointment.domain.AppointmentEvent;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.appointment.domain.recommend.RankRecommendation;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,7 @@ public class AppointmentService {
     private final TeamMemberRepository teamMemberRepository;
     private final SystemTime systemTime;
     private final AuthorizationService authorizationService;
+    private final ApplicationEventPublisher publisher;
 
     public AppointmentResponse createAppointment(String teamCode, Long memberId, AppointmentCreateRequest request) {
         return authorizationService.withTeamMemberValidation(
@@ -173,11 +176,11 @@ public class AppointmentService {
     }
 
     @Generated
-    public void notifyClosedBySchedule() {
+    public void closeAllBeforeNow() {
         List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(LocalDateTime.now());
-
         closeAll(appointmentsToBeClosed);
-//        notifyStatusAll(appointmentsToBeClosed);
+        appointmentsToBeClosed
+                .forEach(appointment -> publisher.publishEvent(AppointmentEvent.from(appointment.getMenu())));
     }
 
     private void closeAll(List<Appointment> appointmentsToBeClosed) {
@@ -185,21 +188,6 @@ public class AppointmentService {
                 appointmentsToBeClosed.stream().map(Appointment::getId).collect(Collectors.toList()));
     }
 
-    /*
-    private void notifyStatusAll(List<Appointment> appointmentsToBeClosed) {
-        Map<String, String> teamMessages = appointmentsToBeClosed.stream().collect(
-                Collectors.groupingBy(
-                        Appointment::getTeamCode,
-                        Collectors.mapping(
-                                appointment -> MessageFormatter.formatClosed(FormattableData.from(appointment)),
-                                Collectors.joining("\n")
-                        )
-                )
-        );
-        webhookService.notifyAllMenuStatus(teamMessages);
-    }
-
-    */
     public AppointmentStatusResponse findAppointmentStatus(String teamCode, Long memberId, String appointmentCode) {
         return authorizationService.withTeamMemberValidation(
                 () -> {

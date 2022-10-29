@@ -11,12 +11,15 @@ import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
 import java.time.LocalTime;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
-public class NotificationIntegrationTest {
+@Sql(scripts = {"classpath:schema.sql", "classpath:data.sql"})
+public class NotificationEventTest {
 
     private static final String APPOINTMENT_CODE = "FEsd23C1";
     private static final String TEAM_CODE = "MoraK123";
@@ -28,7 +31,7 @@ public class NotificationIntegrationTest {
     private AnyEventListener eventListener;
 
     @Autowired
-    public NotificationIntegrationTest(
+    public NotificationEventTest(
             AppointmentService appointmentService,
             AppointmentRepository appointmentRepository,
             SystemTime systemTime,
@@ -38,6 +41,11 @@ public class NotificationIntegrationTest {
         this.appointmentRepository = appointmentRepository;
         this.systemTime = systemTime;
         this.eventListener = eventListener;
+    }
+
+    @BeforeEach
+    void setUp() {
+        eventListener.clear();
     }
 
     @Test
@@ -73,5 +81,14 @@ public class NotificationIntegrationTest {
                 () -> assertThat(appointment.isClosed()).isTrue(),
                 () -> assertThat(eventListener.hasEvent(AppointmentEvent.class)).isTrue()
         );
+    }
+
+    @Test
+    void 마감시각에_해당하는_약속잡기를_종료하면_알림을_보낸다() {
+        // given & when
+        appointmentService.closeAllBeforeNow();
+
+        // then
+        assertThat(eventListener.hasEvent(AppointmentEvent.class)).isTrue();
     }
 }

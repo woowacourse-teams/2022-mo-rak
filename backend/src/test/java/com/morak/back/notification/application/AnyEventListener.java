@@ -20,4 +20,8 @@ public class AnyEventListener {
         return events.stream()
                 .anyMatch(event -> event.getClass().isAssignableFrom(eventClass));
     }
+
+    public void clear() {
+        events.clear();
+    }
 }
