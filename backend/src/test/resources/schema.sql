@@ -140,11 +140,12 @@ CREATE TABLE slack_webhook
     FOREIGN KEY (team_id) REFERENCES team (id)
 );
 
-
 CREATE TABLE role
 (
-    `id`        BIGINT       NOT NULL AUTO_INCREMENT,
-    `team_code` VARCHAR(255) NOT NULL,
+    `id`         BIGINT       NOT NULL AUTO_INCREMENT,
+    `team_code`  VARCHAR(255) NOT NULL,
+    `created_at` DATETIME     NOT NULL,
+    `updated_at` DATETIME     NOT NULL,
     PRIMARY KEY (`id`)
 );
 
