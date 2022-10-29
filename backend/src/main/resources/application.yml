@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: local, master
   sql:
     init:
       platform: local

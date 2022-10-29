@@ -35,7 +35,7 @@ public class NotificationMessageRequest {
 
     public static NotificationMessageRequest formatOpen(MenuEvent event, Team team, String type, String name) {
         return new NotificationMessageRequest(String.join("\n",
-                MessageFormatter.formatOpenAnnouncement(team.getName(), name, event.getTitle()),
+                MessageFormatter.formatOpenAnnouncement(team.getName(), event.getTitle(), name),
                 MessageFormatter.formatTime(event.getClosedAt()),
                 MessageFormatter.formatProgressPage(event.getTeamCode(), type, event.getCode())
         ));
@@ -43,9 +43,9 @@ public class NotificationMessageRequest {
 
     public static NotificationMessageRequest formatClosed(MenuEvent event, Team team, String type, String name) {
         return new NotificationMessageRequest(String.join("\n",
-                MessageFormatter.formatClosedAnnouncement(team.getName(), type, event.getTitle()),
+                MessageFormatter.formatClosedAnnouncement(team.getName(), event.getTitle(), name),
                 MessageFormatter.formatTime(event.getClosedAt()),
-                MessageFormatter.formatResultPage(event.getTeamCode(), name, event.getCode())
+                MessageFormatter.formatResultPage(event.getTeamCode(), type, event.getCode())
         ));
     }
 
