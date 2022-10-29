@@ -2,7 +2,6 @@ package com.morak.back.appointment.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.morak.back.appointment.config.AppointmentConfig;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.SystemTime;
@@ -13,14 +12,11 @@ import com.morak.back.support.ServiceTest;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import javax.persistence.EntityManager;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 
 @ServiceTest
-@Import(AppointmentConfig.class)
 class AppointmentSchedulerTest {
 
     private final AppointmentScheduler appointmentScheduler;
@@ -76,6 +72,6 @@ class AppointmentSchedulerTest {
         entityManager.refresh(appointment);
 
         // then
-        assertThat(appointment.getStatus()).isEqualTo(MenuStatus.CLOSED.name())
+        assertThat(appointment.getStatus()).isEqualTo(MenuStatus.CLOSED.name());
     }
 }
