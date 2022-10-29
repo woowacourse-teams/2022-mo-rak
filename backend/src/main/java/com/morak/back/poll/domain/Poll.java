@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import lombok.Builder;
@@ -31,6 +32,7 @@ public class Poll extends BaseRootEntity<Poll> {
     @Embedded
     private PollItems pollItems;
 
+    @Column(nullable = false)
     private boolean anonymous;
 
     @Builder

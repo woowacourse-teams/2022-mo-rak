@@ -34,6 +34,7 @@ public class Menu {
     private Title title;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
     private MenuStatus status;
 
     @Embedded

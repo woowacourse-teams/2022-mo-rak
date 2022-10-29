@@ -20,13 +20,13 @@ public class DatePeriod {
 
     @Embedded
     @AttributeOverrides(
-            @AttributeOverride(name = "date", column = @Column(name = "start_date"))
+            @AttributeOverride(name = "date", column = @Column(name = "start_date", nullable = false))
     )
     private Date startDate;
 
     @Embedded
     @AttributeOverrides(
-            @AttributeOverride(name = "date", column = @Column(name = "end_date"))
+            @AttributeOverride(name = "date", column = @Column(name = "end_date", nullable = false))
     )
     private Date endDate;
 
