@@ -2,9 +2,24 @@ package com.morak.back.performance;
 
 import static com.morak.back.performance.Fixture.JOIN_TEAM_SIZE;
 import static com.morak.back.performance.Fixture.MEMBER_SIZE;
+import static com.morak.back.performance.Fixture.POLL_ITEM_SIZE;
+import static com.morak.back.performance.Fixture.POLL_ITEM_SIZE_PER_POLL;
+import static com.morak.back.performance.Fixture.POLL_SIZE;
+import static com.morak.back.performance.Fixture.POLL_SIZE_PER_TEAM;
 import static com.morak.back.performance.Fixture.TEAM_ID1_LOCATION;
+import static com.morak.back.performance.Fixture.TEAM_ID2_LOCATION;
 import static com.morak.back.performance.Fixture.TEAM_SIZE;
+import static com.morak.back.performance.Fixture.기명_다중선택_항목2개_투표_생성_요청_데이터;
+import static com.morak.back.performance.Fixture.투표_결과_요청_데이터;
 import static com.morak.back.performance.Fixture.팀_생성_요청_데이터;
+import static com.morak.back.performance.support.PollRequestSupport.투표_결과_조회를_요청한다;
+import static com.morak.back.performance.support.PollRequestSupport.투표_단건_조회를_요청한다;
+import static com.morak.back.performance.support.PollRequestSupport.투표_마감을_요청한다;
+import static com.morak.back.performance.support.PollRequestSupport.투표_목록_조회를_요청한다;
+import static com.morak.back.performance.support.PollRequestSupport.투표_삭제를_요청한다;
+import static com.morak.back.performance.support.PollRequestSupport.투표_생성_요청_후_위치를_가져온다;
+import static com.morak.back.performance.support.PollRequestSupport.투표_선택항목_조회_요청_후_바디를_가져온다;
+import static com.morak.back.performance.support.PollRequestSupport.투표_진행을_요청한다;
 import static com.morak.back.performance.support.RoleRequestSupport.역할_매칭을_요청한다;
 import static com.morak.back.performance.support.RoleRequestSupport.역할_이름_목록_수정을_요청한다;
 import static com.morak.back.performance.support.RoleRequestSupport.역할_이름_목록_조회를_요청한다;
@@ -24,9 +39,12 @@ import com.morak.back.performance.support.AppointmentDummySupport;
 import com.morak.back.performance.support.PollDummySupport;
 import com.morak.back.performance.support.RoleDummySupport;
 import com.morak.back.performance.support.TeamMemberDummySupport;
+import com.morak.back.poll.application.dto.PollItemResponse;
+import com.morak.back.poll.application.dto.PollResultRequest;
 import com.morak.back.role.application.dto.RoleNameEditRequest;
 import io.restassured.RestAssured;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -34,13 +52,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = {"classpath:schema.sql"})
-@ActiveProfiles(value = "performance")
-//@EnabledIf(expression = "#{environment['spring.profiles.active'] == 'performance'}", loadContext = true)
+//@ActiveProfiles(value = "performance")
+@EnabledIf(expression = "#{environment['spring.profiles.active'] == 'performance'}", loadContext = true)
 public class PerformanceTest {
 
     private static final Logger LOG = LoggerFactory.getLogger("PERFORMANCE");
@@ -81,7 +99,7 @@ public class PerformanceTest {
         LOG.info("====== 성능 테스트 start ======");
         팀_멤버_API의_성능을_테스트한다();
 //        약속잡기_API의_성능을_테스트한다();
-//        투표_API의_성능을_테스트한다();
+        투표_API의_성능을_테스트한다();
         역할_API의_성능을_테스트한다();
     }
 
@@ -96,11 +114,11 @@ public class PerformanceTest {
 //        appointmentDummySupport.약속잡기_더미데이터를_추가한다(TEAM_SIZE, APPOINTMENT_SIZE_PER_TEAM);
 //        appointmentDummySupport.약속잡기_선택가능시간_더미데이터를_추가한다(APPOINTMENT_SIZE);
 //
-//        pollDummySupport.투표_더미데이터를_추가한다(TEAM_SIZE, POLL_SIZE_PER_TEAM);
-//        pollDummySupport.투표_선택항목_더미데이터를_추가한다(POLL_SIZE, POLL_ITEM_SIZE_PER_POLL);
-//        pollDummySupport.투표_선택결과_더미데이터를_추가한다(POLL_ITEM_SIZE);
+        pollDummySupport.투표_더미데이터를_추가한다(TEAM_SIZE, POLL_SIZE_PER_TEAM);
+        pollDummySupport.투표_선택항목_더미데이터를_추가한다(POLL_SIZE, POLL_ITEM_SIZE_PER_POLL);
+        pollDummySupport.투표_선택결과_더미데이터를_추가한다(POLL_ITEM_SIZE);
 
-        roleDummySupport.역할_더미데이터를_추가한다(List.of("code1"));
+        roleDummySupport.역할_더미데이터를_추가한다(List.of("00000001"));
         roleDummySupport.역할_이름_더미데이터를_추가한다();
         roleDummySupport.역할_히스토리_더미데이터를_추가한다();
 
@@ -133,26 +151,26 @@ public class PerformanceTest {
 //        약속잡기_삭제를_요청한다(location, member1Token);
 //    }
 //
-//    private void 투표_API의_성능을_테스트한다() {
-//        LOG.info("[투표 성능 테스트]");
-//        투표_목록_조회를_요청한다(TEAM_ID2_LOCATION, member1Token);
-//        String location = 투표_생성_요청_후_위치를_가져온다(TEAM_ID2_LOCATION, 기명_다중선택_항목2개_투표_생성_요청_데이터, member1Token);
-//        투표_단건_조회를_요청한다(location, member1Token);
-//        List<PollItemResponse> pollItemResponses = 투표_선택항목_조회_요청_후_바디를_가져온다(location, member1Token);
-//        List<PollResultRequest> 투표_결과_2개_요청_데이터 = makePollResultRequests(pollItemResponses);
-//        투표_진행을_요청한다(location, 투표_결과_2개_요청_데이터, member1Token);
-//        투표_진행을_요청한다(location, 투표_결과_2개_요청_데이터, member1Token); // 재투표
-//        투표_진행을_요청한다(location, 투표_결과_2개_요청_데이터, member2Token); // 다른 멤버도 투표
-//        투표_결과_조회를_요청한다(location, member1Token);
-//        투표_마감을_요청한다(location, member1Token);
-//        투표_삭제를_요청한다(location, member1Token);
-//    }
-//
-//    private List<PollResultRequest> makePollResultRequests(List<PollItemResponse> pollItemResponses) {
-//        return pollItemResponses.stream()
-//                .map(response -> 투표_결과_요청_데이터(response.getId()))
-//                .collect(Collectors.toList());
-//    }
+    private void 투표_API의_성능을_테스트한다() {
+        LOG.info("[투표 성능 테스트]");
+        투표_목록_조회를_요청한다(TEAM_ID2_LOCATION, member1Token);
+        String location = 투표_생성_요청_후_위치를_가져온다(TEAM_ID2_LOCATION, 기명_다중선택_항목2개_투표_생성_요청_데이터, member1Token);
+        투표_단건_조회를_요청한다(location, member1Token);
+        List<PollItemResponse> pollItemResponses = 투표_선택항목_조회_요청_후_바디를_가져온다(location, member1Token);
+        List<PollResultRequest> 투표_결과_2개_요청_데이터 = makePollResultRequests(pollItemResponses);
+        투표_진행을_요청한다(location, 투표_결과_2개_요청_데이터, member1Token);
+        투표_진행을_요청한다(location, 투표_결과_2개_요청_데이터, member1Token); // 재투표
+        투표_진행을_요청한다(location, 투표_결과_2개_요청_데이터, member2Token); // 다른 멤버도 투표
+        투표_결과_조회를_요청한다(location, member1Token);
+        투표_마감을_요청한다(location, member1Token);
+        투표_삭제를_요청한다(location, member1Token);
+    }
+
+    private List<PollResultRequest> makePollResultRequests(List<PollItemResponse> pollItemResponses) {
+        return pollItemResponses.stream()
+                .map(response -> 투표_결과_요청_데이터(response.getId()))
+                .collect(Collectors.toList());
+    }
 
     private void 역할_API의_성능을_테스트한다() {
         LOG.info("[역할 성능 테스트]");

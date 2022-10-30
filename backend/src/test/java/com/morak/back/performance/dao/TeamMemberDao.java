@@ -45,7 +45,7 @@ public class TeamMemberDao {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
                         ps.setString(1, "더미 팀");
-                        ps.setString(2, "code" + (i + 1));
+                        ps.setString(2, String.format("%08d", i + 1));
                     }
 
                     @Override
