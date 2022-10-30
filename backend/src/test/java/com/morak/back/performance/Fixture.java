@@ -24,11 +24,12 @@ public class Fixture {
     public static final int POLL_ITEM_SIZE_PER_POLL = 3;
     public static final int POLL_ITEM_SIZE = POLL_SIZE * POLL_ITEM_SIZE_PER_POLL;
 
-    public static final Member MEMBER_ID1 = Member.builder().id(1L).build();
-    public static final Member MEMBER_ID2 = Member.builder().id(2L).build();
+    // TODO: 2022/10/30 나중에 어떻게 쓸지 고민 
+//    public static final Member MEMBER_ID1 = Member.builder().id(1L).build();
+//    public static final Member MEMBER_ID2 = Member.builder().id(2L).build();
 
-    public static final String TEAM_ID1_LOCATION = "/api/groups/code1";
-    public static final String TEAM_ID2_LOCATION = "/api/groups/code2";
+    public static final String TEAM_ID1_LOCATION = "/api/groups/00000001";
+    public static final String TEAM_ID2_LOCATION = "/api/groups/00000002";
     public static final TeamCreateRequest 팀_생성_요청_데이터 = new TeamCreateRequest("투표 제목");
 
     public static final List<AvailableTimeRequest> 약속잡기_가능시간_3개_선택_요청_데이터 = List.of(
