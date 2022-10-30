@@ -85,9 +85,7 @@ class PollTest {
     @Test
     void 투표를_진행한다() {
         // given
-        Map<PollItem, String> selectData = new HashMap<>();
-        selectData.put(itemA, descriptionA);
-        selectData.put(itemC, descriptionC);
+        Map<Long, String> selectData = Map.of(itemA.getId(), descriptionA, itemC.getId(), descriptionC);
 
         // when
         poll.doPoll(member.getId(), selectData);
@@ -103,14 +101,11 @@ class PollTest {
     @Test
     void 재투표를_진행한다() {
         // given
-        Map<PollItem, String> selectData1 = new HashMap<>();
-        selectData1.put(itemA, descriptionA);
-        selectData1.put(itemC, descriptionC);
+        Map<Long, String> selectData1 = Map.of(itemA.getId(), descriptionA, itemC.getId(), descriptionC);
         poll.doPoll(member.getId(), selectData1);
 
         // when
-        Map<PollItem, String> selectData2 = new HashMap<>();
-        selectData2.put(itemB, descriptionB);
+        Map<Long, String> selectData2 = Map.of(itemB.getId(), descriptionB);
         poll.doPoll(member.getId(), selectData2);
 
         // then
@@ -124,15 +119,11 @@ class PollTest {
     @Test
     void 여러명의_멤버가_투표를_진행한다() {
         // given
-        Map<PollItem, String> selectData1 = new HashMap<>();
-        selectData1.put(itemA, descriptionA);
-        selectData1.put(itemC, descriptionC);
+        Map<Long, String> selectData1 = Map.of(itemA.getId(), descriptionA, itemC.getId(), descriptionC);
         poll.doPoll(member.getId(), selectData1);
 
         // when
-        Map<PollItem, String> selectData2 = new HashMap<>();
-        selectData2.put(itemA, descriptionA);
-        selectData2.put(itemB, descriptionB);
+        Map<Long, String> selectData2 = Map.of(itemA.getId(), descriptionA, itemB.getId(), descriptionB);
         poll.doPoll(otherMember.getId(), selectData2);
 
         // then
@@ -148,10 +139,11 @@ class PollTest {
     @Test
     void 투표하는_선택_항목의_개수가_허용_개수보다_많으면_예외를_던진다() {
         // given
-        Map<PollItem, String> selectData = new HashMap<>();
-        selectData.put(itemA, descriptionA);
-        selectData.put(itemB, descriptionB);
-        selectData.put(itemC, descriptionC);
+        Map<Long, String> selectData = Map.of(
+                itemA.getId(), descriptionA,
+                itemB.getId(), descriptionB,
+                itemC.getId(), descriptionC
+        );
 
         // when & then
         assertThatThrownBy(() -> poll.doPoll(member.getId(), selectData))
@@ -204,9 +196,7 @@ class PollTest {
         // given
         poll.close(member.getId());
 
-        Map<PollItem, String> selectData = new HashMap<>();
-        selectData.put(itemA, descriptionA);
-        selectData.put(itemC, descriptionC);
+        Map<Long, String> selectData = Map.of(itemA.getId(), descriptionA, itemC.getId(), descriptionC);
 
         // when & then
         assertThatThrownBy(() -> poll.doPoll(member.getId(), selectData))
@@ -218,14 +208,9 @@ class PollTest {
     @Test
     void 투표에_속하지_않은_선택항목에_투표하려는_경우_예외를_던진다() {
         // given
-        PollItem itemD = PollItem.builder()
-                .id(4L)
-                .subject("서브웨이")
-                .build();
+        Long invalidId = 4L;
 
-        Map<PollItem, String> selectData = new HashMap<>();
-        selectData.put(itemC, descriptionC);
-        selectData.put(itemD, "");
+        Map<Long, String> selectData = Map.of(itemC.getId(), descriptionC, invalidId, "");
 
         // when & then
         assertThatThrownBy(() -> poll.doPoll(member.getId(), selectData))
