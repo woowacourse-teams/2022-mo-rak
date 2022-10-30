@@ -33,22 +33,22 @@ public class NotificationService {
     private final SlackClient slackClient;
 
     // todo : 비동기일때 예외 발생시 advice에서 처리해서 로그가 찍히는지 확인
-    @TransactionalEventListener(condition = "#(!event.isClosed())")
+    @TransactionalEventListener(condition = "#event.isClosed() == false")
     public void notifyTeamPollOpen(PollEvent event) {
         notifyTeamMenuEvent(event, NotificationMessageRequest::fromPollOpen);
     }
 
-    @TransactionalEventListener(condition = "#(event.isClosed())")
+    @TransactionalEventListener(condition = "#event.isClosed() == true")
     public void notifyTeamPollClosed(PollEvent event) {
         notifyTeamMenuEvent(event, NotificationMessageRequest::fromPollClosed);
     }
 
-    @TransactionalEventListener(condition = "#(!event.isClosed())")
+    @TransactionalEventListener(condition = "#event.isClosed() == false")
     public void notifyTeamAppointmentOpen(AppointmentEvent event) {
         notifyTeamMenuEvent(event, NotificationMessageRequest::fromAppointmentOpen);
     }
 
-    @TransactionalEventListener(condition = "#(event.isClosed())")
+    @TransactionalEventListener(condition = "#event.isClosed() == true")
     public void notifyTeamAppointmentClosed(AppointmentEvent event) {
         notifyTeamMenuEvent(event, NotificationMessageRequest::fromAppointmentClosed);
     }
