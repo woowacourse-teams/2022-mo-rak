@@ -91,7 +91,8 @@ create table select_member
     PRIMARY KEY (poll_item_id, member_id)
 );
 
-CREATE INDEX `index_poll` ON `poll` (`closed_at`);
+CREATE INDEX `poll_index_closed_at` ON `poll` (`closed_at`);
+CREATE INDEX `poll_index_code` ON `poll` (`code`);
 
 CREATE TABLE appointment
 (
