@@ -35,7 +35,7 @@ public class AllowedCount {
         return this.value > itemCount;
     }
 
-    public boolean isLessThan(int itemCount) {
-        return this.value < itemCount;
+    public boolean isGreaterThanOrEqual(int itemCount) {
+        return this.value >= itemCount;
     }
 }

@@ -59,9 +59,9 @@ public class PollService {
         );
     }
 
-    private Map<Long, String> toDataOfSelected(List<PollResultRequest> requests) {
+    private Map<PollItem, String> toDataOfSelected(List<PollResultRequest> requests) {
         return requests.stream()
-                .collect(Collectors.toMap(PollResultRequest::getId, PollResultRequest::getDescription));
+                .collect(Collectors.toMap(PollResultRequest::toPollItem, PollResultRequest::getDescription));
     }
 
     @Transactional(readOnly = true)
