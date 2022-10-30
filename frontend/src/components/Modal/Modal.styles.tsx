@@ -12,6 +12,8 @@ const StyledContainer = styled.div<{ isVisible: boolean }>(
   left: 0;
   height: 100vh;
   width: 100%;
+  backdrop-filter: blur(4px);
+  
 `
 );
 
