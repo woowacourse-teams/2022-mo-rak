@@ -3,17 +3,13 @@ package com.morak.back.appointment.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
-import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.domain.Code;
 import com.morak.back.support.RepositoryTest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -22,7 +22,7 @@ class PollItemsTest {
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.POLL_ITEM_COUNT_OUT_OF_RANGE_ERROR);
     }
-    
+
     @Test
     void 투표_항목이_선택_가능_개수보다_적으면_예외를_던진다() {
         // given

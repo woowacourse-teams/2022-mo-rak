@@ -1,22 +1,6 @@
 package com.morak.back.performance.support;
 
-import static com.morak.back.performance.Fixture.MEMBER_ID1;
-import static com.morak.back.performance.Fixture.MEMBER_ID2;
-import static com.morak.back.poll.domain.PollStatus.OPEN;
-
-import com.morak.back.auth.domain.Member;
-import com.morak.back.core.domain.Code;
-import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.performance.dao.PollDao;
-import com.morak.back.poll.domain.Poll;
-import com.morak.back.poll.domain.PollItem;
-import com.morak.back.team.domain.Team;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

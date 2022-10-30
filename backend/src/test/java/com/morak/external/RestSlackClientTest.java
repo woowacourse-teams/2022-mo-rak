@@ -13,7 +13,8 @@ import org.junit.jupiter.api.Test;
 public class RestSlackClientTest {
 
     @Test
-    @Disabled // deactivate this annotation if required
+    @Disabled
+        // deactivate this annotation if required
     void 실제_모락_슬랙에_마감_알림을_보낸다() {
         // given
         String url = System.getenv("SLACK_ERROR_URL");

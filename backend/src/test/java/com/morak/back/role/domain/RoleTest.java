@@ -63,7 +63,8 @@ class RoleTest {
         List<Long> memberIds = Arrays.asList(1L, 2L, 3L);
 
         // when
-        RoleHistory actual = role.matchMembers(memberIds, ids -> {});
+        RoleHistory actual = role.matchMembers(memberIds, ids -> {
+        });
 
         // then
         Assertions.assertAll(
@@ -87,7 +88,8 @@ class RoleTest {
         List<Long> memberIds = Arrays.asList(1L, 2L, 3L);
 
         // when
-        RoleHistory actual = role.matchMembers(memberIds, ids -> {});
+        RoleHistory actual = role.matchMembers(memberIds, ids -> {
+        });
 
         // then
         Assertions.assertAll(
@@ -113,7 +115,8 @@ class RoleTest {
         List<Long> memberIds = Arrays.asList(1L);
 
         // when & then
-        assertThatThrownBy(() -> role.matchMembers(memberIds, ids -> {}))
+        assertThatThrownBy(() -> role.matchMembers(memberIds, ids -> {
+        }))
                 .isInstanceOf(RoleDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.ROLE_NAMES_MAX_SIZE_ERROR);

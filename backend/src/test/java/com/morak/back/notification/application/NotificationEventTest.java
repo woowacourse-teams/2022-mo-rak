@@ -16,7 +16,6 @@ import com.morak.back.poll.domain.Poll;
 import com.morak.back.poll.domain.PollEvent;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.role.application.RoleService;
-import com.morak.back.role.domain.RandomShuffleStrategy;
 import com.morak.back.role.domain.Role;
 import com.morak.back.role.domain.RoleHistories;
 import com.morak.back.role.domain.RoleHistoryEvent;

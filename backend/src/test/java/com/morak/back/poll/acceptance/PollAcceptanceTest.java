@@ -16,13 +16,13 @@ import com.morak.back.SimpleRestAssured;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.exception.CustomErrorCode;
-import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.poll.application.dto.MemberResultResponse;
 import com.morak.back.poll.application.dto.PollCreateRequest;
 import com.morak.back.poll.application.dto.PollItemResponse;
 import com.morak.back.poll.application.dto.PollItemResultResponse;
 import com.morak.back.poll.application.dto.PollResponse;
 import com.morak.back.poll.application.dto.PollResultRequest;
+import com.morak.back.poll.domain.PollStatus;
 import com.morak.back.team.ui.dto.TeamCreateRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -311,7 +311,8 @@ class PollAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 List.of(new PollResponse(null, request.getTitle(), request.getAllowedPollCount(),
                                         request.getAnonymous(),
-                                        PollStatus.OPEN.name(), null, request.getClosedAt().withNano(0), pollCode, true, 0))
+                                        PollStatus.OPEN.name(), null, request.getClosedAt().withNano(0), pollCode, true,
+                                        0))
                         )
         );
     }

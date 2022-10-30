@@ -18,8 +18,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -29,16 +27,14 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class NotificationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
-
     private final SlackWebhookRepository slackWebhookRepository;
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
     private final SlackClient slackClient;
 
+    // todo : 비동기일때 예외 발생시 advice에서 처리해서 로그가 찍히는지 확인
     @TransactionalEventListener(condition = "#(!event.isClosed())")
     public void notifyTeamPollOpen(PollEvent event) {
-        // todo : 비동기일때 예외 발생시 로그가 찍히는지 확인
         notifyTeamMenuEvent(event, NotificationMessageRequest::fromPollOpen);
     }
 
@@ -71,8 +67,10 @@ public class NotificationService {
         Team team = teamRepository.findByCode(event.getTeamCode()).orElseThrow();
         Map<Member, String> roleNameByMembers = mapRoleNameByMember(event);
 
-        NotificationMessageRequest request = NotificationMessageRequest.fromRoleHistory(event.getDateTime(), team,
-                roleNameByMembers);
+        NotificationMessageRequest request = NotificationMessageRequest.fromRoleHistory(
+                event.getDateTime(), team,
+                roleNameByMembers
+        );
         slackClient.notifyMessage(webhook, request);
     }
 

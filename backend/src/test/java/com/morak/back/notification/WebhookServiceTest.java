@@ -4,22 +4,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
+import com.morak.back.notification.application.WebhookService;
+import com.morak.back.notification.application.dto.SlackWebhookCreateRequest;
 import com.morak.back.notification.domain.slack.FakeApiReceiver;
-import com.morak.back.notification.domain.slack.FormattableData;
 import com.morak.back.notification.domain.slack.SlackWebhook;
 import com.morak.back.notification.domain.slack.SlackWebhookRepository;
-import com.morak.back.notification.application.dto.SlackWebhookCreateRequest;
-import com.morak.back.notification.util.MessageFormatter;
-import com.morak.back.notification.application.WebhookService;
-import com.morak.back.poll.domain.Poll;
-import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamAuthorizationException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

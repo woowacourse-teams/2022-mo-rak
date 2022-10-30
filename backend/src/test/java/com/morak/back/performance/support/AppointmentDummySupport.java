@@ -1,13 +1,10 @@
 package com.morak.back.performance.support;
 
-import static com.morak.back.performance.Fixture.MEMBER_ID1;
-
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AvailableTime;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.performance.dao.AppointmentDao;
-import com.morak.back.team.domain.Team;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
