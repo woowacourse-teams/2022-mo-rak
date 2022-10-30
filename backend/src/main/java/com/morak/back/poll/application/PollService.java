@@ -10,7 +10,6 @@ import com.morak.back.poll.application.dto.PollItemResultResponse;
 import com.morak.back.poll.application.dto.PollResponse;
 import com.morak.back.poll.application.dto.PollResultRequest;
 import com.morak.back.poll.domain.Poll;
-import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollNotFoundException;
@@ -132,9 +131,7 @@ public class PollService {
     public List<PollItemResponse> findPollItems(String teamCode, Long memberId, String pollCode) {
         return authorizationService.withTeamMemberValidation(
                 () -> {
-                    Poll poll = pollRepository.findFetchedByCode(pollCode).orElseThrow(
-                            () -> PollNotFoundException.of(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode)
-                    );
+                    Poll poll = findPollInTeam(teamCode, pollCode);
                     validatePollInTeam(teamCode, poll);
 
                     return poll.getPollItems()

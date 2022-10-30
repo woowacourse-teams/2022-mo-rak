@@ -49,15 +49,6 @@ class PollRepositoryTest {
         assertThat(foundPoll).isEqualTo(poll);
     }
 
-    @Test
-    void 코드로_투표를_불러온다_fetched() {
-        // when
-        Poll foundPoll = pollRepository.findFetchedByCode(poll.getCode()).orElseThrow();
-
-        // then
-        assertThat(foundPoll).isEqualTo(poll);
-    }
-
     private Team saveTeam() {
         return teamRepository.save(
                 Team.builder()
