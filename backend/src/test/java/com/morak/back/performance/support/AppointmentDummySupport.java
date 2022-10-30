@@ -61,16 +61,6 @@ public class AppointmentDummySupport {
     public List<DummyAvailableTime> makeDummyAvailableTime(long memberId, int appointmentSize) {
         List<DummyAvailableTime> availableTimes = new ArrayList<>();
         for (long appointmentIndex = 1; appointmentIndex <= appointmentSize; appointmentIndex++) {
-//            Appointment appointment = Appointment.builder()
-//                    .id(appointmentIndex)
-//                    .startDate(LocalDate.now().plusDays(1))
-//                    .endDate(LocalDate.now().plusDays(8))
-//                    .startTime(LocalTime.of(16, 0))
-//                    .endTime(LocalTime.of(20, 0))
-//                    .durationHours(1)
-//                    .durationMinutes(0)
-//                    .closedAt(LocalDateTime.now().plusDays(1))
-//                    .build();
             for (int day = 1; day <= 8; day++) {
                 for (int hour = 16; hour <= 19; hour++) {
                     availableTimes.add(
