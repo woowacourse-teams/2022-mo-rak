@@ -7,7 +7,7 @@ const StyledMenuHeader = styled.div`
   margin-bottom: 2rem;
 `;
 
-const StyledGroupsModalBox = styled.div`
+const StyledGroups = styled.div`
   overflow-y: auto;
   max-height: 26.4rem;
 `;
@@ -154,7 +154,7 @@ const StyledLeaveImage = styled.img`
 
 export {
   StyledMenuHeader,
-  StyledGroupsModalBox,
+  StyledGroups,
   StyledSettingIcon,
   StyledGroupsModalIcon,
   StyledGroupProfile,

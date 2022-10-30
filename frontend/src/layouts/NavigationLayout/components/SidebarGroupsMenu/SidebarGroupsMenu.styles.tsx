@@ -29,7 +29,7 @@ const StyledGroupsModalContainer = styled.div<{ isVisible: boolean }>(
   }
 `
 );
-const StyledGroupsModalBox = styled.div`
+const StyledGroups = styled.div`
   overflow-y: auto;
   max-height: 32.4rem;
 `;
@@ -178,7 +178,7 @@ const StyledLeaveImage = styled.img`
 export {
   StyledMenuHeader,
   StyledGroupsModalContainer,
-  StyledGroupsModalBox,
+  StyledGroups,
   StyledSettingIcon,
   StyledGroupsModalIcon,
   StyledGroupProfile,
