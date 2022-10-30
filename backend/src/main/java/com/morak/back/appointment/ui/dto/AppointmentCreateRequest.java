@@ -1,6 +1,7 @@
 package com.morak.back.appointment.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.core.domain.Code;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class AppointmentCreateRequest {
     private String title;
 
     @NotNull
+    @JsonProperty("description")
     private String subTitle;
 
     @NotNull
