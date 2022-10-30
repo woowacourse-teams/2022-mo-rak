@@ -24,6 +24,7 @@ public class Fixture {
     public static final int POLL_ITEM_SIZE_PER_POLL = 3;
     public static final int POLL_ITEM_SIZE = POLL_SIZE * POLL_ITEM_SIZE_PER_POLL;
 
+    // TODO: 2022/10/30 나중에 어떻게 쓸지 고민 
 //    public static final Member MEMBER_ID1 = Member.builder().id(1L).build();
 //    public static final Member MEMBER_ID2 = Member.builder().id(2L).build();
 
