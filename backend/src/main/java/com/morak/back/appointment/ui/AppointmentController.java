@@ -32,8 +32,8 @@ public class AppointmentController {
 
     @PostMapping
     public ResponseEntity<AppointmentResponse> createAppointment(@PathVariable String groupCode,
-                                                  @Auth Long memberId,
-                                                  @Valid @RequestBody AppointmentCreateRequest request) {
+                                                                 @Auth Long memberId,
+                                                                 @Valid @RequestBody AppointmentCreateRequest request) {
         AppointmentResponse response = appointmentService.createAppointment(groupCode, memberId, request);
         return ResponseEntity.created(URI.create("/api/groups/" + groupCode + "/appointments/" + response.getCode()))
                 .body(response);

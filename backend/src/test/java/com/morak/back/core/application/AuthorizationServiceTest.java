@@ -84,7 +84,7 @@ class AuthorizationServiceTest {
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.TEAM_NOT_FOUND_ERROR);
     }
-    
+
     @Test
     void 멤버가_팀에_속하지_않는_경우_예외를_던진다() {
         // given

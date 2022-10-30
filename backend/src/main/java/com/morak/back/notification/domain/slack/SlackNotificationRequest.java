@@ -1,4 +1,4 @@
-package com.morak.back.core.domain.slack;
+package com.morak.back.notification.domain.slack;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class NotificationRequest {
+public class SlackNotificationRequest {
 
     private String username;
     private String text;

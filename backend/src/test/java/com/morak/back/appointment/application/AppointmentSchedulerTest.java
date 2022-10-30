@@ -2,13 +2,11 @@ package com.morak.back.appointment.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.morak.back.appointment.config.AppointmentConfig;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.SystemTime;
-import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.core.domain.Code;
-import com.morak.back.core.domain.slack.FakeApiReceiver;
+import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.support.ServiceTest;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,27 +14,24 @@ import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 @ServiceTest
-@Import(AppointmentConfig.class)
+@ActiveProfiles("master")
 class AppointmentSchedulerTest {
 
-    private final AppointmentRepository appointmentRepository;
-    private final FakeApiReceiver receiver;
     private final AppointmentScheduler appointmentScheduler;
+    private final AppointmentRepository appointmentRepository;
     private final SystemTime systemTime;
 
     @Autowired
     public AppointmentSchedulerTest(
-            AppointmentRepository appointmentRepository,
-            FakeApiReceiver receiver,
             AppointmentScheduler appointmentScheduler,
+            AppointmentRepository appointmentRepository,
             SystemTime systemTime
     ) {
-        this.appointmentRepository = appointmentRepository;
-        this.receiver = receiver;
         this.appointmentScheduler = appointmentScheduler;
+        this.appointmentRepository = appointmentRepository;
         this.systemTime = systemTime;
     }
 
@@ -48,7 +43,7 @@ class AppointmentSchedulerTest {
     }
 
     @Test
-    void 스케줄링에_의해_약속잡기를_종료한다(@Autowired EntityManager entityManager) {
+    void 스케줄링에_의해_약속잡기를_마감한다(@Autowired EntityManager entityManager) {
         // given
         LocalDateTime past = now.minusMinutes(1);
 
@@ -65,18 +60,16 @@ class AppointmentSchedulerTest {
                 .closedAt(past)
                 .hostId(1L)
                 .teamCode(Code.generate((length) -> "MoraK123"))
-                .now(past)
+                .now(past.minusDays(1L))
                 .build()
         );
 
         // when
         appointmentScheduler.scheduleAppointment();
+        entityManager.flush();
         entityManager.refresh(appointment);
 
         // then
         assertThat(appointment.getStatus()).isEqualTo(MenuStatus.CLOSED.name());
-        String message = receiver.getMessage();
-        assertThat(message).contains("마감");
-        System.out.println("message = " + message);
     }
 }

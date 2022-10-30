@@ -19,12 +19,12 @@ public class TimePeriod {
     private static final int MINUTES_UNIT = 30;
 
     @AttributeOverrides(
-            @AttributeOverride(name = "time", column = @Column(name = "start_time"))
+            @AttributeOverride(name = "time", column = @Column(name = "start_time", nullable = false))
     )
     private Time startTime;
 
     @AttributeOverrides(
-            @AttributeOverride(name = "time", column = @Column(name = "end_time"))
+            @AttributeOverride(name = "time", column = @Column(name = "end_time", nullable = false))
     )
     private Time endTime;
 

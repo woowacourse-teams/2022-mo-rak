@@ -1,49 +1,43 @@
-package com.morak.back.core.application;
+package com.morak.back.notification;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.auth.domain.Member;
-import com.morak.back.core.domain.slack.FakeApiReceiver;
-import com.morak.back.core.domain.slack.FormattableData;
-import com.morak.back.core.domain.slack.SlackWebhook;
-import com.morak.back.core.domain.slack.SlackWebhookRepository;
-import com.morak.back.core.ui.dto.SlackWebhookCreateRequest;
-import com.morak.back.core.util.MessageFormatter;
-import com.morak.back.poll.domain.Poll;
-import com.morak.back.poll.domain.PollRepository;
+import com.morak.back.notification.application.WebhookService;
+import com.morak.back.notification.application.dto.SlackWebhookCreateRequest;
+import com.morak.back.notification.domain.slack.FakeApiReceiver;
+import com.morak.back.notification.domain.slack.SlackWebhook;
+import com.morak.back.notification.domain.slack.SlackWebhookRepository;
 import com.morak.back.support.ServiceTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamAuthorizationException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @ServiceTest
-class NotificationServiceTest {
+class WebhookServiceTest {
 
-    private final FakeApiReceiver receiver;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final SlackWebhookRepository slackWebhookRepository;
-    private final NotificationService notificationService;
+    private final WebhookService webhookService;
 
     @Autowired
-    public NotificationServiceTest(
+    public WebhookServiceTest(
             FakeApiReceiver receiver,
             TeamRepository teamRepository,
             TeamMemberRepository teamMemberRepository,
             SlackWebhookRepository slackWebhookRepository,
-            NotificationService notificationService
+            WebhookService webhookService
     ) {
-        this.receiver = receiver;
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.slackWebhookRepository = slackWebhookRepository;
-        this.notificationService = notificationService;
+        this.webhookService = webhookService;
     }
 
     private Team team;
@@ -62,7 +56,7 @@ class NotificationServiceTest {
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
 
         // when
-        Long webhookId = notificationService.saveSlackWebhook(team.getCode(), member.getId(), request);
+        Long webhookId = webhookService.saveSlackWebhook(team.getCode(), member.getId(), request);
 
         // then
         assertThat(webhookId).isNotNull();
@@ -80,7 +74,7 @@ class NotificationServiceTest {
         SlackWebhookCreateRequest request = new SlackWebhookCreateRequest(url);
 
         // when
-        Long webhookId = notificationService.saveSlackWebhook(team.getCode(), member.getId(), request);
+        Long webhookId = webhookService.saveSlackWebhook(team.getCode(), member.getId(), request);
 
         // then
         assertThat(webhookId).isNotEqualTo(savedWebhook.getId());
@@ -99,22 +93,23 @@ class NotificationServiceTest {
 
         // then
         assertThatThrownBy(
-                () -> notificationService.saveSlackWebhook(team.getCode(), otherMember.getId(), request)
+                () -> webhookService.saveSlackWebhook(team.getCode(), otherMember.getId(), request)
         ).isInstanceOf(TeamAuthorizationException.class);
     }
 
-    @Test
-    @Disabled
-    void 알림을_전송한다(@Autowired PollRepository pollRepository) {
-        // given
-        Poll poll = pollRepository.findByCode("testcode").orElseThrow();
-
-        // when
-        notificationService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(poll)));
-
-        // then
-        String message = receiver.getMessage();
-        assertThat(message).contains("마감되었습니다");
-        System.out.println("message = " + message); // remained to debug
-    }
+    // todo : review this
+//    @Test
+//    @Disabled
+//    void 알림을_전송한다(@Autowired PollRepository pollRepository) {
+//        // given
+//        Poll poll = pollRepository.findByCode("testcode").orElseThrow();
+//
+//        // when
+//        webhookService.notifyMenuStatus(team, MessageFormatter.formatClosed(FormattableData.from(poll)));
+//
+//        // then
+//        String message = receiver.getMessage();
+//        assertThat(message).contains("마감되었습니다");
+//        System.out.println("message = " + message); // remained to debug
+//    }
 }

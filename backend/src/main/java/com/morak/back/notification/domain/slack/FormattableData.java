@@ -1,4 +1,4 @@
-package com.morak.back.core.domain.slack;
+package com.morak.back.notification.domain.slack;
 
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.core.support.Generated;

@@ -11,7 +11,6 @@ import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.appointment.domain.AppointmentRepository;
 import com.morak.back.appointment.domain.SystemTime;
-import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;
 import com.morak.back.appointment.exception.AppointmentNotFoundException;
 import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
@@ -23,6 +22,7 @@ import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.support.ServiceTest;
 import java.time.LocalDate;
@@ -367,5 +367,18 @@ class AppointmentServiceTest {
 
         // then
         assertThat(status.getStatus()).isEqualTo(MenuStatus.CLOSED.name());
+    }
+
+    @Test
+    void 약속잡기_목록을_마감한다() {
+        // given
+        appointmentRepository.save(
+                DEFAULT_BUILDER.closedAt(systemTime.now()).now(systemTime.now().minusDays(1)).build()
+        );
+        // when
+        appointmentService.closeAllBeforeNow();
+        // then
+        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(systemTime.now());
+        assertThat(appointmentsToBeClosed).isEmpty();
     }
 }

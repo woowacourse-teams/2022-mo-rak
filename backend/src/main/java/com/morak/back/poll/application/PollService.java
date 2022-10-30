@@ -2,7 +2,6 @@ package com.morak.back.poll.application;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.application.AuthorizationService;
-import com.morak.back.core.application.NotificationService;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
 import com.morak.back.poll.application.dto.PollCreateRequest;
@@ -32,7 +31,6 @@ public class PollService {
 
     private final PollRepository pollRepository;
     private final TeamMemberRepository teamMemberRepository;
-    private final NotificationService notificationService;
     private final AuthorizationService authorizationService;
 
     public PollResponse createPoll(String teamCode, Long memberId, PollCreateRequest request) {
@@ -124,6 +122,7 @@ public class PollService {
                 () -> {
                     Poll poll = findPollInTeam(teamCode, pollCode);
                     poll.close(memberId);
+                    pollRepository.save(poll);
                     return null;
                 }, teamCode, memberId
         );
@@ -147,25 +146,13 @@ public class PollService {
     }
 
     @Generated
-    void notifyClosedByScheduled() {
+    public void closeAllBeforeNow() {
         List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.now());
-
-        pollRepository.closeAll(pollsToBeClosed);
-
-        // TODO: 2022/10/26 이벤트 방식으로 전환하기
-        // notifyStatusAll(pollsToBeClosed);
+        for (Poll poll : pollsToBeClosed) {
+            poll.close(poll.getHostId());
+            pollRepository.save(poll);
+        }
     }
-
-//    private void notifyStatusAll(List<Poll> pollsToBeClosed) {
-//        Map<Team, String> teamMessages = pollsToBeClosed.stream()
-//                .collect(Collectors.toMap(
-//                        poll -> teamRepository.findByCode(poll.getTeamCode()).orElseThrow(),
-//                        poll -> MessageFormatter.formatClosed(FormattableData.from(poll))
-//                ));
-
-    // todo : 이벤트 방식으로 전환하기.
-    // notificationService.notifyAllMenuStatus(teamMessages);
-//    }
 
     private Poll findPollInTeam(String teamCode, String pollCode) {
         Poll poll = pollRepository.findByCode(pollCode)

@@ -1,11 +1,11 @@
 package com.morak.back.poll.domain;
 
+import com.morak.back.core.domain.BaseRootEntity;
+import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.menu.ClosedAt;
 import com.morak.back.core.domain.menu.Menu;
 import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.core.domain.menu.Title;
-import com.morak.back.core.domain.BaseEntity;
-import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollItemNotFoundException;
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import lombok.Builder;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Poll extends BaseEntity {
+public class Poll extends BaseRootEntity<Poll> {
 
     @Embedded
     private Menu menu;
@@ -31,6 +32,7 @@ public class Poll extends BaseEntity {
     @Embedded
     private PollItems pollItems;
 
+    @Column(nullable = false)
     private boolean anonymous;
 
     @Builder
@@ -58,6 +60,7 @@ public class Poll extends BaseEntity {
         this.menu = menu;
         this.pollItems = pollItems;
         this.anonymous = anonymous;
+        registerEvent(PollEvent.from(menu));
     }
 
     public void doPoll(Long memberId, Map<PollItem, String> data) {
@@ -99,6 +102,7 @@ public class Poll extends BaseEntity {
 
     public void close(Long memberId) {
         menu.close(memberId);
+        registerEvent(PollEvent.from(menu));
     }
 
     public List<PollItem> getPollItems() {

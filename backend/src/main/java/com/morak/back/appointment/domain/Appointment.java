@@ -3,14 +3,14 @@ package com.morak.back.appointment.domain;
 import static com.morak.back.core.exception.CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR;
 
 import com.morak.back.appointment.domain.dateperiod.DatePeriod;
-import com.morak.back.core.domain.menu.Menu;
-import com.morak.back.core.domain.menu.MenuStatus;
-import com.morak.back.core.domain.menu.Title;
 import com.morak.back.appointment.domain.recommend.AppointmentTime;
 import com.morak.back.appointment.domain.timeperiod.TimePeriod;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
-import com.morak.back.core.domain.BaseEntity;
+import com.morak.back.core.domain.BaseRootEntity;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.menu.Menu;
+import com.morak.back.core.domain.menu.MenuStatus;
+import com.morak.back.core.domain.menu.Title;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Appointment extends BaseEntity {
+public class Appointment extends BaseRootEntity<Appointment> {
 
     public static final int MINUTES_UNIT = 30;
 
@@ -70,6 +70,7 @@ public class Appointment extends BaseEntity {
         this.timePeriod = new TimePeriod(startTime, endTime);
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
         validateDurationAndPeriod(this.timePeriod, this.durationMinutes);
+        registerEvent(AppointmentEvent.from(menu));
     }
 
     private void validateDurationAndPeriod(TimePeriod timePeriod, DurationMinutes durationMinutes) {
@@ -147,6 +148,7 @@ public class Appointment extends BaseEntity {
 
     public void close(Long memberId) {
         menu.close(memberId);
+        registerEvent(AppointmentEvent.from(menu));
     }
 
     public boolean isHost(Long memberId) {

@@ -5,6 +5,7 @@ import static com.morak.back.appointment.domain.Appointment.MINUTES_UNIT;
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
 import com.morak.back.core.exception.CustomErrorCode;
 import java.time.Duration;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class DurationMinutes {
     private static final int MAX_HOURS = 24;
     private static final int DAY_MINUTES = 1440;
 
+    @Column(nullable = false)
     private int durationMinutes;
 
     public static DurationMinutes of(int hours, int minutes) {

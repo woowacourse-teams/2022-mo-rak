@@ -14,20 +14,16 @@ import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
 import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
 import com.morak.back.appointment.ui.dto.RecommendationResponse;
 import com.morak.back.auth.domain.Member;
-import com.morak.back.core.application.NotificationService;
+import com.morak.back.core.application.AuthorizationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
-import com.morak.back.core.domain.slack.FormattableData;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
-import com.morak.back.core.util.MessageFormatter;
-import com.morak.back.core.application.AuthorizationService;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +39,6 @@ public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final TeamMemberRepository teamMemberRepository;
-    private final NotificationService notificationService;
     private final SystemTime systemTime;
     private final AuthorizationService authorizationService;
 
@@ -153,8 +148,7 @@ public class AppointmentService {
                 () -> {
                     Appointment appointment = findAppointmentInTeam(teamCode, appointmentCode);
                     appointment.close(memberId);
-//                    notificationService.notifyMenuStatus(team,
-//                            MessageFormatter.formatClosed(FormattableData.from(appointment)));
+                    appointmentRepository.save(appointment);
                     return null;
                 }, teamCode, memberId
         );
@@ -179,29 +173,12 @@ public class AppointmentService {
     }
 
     @Generated
-    public void notifyClosedBySchedule() {
-        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(LocalDateTime.now());
-
-        closeAll(appointmentsToBeClosed);
-        notifyStatusAll(appointmentsToBeClosed);
-    }
-
-    private void closeAll(List<Appointment> appointmentsToBeClosed) {
-        appointmentRepository.closeAllByIds(
-                appointmentsToBeClosed.stream().map(Appointment::getId).collect(Collectors.toList()));
-    }
-
-    private void notifyStatusAll(List<Appointment> appointmentsToBeClosed) {
-        Map<String, String> teamMessages = appointmentsToBeClosed.stream().collect(
-                Collectors.groupingBy(
-                        Appointment::getTeamCode,
-                        Collectors.mapping(
-                                appointment -> MessageFormatter.formatClosed(FormattableData.from(appointment)),
-                                Collectors.joining("\n")
-                        )
-                )
-        );
-        notificationService.notifyAllMenuStatus(teamMessages);
+    public void closeAllBeforeNow() {
+        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(systemTime.now());
+        for (Appointment appointment : appointmentsToBeClosed) {
+            appointment.close(appointment.getHostId());
+            appointmentRepository.save(appointment);
+        }
     }
 
     public AppointmentStatusResponse findAppointmentStatus(String teamCode, Long memberId, String appointmentCode) {

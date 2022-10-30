@@ -1,8 +1,9 @@
-package com.morak.back.core.domain.slack;
+package com.morak.back.notification.domain.slack;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.ExternalException;
 import com.morak.back.core.support.Generated;
+import com.morak.back.notification.application.dto.NotificationMessageRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -19,10 +20,10 @@ public class RestSlackClient implements SlackClient {
     private static final String ICON_EMOJI = ":oncoming_police_car:";
 
     @Override
-    public void notifyMessage(SlackWebhook webhook, String message) {
-        NotificationRequest request = createRequest(message);
+    public void notifyMessage(SlackWebhook webhook, NotificationMessageRequest messageRequest) {
+        SlackNotificationRequest slackRequest = createRequest(messageRequest);
         try {
-            ResponseEntity<String> response = restTemplate.postForEntity(webhook.getUrl(), request, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(webhook.getUrl(), slackRequest, String.class);
             validateOK(response, webhook.getUrl());
         } catch (ResourceAccessException e) {
             throw new ExternalException(CustomErrorCode.NOTIFICATION_INVALID_URL_ERROR,
@@ -30,10 +31,8 @@ public class RestSlackClient implements SlackClient {
         }
     }
 
-    private NotificationRequest createRequest(String message) {
-        return new NotificationRequest(
-                USERNAME, message, ICON_EMOJI
-        );
+    private SlackNotificationRequest createRequest(NotificationMessageRequest messageRequest) {
+        return new SlackNotificationRequest(USERNAME, messageRequest.getMessage(), ICON_EMOJI);
     }
 
     private void validateOK(ResponseEntity<String> response, String url) {

@@ -1,4 +1,4 @@
-package com.morak.back.core.ui.dto;
+package com.morak.back.notification.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

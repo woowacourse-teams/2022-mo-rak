@@ -2,6 +2,7 @@ package com.morak.back.core.domain;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.DomainLogicException;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ public class Code {
 
     private static final int LENGTH = 8;
 
+    @Column(nullable = false)
     private String code;
 
     private Code(String code) {

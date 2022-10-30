@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RoleHistories {
 
-    @OneToMany(cascade = {CascadeType.PERSIST}, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     @JoinColumn(name = "role_id", nullable = false, updatable = false)
     private List<RoleHistory> values = new ArrayList<>();
 

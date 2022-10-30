@@ -9,10 +9,9 @@ import com.morak.back.appointment.ui.AppointmentController;
 import com.morak.back.auth.application.OAuthService;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.auth.ui.OAuthController;
-import com.morak.back.core.application.NotificationService;
-import com.morak.back.core.ui.ErrorCodesControllerTest;
 import com.morak.back.core.ui.GlobalController;
-import com.morak.back.core.ui.NotificationController;
+import com.morak.back.notification.application.WebhookService;
+import com.morak.back.notification.ui.NotificationController;
 import com.morak.back.performance.PerformanceMonitor;
 import com.morak.back.poll.application.PollService;
 import com.morak.back.poll.ui.PollController;
@@ -45,7 +44,7 @@ import org.springframework.test.web.servlet.MockMvc;
         AppointmentService.class,
         PollService.class,
         RoleService.class,
-        NotificationService.class
+        WebhookService.class
 })
 public class ControllerTest {
 

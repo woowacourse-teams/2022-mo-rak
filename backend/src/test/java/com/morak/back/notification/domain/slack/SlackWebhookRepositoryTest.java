@@ -1,4 +1,4 @@
-package com.morak.back.core.domain.slack;
+package com.morak.back.notification.domain.slack;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

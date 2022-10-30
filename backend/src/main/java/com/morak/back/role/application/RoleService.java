@@ -61,6 +61,7 @@ public class RoleService {
                     List<Long> memberIds = findMemberIds(teamCode);
                     Role role = findRoleByTeamCode(teamCode);
                     RoleHistory roleHistory = role.matchMembers(memberIds, new RandomShuffleStrategy());
+                    roleRepository.save(role);
                     return roleHistory.getId();
                 }, teamCode, memberId
         );

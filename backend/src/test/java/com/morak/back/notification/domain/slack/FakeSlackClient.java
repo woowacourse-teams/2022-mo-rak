@@ -1,7 +1,8 @@
-package com.morak.back.core.domain.slack;
+package com.morak.back.notification.domain.slack;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.ExternalException;
+import com.morak.back.notification.application.dto.NotificationMessageRequest;
 import com.morak.back.support.FakeBean;
 
 @FakeBean
@@ -14,7 +15,8 @@ public class FakeSlackClient implements SlackClient {
     }
 
     @Override
-    public void notifyMessage(SlackWebhook webhook, String message) {
+    public void notifyMessage(SlackWebhook webhook, NotificationMessageRequest messageRequest) {
+        String message = messageRequest.getMessage();
         if (message.contains("invalid")) {
             throw new ExternalException(
                     CustomErrorCode.NOTIFICATION_REQUEST_FAILURE_ERROR,

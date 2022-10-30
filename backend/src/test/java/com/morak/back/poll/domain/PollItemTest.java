@@ -2,7 +2,6 @@ package com.morak.back.poll.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.morak.back.poll.domain.PollItem;
 import org.junit.jupiter.api.Test;
 
 class PollItemTest {

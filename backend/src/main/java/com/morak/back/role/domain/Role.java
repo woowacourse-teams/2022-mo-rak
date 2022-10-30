@@ -1,29 +1,25 @@
 package com.morak.back.role.domain;
 
+import com.morak.back.core.domain.BaseRootEntity;
+import com.morak.back.core.domain.Code;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
-public class Role {
+public class Role extends BaseRootEntity<Role> {
 
     private static final String DEFAULT_ROLE = "데일리 마스터";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
-    private String teamCode;
+    @AttributeOverride(name = "code", column = @Column(name = "team_code", nullable = false))
+    private Code teamCode;
 
     @Embedded
     private RoleNames roleNames;
@@ -31,10 +27,15 @@ public class Role {
     @Embedded
     private RoleHistories roleHistories;
 
-    public Role(String teamCode, RoleNames roleNames, RoleHistories roleHistories) {
+    public Role(Long id, Code teamCode, RoleNames roleNames, RoleHistories roleHistories) {
+        super(id);
         this.teamCode = teamCode;
         this.roleNames = roleNames;
         this.roleHistories = roleHistories;
+    }
+
+    public Role(String teamCode, RoleNames roleNames, RoleHistories roleHistories) {
+        this(null, Code.generate(ignored -> teamCode), roleNames, roleHistories);
     }
 
     public Role(String teamCode) {
@@ -49,6 +50,7 @@ public class Role {
         strategy.shuffle(memberIds);
         RoleHistory roleHistory = new RoleHistory(LocalDateTime.now(), roleNames.match(memberIds));
         roleHistories.add(roleHistory);
+        registerEvent(RoleHistoryEvent.from(roleHistory, teamCode.getCode()));
         return roleHistory;
     }
 

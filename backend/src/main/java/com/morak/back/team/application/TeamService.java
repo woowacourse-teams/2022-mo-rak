@@ -183,7 +183,8 @@ public class TeamService {
     public void exitMemberFromTeam(Long memberId, String teamCode) {
         authorizationService.withTeamMemberValidation(
                 () -> {
-                    teamMemberRepository.deleteByTeamCodeAndMemberId(teamCode, memberId); // TODO: 2022/10/26 DELETE 에서 조인 불가능
+                    teamMemberRepository.deleteByTeamCodeAndMemberId(teamCode, memberId);
+                    // TODO: 2022/10/26 DELETE 에서 조인 불가능
                     return null;
                 }, teamCode, memberId
         );

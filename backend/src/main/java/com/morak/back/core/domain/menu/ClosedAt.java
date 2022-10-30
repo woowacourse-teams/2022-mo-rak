@@ -3,6 +3,7 @@ package com.morak.back.core.domain.menu;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.DomainLogicException;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ClosedAt {
 
+    @Column(nullable = false)
     private LocalDateTime closedAt;
 
     public ClosedAt(LocalDateTime closedAt, LocalDateTime now) {

@@ -2,6 +2,7 @@ package com.morak.back.core.domain.menu;
 
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.exception.DomainLogicException;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ public class Title {
     private static final int MIN_LENGTH = 1;
     private static final int MAX_LENGTH = 255;
 
+    @Column(nullable = false)
     private String title;
 
     public Title(String title) {

@@ -150,7 +150,8 @@ tasks.named('jacocoTestCoverageVerification') {
                     '**.*Performance*',
                     '**.Proxy*',
                     '**.*Response',
-                    '**.*Request'
+                    '**.*Request',
+                    '**.*Event'
             ]
         }
 

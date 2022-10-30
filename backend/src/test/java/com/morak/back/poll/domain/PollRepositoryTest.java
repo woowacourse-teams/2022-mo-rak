@@ -4,11 +4,11 @@ import static com.morak.back.poll.DateTimeFixture.TIME_OF_2022_05_12_12_00;
 import static com.morak.back.poll.DateTimeFixture.TIME_OF_2022_05_12_12_30;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.morak.back.core.domain.menu.ClosedAt;
-import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
+import com.morak.back.core.domain.menu.ClosedAt;
+import com.morak.back.core.domain.menu.MenuStatus;
 import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamRepository;

@@ -3,13 +3,9 @@ package com.morak.back.appointment.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-import com.morak.back.appointment.domain.Appointment.AppointmentBuilder;
 import com.morak.back.appointment.domain.recommend.AppointmentTime;
 import com.morak.back.appointment.domain.recommend.RecommendationCell;
-import com.morak.back.core.domain.Code;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
