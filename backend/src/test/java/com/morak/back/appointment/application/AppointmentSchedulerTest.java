@@ -23,19 +23,16 @@ class AppointmentSchedulerTest {
 
     private final AppointmentScheduler appointmentScheduler;
     private final AppointmentRepository appointmentRepository;
-    private final FakeApiReceiver receiver;
     private final SystemTime systemTime;
 
     @Autowired
     public AppointmentSchedulerTest(
             AppointmentScheduler appointmentScheduler,
             AppointmentRepository appointmentRepository,
-            FakeApiReceiver receiver,
             SystemTime systemTime
     ) {
         this.appointmentScheduler = appointmentScheduler;
         this.appointmentRepository = appointmentRepository;
-        this.receiver = receiver;
         this.systemTime = systemTime;
     }
 
@@ -47,7 +44,7 @@ class AppointmentSchedulerTest {
     }
 
     @Test
-    void 스케줄링에_의해_약속잡기를_종료한다(@Autowired EntityManager entityManager) {
+    void 스케줄링에_의해_약속잡기를_마감한다(@Autowired EntityManager entityManager) {
         // given
         LocalDateTime past = now.minusMinutes(1);
 

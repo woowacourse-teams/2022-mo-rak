@@ -11,10 +11,8 @@ import com.morak.back.support.ServiceTest;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 
 @ServiceTest
-@ActiveProfiles("master")
 class NotificationServiceTest {
 
     private static final String APPOINTMENT_CODE = "FEsd23C1";

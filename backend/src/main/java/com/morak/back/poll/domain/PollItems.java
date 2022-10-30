@@ -4,6 +4,7 @@ import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.CascadeType;
@@ -30,7 +31,7 @@ public class PollItems {
     @Builder
     public PollItems(List<PollItem> values, AllowedCount allowedCount) {
         validateCountAllowed(values, allowedCount);
-        this.values = values;
+        this.values = new ArrayList<>(values);
         this.allowedCount = allowedCount;
     }
 
@@ -62,6 +63,6 @@ public class PollItems {
     }
 
     public boolean containsAll(Collection<PollItem> items) {
-        return this.values.containsAll(items);
+        return new HashSet<>(this.values).containsAll(items);
     }
 }

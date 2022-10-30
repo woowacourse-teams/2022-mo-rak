@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -372,10 +373,13 @@ class AppointmentServiceTest {
     @Test
     void 약속잡기_목록을_마감한다() {
         // given
-        appointmentRepository.save(DEFAULT_BUILDER.closedAt(systemTime.now()).now(systemTime.now().minusDays(1)).build());
-
+        appointmentRepository.save(
+                DEFAULT_BUILDER.closedAt(systemTime.now()).now(systemTime.now().minusDays(1)).build()
+        );
         // when
         appointmentService.closeAllBeforeNow();
         // then
+        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(systemTime.now());
+        assertThat(appointmentsToBeClosed).isEmpty();
     }
 }

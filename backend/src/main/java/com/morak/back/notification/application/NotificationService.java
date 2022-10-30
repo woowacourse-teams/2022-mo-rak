@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -28,7 +27,6 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Service
 @Async
 @RequiredArgsConstructor
-@Profile("master")
 public class NotificationService {
 
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
@@ -73,7 +71,8 @@ public class NotificationService {
         Team team = teamRepository.findByCode(event.getTeamCode()).orElseThrow();
         Map<Member, String> roleNameByMembers = mapRoleNameByMember(event);
 
-        NotificationMessageRequest request = NotificationMessageRequest.fromRoleHistory(event.getDateTime(), team, roleNameByMembers);
+        NotificationMessageRequest request = NotificationMessageRequest.fromRoleHistory(event.getDateTime(), team,
+                roleNameByMembers);
         slackClient.notifyMessage(webhook, request);
     }
 
