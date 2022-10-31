@@ -9,6 +9,7 @@ import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.role.application.dto.HistoryResponse;
 import com.morak.back.role.application.dto.RoleNameResponses;
 import com.morak.back.role.application.dto.RoleResponse;
 import com.morak.back.role.application.dto.RolesResponse;
@@ -186,15 +187,6 @@ class RoleServiceTest {
     }
 
     @Test
-    void 역할정하기가_존재하지_않고_역할의_이름_목록을_수정하면_예외를_던진다() {
-        // when & then
-        assertThatThrownBy(() -> roleService.editRoleNames(team.getCode(), member.getId(), List.of("서기", "타임키퍼")))
-                .isInstanceOf(RoleNotFoundException.class)
-                .extracting("code")
-                .isEqualTo(CustomErrorCode.ROLE_NOT_FOUND_ERROR);
-    }
-
-    @Test
     void 역할을_매칭한다(@Autowired EntityManager em) {
         // given
         Member otherMember = saveOtherMember();
@@ -232,9 +224,10 @@ class RoleServiceTest {
         roleService.matchRoleAndMember(team.getCode(), member.getId());
 
         em.flush();
+        em.clear();
 
         // then
-        RoleHistories afterHistories = role.getRoleHistories();
+        RoleHistories afterHistories = roleRepository.findByTeamCode(team.getCode()).orElseThrow().getRoleHistories();
         Assertions.assertAll(
                 () -> assertThat(afterHistories.getValues().get(0).getId()).isNotNull(),
                 () -> assertThat(afterHistories.getValues().size()).isGreaterThan(beforeSize)
@@ -242,19 +235,13 @@ class RoleServiceTest {
     }
 
     @Test
-    void 역할을_매칭하는데_역할이_존재하지_않을_경우_예외를_던진다() {
-        // when & then
-        assertThatThrownBy(() -> roleService.matchRoleAndMember(team.getCode(), member.getId()))
-                .isInstanceOf(RoleNotFoundException.class)
-                .extracting("code")
-                .isEqualTo(CustomErrorCode.ROLE_NOT_FOUND_ERROR);
-    }
-
-    @Test
-    void 역할을_매칭하는데_역할이_멤버보다_많을_경우_예외를_던진다() {
+    void 역할을_매칭하는데_역할이_멤버보다_많을_경우_예외를_던진다(@Autowired EntityManager entityManager) {
         // given
-        roleRepository.save(new Role(team.getCode()));
-        roleService.editRoleNames(team.getCode(), member.getId(), List.of("서기", "타임키퍼"));
+        saveRoleWithHistories();
+
+//        roleRepository.save(new Role(team.getCode(), RoleNames.from(List.of("서기", "타임키퍼")), new RoleHistories()));
+//        entityManager.flush();
+//        entityManager.clear();
 
         // when & then
         assertThatThrownBy(() -> roleService.matchRoleAndMember(team.getCode(), member.getId()))
@@ -264,10 +251,9 @@ class RoleServiceTest {
     }
 
     @Test
-    void 역할_히스토리_목록을_조회한다(@Autowired EntityManager em) {
+    void 역할_히스토리_목록을_조회한다() {
         // given
-        saveRolewithHistories();
-        em.flush();
+        saveRoleWithHistories();
 
         // when
         RolesResponse rolesResponse = roleService.findHistories(team.getCode(), member.getId());
@@ -285,7 +271,7 @@ class RoleServiceTest {
         );
     }
 
-    private Role saveRolewithHistories() {
+    private Role saveRoleWithHistories() {
         String 데일리_마스터 = "데일리 마스터";
         String 서기 = "서기";
         LocalDateTime now = LocalDateTime.of(2022, 10, 14, 22, 52);
@@ -306,15 +292,6 @@ class RoleServiceTest {
         roleHistories.add(history4);
 
         return roleRepository.save(new Role(team.getCode(), RoleNames.from(List.of(데일리_마스터, 서기)), roleHistories));
-    }
-
-    @Test
-    void 팀에_역할이_존재하지_않는_경우_예외를_던진다() {
-        // when & then
-        assertThatThrownBy(() -> roleService.findHistories(team.getCode(), member.getId()))
-                .isInstanceOf(RoleNotFoundException.class)
-                .extracting("code")
-                .isEqualTo(CustomErrorCode.ROLE_NOT_FOUND_ERROR);
     }
 
     private Member saveOtherMember() {

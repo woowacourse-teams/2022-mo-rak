@@ -3,8 +3,11 @@ package com.morak.back.role.domain;
 import com.morak.back.core.support.Generated;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -33,11 +36,15 @@ public class RoleHistory implements Comparable<RoleHistory> {
             name = "role_match_result",
             joinColumns = @JoinColumn(name = "role_history_id")
     )
-    private List<RoleMatchResult> matchResults = new ArrayList<>();
+    private Set<RoleMatchResult> matchResults = new LinkedHashSet<>();
 
     public RoleHistory(LocalDateTime dateTime, List<RoleMatchResult> matchResults) {
         this.dateTime = dateTime;
-        this.matchResults = matchResults;
+        this.matchResults = new LinkedHashSet<>(matchResults);
+    }
+
+    public List<RoleMatchResult> getMatchResults() {
+        return new ArrayList<>(matchResults);
     }
 
     @Override
@@ -50,8 +57,8 @@ public class RoleHistory implements Comparable<RoleHistory> {
             return false;
         }
         RoleHistory that = (RoleHistory) o;
-        return Objects.equals(getDateTime(), that.getDateTime()) && Objects.equals(getMatchResults(),
-                that.getMatchResults());
+        return Objects.equals(getDateTime(), that.getDateTime())
+                && Objects.equals(getMatchResults(), that.getMatchResults());
     }
 
     @Override
