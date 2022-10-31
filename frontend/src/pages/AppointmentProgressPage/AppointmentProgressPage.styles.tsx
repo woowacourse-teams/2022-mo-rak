@@ -11,8 +11,8 @@ const StyledContainer = styled.div`
 
   ${responsive.mobile(`
     width: 100%;
-    height: 100vh;
     padding: 0 8rem;
+    margin-top: 8rem;
   `)}
 `;
 
