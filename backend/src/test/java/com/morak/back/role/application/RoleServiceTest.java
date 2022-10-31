@@ -235,13 +235,9 @@ class RoleServiceTest {
     }
 
     @Test
-    void 역할을_매칭하는데_역할이_멤버보다_많을_경우_예외를_던진다(@Autowired EntityManager entityManager) {
+    void 역할을_매칭하는데_역할이_멤버보다_많을_경우_예외를_던진다() {
         // given
-        saveRoleWithHistories();
-
-//        roleRepository.save(new Role(team.getCode(), RoleNames.from(List.of("서기", "타임키퍼")), new RoleHistories()));
-//        entityManager.flush();
-//        entityManager.clear();
+        roleRepository.save(new Role(team.getCode(), RoleNames.from(List.of("서기", "타임키퍼")), new RoleHistories()));
 
         // when & then
         assertThatThrownBy(() -> roleService.matchRoleAndMember(team.getCode(), member.getId()))

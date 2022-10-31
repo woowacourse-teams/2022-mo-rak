@@ -23,9 +23,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class RoleService {
 
-    private final TeamMemberRepository teamMemberRepository;
     private final RoleRepository roleRepository;
-
+    private final TeamMemberRepository teamMemberRepository;
     private final AuthorizationService authorizationService;
 
     @TransactionalEventListener
@@ -88,7 +87,6 @@ public class RoleService {
 
     private Role getRoleByTeamCodeFetched(String teamCode) {
         return roleRepository.findByTeamCodeFetched(teamCode)
-                .orElseThrow();
-//                .orElseGet(() -> roleRepository.save(new Role(teamCode)));
+                .orElseGet(() -> roleRepository.save(new Role(teamCode)));
     }
 }
