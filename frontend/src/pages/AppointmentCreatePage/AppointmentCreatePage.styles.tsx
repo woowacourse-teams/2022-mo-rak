@@ -9,9 +9,10 @@ const StyledContainer = styled.div`
   gap: 6rem;
 
   ${responsive.mobile(`
+    align-items: flex-start;
     width: 100%;
-    height: 100vh;
     padding: 0 8rem;
+    margin-top: 8rem;
   `)}
 `;
 
@@ -20,6 +21,10 @@ const StyledLeftContainer = styled.div`
   width: 45.2rem;
   flex-direction: column;
   gap: 1.8rem;
+
+  ${responsive.mobile(`
+    align-items: center; 
+  `)}
 `;
 
 const StyledRightContainer = styled.div`
@@ -28,4 +33,14 @@ const StyledRightContainer = styled.div`
   gap: 4rem;
 `;
 
-export { StyledContainer, StyledLeftContainer, StyledRightContainer };
+const StyledContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  ${responsive.mobile(`
+    width: 100%;
+  `)}
+`;
+
+export { StyledContainer, StyledLeftContainer, StyledRightContainer, StyledContentContainer };

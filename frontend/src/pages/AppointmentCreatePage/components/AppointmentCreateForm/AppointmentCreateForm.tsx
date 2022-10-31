@@ -15,6 +15,7 @@ import { Time, CreateAppointmentRequest, Appointment } from '../../../../types/a
 import { createAppointment } from '../../../../api/appointment';
 import { Group } from '../../../../types/group';
 import { StyledForm } from './AppointmentCreateForm.styles';
+import useDeviceState from '../../../../hooks/useDeviceState';
 
 const getFormattedTime = (time: Time) => {
   const { period, hour, minute } = time;
@@ -36,6 +37,7 @@ type Props = {
 
 function AppointmentCreateForm({ startDate, endDate }: Props) {
   const navigate = useNavigate();
+  const isMobile = useDeviceState();
   const [title, handleTitle] = useInput('');
   const { groupCode } = useParams() as { groupCode: Group['code'] };
   const [description, handleDescription] = useInput('');
@@ -124,8 +126,8 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   return (
     // TODO: StyledForm처럼 컴포넌트의 역할을 담은 네이밍을 해줄 것인지? S
     // StyledContainer처럼 최상단은 무조건 StyledContainer로 해줄 것인지 컨벤션 정해서 통일
-    <StyledForm onSubmit={handleCreateAppointment}>
-      <Box width="66rem" padding="4.8rem" height="60rem">
+    <StyledForm onSubmit={handleCreateAppointment} isMobile={isMobile}>
+      <Box width="100%" padding="4.8rem" height="60rem">
         <FlexContainer flexDirection="column" gap="2rem">
           <AppointmentCreateFormTitleInput title={title} onChange={handleTitle} />
           <AppointmentCreateFormDescriptionInput
