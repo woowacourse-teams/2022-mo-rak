@@ -11,7 +11,7 @@ function NavigationLayout() {
   const navigationBar = isMobile ? <GlobalFootbar /> : <Sidebar />;
 
   return (
-    <StyledContainer isMobile={isMobile}>
+    <StyledContainer>
       <NavigationBarProvider>
         <GroupMembersProvider>
           {navigationBar}

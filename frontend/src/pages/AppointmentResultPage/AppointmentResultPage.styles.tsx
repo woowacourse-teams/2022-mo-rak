@@ -9,9 +9,19 @@ const StyledContainer = styled.div`
 
   ${responsive.mobile(`
     width: 100%;
-    height: 100vh;
     padding: 0 8rem;
+    margin-top: 8rem;
   `)}
 `;
 
-export { StyledContainer };
+const StyledContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+
+  ${responsive.mobile(`
+    width: 100%;
+  `)}
+`;
+
+export { StyledContainer, StyledContentContainer };
