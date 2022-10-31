@@ -113,7 +113,7 @@ CREATE TABLE appointment
     `status`           VARCHAR(255) NOT NULL,
     `code`             VARCHAR(255) NOT NULL UNIQUE,
     `closed_at`        DATETIME     NOT NULL,
-    `selected_count`    BIGINT       NOT NULL DEFAULT 0,
+    `selected_count`   BIGINT       NOT NULL DEFAULT 0,
     `created_at`       DATETIME     NOT NULL,
     `updated_at`       DATETIME     NOT NULL,
     PRIMARY KEY (id),
@@ -125,10 +125,12 @@ CREATE INDEX `index_appointment` ON `appointment` (`closed_at`);
 
 CREATE TABLE appointment_available_time
 (
+    `id`              BIGINT   NOT NULL AUTO_INCREMENT,
     `appointment_id`  BIGINT   NOT NULL,
     `member_id`       BIGINT   NOT NULL,
     `start_date_time` DATETIME NOT NULL,
     `created_at`      DATETIME NOT NULL,
+    `updated_at`      DATETIME NOT NULL,
     FOREIGN KEY (appointment_id) REFERENCES appointment (id),
     FOREIGN KEY (member_id) REFERENCES member (id)
 );

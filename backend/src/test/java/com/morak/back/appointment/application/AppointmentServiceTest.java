@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -223,7 +224,7 @@ class AppointmentServiceTest {
 
 
     @Test
-    void 약속잡기_가능시간을_선택한다() {
+    void 약속잡기_가능시간을_선택한다(@Autowired EntityManager em) {
         // given
         Appointment appointment = appointmentRepository.save(약속잡기_현재부터_1일에서_5일_14시_20시);
         AvailableTimeRequest availableTimeRequest = new AvailableTimeRequest(
@@ -242,6 +243,9 @@ class AppointmentServiceTest {
                         requests
                 )
         );
+
+        em.flush();
+        em.clear();
     }
 
     @Test

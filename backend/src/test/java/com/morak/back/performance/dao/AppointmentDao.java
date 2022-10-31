@@ -49,7 +49,7 @@ public class AppointmentDao {
 
     public void batchInsertAvailableTime(List<DummyAvailableTime> availableTimes) {
         jdbcTemplate.batchUpdate(
-                "INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, created_at) VALUES (?, ?, ?, now());",
+                "INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, created_at, updated_at) VALUES (?, ?, ?, now(), now());",
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {

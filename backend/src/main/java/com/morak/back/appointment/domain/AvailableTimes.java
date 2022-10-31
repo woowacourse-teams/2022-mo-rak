@@ -5,24 +5,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
+import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Embeddable
 @NoArgsConstructor
 public class AvailableTimes {
 
-    @ElementCollection
-    @CollectionTable(
-            name = "appointment_available_time",
-            joinColumns = @JoinColumn(name = "appointment_id")
-    )
-    private final Set<AvailableTime> availableTimes = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "appointment_id", nullable = false, updatable = false)
+    private Set<AvailableTime> availableTimes = new HashSet<>();
 
     public boolean hasMember(Long memberId) {
         return this.availableTimes.stream()
