@@ -1,5 +1,6 @@
 package com.morak.back.appointment.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
@@ -73,5 +74,31 @@ class AvailableTimeTest {
         ).isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR);
+    }
+
+    @Test
+    void 선택한_멤버가_맞는지_확인한다() {
+        // given
+        long memberId = 1L;
+        AvailableTime availableTime = AvailableTime.builder().startDateTime(LocalDateTime.now()).memberId(memberId).build();
+
+        // when
+        boolean actual = availableTime.matchMember(memberId);
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void 선택한_멤버가_아닌지_확인한다() {
+        // given
+        long memberId = 1L;
+        AvailableTime availableTime = AvailableTime.builder().startDateTime(LocalDateTime.now()).memberId(memberId).build();
+
+        // when
+        boolean actual = availableTime.matchMember(memberId + 1L);
+
+        // then
+        assertThat(actual).isFalse();
     }
 }

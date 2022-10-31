@@ -2,7 +2,9 @@ package com.morak.back.appointment.domain;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
@@ -24,14 +26,14 @@ public class AvailableTimes {
 
     public boolean hasMember(Long memberId) {
         return this.availableTimes.stream()
-                .anyMatch(availableTime -> availableTime.getMemberId().equals(memberId));
+                .anyMatch(availableTime -> availableTime.matchMember(memberId));
     }
 
     public void select(Set<LocalDateTime> localDateTimes, Long memberId) {
-        Set<AvailableTime> availableTimes = new HashSet<>();
-        for (LocalDateTime dateTime : localDateTimes) {
-            availableTimes.add(AvailableTime.builder().memberId(memberId).startDateTime(dateTime).build());
-        }
+        final List<AvailableTime> availableTimes = localDateTimes.stream()
+                .map(dateTime -> AvailableTime.builder().memberId(memberId).startDateTime(dateTime).build())
+                .collect(Collectors.toList());
+
         this.availableTimes.removeIf(availableTime -> availableTime.getMemberId().equals(memberId));
         this.availableTimes.addAll(availableTimes);
     }

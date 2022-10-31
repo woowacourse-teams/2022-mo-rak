@@ -25,6 +25,10 @@ public class AvailableTime extends BaseElement {
         this.startDateTime = startDateTime;
     }
 
+    public boolean matchMember(Long memberId) {
+        return this.memberId.equals(memberId);
+    }
+
     @Override
     @Generated
     public boolean equals(Object o) {
