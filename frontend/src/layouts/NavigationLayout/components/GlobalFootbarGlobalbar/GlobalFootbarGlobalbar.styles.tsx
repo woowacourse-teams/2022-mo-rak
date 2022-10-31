@@ -10,7 +10,7 @@ const StyledContainer = styled.div(
   align-items: center;
   justify-content: space-between;
   padding-left: 2rem;
-  z-index: 1;
+  z-index: 999; // TODO: 상수화
   background:${theme.colors.WHITE_100};
 `
 );

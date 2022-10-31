@@ -29,7 +29,6 @@ const StyledContent = styled.p`
 const StyledHeader = styled.div`
   display: flex;
   gap: 2rem;
-  z-index: 1;
 `;
 
 export { StyledTitle, StyledHelpIconContainer, StyledHelpIcon, StyledContent, StyledHeader };
