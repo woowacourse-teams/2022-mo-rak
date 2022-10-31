@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router-dom';
-import FlexContainer from '../../components/FlexContainer/FlexContainer';
 import { GroupMembersProvider } from '../../context/GroupMembersProvider';
 import { NavigationBarProvider } from '../../context/NavigationBarProvider';
 import useDeviceState from '../../hooks/useDeviceState';
 import GlobalFootbar from './components/GlobalFootbar/GlobalFootbar';
+import { StyledContainer } from './NavigationLayout.styles';
 import Sidebar from './components/Sidebar/Sidebar';
 
 function NavigationLayout() {
@@ -11,14 +11,14 @@ function NavigationLayout() {
   const navigationBar = isMobile ? <GlobalFootbar /> : <Sidebar />;
 
   return (
-    <FlexContainer>
+    <StyledContainer isMobile={isMobile}>
       <NavigationBarProvider>
         <GroupMembersProvider>
           {navigationBar}
           <Outlet />
         </GroupMembersProvider>
       </NavigationBarProvider>
-    </FlexContainer>
+    </StyledContainer>
   );
 }
 

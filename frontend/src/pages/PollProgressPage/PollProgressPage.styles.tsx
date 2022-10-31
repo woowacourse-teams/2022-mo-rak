@@ -8,9 +8,10 @@ const StyledContainer = styled.div`
   justify-content: center;
 
   ${responsive.mobile(`
+    align-items: flex-start;
     width: 100%;
-    height: 100vh;
     padding: 0 8rem;
+    margin-top: 8rem;
   `)}
 `;
 

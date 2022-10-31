@@ -2,15 +2,15 @@ import styled from '@emotion/styled';
 
 const StyledContainer = styled.div(
   ({ theme }) => `
+  position: sticky;
+  top: 0;
+  width: 100vw;
+  height: 10vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: fixed;
-  top: 0;
   padding-left: 2rem;
   z-index: 1;
-  width: 100%;
-  height: 10%;
   background:${theme.colors.WHITE_100};
 `
 );
