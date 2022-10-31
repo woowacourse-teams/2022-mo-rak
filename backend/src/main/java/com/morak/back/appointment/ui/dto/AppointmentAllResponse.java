@@ -43,7 +43,7 @@ public class AppointmentAllResponse implements Comparable<AppointmentAllResponse
                 appointment.parseMinutes(),
                 appointment.getClosedAt(),
                 appointment.isClosed(),
-                appointment.getSelected()
+                appointment.getSelectedCount()
         );
     }
 

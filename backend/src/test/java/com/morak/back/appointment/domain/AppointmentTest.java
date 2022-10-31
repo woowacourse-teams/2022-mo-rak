@@ -438,7 +438,7 @@ class AppointmentTest {
         );
 
         // when
-        assertThat(appointment.getSelected()).isEqualTo(2);
+        assertThat(appointment.getSelectedCount()).isEqualTo(2);
     }
 
     @Test
@@ -466,6 +466,6 @@ class AppointmentTest {
         );
 
         // when
-        assertThat(appointment.getSelected()).isEqualTo(1);
+        assertThat(appointment.getSelectedCount()).isEqualTo(1);
     }
 }

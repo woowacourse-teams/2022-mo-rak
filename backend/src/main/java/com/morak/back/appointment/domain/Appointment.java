@@ -31,7 +31,6 @@ public class Appointment extends BaseRootEntity<Appointment> {
 
     public static final int MINUTES_UNIT = 30;
 
-
     @Embedded
     private Menu menu;
 
@@ -50,7 +49,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
     @Embedded
     private AvailableTimes availableTimes;
 
-    private long selected;
+    private long selectedCount;
 
     @Builder
     private Appointment(Long id, Code teamCode, Long hostId, String title, String subTitle, LocalDate startDate,
@@ -65,7 +64,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
         validateDurationAndPeriod(this.timePeriod, this.durationMinutes);
         this.availableTimes = new AvailableTimes();
-        this.selected = 0;
+        this.selectedCount = 0;
         registerEvent(AppointmentEvent.from(menu));
     }
 
@@ -100,7 +99,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
 
     private void countUpIfNotExists(Long memberId) {
         if (!this.availableTimes.hasMember(memberId)) {
-            this.selected++;
+            this.selectedCount++;
         }
     }
 
@@ -215,8 +214,8 @@ public class Appointment extends BaseRootEntity<Appointment> {
         return this.menu.getStatus();
     }
 
-    public long getSelected() {
-        return this.selected;
+    public long getSelectedCount() {
+        return this.selectedCount;
     }
 
     public Set<AvailableTime> getAvailableTimes() {
