@@ -63,7 +63,7 @@ class PollTest {
     @Test
     void 투표_생성시_count는_0이다() {
         // then
-        assertThat(poll.getCount()).isEqualTo(0);
+        assertThat(poll.getSelectedCount()).isEqualTo(0);
     }
 
     @Test
@@ -101,7 +101,7 @@ class PollTest {
                 () -> assertThat(itemA.getSelectMembers()).containsExactly(entry(member.getId(), descriptionA)),
                 () -> assertThat(itemB.getSelectMembers()).hasSize(0),
                 () -> assertThat(itemC.getSelectMembers()).containsExactly(entry(member.getId(), descriptionC)),
-                () -> assertThat(poll.getCount()).isEqualTo(1)
+                () -> assertThat(poll.getSelectedCount()).isEqualTo(1)
         );
     }
 
@@ -120,7 +120,7 @@ class PollTest {
                 () -> assertThat(itemA.getSelectMembers()).isEmpty(),
                 () -> assertThat(itemB.getSelectMembers()).containsExactly(entry(member.getId(), descriptionB)),
                 () -> assertThat(itemC.getSelectMembers()).isEmpty(),
-                () -> assertThat(poll.getCount()).isEqualTo(1)
+                () -> assertThat(poll.getSelectedCount()).isEqualTo(1)
         );
     }
 
@@ -140,7 +140,7 @@ class PollTest {
                         entry(member.getId(), descriptionA), entry(otherMember.getId(), descriptionA)),
                 () -> assertThat(itemB.getSelectMembers()).containsExactly(entry(otherMember.getId(), descriptionB)),
                 () -> assertThat(itemC.getSelectMembers()).containsExactly(entry(member.getId(), descriptionC)),
-                () -> assertThat(poll.getCount()).isEqualTo(2)
+                () -> assertThat(poll.getSelectedCount()).isEqualTo(2)
         );
     }
 

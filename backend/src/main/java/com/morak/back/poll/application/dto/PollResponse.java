@@ -46,7 +46,7 @@ public class PollResponse implements Comparable<PollResponse> {
                 poll.getClosedAt(),
                 poll.getCode(),
                 poll.isHost(memberId),
-                poll.getCount()
+                poll.getSelectedCount()
         );
     }
 

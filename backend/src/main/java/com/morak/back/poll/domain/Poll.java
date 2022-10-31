@@ -33,7 +33,7 @@ public class Poll extends BaseRootEntity<Poll> {
     private boolean anonymous;
 
     @Column(nullable = false)
-    private int count;
+    private int selectedCount;
 
     @Builder
     public Poll(Code teamCode, Long hostId, Code code, String title, MenuStatus status, ClosedAt closedAt,
@@ -60,7 +60,7 @@ public class Poll extends BaseRootEntity<Poll> {
         this.menu = menu;
         this.pollItems = pollItems;
         this.anonymous = anonymous;
-        this.count = pollItems.countSelectMembers();
+        this.selectedCount = pollItems.countSelectMembers();
         registerEvent(PollEvent.from(menu));
     }
 
@@ -68,7 +68,7 @@ public class Poll extends BaseRootEntity<Poll> {
         validateStatusOpen();
 
         pollItems.doPoll(memberId, data);
-        count = pollItems.countSelectMembers();
+        selectedCount = pollItems.countSelectMembers();
     }
 
     private void validateStatusOpen() {

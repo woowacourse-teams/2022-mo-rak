@@ -60,18 +60,18 @@ CREATE TABLE team_invitation
 
 CREATE TABLE poll
 (
-    id            BIGINT       NOT NULL AUTO_INCREMENT,
-    allowed_count INT          NOT NULL,
-    anonymous     BOOLEAN      NOT NULL,
-    code          VARCHAR(255) NOT NULL,
-    host_id       BIGINT       NOT NULL,
-    status        VARCHAR(255) NOT NULL,
-    team_code     VARCHAR(255) NOT NULL,
-    title         VARCHAR(255) NOT NULL,
-    closed_at     DATETIME     NOT NULL,
-    count         INTEGER      NOT NULL DEFAULT 0,
-    created_at    DATETIME     NOT NULL,
-    updated_at    DATETIME     NOT NULL,
+    id             BIGINT       NOT NULL AUTO_INCREMENT,
+    allowed_count  INT          NOT NULL,
+    anonymous      BOOLEAN      NOT NULL,
+    code           VARCHAR(255) NOT NULL,
+    host_id        BIGINT       NOT NULL,
+    status         VARCHAR(255) NOT NULL,
+    team_code      VARCHAR(255) NOT NULL,
+    title          VARCHAR(255) NOT NULL,
+    closed_at      DATETIME     NOT NULL,
+    selected_count INTEGER      NOT NULL DEFAULT 0,
+    created_at     DATETIME     NOT NULL,
+    updated_at     DATETIME     NOT NULL,
     PRIMARY KEY (id)
 );
 
