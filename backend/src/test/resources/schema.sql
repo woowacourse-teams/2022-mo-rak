@@ -113,6 +113,7 @@ CREATE TABLE appointment
     `status`           VARCHAR(255) NOT NULL,
     `code`             VARCHAR(255) NOT NULL UNIQUE,
     `closed_at`        DATETIME     NOT NULL,
+    `selected`         BIGINT       NOT NULL DEFAULT 0,
     `created_at`       DATETIME     NOT NULL,
     `updated_at`       DATETIME     NOT NULL,
     PRIMARY KEY (id),

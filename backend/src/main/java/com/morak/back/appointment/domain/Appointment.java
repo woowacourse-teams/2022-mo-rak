@@ -43,6 +43,8 @@ public class Appointment extends BaseRootEntity<Appointment> {
     )
     private final Set<AvailableTime> availableTimes = new HashSet<>();
 
+    private long selected;
+
     @Embedded
     private Menu menu;
 
@@ -70,6 +72,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
         this.timePeriod = new TimePeriod(startTime, endTime);
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
         validateDurationAndPeriod(this.timePeriod, this.durationMinutes);
+        this.selected = 0;
         registerEvent(AppointmentEvent.from(menu));
     }
 
@@ -93,7 +96,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
             validateSelectTime(now, dateTime);
             availableTimes.add(AvailableTime.builder().memberId(memberId).startDateTime(dateTime).build());
         }
-
+        countUpIfNotExists(memberId);
         this.availableTimes.removeIf(availableTime -> availableTime.getMemberId().equals(memberId));
         this.availableTimes.addAll(availableTimes);
     }
@@ -104,6 +107,13 @@ public class Appointment extends BaseRootEntity<Appointment> {
                     CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR,
                     menu.getCode() + "코드의 약속잡기는 마감되었습니다."
             );
+        }
+    }
+
+    private void countUpIfNotExists(Long memberId) {
+        if (this.availableTimes.stream()
+                .noneMatch(availableTime -> availableTime.getMemberId().equals(memberId))) {
+            this.selected += 1;
         }
     }
 
@@ -215,5 +225,9 @@ public class Appointment extends BaseRootEntity<Appointment> {
 
     public String getStatus() {
         return this.menu.getStatus();
+    }
+
+    public long getSelected() {
+        return selected;
     }
 }
