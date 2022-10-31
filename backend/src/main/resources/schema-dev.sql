@@ -93,6 +93,7 @@ create table select_member
 
 CREATE INDEX `poll_index_closed_at` ON `poll` (`closed_at`);
 CREATE INDEX `poll_index_code` ON `poll` (`code`);
+CREATE INDEX `poll_index_team_code` ON `poll` (`team_code`);
 
 CREATE TABLE appointment
 (
