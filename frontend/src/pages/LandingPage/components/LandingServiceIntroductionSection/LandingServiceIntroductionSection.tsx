@@ -26,7 +26,7 @@ function LandingServiceIntroductionSection({ id }: Props) {
           <StyledHighlightImage src={circleHighlightImg} alt="highlight" />
         </StyledTitle>
         <StyledSubTitle>
-          투표 하기, 일정 정하기...
+          투표 하기, 약속 잡기, 역할 정하기...
           <br />
           분산 되어있는 서비스에 불편함을 느끼지 않으셨나요?
           <br />
