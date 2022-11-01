@@ -8,4 +8,6 @@ export default {
 
 const DefaultTemplate: Story = () => <Calendar startDate="2022-08-22" endDate="2022-08-31" />;
 
-export const Default = DefaultTemplate.bind({});
+const Default = DefaultTemplate.bind({});
+
+export { Default };

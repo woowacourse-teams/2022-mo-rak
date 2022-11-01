@@ -20,7 +20,7 @@ const OutlinedTemplate: Story = (args) => (
   </TextField>
 );
 
-export const Outlined = OutlinedTemplate.bind({});
+const Outlined = OutlinedTemplate.bind({});
 Outlined.args = defaultArgs;
 
 const FilledTemplate: Story = (args) => (
@@ -29,7 +29,7 @@ const FilledTemplate: Story = (args) => (
   </TextField>
 );
 
-export const Filled = FilledTemplate.bind({});
+const Filled = FilledTemplate.bind({});
 Filled.args = defaultArgs;
 
 const UnstyledTemplate: Story = (args) => (
@@ -38,5 +38,7 @@ const UnstyledTemplate: Story = (args) => (
   </TextField>
 );
 
-export const Unstyled = UnstyledTemplate.bind({});
+const Unstyled = UnstyledTemplate.bind({});
 Unstyled.args = defaultArgs;
+
+export { Outlined, Filled, Unstyled };

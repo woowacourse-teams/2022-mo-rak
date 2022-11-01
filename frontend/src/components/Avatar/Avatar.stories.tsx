@@ -14,10 +14,12 @@ const DefaultTemplate: Story = (args) => (
     {...args}
   />
 );
-export const Default = DefaultTemplate.bind({});
+const Default = DefaultTemplate.bind({});
 
 const NoImageFoundTemplate: Story = (args) => (
   <Avatar profileUrl="not-found" name="al-bur" {...args} />
 );
 
-export const NoImageFound = NoImageFoundTemplate.bind({});
+const NoImageFound = NoImageFoundTemplate.bind({});
+
+export { Default, NoImageFound };

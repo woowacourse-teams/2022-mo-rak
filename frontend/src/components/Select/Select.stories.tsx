@@ -16,7 +16,7 @@ const DefaultTemplate: Story = (args) => (
   </Select>
 );
 
-export const Default = DefaultTemplate.bind({});
+const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 const OutlinedTemplate: Story = (args) => (
@@ -34,5 +34,7 @@ const OutlinedTemplate: Story = (args) => (
   </TextField>
 );
 
-export const Outlined = OutlinedTemplate.bind({});
+const Outlined = OutlinedTemplate.bind({});
 Outlined.args = {};
+
+export { Default, Outlined };

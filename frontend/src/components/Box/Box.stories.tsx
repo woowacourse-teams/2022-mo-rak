@@ -8,9 +8,11 @@ export default {
 } as Meta;
 
 const DefaultTemplate: Story = (args) => <Box {...args} />;
-export const Default = DefaultTemplate.bind({});
+const Default = DefaultTemplate.bind({});
 Default.args = {
   width: '84.4rem',
   height: '40rem',
   borderRadius: '15px'
 };
+
+export { Default };

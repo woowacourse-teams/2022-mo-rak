@@ -8,9 +8,11 @@ export default {
 
 const DefaultTemplate: Story = (args) => <Progress {...args} />;
 
-export const Default = DefaultTemplate.bind({});
+const Default = DefaultTemplate.bind({});
 Default.args = {
   value: '0',
   max: '100',
   width: '200px'
 };
+
+export { Default };
