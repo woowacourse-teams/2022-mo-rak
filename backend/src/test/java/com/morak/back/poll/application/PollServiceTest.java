@@ -317,7 +317,7 @@ class PollServiceTest {
     }
 
     @Test
-    void 투표를_진행한다(@Autowired EntityManager em) {
+    void 투표를_진행한다(@Autowired EntityManager entityManager) {
         // given
         String pollCode = 투표를_초기화하고_코드를_받아온다();
 
@@ -326,8 +326,8 @@ class PollServiceTest {
                 new PollResultRequest(2L, "ㅋ"));
         pollService.doPoll(team.getCode(), member.getId(), pollCode, pollResultRequests);
 
-        em.flush();
-        em.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), pollCode);
 
@@ -493,7 +493,7 @@ class PollServiceTest {
     }
 
     @Test
-    void 투표_진행_후_단건_조회_시_count값이_반영된다(@Autowired EntityManager em) {
+    void 투표_진행_후_단건_조회_시_count값이_반영된다(@Autowired EntityManager entityManager) {
         // given
         String pollCode = 투표를_초기화하고_코드를_받아온다();
         pollService.doPoll(team.getCode(), member.getId(), pollCode,
@@ -510,8 +510,8 @@ class PollServiceTest {
         pollService.doPoll(team.getCode(), 엘리.getId(), pollCode,
                 List.of(new PollResultRequest(1L, "그냥그냥그냐앙~")));
 
-        em.flush();
-        em.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         // when
         PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), pollCode);
