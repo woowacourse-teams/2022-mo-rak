@@ -6,6 +6,5 @@ export default {
   component: Checkbox
 } as Meta;
 
-const Template: Story = (args) => <Checkbox {...args} />;
-export const Default = Template.bind({});
-Default.args = {};
+const DefaultTemplate: Story = (args) => <Checkbox {...args} />;
+export const Default = DefaultTemplate.bind({});

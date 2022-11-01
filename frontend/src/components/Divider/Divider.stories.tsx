@@ -7,9 +7,9 @@ export default {
   component: Divider
 } as Meta;
 
-const Template: Story = (args) => <Divider {...args} />;
+const DefaultTemplate: Story = (args) => <Divider {...args} />;
 
-export const Default = Template.bind({});
+export const Default = DefaultTemplate.bind({});
 Default.args = {
   borderColor: theme.colors.GRAY_200
 };
