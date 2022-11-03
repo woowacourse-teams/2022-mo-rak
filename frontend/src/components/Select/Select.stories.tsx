@@ -17,7 +17,6 @@ const DefaultTemplate: Story = (args) => (
 );
 
 const Default = DefaultTemplate.bind({});
-Default.args = {};
 
 const OutlinedTemplate: Story = (args) => (
   <TextField

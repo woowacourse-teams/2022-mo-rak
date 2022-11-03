@@ -9,6 +9,5 @@ export default {
 const DefaultTemplate: Story = (args) => <Radio name="story" {...args} />;
 
 const Default = DefaultTemplate.bind({});
-Default.args = {};
 
 export { Default };
