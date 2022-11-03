@@ -1,4 +1,4 @@
-import { privateGroupsAxiosInstance } from './axios';
+import { privateGroupsAxiosInstance } from '@/api/axios';
 import { Poll, createPollRequest, SelectedPollItem } from '@/types/poll';
 import { Group } from '@/types/group';
 

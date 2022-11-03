@@ -3,7 +3,7 @@ import {
   getLocalStorageItem,
   removeLocalStorageItem,
   saveSessionStorageItem
-} from '../utils/storage';
+} from '@/utils/storage';
 
 type Path = 'auth' | 'groups';
 

@@ -1,5 +1,5 @@
 import { Group } from '@/types/group';
-import { privateGroupsAxiosInstance } from './axios';
+import { privateGroupsAxiosInstance } from '@/api/axios';
 import { Appointment, CreateAppointmentRequest, AvailableTimes } from '@/types/appointment';
 
 const createAppointment = (groupCode: Group['code'], appointment: CreateAppointmentRequest) =>

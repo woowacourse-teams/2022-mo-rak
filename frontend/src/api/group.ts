@@ -1,4 +1,4 @@
-import { privateGroupsAxiosInstance } from './axios';
+import { privateGroupsAxiosInstance } from '@/api/axios';
 import { Group } from '@/types/group';
 
 const getGroups = () => privateGroupsAxiosInstance.get('');
