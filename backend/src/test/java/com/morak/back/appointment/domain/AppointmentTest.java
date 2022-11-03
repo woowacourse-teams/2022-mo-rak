@@ -120,6 +120,31 @@ class AppointmentTest {
         assertThat(appointmentTimes).hasSize(5 * 8);
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "0, 30, 48",
+            "1, 0, 47",
+            "2, 0, 45",
+            "24, 0, 1"
+    })
+    void 하루종일_약속잡기의_약속시간_후보를_얻어온다(int hours, int minutes, int expected) {
+        // given
+        Appointment appointment = DEFAULT_BUILDER
+                .startDate(now.toLocalDate().plusDays(1))
+                .endDate(now.toLocalDate().plusDays(1))
+                .durationHours(hours)
+                .durationMinutes(minutes)
+                .startTime(LocalTime.of(0, 0))
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        // when
+        List<AppointmentTime> appointmentTimes = appointment.getAppointmentTimes();
+
+        // then
+        assertThat(appointmentTimes).hasSize(expected);
+    }
+
     @Test
     void durationMinutes객체의_시간의_시를_얻어온다() {
         // given
