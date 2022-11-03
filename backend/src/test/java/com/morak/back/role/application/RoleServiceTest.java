@@ -187,7 +187,7 @@ class RoleServiceTest {
     }
 
     @Test
-    void 역할을_매칭한다(@Autowired EntityManager em) {
+    void 역할을_매칭한다(@Autowired EntityManager entityManager) {
         // given
         Member otherMember = saveOtherMember();
         teamMemberRepository.save(new TeamMember(null, team, otherMember));
@@ -199,7 +199,7 @@ class RoleServiceTest {
         // when
         roleService.matchRoleAndMember(team.getCode(), member.getId());
 
-        em.flush(); // 테스트에서는 flush()를 해야 history의 id 값을 얻어올 수 있다.
+        entityManager.flush(); // 테스트에서는 flush()를 해야 history의 id 값을 얻어올 수 있다.
 
         // then
         RoleHistories afterHistories = role.getRoleHistories();
@@ -210,7 +210,7 @@ class RoleServiceTest {
     }
 
     @Test
-    void 중복된_역할이_있을_때_역할을_매칭한다(@Autowired EntityManager em) {
+    void 중복된_역할이_있을_때_역할을_매칭한다(@Autowired EntityManager entityManager) {
         // given
         Member otherMember = saveOtherMember();
         teamMemberRepository.save(new TeamMember(null, team, otherMember));
@@ -223,8 +223,8 @@ class RoleServiceTest {
         // when
         roleService.matchRoleAndMember(team.getCode(), member.getId());
 
-        em.flush();
-        em.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         // then
         RoleHistories afterHistories = roleRepository.findByTeamCode(team.getCode()).orElseThrow().getRoleHistories();
