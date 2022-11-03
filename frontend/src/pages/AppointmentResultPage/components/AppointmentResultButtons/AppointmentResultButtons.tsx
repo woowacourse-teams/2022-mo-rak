@@ -3,18 +3,18 @@ import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 
 import { AxiosError } from 'axios';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import Tooltip from '../../../../components/Tooltip/Tooltip';
-import { Group } from '../../../../types/group';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Tooltip from '@/components/Tooltip/Tooltip';
+import { Group } from '@/types/group';
 import {
   Appointment,
   GetAppointmentResponse,
   AppointmentRecommendation
-} from '../../../../types/appointment';
-import { closeAppointment, deleteAppointment } from '../../../../api/appointment';
-import Button from '../../../../components/Button/Button';
+} from '@/types/appointment';
+import { closeAppointment, deleteAppointment } from '@/api/appointment';
+import Button from '@/components/Button/Button';
 import { getFormattedDateTime } from '../../../../utils/date';
-import questionImg from '../../../../assets/question.svg';
+import questionImg from '@/assets/question.svg';
 import { StyledHelpIconContainer, StyledHelpIcon } from './AppointmentResultButtons.styles';
 
 type Props = {

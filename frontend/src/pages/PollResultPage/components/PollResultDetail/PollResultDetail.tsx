@@ -1,9 +1,9 @@
 import { useTheme } from '@emotion/react';
 
 import { StyledContainer, StyledCloseTime, StyledDetail } from './PolLResultDetail.styles';
-import TextField from '../../../../components/TextField/TextField';
+import TextField from '@/components/TextField/TextField';
 
-import { Poll } from '../../../../types/poll';
+import { Poll } from '@/types/poll';
 
 type Props = Pick<Poll, 'isAnonymous' | 'allowedPollCount' | 'closedAt'>;
 

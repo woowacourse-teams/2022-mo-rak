@@ -1,4 +1,4 @@
-import Modal from '../../../../components/Modal/Modal';
+import Modal from '@/components/Modal/Modal';
 import {
   StyledParticipantsContainer,
   StyledIcon,
@@ -9,10 +9,10 @@ import {
   StyledParticipantContainer,
   StyledParticipantDescription
 } from './PollResultParticipantModal.styles';
-import closeButtonImg from '../../../../assets/close-button.svg';
-import pollImg from '../../../../assets/poll.svg';
-import Avatar from '../../../../components/Avatar/Avatar';
-import { Members, PollItem } from '../../../../types/poll';
+import closeButtonImg from '@/assets/close-button.svg';
+import pollImg from '@/assets/poll.svg';
+import Avatar from '@/components/Avatar/Avatar';
+import { Members, PollItem } from '@/types/poll';
 
 type Props = {
   isVisible: boolean;

@@ -1,7 +1,7 @@
 import { StyledLink } from './PollResultShareLink.styles';
-import linkImg from '../../../../assets/link.svg';
-import { Poll } from '../../../../types/poll';
-import { Group } from '../../../../types/group';
+import linkImg from '@/assets/link.svg';
+import { Poll } from '@/types/poll';
+import { Group } from '@/types/group';
 
 type Props = {
   pollCode: Poll['code'];

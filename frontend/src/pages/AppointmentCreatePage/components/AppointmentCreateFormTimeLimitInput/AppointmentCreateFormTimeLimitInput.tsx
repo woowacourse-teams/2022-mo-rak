@@ -1,9 +1,9 @@
 import { ChangeEventHandler, memo } from 'react';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { Time } from '../../../../types/appointment';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import { Time } from '@/types/appointment';
 import AppointmentCreateFormTimeInput from '../AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput';
-import questionImg from '../../../../assets/question.svg';
-import Tooltip from '../../../../components/Tooltip/Tooltip';
+import questionImg from '@/assets/question.svg';
+import Tooltip from '@/components/Tooltip/Tooltip';
 import {
   StyledTitle,
   StyledHelpIconContainer,

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import serviceLogoImg from '../../../../assets/service-logo.svg';
+import serviceLogoImg from '@/assets/service-logo.svg';
 
-import { getGroups } from '../../../../api/group';
-import { Group } from '../../../../types/group';
+import { getGroups } from '@/api/group';
+import { Group } from '@/types/group';
 
 import SidebarGroupsMenu from '../SidebarGroupsMenu/SidebarGroupsMenu';
 import SidebarModals from '../SidebarModals/SidebarModals';
@@ -19,8 +19,8 @@ import {
   StyledBottomMenu,
   StyledLogoContainer
 } from './Sidebar.styles';
-import Divider from '../../../../components/Divider/Divider';
-import Spinner from '../../../../components/Spinner/Spinner';
+import Divider from '@/components/Divider/Divider';
+import Spinner from '@/components/Spinner/Spinner';
 
 function Sidebar() {
   const navigate = useNavigate();

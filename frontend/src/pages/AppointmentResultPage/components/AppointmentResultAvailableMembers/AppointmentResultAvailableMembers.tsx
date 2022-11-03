@@ -1,7 +1,7 @@
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import Box from '../../../../components/Box/Box';
-import { AppointmentRecommendation } from '../../../../types/appointment';
-import Avatar from '../../../../components/Avatar/Avatar';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Box from '@/components/Box/Box';
+import { AppointmentRecommendation } from '@/types/appointment';
+import Avatar from '@/components/Avatar/Avatar';
 import { StyledGuideText, StyledSmallTitle } from './AppointmentResultAvailableMembers.styles';
 
 type Props = {

@@ -1,6 +1,6 @@
 import { useTheme } from '@emotion/react';
-import TextField from '../../../../components/TextField/TextField';
-import { Poll } from '../../../../types/poll';
+import TextField from '@/components/TextField/TextField';
+import { Poll } from '@/types/poll';
 import { StyledStatus } from './PollResultStatus.styles';
 
 type Props = {

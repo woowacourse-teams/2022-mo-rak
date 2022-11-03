@@ -8,30 +8,25 @@ import {
 } from './PollResultContainer.styles';
 
 import { useNavigate, useParams } from 'react-router-dom';
-import Box from '../../../../components/Box/Box';
-import Divider from '../../../../components/Divider/Divider';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
+import Box from '@/components/Box/Box';
+import Divider from '@/components/Divider/Divider';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import MarginContainer from '@/components/MarginContainer/MarginContainer';
 
 import PollResultItems from '../PollResultItems/PollResultItems';
 import PollResultDetail from '../PollResultDetail/PollResultDetail';
 import PollResultButtons from '../PollResultButtons/PollResultButtons';
-import { getPoll, getPollResult, getPollItems } from '../../../../api/poll';
-import {
-  Poll,
-  getPollResponse,
-  getPollResultResponse,
-  getPollItemsResponse
-} from '../../../../types/poll';
-import { Group } from '../../../../types/group';
+import { getPoll, getPollResult, getPollItems } from '@/api/poll';
+import { Poll, getPollResponse, getPollResultResponse, getPollItemsResponse } from '@/types/poll';
+import { Group } from '@/types/group';
 
 import PollResultProgress from '../PollResultProgress/PollResultProgress';
 import PollResultStatus from '../PollResultStatus/PollResultStatus';
 import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
 import { AxiosError } from 'axios';
-import Spinner from '../../../../components/Spinner/Spinner';
-import Tooltip from '../../../../components/Tooltip/Tooltip';
-import questionImg from '../../../../assets/question.svg';
+import Spinner from '@/components/Spinner/Spinner';
+import Tooltip from '@/components/Tooltip/Tooltip';
+import questionImg from '@/assets/question.svg';
 import { useTheme } from '@emotion/react';
 
 function PollResultContainer() {

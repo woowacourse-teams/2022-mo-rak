@@ -1,6 +1,6 @@
-import { Group } from '../../../../types/group';
-import plusImg from '../../../../assets/plus.svg';
-import { createInvitationCode } from '../../../../api/group';
+import { Group } from '@/types/group';
+import plusImg from '@/assets/plus.svg';
+import { createInvitationCode } from '@/api/group';
 import { writeClipboard } from '../../../../utils/clipboard';
 import {
   StyledInvitationLink,

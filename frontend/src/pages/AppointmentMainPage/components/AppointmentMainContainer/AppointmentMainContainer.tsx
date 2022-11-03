@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLottie } from 'lottie-react';
-import Box from '../../../../components/Box/Box';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
-import { Group } from '../../../../types/group';
-import { GetAppointmentsResponse } from '../../../../types/appointment';
-import { getAppointments } from '../../../../api/appointment';
+import Box from '@/components/Box/Box';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import MarginContainer from '@/components/MarginContainer/MarginContainer';
+import { Group } from '@/types/group';
+import { GetAppointmentsResponse } from '@/types/appointment';
+import { getAppointments } from '@/api/appointment';
 import AppointmentMainStatus from '../AppointmentMainStatus/AppointmentMainStatus';
 import AppointmentMainProgress from '../AppointmentMainProgress/AppointmentMainProgress';
 import AppointmentMainDetail from '../AppointmentMainDetail/AppointmentMainDetail';
 import AppointmentMainButtons from '../AppointmentMainButtons/AppointmentMainButtons';
-import emptyLottie from '../../../../assets/empty-animation.json';
+import emptyLottie from '@/assets/empty-animation.json';
 import {
   StyledContainer,
   StyledTitle,

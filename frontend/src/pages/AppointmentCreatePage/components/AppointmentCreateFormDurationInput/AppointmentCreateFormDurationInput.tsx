@@ -1,10 +1,10 @@
 import { useTheme } from '@emotion/react';
 import { memo, SelectHTMLAttributes } from 'react';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import TextField from '../../../../components/TextField/TextField';
-import Select from '../../../../components/Select/Select';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import TextField from '@/components/TextField/TextField';
+import Select from '@/components/Select/Select';
 import { createRange } from '../../../../utils/createRange';
-import { Time } from '../../../../types/appointment';
+import { Time } from '@/types/appointment';
 import {
   StyledTitle,
   StyledContent,

@@ -1,14 +1,14 @@
 import { useTheme } from '@emotion/react';
 import { useParams } from 'react-router-dom';
-import Button from '../../../../components/Button/Button';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { StyledAnimationContainer } from './RoleMainButtons.styles';
-import { Group } from '../../../../types/group';
+import Button from '@/components/Button/Button';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import { StyledAnimationContainer } from '@/pages/RoleMainPage/components/RoleMainButtons/RoleMainButtons.styles';
+import { Group } from '@/types/group';
 import { useState } from 'react';
 import { useLottie } from 'lottie-react';
-import { allocateRoles } from '../../../../api/role';
+import { allocateRoles } from '@/api/role';
 import { AxiosError } from 'axios';
-import fireworkLottie from '../../../../assets/firework-animation.json';
+import fireworkLottie from '@/assets/firework-animation.json';
 
 type Props = {
   onClickAllocateRolesButton: () => void;

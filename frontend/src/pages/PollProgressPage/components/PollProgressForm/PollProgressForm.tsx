@@ -2,11 +2,11 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { StyledTitle, StyledLoadingContainer } from './PollProgressForm.styles';
-import Box from '../../../../components/Box/Box';
-import Divider from '../../../../components/Divider/Divider';
-import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
+import Box from '@/components/Box/Box';
+import Divider from '@/components/Divider/Divider';
+import MarginContainer from '@/components/MarginContainer/MarginContainer';
 import PollProgressButtons from '../PollProgressButtons/PollProgressButtons';
-import { getPoll, progressPoll, getPollItems } from '../../../../api/poll';
+import { getPoll, progressPoll, getPollItems } from '@/api/poll';
 import PollProgressItems from '../PollProgressItems/PollProgressItems';
 import {
   Poll,
@@ -14,11 +14,11 @@ import {
   getPollResponse,
   getPollItemsResponse,
   PollItem
-} from '../../../../types/poll';
+} from '@/types/poll';
 import PollProgressDetail from '../PollProgressDetail/PollProgressDetail';
-import { Group } from '../../../../types/group';
+import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
-import Spinner from '../../../../components/Spinner/Spinner';
+import Spinner from '@/components/Spinner/Spinner';
 
 const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
   pollItems

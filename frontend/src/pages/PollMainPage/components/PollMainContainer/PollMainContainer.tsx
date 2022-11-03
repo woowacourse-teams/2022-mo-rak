@@ -8,19 +8,19 @@ import {
 } from './PollMainContainer.styles';
 import { useParams } from 'react-router-dom';
 import { useLottie } from 'lottie-react';
-import Box from '../../../../components/Box/Box';
+import Box from '@/components/Box/Box';
 import PollMainStatus from '../PollMainStatus/PollMainStatus';
 import PollMainDetail from '../PollMainDetail/PollMainDetail';
 import PollMainProgress from '../PollMainProgress/PollMainProgress';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import MarginContainer from '@/components/MarginContainer/MarginContainer';
 
-import { getPolls } from '../../../../api/poll';
-import { getPollsResponse } from '../../../../types/poll';
-import { Group } from '../../../../types/group';
+import { getPolls } from '@/api/poll';
+import { getPollsResponse } from '@/types/poll';
+import { Group } from '@/types/group';
 
 import PollMainButtons from '../PollMainButtons/PollMainButtons';
-import emptyLottie from '../../../../assets/empty-animation.json';
+import emptyLottie from '@/assets/empty-animation.json';
 
 function PollMainContainer() {
   const [polls, setPolls] = useState<getPollsResponse>([]);

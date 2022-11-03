@@ -8,8 +8,8 @@ import {
   StyledTitleContainer
 } from './LandingServiceIntroductionSection.styles';
 
-import servicesImg from '../../../../assets/services.svg';
-import circleHighlightImg from '../../../../assets/circle-highlight.svg';
+import servicesImg from '@/assets/services.svg';
+import circleHighlightImg from '@/assets/circle-highlight.svg';
 import LandingNavbar from '../LandingNavbar/LandingNavbar';
 
 type Props = HTMLAttributes<HTMLDivElement>;

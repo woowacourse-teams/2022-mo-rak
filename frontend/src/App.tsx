@@ -1,36 +1,35 @@
 import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import { PrivateRoute } from './routes/PrivateRoute';
-import { MenuRoute } from './routes/MenuRoute';
-import NavigationLayout from './layouts/NavigationLayout/NavigationLayout';
-import GroupRoute from './routes/GroupRoute';
-import ErrorPage from './pages/ErrorPage/ErrorPage';
-import { AuthProvider } from './context/AuthProvider';
-import FallbackPage from './pages/FallbackPage/FallbackPage';
+import { PrivateRoute } from '@/routes/PrivateRoute';
+import { MenuRoute } from '@/routes/MenuRoute';
+import NavigationLayout from '@/layouts/NavigationLayout/NavigationLayout';
+import GroupRoute from '@/routes/GroupRoute';
+import ErrorPage from '@/pages/ErrorPage/ErrorPage';
+import { AuthProvider } from '@/context/AuthProvider';
+import FallbackPage from '@/pages/FallbackPage/FallbackPage';
 
-const PollMainPage = lazy(() => import('./pages/PollMainPage/PollMainPage'));
-const PollCreatePage = lazy(() => import('./pages/PollCreatePage/PollCreatePage'));
-const PollProgressPage = lazy(() => import('./pages/PollProgressPage/PollProgressPage'));
-const LandingPage = lazy(() => import('./pages/LandingPage/LandingPage'));
-const PollResultPage = lazy(() => import('./pages/PollResultPage/PollResultPage'));
-const GroupInitPage = lazy(() => import('./pages/GroupInitPage/GroupInitPage'));
-const MainPage = lazy(() => import('./pages/MainPage/MainPage'));
-const InvitationPage = lazy(() => import('./pages/InvitationPage/InvitationPage'));
-const AppointmentMainPage = lazy(() => import('./pages/AppointmentMainPage/AppointmentMainPage'));
+const PollMainPage = lazy(() => import('@/pages/PollMainPage/PollMainPage'));
+const PollCreatePage = lazy(() => import('@/pages/PollCreatePage/PollCreatePage'));
+const PollProgressPage = lazy(() => import('@/pages/PollProgressPage/PollProgressPage'));
+const LandingPage = lazy(() => import('@/pages/LandingPage/LandingPage'));
+const PollResultPage = lazy(() => import('@/pages/PollResultPage/PollResultPage'));
+const GroupInitPage = lazy(() => import('@/pages/GroupInitPage/GroupInitPage'));
+const MainPage = lazy(() => import('@/pages/MainPage/MainPage'));
+const InvitationPage = lazy(() => import('@/pages/InvitationPage/InvitationPage'));
+const AppointmentMainPage = lazy(() => import('@/pages/AppointmentMainPage/AppointmentMainPage'));
 const AppointmentCreatePage = lazy(
-  () => import('./pages/AppointmentCreatePage/AppointmentCreatePage')
+  () => import('@/pages/AppointmentCreatePage/AppointmentCreatePage')
 );
 const AppointmentProgressPage = lazy(
-  () => import('./pages/AppointmentProgressPage/AppointmentProgressPage')
+  () => import('@/pages/AppointmentProgressPage/AppointmentProgressPage')
 );
 const AppointmentResultPage = lazy(
-  () => import('./pages/AppointmentResultPage/AppointmentResultPage')
+  () => import('@/pages/AppointmentResultPage/AppointmentResultPage')
 );
-const RoleMainPage = lazy(() => import('./pages/RoleMainPage/RoleMainPage'));
+const RoleMainPage = lazy(() => import('@/pages/RoleMainPage/RoleMainPage'));
 
 function App() {
   return (
-    // TODO: 로딩 UI 필요
     <Suspense fallback={<FallbackPage />}>
       <Routes>
         <Route path="/">

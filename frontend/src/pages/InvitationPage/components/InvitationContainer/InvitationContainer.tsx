@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { StyledLogo, StyledTitle } from './InvitationContainer.styles';
 import { AxiosError } from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import Box from '../../../../components/Box/Box';
-import serviceLogoImg from '../../../../assets/service-logo.svg';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
+import Box from '@/components/Box/Box';
+import serviceLogoImg from '@/assets/service-logo.svg';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import InvitationButtons from '../InvitationButtons/InvitationButtons';
-import { getIsJoinedGroup } from '../../../../api/group';
-import { Group } from '../../../../types/group';
+import { getIsJoinedGroup } from '@/api/group';
+import { Group } from '@/types/group';
 
 function InvitationContainer() {
   const navigate = useNavigate();

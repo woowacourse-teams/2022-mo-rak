@@ -1,9 +1,9 @@
-import { Appointment } from '../../../../types/appointment';
-import linkImg from '../../../../assets/link.svg';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
+import { Appointment } from '@/types/appointment';
+import linkImg from '@/assets/link.svg';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import { writeClipboard } from '../../../../utils/clipboard';
 import AppointmentResultStatus from '../AppointmentResultStatus/AppointmentResultStatus';
-import { Group } from '../../../../types/group';
+import { Group } from '@/types/group';
 import {
   StyledContainer,
   StyledTitle,
@@ -13,8 +13,8 @@ import {
   StyledHelpIcon,
   StyledDescription
 } from './AppointmentResultHeader.styles';
-import Tooltip from '../../../../components/Tooltip/Tooltip';
-import questionImg from '../../../../assets/question.svg';
+import Tooltip from '@/components/Tooltip/Tooltip';
+import questionImg from '@/assets/question.svg';
 import { useTheme } from '@emotion/react';
 
 const getFormattedClosedTime = (value: string) => {

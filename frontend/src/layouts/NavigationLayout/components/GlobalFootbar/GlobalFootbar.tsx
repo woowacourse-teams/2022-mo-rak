@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Group } from '../../../../types/group';
+import { Group } from '@/types/group';
 import GlobalFootbarGlobalbar from '../GlobalFootbarGlobalbar/GlobalFootbarGlobalbar';
 import GlobalFootbarFootbar from '../GlobalFootbarFootbar/GlobalFootbarFootbar';
-import { getGroups } from '../../../../api/group';
+import { getGroups } from '@/api/group';
 
 function GlobalFootbar() {
   const [isLoading, setIsLoading] = useState(true);

@@ -1,14 +1,14 @@
 import { StyledContainer, StyledMenuIcon } from './GlobalFootbarFootbar.styles';
-import homeImg from '../../../../assets/home.svg';
-import menuImg from '../../../../assets/menu.svg';
-import pollImg from '../../../../assets/poll.svg';
-import calendarClockImg from '../../../../assets/calendar-clock.svg';
-import roleImg from '../../../../assets/role.svg';
+import homeImg from '@/assets/home.svg';
+import menuImg from '@/assets/menu.svg';
+import pollImg from '@/assets/poll.svg';
+import calendarClockImg from '@/assets/calendar-clock.svg';
+import roleImg from '@/assets/role.svg';
 import { useNavigate } from 'react-router-dom';
-import useNavigationBarDispatchContext from '../../../../hooks/useNavigationBarDispatchContext';
-import useNavigationBarContext from '../../../../hooks/useNavigationBarContext';
-import { Group } from '../../../../types/group';
-import { Menu } from '../../../../types/menu';
+import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
+import useNavigationBarContext from '@/hooks/useNavigationBarContext';
+import { Group } from '@/types/group';
+import { Menu } from '@/types/menu';
 import GlobalFootbarFootbarDrawer from '../GlobalFootbarFootbarDrawer/GlobalFootbarFootbarDrawer';
 
 type Props = {

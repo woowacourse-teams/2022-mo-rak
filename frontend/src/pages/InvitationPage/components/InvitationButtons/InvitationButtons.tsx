@@ -1,10 +1,10 @@
 import { NavigateFunction } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
-import Button from '../../../../components/Button/Button';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
+import Button from '@/components/Button/Button';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 
-import { participateGroup } from '../../../../api/group';
-import { Group } from '../../../../types/group';
+import { participateGroup } from '@/api/group';
+import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
 
 type Props = {

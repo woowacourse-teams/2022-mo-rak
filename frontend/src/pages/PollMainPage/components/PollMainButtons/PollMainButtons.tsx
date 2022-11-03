@@ -1,8 +1,8 @@
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import Button from '../../../../components/Button/Button';
-import { Poll } from '../../../../types/poll';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Button from '@/components/Button/Button';
+import { Poll } from '@/types/poll';
 
 type Props = {
   pollCode: Poll['code'];

@@ -1,8 +1,8 @@
 import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { participateGroup } from '../../../../api/group';
-import useInput from '../../../../hooks/useInput';
+import { participateGroup } from '@/api/group';
+import useInput from '@/hooks/useInput';
 
 import GroupParticipateInvitationCodeInput from '../GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';
 import GroupParticipateFormSubmitButton from '../GroupPariticipateFormSubmitButton/GroupParticipateFormSubmitButton';

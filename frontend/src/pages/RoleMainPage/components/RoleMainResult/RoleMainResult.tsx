@@ -1,6 +1,6 @@
-import Box from '../../../../components/Box/Box';
-import Avatar from '../../../../components/Avatar/Avatar';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
+import Box from '@/components/Box/Box';
+import Avatar from '@/components/Avatar/Avatar';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 
 import {
   StyledTitle,
@@ -11,11 +11,11 @@ import {
   StyledDate,
   StyledEmptyText
 } from './RoleMainResult.styles';
-import Divider from '../../../../components/Divider/Divider';
+import Divider from '@/components/Divider/Divider';
 import { useState } from 'react';
-import { GetRolesHistoriesResponse } from '../../../../types/role';
-import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
-import deletedUserImg from '../../../../assets/deleted-user.svg';
+import { GetRolesHistoriesResponse } from '@/types/role';
+import useGroupMembersContext from '@/hooks/useGroupMembersContext';
+import deletedUserImg from '@/assets/deleted-user.svg';
 
 type Props = { rolesHistories: GetRolesHistoriesResponse };
 

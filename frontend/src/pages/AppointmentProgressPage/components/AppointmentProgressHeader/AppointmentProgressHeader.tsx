@@ -1,4 +1,4 @@
-import { Appointment } from '../../../../types/appointment';
+import { Appointment } from '@/types/appointment';
 import AppointmentProgressDetail from '../AppointmentProgressDetail/AppointmentProgressDetail';
 import {
   StyledHeaderContainer,

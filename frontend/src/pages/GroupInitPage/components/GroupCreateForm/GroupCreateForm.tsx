@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createGroup } from '../../../../api/group';
-import { Group } from '../../../../types/group';
+import { createGroup } from '@/api/group';
+import { Group } from '@/types/group';
 import GroupCreateFormNameInput from '../GroupCreateFormNameInput/GroupCreateFormNameInput';
 import GroupCreateFormSubmitButton from '../GroupCreateFormSubmitButton/GroupCreateFormSubmitButton';
 import { StyledForm, StyledInputContainer } from './GroupCreateForm.styles';

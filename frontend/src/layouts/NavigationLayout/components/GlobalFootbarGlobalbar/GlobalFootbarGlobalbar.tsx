@@ -6,9 +6,9 @@ import {
   StyledName,
   StyledCurrentGroupContainer
 } from './GlobalFootbarGlobalbar.styles';
-import serviceLogoImg from '../../../../assets/service-logo.svg';
+import serviceLogoImg from '@/assets/service-logo.svg';
 import { useNavigate } from 'react-router-dom';
-import { Group } from '../../../../types/group';
+import { Group } from '@/types/group';
 
 type Props = {
   groupCode: Group['code'];

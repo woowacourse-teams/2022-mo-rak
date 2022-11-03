@@ -1,5 +1,5 @@
 import { useLottie } from 'lottie-react';
-import notFoundLottie from '../../../../assets/not-found-animation.json';
+import notFoundLottie from '@/assets/not-found-animation.json';
 import { StyledDescription } from './ErrorPageContainer.styles';
 
 function ErrorPageContainer() {

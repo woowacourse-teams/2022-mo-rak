@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { getUser } from '../api/auth';
-import useAuthDispatchContext from '../hooks/useAuthDispatchContext';
-import { getLocalStorageItem } from '../utils/storage';
+import { getUser } from '@/api/auth';
+import useAuthDispatchContext from '@/hooks/useAuthDispatchContext';
+import { getLocalStorageItem } from '@/utils/storage';
 
 function PrivateRoute() {
   const token = getLocalStorageItem('token');

@@ -1,8 +1,8 @@
 import { useTheme } from '@emotion/react';
 import { ChangeEventHandler } from 'react';
-import Input from '../../../../components/Input/Input';
-import TextField from '../../../../components/TextField/TextField';
-import { Member } from '../../../../types/group';
+import Input from '@/components/Input/Input';
+import TextField from '@/components/TextField/TextField';
+import { Member } from '@/types/group';
 
 type Props = {
   username: Member['name'];

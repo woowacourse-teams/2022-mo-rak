@@ -1,11 +1,11 @@
 import { useTheme } from '@emotion/react';
 
 import { useNavigate } from 'react-router-dom';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import Button from '../../../../components/Button/Button';
-import { closePoll, deletePoll } from '../../../../api/poll';
-import { Poll, getPollResponse, getPollItemsResponse } from '../../../../types/poll';
-import { Group } from '../../../../types/group';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Button from '@/components/Button/Button';
+import { closePoll, deletePoll } from '@/api/poll';
+import { Poll, getPollResponse, getPollItemsResponse } from '@/types/poll';
+import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
 
 type Props = {

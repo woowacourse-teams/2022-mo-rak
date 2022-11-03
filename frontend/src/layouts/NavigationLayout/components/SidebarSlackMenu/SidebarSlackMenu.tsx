@@ -1,5 +1,5 @@
 import { MouseEventHandler } from 'react';
-import slackImg from '../../../../assets/slack.svg';
+import slackImg from '@/assets/slack.svg';
 import { StyledContainer, StyledSlackLogo, StyledText } from './SidebarSlackMenu.styles';
 
 type Props = {

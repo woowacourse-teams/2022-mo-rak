@@ -1,10 +1,10 @@
 import { ChangeEventHandler } from 'react';
 
 import { useTheme } from '@emotion/react';
-import Input from '../../../../components/Input/Input';
-import TextField from '../../../../components/TextField/TextField';
-import { Group } from '../../../../types/group';
-import createPlusImg from '../../../../assets/create-plus.svg';
+import Input from '@/components/Input/Input';
+import TextField from '@/components/TextField/TextField';
+import { Group } from '@/types/group';
+import createPlusImg from '@/assets/create-plus.svg';
 import { StyledCreateIcon } from './GroupCreateFormNameInput.styles';
 
 type Props = {

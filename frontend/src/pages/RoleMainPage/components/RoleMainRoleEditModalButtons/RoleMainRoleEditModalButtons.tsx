@@ -1,5 +1,5 @@
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import Button from '../../../../components/Button/Button';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Button from '@/components/Button/Button';
 import { useTheme } from '@emotion/react';
 import { MouseEventHandler } from 'react';
 

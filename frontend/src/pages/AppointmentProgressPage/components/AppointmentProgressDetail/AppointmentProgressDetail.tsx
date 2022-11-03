@@ -1,4 +1,4 @@
-import { Appointment } from '../../../../types/appointment';
+import { Appointment } from '@/types/appointment';
 import { getFormattedHourMinuteDuration } from '../../../../utils/date';
 import { StyledDuration } from './AppointmentProgressDetail.styles';
 

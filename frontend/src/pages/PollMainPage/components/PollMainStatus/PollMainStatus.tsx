@@ -1,7 +1,7 @@
 import { useTheme } from '@emotion/react';
 import { StyledStatus } from './PollMainStatus.styles';
-import TextField from '../../../../components/TextField/TextField';
-import { Poll } from '../../../../types/poll';
+import TextField from '@/components/TextField/TextField';
+import { Poll } from '@/types/poll';
 
 type Props = {
   status: Poll['status'];

@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import TextField from '../../../../components/TextField/TextField';
+import TextField from '@/components/TextField/TextField';
 import { StyledStatus } from './AppointmentMainStatus.styles';
 
 type Props = {

@@ -1,10 +1,10 @@
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
-import { deletePoll } from '../../../../api/poll';
-import { Poll, getPollResponse } from '../../../../types/poll';
-import Button from '../../../../components/Button/Button';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { Group } from '../../../../types/group';
+import { deletePoll } from '@/api/poll';
+import { Poll, getPollResponse } from '@/types/poll';
+import Button from '@/components/Button/Button';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
 
 type Props = {

@@ -1,4 +1,4 @@
-import Modal from '../../../../components/Modal/Modal';
+import Modal from '@/components/Modal/Modal';
 import {
   StyledTop,
   StyledIcon,
@@ -8,13 +8,13 @@ import {
   StyledTitle,
   StyledForm
 } from './SidebarEditUsernameModal.styles';
-import closeButtonImg from '../../../../assets/close-button.svg';
-import editWithSmileImg from '../../../../assets/edit-with-smile.svg';
+import closeButtonImg from '@/assets/close-button.svg';
+import editWithSmileImg from '@/assets/edit-with-smile.svg';
 import { FormEvent } from 'react';
-import useInput from '../../../../hooks/useInput';
-import { editUsername } from '../../../../api/auth';
+import useInput from '@/hooks/useInput';
+import { editUsername } from '@/api/auth';
 import { AxiosError } from 'axios';
-import useAuthDispatchContext from '../../../../hooks/useAuthDispatchContext';
+import useAuthDispatchContext from '@/hooks/useAuthDispatchContext';
 import SidebarEditUsernameModalButtons from '../SidebarEditUsernameModalButtons/SidebarEditUsernameModalButtons';
 import SidebarEditUsernameModalUsernameInput from '../SidebarEditUsernameModalUsernameInput/SidebarEditUsernameModalUsernameInput';
 

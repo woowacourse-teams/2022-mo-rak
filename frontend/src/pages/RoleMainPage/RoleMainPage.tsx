@@ -1,11 +1,11 @@
-import { StyledContainer } from './RoleMainPage.styles';
-import RoleMainHeader from './components/RoleMainHeader/RoleMainHeader';
-import RoleMainProgress from './components/RoleMainProgress/RoleMainProgress';
-import RoleMainResult from './components/RoleMainResult/RoleMainResult';
-import { getRolesHistories } from '../../api/role';
+import { StyledContainer } from '@/pages/RoleMainPage/RoleMainPage.styles';
+import RoleMainHeader from '@/pages/RoleMainPage/components/RoleMainHeader/RoleMainHeader';
+import RoleMainProgress from '@/pages/RoleMainPage/components/RoleMainProgress/RoleMainProgress';
+import RoleMainResult from '@/pages/RoleMainPage/components/RoleMainResult/RoleMainResult';
+import { getRolesHistories } from '@/api/role';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Group } from '../../types/group';
+import { Group } from '@/types/group';
 
 function RoleMainPage() {
   const { groupCode } = useParams() as { groupCode: Group['code'] };

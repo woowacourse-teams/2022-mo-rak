@@ -1,8 +1,8 @@
 import { ChangeEventHandler, memo } from 'react';
 import { useTheme } from '@emotion/react';
-import Input from '../../../../components/Input/Input';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import TextField from '../../../../components/TextField/TextField';
+import Input from '@/components/Input/Input';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import TextField from '@/components/TextField/TextField';
 import { StyledTitle } from './AppointmentCreateFormCloseTimeInput.styles';
 
 type Props = {

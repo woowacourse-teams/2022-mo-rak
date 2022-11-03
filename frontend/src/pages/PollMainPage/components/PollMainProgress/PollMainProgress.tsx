@@ -1,13 +1,12 @@
 import { StyledParticipantsStatus } from './PollMainProgress.styles';
-import Progress from '../../../../components/Progress/Progress';
-import { getPollResponse } from '../../../../types/poll';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
+import Progress from '@/components/Progress/Progress';
+import { getPollResponse } from '@/types/poll';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import useGroupMembersContext from '@/hooks/useGroupMembersContext';
 
 type Props = {
   currentParticipants: getPollResponse['count'];
 };
-
 
 function PollMainProgress({ currentParticipants }: Props) {
   const { groupMembers } = useGroupMembersContext();

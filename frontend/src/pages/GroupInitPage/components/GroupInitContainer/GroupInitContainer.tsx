@@ -1,4 +1,4 @@
-import serviceLogoImg from '../../../../assets/service-logo.svg';
+import serviceLogoImg from '@/assets/service-logo.svg';
 
 import GroupCreateForm from '../GroupCreateForm/GroupCreateForm';
 import GroupParticipateForm from '../GroupParticipateForm/GroupParticipateForm';
