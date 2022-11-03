@@ -1,6 +1,9 @@
 import { useTheme } from '@emotion/react';
 
-import { StyledCloseTime, StyledDetail } from './PollMainDetail.styles';
+import {
+  StyledCloseTime,
+  StyledDetail
+} from '@/pages/PollMainPage/components/PollMainDetail/PollMainDetail.styles';
 
 import { Poll } from '@/types/poll';
 import TextField from '@/components/TextField/TextField';

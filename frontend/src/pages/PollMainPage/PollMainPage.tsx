@@ -1,7 +1,7 @@
-import { StyledContainer } from './PollMainPage.styles';
+import { StyledContainer } from '@/pages/PollMainPage/PollMainPage.styles';
 
-import PollMainContainer from './components/PollMainContainer/PollMainContainer';
-import PollMainHeader from './components/PollMainHeader/PollMainHeader';
+import PollMainContainer from '@/pages/PollMainPage/components/PollMainContainer/PollMainContainer';
+import PollMainHeader from '@/pages/PollMainPage/components/PollMainHeader/PollMainHeader';
 
 function PollMainPage() {
   return (

@@ -1,4 +1,4 @@
-import { StyledParticipantsStatus } from './PollMainProgress.styles';
+import { StyledParticipantsStatus } from '@/pages/PollMainPage/components/PollMainProgress/PollMainProgress.styles';
 import Progress from '@/components/Progress/Progress';
 import { getPollResponse } from '@/types/poll';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';

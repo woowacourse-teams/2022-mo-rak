@@ -1,4 +1,4 @@
-import { StyledLink } from './PollResultShareLink.styles';
+import { StyledLink } from '@/pages/PollResultPage/components/PollResultShareLink/PollResultShareLink.styles';
 import linkImg from '@/assets/link.svg';
 import { Poll } from '@/types/poll';
 import { Group } from '@/types/group';

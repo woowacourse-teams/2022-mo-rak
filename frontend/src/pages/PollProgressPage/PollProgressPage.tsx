@@ -1,6 +1,6 @@
-import { StyledContainer } from './PollProgressPage.styles';
+import { StyledContainer } from '@/pages/PollProgressPage/PollProgressPage.styles';
 
-import PollProgressForm from './components/PollProgressForm/PollProgressForm';
+import PollProgressForm from '@/pages/PollProgressPage/components/PollProgressForm/PollProgressForm';
 
 function PollProgressPage() {
   return (

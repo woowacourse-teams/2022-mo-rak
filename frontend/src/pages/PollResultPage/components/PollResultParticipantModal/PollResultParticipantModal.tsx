@@ -8,7 +8,7 @@ import {
   StyledBottom,
   StyledParticipantContainer,
   StyledParticipantDescription
-} from './PollResultParticipantModal.styles';
+} from '@/pages/PollResultPage/components/PollResultParticipantModal/PollResultParticipantModal.styles';
 import closeButtonImg from '@/assets/close-button.svg';
 import pollImg from '@/assets/poll.svg';
 import Avatar from '@/components/Avatar/Avatar';

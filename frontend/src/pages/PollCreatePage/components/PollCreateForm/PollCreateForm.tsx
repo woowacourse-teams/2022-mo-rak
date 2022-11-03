@@ -7,11 +7,11 @@ import Box from '@/components/Box/Box';
 import Divider from '@/components/Divider/Divider';
 import MarginContainer from '@/components/MarginContainer/MarginContainer';
 
-import PollCreateFormInputs from '../PollCreateFormInputs/PollCreateFormInputs';
-import PollCreateDetail from '../PollCreateDetail/PollCreateDetail';
-import PollCreateFormSubmitButton from '../PollCreateFormSubmitButton/PollCreateFormSubmitButton';
-import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateFormTitleInput';
-import PollCreateCloseTimeInput from '../PollCreateCloseTimeInput/PollCreateCloseTimeInput';
+import PollCreateFormInputs from '@/pages/PollCreatePage/components/PollCreateFormInputs/PollCreateFormInputs';
+import PollCreateDetail from '@/pages/PollCreatePage/components/PollCreateDetail/PollCreateDetail';
+import PollCreateFormSubmitButton from '@/pages/PollCreatePage/components/PollCreateFormSubmitButton/PollCreateFormSubmitButton';
+import PollCreateFormTitleInput from '@/pages/PollCreatePage/components/PollCreateFormTitleInput/PollCreateFormTitleInput';
+import PollCreateCloseTimeInput from '@/pages/PollCreatePage/components/PollCreateCloseTimeInput/PollCreateCloseTimeInput';
 
 import { createPoll } from '@/api/poll';
 import { createPollRequest, Poll } from '@/types/poll';

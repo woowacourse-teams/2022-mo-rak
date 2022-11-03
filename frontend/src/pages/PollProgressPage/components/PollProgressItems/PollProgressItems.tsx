@@ -1,7 +1,7 @@
 import { ChangeEventHandler } from 'react';
 
 import { useTheme } from '@emotion/react';
-import { StyledDescription } from './PollProgressItems.styles';
+import { StyledDescription } from '@/pages/PollProgressPage/components/PollProgressItems/PollProgressItems.styles';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 
 import { Poll, SelectedPollItem, getPollItemsResponse } from '@/types/poll';

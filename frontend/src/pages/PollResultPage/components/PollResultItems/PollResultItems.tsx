@@ -7,7 +7,7 @@ import {
   StyledCheckIcon,
   StyledUserCount,
   StyledSubject
-} from './PollResultItems.styles';
+} from '@/pages/PollResultPage/components/PollResultItems/PollResultItems.styles';
 import { Poll, PollItem, Members, getPollResultResponse, getPollItemsResponse } from '@/types/poll';
 import crownImg from '@/assets/crown.svg';
 import checkImg from '@/assets/check.svg';
@@ -15,7 +15,7 @@ import userPurpleImg from '@/assets/user-purple.svg';
 import userWhiteImg from '@/assets/user-white.svg';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import TextField from '@/components/TextField/TextField';
-import PollResultParticipantModal from '../PollResultParticipantModal/PollResultParticipantModal';
+import PollResultParticipantModal from '@/pages/PollResultPage/components/PollResultParticipantModal/PollResultParticipantModal';
 import useModal from '@/hooks/useModal';
 
 type Props = {

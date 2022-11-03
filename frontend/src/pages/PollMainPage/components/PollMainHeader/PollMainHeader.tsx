@@ -1,4 +1,4 @@
-import { StyledTitle } from './PollMainHeader.styles';
+import { StyledTitle } from '@/pages/PollMainPage/components/PollMainHeader/PollMainHeader.styles';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';

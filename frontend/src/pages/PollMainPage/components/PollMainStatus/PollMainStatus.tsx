@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import { StyledStatus } from './PollMainStatus.styles';
+import { StyledStatus } from '@/pages/PollMainPage/components/PollMainStatus/PollMainStatus.styles';
 import TextField from '@/components/TextField/TextField';
 import { Poll } from '@/types/poll';
 

@@ -5,7 +5,7 @@ import {
   StyledHelpIconContainer,
   StyledHelpIcon,
   StyledDescription
-} from './PollResultContainer.styles';
+} from '@/pages/PollResultPage/components/PollResultContainer/PollResultContainer.styles';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import Box from '@/components/Box/Box';
@@ -13,16 +13,16 @@ import Divider from '@/components/Divider/Divider';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import MarginContainer from '@/components/MarginContainer/MarginContainer';
 
-import PollResultItems from '../PollResultItems/PollResultItems';
-import PollResultDetail from '../PollResultDetail/PollResultDetail';
-import PollResultButtons from '../PollResultButtons/PollResultButtons';
+import PollResultItems from '@/pages/PollResultPage/components/PollResultItems/PollResultItems';
+import PollResultDetail from '@/pages/PollResultPage/components/PollResultDetail/PollResultDetail';
+import PollResultButtons from '@/pages/PollResultPage/components/PollResultButtons/PollResultButtons';
 import { getPoll, getPollResult, getPollItems } from '@/api/poll';
 import { Poll, getPollResponse, getPollResultResponse, getPollItemsResponse } from '@/types/poll';
 import { Group } from '@/types/group';
 
-import PollResultProgress from '../PollResultProgress/PollResultProgress';
-import PollResultStatus from '../PollResultStatus/PollResultStatus';
-import PollResultShareLink from '../PollResultShareLink/PollResultShareLink';
+import PollResultProgress from '@/pages/PollResultPage/components/PollResultProgress/PollResultProgress';
+import PollResultStatus from '@/pages/PollResultPage/components/PollResultStatus/PollResultStatus';
+import PollResultShareLink from '@/pages/PollResultPage/components/PollResultShareLink/PollResultShareLink';
 import { AxiosError } from 'axios';
 import Spinner from '@/components/Spinner/Spinner';
 import Tooltip from '@/components/Tooltip/Tooltip';

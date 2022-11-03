@@ -1,6 +1,6 @@
-import { StyledContainer } from './PollCreatePage.styles';
+import { StyledContainer } from '@/pages/PollCreatePage/PollCreatePage.styles';
 
-import PollCreateForm from './components/PollCreateForm/PollCreateForm';
+import PollCreateForm from '@/pages/PollCreatePage/components/PollCreateForm/PollCreateForm';
 
 function PollCreatePage() {
   return (
