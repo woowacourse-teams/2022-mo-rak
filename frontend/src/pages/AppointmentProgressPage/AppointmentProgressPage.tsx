@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getAppointment, progressAppointment } from '../../api/appointment';
+import { getAppointment, progressAppointment } from '@/api/appointment';
 import { Group } from '@/types/group';
 import { AvailableTimes, Appointment, GetAppointmentResponse } from '@/types/appointment';
 import Calendar from '@/components/Calendar/Calendar';
-import AppointmentProgressHeader from './components/AppointmentProgressHeader/AppointmentProgressHeader';
-import AppointmentProgressTimePicker from './components/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
-import AppointmentProgressButtons from './components/AppointmentProgressButtons/AppointmentProgressButtons';
+import AppointmentProgressHeader from '@/pages/AppointmentProgressPage/components/AppointmentProgressHeader/AppointmentProgressHeader';
+import AppointmentProgressTimePicker from '@/pages/AppointmentProgressPage/components/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
+import AppointmentProgressButtons from '@/pages/AppointmentProgressPage/components/AppointmentProgressButtons/AppointmentProgressButtons';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import {
   StyledContainer,
   StyledLeftContainer,
   StyledRightContainer
-} from './AppointmentProgressPage.styles';
+} from '@/pages/AppointmentProgressPage/AppointmentProgressPage.styles';
 import { AxiosError } from 'axios';
 import Spinner from '@/components/Spinner/Spinner';
 

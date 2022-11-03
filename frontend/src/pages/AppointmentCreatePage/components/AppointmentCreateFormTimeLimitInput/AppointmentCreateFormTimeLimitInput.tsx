@@ -1,7 +1,7 @@
 import { ChangeEventHandler, memo } from 'react';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import { Time } from '@/types/appointment';
-import AppointmentCreateFormTimeInput from '../AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput';
+import AppointmentCreateFormTimeInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput';
 import questionImg from '@/assets/question.svg';
 import Tooltip from '@/components/Tooltip/Tooltip';
 import {
@@ -10,7 +10,7 @@ import {
   StyledHelpIcon,
   StyledContent,
   StyledHeader
-} from './AppointmentCreateFormTimeLimitInput.styles';
+} from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormTimeLimitInput/AppointmentCreateFormTimeLimitInput.styles';
 import { useTheme } from '@emotion/react';
 
 type Props = {

@@ -1,10 +1,10 @@
 import { Appointment } from '@/types/appointment';
-import AppointmentProgressDetail from '../AppointmentProgressDetail/AppointmentProgressDetail';
+import AppointmentProgressDetail from '@/pages/AppointmentProgressPage/components/AppointmentProgressDetail/AppointmentProgressDetail';
 import {
   StyledHeaderContainer,
   StyledHeader,
   StyledDescription
-} from './AppointmentProgressHeader.styles';
+} from '@/pages/AppointmentProgressPage/components/AppointmentProgressHeader/AppointmentProgressHeader.styles';
 
 type Props = {
   appointment: Appointment;

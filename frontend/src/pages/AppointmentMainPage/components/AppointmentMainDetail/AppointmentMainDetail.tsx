@@ -4,7 +4,10 @@ import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import TextField from '@/components/TextField/TextField';
 import { Appointment } from '@/types/appointment';
 import { getFormattedHourMinuteDuration } from '@/utils/date';
-import { StyledCloseTime, StyledDetail } from './AppointmentMainDetail.styles';
+import {
+  StyledCloseTime,
+  StyledDetail
+} from '@/pages/AppointmentMainPage/components/AppointmentMainDetail/AppointmentMainDetail.styles';
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);

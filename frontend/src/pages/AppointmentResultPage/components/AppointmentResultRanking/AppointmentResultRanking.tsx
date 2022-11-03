@@ -9,7 +9,7 @@ import {
   StyledResultText,
   StyledCrownIcon,
   StyledRank
-} from './AppointmentResultRanking.styles';
+} from '@/pages/AppointmentResultPage/components/AppointmentResultRanking/AppointmentResultRanking.styles';
 import useGroupMembersContext from '@/hooks/useGroupMembersContext';
 
 type Props = {

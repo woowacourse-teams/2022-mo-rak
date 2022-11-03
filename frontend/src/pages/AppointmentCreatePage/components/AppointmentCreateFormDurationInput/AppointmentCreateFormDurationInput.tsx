@@ -9,7 +9,7 @@ import {
   StyledTitle,
   StyledContent,
   StyledLabel
-} from './AppointmentCreateFormDurationInput.styles';
+} from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormDurationInput/AppointmentCreateFormDurationInput.styles';
 
 type Props = {
   duration: Omit<Time, 'period'>;

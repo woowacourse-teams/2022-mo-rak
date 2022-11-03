@@ -7,10 +7,10 @@ import MarginContainer from '@/components/MarginContainer/MarginContainer';
 import { Group } from '@/types/group';
 import { GetAppointmentsResponse } from '@/types/appointment';
 import { getAppointments } from '@/api/appointment';
-import AppointmentMainStatus from '../AppointmentMainStatus/AppointmentMainStatus';
-import AppointmentMainProgress from '../AppointmentMainProgress/AppointmentMainProgress';
-import AppointmentMainDetail from '../AppointmentMainDetail/AppointmentMainDetail';
-import AppointmentMainButtons from '../AppointmentMainButtons/AppointmentMainButtons';
+import AppointmentMainStatus from '@/pages/AppointmentMainPage/components/AppointmentMainStatus/AppointmentMainStatus';
+import AppointmentMainProgress from '@/pages/AppointmentMainPage/components/AppointmentMainProgress/AppointmentMainProgress';
+import AppointmentMainDetail from '@/pages/AppointmentMainPage/components/AppointmentMainDetail/AppointmentMainDetail';
+import AppointmentMainButtons from '@/pages/AppointmentMainPage/components/AppointmentMainButtons/AppointmentMainButtons';
 import emptyLottie from '@/assets/empty-animation.json';
 import {
   StyledContainer,
