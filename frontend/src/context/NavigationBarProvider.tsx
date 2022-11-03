@@ -1,5 +1,5 @@
 import { createContext, useReducer, PropsWithChildren, Dispatch } from 'react';
-import { Menu } from '../types/menu';
+import { Menu } from '@/types/menu';
 
 type NavigationBarState = {
   activeMenu: Menu;

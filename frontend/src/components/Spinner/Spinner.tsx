@@ -1,6 +1,6 @@
 import { useLottie } from 'lottie-react';
 import { CSSProperties } from 'react';
-import spinnerLottie from '../../assets/spinner-animation.json';
+import spinnerLottie from '@/assets/spinner-animation.json';
 import { StyledContainer } from './Spinner.styles';
 
 type Props = {

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import AppointmentCreateForm from './components/AppointmentCreateForm/AppointmentCreateForm';
-import Calendar from '../../components/Calendar/Calendar';
+import Calendar from '@/components/Calendar/Calendar';
 import AppointmentCreateHeader from './components/AppointmentCreateHeader/AppointmentCreateHeader';
-import FlexContainer from '../../components/FlexContainer/FlexContainer';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import {
   StyledContainer,
   StyledLeftContainer,

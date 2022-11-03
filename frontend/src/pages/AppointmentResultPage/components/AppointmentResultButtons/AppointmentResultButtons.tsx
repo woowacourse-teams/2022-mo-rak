@@ -13,7 +13,7 @@ import {
 } from '@/types/appointment';
 import { closeAppointment, deleteAppointment } from '@/api/appointment';
 import Button from '@/components/Button/Button';
-import { getFormattedDateTime } from '../../../../utils/date';
+import { getFormattedDateTime } from '@/utils/date';
 import questionImg from '@/assets/question.svg';
 import { StyledHelpIconContainer, StyledHelpIcon } from './AppointmentResultButtons.styles';
 

@@ -3,7 +3,7 @@ import { useTheme } from '@emotion/react';
 import TextField from '@/components/TextField/TextField';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import Select from '@/components/Select/Select';
-import { createRange } from '../../../../utils/createRange';
+import { createRange } from '@/utils/createRange';
 import { Time } from '@/types/appointment';
 import { StyledContent } from './AppointmentCreateFormTimeInput.styles';
 

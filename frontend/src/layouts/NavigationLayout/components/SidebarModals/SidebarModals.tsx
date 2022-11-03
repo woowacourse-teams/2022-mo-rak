@@ -6,7 +6,7 @@ import TextField from '@/components/TextField/TextField';
 import Input from '@/components/Input/Input';
 import Modal from '@/components/Modal/Modal';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import theme from '../../../../styles/theme';
+import theme from '@/styles/theme';
 import slackImg from '@/assets/slack.svg';
 import plusImg from '@/assets/plus.svg';
 import linkImg from '@/assets/link.svg';

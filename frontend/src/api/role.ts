@@ -1,5 +1,5 @@
-import { Group } from '../types/group';
-import { EditRolesRequest } from '../types/role';
+import { Group } from '@/types/group';
+import { EditRolesRequest } from '@/types/role';
 import { privateGroupsAxiosInstance } from './axios';
 
 const getRoles = (groupCode: Group['code']) =>

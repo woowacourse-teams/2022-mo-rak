@@ -3,7 +3,7 @@ import { MouseEventHandler } from 'react';
 import crownImg from '@/assets/crown.svg';
 import { AppointmentRecommendation } from '@/types/appointment';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import { getFormattedDateTime } from '../../../../utils/date';
+import { getFormattedDateTime } from '@/utils/date';
 import {
   StyledResultBox,
   StyledResultText,

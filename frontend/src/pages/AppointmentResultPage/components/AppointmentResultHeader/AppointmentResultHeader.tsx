@@ -1,7 +1,7 @@
 import { Appointment } from '@/types/appointment';
 import linkImg from '@/assets/link.svg';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import { writeClipboard } from '../../../../utils/clipboard';
+import { writeClipboard } from '@/utils/clipboard';
 import AppointmentResultStatus from '../AppointmentResultStatus/AppointmentResultStatus';
 import { Group } from '@/types/group';
 import {

@@ -1,4 +1,4 @@
-import { EditUsernameRequest } from '../types/auth';
+import { EditUsernameRequest } from '@/types/auth';
 import { publicAuthAxiosInstance, privateAuthAxiosInstance } from './axios';
 
 const signin = (code: string) => publicAuthAxiosInstance.post('/signin', code);

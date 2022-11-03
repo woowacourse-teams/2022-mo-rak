@@ -3,7 +3,7 @@ import { useTheme } from '@emotion/react';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import TextField from '@/components/TextField/TextField';
 import { Appointment } from '@/types/appointment';
-import { getFormattedHourMinuteDuration } from '../../../../utils/date';
+import { getFormattedHourMinuteDuration } from '@/utils/date';
 import { StyledCloseTime, StyledDetail } from './AppointmentMainDetail.styles';
 
 const getFormattedClosedTime = (value: string) => {

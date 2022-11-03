@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { Member } from '../../types/group';
+import { Member } from '@/types/group';
 import { StyledContainer, StyledUserImage, StyledUserName } from './Avatar.styles';
 
 type Props = {

@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/react';
 import TextField from './TextField';
-import theme from '../../styles/theme';
+import theme from '@/styles/theme';
 import Input from '../Input/Input';
 
 export default {

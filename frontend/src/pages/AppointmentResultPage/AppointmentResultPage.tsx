@@ -6,15 +6,15 @@ import {
   Appointment,
   AppointmentRecommendation,
   GetAppointmentResponse
-} from '../../types/appointment';
-import { Group } from '../../types/group';
-import FlexContainer from '../../components/FlexContainer/FlexContainer';
+} from '@/types/appointment';
+import { Group } from '@/types/group';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import AppointmentResultRanking from './components/AppointmentResultRanking/AppointmentResultRanking';
 import AppointmentResultAvailableMembers from './components/AppointmentResultAvailableMembers/AppointmentResultAvailableMembers';
 import AppointmentResultButtons from './components/AppointmentResultButtons/AppointmentResultButtons';
 import AppointmentResultHeader from './components/AppointmentResultHeader/AppointmentResultHeader';
 import { AxiosError } from 'axios';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '@/components/Spinner/Spinner';
 
 function AppointmentResultPage() {
   const navigate = useNavigate();

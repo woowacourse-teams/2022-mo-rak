@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from 'react';
 import { useTheme } from '@emotion/react';
-import closeButtonImg from '../../assets/close-button.svg';
+import closeButtonImg from '@/assets/close-button.svg';
 import {
   StyledContainer,
   StyledContentTrigger,
