@@ -1,5 +1,5 @@
-import Spinner from '../../components/Spinner/Spinner';
-import { StyledContainer } from './FallbackPage.styles';
+import Spinner from '@/components/Spinner/Spinner';
+import { StyledContainer } from '@/pages/FallbackPage/FallbackPage.styles';
 
 function FallbackPage() {
   return (
