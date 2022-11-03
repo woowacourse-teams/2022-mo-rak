@@ -106,7 +106,8 @@ class PollServiceTest {
                 () -> assertThat(pollResponse.getAllowedPollCount()).isEqualTo(pollCreateRequest.getAllowedPollCount()),
                 () -> assertThat(pollResponse.getIsAnonymous()).isEqualTo(pollCreateRequest.getAnonymous()),
                 () -> assertThat(pollResponse.getClosedAt()).isEqualTo(pollCreateRequest.getClosedAt()),
-                () -> assertThat(pollResponse.getCode()).isNotNull()
+                () -> assertThat(pollResponse.getCode()).isNotNull(),
+                () -> assertThat(pollResponse.getCount()).isEqualTo(0)
         );
     }
 
@@ -316,7 +317,7 @@ class PollServiceTest {
     }
 
     @Test
-    void 투표를_진행한다() {
+    void 투표를_진행한다(@Autowired EntityManager entityManager) {
         // given
         String pollCode = 투표를_초기화하고_코드를_받아온다();
 
@@ -325,7 +326,11 @@ class PollServiceTest {
                 new PollResultRequest(2L, "ㅋ"));
         pollService.doPoll(team.getCode(), member.getId(), pollCode, pollResultRequests);
 
+        entityManager.flush();
+        entityManager.clear();
+
         PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), pollCode);
+
         // then
         assertThat(pollResponse.getCount()).isEqualTo(1);
     }
@@ -506,6 +511,7 @@ class PollServiceTest {
                 List.of(new PollResultRequest(1L, "그냥그냥그냐앙~")));
 
         entityManager.flush();
+        entityManager.clear();
 
         // when
         PollResponse pollResponse = pollService.findPoll(team.getCode(), member.getId(), pollCode);

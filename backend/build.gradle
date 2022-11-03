@@ -29,7 +29,6 @@ ext {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.projectlombok:lombok:1.18.20'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'com.github.maricn:logback-slack-appender:1.6.1'
@@ -62,6 +61,10 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
 
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    // for using lombok in test package
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {

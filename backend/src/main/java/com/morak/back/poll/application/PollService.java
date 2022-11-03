@@ -10,7 +10,6 @@ import com.morak.back.poll.application.dto.PollItemResultResponse;
 import com.morak.back.poll.application.dto.PollResponse;
 import com.morak.back.poll.application.dto.PollResultRequest;
 import com.morak.back.poll.domain.Poll;
-import com.morak.back.poll.domain.PollItem;
 import com.morak.back.poll.domain.PollRepository;
 import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollNotFoundException;
@@ -43,28 +42,6 @@ public class PollService {
     }
 
     @Transactional(readOnly = true)
-    public PollResponse findPoll(String teamCode, Long memberId, String pollCode) {
-        return authorizationService.withTeamMemberValidation(
-                () -> PollResponse.from(memberId, findPollInTeam(teamCode, pollCode)), teamCode, memberId
-        );
-    }
-
-    public void doPoll(String teamCode, Long memberId, String pollCode, List<PollResultRequest> requests) {
-        authorizationService.withTeamMemberValidation(
-                () -> {
-                    Poll poll = findPollInTeam(teamCode, pollCode);
-                    poll.doPoll(memberId, toDataOfSelected(requests));
-                    return null;
-                }, teamCode, memberId
-        );
-    }
-
-    private Map<PollItem, String> toDataOfSelected(List<PollResultRequest> requests) {
-        return requests.stream()
-                .collect(Collectors.toMap(PollResultRequest::toPollItem, PollResultRequest::getDescription));
-    }
-
-    @Transactional(readOnly = true)
     public List<PollResponse> findPolls(String teamCode, Long memberId) {
         return authorizationService.withTeamMemberValidation(
                 () -> pollRepository.findAllByTeamCode(teamCode)
@@ -76,10 +53,47 @@ public class PollService {
     }
 
     @Transactional(readOnly = true)
+    public PollResponse findPoll(String teamCode, Long memberId, String pollCode) {
+        return authorizationService.withTeamMemberValidation(
+                () -> PollResponse.from(memberId, getPollInTeam(teamCode, pollCode)), teamCode, memberId
+        );
+    }
+
+    public void doPoll(String teamCode, Long memberId, String pollCode, List<PollResultRequest> requests) {
+        authorizationService.withTeamMemberValidation(
+                () -> {
+                    Poll poll = getPollInTeam(teamCode, pollCode);
+                    poll.doPoll(memberId, toDataOfSelected(requests));
+                    return null;
+                }, teamCode, memberId
+        );
+    }
+
+    private Map<Long, String> toDataOfSelected(List<PollResultRequest> requests) {
+        return requests.stream()
+                .collect(Collectors.toMap(PollResultRequest::getId, PollResultRequest::getDescription));
+    }
+
+    @Transactional(readOnly = true)
+    public List<PollItemResponse> findPollItems(String teamCode, Long memberId, String pollCode) {
+        return authorizationService.withTeamMemberValidation(
+                () -> {
+                    Poll poll = getPollInTeam(teamCode, pollCode);
+                    validatePollInTeam(teamCode, poll);
+
+                    return poll.getPollItems()
+                            .stream()
+                            .map(pollItem -> PollItemResponse.from(pollItem, memberId))
+                            .collect(Collectors.toList());
+                }, teamCode, memberId
+        );
+    }
+
+    @Transactional(readOnly = true)
     public List<PollItemResultResponse> findPollResults(String teamCode, Long memberId, String pollCode) {
         return authorizationService.withTeamMemberValidation(
                 () -> {
-                    Poll poll = findPollInTeam(teamCode, pollCode);
+                    Poll poll = getPollInTeam(teamCode, pollCode);
                     List<Member> members = findMembersByTeamCode(teamCode);
 
                     return poll.getPollItems()
@@ -97,10 +111,21 @@ public class PollService {
                 .collect(Collectors.toList());
     }
 
+    public void closePoll(String teamCode, Long memberId, String pollCode) {
+        authorizationService.withTeamMemberValidation(
+                () -> {
+                    Poll poll = getPollInTeam(teamCode, pollCode);
+                    poll.close(memberId);
+                    pollRepository.save(poll);
+                    return null;
+                }, teamCode, memberId
+        );
+    }
+
     public void deletePoll(String teamCode, Long memberId, String pollCode) {
         authorizationService.withTeamMemberValidation(
                 () -> {
-                    Poll poll = findPollInTeam(teamCode, pollCode);
+                    Poll poll = getPollInTeam(teamCode, pollCode);
                     validateHost(memberId, poll);
                     pollRepository.delete(poll);
                     return null;
@@ -117,34 +142,6 @@ public class PollService {
         }
     }
 
-    public void closePoll(String teamCode, Long memberId, String pollCode) {
-        authorizationService.withTeamMemberValidation(
-                () -> {
-                    Poll poll = findPollInTeam(teamCode, pollCode);
-                    poll.close(memberId);
-                    pollRepository.save(poll);
-                    return null;
-                }, teamCode, memberId
-        );
-    }
-
-    @Transactional(readOnly = true)
-    public List<PollItemResponse> findPollItems(String teamCode, Long memberId, String pollCode) {
-        return authorizationService.withTeamMemberValidation(
-                () -> {
-                    Poll poll = pollRepository.findFetchedByCode(pollCode).orElseThrow(
-                            () -> PollNotFoundException.of(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode)
-                    );
-                    validatePollInTeam(teamCode, poll);
-
-                    return poll.getPollItems()
-                            .stream()
-                            .map(pollItem -> PollItemResponse.from(pollItem, memberId))
-                            .collect(Collectors.toList());
-                }, teamCode, memberId
-        );
-    }
-
     @Generated
     public void closeAllBeforeNow() {
         List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.now());
@@ -154,7 +151,7 @@ public class PollService {
         }
     }
 
-    private Poll findPollInTeam(String teamCode, String pollCode) {
+    private Poll getPollInTeam(String teamCode, String pollCode) {
         Poll poll = pollRepository.findByCode(pollCode)
                 .orElseThrow(() -> PollNotFoundException.of(CustomErrorCode.POLL_NOT_FOUND_ERROR, pollCode));
         validatePollInTeam(teamCode, poll);

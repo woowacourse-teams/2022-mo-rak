@@ -60,18 +60,20 @@ CREATE TABLE team_invitation
 
 CREATE TABLE poll
 (
-    id            BIGINT       NOT NULL AUTO_INCREMENT,
-    allowed_count INT          NOT NULL,
-    anonymous     BOOLEAN      NOT NULL,
-    code          VARCHAR(255) NOT NULL,
-    host_id       BIGINT       NOT NULL,
-    status        VARCHAR(255) NOT NULL,
-    team_code     VARCHAR(255) NOT NULL,
-    title         VARCHAR(255) NOT NULL,
-    closed_at     DATETIME     NOT NULL,
-    created_at    DATETIME     NOT NULL,
-    updated_at    DATETIME     NOT NULL,
-    PRIMARY KEY (id)
+    id             BIGINT       NOT NULL AUTO_INCREMENT,
+    allowed_count  INT          NOT NULL,
+    anonymous      BOOLEAN      NOT NULL,
+    code           VARCHAR(255) NOT NULL,
+    host_id        BIGINT       NOT NULL,
+    status         VARCHAR(255) NOT NULL,
+    team_code      VARCHAR(255) NOT NULL,
+    title          VARCHAR(255) NOT NULL,
+    closed_at      DATETIME     NOT NULL,
+    selected_count INTEGER      NOT NULL DEFAULT 0,
+    created_at     DATETIME     NOT NULL,
+    updated_at     DATETIME     NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (team_code) REFERENCES team (code)
 );
 
 CREATE TABLE poll_item
@@ -79,7 +81,8 @@ CREATE TABLE poll_item
     id      BIGINT NOT NULL AUTO_INCREMENT,
     subject VARCHAR(255),
     poll_id BIGINT NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (poll_id) REFERENCES poll (id)
 );
 
 create table select_member
@@ -87,10 +90,13 @@ create table select_member
     poll_item_id BIGINT        NOT NULL,
     description  VARCHAR(1000) NOT NULL,
     member_id    BIGINT        NOT NULL,
-    PRIMARY KEY (poll_item_id, member_id)
+    PRIMARY KEY (poll_item_id, member_id),
+    FOREIGN KEY (poll_item_id) REFERENCES poll_item (id),
+    FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
-CREATE INDEX `index_poll` ON `poll` (`closed_at`);
+CREATE INDEX `poll_index_closed_at` ON `poll` (`closed_at`);
+CREATE INDEX `poll_index_code` ON `poll` (`code`);
 
 CREATE TABLE appointment
 (
