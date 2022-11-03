@@ -126,8 +126,9 @@ public class Appointment extends BaseRootEntity<Appointment> {
         LocalDate endDate = datePeriod.getEndDate();
         LocalDate date = datePeriod.getStartDate();
 
-        for (; !date.isAfter(endDate); date = date.plusDays(1L)) {
+        while (!date.isAfter(endDate)) {
             times.addAll(getAppointmentPerDate(date));
+            date = date.plusDays(1L);
         }
         return times;
     }
@@ -135,13 +136,14 @@ public class Appointment extends BaseRootEntity<Appointment> {
     private List<AppointmentTime> getAppointmentPerDate(LocalDate date) {
         List<AppointmentTime> times = new ArrayList<>();
 
-        LocalTime startTime = timePeriod.getStartTime();
-        LocalTime endTime = timePeriod.getEndTime();
         int durationMinutes = this.durationMinutes.getDurationMinutes();
-        long duration = (long) durationMinutes - MINUTES_UNIT;
+        LocalDateTime startDateTime = LocalDateTime.of(date, timePeriod.getStartTime());
+        LocalDateTime endDateTime = LocalDateTime.of(date, timePeriod.getEndTime());
 
-        for (; !startTime.plusMinutes(duration).isAfter(endTime); startTime = startTime.plusMinutes(MINUTES_UNIT)) {
-            times.add(new AppointmentTime(LocalDateTime.of(date, startTime), durationMinutes));
+        int duration = durationMinutes - MINUTES_UNIT;
+        while (!startDateTime.plusMinutes(duration).isAfter(endDateTime)) {
+            times.add(new AppointmentTime(startDateTime, durationMinutes));
+            startDateTime = startDateTime.plusMinutes(MINUTES_UNIT);
         }
         return times;
     }

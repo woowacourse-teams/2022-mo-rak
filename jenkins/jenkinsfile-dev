@@ -13,7 +13,8 @@ node {
                 slackSend (channel: "jenkins", color: "good",  message: "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
             } catch(e) {
                 slackSend (channel: "jenkins", color: "warning",  message: "Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
-            }
+                throw e
+			}
         }
     }
 
@@ -24,7 +25,8 @@ node {
                 sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@${DEV_WAS_IP} "sh /home/ubuntu/start_service.sh 2>/dev/null"'
             } catch(e) {
                 slackSend (channel: "jenkins", color: "warning", message: "Deploy Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
-            }
+                throw e
+			}
         }
     }
 }
