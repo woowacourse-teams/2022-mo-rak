@@ -6,11 +6,11 @@ import {
   StyledSubTitle,
   StyledTitle,
   StyledTitleContainer
-} from './LandingServiceIntroductionSection.styles';
+} from '@/pages/LandingPage/components/LandingServiceIntroductionSection/LandingServiceIntroductionSection.styles';
 
 import servicesImg from '@/assets/services.svg';
 import circleHighlightImg from '@/assets/circle-highlight.svg';
-import LandingNavbar from '../LandingNavbar/LandingNavbar';
+import LandingNavbar from '@/pages/LandingPage/components/LandingNavbar/LandingNavbar';
 
 type Props = HTMLAttributes<HTMLDivElement>;
 

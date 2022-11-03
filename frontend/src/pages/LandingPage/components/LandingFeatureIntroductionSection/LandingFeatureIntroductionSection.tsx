@@ -12,14 +12,14 @@ import {
   StyledSubTitle,
   StyledTitle,
   StyledIntroductionTitleContainer
-} from './LandingFeatureIntroductionSection.styles';
+} from '@/pages/LandingPage/components/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection.styles';
 
 import glitterImg from '@/assets/glitter.svg';
 import highlightImg from '@/assets/highlight.svg';
 import pollSmallImg from '@/assets/poll-small.svg';
 import timeImg from '@/assets/time.svg';
 import roleImg from '@/assets/role.svg';
-import LandingNavbar from '../LandingNavbar/LandingNavbar';
+import LandingNavbar from '@/pages/LandingPage/components/LandingNavbar/LandingNavbar';
 
 type Props = HTMLAttributes<HTMLDivElement>;
 

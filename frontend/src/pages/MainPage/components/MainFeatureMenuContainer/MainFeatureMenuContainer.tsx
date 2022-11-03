@@ -4,7 +4,7 @@ import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import pollImg from '@/assets/poll.svg';
 import appointmentImg from '@/assets/appointment.svg';
 import roleImg from '@/assets/role.svg';
-import MainFeatureMenu from '../MainFeatureMenu/MainFeatureMenu';
+import MainFeatureMenu from '@/pages/MainPage/components/MainFeatureMenu/MainFeatureMenu';
 import { Menu } from '@/types/menu';
 
 function MainFeatureMenuContainer() {
