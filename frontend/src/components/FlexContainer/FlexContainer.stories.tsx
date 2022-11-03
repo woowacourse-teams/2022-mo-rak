@@ -8,16 +8,16 @@ export default {
   component: FlexContainer
 } as Meta;
 
-const SampleBox = styled.div`
+const StyledBox = styled.div`
   width: 10rem;
   height: 10rem;
   border: 1px solid ${theme.colors.BLACK_100};
 `;
 const DefaultTemplate: Story = (args) => (
   <FlexContainer {...args}>
-    <SampleBox />
-    <SampleBox />
-    <SampleBox />
+    <StyledBox />
+    <StyledBox />
+    <StyledBox />
   </FlexContainer>
 );
 
@@ -25,9 +25,9 @@ const Default = DefaultTemplate.bind({});
 
 const ColumnTemplate: Story = (args) => (
   <FlexContainer flexDirection="column" {...args}>
-    <SampleBox />
-    <SampleBox />
-    <SampleBox />
+    <StyledBox />
+    <StyledBox />
+    <StyledBox />
   </FlexContainer>
 );
 const Column = ColumnTemplate.bind({});
