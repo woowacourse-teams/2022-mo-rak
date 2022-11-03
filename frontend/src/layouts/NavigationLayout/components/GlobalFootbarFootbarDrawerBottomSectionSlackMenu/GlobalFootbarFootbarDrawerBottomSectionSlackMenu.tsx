@@ -4,7 +4,7 @@ import {
   StyledContainer,
   StyledSlackLogo,
   StyledText
-} from './GlobalFootbarFootbarDrawerBottomSectionSlackMenu.styles';
+} from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerBottomSectionSlackMenu/GlobalFootbarFootbarDrawerBottomSectionSlackMenu.styles';
 
 type Props = {
   onClick: MouseEventHandler<HTMLButtonElement>;

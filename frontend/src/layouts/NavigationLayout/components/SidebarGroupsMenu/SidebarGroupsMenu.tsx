@@ -26,7 +26,7 @@ import {
   StyledLeaveGroupButton,
   StyledPlusImage,
   StyledLeaveImage
-} from './SidebarGroupsMenu.styles';
+} from '@/layouts/NavigationLayout/components/SidebarGroupsMenu/SidebarGroupsMenu.styles';
 
 type Props = {
   groupCode: Group['code'];

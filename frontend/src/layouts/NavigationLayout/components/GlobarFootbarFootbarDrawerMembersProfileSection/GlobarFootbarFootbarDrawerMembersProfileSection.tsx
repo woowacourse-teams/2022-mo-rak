@@ -8,7 +8,7 @@ import {
   StyledMenuHeader,
   StyledName,
   StyledContainer
-} from './GlobarFootbarFootbarDrawerMembersProfileSection.styles';
+} from '@/layouts/NavigationLayout/components/GlobarFootbarFootbarDrawerMembersProfileSection/GlobarFootbarFootbarDrawerMembersProfileSection.styles';
 
 type Props = {
   groupCode: Group['code'];

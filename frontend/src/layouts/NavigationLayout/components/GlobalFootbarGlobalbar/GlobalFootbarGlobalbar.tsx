@@ -5,7 +5,7 @@ import {
   StyledProfileContainer,
   StyledName,
   StyledCurrentGroupContainer
-} from './GlobalFootbarGlobalbar.styles';
+} from '@/layouts/NavigationLayout/components/GlobalFootbarGlobalbar/GlobalFootbarGlobalbar.styles';
 import serviceLogoImg from '@/assets/service-logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { Group } from '@/types/group';

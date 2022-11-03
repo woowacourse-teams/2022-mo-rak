@@ -5,7 +5,7 @@ import {
   StyledContainer,
   StyledLeaveImage,
   StyledText
-} from './GlobalFootbarFootbarDrawerBottomSectionLogoutMenu.styles';
+} from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerBottomSectionLogoutMenu/GlobalFootbarFootbarDrawerBottomSectionLogoutMenu.styles';
 
 function GlobalFootbarFootbarDrawerBottomSectionLogoutMenu() {
   const navigate = useNavigate();

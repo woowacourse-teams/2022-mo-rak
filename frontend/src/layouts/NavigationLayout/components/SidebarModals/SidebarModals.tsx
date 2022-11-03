@@ -30,7 +30,7 @@ import {
   StyledLinkIcon,
   StyledButton,
   StyledSmallLogo
-} from './SidebarModals.styles';
+} from '@/layouts/NavigationLayout/components/SidebarModals/SidebarModals.styles';
 
 type Props = {
   activeModal: string | null;

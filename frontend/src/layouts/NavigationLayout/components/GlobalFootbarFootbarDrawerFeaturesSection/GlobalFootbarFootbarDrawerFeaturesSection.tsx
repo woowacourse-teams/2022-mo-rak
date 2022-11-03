@@ -14,7 +14,7 @@ import {
   StyledMenuIcon,
   StyledMenuTitle,
   StyledMenu
-} from './GlobalFootbarFootbarDrawerFeaturesSection.styles';
+} from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerFeaturesSection/GlobalFootbarFootbarDrawerFeaturesSection.styles';
 
 type Props = {
   groupCode: Group['code'];

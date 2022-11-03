@@ -1,4 +1,7 @@
-import { StyledContainer, StyledMenuIcon } from './GlobalFootbarFootbar.styles';
+import {
+  StyledContainer,
+  StyledMenuIcon
+} from '@/layouts/NavigationLayout/components/GlobalFootbarFootbar/GlobalFootbarFootbar.styles';
 import homeImg from '@/assets/home.svg';
 import menuImg from '@/assets/menu.svg';
 import pollImg from '@/assets/poll.svg';
@@ -9,7 +12,7 @@ import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchCon
 import useNavigationBarContext from '@/hooks/useNavigationBarContext';
 import { Group } from '@/types/group';
 import { Menu } from '@/types/menu';
-import GlobalFootbarFootbarDrawer from '../GlobalFootbarFootbarDrawer/GlobalFootbarFootbarDrawer';
+import GlobalFootbarFootbarDrawer from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawer/GlobalFootbarFootbarDrawer';
 
 type Props = {
   groupCode: Group['code'];

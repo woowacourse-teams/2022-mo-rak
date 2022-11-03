@@ -6,7 +6,7 @@ import {
   StyledInvitationLink,
   StyledInvitationText,
   StyledPlusIcon
-} from './SidebarInvitationMenu.styles';
+} from '@/layouts/NavigationLayout/components/SidebarInvitationMenu/SidebarInvitationMenu.styles';
 
 type Props = {
   groupCode: Group['code'];

@@ -17,7 +17,7 @@ import {
   StyledLeaveGroupButton,
   StyledPlusImage,
   StyledLeaveImage
-} from './GlobalFootbarFootbarDrawerGroupsSection.styles';
+} from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerGroupsSection/GlobalFootbarFootbarDrawerGroupsSection.styles';
 
 type Props = {
   groupCode: Group['code'];

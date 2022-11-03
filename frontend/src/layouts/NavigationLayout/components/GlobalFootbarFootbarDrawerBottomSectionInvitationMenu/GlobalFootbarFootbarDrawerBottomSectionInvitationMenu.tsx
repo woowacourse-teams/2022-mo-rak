@@ -6,7 +6,7 @@ import {
   StyledInvitationLink,
   StyledInvitationText,
   StyledPlusIcon
-} from './GlobalFootbarFootbarDrawerBottomSectionInvitationMenu.styles';
+} from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerBottomSectionInvitationMenu/GlobalFootbarFootbarDrawerBottomSectionInvitationMenu.styles';
 
 type Props = {
   groupCode: Group['code'];

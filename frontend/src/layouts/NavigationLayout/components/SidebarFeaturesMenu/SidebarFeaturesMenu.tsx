@@ -14,7 +14,7 @@ import {
   StyledMenuIcon,
   StyledMenuTitle,
   StyledMenu
-} from './SidebarFeaturesMenu.styles';
+} from '@/layouts/NavigationLayout/components/SidebarFeaturesMenu/SidebarFeaturesMenu.styles';
 
 type Props = {
   groupCode: Group['code'];

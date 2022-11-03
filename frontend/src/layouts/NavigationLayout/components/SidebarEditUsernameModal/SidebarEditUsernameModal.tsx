@@ -7,7 +7,7 @@ import {
   StyledCloseIcon,
   StyledTitle,
   StyledForm
-} from './SidebarEditUsernameModal.styles';
+} from '@/layouts/NavigationLayout/components/SidebarEditUsernameModal/SidebarEditUsernameModal.styles';
 import closeButtonImg from '@/assets/close-button.svg';
 import editWithSmileImg from '@/assets/edit-with-smile.svg';
 import { FormEvent } from 'react';
@@ -15,8 +15,8 @@ import useInput from '@/hooks/useInput';
 import { editUsername } from '@/api/auth';
 import { AxiosError } from 'axios';
 import useAuthDispatchContext from '@/hooks/useAuthDispatchContext';
-import SidebarEditUsernameModalButtons from '../SidebarEditUsernameModalButtons/SidebarEditUsernameModalButtons';
-import SidebarEditUsernameModalUsernameInput from '../SidebarEditUsernameModalUsernameInput/SidebarEditUsernameModalUsernameInput';
+import SidebarEditUsernameModalButtons from '@/layouts/NavigationLayout/components/SidebarEditUsernameModalButtons/SidebarEditUsernameModalButtons';
+import SidebarEditUsernameModalUsernameInput from '@/layouts/NavigationLayout/components/SidebarEditUsernameModalUsernameInput/SidebarEditUsernameModalUsernameInput';
 
 type Props = {
   isVisible: boolean;

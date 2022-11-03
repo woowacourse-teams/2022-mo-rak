@@ -30,7 +30,7 @@ import {
   StyledLinkIcon,
   StyledButton,
   StyledSmallLogo
-} from './GlobalFootbarFootbarDrawerModals.styles';
+} from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerModals/GlobalFootbarFootbarDrawerModals.styles';
 
 type Props = {
   activeModalMenu: string | null;

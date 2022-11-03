@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Group } from '@/types/group';
-import GlobalFootbarGlobalbar from '../GlobalFootbarGlobalbar/GlobalFootbarGlobalbar';
-import GlobalFootbarFootbar from '../GlobalFootbarFootbar/GlobalFootbarFootbar';
+import GlobalFootbarGlobalbar from '@/layouts/NavigationLayout/components/GlobalFootbarGlobalbar/GlobalFootbarGlobalbar';
+import GlobalFootbarFootbar from '@/layouts/NavigationLayout/components/GlobalFootbarFootbar/GlobalFootbarFootbar';
 import { getGroups } from '@/api/group';
 
 function GlobalFootbar() {

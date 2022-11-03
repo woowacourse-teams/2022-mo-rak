@@ -5,14 +5,14 @@ import serviceLogoImg from '@/assets/service-logo.svg';
 import { getGroups } from '@/api/group';
 import { Group } from '@/types/group';
 
-import SidebarGroupsMenu from '../SidebarGroupsMenu/SidebarGroupsMenu';
-import SidebarModals from '../SidebarModals/SidebarModals';
+import SidebarGroupsMenu from '@/layouts/NavigationLayout/components/SidebarGroupsMenu/SidebarGroupsMenu';
+import SidebarModals from '@/layouts/NavigationLayout/components/SidebarModals/SidebarModals';
 
-import SidebarMembersProfileMenu from '../SidebarMembersProfileMenu/SidebarMembersProfileMenu';
-import SidebarFeaturesMenu from '../SidebarFeaturesMenu/SidebarFeaturesMenu';
-import SidebarInvitationMenu from '../SidebarInvitationMenu/SidebarInvitationMenu';
-import SidebarSlackMenu from '../SidebarSlackMenu/SidebarSlackMenu';
-import SidebarLogoutMenu from '../SidebarLogoutMenu/SidebarLogoutMenu';
+import SidebarMembersProfileMenu from '@/layouts/NavigationLayout/components/SidebarMembersProfileMenu/SidebarMembersProfileMenu';
+import SidebarFeaturesMenu from '@/layouts/NavigationLayout/components/SidebarFeaturesMenu/SidebarFeaturesMenu';
+import SidebarInvitationMenu from '@/layouts/NavigationLayout/components/SidebarInvitationMenu/SidebarInvitationMenu';
+import SidebarSlackMenu from '@/layouts/NavigationLayout/components/SidebarSlackMenu/SidebarSlackMenu';
+import SidebarLogoutMenu from '@/layouts/NavigationLayout/components/SidebarLogoutMenu/SidebarLogoutMenu';
 import {
   StyledContainer,
   StyledLogo,
