@@ -1,6 +1,6 @@
 import { InputHTMLAttributes, CSSProperties } from 'react';
 
-import { StyledInput } from './Input.styles';
+import { StyledInput } from '@/components/Input/Input.styles';
 
 type Props = InputHTMLAttributes<HTMLInputElement> & CSSProperties;
 

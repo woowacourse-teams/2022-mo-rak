@@ -1,8 +1,13 @@
 import { InputHTMLAttributes, PropsWithChildren } from 'react';
-import FlexContainer from '../FlexContainer/FlexContainer';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import checkImg from '@/assets/check.svg';
 import notCheckImg from '@/assets/not-check.svg';
-import { StyledContainerLabel, StyledInput, StyledRadio, StyledLabel } from './Radio.styles';
+import {
+  StyledContainerLabel,
+  StyledInput,
+  StyledRadio,
+  StyledLabel
+} from '@/components/Radio/Radio.styles';
 
 type Props = {
   name: string;

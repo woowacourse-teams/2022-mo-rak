@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import Checkbox from './Checkbox';
+import Checkbox from '@/components/Checkbox/Checkbox';
 
 export default {
   title: 'Reusable Components/Checkbox',

@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, PropsWithChildren, CSSProperties } from 'react';
 
 import { useTheme } from '@emotion/react';
-import { StyledButton } from './Button.styles';
+import { StyledButton } from '@/components/Button/Button.styles';
 
 const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
   const theme = useTheme();

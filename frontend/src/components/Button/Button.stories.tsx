@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/react';
 import theme from '@/styles/theme';
-import Button from './Button';
+import Button from '@/components/Button/Button';
 
 export default {
   title: 'Reusable Components/Button',

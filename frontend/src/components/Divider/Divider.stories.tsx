@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/react';
 import theme from '@/styles/theme';
-import Divider from './Divider';
+import Divider from '@/components/Divider/Divider';
 
 export default {
   title: 'Reusable Components/Divider',

@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import Progress from './Progress';
+import Progress from '@/components/Progress/Progress';
 
 export default {
   title: 'Reusable Components/Progress',

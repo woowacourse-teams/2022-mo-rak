@@ -1,6 +1,6 @@
 import { PropsWithChildren, CSSProperties, HTMLAttributes } from 'react';
 
-import { StyledContainer } from './MarginContainer.styles';
+import { StyledContainer } from '@/components/MarginContainer/MarginContainer.styles';
 
 type Props = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & CSSProperties;
 

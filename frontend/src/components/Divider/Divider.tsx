@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 
-import { StyledDivider } from './Divider.styles';
+import { StyledDivider } from '@/components/Divider/Divider.styles';
 
 type Props = CSSProperties;
 

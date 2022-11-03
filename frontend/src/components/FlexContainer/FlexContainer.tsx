@@ -1,5 +1,5 @@
 import { HTMLAttributes, PropsWithChildren, CSSProperties } from 'react';
-import { StyledContainer } from './FlexContainer.styles';
+import { StyledContainer } from '@/components/FlexContainer/FlexContainer.styles';
 
 type Props = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & CSSProperties;
 

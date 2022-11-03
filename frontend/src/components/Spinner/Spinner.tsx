@@ -1,7 +1,7 @@
 import { useLottie } from 'lottie-react';
 import { CSSProperties } from 'react';
 import spinnerLottie from '@/assets/spinner-animation.json';
-import { StyledContainer } from './Spinner.styles';
+import { StyledContainer } from '@/components/Spinner/Spinner.styles';
 
 type Props = {
   width: CSSProperties['width'];
