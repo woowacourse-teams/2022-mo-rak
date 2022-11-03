@@ -5,7 +5,7 @@ import { participateGroup } from '@/api/group';
 import useInput from '@/hooks/useInput';
 
 import GroupParticipateInvitationCodeInput from '../GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';
-import GroupParticipateFormSubmitButton from '../GroupPariticipateFormSubmitButton/GroupParticipateFormSubmitButton';
+import GroupParticipateFormSubmitButton from '../GroupParticipateFormSubmitButton/GroupParticipateFormSubmitButton';
 import { StyledForm, StyledInputContainer } from './GroupParticipateForm.styles';
 import { AxiosError } from 'axios';
 

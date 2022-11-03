@@ -1,7 +1,7 @@
 import serviceLogoImg from '@/assets/service-logo.svg';
 
-import GroupCreateForm from '../GroupCreateForm/GroupCreateForm';
-import GroupParticipateForm from '../GroupParticipateForm/GroupParticipateForm';
+import GroupCreateForm from '@/pages/GroupInitPage/components/GroupCreateForm/GroupCreateForm';
+import GroupParticipateForm from '@/pages/GroupInitPage/components/GroupParticipateForm/GroupParticipateForm';
 
 import {
   StyledContainer,

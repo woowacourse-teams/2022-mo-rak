@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import GroupInitContainer from './components/GroupInitContainer/GroupInitContainer';
-import { getDefaultGroup } from '../../api/group';
-import { getLocalStorageItem } from '../../utils/storage';
+import GroupInitContainer from '@/pages/GroupInitPage/components/GroupInitContainer/GroupInitContainer';
+import { getDefaultGroup } from '@/api/group';
+import { getLocalStorageItem } from '@/utils/storage';
 import { AxiosError } from 'axios';
 
 function GroupInitPage() {

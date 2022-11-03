@@ -3,7 +3,7 @@ import { ChangeEventHandler } from 'react';
 import TextField from '@/components/TextField/TextField';
 import Input from '@/components/Input/Input';
 import participateImg from '@/assets/participate.svg';
-import { StyledParticipateIcon } from './GroupParticipateInvitationCodeInput.styles';
+import { StyledParticipateIcon } from '@/pages/GroupInitPage/components/GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput.styles';
 
 type Props = {
   invitationCode: string;

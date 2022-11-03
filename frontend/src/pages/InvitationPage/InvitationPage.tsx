@@ -1,6 +1,6 @@
-import { StyledContainer } from './InvitationPage.styles';
+import { StyledContainer } from '@/pages/InvitationPage/InvitationPage.styles';
 
-import InvitationContainer from './components/InvitationContainer/InvitationContainer';
+import InvitationContainer from '@/pages/InvitationPage/components/InvitationContainer/InvitationContainer';
 
 function InvitationPage() {
   return (
