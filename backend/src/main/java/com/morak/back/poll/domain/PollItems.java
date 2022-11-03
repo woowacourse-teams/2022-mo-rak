@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
@@ -31,11 +32,15 @@ public class PollItems {
     @Embedded
     private AllowedCount allowedCount;
 
+    @Column(nullable = false)
+    private int selectedCount;
+
     @Builder
     public PollItems(List<PollItem> values, AllowedCount allowedCount) {
         validateCountAllowed(values, allowedCount);
         this.values = new ArrayList<>(values);
         this.allowedCount = allowedCount;
+        updateSelectedCount();
     }
 
     private void validateCountAllowed(List<PollItem> values, AllowedCount allowedCount) {
@@ -54,6 +59,7 @@ public class PollItems {
         for (PollItem pollItem : values) {
             addOrRemove(pollItem, memberId, data);
         }
+        updateSelectedCount();
     }
 
     private void validateExistItem(Set<Long> selectItems) {
@@ -86,8 +92,8 @@ public class PollItems {
         pollItem.remove(memberId);
     }
 
-    public int countSelectMembers() {
-        return (int) values.stream()
+    private void updateSelectedCount() {
+        this.selectedCount = (int) this.values.stream()
                 .map(PollItem::getOnlyMembers)
                 .flatMap(Collection::stream)
                 .distinct()
