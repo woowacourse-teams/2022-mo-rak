@@ -6,6 +6,10 @@
     "target": "ES2015",
     "jsx": "react-jsx",
     "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "lib": ["dom.iterable", "dom"]
   },
   "include": ["src"]
