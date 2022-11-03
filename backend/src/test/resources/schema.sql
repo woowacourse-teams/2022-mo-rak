@@ -72,7 +72,8 @@ CREATE TABLE poll
     selected_count INTEGER      NOT NULL DEFAULT 0,
     created_at     DATETIME     NOT NULL,
     updated_at     DATETIME     NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (team_code) REFERENCES team (code)
 );
 
 CREATE TABLE poll_item
@@ -80,7 +81,8 @@ CREATE TABLE poll_item
     id      BIGINT NOT NULL AUTO_INCREMENT,
     subject VARCHAR(255),
     poll_id BIGINT NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (poll_id) REFERENCES poll (id)
 );
 
 create table select_member
@@ -88,12 +90,13 @@ create table select_member
     poll_item_id BIGINT        NOT NULL,
     description  VARCHAR(1000) NOT NULL,
     member_id    BIGINT        NOT NULL,
-    PRIMARY KEY (poll_item_id, member_id)
+    PRIMARY KEY (poll_item_id, member_id),
+    FOREIGN KEY (poll_item_id) REFERENCES poll_item (id),
+    FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
 CREATE INDEX `poll_index_closed_at` ON `poll` (`closed_at`);
 CREATE INDEX `poll_index_code` ON `poll` (`code`);
-CREATE INDEX `poll_index_team_code` ON `poll` (`team_code`);
 
 CREATE TABLE appointment
 (
