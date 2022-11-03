@@ -11,8 +11,8 @@ import {
 import { signin } from '@/api/auth';
 import { getDefaultGroup } from '@/api/group';
 import LandingMainSection from '@/pages/LandingPage/components/LandingMainSection/LandingMainSection';
-import LandingServiceIntroductionSection from './components/LandingServiceIntroductionSection/LandingServiceIntroductionSection';
-import LandingFeatureIntroductionSection from './components/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';
+import LandingServiceIntroductionSection from '@/pages/LandingPage/components/LandingServiceIntroductionSection/LandingServiceIntroductionSection';
+import LandingFeatureIntroductionSection from '@/pages/LandingPage/components/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';
 import { AxiosError } from 'axios';
 
 function LandingPage() {

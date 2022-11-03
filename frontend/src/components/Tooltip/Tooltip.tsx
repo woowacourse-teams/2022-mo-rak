@@ -7,7 +7,7 @@ import {
   StyledContentContainer,
   StyledCloseButton,
   StyledContent
-} from './Tooltip.styles';
+} from '@/components/Tooltip/Tooltip.styles';
 
 type placementStyleProps = Pick<Props, 'placement' | 'width' | 'backgroundColor'>;
 

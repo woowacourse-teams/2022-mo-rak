@@ -18,7 +18,7 @@ import {
   StyledLogo,
   StyledBottomMenu,
   StyledLogoContainer
-} from './Sidebar.styles';
+} from '@/layouts/NavigationLayout/components/Sidebar/Sidebar.styles';
 import Divider from '@/components/Divider/Divider';
 import Spinner from '@/components/Spinner/Spinner';
 

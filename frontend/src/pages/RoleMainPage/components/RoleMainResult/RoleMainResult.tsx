@@ -10,7 +10,7 @@ import {
   StyledRoleResultContainer,
   StyledDate,
   StyledEmptyText
-} from './RoleMainResult.styles';
+} from '@/pages/RoleMainPage/components/RoleMainResult/RoleMainResult.styles';
 import Divider from '@/components/Divider/Divider';
 import { useState } from 'react';
 import { GetRolesHistoriesResponse } from '@/types/role';

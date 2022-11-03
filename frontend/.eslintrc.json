@@ -27,7 +27,6 @@
   "plugins": ["@emotion"],
   "rules": {
     "@emotion/syntax-preference": ["error", "string"],
-    "@typescript-eslint/no-empty-interface": "off",
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off"
   }

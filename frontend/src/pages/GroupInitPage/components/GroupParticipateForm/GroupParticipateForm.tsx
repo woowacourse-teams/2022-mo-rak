@@ -4,9 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { participateGroup } from '@/api/group';
 import useInput from '@/hooks/useInput';
 
-import GroupParticipateInvitationCodeInput from '../GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';
-import GroupParticipateFormSubmitButton from '../GroupParticipateFormSubmitButton/GroupParticipateFormSubmitButton';
-import { StyledForm, StyledInputContainer } from './GroupParticipateForm.styles';
+import GroupParticipateInvitationCodeInput from '@/pages/GroupInitPage/components/GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';
+import GroupParticipateFormSubmitButton from '@/pages/GroupInitPage/components/GroupParticipateFormSubmitButton/GroupParticipateFormSubmitButton';
+import {
+  StyledForm,
+  StyledInputContainer
+} from '@/pages/GroupInitPage/components/GroupParticipateForm/GroupParticipateForm.styles';
 import { AxiosError } from 'axios';
 
 function GroupParticipateForm() {
