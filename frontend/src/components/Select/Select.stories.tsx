@@ -34,6 +34,5 @@ const OutlinedTemplate: Story = (args) => (
 );
 
 const Outlined = OutlinedTemplate.bind({});
-Outlined.args = {};
 
 export { Default, Outlined };
