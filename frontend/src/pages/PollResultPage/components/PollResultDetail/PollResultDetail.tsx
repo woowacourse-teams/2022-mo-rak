@@ -30,7 +30,7 @@ function PollResultDetail({ isAnonymous, allowedPollCount, closedAt }: Props) {
     <FlexContainer justifyContent="space-between" flexWrap="wrap" gap="1.2rem">
       <FlexContainer gap="1.2rem">
         <TextField
-          borderRadius="20px"
+          borderRadius="2rem"
           padding="1.2rem 2rem"
           variant="outlined"
           colorScheme={theme.colors.PURPLE_100}
@@ -38,7 +38,7 @@ function PollResultDetail({ isAnonymous, allowedPollCount, closedAt }: Props) {
           <StyledDetail>{isAnonymous ? '익명' : '기명'}</StyledDetail>
         </TextField>
         <TextField
-          borderRadius="20px"
+          borderRadius="2rem"
           padding="1.2rem"
           variant="outlined"
           colorScheme={theme.colors.PURPLE_100}

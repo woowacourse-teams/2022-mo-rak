@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import responsive from '../../../../utils/responsive';
 
 const StyledForm = styled.form`
-  width: 66rem;
+  width: 64rem;
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
