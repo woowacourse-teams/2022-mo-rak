@@ -74,7 +74,7 @@ function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, 
           </StyledContent>
           <Tooltip
             content="공동 1등이 나오면, 마감 이후 재투표를 빠르게 진행할 수 있어요!"
-            width="28"
+            width="28rem"
             placement="bottom"
             fontSize="1.6rem"
             backgroundColor={theme.colors.GRAY_200}

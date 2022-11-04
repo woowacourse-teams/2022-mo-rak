@@ -34,7 +34,7 @@ function AppointmentCreateFormTimeLimitInput({
         <StyledTitle>가능 시간 제한 설정</StyledTitle>
         <Tooltip
           content="오전 12:00 ~ 오전 12:00(다음날)은 하루종일을 의미합니다."
-          width="28"
+          width="28rem"
           placement="right"
           fontSize="1.6rem"
           backgroundColor={theme.colors.GRAY_200}

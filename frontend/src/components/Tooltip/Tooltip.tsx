@@ -9,17 +9,17 @@ import {
   StyledContent
 } from './Tooltip.styles';
 
-type placementStyleProps = Pick<Props, 'placement' | 'width' | 'backgroundColor'>;
+type placementStyleProps = Pick<Props, 'placement' | 'backgroundColor'>;
 
-const getPlacementStyle = ({ placement, width, backgroundColor }: placementStyleProps) => {
+const getPlacementStyle = ({ placement, backgroundColor }: placementStyleProps) => {
   const theme = useTheme();
 
+  // TODO: 중앙정렬 (현재는 위치만 적용)
   switch (placement) {
     case 'top':
       return `
         bottom: 100%;
-        left: 50%;
-        margin: 0 0 0.8rem ${-width / 2}rem;
+        margin-bottom: 0.8rem;
 
         &::after {
           top: 100%; 
@@ -33,8 +33,7 @@ const getPlacementStyle = ({ placement, width, backgroundColor }: placementStyle
     case 'bottom':
       return `
         top: 100%;
-        left: 50%;
-        margin: 0.8rem 0 0 ${-width / 2}rem;
+        margin-top: 0.8rem;
 
         &::after {
           bottom: 100%; 
@@ -47,10 +46,9 @@ const getPlacementStyle = ({ placement, width, backgroundColor }: placementStyle
       `;
     case 'left':
       return `
-        top: -5px;
+        top: 0;
         right: 105%;
         margin-right: 0.8rem;
-        // TODO: 중앙 정렬 (툴팁 -height / 2rem)
 
         &::after {
           top: 50%;
@@ -66,7 +64,6 @@ const getPlacementStyle = ({ placement, width, backgroundColor }: placementStyle
         top: -5px;
         left: 105%;
         margin-left: 0.8rem;
-        // TODO: 중앙 정렬 ( -height / 2rem)
 
         &::after {
           top: 50%;
@@ -102,7 +99,7 @@ function Tooltip({
 }: Props) {
   const [isVisible, setIsVisible] = useState(false);
 
-  const placementStyle = getPlacementStyle({ placement, width, backgroundColor });
+  const placementStyle = getPlacementStyle({ placement, backgroundColor });
 
   const handleToggleContent = () => {
     setIsVisible(!isVisible);
