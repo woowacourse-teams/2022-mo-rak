@@ -1,5 +1,4 @@
 import { PropsWithChildren, useState } from 'react';
-import { useTheme } from '@emotion/react';
 import closeButtonImg from '../../assets/close-button.svg';
 import {
   StyledContainer,
@@ -9,70 +8,32 @@ import {
   StyledContent
 } from './Tooltip.styles';
 
-type placementStyleProps = Pick<Props, 'placement' | 'backgroundColor'>;
+type placementStyleProps = Pick<Props, 'placement'>;
 
-const getPlacementStyle = ({ placement, backgroundColor }: placementStyleProps) => {
-  const theme = useTheme();
-
+const getPlacementStyle = ({ placement }: placementStyleProps) => {
   // TODO: 중앙정렬 (현재는 위치만 적용)
   switch (placement) {
     case 'top':
       return `
         bottom: 100%;
         margin-bottom: 0.8rem;
-
-        &::after {
-          top: 100%; 
-          left: 50%;
-          margin-left: -5px;
-          border-color: ${
-            backgroundColor || theme.colors.PURPLE_50
-          } transparent transparent transparent;
-        }
       `;
     case 'bottom':
       return `
         top: 100%;
         margin-top: 0.8rem;
-
-        &::after {
-          bottom: 100%; 
-          left: 50%;
-          margin-left: -5px;
-          border-color: transparent transparent ${
-            backgroundColor || theme.colors.PURPLE_50
-          } transparent;
-        }
       `;
     case 'left':
       return `
         top: 0;
         right: 105%;
         margin-right: 0.8rem;
-
-        &::after {
-          top: 50%;
-          left: 100%;
-          margin-top: -5px;
-          border-color: transparent transparent transparent ${
-            backgroundColor || theme.colors.PURPLE_50
-          };
-        }
       `;
     case 'right':
       return `
-        top: -5px;
+        top: 0;
         left: 105%;
         margin-left: 0.8rem;
-
-        &::after {
-          top: 50%;
-          right: 100%; 
-          margin-top: -5px;
-          border-color: transparent ${
-            backgroundColor || theme.colors.PURPLE_50
-          } transparent transparent;
-        }
       `;
     default:
       return '';
@@ -99,7 +60,7 @@ function Tooltip({
 }: Props) {
   const [isVisible, setIsVisible] = useState(false);
 
-  const placementStyle = getPlacementStyle({ placement, backgroundColor });
+  const placementStyle = getPlacementStyle({ placement });
 
   const handleToggleContent = () => {
     setIsVisible(!isVisible);
