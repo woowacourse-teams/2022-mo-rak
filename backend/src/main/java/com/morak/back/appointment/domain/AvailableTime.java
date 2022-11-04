@@ -4,6 +4,7 @@ import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.support.Generated;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.Builder;
@@ -29,6 +30,10 @@ public class AvailableTime extends BaseEntity {
 
     public boolean matchMember(Long memberId) {
         return this.memberId.equals(memberId);
+    }
+
+    public boolean belongTo(Set<LocalDateTime> localDateTimes) {
+        return localDateTimes.contains(startDateTime);
     }
 
     @Override

@@ -48,30 +48,28 @@ class AvailableTimesTest {
     }
 
     @Test
-    void 멤버가_약속선택을_진행했는지_확인한다() {
+    void 멤버가_약속선택을_진행하면_count가_증가한다() {
         // given
         long memberId = 1L;
         AvailableTimes availableTimes = new AvailableTimes();
         availableTimes.select(Set.of(LocalDateTime.now()), memberId);
 
         // when
-        boolean actual = availableTimes.hasMember(memberId);
+        long actual = availableTimes.getSelectedCount();
 
         // then
-        assertThat(actual).isTrue();
+        assertThat(actual).isEqualTo(1);
     }
 
     @Test
-    void 멤버가_약속선택을_진행_안했는지_확인한다() {
+    void 멤버가_약속선택을_안했다면_count는_0이다() {
         // given
-        long memberId = 1L;
         AvailableTimes availableTimes = new AvailableTimes();
-        availableTimes.select(Set.of(LocalDateTime.now()), memberId);
 
         // when
-        boolean actual = availableTimes.hasMember(memberId + 1L);
+        long actual = availableTimes.getSelectedCount();
 
         // then
-        assertThat(actual).isFalse();
+        assertThat(actual).isEqualTo(0);
     }
 }

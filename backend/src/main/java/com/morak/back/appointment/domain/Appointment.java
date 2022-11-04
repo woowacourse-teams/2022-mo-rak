@@ -49,8 +49,6 @@ public class Appointment extends BaseRootEntity<Appointment> {
     @Embedded
     private AvailableTimes availableTimes;
 
-    private long selectedCount;
-
     @Builder
     private Appointment(Long id, Code teamCode, Long hostId, String title, String subTitle, LocalDate startDate,
                         LocalDate endDate, LocalTime startTime, LocalTime endTime, int durationHours,
@@ -64,7 +62,6 @@ public class Appointment extends BaseRootEntity<Appointment> {
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
         validateDurationAndPeriod(this.timePeriod, this.durationMinutes);
         this.availableTimes = new AvailableTimes();
-        this.selectedCount = 0;
         registerEvent(AppointmentEvent.from(menu));
     }
 
@@ -83,7 +80,6 @@ public class Appointment extends BaseRootEntity<Appointment> {
     public void selectAvailableTime(Set<LocalDateTime> localDateTimes, Long memberId, LocalDateTime now) {
         validateOpen();
         validateSelectTime(now, localDateTimes);
-        countUpIfNotExists(memberId);
 
         this.availableTimes.select(localDateTimes, memberId);
     }
@@ -94,12 +90,6 @@ public class Appointment extends BaseRootEntity<Appointment> {
                     CustomErrorCode.APPOINTMENT_ALREADY_CLOSED_ERROR,
                     menu.getCode() + "코드의 약속잡기는 마감되었습니다."
             );
-        }
-    }
-
-    private void countUpIfNotExists(Long memberId) {
-        if (!this.availableTimes.hasMember(memberId)) {
-            this.selectedCount++;
         }
     }
 
@@ -215,7 +205,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
     }
 
     public long getSelectedCount() {
-        return this.selectedCount;
+        return availableTimes.getSelectedCount();
     }
 
     public Set<AvailableTime> getAvailableTimes() {
