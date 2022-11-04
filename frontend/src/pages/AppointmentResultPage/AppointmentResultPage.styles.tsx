@@ -9,8 +9,7 @@ const StyledContainer = styled.div`
 
   ${responsive.mobile(`
     width: 100%;
-    padding: 0 8rem;
-    margin-top: 8rem;
+    padding: 20rem 8rem;
   `)}
 `;
 
