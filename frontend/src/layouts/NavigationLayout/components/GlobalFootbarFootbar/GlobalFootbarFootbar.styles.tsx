@@ -7,7 +7,7 @@ const StyledContainer = styled.div(
   justify-content: space-evenly;
   position: fixed;
   bottom: 0;
-  z-index: 999; // TODO: 상수화
+  z-index: 998; // TODO: 상수화
   width: 100%;
   height: 10%;
   background:${theme.colors.WHITE_100}; 
