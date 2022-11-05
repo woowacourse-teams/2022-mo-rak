@@ -24,7 +24,7 @@ const CenteredContainer = styled.div`
 
 const DefaultTemplate: Story = (args) => (
   <CenteredContainer>
-    <Tooltip placement="top" content="툴팁입니다." width="8" {...args}>
+    <Tooltip placement="top" content="툴팁입니다." width="8rem" {...args}>
       <SampleBox />
     </Tooltip>
   </CenteredContainer>
