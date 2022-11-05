@@ -16,7 +16,7 @@ function GroupInitContainer() {
   return (
     <StyledContainer>
       <StyledTopContainer>
-        <StyledLogo src={serviceLogoImg} alt="logo" />
+        <StyledLogo src={serviceLogoImg} alt="모락 로고" aria-hidden="true" />
         <StyledBigText>새로운 그룹에 참여해볼까요?</StyledBigText>
         <StyledSmallText>
           아직 그룹이 없네요. <br />
