@@ -32,7 +32,7 @@ public class AvailableTime extends BaseEntity {
         return this.memberId.equals(memberId);
     }
 
-    public boolean belongTo(Set<LocalDateTime> localDateTimes) {
+    public boolean isBelongTo(Set<LocalDateTime> localDateTimes) {
         return localDateTimes.contains(startDateTime);
     }
 

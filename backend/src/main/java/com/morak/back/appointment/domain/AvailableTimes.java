@@ -30,7 +30,7 @@ public class AvailableTimes {
         countUpIfNotExists(memberId);
 
         this.availableTimes.removeIf(
-                availableTime -> availableTime.matchMember(memberId) && !availableTime.belongTo(localDateTimes)
+                availableTime -> availableTime.matchMember(memberId) && !availableTime.isBelongTo(localDateTimes)
         );
         this.availableTimes.addAll(availableTimes);
     }
