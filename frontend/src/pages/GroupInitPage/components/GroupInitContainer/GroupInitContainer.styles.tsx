@@ -31,12 +31,12 @@ const StyledLogo = styled.img`
   margin-bottom: 4rem;
 `;
 
-const StyledBigText = styled.div`
+const StyledBigText = styled.h1`
   font-size: 4.4rem;
   margin-bottom: 2rem;
 `;
 
-const StyledSmallText = styled.div`
+const StyledSmallText = styled.p`
   font-size: 2.4rem;
   padding: 0 4rem;
   text-align: center;
