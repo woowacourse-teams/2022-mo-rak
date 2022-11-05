@@ -31,12 +31,12 @@ const StyledLogo = styled.img`
   margin-bottom: 4rem;
 `;
 
-const StyledBigText = styled.h1`
+const StyledTitle = styled.h1`
   font-size: 4.4rem;
   margin-bottom: 2rem;
 `;
 
-const StyledSmallText = styled.p`
+const StyledDescription = styled.p`
   font-size: 2.4rem;
   padding: 0 4rem;
   text-align: center;
@@ -48,6 +48,6 @@ export {
   StyledTopContainer,
   StyledBottomContainer,
   StyledLogo,
-  StyledBigText,
-  StyledSmallText
+  StyledTitle,
+  StyledDescription
 };

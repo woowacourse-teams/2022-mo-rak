@@ -8,8 +8,8 @@ import {
   StyledTopContainer,
   StyledBottomContainer,
   StyledLogo,
-  StyledBigText,
-  StyledSmallText
+  StyledTitle,
+  StyledDescription
 } from './GroupInitContainer.styles';
 
 function GroupInitContainer() {
@@ -17,10 +17,10 @@ function GroupInitContainer() {
     <StyledContainer>
       <StyledTopContainer>
         <StyledLogo src={serviceLogoImg} alt="모락 로고" aria-hidden="true" />
-        <StyledBigText>새로운 그룹에 참여해볼까요?</StyledBigText>
-        <StyledSmallText>
+        <StyledTitle>새로운 그룹에 참여해볼까요?</StyledTitle>
+        <StyledDescription>
           아직 그룹이 없네요. 새로운 그룹을 생성하거나, 초대받은 그룹에 참가해서 모락을 시작해보세요!
-        </StyledSmallText>
+        </StyledDescription>
       </StyledTopContainer>
       <StyledBottomContainer>
         <GroupCreateForm />
