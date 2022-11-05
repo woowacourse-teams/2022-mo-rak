@@ -56,7 +56,7 @@ public class RoleService {
         return authorizationService.withTeamMemberValidation(
                 () -> {
                     List<Long> memberIds = findMemberIds(teamCode);
-                    Role role = getRoleByTeamCodeFetched(teamCode);
+                    Role role = getWithOnlyHistoriesPerDate(teamCode);
                     RoleHistory roleHistory = role.matchMembers(memberIds, new RandomShuffleStrategy());
                     roleRepository.save(role);
                     return roleHistory.getId();
@@ -74,7 +74,7 @@ public class RoleService {
     public RolesResponse findHistories(String teamCode, Long memberId) {
         return authorizationService.withTeamMemberValidation(
                 () -> {
-                    Role role = getRoleByTeamCodeFetched(teamCode);
+                    Role role = getWithOnlyHistoriesPerDate(teamCode);
                     return RolesResponse.from(role.findAllGroupByDate());
                 }, teamCode, memberId
         );
@@ -85,8 +85,8 @@ public class RoleService {
                 .orElseGet(() -> roleRepository.save(new Role(teamCode)));
     }
 
-    private Role getRoleByTeamCodeFetched(String teamCode) {
-        return roleRepository.findByTeamCodeFetched(teamCode)
+    private Role getWithOnlyHistoriesPerDate(String teamCode) {
+        return roleRepository.findWithOnlyHistoriesPerDate(teamCode)
                 .orElseGet(() -> roleRepository.save(new Role(teamCode)));
     }
 }

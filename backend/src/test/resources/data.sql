@@ -38,3 +38,16 @@ VALUES ('MoraK123', 2, '발표 준비 날짜 정하기', '데모 데이 발표 �
 
 INSERT INTO slack_webhook (team_id, url, created_at, updated_at)
 VALUES (1, 'https://slack.webhook.com/', now(), now());
+
+INSERT INTO role (id, team_code, created_at, updated_at) values (1, 'roletest', '2022-07-31T23:59:00', '2022-07-31T23:59:00');
+
+INSERT INTO role_history (id, date_time, role_id) values (1, '2022-07-31T23:59:00', 1);
+INSERT INTO role_history (id, date_time, role_id) values (2, '2022-07-31T23:59:05', 1);
+INSERT INTO role_history (id, date_time, role_id) values (3, '2022-08-01T10:12:00', 1);
+INSERT INTO role_history (id, date_time, role_id) values (4, '2022-08-02T10:23:00', 1);
+
+INSERT INTO role_match_result (role_history_id, member_id, role_name) values (1, 1, '데일리 마스터');
+INSERT INTO role_match_result (role_history_id, member_id, role_name) values (1, 2, '서기');
+INSERT INTO role_match_result (role_history_id, member_id, role_name) values (2, 1, '데일리 마스터');
+INSERT INTO role_match_result (role_history_id, member_id, role_name) values (3, 2, '타임키퍼');
+INSERT INTO role_match_result (role_history_id, member_id, role_name) values (4, 1, '데일리 마스터');

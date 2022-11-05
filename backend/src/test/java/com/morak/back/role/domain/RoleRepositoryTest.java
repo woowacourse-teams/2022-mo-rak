@@ -3,8 +3,10 @@ package com.morak.back.role.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.support.RepositoryTest;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

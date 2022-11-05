@@ -58,3 +58,10 @@ VALUES (1, 2, '2122-08-02T16:00:00', now());
 
 INSERT INTO appointment_available_time (appointment_id, member_id, start_date_time, created_at)
 VALUES (1, 1, '2122-08-03T13:00:00', now());
+
+INSERT INTO role (id, team_code, created_at, updated_at) values (1, 'roletest', '2022-07-31T23:59:00', '2022-07-31T23:59:00');
+
+INSERT INTO role_history (date_time, role_id) values ('2022-07-31T23:59:00', 1);
+INSERT INTO role_history (date_time, role_id) values ('2022-07-31T23:59:05', 1);
+INSERT INTO role_history (date_time, role_id) values ('2022-08-01T10:12:00', 1);
+INSERT INTO role_history (date_time, role_id) values ('2022-08-02T10:23:00', 1);

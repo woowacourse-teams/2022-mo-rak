@@ -16,12 +16,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class RoleHistory implements Comparable<RoleHistory> {
 
     @Id
@@ -36,15 +38,11 @@ public class RoleHistory implements Comparable<RoleHistory> {
             name = "role_match_result",
             joinColumns = @JoinColumn(name = "role_history_id")
     )
-    private Set<RoleMatchResult> matchResults = new LinkedHashSet<>();
+    private List<RoleMatchResult> matchResults = new ArrayList<>();
 
     public RoleHistory(LocalDateTime dateTime, List<RoleMatchResult> matchResults) {
         this.dateTime = dateTime;
-        this.matchResults = new LinkedHashSet<>(matchResults);
-    }
-
-    public List<RoleMatchResult> getMatchResults() {
-        return new ArrayList<>(matchResults);
+        this.matchResults = matchResults;
     }
 
     @Override
