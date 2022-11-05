@@ -138,7 +138,7 @@ function AppointmentProgressPage() {
       {appointment ? (
         <FlexContainer flexDirection="column" gap="2rem">
           <AppointmentProgressHeader appointment={appointment} />
-          <FlexContainer gap="4rem">
+          <FlexContainer gap="4rem" flexWrap="wrap" justifyContent="center">
             <StyledLeftContainer>
               <Calendar
                 version="select"

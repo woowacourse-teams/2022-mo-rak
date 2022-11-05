@@ -13,7 +13,7 @@ function PollMainStatus({ status }: Props) {
   return (
     <TextField
       variant="filled"
-      width="7.2rem"
+      width="20%"
       padding="0.8rem 0"
       borderRadius="5px"
       colorScheme={status === 'OPEN' ? theme.colors.PURPLE_100 : theme.colors.GRAY_400}

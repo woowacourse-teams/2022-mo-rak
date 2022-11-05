@@ -1,6 +1,6 @@
 {
   "name": "morak-frontend",
-  "version": "0.3.3",
+  "version": "1.0.2",
   "description": "모락 서비스",
   "main": "src/index.tsx",
   "scripts": {

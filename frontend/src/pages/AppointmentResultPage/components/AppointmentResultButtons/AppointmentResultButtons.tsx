@@ -160,7 +160,7 @@ function AppointmentResultButtons({
               </Button>
               <Tooltip
                 content="공동 1등이 나왔네요! 공동 1등에 대한 재투표를 생성할 수 있습니다."
-                width="28"
+                width="28rem"
                 placement="right"
                 backgroundColor={theme.colors.GRAY_200}
                 fontSize="1.6rem"

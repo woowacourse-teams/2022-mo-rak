@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import responsive from '../../utils/responsive';
 
 const StyledContainer = styled.div`
   width: calc(100% - 36.4rem);
@@ -6,6 +7,12 @@ const StyledContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 6rem;
+
+  ${responsive.mobile(`
+    align-items: flex-start;
+    width: 100%;
+    padding: 20rem 8rem;
+  `)}
 `;
 
 const StyledLeftContainer = styled.div`
@@ -13,6 +20,10 @@ const StyledLeftContainer = styled.div`
   width: 45.2rem;
   flex-direction: column;
   gap: 1.8rem;
+
+  ${responsive.mobile(`
+    align-items: center; 
+  `)}
 `;
 
 const StyledRightContainer = styled.div`
@@ -21,4 +32,14 @@ const StyledRightContainer = styled.div`
   gap: 4rem;
 `;
 
-export { StyledContainer, StyledLeftContainer, StyledRightContainer };
+const StyledContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  ${responsive.mobile(`
+    width: 100%;
+  `)}
+`;
+
+export { StyledContainer, StyledLeftContainer, StyledRightContainer, StyledContentContainer };

@@ -17,10 +17,11 @@ const StyledContentContainer = styled.div<
 >(
   ({ isVisible, backgroundColor, width, theme, placementStyle }) => `
     ${placementStyle};
+    z-index: 1;
     position: absolute;
     display: ${isVisible ? 'block' : 'none'};  
     background: ${backgroundColor ? backgroundColor : theme.colors.PURPLE_50}; 
-    width: ${width}rem;
+    width: ${width};
     border-radius: 1.2rem;
     padding: 2rem;
 `

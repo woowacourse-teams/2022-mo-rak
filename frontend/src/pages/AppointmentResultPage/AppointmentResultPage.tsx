@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { StyledContainer } from './AppointmentResultPage.styles';
+import { StyledContainer, StyledContentContainer } from './AppointmentResultPage.styles';
 import { getAppointment, getAppointmentRecommendation } from '../../api/appointment';
 import {
   Appointment,
@@ -68,7 +68,7 @@ function AppointmentResultPage() {
   return (
     <StyledContainer>
       {appointment ? (
-        <FlexContainer flexDirection="column" gap="4rem">
+        <StyledContentContainer>
           <AppointmentResultHeader
             groupCode={groupCode}
             appointmentCode={appointmentCode}
@@ -76,7 +76,7 @@ function AppointmentResultPage() {
             isClosed={appointment.isClosed}
             closedAt={appointment.closedAt}
           />
-          <FlexContainer gap="4rem">
+          <FlexContainer gap="4rem" flexWrap="wrap">
             <AppointmentResultRanking
               appointmentRecommendation={appointmentRecommendation}
               clickedRecommendation={clickedRecommendation}
@@ -96,7 +96,7 @@ function AppointmentResultPage() {
             isHost={appointment.isHost}
             setIsClosed={setIsClosed}
           />
-        </FlexContainer>
+        </StyledContentContainer>
       ) : (
         <Spinner width="15%" placement="center" />
       )}

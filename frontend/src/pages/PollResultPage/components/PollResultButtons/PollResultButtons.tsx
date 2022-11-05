@@ -69,9 +69,8 @@ function PollResultButtons({ pollCode, status, setStatus, isHost, groupCode, pol
         {status === 'OPEN' && (
           <FlexContainer gap="2rem" justifyContent="space-between">
             <Button
-              type="button"
               variant="filled"
-              width="22.8rem"
+              width="calc(100% / 3)"
               padding="2rem 0"
               fontSize="2rem"
               colorScheme={theme.colors.GRAY_400}
@@ -80,9 +79,8 @@ function PollResultButtons({ pollCode, status, setStatus, isHost, groupCode, pol
               투표 마감하기
             </Button>
             <Button
-              type="button"
               variant="filled"
-              width="22.8rem"
+              width="calc(100% / 3)"
               padding="2rem 0"
               fontSize="2rem"
               colorScheme={theme.colors.GRAY_400}
@@ -91,9 +89,8 @@ function PollResultButtons({ pollCode, status, setStatus, isHost, groupCode, pol
               투표 삭제하기
             </Button>
             <Button
-              type="button"
               variant="filled"
-              width="22.8rem"
+              width="calc(100% / 3)"
               padding="2rem 0"
               fontSize="2rem"
               colorScheme={theme.colors.PURPLE_100}

@@ -6,11 +6,13 @@ export default {
   component: Progress
 } as Meta;
 
-const Template: Story = (args) => <Progress {...args} />;
+const DefaultTemplate: Story = (args) => <Progress {...args} />;
 
-export const Default = Template.bind({});
+const Default = DefaultTemplate.bind({});
 Default.args = {
   value: '0',
   max: '100',
   width: '200px'
 };
+
+export { Default };
