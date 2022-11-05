@@ -10,7 +10,7 @@ const StyledResultBox = styled.div(
   height: 59.6rem;
   overflow-y: auto;
   border-radius: 15px;
-  padding: 2rem 0;
+  padding: 2rem;
   
   background-color: ${theme.colors.WHITE_100};
   box-shadow: 0px 4px 4px ${theme.colors.TRANSPARENT_BLACK_100_25};
@@ -31,11 +31,10 @@ const StyledRank = styled.div<{
   // NOTE: 아래처럼 변수 사용하는 것은 밑으로 빼줘도 괜찮을듯?
   ({ theme, isClicked }) => `
   text-align: center;
-  width: 66.8rem;
+  width: 100%;
   border-radius: 0.8rem;
   padding: 2rem 4.4rem;
   cursor: pointer;
-  
   border: 0.1rem solid ${theme.colors.TRANSPARENT_BLACK_100_25};
   box-shadow: 0px 4px 4px ${theme.colors.TRANSPARENT_BLACK_100_25};
   background-color: ${isClicked ? theme.colors.PURPLE_100 : theme.colors.WHITE_100};

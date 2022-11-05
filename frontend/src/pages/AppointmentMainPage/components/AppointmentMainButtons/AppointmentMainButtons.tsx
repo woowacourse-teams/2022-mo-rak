@@ -22,7 +22,7 @@ function AppointmentMainButtons({ appointmentCode, isClosed }: Props) {
       {!isClosed && (
         <Button
           variant="filled"
-          width="8.4rem"
+          width="24%"
           padding="0.8rem 0"
           fontSize="1.2rem"
           borderRadius="5px"
@@ -34,7 +34,7 @@ function AppointmentMainButtons({ appointmentCode, isClosed }: Props) {
       )}
       <Button
         variant="outlined"
-        width="8.4rem"
+        width="24%"
         padding="0.8rem 0"
         fontSize="1.2rem"
         borderRadius="5px"
