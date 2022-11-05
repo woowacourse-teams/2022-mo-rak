@@ -247,9 +247,11 @@ class RoleServiceTest {
     }
 
     @Test
-    void 역할_히스토리_목록을_조회한다() {
+    void 역할_히스토리_목록을_조회한다(@Autowired EntityManager entityManager) {
         // given
         saveRoleWithHistories();
+        entityManager.flush();
+        entityManager.clear();
 
         // when
         RolesResponse rolesResponse = roleService.findHistories(team.getCode(), member.getId());

@@ -56,7 +56,7 @@ public class RoleService {
         return authorizationService.withTeamMemberValidation(
                 () -> {
                     List<Long> memberIds = findMemberIds(teamCode);
-                    Role role = getWithOnlyHistoriesPerDate(teamCode);
+                    Role role = getRoleByTeamCode(teamCode);
                     RoleHistory roleHistory = role.matchMembers(memberIds, new RandomShuffleStrategy());
                     roleRepository.save(role);
                     return roleHistory.getId();
