@@ -57,7 +57,11 @@ public class RoleEntityRepositoryImpl implements RoleEntityRepository {
 
     private List<RoleHistory> queryRoleHistories(Long roleId) {
         return jdbcTemplate.query(
-                "SELECT MAX(ID) id, MAX(rh.date_time) date_time FROM role_history rh WHERE rh.role_id = :roleId GROUP BY cast(rh.date_time as DATE)",
+                "SELECT MAX(ID) id, MAX(rh.date_time) date_time "
+                        + "FROM role_history rh "
+                        + "WHERE rh.role_id = :roleId "
+                        + "GROUP BY cast(rh.date_time as DATE) "
+                        + "ORDER BY date_time desc",
                 new MapSqlParameterSource("roleId", roleId),
                 (rs, rowNum) -> new RoleHistory(
                         rs.getLong("id"),
