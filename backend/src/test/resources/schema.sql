@@ -131,7 +131,8 @@ CREATE TABLE appointment_available_time
     `start_date_time` DATETIME NOT NULL,
     `created_at`      DATETIME NOT NULL,
     `updated_at`      DATETIME NOT NULL,
-    FOREIGN KEY (appointment_id) REFERENCES appointment (id),
+    PRIMARY KEY (id),
+    FOREIGN KEY (appointment_id) REFERENCES appointment (id) ON DELETE CASCADE,
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
