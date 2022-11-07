@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledInvitationLink = styled.button`
+const StyledContainer = styled.button`
   display: flex;
   align-items: center;
   gap: 1.2rem;
@@ -16,4 +16,4 @@ const StyledPlusIcon = styled.img`
   width: 2.4rem;
 `;
 
-export { StyledInvitationLink, StyledInvitationText, StyledPlusIcon };
+export { StyledContainer, StyledInvitationText, StyledPlusIcon };

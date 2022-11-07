@@ -79,7 +79,7 @@ const StyledGroupName = styled.div`
   margin-bottom: 1.2rem;
 `;
 
-const StyledGroupContainer = styled.div`
+const StyledContainer = styled.div`
   position: relative;
   width: 100%;
   margin-bottom: 2.8rem;
@@ -184,7 +184,7 @@ export {
   StyledGroupProfile,
   StyledGroupFirstCharacter,
   StyledGroupName,
-  StyledGroupContainer,
+  StyledContainer,
   StyledGroup,
   StyledGroupIconGroup,
   StyledParticipateNewGroupButton,
