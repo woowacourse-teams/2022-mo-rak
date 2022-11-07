@@ -31,7 +31,7 @@ const StyledDescription = styled.p`
   margin-bottom: 1.2rem;
 `;
 
-const StyledTop = styled.div`
+const StyledTopContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -54,7 +54,7 @@ const StyledCloseIcon = styled.img`
   }
 `;
 
-const StyledBottom = styled.div(
+const StyledBottomContainer = styled.div(
   ({ theme }) => `
     background-color: ${theme.colors.YELLOW_50};
     height: 75%;
@@ -96,9 +96,9 @@ export {
   StyledParticipantsContainer,
   StyledIcon,
   StyledTitle,
-  StyledTop,
+  StyledTopContainer,
   StyledCloseIcon,
-  StyledBottom,
+  StyledBottomContainer,
   StyledDescription,
   StyledParticipantContainer,
   StyledParticipantDescription

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledTop = styled.div`
+const StyledTopContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -47,7 +47,7 @@ const StyledTriangle = styled.div(
 `
 );
 
-const StyledBottom = styled.div(
+const StyledBottomContainer = styled.div(
   ({ theme }) => `
     background-color: ${theme.colors.YELLOW_50};
     height: 60%;
@@ -72,11 +72,11 @@ const StyledForm = styled.form(
 );
 
 export {
-  StyledTop,
+  StyledTopContainer,
   StyledIcon,
   StyledTitle,
   StyledCloseIcon,
   StyledTriangle,
-  StyledBottom,
+  StyledBottomContainer,
   StyledForm
 };

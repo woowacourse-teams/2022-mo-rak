@@ -27,7 +27,7 @@ const StyledDescription = styled.p`
   margin-bottom: 1.2rem;
 `;
 
-const StyledTop = styled.div`
+const StyledTopContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,7 +63,7 @@ const StyledTriangle = styled.div(
 `
 );
 
-const StyledBottom = styled.div(
+const StyledBottomContainer = styled.div(
   ({ theme }) => `
     background-color: ${theme.colors.YELLOW_50};
     height: 75%;
@@ -82,9 +82,9 @@ export {
   StyledForm,
   StyledLogo,
   StyledTitle,
-  StyledTop,
+  StyledTopContainer,
   StyledCloseButton,
   StyledTriangle,
-  StyledBottom,
+  StyledBottomContainer,
   StyledDescription
 };
