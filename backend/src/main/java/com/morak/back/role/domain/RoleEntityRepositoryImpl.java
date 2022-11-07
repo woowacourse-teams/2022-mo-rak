@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -39,7 +39,7 @@ public class RoleEntityRepositoryImpl implements RoleEntityRepository {
                     new MapSqlParameterSource("teamCode", teamCode),
                     (rs, rowNum) -> new Role(rs.getLong("id"), Code.generate(ignored -> teamCode), null, null)
             );
-        } catch (RuntimeException e) {
+        } catch (DataAccessException e) {
             return null;
         }
     }
