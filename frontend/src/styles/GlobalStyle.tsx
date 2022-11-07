@@ -63,7 +63,7 @@ const style = css`
 
   button {
     border: none;
-    background: transparent;
+    background-color: transparent;
     cursor: pointer;
     font: inherit;
   }

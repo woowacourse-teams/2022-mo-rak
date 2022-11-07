@@ -63,7 +63,7 @@ const StyledTriangle = styled.div(
 
 const StyledBottom = styled.div(
   ({ theme }) => `
-    background: ${theme.colors.YELLOW_50};
+    background-color: ${theme.colors.YELLOW_50};
     height: 50%;
     padding-top: 4.4rem;
     border-bottom-left-radius: 1.2rem;

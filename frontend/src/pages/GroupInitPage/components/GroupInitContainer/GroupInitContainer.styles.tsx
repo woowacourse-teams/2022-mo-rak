@@ -20,7 +20,7 @@ const StyledBottomContainer = styled.div(
   justify-content: center;
   align-items: center;
   height: 50%;
-  background: ${theme.colors.YELLOW_50};
+  background-color: ${theme.colors.YELLOW_50};
   flex-direction: column;
   gap: 6.8rem;
 `

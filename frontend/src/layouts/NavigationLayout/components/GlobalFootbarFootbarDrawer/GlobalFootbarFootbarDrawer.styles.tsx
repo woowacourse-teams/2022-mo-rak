@@ -9,7 +9,7 @@ const StyledContainer = styled.div<{ isVisible: boolean }>(
   width: 100%;
   min-height: 100%;
   z-index: 999; 
-  background: ${theme.colors.WHITE_100};
+  background-color: ${theme.colors.WHITE_100};
   padding: 4rem;
   gap: 2rem;
 `

@@ -6,7 +6,7 @@ const StyledCalendar = styled.div(
   height: 60rem;
   border-radius: 2rem;
 
-  background: ${theme.colors.WHITE_100};
+  background-color: ${theme.colors.WHITE_100};
 `
 );
 

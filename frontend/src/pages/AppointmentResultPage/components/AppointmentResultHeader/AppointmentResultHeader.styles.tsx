@@ -24,7 +24,7 @@ const StyledHelpIconContainer = styled.div(
   justify-content: center;
   width: 2.8rem;
   height: 2.8rem;
-  background: ${theme.colors.GRAY_300};
+  background-color: ${theme.colors.GRAY_300};
   border-radius: 100%;
 `
 );

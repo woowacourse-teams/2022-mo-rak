@@ -56,7 +56,7 @@ const StyledCloseIcon = styled.img`
 
 const StyledBottom = styled.div(
   ({ theme }) => `
-    background: ${theme.colors.YELLOW_50};
+    background-color: ${theme.colors.YELLOW_50};
     height: 75%;
     padding: 4.4rem 0 2rem 0;
     border-bottom-left-radius: 1.2rem;
@@ -84,7 +84,7 @@ const StyledParticipantDescription = styled.p(
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${theme.colors.WHITE_100};
+  background-color: ${theme.colors.WHITE_100};
   border-radius: 2rem;
   font-size: 1.6rem;
   padding: 2rem;

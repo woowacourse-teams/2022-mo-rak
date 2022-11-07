@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 const StyledButton = styled.button(
   ({ theme }) => `
-  background: ${theme.colors.YELLOW_200};
+  background-color: ${theme.colors.YELLOW_200};
   color: ${theme.colors.WHITE_100};
   border-radius: 0 10px 10px 0;
   fontSize: 1.6rem;
