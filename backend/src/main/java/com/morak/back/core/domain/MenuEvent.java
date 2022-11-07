@@ -1,7 +1,9 @@
 package com.morak.back.core.domain;
 
 import java.time.LocalDateTime;
+import lombok.ToString;
 
+@ToString
 public class MenuEvent {
 
     private final String code;
