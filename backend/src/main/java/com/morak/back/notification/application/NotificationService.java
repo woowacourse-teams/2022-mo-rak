@@ -92,7 +92,7 @@ public class NotificationService {
         return members.stream()
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        member -> event.getRoleNameByMemberIds().get(member.getId())
+                        member -> event.getRoleName(member.getId())
                 ));
     }
 }
