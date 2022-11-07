@@ -49,9 +49,9 @@ public class RoleEntityRepositoryImpl implements RoleEntityRepository {
         if (roleHistories.isEmpty()) {
             return new RoleHistories(roleHistories);
         }
-        Map<Long, RoleHistory> IdsByHistory = roleHistories.stream()
+        Map<Long, RoleHistory> idsByHistory = roleHistories.stream()
                 .collect(Collectors.toMap(RoleHistory::getId, Function.identity()));
-        addMatchResults(IdsByHistory);
+        addMatchResults(idsByHistory);
         return new RoleHistories(roleHistories);
     }
 

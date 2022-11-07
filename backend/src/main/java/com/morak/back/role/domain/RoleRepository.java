@@ -9,7 +9,6 @@ public interface RoleRepository extends Repository<Role, Long>, RoleEntityReposi
 
     Role save(Role role);
 
-
     @Query("SELECT r FROM Role r WHERE r.teamCode.code = :code")
     Optional<Role> findByTeamCode(@Param("code") String teamCode);
 }
