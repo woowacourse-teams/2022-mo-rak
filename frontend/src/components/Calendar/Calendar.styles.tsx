@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledCalendar = styled.div(
+const StyledContainer = styled.div(
   ({ theme }) => `
   width: 45.2rem;
   height: 60rem;
@@ -144,7 +144,7 @@ const StyledCurrentMonthDayNotInStartAndEndDate = styled(StyledCurrentMonthDay)(
 );
 
 export {
-  StyledCalendar,
+  StyledContainer,
   StyledMonth,
   StyledWeekends,
   StyledWeekDay,
