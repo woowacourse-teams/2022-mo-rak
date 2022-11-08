@@ -1,6 +1,18 @@
+
+# Global Configuration
+
 spring:
   profiles:
     active: test
+  jpa:
+    defer-datasource-initialization: true
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+        format_sql: true
   sql:
     init:
       mode: always
@@ -16,59 +28,6 @@ cors:
 monitoring:
   prometheus:
     origin: localhost
-
----
-
-spring:
-  jpa:
-    defer-datasource-initialization: true
-    show-sql: true
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        format_sql: true
-  config:
-    activate:
-      on-profile: test
-  datasource:
-    url: jdbc:h2:mem:test;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-  h2:
-    console:
-      enabled: true
-logging:
-  level:
-    org.hibernate.type: trace
-
----
-
-spring:
-  jpa:
-    defer-datasource-initialization: true
-    show-sql: true
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        default_batch_fetch_size: 1000
-        format_sql: true
-  config:
-    activate:
-      on-profile: performance
-  datasource:
-    driver-class-name: ${DRIVER_CLASS_NAME}
-    url: ${DATABASE_URL}
-    username: ${USERNAME}
-    password: ${PASSWORD}
-  h2:
-    console:
-      enabled: true
-logging:
-  level:
-    org.hibernate.type: trace
-
----
 
 security:
   jwt:
@@ -86,3 +45,35 @@ logging:
       springframework:
         test.context.cache: DEBUG
         transaction.interceptor: TRACE
+      hibernate.type: trace
+
+---
+
+# Test Configuration
+
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:test;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+  h2:
+    console:
+      enabled: true
+
+---
+
+# Performance Configuration
+
+spring:
+  config:
+    activate:
+      on-profile: performance
+  datasource: # H2 인 경우 주석을 해제한다.
+    url: jdbc:mysql://localhost:33306/morak?characterEncoding=UTF-8&serverTimezone=UTC
+    username: sa
+#  datasource: # Docker 인 경우 주석을 해제한다.
+#    url: jdbc:mysql://localhost:33306/morak?characterEncoding=UTF-8&serverTimezone=UTC
+#    username: root
+#    password: root

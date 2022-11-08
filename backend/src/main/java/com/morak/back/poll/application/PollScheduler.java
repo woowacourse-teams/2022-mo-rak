@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Profile("master")
+@Profile("schedule")
 public class PollScheduler {
 
     private final PollService pollService;
