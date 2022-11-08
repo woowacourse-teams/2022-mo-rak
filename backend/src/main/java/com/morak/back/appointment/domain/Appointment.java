@@ -16,14 +16,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,14 +30,6 @@ import lombok.NoArgsConstructor;
 public class Appointment extends BaseRootEntity<Appointment> {
 
     public static final int MINUTES_UNIT = 30;
-
-    @Getter
-    @ElementCollection
-    @CollectionTable(
-            name = "appointment_available_time",
-            joinColumns = @JoinColumn(name = "appointment_id")
-    )
-    private final Set<AvailableTime> availableTimes = new HashSet<>();
 
     @Embedded
     private Menu menu;
@@ -58,6 +46,9 @@ public class Appointment extends BaseRootEntity<Appointment> {
     @Embedded
     private DurationMinutes durationMinutes;
 
+    @Embedded
+    private AvailableTimes availableTimes;
+
     @Builder
     private Appointment(Long id, Code teamCode, Long hostId, String title, String subTitle, LocalDate startDate,
                         LocalDate endDate, LocalTime startTime, LocalTime endTime, int durationHours,
@@ -70,6 +61,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
         this.timePeriod = new TimePeriod(startTime, endTime);
         this.durationMinutes = DurationMinutes.of(durationHours, durationMinutes);
         validateDurationAndPeriod(this.timePeriod, this.durationMinutes);
+        this.availableTimes = new AvailableTimes();
         registerEvent(AppointmentEvent.from(menu));
     }
 
@@ -85,17 +77,11 @@ public class Appointment extends BaseRootEntity<Appointment> {
         }
     }
 
-    public void selectAvailableTime(Set<LocalDateTime> localDateTimes, Long memberId, LocalDateTime now) {
+    public void selectAvailableTime(Set<LocalDateTime> selectingDateTimes, Long memberId, LocalDateTime now) {
         validateOpen();
+        validateSelectable(now, selectingDateTimes);
 
-        Set<AvailableTime> availableTimes = new HashSet<>();
-        for (LocalDateTime dateTime : localDateTimes) {
-            validateSelectTime(now, dateTime);
-            availableTimes.add(AvailableTime.builder().memberId(memberId).startDateTime(dateTime).build());
-        }
-
-        this.availableTimes.removeIf(availableTime -> availableTime.getMemberId().equals(memberId));
-        this.availableTimes.addAll(availableTimes);
+        this.availableTimes.select(selectingDateTimes, memberId);
     }
 
     private void validateOpen() {
@@ -107,10 +93,11 @@ public class Appointment extends BaseRootEntity<Appointment> {
         }
     }
 
-    private void validateSelectTime(LocalDateTime now, LocalDateTime dateTime) {
-        if (!isDateTimeBetween(dateTime, now)) {
+    private void validateSelectable(LocalDateTime now, Set<LocalDateTime> dateTimes) {
+        if (dateTimes.stream()
+                .anyMatch(dateTime -> !isDateTimeBetween(dateTime, now))) {
             throw new AppointmentDomainLogicException(AVAILABLETIME_OUT_OF_RANGE_ERROR,
-                    menu.getCode() + "코드의 약속잡기에" + dateTime + "은 선택할 수 없는 시간입니다.");
+                    menu.getCode() + "코드의 약속잡기에" + dateTimes + "는 선택할 수 없는 시간입니다.");
         }
     }
 
@@ -215,5 +202,13 @@ public class Appointment extends BaseRootEntity<Appointment> {
 
     public String getStatus() {
         return this.menu.getStatus();
+    }
+
+    public long getSelectedCount() {
+        return availableTimes.getSelectedCount();
+    }
+
+    public Set<AvailableTime> getAvailableTimes() {
+        return this.availableTimes.getAvailableTimes();
     }
 }

@@ -176,11 +176,21 @@ class AppointmentServiceTest {
                 List.of(availableTimeRequest)
         );
 
+        AvailableTimeRequest availableTimeRequest2 = new AvailableTimeRequest(
+                LocalDateTime.of(now.toLocalDate().plusDays(1), LocalTime.of(16, 0))
+        );
+        appointmentService.selectAvailableTimes(
+                appointment.getTeamCode(),
+                2L,
+                appointment.getCode(),
+                List.of(availableTimeRequest2)
+        );
+
         // when
         List<AppointmentAllResponse> responses = appointmentService.findAppointments("MoraK123", 1L);
 
         // then
-        assertThat(responses.get(0).getCount()).isEqualTo(1);
+        assertThat(responses.get(0).getCount()).isEqualTo(2);
     }
 
     @Test

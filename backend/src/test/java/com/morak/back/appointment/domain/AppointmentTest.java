@@ -411,4 +411,61 @@ class AppointmentTest {
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR);
     }
+
+    @Test
+    void 약속잡기_가능시간을_선택할_때_선택한_인원의_수가_증가한다() {
+        // given
+        long memberId = 1L;
+        long memberId2 = 2L;
+        Appointment appointment = DEFAULT_BUILDER
+                .endDate(now.toLocalDate().plusDays(1))
+                .startTime(LocalTime.of(0, 0))
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        LocalDate today = now.toLocalDate();
+
+        appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(1L), LocalTime.of(0, 0))),
+                memberId,
+                now
+        );
+
+        appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(1L), LocalTime.of(0, 0))),
+                memberId2,
+                now
+        );
+
+        // when
+        assertThat(appointment.getSelectedCount()).isEqualTo(2);
+    }
+
+    @Test
+    void 약속잡기_가능시간을_다시_선택할_때_선택한_인원의_수가_증가하지_않는다() {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER
+                .endDate(now.toLocalDate().plusDays(1))
+                .startTime(LocalTime.of(0, 0))
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        LocalDate today = now.toLocalDate();
+
+        appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(1L), LocalTime.of(0, 0))),
+                memberId,
+                now
+        );
+
+        appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(1L), LocalTime.of(1, 0))),
+                memberId,
+                now
+        );
+
+        // when
+        assertThat(appointment.getSelectedCount()).isEqualTo(1);
+    }
 }
