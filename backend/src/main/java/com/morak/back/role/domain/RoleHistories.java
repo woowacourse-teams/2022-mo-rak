@@ -21,7 +21,7 @@ public class RoleHistories {
     @JoinColumn(name = "role_id", nullable = false, updatable = false)
     private List<RoleHistory> values = new ArrayList<>();
 
-    private RoleHistories(List<RoleHistory> values) {
+    public RoleHistories(List<RoleHistory> values) {
         this.values = values;
     }
 
