@@ -77,11 +77,11 @@ public class Appointment extends BaseRootEntity<Appointment> {
         }
     }
 
-    public void selectAvailableTime(Set<LocalDateTime> localDateTimes, Long memberId, LocalDateTime now) {
+    public void selectAvailableTime(Set<LocalDateTime> selectingDateTimes, Long memberId, LocalDateTime now) {
         validateOpen();
-        validateSelectTime(now, localDateTimes);
+        validateSelectable(now, selectingDateTimes);
 
-        this.availableTimes.select(localDateTimes, memberId);
+        this.availableTimes.select(selectingDateTimes, memberId);
     }
 
     private void validateOpen() {
@@ -93,7 +93,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
         }
     }
 
-    private void validateSelectTime(LocalDateTime now, Set<LocalDateTime> dateTimes) {
+    private void validateSelectable(LocalDateTime now, Set<LocalDateTime> dateTimes) {
         if (dateTimes.stream()
                 .anyMatch(dateTime -> !isDateTimeBetween(dateTime, now))) {
             throw new AppointmentDomainLogicException(AVAILABLETIME_OUT_OF_RANGE_ERROR,
