@@ -3,11 +3,6 @@ import responsive from '../../utils/responsive';
 
 const StyledContainer = styled.div`
   width: calc(100% - 36.4rem);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8rem;
   padding: 6.4rem 20rem;
 
   ${responsive.mobile(`
