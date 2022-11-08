@@ -1,7 +1,7 @@
-import { StyledButton } from './GroupCreateFormSubmitButton.styles';
+import { StyledContainer } from './GroupCreateFormSubmitButton.styles';
 
 function GroupCreateFormSubmitButton() {
-  return <StyledButton type="submit">생성하기</StyledButton>;
+  return <StyledContainer type="submit">생성하기</StyledContainer>;
 }
 
 export default GroupCreateFormSubmitButton;

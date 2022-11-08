@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 
 import styled from '@emotion/styled';
 
-const StyledButton = styled.button<
+const StyledContainer = styled.button<
   CSSProperties & {
     variantStyle: string;
   }
@@ -21,4 +21,4 @@ const StyledButton = styled.button<
   `
 );
 
-export { StyledButton };
+export { StyledContainer };

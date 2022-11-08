@@ -1,11 +1,11 @@
 import { CSSProperties, PropsWithChildren, HTMLAttributes } from 'react';
 
-import { StyledBox } from './Box.styles';
+import { StyledContainer } from './Box.styles';
 
 type Props = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & CSSProperties;
 
 function Box({ children, ...props }: Props) {
-  return <StyledBox {...props}>{children}</StyledBox>;
+  return <StyledContainer {...props}>{children}</StyledContainer>;
 }
 
 export default Box;

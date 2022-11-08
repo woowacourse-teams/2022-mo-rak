@@ -23,10 +23,10 @@ import {
   StyledSlackLogo,
   StyledHeaderText,
   StyledGuideText,
-  StyledTop,
+  StyledTopContainer,
   StyledCloseButton,
   StyledTriangle,
-  StyledBottom,
+  StyledBottomContainer,
   StyledLinkIcon,
   StyledButton,
   StyledSmallLogo
@@ -132,7 +132,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
       <Modal isVisible={activeModal === 'slack'} close={closeModal}>
         {/* 슬랙 메뉴 */}
         <StyledModalFormContainer onSubmit={handleLinkSlack}>
-          <StyledTop>
+          <StyledTopContainer>
             <StyledSlackLogo src={slackImg} alt="slack-logo" />
             <StyledHeaderText>슬랙 채널과 연동해보세요!</StyledHeaderText>
             <StyledGuideText>
@@ -140,8 +140,8 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
             </StyledGuideText>
             <StyledCloseButton onClick={closeModal} src={closeButtonImg} alt="close-button" />
             <StyledTriangle />
-          </StyledTop>
-          <StyledBottom>
+          </StyledTopContainer>
+          <StyledBottomContainer>
             <FlexContainer flexDirection="column" alignItems="center" gap="2.4rem">
               <TextField
                 variant="filled"
@@ -162,21 +162,21 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
               </TextField>
               <StyledButton>확인</StyledButton>
             </FlexContainer>
-          </StyledBottom>
+          </StyledBottomContainer>
         </StyledModalFormContainer>
       </Modal>
 
       {/* 그룹 생성 */}
       <Modal isVisible={activeModal === 'create'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleCreateGroup}>
-          <StyledTop>
+          <StyledTopContainer>
             <StyledSmallLogo src={serviceLogoImg} alt="logo" />
             <StyledHeaderText>그룹 생성</StyledHeaderText>
             <StyledGuideText>새로운 그룹을 빠르고 쉽게 생성해보세요</StyledGuideText>
             <StyledCloseButton onClick={closeModal} src={closeButtonImg} alt="close-button" />
             <StyledTriangle />
-          </StyledTop>
-          <StyledBottom>
+          </StyledTopContainer>
+          <StyledBottomContainer>
             <FlexContainer flexDirection="column" alignItems="center" gap="2.4rem">
               <TextField
                 variant="filled"
@@ -199,21 +199,21 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
               </TextField>
               <StyledButton>생성하기</StyledButton>
             </FlexContainer>
-          </StyledBottom>
+          </StyledBottomContainer>
         </StyledModalFormContainer>
       </Modal>
 
       {/* 그룹 참가 */}
       <Modal isVisible={activeModal === 'participate'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleParticipateGroup}>
-          <StyledTop>
+          <StyledTopContainer>
             <StyledSmallLogo src={serviceLogoImg} alt="logo" />
             <StyledHeaderText>그룹 참가</StyledHeaderText>
             <StyledGuideText>새로운 그룹에도 참가해보세요</StyledGuideText>
             <StyledCloseButton onClick={closeModal} src={closeButtonImg} alt="close-button" />
             <StyledTriangle />
-          </StyledTop>
-          <StyledBottom>
+          </StyledTopContainer>
+          <StyledBottomContainer>
             <FlexContainer flexDirection="column" alignItems="center" gap="2.4rem">
               <TextField
                 variant="filled"
@@ -236,7 +236,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
               </TextField>
               <StyledButton>참가하기</StyledButton>
             </FlexContainer>
-          </StyledBottom>
+          </StyledBottomContainer>
         </StyledModalFormContainer>
       </Modal>
     </>

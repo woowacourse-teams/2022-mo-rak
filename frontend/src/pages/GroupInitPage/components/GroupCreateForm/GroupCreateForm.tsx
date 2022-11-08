@@ -4,7 +4,7 @@ import { createGroup } from '../../../../api/group';
 import { Group } from '../../../../types/group';
 import GroupCreateFormNameInput from '../GroupCreateFormNameInput/GroupCreateFormNameInput';
 import GroupCreateFormSubmitButton from '../GroupCreateFormSubmitButton/GroupCreateFormSubmitButton';
-import { StyledForm, StyledInputContainer } from './GroupCreateForm.styles';
+import { StyledContainer, StyledInputContainer } from './GroupCreateForm.styles';
 import { AxiosError } from 'axios';
 
 function GroupCreateForm() {
@@ -35,12 +35,12 @@ function GroupCreateForm() {
   };
 
   return (
-    <StyledForm onSubmit={handleCreateGroup}>
+    <StyledContainer onSubmit={handleCreateGroup}>
       <StyledInputContainer>
         <GroupCreateFormNameInput groupName={groupName} onChange={handleGroupName} />
         <GroupCreateFormSubmitButton />
       </StyledInputContainer>
-    </StyledForm>
+    </StyledContainer>
   );
 }
 

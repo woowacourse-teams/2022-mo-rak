@@ -3,9 +3,9 @@ import {
   StyledParticipantsContainer,
   StyledIcon,
   StyledTitle,
-  StyledTop,
+  StyledTopContainer,
   StyledCloseIcon,
-  StyledBottom,
+  StyledBottomContainer,
   StyledParticipantContainer,
   StyledParticipantDescription
 } from './PollResultParticipantModal.styles';
@@ -27,14 +27,14 @@ function PollResultParticipantModal({ isVisible, close, participants, subject }:
   return (
     <Modal isVisible={isVisible} close={close}>
       <StyledParticipantsContainer>
-        <StyledTop>
+        <StyledTopContainer>
           <StyledCloseIcon onClick={close} src={closeButtonImg} alt="close-icon" />
           <StyledIcon src={pollImg} alt="poll-icon" />
           <StyledTitle>
             {subject} ({participantsLength}표)
           </StyledTitle>
-        </StyledTop>
-        <StyledBottom>
+        </StyledTopContainer>
+        <StyledBottomContainer>
           {participants.map(({ name, profileUrl, description }, idx) => {
             return (
               <StyledParticipantContainer key={idx}>
@@ -43,7 +43,7 @@ function PollResultParticipantModal({ isVisible, close, participants, subject }:
               </StyledParticipantContainer>
             );
           })}
-        </StyledBottom>
+        </StyledBottomContainer>
       </StyledParticipantsContainer>
     </Modal>
   );

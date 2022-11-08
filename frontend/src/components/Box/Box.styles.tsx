@@ -3,7 +3,7 @@ import { CSSProperties } from 'react';
 import styled from '@emotion/styled';
 
 // NOTE: overflow와 height 속성 추가....
-const StyledBox = styled.div<CSSProperties>(
+const StyledContainer = styled.div<CSSProperties>(
   ({ theme, width, borderRadius, padding, minHeight, filter, height, overflow }) => `
     min-height: ${minHeight};
     border-radius: ${borderRadius || '15px'};
@@ -17,4 +17,4 @@ const StyledBox = styled.div<CSSProperties>(
   `
 );
 
-export { StyledBox };
+export { StyledContainer };

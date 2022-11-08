@@ -14,12 +14,12 @@ const StyledMenuContainer = styled.div(
   align-items: center;
   border-radius: 8rem;
   font-size: 3.2rem;
-  background: ${theme.colors.WHITE_100};
+  background-color: ${theme.colors.WHITE_100};
   box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;
   transition: 0.5s;
 
   &:hover {
-    background: ${theme.colors.YELLOW_50};
+    background-color: ${theme.colors.YELLOW_50};
     box-shadow: rgba(250, 222, 144, 0.7) 0px 50px 100px -20px, rgba(250, 222, 144, 0.3) 0px 30px 60px -30px;
   }
   

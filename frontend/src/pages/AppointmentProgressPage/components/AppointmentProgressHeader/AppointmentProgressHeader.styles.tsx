@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledHeaderContainer = styled.div`
+const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -17,4 +17,4 @@ const StyledDescription = styled.p`
   overflow-y: auto;
 `;
 
-export { StyledHeaderContainer, StyledHeader, StyledDescription };
+export { StyledContainer, StyledHeader, StyledDescription };

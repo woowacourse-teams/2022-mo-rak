@@ -1,7 +1,7 @@
-import { StyledHeader } from './AppointmentCreateHeader.styles';
+import { StyledContainer } from './AppointmentCreateHeader.styles';
 
 function AppointmentCreateHeader() {
-  return <StyledHeader>약속을 생성해주세요 🥳</StyledHeader>;
+  return <StyledContainer>약속을 생성해주세요 🥳</StyledContainer>;
 }
 
 export default AppointmentCreateHeader;

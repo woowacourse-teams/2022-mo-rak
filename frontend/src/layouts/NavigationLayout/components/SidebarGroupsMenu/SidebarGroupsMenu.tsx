@@ -17,7 +17,7 @@ import {
   StyledGroupProfile,
   StyledGroupFirstCharacter,
   StyledGroupName,
-  StyledGroupContainer,
+  StyledContainer,
   StyledGroup,
   StyledGroupIconGroup,
   StyledParticipateNewGroupButton,
@@ -67,7 +67,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
   };
 
   return (
-    <StyledGroupContainer>
+    <StyledContainer>
       <StyledMenuHeader>그룹</StyledMenuHeader>
       <FlexContainer justifyContent="space-between">
         <FlexContainer gap="2rem">
@@ -117,7 +117,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
           <StyledButtonText>그룹 나가기</StyledButtonText>
         </StyledLeaveGroupButton>
       </StyledGroupsModalContainer>
-    </StyledGroupContainer>
+    </StyledContainer>
   );
 }
 export default SidebarGroupsMenu;

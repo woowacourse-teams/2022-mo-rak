@@ -11,7 +11,7 @@ const StyledContainer = styled.div(
   justify-content: space-between;
   padding-left: 2rem;
   z-index: 998; // TODO: 상수화
-  background:${theme.colors.WHITE_100};
+  background-color:${theme.colors.WHITE_100};
 `
 );
 
@@ -36,7 +36,7 @@ const StyledProfileContainer = styled.div(
   height: 8rem;
   border-radius: 1.2rem;
   font-family: 'Nanum Gothic', sans-serif;
-  background: ${theme.colors.PURPLE_50};
+  background-color: ${theme.colors.PURPLE_50};
 `
 );
 

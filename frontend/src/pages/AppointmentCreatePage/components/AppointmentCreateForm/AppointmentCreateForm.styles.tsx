@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import responsive from '../../../../utils/responsive';
 
-const StyledForm = styled.form`
+const StyledContainer = styled.form`
   width: 64rem;
   display: flex;
   flex-direction: column;
@@ -12,4 +12,4 @@ const StyledForm = styled.form`
   `)}
 `;
 
-export { StyledForm };
+export { StyledContainer };
