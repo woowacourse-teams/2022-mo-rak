@@ -14,7 +14,7 @@ function AppointmentCreateFormDescriptionInput({ description, onChange }: Props)
       <Input
         id="appointment-description"
         placeholder="약속에 대한 설명을 입력해주세요"
-        fontSize="2.4rem"
+        fontSize="2.2rem"
         textAlign="start"
         value={description}
         onChange={onChange}

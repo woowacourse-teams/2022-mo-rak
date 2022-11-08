@@ -4,9 +4,6 @@ import responsive from '../../utils/responsive';
 const StyledContainer = styled.div`
   width: calc(100% - 36.4rem);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6rem;
   padding: 6.4rem 20rem;
 
   ${responsive.mobile(`
@@ -31,16 +28,19 @@ const StyledRightContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4rem;
+  width: calc(100% - 49.2rem);
+  min-width: 44rem;
+
+  ${responsive.mobile(`
+    width: 100%;
+  `)}
 `;
 
 const StyledContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-
-  ${responsive.mobile(`
-    width: 100%;
-  `)}
+  width: 100%;
 `;
 
 export { StyledContainer, StyledLeftContainer, StyledRightContainer, StyledContentContainer };

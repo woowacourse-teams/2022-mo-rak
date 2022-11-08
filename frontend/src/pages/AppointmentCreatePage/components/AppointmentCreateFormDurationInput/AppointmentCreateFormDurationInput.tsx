@@ -22,7 +22,7 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
   return (
     <>
       <StyledTitle>진행 시간 설정</StyledTitle>
-      <FlexContainer alignItems="end" gap="1.2rem">
+      <FlexContainer alignItems="center" gap="1.2rem">
         <TextField
           variant="outlined"
           colorScheme={theme.colors.PURPLE_100}
@@ -61,7 +61,7 @@ function AppointmentCreateFormDurationInput({ duration, onChange }: Props) {
             onChange={onChange}
             value={minute}
             name="minute"
-            fontSize="2.4rem"
+            fontSize="2.2rem"
             aria-label="appointment-duration-minute"
             required
           >

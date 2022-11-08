@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 const StyledTitle = styled.div(
   ({ theme }) => `
-  font-size: 2.8rem;
+  font-size: 2.4rem;
   color: ${theme.colors.PURPLE_100};
 `
 );
@@ -29,6 +29,7 @@ const StyledContent = styled.p`
 const StyledHeader = styled.div`
   display: flex;
   gap: 2rem;
+  align-items: center;
 `;
 
 export { StyledTitle, StyledHelpIconContainer, StyledHelpIcon, StyledContent, StyledHeader };
