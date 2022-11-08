@@ -117,14 +117,16 @@ node {
             try {
                 echo "PREV_PORT_A=${OUTPUT[2]}"
                 echo "PREV_PORT_B=${OUTPUT[3]}"
-                PRD_KILL_WAS_IP_LIST = PRD_WAS_IP_LIST
-                PRD_KILL_WAS_IP_LIST = PRD_KILL_WAS_IP_LIST.split(" ")
 
-                sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@' + PRD_KILL_WAS_IP_LIST[0] + ' "bash /home/ubuntu/deploy/kill.sh ' + OUTPUT[2] + ' 1>/dev/null 2>/dev/null"'
-                sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@' + PRD_KILL_WAS_IP_LIST[1] + ' "bash /home/ubuntu/deploy/kill.sh ' + OUTPUT[3] + ' 1>/dev/null 2>/dev/null"'
-                slackSend (channel: "jenkins", color: "good",  message: "Route Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                PRD_KILL_WAS_IP_LIST = PRD_WAS_IP_LIST.split(" ")
+
+                PRD_KILL_WAS_IP_LIST.eachWithIndex { item, index ->
+                    sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@' + item + ' "bash /home/ubuntu/deploy/kill.sh ' + OUTPUT[index + 2] + ' 1>/dev/null 2>/dev/null"'
+                }
+
+                slackSend (channel: "jenkins", color: "good",  message: "Down Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
             } catch(e) {
-                slackSend (channel: "jenkins", color: "warning",  message: "Route Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                slackSend (channel: "jenkins", color: "warning",  message: "Down Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
                 throw e
             }
     }
