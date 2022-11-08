@@ -5,7 +5,7 @@ import { AppointmentRecommendation } from '../../../../types/appointment';
 import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
 import { getFormattedDateTime } from '../../../../utils/date';
 import {
-  StyledResultBox,
+  StyledContainer,
   StyledResultText,
   StyledCrownIcon,
   StyledRank
@@ -28,7 +28,7 @@ function AppointmentResultRanking({
   const totalParticipants = groupMembers.length;
 
   return (
-    <StyledResultBox>
+    <StyledContainer>
       {appointmentRecommendation.map(
         (
           {
@@ -65,7 +65,7 @@ function AppointmentResultRanking({
           </StyledRank>
         )
       )}
-    </StyledResultBox>
+    </StyledContainer>
   );
 }
 

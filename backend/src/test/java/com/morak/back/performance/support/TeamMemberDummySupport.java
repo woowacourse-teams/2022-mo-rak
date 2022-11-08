@@ -21,14 +21,17 @@ public class TeamMemberDummySupport {
     private TeamMemberDao teamMemberDao;
 
     public void 멤버_더미데이터를_추가한다(int memberSize) {
+        System.out.println("====== 멤버 더미 데이터 추가 start ======");
         teamMemberDao.batchInsertMembers(memberSize);
     }
 
     public void 팀_더미데이터를_추가한다(int teamSize) {
+        System.out.println("====== 팀 더미 데이터 추가 start ======");
         teamMemberDao.batchInsertTeams(teamSize);
     }
 
     public void 팀_멤버_더미데이터를_추가한다(int memberSize, int teamSize, int joinSize) {
+        System.out.println("====== 팀 멤버 더미 데이터 추가 start ======");
         // 멤버1을 모든 팀에 속하게 한다.
         List<Entry<Long, Long>> teamMembers = makeDummyTeamMembersJoinTeams(1L, teamSize);
         // 멤버2를 팀1~5개 팀에 속하게 한다.

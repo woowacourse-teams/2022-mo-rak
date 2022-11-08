@@ -28,7 +28,7 @@ const StyledGuideText = styled.div`
   text-align: center;
 `;
 
-const StyledTop = styled.div`
+const StyledTopContainer = styled.div`
   position: relative;
   height: 50%;
   padding-top: 2.4rem;
@@ -61,9 +61,9 @@ const StyledTriangle = styled.div(
 `
 );
 
-const StyledBottom = styled.div(
+const StyledBottomContainer = styled.div(
   ({ theme }) => `
-    background: ${theme.colors.YELLOW_50};
+    background-color: ${theme.colors.YELLOW_50};
     height: 50%;
     padding-top: 4.4rem;
     border-bottom-left-radius: 1.2rem;
@@ -109,10 +109,10 @@ export {
   StyledSlackLogo,
   StyledHeaderText,
   StyledGuideText,
-  StyledTop,
+  StyledTopContainer,
   StyledCloseButton,
   StyledTriangle,
-  StyledBottom,
+  StyledBottomContainer,
   StyledLinkIcon,
   StyledButton,
   StyledSmallLogo

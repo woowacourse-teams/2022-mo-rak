@@ -16,4 +16,5 @@ public class DummyAvailableTime {
     private Long memberId;
     private LocalDateTime startDateTime;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

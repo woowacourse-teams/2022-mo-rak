@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledButton = styled.button(
+const StyledContainer = styled.button(
   ({ theme }) => `
   background-color: ${theme.colors.YELLOW_200};
   color: ${theme.colors.WHITE_100};
@@ -18,4 +18,4 @@ const StyledButton = styled.button(
 `
 );
 
-export { StyledButton };
+export { StyledContainer };

@@ -50,7 +50,7 @@ const StyledFeatureCircle = styled.div(
   border-radius: 100%;
   width: 26rem;
   height: 26rem;
-  background: ${theme.colors.YELLOW_100};
+  background-color: ${theme.colors.YELLOW_100};
   margin-bottom: 1.2rem;
   display: flex;
   justify-content: center;

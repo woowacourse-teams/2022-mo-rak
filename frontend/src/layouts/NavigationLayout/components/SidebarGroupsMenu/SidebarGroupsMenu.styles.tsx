@@ -16,7 +16,7 @@ const StyledGroupsModalContainer = styled.div<{ isVisible: boolean }>(
   width: 24rem;
   max-height: 55.2rem;
   border-radius: 1.2rem;
-  background: ${theme.colors.WHITE_100};
+  background-color: ${theme.colors.WHITE_100};
   opacity: 0;
   transition: visibility 0s, opacity 0.2s ease-in-out;
 
@@ -64,7 +64,7 @@ const StyledGroupProfile = styled.div<CSSProperties>(
   width: 8rem;
   height: 8rem;
   border-radius: 1.2rem;
-  background: ${backgroundColor};
+  background-color: ${backgroundColor};
 `
 );
 
@@ -81,7 +81,7 @@ const StyledGroupName = styled.div`
   word-break: break-all;
 `;
 
-const StyledGroupContainer = styled.div`
+const StyledContainer = styled.div`
   position: relative;
   width: 100%;
   margin-bottom: 2.8rem;
@@ -99,7 +99,7 @@ const StyledGroup = styled.div<{ isActive: boolean }>(
   cursor: pointer;
 
   &:hover {
-    background: ${theme.colors.GRAY_100};
+    background-color: ${theme.colors.GRAY_100};
     border-radius: 1.2rem;
     transition: all 0.2s linear;
   }
@@ -107,7 +107,7 @@ const StyledGroup = styled.div<{ isActive: boolean }>(
   ${
     isActive &&
     `
-      background: ${theme.colors.GRAY_100}; 
+      background-color: ${theme.colors.GRAY_100}; 
       border-radius: 1.2rem;
     `
   }
@@ -186,7 +186,7 @@ export {
   StyledGroupProfile,
   StyledGroupFirstCharacter,
   StyledGroupName,
-  StyledGroupContainer,
+  StyledContainer,
   StyledGroup,
   StyledGroupIconGroup,
   StyledParticipateNewGroupButton,

@@ -31,14 +31,14 @@ const StyledMenu = styled.div<{
   ${
     isActive &&
     `
-      background: ${theme.colors.GRAY_100}; 
+      background-color: ${theme.colors.GRAY_100}; 
       border-top-left-radius: 4rem; 
       border-bottom-left-radius: 4rem;
     `
   };
 
   &:hover {
-    background: ${!isActive && theme.colors.TRANSPARENT_GRAY_100_80};
+    background-color: ${!isActive && theme.colors.TRANSPARENT_GRAY_100_80};
     border-top-left-radius: 4rem; 
     border-bottom-left-radius: 4rem;
   } 

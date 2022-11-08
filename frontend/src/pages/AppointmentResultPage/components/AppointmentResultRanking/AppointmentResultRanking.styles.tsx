@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledResultBox = styled.div(
+const StyledContainer = styled.div(
   ({ theme }) => `
   display: flex;
   flex-direction: column;
@@ -42,4 +42,4 @@ const StyledRank = styled.div<{
 `
 );
 
-export { StyledResultBox, StyledResultText, StyledCrownIcon, StyledRank };
+export { StyledContainer, StyledResultText, StyledCrownIcon, StyledRank };

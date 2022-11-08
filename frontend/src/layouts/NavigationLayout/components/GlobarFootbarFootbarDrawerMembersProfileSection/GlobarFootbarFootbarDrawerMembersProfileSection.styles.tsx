@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledMemberListContainer = styled.div`
+const StyledContainer = styled.div`
   margin: 2.8rem 0;
 `;
 
@@ -14,9 +14,9 @@ const StyledName = styled.div`
   font-size: 2.4rem;
 `;
 
-const StyledContainer = styled.div`
+const StyledMembersProfileContainer = styled.div`
   overflow-y: auto;
   max-height: 36rem;
 `;
 
-export { StyledMemberListContainer, StyledMenuHeader, StyledName, StyledContainer };
+export { StyledContainer, StyledMenuHeader, StyledName, StyledMembersProfileContainer };

@@ -36,7 +36,7 @@ const StyledProfileContainer = styled.div(
   height: 8rem;
   border-radius: 1.2rem;
   font-family: 'Nanum Gothic', sans-serif;
-  background: ${theme.colors.PURPLE_50};
+  background-color: ${theme.colors.PURPLE_50};
 `
 );
 

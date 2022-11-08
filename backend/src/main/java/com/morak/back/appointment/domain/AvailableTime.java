@@ -1,18 +1,21 @@
 package com.morak.back.appointment.domain;
 
-import com.morak.back.core.domain.BaseElement;
+import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.support.Generated;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import javax.persistence.Embeddable;
+import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Entity
 @Getter
-@Embeddable
 @NoArgsConstructor
-public class AvailableTime extends BaseElement {
+@Table(name = "appointment_available_time")
+public class AvailableTime extends BaseEntity {
 
     private Long memberId;
 
@@ -23,6 +26,14 @@ public class AvailableTime extends BaseElement {
         super();
         this.memberId = memberId;
         this.startDateTime = startDateTime;
+    }
+
+    public boolean matchMember(Long memberId) {
+        return this.memberId.equals(memberId);
+    }
+
+    public boolean isBelongTo(Set<LocalDateTime> localDateTimes) {
+        return localDateTimes.contains(startDateTime);
     }
 
     @Override

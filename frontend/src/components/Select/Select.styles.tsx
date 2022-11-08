@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { CSSProperties } from 'react';
 
-const StyledSelect = styled.select<CSSProperties>(
+const StyledContainer = styled.select<CSSProperties>(
   ({ fontSize }) => `
   appearance: none;
   width: 100%;
@@ -16,4 +16,4 @@ const StyledSelect = styled.select<CSSProperties>(
 `
 );
 
-export { StyledSelect };
+export { StyledContainer };

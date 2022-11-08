@@ -1,8 +1,8 @@
 import Modal from '../../../../components/Modal/Modal';
 import {
-  StyledTop,
+  StyledTopContainer,
   StyledIcon,
-  StyledBottom,
+  StyledBottomContainer,
   StyledTriangle,
   StyledCloseIcon,
   StyledTitle,
@@ -52,19 +52,19 @@ function SidebarEditUsernameModal({ isVisible, close }: Props) {
     // TODO: props drilling 발생
     <Modal isVisible={isVisible} close={close}>
       <StyledForm onSubmit={handleEditUserName}>
-        <StyledTop>
+        <StyledTopContainer>
           <StyledIcon src={editWithSmileImg} alt="edit-logo" />
           <StyledTitle>닉네임 수정하기</StyledTitle>
           <StyledCloseIcon onClick={close} src={closeButtonImg} alt="close-button" />
           <StyledTriangle />
-        </StyledTop>
-        <StyledBottom>
+        </StyledTopContainer>
+        <StyledBottomContainer>
           <SidebarEditUsernameModalUsernameInput
             username={username}
             onChangeUsername={handleUsername}
           />
           <SidebarEditUsernameModalButtons onClickCancelButton={close} />
-        </StyledBottom>
+        </StyledBottomContainer>
       </StyledForm>
     </Modal>
   );

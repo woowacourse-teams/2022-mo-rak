@@ -20,7 +20,7 @@ const StyledContentContainer = styled.div<
     z-index: 10;
     position: absolute;
     display: ${isVisible ? 'block' : 'none'};  
-    background: ${backgroundColor ? backgroundColor : theme.colors.PURPLE_50}; 
+    background-color: ${backgroundColor ? backgroundColor : theme.colors.PURPLE_50}; 
     width: ${width};
     border-radius: 1.2rem;
     padding: 2rem;

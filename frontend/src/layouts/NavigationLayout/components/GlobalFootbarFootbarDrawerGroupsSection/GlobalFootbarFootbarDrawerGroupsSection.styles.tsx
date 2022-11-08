@@ -43,7 +43,7 @@ const StyledGroupProfile = styled.div<CSSProperties>(
   height: 8rem;
   border-radius: 1.2rem;
   font-family: 'Nanum Gothic', sans-serif;
-  background: ${backgroundColor};
+  background-color: ${backgroundColor};
 `
 );
 
@@ -79,7 +79,7 @@ const StyledGroup = styled.div<{ isActive: boolean }>(
   cursor: pointer;
 
   &:hover {
-    background: ${theme.colors.GRAY_100};
+    background-color: ${theme.colors.GRAY_100};
     border-radius: 1.2rem;
     transition: all 0.2s linear;
   }
@@ -87,7 +87,7 @@ const StyledGroup = styled.div<{ isActive: boolean }>(
   ${
     isActive &&
     `
-      background: ${theme.colors.GRAY_100}; 
+      background-color: ${theme.colors.GRAY_100}; 
       border-radius: 1.2rem;
     `
   }

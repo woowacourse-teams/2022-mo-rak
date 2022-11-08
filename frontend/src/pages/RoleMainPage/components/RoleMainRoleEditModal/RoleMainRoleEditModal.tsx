@@ -5,10 +5,10 @@ import {
   StyledForm,
   StyledLogo,
   StyledTitle,
-  StyledTop,
+  StyledTopContainer,
   StyledCloseButton,
   StyledTriangle,
-  StyledBottom,
+  StyledBottomContainer,
   StyledDescription
 } from './RoleMainRoleEditModal.styles';
 import Modal from '../../../../components/Modal/Modal';
@@ -87,14 +87,14 @@ function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
   return (
     <Modal isVisible={true} close={close}>
       <StyledForm onSubmit={handleAllocateRoles}>
-        <StyledTop>
+        <StyledTopContainer>
           <StyledLogo src={editWithSmileImg} alt="edit-logo" />
           <StyledTitle>역할 목록 수정하기</StyledTitle>
           <StyledDescription>역할의 개수가 멤버수보다 많을 수는 없어요!</StyledDescription>
           <StyledCloseButton onClick={close} src={closeButtonImg} alt="close-button" />
           <StyledTriangle />
-        </StyledTop>
-        <StyledBottom>
+        </StyledTopContainer>
+        <StyledBottomContainer>
           <RoleMainRoleEditModalInputs
             roles={roles}
             onChangeRoleInput={handleSetRoles}
@@ -102,7 +102,7 @@ function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
             onClickAddButton={handleAddRoleInput}
           />
           <RoleMainRoleEditModalButtons onClickCancelButton={close} />
-        </StyledBottom>
+        </StyledBottomContainer>
       </StyledForm>
     </Modal>
   );
