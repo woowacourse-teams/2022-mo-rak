@@ -155,7 +155,8 @@ tasks.named('jacocoTestCoverageVerification') {
                     '**.Proxy*',
                     '**.*Response',
                     '**.*Request',
-                    '**.*Event'
+                    '**.*Event',
+                    '**.*AsyncExceptionHandler'
             ]
         }
 
