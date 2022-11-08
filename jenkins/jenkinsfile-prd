@@ -79,15 +79,12 @@ node {
 
                 for index in $(seq ${SIZE})
                 do
-                    IP=${IP_LIST[index-1]}
-                    PREVIOUS=${PREVIOUS_PORT_LIST[index-1]}
-                    ssh -i /var/lib/jenkins/key-morak.pem ubuntu@"${IP}" "sh /home/ubuntu/deploy/kill.sh ${PREVIOUS} 1>/dev/null 2>/dev/null"
+                    echo "${IP_LIST[index-1]}:${NEXT_PORT_LIST[index-1]}"
                 done
-
 
                 for index in $(seq ${SIZE})
                 do
-                    echo "${IP_LIST[index-1]}:${NEXT_PORT_LIST[index-1]}"
+                    echo "${PREVIOUS_PORT_LIST[index-1]}"
                 done
                 ''',
                 returnStdout: true
@@ -109,6 +106,22 @@ node {
                 echo "URL_B=${OUTPUT[1]}"
 
                 sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@${WS_IP} "bash /home/ubuntu/route.sh ' + OUTPUT[0] + ' ' + OUTPUT[1] + '"'
+                slackSend (channel: "jenkins", color: "good",  message: "Route Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            } catch(e) {
+                slackSend (channel: "jenkins", color: "warning",  message: "Route Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                throw e
+            }
+    }
+
+    stage('kill') {
+            try {
+                echo "PREV_PORT_A=${OUTPUT[2]}"
+                echo "PREV_PORT_B=${OUTPUT[3]}"
+                PRD_KILL_WAS_IP_LIST = PRD_WAS_IP_LIST
+                PRD_KILL_WAS_IP_LIST = PRD_KILL_WAS_IP_LIST.split(" ")
+
+                sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@' + PRD_KILL_WAS_IP_LIST[0] + ' "bash /home/ubuntu/deploy/kill.sh ' + OUTPUT[2] + ' 1>/dev/null 2>/dev/null"'
+                sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@' + PRD_KILL_WAS_IP_LIST[1] + ' "bash /home/ubuntu/deploy/kill.sh ' + OUTPUT[3] + ' 1>/dev/null 2>/dev/null"'
                 slackSend (channel: "jenkins", color: "good",  message: "Route Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
             } catch(e) {
                 slackSend (channel: "jenkins", color: "warning",  message: "Route Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
