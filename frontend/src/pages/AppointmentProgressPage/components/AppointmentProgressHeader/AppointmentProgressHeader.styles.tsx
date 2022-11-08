@@ -4,7 +4,6 @@ const StyledHeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  max-height: 20.8rem;
 `;
 
 const StyledHeader = styled.header`

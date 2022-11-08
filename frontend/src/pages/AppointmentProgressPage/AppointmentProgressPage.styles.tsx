@@ -8,6 +8,7 @@ const StyledContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 8rem;
+  padding: 6.4rem 20rem;
 
   ${responsive.mobile(`
     width: 100%;
