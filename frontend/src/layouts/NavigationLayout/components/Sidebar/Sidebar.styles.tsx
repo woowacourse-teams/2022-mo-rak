@@ -7,7 +7,7 @@ const StyledContainer = styled.div(
   top: 0;
   width: 36.4rem;
   height: 100vh;
-  z-index: 999; 
+  z-index: 20; 
   background: ${theme.colors.WHITE_100};
   padding-left: 4rem;
   gap: 2rem;
