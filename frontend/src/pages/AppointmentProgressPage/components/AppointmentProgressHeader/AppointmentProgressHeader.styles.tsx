@@ -9,6 +9,7 @@ const StyledHeaderContainer = styled.div`
 
 const StyledHeader = styled.header`
   font-size: 4.8rem;
+  word-break: break-all;
 `;
 
 const StyledDescription = styled.p`

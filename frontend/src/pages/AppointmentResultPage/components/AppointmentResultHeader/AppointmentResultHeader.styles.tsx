@@ -8,6 +8,7 @@ const StyledContainer = styled.div`
 
 const StyledTitle = styled.h1`
   font-size: 4rem;
+  word-break: break-all;
 `;
 
 const StyledContent = styled.p`
