@@ -6,7 +6,9 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.morak.back.appointment.exception.AppointmentDomainLogicException;
+import com.morak.back.core.exception.CustomErrorCode;
 import java.time.LocalDate;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -81,5 +83,29 @@ class DateTest {
 
         // then
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void 현재날짜로부터_1년_이후의_날짜라면_예외를_던진다() {
+        // given
+        LocalDate today = LocalDate.now();
+        LocalDate invalidDate = today.plusYears(1).plusDays(1);
+
+        // when & then
+        assertThatThrownBy(() -> new Date(invalidDate, today))
+                .isInstanceOf(AppointmentDomainLogicException.class)
+                .extracting("code")
+                .isEqualTo(CustomErrorCode.APPOINTMENT_DATE_AFTER_YEAR_ERROR);
+    }
+
+    @Test
+    void 현재날짜로부터_1년뒤의_날짜까지는_생성_가능하다() {
+        // given
+        LocalDate today = LocalDate.now();
+        LocalDate invalidDate = today.plusYears(1);
+
+        // when & then
+        assertThatNoException()
+                .isThrownBy(() -> new Date(invalidDate, today));
     }
 }
