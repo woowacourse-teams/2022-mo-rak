@@ -29,7 +29,11 @@ VALUES (2, 4, now(), now());
 
 INSERT INTO poll (team_code, host_id, title, allowed_count, anonymous, status, created_at, updated_at, closed_at,
                   code)
-VALUES ('MoraK123', 2, 'test-poll-title', 2, true, 'OPEN', now(), now(), now(), 'testcode');
+VALUES ('MoraK123', 2, 'test-poll-title1', 2, true, 'OPEN', now(), now(), '2022-07-31T23:59:00', 'Testcode');
+
+INSERT INTO poll (team_code, host_id, title, allowed_count, anonymous, status, created_at, updated_at, closed_at,
+                  code)
+VALUES ('MoraK123', 2, 'test-poll-title2', 2, true, 'OPEN', now(), now(), now(), 'testcode');
 
 INSERT INTO appointment (team_code, host_id, title, sub_title, start_date, end_date, start_time, end_time,
                          duration_minutes, status, code, closed_at, selected_count, created_at, updated_at)

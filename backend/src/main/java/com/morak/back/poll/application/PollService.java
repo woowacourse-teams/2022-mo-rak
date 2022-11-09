@@ -2,6 +2,7 @@ package com.morak.back.poll.application;
 
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.application.AuthorizationService;
+import com.morak.back.core.domain.SystemTime;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
 import com.morak.back.poll.application.dto.PollCreateRequest;
@@ -15,7 +16,6 @@ import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollNotFoundException;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,11 +31,12 @@ public class PollService {
     private final PollRepository pollRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final AuthorizationService authorizationService;
+    private final SystemTime systemTime;
 
     public PollResponse createPoll(String teamCode, Long memberId, PollCreateRequest request) {
         return authorizationService.withTeamMemberValidation(
                 () -> {
-                    Poll poll = request.toPoll(teamCode, memberId);
+                    Poll poll = request.toPoll(teamCode, memberId, systemTime.now());
                     return PollResponse.from(memberId, pollRepository.save(poll));
                 }, teamCode, memberId
         );
@@ -144,7 +145,7 @@ public class PollService {
 
     @Generated
     public void closeAllBeforeNow() {
-        List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(LocalDateTime.now());
+        List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(systemTime.now());
         for (Poll poll : pollsToBeClosed) {
             poll.close(poll.getHostId());
             pollRepository.save(poll);

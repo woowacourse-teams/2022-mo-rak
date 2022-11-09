@@ -40,7 +40,7 @@ public class PollCreateRequest {
     @NotNull(message = "subjects 는 null 일 수 없습니다.")
     private List<String> subjects;
 
-    public Poll toPoll(String teamCode, Long hostId) {
+    public Poll toPoll(String teamCode, Long hostId, LocalDateTime now) {
         List<PollItem> pollItems = subjects.stream()
                 .map(subject -> PollItem.builder().subject(subject).build())
                 .collect(Collectors.toList());
@@ -50,7 +50,7 @@ public class PollCreateRequest {
                 .code(Code.generate(new RandomCodeGenerator()))
                 .title(title)
                 .status(MenuStatus.OPEN)
-                .closedAt(new ClosedAt(closedAt, LocalDateTime.now()))
+                .closedAt(new ClosedAt(closedAt, now))
                 .pollItems(pollItems)
                 .anonymous(anonymous)
                 .allowedCount(allowedPollCount)
