@@ -4,6 +4,8 @@ spring:
   profiles:
     active: test
   jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     defer-datasource-initialization: true
     show-sql: true
     hibernate:
