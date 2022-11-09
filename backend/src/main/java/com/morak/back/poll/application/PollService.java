@@ -16,6 +16,9 @@ import com.morak.back.poll.exception.PollAuthorizationException;
 import com.morak.back.poll.exception.PollNotFoundException;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,6 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class PollService {
+
+    private static final long CHECKING_RANGE_AMOUNT = 1L;
+    private static final TemporalUnit CHECKING_RANGE_TEMPORAL_UNIT = ChronoUnit.DAYS;
 
     private final PollRepository pollRepository;
     private final TeamMemberRepository teamMemberRepository;
@@ -145,7 +151,9 @@ public class PollService {
 
     @Generated
     public void closeAllBeforeNow() {
-        List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(systemTime.now());
+        LocalDateTime now = systemTime.now();
+        LocalDateTime closeCheckingRange = now.minus(CHECKING_RANGE_AMOUNT, CHECKING_RANGE_TEMPORAL_UNIT);
+        List<Poll> pollsToBeClosed = pollRepository.findAllToBeClosed(closeCheckingRange, now);
         for (Poll poll : pollsToBeClosed) {
             poll.close(poll.getHostId());
             pollRepository.save(poll);

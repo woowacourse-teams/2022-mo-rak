@@ -14,8 +14,9 @@ public interface PollRepository extends Repository<Poll, Long> {
     @Query("SELECT p FROM Poll p WHERE p.menu.code.code = :code")
     Optional<Poll> findByCode(@Param("code") String code);
 
-    @Query("SELECT p FROM Poll p INNER JOIN Team t ON t.code = p.menu.teamCode WHERE p.menu.status = 'OPEN' AND p.menu.closedAt.closedAt <= :thresholdDateTime")
-    List<Poll> findAllToBeClosed(@Param("thresholdDateTime") LocalDateTime thresholdDateTime);
+    @Query("SELECT p FROM Poll p WHERE p.menu.status = 'OPEN' and p.menu.closedAt.closedAt between :startThresholdDateTime and :endThresholdDateTime")
+    List<Poll> findAllToBeClosed(@Param("startThresholdDateTime") LocalDateTime startThresholdDateTime,
+                                 @Param("endThresholdDateTime") LocalDateTime endThresholdDateTime);
 
     @Query("SELECT p FROM Poll p WHERE p.menu.teamCode.code = :teamCode")
     List<Poll> findAllByTeamCode(@Param("teamCode") String teamCode);
