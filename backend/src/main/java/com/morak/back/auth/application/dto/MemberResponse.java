@@ -1,4 +1,4 @@
-package com.morak.back.auth.ui.dto;
+package com.morak.back.auth.application.dto;
 
 import com.morak.back.auth.domain.Member;
 import lombok.AllArgsConstructor;

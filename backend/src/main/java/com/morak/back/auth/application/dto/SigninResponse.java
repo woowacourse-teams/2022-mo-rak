@@ -1,4 +1,4 @@
-package com.morak.back.auth.ui.dto;
+package com.morak.back.auth.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

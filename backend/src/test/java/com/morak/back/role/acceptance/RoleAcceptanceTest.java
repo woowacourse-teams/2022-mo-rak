@@ -20,7 +20,7 @@ import com.morak.back.role.application.dto.RoleNameResponses;
 import com.morak.back.role.application.dto.RolesResponse;
 import com.morak.back.role.domain.Role;
 import com.morak.back.role.domain.RoleRepository;
-import com.morak.back.team.ui.dto.TeamCreateRequest;
+import com.morak.back.team.application.dto.TeamCreateRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;

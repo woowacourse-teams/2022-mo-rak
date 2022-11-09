@@ -19,10 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.morak.back.ControllerTest;
 import com.morak.back.appointment.application.AppointmentService;
-import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
-import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
-import com.morak.back.appointment.ui.dto.AppointmentResponse;
-import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
+import com.morak.back.appointment.application.dto.AppointmentAllResponse;
+import com.morak.back.appointment.application.dto.AppointmentCreateRequest;
+import com.morak.back.appointment.application.dto.AppointmentResponse;
+import com.morak.back.appointment.application.dto.AvailableTimeRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

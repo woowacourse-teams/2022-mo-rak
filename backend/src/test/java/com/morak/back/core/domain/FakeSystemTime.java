@@ -1,6 +1,5 @@
 package com.morak.back.core.domain;
 
-import com.morak.back.appointment.domain.SystemTime;
 import com.morak.back.support.FakeBean;
 import java.time.LocalDateTime;
 

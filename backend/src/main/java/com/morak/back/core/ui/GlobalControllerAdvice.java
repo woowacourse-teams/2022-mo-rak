@@ -10,7 +10,7 @@ import com.morak.back.core.exception.ResourceNotFoundException;
 import com.morak.back.core.exception.SchedulingException;
 import com.morak.back.core.support.Generated;
 import com.morak.back.core.support.LogFormatter;
-import com.morak.back.core.ui.dto.ExceptionResponse;
+import com.morak.back.core.application.dto.ExceptionResponse;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;

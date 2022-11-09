@@ -6,7 +6,7 @@ import static com.morak.back.SimpleRestAssured.get;
 import static com.morak.back.SimpleRestAssured.post;
 
 import com.morak.back.AuthSupporter;
-import com.morak.back.team.ui.dto.TeamCreateRequest;
+import com.morak.back.team.application.dto.TeamCreateRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 

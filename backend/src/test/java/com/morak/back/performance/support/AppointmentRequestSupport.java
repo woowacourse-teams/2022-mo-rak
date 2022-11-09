@@ -7,8 +7,8 @@ import static com.morak.back.SimpleRestAssured.patch;
 import static com.morak.back.SimpleRestAssured.put;
 
 import com.morak.back.SimpleRestAssured;
-import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
-import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
+import com.morak.back.appointment.application.dto.AppointmentCreateRequest;
+import com.morak.back.appointment.application.dto.AvailableTimeRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;

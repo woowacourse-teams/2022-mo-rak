@@ -2,7 +2,7 @@ package com.morak.back.poll.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.morak.back.appointment.domain.SystemTime;
+import com.morak.back.core.domain.SystemTime;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.domain.menu.ClosedAt;

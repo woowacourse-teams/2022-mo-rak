@@ -2,10 +2,10 @@ package com.morak.back.auth.ui;
 
 import com.morak.back.auth.application.OAuthService;
 import com.morak.back.auth.support.Auth;
-import com.morak.back.auth.ui.dto.ChangeNameRequest;
-import com.morak.back.auth.ui.dto.MemberResponse;
-import com.morak.back.auth.ui.dto.SigninRequest;
-import com.morak.back.auth.ui.dto.SigninResponse;
+import com.morak.back.auth.application.dto.ChangeNameRequest;
+import com.morak.back.auth.application.dto.MemberResponse;
+import com.morak.back.auth.application.dto.SigninRequest;
+import com.morak.back.auth.application.dto.SigninResponse;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -3,7 +3,7 @@ package com.morak.back.notification.application;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.appointment.domain.AppointmentEvent;
-import com.morak.back.appointment.domain.SystemTime;
+import com.morak.back.core.domain.SystemTime;
 import com.morak.back.notification.domain.slack.FakeApiReceiver;
 import com.morak.back.poll.domain.PollEvent;
 import com.morak.back.role.domain.RoleHistoryEvent;

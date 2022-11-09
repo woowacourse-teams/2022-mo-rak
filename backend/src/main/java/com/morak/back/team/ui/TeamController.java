@@ -1,11 +1,11 @@
 package com.morak.back.team.ui;
 
 import com.morak.back.auth.support.Auth;
-import com.morak.back.auth.ui.dto.MemberResponse;
+import com.morak.back.auth.application.dto.MemberResponse;
 import com.morak.back.team.application.TeamService;
-import com.morak.back.team.ui.dto.InvitationJoinedResponse;
-import com.morak.back.team.ui.dto.TeamCreateRequest;
-import com.morak.back.team.ui.dto.TeamResponse;
+import com.morak.back.team.application.dto.InvitationJoinedResponse;
+import com.morak.back.team.application.dto.TeamCreateRequest;
+import com.morak.back.team.application.dto.TeamResponse;
 import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;

@@ -17,11 +17,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.morak.back.ControllerTest;
-import com.morak.back.auth.ui.dto.MemberResponse;
+import com.morak.back.auth.application.dto.MemberResponse;
 import com.morak.back.team.application.TeamService;
-import com.morak.back.team.ui.dto.InvitationJoinedResponse;
-import com.morak.back.team.ui.dto.TeamCreateRequest;
-import com.morak.back.team.ui.dto.TeamResponse;
+import com.morak.back.team.application.dto.InvitationJoinedResponse;
+import com.morak.back.team.application.dto.TeamCreateRequest;
+import com.morak.back.team.application.dto.TeamResponse;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

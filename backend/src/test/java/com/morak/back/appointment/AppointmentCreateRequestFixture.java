@@ -1,8 +1,8 @@
 package com.morak.back.appointment;
 
-import com.morak.back.appointment.domain.SystemTime;
-import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
-import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
+import com.morak.back.core.domain.SystemTime;
+import com.morak.back.appointment.application.dto.AppointmentCreateRequest;
+import com.morak.back.appointment.application.dto.AvailableTimeRequest;
 import com.morak.back.core.domain.FakeSystemTime;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

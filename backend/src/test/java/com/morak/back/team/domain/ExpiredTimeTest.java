@@ -3,7 +3,7 @@ package com.morak.back.team.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.morak.back.appointment.domain.SystemTime;
+import com.morak.back.core.domain.SystemTime;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.team.exception.TeamDomainLogicException;
 import java.time.LocalDateTime;

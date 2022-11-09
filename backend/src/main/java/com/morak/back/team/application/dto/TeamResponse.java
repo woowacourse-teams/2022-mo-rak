@@ -1,4 +1,4 @@
-package com.morak.back.team.ui.dto;
+package com.morak.back.team.application.dto;
 
 import com.morak.back.team.domain.Team;
 import lombok.AllArgsConstructor;

@@ -1,10 +1,10 @@
 package com.morak.back.team.application;
 
-import com.morak.back.appointment.domain.SystemTime;
+import com.morak.back.core.domain.SystemTime;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
-import com.morak.back.auth.ui.dto.MemberResponse;
+import com.morak.back.auth.application.dto.MemberResponse;
 import com.morak.back.core.application.AuthorizationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
@@ -20,9 +20,9 @@ import com.morak.back.team.domain.TeamMemberRepository;
 import com.morak.back.team.domain.TeamRepository;
 import com.morak.back.team.exception.TeamDomainLogicException;
 import com.morak.back.team.exception.TeamNotFoundException;
-import com.morak.back.team.ui.dto.InvitationJoinedResponse;
-import com.morak.back.team.ui.dto.TeamCreateRequest;
-import com.morak.back.team.ui.dto.TeamResponse;
+import com.morak.back.team.application.dto.InvitationJoinedResponse;
+import com.morak.back.team.application.dto.TeamCreateRequest;
+import com.morak.back.team.application.dto.TeamResponse;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;

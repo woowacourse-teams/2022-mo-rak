@@ -1,8 +1,9 @@
-package com.morak.back.appointment.ui.dto;
+package com.morak.back.appointment.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.core.support.Generated;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -67,6 +68,7 @@ public class AppointmentResponse {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;

@@ -1,6 +1,6 @@
 package com.morak.back.core.config;
 
-import com.morak.back.appointment.domain.SystemTime;
+import com.morak.back.core.domain.SystemTime;
 import java.time.LocalDateTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

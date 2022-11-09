@@ -1,6 +1,7 @@
-package com.morak.back.appointment.ui.dto;
+package com.morak.back.appointment.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.morak.back.core.support.Generated;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
@@ -20,6 +21,7 @@ public class AvailableTimeRequest {
     private LocalDateTime start;
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;

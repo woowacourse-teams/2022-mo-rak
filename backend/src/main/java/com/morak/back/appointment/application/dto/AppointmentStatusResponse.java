@@ -1,4 +1,4 @@
-package com.morak.back.appointment.ui.dto;
+package com.morak.back.appointment.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

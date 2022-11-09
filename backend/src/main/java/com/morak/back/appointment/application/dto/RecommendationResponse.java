@@ -1,9 +1,9 @@
-package com.morak.back.appointment.ui.dto;
+package com.morak.back.appointment.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.morak.back.appointment.domain.recommend.RankRecommendation;
 import com.morak.back.auth.domain.Member;
-import com.morak.back.auth.ui.dto.MemberResponse;
+import com.morak.back.auth.application.dto.MemberResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

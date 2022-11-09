@@ -14,10 +14,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.morak.back.ControllerTest;
 import com.morak.back.auth.application.OAuthService;
-import com.morak.back.auth.ui.dto.ChangeNameRequest;
-import com.morak.back.auth.ui.dto.MemberResponse;
-import com.morak.back.auth.ui.dto.SigninRequest;
-import com.morak.back.auth.ui.dto.SigninResponse;
+import com.morak.back.auth.application.dto.ChangeNameRequest;
+import com.morak.back.auth.application.dto.MemberResponse;
+import com.morak.back.auth.application.dto.SigninRequest;
+import com.morak.back.auth.application.dto.SigninResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

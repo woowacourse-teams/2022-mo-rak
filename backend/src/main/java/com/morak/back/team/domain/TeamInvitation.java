@@ -1,6 +1,6 @@
 package com.morak.back.team.domain;
 
-import com.morak.back.appointment.domain.SystemTime;
+import com.morak.back.core.domain.SystemTime;
 import com.morak.back.core.domain.BaseEntity;
 import com.morak.back.core.domain.Code;
 import javax.persistence.Embedded;

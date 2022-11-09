@@ -1,12 +1,12 @@
 package com.morak.back.appointment.ui;
 
 import com.morak.back.appointment.application.AppointmentService;
-import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
-import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
-import com.morak.back.appointment.ui.dto.AppointmentResponse;
-import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
-import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
-import com.morak.back.appointment.ui.dto.RecommendationResponse;
+import com.morak.back.appointment.application.dto.AppointmentAllResponse;
+import com.morak.back.appointment.application.dto.AppointmentCreateRequest;
+import com.morak.back.appointment.application.dto.AppointmentResponse;
+import com.morak.back.appointment.application.dto.AppointmentStatusResponse;
+import com.morak.back.appointment.application.dto.AvailableTimeRequest;
+import com.morak.back.appointment.application.dto.RecommendationResponse;
 import com.morak.back.auth.support.Auth;
 import java.net.URI;
 import java.util.List;
