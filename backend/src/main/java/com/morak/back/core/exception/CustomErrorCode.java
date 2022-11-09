@@ -54,6 +54,7 @@ public enum CustomErrorCode {
     APPOINTMENT_TIME_REVERSE_CHRONOLOGY_ERROR("3110", "약속잡기 마지막 시각은 시작 시각보다 미래여야 합니다."),
     APPOINTMENT_NOT_DIVIDED_BY_MINUTES_UNIT_ERROR("3111", "약속잡기 시작시각, 마지막 시각은 30분 단위여야 합니다."),
     AVAILABLETIME_OUT_OF_RANGE_ERROR("3113", "약속잡기 선택 시간이 약속잡기 시간을 벗어났습니다."),
+    APPOINTMENT_DATE_AFTER_YEAR_ERROR("3114", "약속잡기 날짜는 현재로부터 1년 이후일 수 없습니다."),
     APPOINTMENT_CLOSED_AT_OUT_OF_RANGE_ERROR("3117", "약속잡기 마감 시간은 현재 시간과 마지막 날짜/시간 사이여야 합니다."),
 
     APPOINTMENT_HOST_MISMATCHED_ERROR("3200", "멤버가 약속잡기의 호스트가 아닙니다."),
