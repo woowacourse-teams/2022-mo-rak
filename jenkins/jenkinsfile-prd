@@ -116,13 +116,18 @@ node {
 
     stage('kill') {
             try {
-                echo "PREV_PORT_A=${OUTPUT[2]}"
-                echo "PREV_PORT_B=${OUTPUT[3]}"
+                sub_list = []
+                for (res in OUTPUT) {
+                    sub_list.add(res)
+                }
+                sub_list = sub_list[(int) (sub_list.size() / 2)..sub_list.size() - 1]
+
+                println sub_list
 
                 PRD_KILL_WAS_IP_LIST = PRD_WAS_IP_LIST.split(" ")
 
                 PRD_KILL_WAS_IP_LIST.eachWithIndex { item, index ->
-                    sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@' + item + ' "bash /home/ubuntu/deploy/kill.sh ' + OUTPUT[index + 2] + ' 1>/dev/null 2>/dev/null"'
+                    sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@' + item + ' "bash /home/ubuntu/deploy/kill.sh ' + sub_list[index] + ' 1>/dev/null 2>/dev/null"'
                 }
 
                 slackSend (channel: "jenkins", color: "good",  message: "Down Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
