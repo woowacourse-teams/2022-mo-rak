@@ -32,12 +32,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.AcceptanceTest;
 import com.morak.back.core.domain.SystemTime;
-import com.morak.back.appointment.ui.dto.AppointmentAllResponse;
-import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
-import com.morak.back.appointment.ui.dto.AppointmentResponse;
-import com.morak.back.appointment.ui.dto.AppointmentStatusResponse;
-import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
-import com.morak.back.appointment.ui.dto.RecommendationResponse;
+import com.morak.back.appointment.application.dto.AppointmentAllResponse;
+import com.morak.back.appointment.application.dto.AppointmentCreateRequest;
+import com.morak.back.appointment.application.dto.AppointmentResponse;
+import com.morak.back.appointment.application.dto.AppointmentStatusResponse;
+import com.morak.back.appointment.application.dto.AvailableTimeRequest;
+import com.morak.back.appointment.application.dto.RecommendationResponse;
 import com.morak.back.auth.application.TokenProvider;
 import com.morak.back.core.domain.FakeSystemTime;
 import com.morak.back.core.domain.menu.MenuStatus;

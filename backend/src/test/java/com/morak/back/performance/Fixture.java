@@ -4,10 +4,10 @@ import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_4시부터_4시반_선택_요청_데이터;
 import static com.morak.back.appointment.AppointmentCreateRequestFixture.모락_회식_첫째날_5시부터_5시반_선택_요청_데이터;
 
-import com.morak.back.appointment.ui.dto.AvailableTimeRequest;
+import com.morak.back.appointment.application.dto.AvailableTimeRequest;
 import com.morak.back.poll.application.dto.PollCreateRequest;
 import com.morak.back.poll.application.dto.PollResultRequest;
-import com.morak.back.team.ui.dto.TeamCreateRequest;
+import com.morak.back.team.application.dto.TeamCreateRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 

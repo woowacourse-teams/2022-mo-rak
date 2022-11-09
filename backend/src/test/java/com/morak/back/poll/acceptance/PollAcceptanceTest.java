@@ -23,7 +23,7 @@ import com.morak.back.poll.application.dto.PollItemResultResponse;
 import com.morak.back.poll.application.dto.PollResponse;
 import com.morak.back.poll.application.dto.PollResultRequest;
 import com.morak.back.poll.domain.PollStatus;
-import com.morak.back.team.ui.dto.TeamCreateRequest;
+import com.morak.back.team.application.dto.TeamCreateRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;

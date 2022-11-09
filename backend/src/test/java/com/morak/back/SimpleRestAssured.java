@@ -1,6 +1,6 @@
 package com.morak.back;
 
-import com.morak.back.core.ui.dto.ExceptionResponse;
+import com.morak.back.core.application.dto.ExceptionResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
