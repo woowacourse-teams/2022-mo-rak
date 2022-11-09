@@ -8,11 +8,13 @@ export default {
   component: Input
 } as Meta;
 
-const Template: Story = (args) => <Input {...args} />;
+const DefaultTemplate: Story = (args) => <Input {...args} />;
 
-export const Default = Template.bind({});
+const Default = DefaultTemplate.bind({});
 Default.args = {
   fontSize: '5rem',
   textAlign: 'center',
   color: theme.colors.BLACK_100
 };
+
+export { Default };

@@ -8,7 +8,7 @@ export default {
   component: Select
 } as Meta;
 
-const Template: Story = (args) => (
+const DefaultTemplate: Story = (args) => (
   <Select name="story" {...args}>
     <option>1</option>
     <option>2</option>
@@ -16,10 +16,9 @@ const Template: Story = (args) => (
   </Select>
 );
 
-export const Default = Template.bind({});
-Default.args = {};
+const Default = DefaultTemplate.bind({});
 
-const TexFieldTemplate: Story = (args) => (
+const OutlinedTemplate: Story = (args) => (
   <TextField
     variant="outlined"
     colorScheme={theme.colors.PURPLE_100}
@@ -34,5 +33,6 @@ const TexFieldTemplate: Story = (args) => (
   </TextField>
 );
 
-export const WithTextField = TexFieldTemplate.bind({});
-WithTextField.args = {};
+const Outlined = OutlinedTemplate.bind({});
+
+export { Default, Outlined };

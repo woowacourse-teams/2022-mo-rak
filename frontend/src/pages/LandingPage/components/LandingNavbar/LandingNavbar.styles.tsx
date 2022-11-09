@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import responsive from '@/utils/responsive';
 
-const StyledNavbar = styled.nav`
+const StyledContainer = styled.nav`
   position: absolute;
   right: 12rem;
   top: 6rem;
@@ -23,4 +23,4 @@ const StyledMenu = styled.a(
 `
 );
 
-export { StyledMenu, StyledNavbar };
+export { StyledMenu, StyledContainer };

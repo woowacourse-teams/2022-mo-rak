@@ -26,11 +26,13 @@ public class AppointmentDummySupport {
     private AppointmentDao appointmentDao;
 
     public void 약속잡기_더미데이터를_추가한다(int teamSize, int appointmentSizePerTeam) {
+        System.out.println("====== 약속 잡기 더미 데이터 추가 start ======");
         List<DummyAppointment> appointments = makeDummyAppointments(1L, teamSize, appointmentSizePerTeam);
         appointmentDao.batchInsertAppointment(appointments);
     }
 
     public void 약속잡기_선택가능시간_더미데이터를_추가한다(int appointmentSize) {
+        System.out.println("====== 약속 잡기 선택 가능 시간 더미 데이터 추가 start ======");
         List<DummyAvailableTime> dummyAvailableTimes = makeDummyAvailableTime(1L, appointmentSize);
         dummyAvailableTimes.addAll(makeDummyAvailableTime(2L, appointmentSize));
         appointmentDao.batchInsertAvailableTime(dummyAvailableTimes);

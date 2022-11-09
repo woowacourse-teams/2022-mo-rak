@@ -24,7 +24,7 @@ function GroupCreateFormNameInput({ groupName, onChange }: Props) {
       borderRadius="10px 0 0 10px"
       padding="2.8rem 8rem"
     >
-      <StyledCreateIcon src={createPlusImg} alt="create-group-icon" />
+      <StyledCreateIcon src={createPlusImg} alt="그룹 생성 아이콘" aria-hidden="true" />
       <Input
         placeholder="그룹이름을 입력해주세요!"
         value={groupName}

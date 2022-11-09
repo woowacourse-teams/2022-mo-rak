@@ -1,7 +1,7 @@
-import { StyledButton } from '@/pages/GroupInitPage/components/GroupParticipateFormSubmitButton/GroupParticipateFormSubmitButton.styles';
+import { StyledContainer } from '@/pages/GroupInitPage/components/GroupParticipateFormSubmitButton/GroupParticipateFormSubmitButton.styles';
 
 function GroupParticipateFormSubmitButton() {
-  return <StyledButton type="submit">참가하기</StyledButton>;
+  return <StyledContainer type="submit">참가하기</StyledContainer>;
 }
 
 export default GroupParticipateFormSubmitButton;

@@ -8,18 +8,20 @@ export default {
   component: TextField
 } as Meta;
 
+const defaultArgs = {
+  color: theme.colors.BLACK_100,
+  colorScheme: theme.colors.PURPLE_100,
+  borderRadius: '10px'
+};
+
 const OutlinedTemplate: Story = (args) => (
   <TextField variant="outlined" {...args}>
     <Input placeholder="투표 제목을 입력해주세요🧐" />
   </TextField>
 );
 
-export const Outlined = OutlinedTemplate.bind({});
-Outlined.args = {
-  color: theme.colors.BLACK_100,
-  colorScheme: theme.colors.PURPLE_100,
-  borderRadius: '10px'
-};
+const Outlined = OutlinedTemplate.bind({});
+Outlined.args = defaultArgs;
 
 const FilledTemplate: Story = (args) => (
   <TextField variant="filled" {...args}>
@@ -27,12 +29,8 @@ const FilledTemplate: Story = (args) => (
   </TextField>
 );
 
-export const Filled = FilledTemplate.bind({});
-Filled.args = {
-  color: theme.colors.BLACK_100,
-  colorScheme: theme.colors.PURPLE_100,
-  borderRadius: '10px'
-};
+const Filled = FilledTemplate.bind({});
+Filled.args = defaultArgs;
 
 const UnstyledTemplate: Story = (args) => (
   <TextField variant="unstyled" {...args}>
@@ -40,10 +38,7 @@ const UnstyledTemplate: Story = (args) => (
   </TextField>
 );
 
-export const Unstyled = UnstyledTemplate.bind({});
-Unstyled.args = {
-  color: theme.colors.BLACK_100,
-  colorScheme: theme.colors.PURPLE_100,
-  borderRadius: '10px',
-  variant: 'unstyled'
-};
+const Unstyled = UnstyledTemplate.bind({});
+Unstyled.args = defaultArgs;
+
+export { Outlined, Filled, Unstyled };

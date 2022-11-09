@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
-public interface RoleRepository extends Repository<Role, Long> {
+public interface RoleRepository extends Repository<Role, Long>, RoleEntityRepository {
 
     Role save(Role role);
 

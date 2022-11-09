@@ -48,13 +48,13 @@ const StyledDate = styled.button<{
   padding: 2rem;
   font-size: 1.6rem;
   color: ${isActive ? theme.colors.WHITE_100 : theme.colors.BLACK_100};
-  background: ${isActive ? theme.colors.PURPLE_100 : theme.colors.WHITE_100};
+  background-color: ${isActive ? theme.colors.PURPLE_100 : theme.colors.WHITE_100};
 
 
   &:hover {
     transform: scale(1.03);
     transition: all 0.2s linear;
-    background: ${theme.colors.PURPLE_100};
+    background-color: ${theme.colors.PURPLE_100};
     color: ${theme.colors.WHITE_100};
   }
 `

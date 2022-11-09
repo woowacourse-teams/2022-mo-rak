@@ -13,7 +13,7 @@ const OutlinedTemplate: Story = (args) => (
   </Button>
 );
 
-export const Outlined = OutlinedTemplate.bind({});
+const Outlined = OutlinedTemplate.bind({});
 Outlined.args = {
   color: theme.colors.PURPLE_100,
   width: '9.2rem',
@@ -27,7 +27,7 @@ const FilledTemplate: Story = (args) => (
   </Button>
 );
 
-export const Filled = FilledTemplate.bind({});
+const Filled = FilledTemplate.bind({});
 Filled.args = {
   width: '46rem',
   borderRadius: '10px',
@@ -41,7 +41,7 @@ const PollButtonTemplate: Story = (args) => (
   </Button>
 );
 
-export const PollButton = PollButtonTemplate.bind({});
+const PollButton = PollButtonTemplate.bind({});
 PollButton.args = {
   width: '74.4rem',
   borderRadius: '10px',
@@ -49,16 +49,4 @@ PollButton.args = {
   fontSize: '1.6rem'
 };
 
-const PollChoiceButtonTemplate: Story = (args) => (
-  <Button {...args} colorScheme={theme.colors.PURPLE_100} variant="outlined">
-    투표 선택지입니다
-  </Button>
-);
-
-export const PollChoiceButton = PollChoiceButtonTemplate.bind({});
-PollChoiceButton.args = {
-  width: '74.4rem',
-  borderRadius: '10px',
-  color: theme.colors.BLACK_100,
-  fontSize: '1.6rem'
-};
+export { PollButton, Filled, Outlined };

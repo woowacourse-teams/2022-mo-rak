@@ -4,10 +4,10 @@ import { Group, Member } from '@/types/group';
 import Avatar from '@/components/Avatar/Avatar';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import {
-  StyledMemberListContainer,
   StyledMenuHeader,
   StyledName,
-  StyledContainer
+  StyledContainer,
+  StyledMembersProfileContainer
 } from '@/layouts/NavigationLayout/components/GlobarFootbarFootbarDrawerMembersProfileSection/GlobarFootbarFootbarDrawerMembersProfileSection.styles';
 
 type Props = {
@@ -26,9 +26,9 @@ function GlobalFootbarFootbarDrawerMembersProfileSection({ groupCode }: Props) {
   }, [groupCode]);
 
   return (
-    <StyledMemberListContainer>
+    <StyledContainer>
       <StyledMenuHeader>멤버 목록 ({groupMembersCount})</StyledMenuHeader>
-      <StyledContainer>
+      <StyledMembersProfileContainer>
         <FlexContainer flexDirection="column" gap="1.6rem">
           {groupMembers.map(({ profileUrl, name }) => (
             <FlexContainer key={`${name}-${profileUrl}`} alignItems="center" gap="2rem">
@@ -37,8 +37,8 @@ function GlobalFootbarFootbarDrawerMembersProfileSection({ groupCode }: Props) {
             </FlexContainer>
           ))}
         </FlexContainer>
-      </StyledContainer>
-    </StyledMemberListContainer>
+      </StyledMembersProfileContainer>
+    </StyledContainer>
   );
 }
 

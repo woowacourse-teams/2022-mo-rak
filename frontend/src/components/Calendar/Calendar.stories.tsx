@@ -6,6 +6,8 @@ export default {
   component: Calendar
 } as Meta;
 
-const Template: Story = () => <Calendar startDate="2022-08-22" endDate="2022-08-31" />;
+const DefaultTemplate: Story = () => <Calendar startDate="2022-08-22" endDate="2022-08-31" />;
 
-export const Default = Template.bind({});
+const Default = DefaultTemplate.bind({});
+
+export { Default };

@@ -4,6 +4,7 @@ const StyledTitle = styled.h1(
   ({ theme }) => `
   color: ${theme.colors.BLACK_100};
   font-size: 3.2rem;
+  word-break: break-all;
 `
 );
 
@@ -17,7 +18,7 @@ const StyledHelpIconContainer = styled.div(
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  background: ${theme.colors.GRAY_300};
+  background-color: ${theme.colors.GRAY_300};
   border-radius: 100%;
 `
 );

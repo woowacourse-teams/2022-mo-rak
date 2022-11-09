@@ -2,15 +2,15 @@ import styled from '@emotion/styled';
 
 const StyledContainer = styled.div(
   ({ theme }) => `
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 10vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: fixed;
-  top: 0;
   padding-left: 2rem;
-  z-index: 1;
-  width: 100%;
-  height: 10%;
+  z-index: 20; // TODO: 상수화
   background:${theme.colors.WHITE_100};
 `
 );
@@ -36,7 +36,7 @@ const StyledProfileContainer = styled.div(
   height: 8rem;
   border-radius: 1.2rem;
   font-family: 'Nanum Gothic', sans-serif;
-  background: ${theme.colors.PURPLE_50};
+  background-color: ${theme.colors.PURPLE_50};
 `
 );
 

@@ -22,7 +22,7 @@ function GroupParticipateInvitationCodeInput({ invitationCode, handleInvitationC
       borderRadius="10px 0 0 10px"
       padding="2.8rem 8rem"
     >
-      <StyledParticipateIcon src={participateImg} alt="participate-group-icon" />
+      <StyledParticipateIcon src={participateImg} alt="그룹 참가 아이콘" aria-hidden="true" />
       <Input
         placeholder="코드를 입력해주세요!"
         value={invitationCode}

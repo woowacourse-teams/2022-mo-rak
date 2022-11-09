@@ -120,6 +120,31 @@ class AppointmentTest {
         assertThat(appointmentTimes).hasSize(5 * 8);
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "0, 30, 48",
+            "1, 0, 47",
+            "2, 0, 45",
+            "24, 0, 1"
+    })
+    void 하루종일_약속잡기의_약속시간_후보를_얻어온다(int hours, int minutes, int expected) {
+        // given
+        Appointment appointment = DEFAULT_BUILDER
+                .startDate(now.toLocalDate().plusDays(1))
+                .endDate(now.toLocalDate().plusDays(1))
+                .durationHours(hours)
+                .durationMinutes(minutes)
+                .startTime(LocalTime.of(0, 0))
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        // when
+        List<AppointmentTime> appointmentTimes = appointment.getAppointmentTimes();
+
+        // then
+        assertThat(appointmentTimes).hasSize(expected);
+    }
+
     @Test
     void durationMinutes객체의_시간의_시를_얻어온다() {
         // given
@@ -385,5 +410,62 @@ class AppointmentTest {
                 .isInstanceOf(AppointmentDomainLogicException.class)
                 .extracting("code")
                 .isEqualTo(CustomErrorCode.AVAILABLETIME_OUT_OF_RANGE_ERROR);
+    }
+
+    @Test
+    void 약속잡기_가능시간을_선택할_때_선택한_인원의_수가_증가한다() {
+        // given
+        long memberId = 1L;
+        long memberId2 = 2L;
+        Appointment appointment = DEFAULT_BUILDER
+                .endDate(now.toLocalDate().plusDays(1))
+                .startTime(LocalTime.of(0, 0))
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        LocalDate today = now.toLocalDate();
+
+        appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(1L), LocalTime.of(0, 0))),
+                memberId,
+                now
+        );
+
+        appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(1L), LocalTime.of(0, 0))),
+                memberId2,
+                now
+        );
+
+        // when
+        assertThat(appointment.getSelectedCount()).isEqualTo(2);
+    }
+
+    @Test
+    void 약속잡기_가능시간을_다시_선택할_때_선택한_인원의_수가_증가하지_않는다() {
+        // given
+        long memberId = 1L;
+        Appointment appointment = DEFAULT_BUILDER
+                .endDate(now.toLocalDate().plusDays(1))
+                .startTime(LocalTime.of(0, 0))
+                .endTime(LocalTime.of(0, 0))
+                .build();
+
+        LocalDate today = now.toLocalDate();
+
+        appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(1L), LocalTime.of(0, 0))),
+                memberId,
+                now
+        );
+
+        appointment.selectAvailableTime(
+                Set.of(LocalDateTime.of(today.plusDays(1L), LocalTime.of(1, 0))),
+                memberId,
+                now
+        );
+
+        // when
+        assertThat(appointment.getSelectedCount()).isEqualTo(1);
     }
 }

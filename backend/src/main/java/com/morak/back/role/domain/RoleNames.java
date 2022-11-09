@@ -11,6 +11,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +21,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RoleNames {
 
-    @ElementCollection
-    @CollectionTable(name = "role_name", joinColumns = @JoinColumn(name = "role_id"))
-    @AttributeOverride(name = "value", column = @Column(name = "name"))
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "role_name", joinColumns = @JoinColumn(name = "role_id", nullable = false))
+    @AttributeOverride(name = "value", column = @Column(name = "name", nullable = false))
     private List<RoleName> values = new ArrayList<>();
 
     public RoleNames(List<RoleName> values) {

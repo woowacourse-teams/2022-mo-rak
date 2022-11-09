@@ -6,7 +6,8 @@ import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import {
   StyledContainer,
   StyledLeftContainer,
-  StyledRightContainer
+  StyledRightContainer,
+  StyledContentContainer
 } from '@/pages/AppointmentCreatePage/AppointmentCreatePage.styles';
 
 function AppointmentCreatePage() {
@@ -15,9 +16,9 @@ function AppointmentCreatePage() {
 
   return (
     <StyledContainer>
-      <FlexContainer flexDirection="column" gap="2rem">
+      <StyledContentContainer>
         <AppointmentCreateHeader />
-        <FlexContainer gap="4rem">
+        <FlexContainer gap="4rem" flexWrap="wrap" justifyContent="center">
           <StyledLeftContainer>
             <Calendar
               startDate={startDate}
@@ -30,7 +31,7 @@ function AppointmentCreatePage() {
             <AppointmentCreateForm startDate={startDate} endDate={endDate} />
           </StyledRightContainer>
         </FlexContainer>
-      </FlexContainer>
+      </StyledContentContainer>
     </StyledContainer>
   );
 }

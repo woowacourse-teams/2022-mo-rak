@@ -6,7 +6,8 @@ export default {
   component: Radio
 } as Meta;
 
-const Template: Story = (args) => <Radio name="story" {...args} />;
+const DefaultTemplate: Story = (args) => <Radio name="story" {...args} />;
 
-export const Default = Template.bind({});
-Default.args = {};
+const Default = DefaultTemplate.bind({});
+
+export { Default };

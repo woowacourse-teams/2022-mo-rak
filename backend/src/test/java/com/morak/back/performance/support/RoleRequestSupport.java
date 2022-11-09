@@ -23,7 +23,7 @@ public class RoleRequestSupport {
         return post(teamLocation + "/roles", toHeader(token));
     }
 
-    public static ExtractableResponse<Response> 역할_히스토를_조회를_요청한다(String teamLocation, String token) {
+    public static ExtractableResponse<Response> 역할_히스토리_조회를_요청한다(String teamLocation, String token) {
         return get(teamLocation + "/roles/histories", toHeader(token));
     }
 }

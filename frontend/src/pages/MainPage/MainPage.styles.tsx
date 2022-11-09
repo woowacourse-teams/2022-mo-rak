@@ -8,7 +8,10 @@ const StyledContainer = styled.div`
   width: calc(100% - 36.4rem);
   padding: 6.4rem 20rem;
 
-  ${responsive.mobile(`width: 100%`)}
+  ${responsive.mobile(`
+    width: 100%;
+    padding: 20rem 8rem;
+  `)}
 `;
 
 export { StyledContainer };

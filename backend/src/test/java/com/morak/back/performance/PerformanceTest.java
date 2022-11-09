@@ -34,7 +34,7 @@ import static com.morak.back.performance.support.PollRequestSupport.투표_진�
 import static com.morak.back.performance.support.RoleRequestSupport.역할_매칭을_요청한다;
 import static com.morak.back.performance.support.RoleRequestSupport.역할_이름_목록_수정을_요청한다;
 import static com.morak.back.performance.support.RoleRequestSupport.역할_이름_목록_조회를_요청한다;
-import static com.morak.back.performance.support.RoleRequestSupport.역할_히스토를_조회를_요청한다;
+import static com.morak.back.performance.support.RoleRequestSupport.역할_히스토리_조회를_요청한다;
 import static com.morak.back.performance.support.TeamMemberRequestSupport.extractTeamCodeFromLocation;
 import static com.morak.back.performance.support.TeamMemberRequestSupport.그룹_멤버_목록_조회를_요청한다;
 import static com.morak.back.performance.support.TeamMemberRequestSupport.그룹_목록_조회를_요청한다;
@@ -187,6 +187,6 @@ class PerformanceTest {
         RoleNameEditRequest request = new RoleNameEditRequest(List.of("서기", "타임키퍼", "데일리 마스터", "데일리 마스터"));
         역할_이름_목록_수정을_요청한다(TEAM_ID1_LOCATION, member1Token, request); // 쿼리 개수 문제 있음(insert, delete)
         역할_매칭을_요청한다(TEAM_ID1_LOCATION, member1Token);
-        역할_히스토를_조회를_요청한다(TEAM_ID1_LOCATION, member1Token);
+        역할_히스토리_조회를_요청한다(TEAM_ID1_LOCATION, member1Token);
     }
 }

@@ -7,10 +7,10 @@ const StyledContainer = styled.div(
   justify-content: space-evenly;
   position: fixed;
   bottom: 0;
-  z-index: 1;
+  z-index: 20; // TODO: 상수화
   width: 100%;
   height: 10%;
-  background:${theme.colors.WHITE_100}; 
+  background-color:${theme.colors.WHITE_100}; 
   border-radius: 10px 10px 0 0;
 `
 );

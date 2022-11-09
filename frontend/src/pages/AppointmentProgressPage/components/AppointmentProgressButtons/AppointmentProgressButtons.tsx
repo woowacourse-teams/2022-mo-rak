@@ -13,7 +13,7 @@ function AppointmentProgressButtons({ onClickProgress }: Props) {
     <Button
       variant="filled"
       colorScheme={theme.colors.PURPLE_100}
-      width="30rem"
+      width="100%"
       fontSize="4rem"
       onClick={onClickProgress}
     >

@@ -4,6 +4,7 @@ import com.morak.back.appointment.domain.AppointmentEvent;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.MenuEvent;
+import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.notification.application.dto.NotificationMessageRequest;
 import com.morak.back.notification.domain.slack.SlackClient;
 import com.morak.back.notification.domain.slack.SlackWebhook;
@@ -12,8 +13,10 @@ import com.morak.back.poll.domain.PollEvent;
 import com.morak.back.role.domain.RoleHistoryEvent;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamRepository;
+import com.morak.back.team.exception.TeamNotFoundException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -32,7 +35,6 @@ public class NotificationService {
     private final MemberRepository memberRepository;
     private final SlackClient slackClient;
 
-    // todo : 비동기일때 예외 발생시 advice에서 처리해서 로그가 찍히는지 확인
     @TransactionalEventListener(condition = "#event.isClosed() == false")
     public void notifyTeamPollOpen(PollEvent event) {
         notifyTeamMenuEvent(event, NotificationMessageRequest::fromPollOpen);
@@ -55,23 +57,34 @@ public class NotificationService {
 
     private void notifyTeamMenuEvent(MenuEvent event,
                                      BiFunction<MenuEvent, Team, NotificationMessageRequest> requestBiFunction) {
-        SlackWebhook webhook = slackWebhookRepository.findByTeamCode(event.getTeamCode()).orElseThrow();
-        Team team = teamRepository.findByCode(event.getTeamCode()).orElseThrow();
-        NotificationMessageRequest request = requestBiFunction.apply(event, team);
-        slackClient.notifyMessage(webhook, request);
+        Optional<SlackWebhook> webhook = slackWebhookRepository.findByTeamCode(event.getTeamCode());
+        if (webhook.isEmpty()) {
+            return;
+        }
+        Team team = findTeamByCode(event.getTeamCode());
+        slackClient.notifyMessage(webhook.get(), requestBiFunction.apply(event, team));
+    }
+
+    private Team findTeamByCode(String teamCode) {
+        return teamRepository.findByCode(teamCode).orElseThrow(
+                () -> TeamNotFoundException.ofTeam(CustomErrorCode.TEAM_NOT_FOUND_ERROR, teamCode)
+        );
     }
 
     @TransactionalEventListener
     public void notifyTeamRoleHistory(RoleHistoryEvent event) {
-        SlackWebhook webhook = slackWebhookRepository.findByTeamCode(event.getTeamCode()).orElseThrow();
-        Team team = teamRepository.findByCode(event.getTeamCode()).orElseThrow();
+        Optional<SlackWebhook> webhook = slackWebhookRepository.findByTeamCode(event.getTeamCode());
+        if (webhook.isEmpty()) {
+            return;
+        }
+        Team team = findTeamByCode(event.getTeamCode());
         Map<Member, String> roleNameByMembers = mapRoleNameByMember(event);
 
         NotificationMessageRequest request = NotificationMessageRequest.fromRoleHistory(
                 event.getDateTime(), team,
                 roleNameByMembers
         );
-        slackClient.notifyMessage(webhook, request);
+        slackClient.notifyMessage(webhook.get(), request);
     }
 
     private Map<Member, String> mapRoleNameByMember(RoleHistoryEvent event) {
@@ -79,7 +92,7 @@ public class NotificationService {
         return members.stream()
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        member -> event.getRoleNameByMemberIds().get(member.getId())
+                        member -> event.getRoleName(member.getId())
                 ));
     }
 }

@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 
-const StyledCalendar = styled.div(
+const StyledContainer = styled.div(
   ({ theme }) => `
   width: 45.2rem;
   height: 60rem;
   border-radius: 2rem;
 
-  background: ${theme.colors.WHITE_100};
+  background-color: ${theme.colors.WHITE_100};
 `
 );
 
@@ -89,35 +89,27 @@ const StyledCurrentMonthDay = styled(StyledMonthDay)<{
 }>(
   ({ theme, isBetweenStartEndDate, isStartOrEndDate, isSelectedDate }) => `
   color: ${theme.colors.BLACK_100};
+  border-radius: 100%;
 
   &:hover {
     border: 2px solid ${theme.colors.PURPLE_100};
-    border-radius: 100%;
   }
   
   ${
     isSelectedDate
       ? `background-color: ${theme.colors.PURPLE_100};
-    color: ${theme.colors.WHITE_100};
-    border-radius: 100%;`
+    color: ${theme.colors.WHITE_100};`
       : ''
   }
 
   ${
     isStartOrEndDate
       ? `background-color: ${theme.colors.PURPLE_100};
-  color: ${theme.colors.WHITE_100};
-  border-radius: 100%;`
+  color: ${theme.colors.WHITE_100};`
       : ''
   }
 
-  ${
-    isBetweenStartEndDate
-      ? `background-color: ${theme.colors.PURPLE_50};
-    border-radius: 100%;
-    `
-      : ''
-  }
+  ${isBetweenStartEndDate ? `background-color: ${theme.colors.PURPLE_50};` : ''}
 `
 );
 
@@ -144,7 +136,7 @@ const StyledCurrentMonthDayNotInStartAndEndDate = styled(StyledCurrentMonthDay)(
 );
 
 export {
-  StyledCalendar,
+  StyledContainer,
   StyledMonth,
   StyledWeekends,
   StyledWeekDay,

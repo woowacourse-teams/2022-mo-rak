@@ -41,7 +41,7 @@ function PollProgressButtons({ pollCode, isHost, groupCode }: Props) {
       {isHost && (
         <Button
           variant="filled"
-          width="46rem"
+          width="50%"
           padding="2rem 0"
           colorScheme={theme.colors.GRAY_400}
           fontSize="2rem"
@@ -52,7 +52,7 @@ function PollProgressButtons({ pollCode, isHost, groupCode }: Props) {
       )}
       <Button
         variant="filled"
-        width="46rem"
+        width="50%"
         padding="2rem 0"
         colorScheme={theme.colors.PURPLE_100}
         fontSize="2rem"

@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 
-const StyledHeaderContainer = styled.div`
+const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  max-height: 20.8rem;
 `;
 
 const StyledHeader = styled.header`
   font-size: 4.8rem;
+  word-break: break-all;
 `;
 
 const StyledDescription = styled.p`
@@ -17,4 +17,4 @@ const StyledDescription = styled.p`
   overflow-y: auto;
 `;
 
-export { StyledHeaderContainer, StyledHeader, StyledDescription };
+export { StyledContainer, StyledHeader, StyledDescription };

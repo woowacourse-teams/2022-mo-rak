@@ -8,6 +8,7 @@ const StyledContainer = styled.div`
 
 const StyledTitle = styled.h1`
   font-size: 4rem;
+  word-break: break-all;
 `;
 
 const StyledContent = styled.p`
@@ -24,7 +25,7 @@ const StyledHelpIconContainer = styled.div(
   justify-content: center;
   width: 2.8rem;
   height: 2.8rem;
-  background: ${theme.colors.GRAY_300};
+  background-color: ${theme.colors.GRAY_300};
   border-radius: 100%;
 `
 );

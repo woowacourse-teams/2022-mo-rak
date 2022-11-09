@@ -20,7 +20,7 @@ const StyledBottomContainer = styled.div(
   justify-content: center;
   align-items: center;
   height: 50%;
-  background: ${theme.colors.YELLOW_50};
+  background-color: ${theme.colors.YELLOW_50};
   flex-direction: column;
   gap: 6.8rem;
 `
@@ -31,12 +31,12 @@ const StyledLogo = styled.img`
   margin-bottom: 4rem;
 `;
 
-const StyledBigText = styled.div`
+const StyledTitle = styled.h1`
   font-size: 4.4rem;
   margin-bottom: 2rem;
 `;
 
-const StyledSmallText = styled.div`
+const StyledDescription = styled.p`
   font-size: 2.4rem;
   padding: 0 4rem;
   text-align: center;
@@ -48,6 +48,6 @@ export {
   StyledTopContainer,
   StyledBottomContainer,
   StyledLogo,
-  StyledBigText,
-  StyledSmallText
+  StyledTitle,
+  StyledDescription
 };

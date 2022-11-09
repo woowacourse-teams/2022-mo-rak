@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, PropsWithChildren, CSSProperties } from 'react';
 
 import { useTheme } from '@emotion/react';
-import { StyledButton } from '@/components/Button/Button.styles';
+import { StyledContainer } from '@/components/Button/Button.styles';
 
 const getVariantStyle = ({ variant, colorScheme }: VariantStyleProps) => {
   const theme = useTheme();
@@ -35,9 +35,9 @@ function Button({ children, colorScheme, type = 'button', variant, ...props }: P
   const variantStyle = getVariantStyle({ variant, colorScheme });
 
   return (
-    <StyledButton type={type} variantStyle={variantStyle} {...props}>
+    <StyledContainer type={type} variantStyle={variantStyle} {...props}>
       {children}
-    </StyledButton>
+    </StyledContainer>
   );
 }
 

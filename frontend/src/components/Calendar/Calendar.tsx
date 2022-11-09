@@ -1,6 +1,6 @@
 import { SetStateAction, useState, Dispatch } from 'react';
 import {
-  StyledCalendar,
+  StyledContainer,
   StyledMonth,
   StyledWeekends,
   StyledWeekDay,
@@ -143,7 +143,7 @@ function Calendar({
   const isSelectedDate = (day: number) => formatDate(day) === selectedDate;
 
   return (
-    <StyledCalendar>
+    <StyledContainer>
       <StyledMonth>
         <StyledPrevButton
           onClick={handleShowPrevMonth}
@@ -257,7 +257,7 @@ function Calendar({
           </StyledNextMonthDay>
         ))}
       </StyledDays>
-    </StyledCalendar>
+    </StyledContainer>
   );
 }
 

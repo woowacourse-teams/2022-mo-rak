@@ -144,6 +144,7 @@ tasks.named('jacocoTestCoverageVerification') {
             excludes = [
                     '**.*Formatter*',
                     '**.*BaseEntity*',
+                    '**.*BaseElement*',
                     '**.*GithubOAuthClient*',
                     '**.*MorakBackApplication*',
                     '**.*Interceptor*',
@@ -154,7 +155,8 @@ tasks.named('jacocoTestCoverageVerification') {
                     '**.Proxy*',
                     '**.*Response',
                     '**.*Request',
-                    '**.*Event'
+                    '**.*Event',
+                    '**.*AsyncExceptionHandler'
             ]
         }
 

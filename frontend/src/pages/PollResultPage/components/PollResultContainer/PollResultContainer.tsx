@@ -96,7 +96,7 @@ function PollResultContainer() {
               <MarginContainer margin="1.2rem 0 0">
                 <Tooltip
                   content="사람 아이콘을 클릭해보세요. 항목별로 투표 한 사람들과 이유를 볼 수 있어요 👀"
-                  width="32"
+                  width="32rem"
                   placement="bottom"
                   backgroundColor={theme.colors.PURPLE_50}
                   fontSize="1.6rem"

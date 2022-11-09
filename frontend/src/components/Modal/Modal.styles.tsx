@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 const StyledContainer = styled.div<{ isVisible: boolean }>(
   ({ theme, isVisible }) => `
-  z-index: 10;
+  z-index: 999;
   display: ${isVisible ? 'flex' : 'none'};
   background-color: ${theme.colors.TRANSPARENT_BLACK_100_25};
   align-items: center;

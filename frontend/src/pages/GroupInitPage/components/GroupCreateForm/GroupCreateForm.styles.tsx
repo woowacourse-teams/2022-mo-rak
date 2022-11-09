@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledForm = styled.form`
+const StyledContainer = styled.form`
   width: 80%;
   display: flex;
   flex-direction: column;
@@ -15,4 +15,4 @@ const StyledInputContainer = styled.div`
   justify-content: center;
 `;
 
-export { StyledForm, StyledInputContainer };
+export { StyledContainer, StyledInputContainer };

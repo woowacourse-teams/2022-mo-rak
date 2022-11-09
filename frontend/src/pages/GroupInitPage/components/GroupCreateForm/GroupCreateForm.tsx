@@ -5,7 +5,7 @@ import { Group } from '@/types/group';
 import GroupCreateFormNameInput from '@/pages/GroupInitPage/components/GroupCreateFormNameInput/GroupCreateFormNameInput';
 import GroupCreateFormSubmitButton from '@/pages/GroupInitPage/components/GroupCreateFormSubmitButton/GroupCreateFormSubmitButton';
 import {
-  StyledForm,
+  StyledContainer,
   StyledInputContainer
 } from '@/pages/GroupInitPage/components/GroupCreateForm/GroupCreateForm.styles';
 import { AxiosError } from 'axios';
@@ -38,12 +38,12 @@ function GroupCreateForm() {
   };
 
   return (
-    <StyledForm onSubmit={handleCreateGroup}>
+    <StyledContainer onSubmit={handleCreateGroup}>
       <StyledInputContainer>
         <GroupCreateFormNameInput groupName={groupName} onChange={handleGroupName} />
         <GroupCreateFormSubmitButton />
       </StyledInputContainer>
-    </StyledForm>
+    </StyledContainer>
   );
 }
 

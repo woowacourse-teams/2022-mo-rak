@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 const StyledTitle = styled.div(
   ({ theme }) => `
-  font-size: 2.8rem;
+  font-size: 2.4rem;
   color: ${theme.colors.PURPLE_100};
 `
 );
@@ -13,7 +13,7 @@ const StyledHelpIconContainer = styled.div(
   justify-content: center;
   width: 2.8rem;
   height: 2.8rem;
-  background: ${theme.colors.GRAY_300};
+  background-color: ${theme.colors.GRAY_300};
   border-radius: 100%;
 `
 );
@@ -29,7 +29,7 @@ const StyledContent = styled.p`
 const StyledHeader = styled.div`
   display: flex;
   gap: 2rem;
-  z-index: 1;
+  align-items: center;
 `;
 
 export { StyledTitle, StyledHelpIconContainer, StyledHelpIcon, StyledContent, StyledHeader };

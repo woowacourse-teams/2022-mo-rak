@@ -3,7 +3,7 @@ import plusImg from '@/assets/plus.svg';
 import { createInvitationCode } from '@/api/group';
 import { writeClipboard } from '@/utils/clipboard';
 import {
-  StyledInvitationLink,
+  StyledContainer,
   StyledInvitationText,
   StyledPlusIcon
 } from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerBottomSectionInvitationMenu/GlobalFootbarFootbarDrawerBottomSectionInvitationMenu.styles';
@@ -28,10 +28,10 @@ function GlobalFootbarFootbarDrawerBottomSectionInvitationMenu({ groupCode }: Pr
   };
 
   return (
-    <StyledInvitationLink onClick={handleCopyInvitationCode}>
+    <StyledContainer onClick={handleCopyInvitationCode}>
       <StyledPlusIcon src={plusImg} alt="invitation-link" />
       <StyledInvitationText>새로운 멤버 초대</StyledInvitationText>
-    </StyledInvitationLink>
+    </StyledContainer>
   );
 }
 

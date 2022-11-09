@@ -38,11 +38,12 @@ const StyledGroupProfile = styled.div<CSSProperties>(
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
   width: 8rem;
   height: 8rem;
   border-radius: 1.2rem;
   font-family: 'Nanum Gothic', sans-serif;
-  background: ${backgroundColor};
+  background-color: ${backgroundColor};
 `
 );
 
@@ -56,6 +57,7 @@ const StyledGroupFirstCharacter = styled.div(
 const StyledGroupName = styled.div`
   font-size: 2.4rem;
   margin-bottom: 1.2rem;
+  word-break: break-all;
 `;
 
 const StyledContainer = styled.div`
@@ -77,7 +79,7 @@ const StyledGroup = styled.div<{ isActive: boolean }>(
   cursor: pointer;
 
   &:hover {
-    background: ${theme.colors.GRAY_100};
+    background-color: ${theme.colors.GRAY_100};
     border-radius: 1.2rem;
     transition: all 0.2s linear;
   }
@@ -85,7 +87,7 @@ const StyledGroup = styled.div<{ isActive: boolean }>(
   ${
     isActive &&
     `
-      background: ${theme.colors.GRAY_100}; 
+      background-color: ${theme.colors.GRAY_100}; 
       border-radius: 1.2rem;
     `
   }

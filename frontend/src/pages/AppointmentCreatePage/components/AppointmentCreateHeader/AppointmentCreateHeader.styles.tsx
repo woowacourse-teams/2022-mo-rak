@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
-const StyledHeader = styled.header`
+const StyledContainer = styled.header`
   font-size: 4rem;
 `;
 
-export { StyledHeader };
+export { StyledContainer };

@@ -12,10 +12,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Date {
 
+    private static final int LIMIT_YEAR = 1;
+
     private LocalDate date;
 
     public Date(LocalDate date, LocalDate today) {
         validateFutureOrPresent(date, today);
+        validateDateAllowedRange(date, today);
         this.date = date;
     }
 
@@ -24,6 +27,15 @@ public class Date {
             throw new AppointmentDomainLogicException(
                     CustomErrorCode.APPOINTMENT_PAST_DATE_CREATE_ERROR,
                     String.format("약속잡기 날짜(%s)는 현재(%s)보다 과거일 수 없습니다.", date, today)
+            );
+        }
+    }
+
+    private void validateDateAllowedRange(LocalDate date, LocalDate today) {
+        if (date.isAfter(today.plusYears(LIMIT_YEAR))) {
+            throw new AppointmentDomainLogicException(
+                    CustomErrorCode.APPOINTMENT_DATE_AFTER_YEAR_ERROR,
+                    String.format("약속잡기 날짜(%s)는 현재(%s)로부터 %d년 뒤까지만 가능합니다.", date, today, LIMIT_YEAR)
             );
         }
     }

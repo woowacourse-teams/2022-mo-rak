@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
-const StyledDuration = styled.p`
+const StyledContainer = styled.p`
   font-size: 2.4rem;
 `;
 
-export { StyledDuration };
+export { StyledContainer };
