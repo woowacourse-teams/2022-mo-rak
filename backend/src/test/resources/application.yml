@@ -1,4 +1,3 @@
-
 # Global Configuration
 
 spring:
@@ -11,6 +10,7 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
+        batch_fetch_style: padded
         default_batch_fetch_size: 100
         format_sql: true
   sql:

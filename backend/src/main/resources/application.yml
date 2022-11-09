@@ -6,6 +6,7 @@ spring:
   jpa:
     properties:
       hibernate:
+        batch_fetch_style: padded
         default_batch_fetch_size: 100
         connection:
           provider_disables_autocommit: true
