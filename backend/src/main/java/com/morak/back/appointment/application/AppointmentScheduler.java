@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Profile("master")
+@Profile("schedule")
 public class AppointmentScheduler {
 
     private final AppointmentService appointmentService;

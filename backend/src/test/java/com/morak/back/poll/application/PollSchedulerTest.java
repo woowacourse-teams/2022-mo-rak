@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 
 @ServiceTest
-@ActiveProfiles("master")
+@ActiveProfiles("schedule")
 class PollSchedulerTest {
 
     private static final String TEAM_CODE = "MoraK123";

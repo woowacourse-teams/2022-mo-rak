@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 
 @ServiceTest
-@ActiveProfiles("master")
+@ActiveProfiles("schedule")
 class AppointmentSchedulerTest {
 
     private final AppointmentScheduler appointmentScheduler;
