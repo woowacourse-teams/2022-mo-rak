@@ -47,6 +47,7 @@ node {
                     NEXT=${NEXT_PORT_LIST[index-1]}
                     IP=${IP_LIST[index-1]}
 
+                    ssh -i /var/lib/jenkins/key-morak.pem ubuntu@"${IP}" "sh /home/ubuntu/deploy/backup.sh ${NEXT} 1>/dev/null 2>/dev/null"
                     scp -i /var/lib/jenkins/key-morak.pem ./backend/build/libs/*.jar ubuntu@"${IP}":/home/ubuntu/deploy 1>/dev/null 2>/dev/null
                     ssh -i /var/lib/jenkins/key-morak.pem ubuntu@"${IP}" "sh /home/ubuntu/deploy/start_service.sh ${NEXT} 1>/dev/null 2>/dev/null"
                 done
@@ -79,15 +80,12 @@ node {
 
                 for index in $(seq ${SIZE})
                 do
-                    IP=${IP_LIST[index-1]}
-                    PREVIOUS=${PREVIOUS_PORT_LIST[index-1]}
-                    ssh -i /var/lib/jenkins/key-morak.pem ubuntu@"${IP}" "sh /home/ubuntu/deploy/kill.sh ${PREVIOUS} 1>/dev/null 2>/dev/null"
+                    echo "${IP_LIST[index-1]}:${NEXT_PORT_LIST[index-1]}"
                 done
-
 
                 for index in $(seq ${SIZE})
                 do
-                    echo "${IP_LIST[index-1]}:${NEXT_PORT_LIST[index-1]}"
+                    echo "${PREVIOUS_PORT_LIST[index-1]}"
                 done
                 ''',
                 returnStdout: true
@@ -112,6 +110,29 @@ node {
                 slackSend (channel: "jenkins", color: "good",  message: "Route Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
             } catch(e) {
                 slackSend (channel: "jenkins", color: "warning",  message: "Route Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                throw e
+            }
+    }
+
+    stage('kill') {
+            try {
+                sub_list = []
+                for (res in OUTPUT) {
+                    sub_list.add(res)
+                }
+                sub_list = sub_list[(int) (sub_list.size() / 2)..sub_list.size() - 1]
+
+                println sub_list
+
+                PRD_KILL_WAS_IP_LIST = PRD_WAS_IP_LIST.split(" ")
+
+                PRD_KILL_WAS_IP_LIST.eachWithIndex { item, index ->
+                    sh 'ssh -i /var/lib/jenkins/key-morak.pem ubuntu@' + item + ' "bash /home/ubuntu/deploy/kill.sh ' + sub_list[index] + ' 1>/dev/null 2>/dev/null"'
+                }
+
+                slackSend (channel: "jenkins", color: "good",  message: "Down Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            } catch(e) {
+                slackSend (channel: "jenkins", color: "warning",  message: "Down Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
                 throw e
             }
     }
