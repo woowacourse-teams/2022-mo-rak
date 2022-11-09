@@ -89,35 +89,27 @@ const StyledCurrentMonthDay = styled(StyledMonthDay)<{
 }>(
   ({ theme, isBetweenStartEndDate, isStartOrEndDate, isSelectedDate }) => `
   color: ${theme.colors.BLACK_100};
+  border-radius: 100%;
 
   &:hover {
     border: 2px solid ${theme.colors.PURPLE_100};
-    border-radius: 100%;
   }
   
   ${
     isSelectedDate
       ? `background-color: ${theme.colors.PURPLE_100};
-    color: ${theme.colors.WHITE_100};
-    border-radius: 100%;`
+    color: ${theme.colors.WHITE_100};`
       : ''
   }
 
   ${
     isStartOrEndDate
       ? `background-color: ${theme.colors.PURPLE_100};
-  color: ${theme.colors.WHITE_100};
-  border-radius: 100%;`
+  color: ${theme.colors.WHITE_100};`
       : ''
   }
 
-  ${
-    isBetweenStartEndDate
-      ? `background-color: ${theme.colors.PURPLE_50};
-    border-radius: 100%;
-    `
-      : ''
-  }
+  ${isBetweenStartEndDate ? `background-color: ${theme.colors.PURPLE_50};` : ''}
 `
 );
 

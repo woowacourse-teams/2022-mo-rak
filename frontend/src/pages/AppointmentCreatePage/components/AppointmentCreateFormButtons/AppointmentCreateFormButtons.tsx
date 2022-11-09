@@ -11,7 +11,7 @@ function AppointmentCreateFormButtons({ onCancel }: Props) {
   const theme = useTheme();
 
   return (
-    <FlexContainer justifyContent="space-between">
+    <FlexContainer justifyContent="space-between" gap="2rem">
       <Button
         variant="filled"
         colorScheme={theme.colors.GRAY_400}

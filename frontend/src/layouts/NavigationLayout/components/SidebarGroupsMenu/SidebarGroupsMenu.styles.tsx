@@ -58,6 +58,7 @@ const StyledGroupsModalIcon = styled.img`
 const StyledGroupProfile = styled.div<CSSProperties>(
   ({ backgroundColor }) => `
   display: flex;
+  flex-shrink: 0;
   justify-content: center;
   align-items: center;
   width: 8rem;
@@ -77,6 +78,7 @@ const StyledGroupFirstCharacter = styled.div(
 const StyledGroupName = styled.div`
   font-size: 1.6rem;
   margin-bottom: 1.2rem;
+  word-break: break-all;
 `;
 
 const StyledContainer = styled.div`

@@ -30,7 +30,7 @@ function AppointmentCreateFormTimeInput({ time, ariaLabelHelper, onChange }: Pro
           name="period"
           value={time.period}
           onChange={onChange}
-          fontSize="2.4rem"
+          fontSize="2.2rem"
           aria-label={`appointment-${ariaLabelHelper}-time-limit-period`}
           required
         >
@@ -41,7 +41,7 @@ function AppointmentCreateFormTimeInput({ time, ariaLabelHelper, onChange }: Pro
           name="hour"
           value={time.hour}
           onChange={onChange}
-          fontSize="2.4rem"
+          fontSize="2.2rem"
           aria-label={`appointment-${ariaLabelHelper}-time-limit-hour`}
           required
         >
@@ -60,7 +60,7 @@ function AppointmentCreateFormTimeInput({ time, ariaLabelHelper, onChange }: Pro
           name="minute"
           value={time.minute}
           onChange={onChange}
-          fontSize="2.4rem"
+          fontSize="2.2rem"
           aria-label={`appointment-${ariaLabelHelper}-time-limit-minute`}
           required
         >

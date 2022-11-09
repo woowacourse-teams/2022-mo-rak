@@ -17,7 +17,7 @@ const StyledContentContainer = styled.div<
 >(
   ({ isVisible, backgroundColor, width, theme, placementStyle }) => `
     ${placementStyle};
-    z-index: 1;
+    z-index: 10;
     position: absolute;
     display: ${isVisible ? 'block' : 'none'};  
     background-color: ${backgroundColor ? backgroundColor : theme.colors.PURPLE_50}; 

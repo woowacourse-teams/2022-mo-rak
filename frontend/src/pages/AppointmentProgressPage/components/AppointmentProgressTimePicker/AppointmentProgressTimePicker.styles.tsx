@@ -2,10 +2,10 @@ import styled from '@emotion/styled';
 
 const StyledTime = styled.div<{ isSelected: boolean }>(
   ({ theme, isSelected }) => `
-  width: 25.6rem;
+  width: 100%;
   font-size: 2rem;
   text-align: center;
-  padding: 1.2rem 0;
+  padding: 2rem 0;
   border-radius: 10px;
   cursor: pointer;
 

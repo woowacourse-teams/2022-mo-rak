@@ -30,7 +30,7 @@ function AppointmentCreateFormCloseTimeInput({
       <TextField
         variant="outlined"
         colorScheme={theme.colors.PURPLE_100}
-        width="42rem"
+        width="100%"
         padding="0.4rem 0.8rem"
         borderRadius="1.2rem"
       >
@@ -41,7 +41,7 @@ function AppointmentCreateFormCloseTimeInput({
             max={maxCloseDate}
             onChange={onChangeDate}
             value={closeDate}
-            fontSize="2.4rem"
+            fontSize="2.2rem"
             role="textbox"
             aria-label="appointment-closeDate"
             required
@@ -50,7 +50,7 @@ function AppointmentCreateFormCloseTimeInput({
             type="time"
             onChange={onChangeTime}
             value={closeTime}
-            fontSize="2.4rem"
+            fontSize="2.2rem"
             role="textbox"
             aria-label="appointment-closeTime"
             required
