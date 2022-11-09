@@ -2,7 +2,7 @@ package com.morak.back.appointment.application;
 
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
-import com.morak.back.appointment.domain.SystemTime;
+import com.morak.back.core.domain.SystemTime;
 import com.morak.back.appointment.domain.recommend.RankRecommendation;
 import com.morak.back.appointment.domain.recommend.RecommendationCells;
 import com.morak.back.appointment.exception.AppointmentAuthorizationException;

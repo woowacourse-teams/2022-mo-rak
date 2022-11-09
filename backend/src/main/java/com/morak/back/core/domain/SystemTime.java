@@ -1,4 +1,4 @@
-package com.morak.back.appointment.domain;
+package com.morak.back.core.domain;
 
 import java.time.Clock;
 import java.time.LocalDateTime;

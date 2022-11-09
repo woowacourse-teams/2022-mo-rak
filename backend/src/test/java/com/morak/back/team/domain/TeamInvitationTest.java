@@ -2,7 +2,7 @@ package com.morak.back.team.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.morak.back.appointment.domain.SystemTime;
+import com.morak.back.core.domain.SystemTime;
 import com.morak.back.core.domain.Code;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

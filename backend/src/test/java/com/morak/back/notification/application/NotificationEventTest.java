@@ -6,7 +6,7 @@ import com.morak.back.appointment.application.AppointmentService;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentEvent;
 import com.morak.back.appointment.domain.AppointmentRepository;
-import com.morak.back.appointment.domain.SystemTime;
+import com.morak.back.core.domain.SystemTime;
 import com.morak.back.appointment.ui.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.ui.dto.AppointmentResponse;
 import com.morak.back.poll.application.PollService;
