@@ -1,4 +1,7 @@
-import { StyledMenu, StyledContainer } from './LandingNavbar.styles';
+import {
+  StyledMenu,
+  StyledContainer
+} from '@/pages/LandingPage/components/LandingNavbar/LandingNavbar.styles';
 
 function LandingNavbar() {
   return (

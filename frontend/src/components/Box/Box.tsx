@@ -1,6 +1,6 @@
 import { CSSProperties, PropsWithChildren, HTMLAttributes } from 'react';
 
-import { StyledContainer } from './Box.styles';
+import { StyledContainer } from '@/components/Box/Box.styles';
 
 type Props = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & CSSProperties;
 

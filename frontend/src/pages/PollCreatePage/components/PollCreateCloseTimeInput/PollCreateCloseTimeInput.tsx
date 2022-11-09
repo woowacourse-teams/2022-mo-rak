@@ -1,7 +1,7 @@
-import { StyledLabel } from './PollCreateCloseTimeInput.styles';
+import { StyledLabel } from '@/pages/PollCreatePage/components/PollCreateCloseTimeInput/PollCreateCloseTimeInput.styles';
 import { ChangeEventHandler, memo } from 'react';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import Input from '../../../../components/Input/Input';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Input from '@/components/Input/Input';
 
 type Props = {
   closingTime: string;

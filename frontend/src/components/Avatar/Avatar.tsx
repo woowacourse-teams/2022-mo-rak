@@ -1,6 +1,10 @@
 import { CSSProperties } from 'react';
-import { Member } from '../../types/group';
-import { StyledContainer, StyledUserImage, StyledUserName } from './Avatar.styles';
+import { Member } from '@/types/group';
+import {
+  StyledContainer,
+  StyledUserImage,
+  StyledUserName
+} from '@/components/Avatar/Avatar.styles';
 
 type Props = {
   profileUrl: Member['profileUrl'];

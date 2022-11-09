@@ -1,5 +1,5 @@
 import { MouseEvent, PropsWithChildren, useRef } from 'react';
-import { StyledContainer } from './Modal.styles';
+import { StyledContainer } from '@/components/Modal/Modal.styles';
 
 type Props = {
   isVisible: boolean;

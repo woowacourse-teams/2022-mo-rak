@@ -1,8 +1,11 @@
 import { MouseEventHandler, useMemo } from 'react';
-import Box from '../../../../components/Box/Box';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { Appointment, AvailableTimes } from '../../../../types/appointment';
-import { StyledTime, StyledGuide } from './AppointmentProgressTimePicker.styles';
+import Box from '@/components/Box/Box';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import { Appointment, AvailableTimes } from '@/types/appointment';
+import {
+  StyledTime,
+  StyledGuide
+} from '@/pages/AppointmentProgressPage/components/AppointmentProgressTimePicker/AppointmentProgressTimePicker.styles';
 
 const formatHourMinutePeriod = (date: Date) =>
   date

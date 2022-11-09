@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
-import theme from '../../styles/theme';
+import theme from '@/styles/theme';
 
-import Input from './Input';
+import Input from '@/components/Input/Input';
 
 export default {
   title: 'Reusable Components/Input',

@@ -1,20 +1,20 @@
 import { FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import Box from '../../../../components/Box/Box';
-import AppointmentCreateFormButtons from '../AppointmentCreateFormButtons/AppointmentCreateFormButtons';
-import AppointmentCreateFormTitleInput from '../AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
-import AppointmentCreateFormDescriptionInput from '../AppointmentCreateFormDescriptionInput/AppointmentCreateFormDescriptionInput';
-import AppointmentCreateFormDurationInput from '../AppointmentCreateFormDurationInput/AppointmentCreateFormDurationInput';
-import AppointmentCreateFormTimeLimitInput from '../AppointmentCreateFormTimeLimitInput/AppointmentCreateFormTimeLimitInput';
-import AppointmentCreateFormCloseTimeInput from '../AppointmentCreateFormCloseTimeInput/AppointmentCreateFormCloseTimeInput';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import useInput from '../../../../hooks/useInput';
-import useInputs from '../../../../hooks/useInputs';
-import { Time, CreateAppointmentRequest, Appointment } from '../../../../types/appointment';
-import { createAppointment } from '../../../../api/appointment';
-import { Group } from '../../../../types/group';
-import { StyledContainer } from './AppointmentCreateForm.styles';
+import Box from '@/components/Box/Box';
+import AppointmentCreateFormButtons from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormButtons/AppointmentCreateFormButtons';
+import AppointmentCreateFormTitleInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
+import AppointmentCreateFormDescriptionInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormDescriptionInput/AppointmentCreateFormDescriptionInput';
+import AppointmentCreateFormDurationInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormDurationInput/AppointmentCreateFormDurationInput';
+import AppointmentCreateFormTimeLimitInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormTimeLimitInput/AppointmentCreateFormTimeLimitInput';
+import AppointmentCreateFormCloseTimeInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormCloseTimeInput/AppointmentCreateFormCloseTimeInput';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import useInput from '@/hooks/useInput';
+import useInputs from '@/hooks/useInputs';
+import { Time, CreateAppointmentRequest, Appointment } from '@/types/appointment';
+import { createAppointment } from '@/api/appointment';
+import { Group } from '@/types/group';
+import { StyledContainer } from '@/pages/AppointmentCreatePage/components/AppointmentCreateForm/AppointmentCreateForm.styles';
 
 const getFormattedTime = (time: Time) => {
   const { period, hour, minute } = time;

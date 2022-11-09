@@ -1,6 +1,6 @@
-import { StyledContainer } from './PollResultPage.styles';
+import { StyledContainer } from '@/pages/PollResultPage/PollResultPage.styles';
 
-import PollResultContainer from './components/PollResultContainer/PollResultContainer';
+import PollResultContainer from '@/pages/PollResultPage/components/PollResultContainer/PollResultContainer';
 
 function PollResultPage() {
   return (

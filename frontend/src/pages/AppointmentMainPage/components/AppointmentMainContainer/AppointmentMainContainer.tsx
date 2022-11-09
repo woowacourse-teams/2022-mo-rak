@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLottie } from 'lottie-react';
-import Box from '../../../../components/Box/Box';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
-import { Group } from '../../../../types/group';
-import { GetAppointmentsResponse } from '../../../../types/appointment';
-import { getAppointments } from '../../../../api/appointment';
-import AppointmentMainStatus from '../AppointmentMainStatus/AppointmentMainStatus';
-import AppointmentMainProgress from '../AppointmentMainProgress/AppointmentMainProgress';
-import AppointmentMainDetail from '../AppointmentMainDetail/AppointmentMainDetail';
-import AppointmentMainButtons from '../AppointmentMainButtons/AppointmentMainButtons';
-import emptyLottie from '../../../../assets/empty-animation.json';
+import Box from '@/components/Box/Box';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import MarginContainer from '@/components/MarginContainer/MarginContainer';
+import { Group } from '@/types/group';
+import { GetAppointmentsResponse } from '@/types/appointment';
+import { getAppointments } from '@/api/appointment';
+import AppointmentMainStatus from '@/pages/AppointmentMainPage/components/AppointmentMainStatus/AppointmentMainStatus';
+import AppointmentMainProgress from '@/pages/AppointmentMainPage/components/AppointmentMainProgress/AppointmentMainProgress';
+import AppointmentMainDetail from '@/pages/AppointmentMainPage/components/AppointmentMainDetail/AppointmentMainDetail';
+import AppointmentMainButtons from '@/pages/AppointmentMainPage/components/AppointmentMainButtons/AppointmentMainButtons';
+import emptyLottie from '@/assets/empty-animation.json';
 import {
   StyledContainer,
   StyledTitle,
   LottieContainer,
   StyledGuide,
   StyledAppointmentContainer
-} from './AppointmentMainContainer.styles';
+} from '@/pages/AppointmentMainPage/components/AppointmentMainContainer/AppointmentMainContainer.styles';
 
 function AppointmentMainContainer() {
   const emptyAnimation = useLottie({ animationData: emptyLottie }, { width: '60rem' });

@@ -15,16 +15,16 @@ import {
   StyledSubTitle,
   StyledTitle,
   StyledAnchor
-} from './LandingMainSection.styles';
+} from '@/pages/LandingPage/components/LandingMainSection/LandingMainSection.styles';
 
-import serviceLogoImg from '../../../../assets/service-logo.svg';
-import smileImg from '../../../../assets/smile.svg';
-import lineImg from '../../../../assets/line.svg';
-import blobImg from '../../../../assets/blob.svg';
-import githubLogoImg from '../../../../assets/github-logo.svg';
-import glitterImg from '../../../../assets/glitter.svg';
-import FlexContainer from '../../../../components//FlexContainer/FlexContainer';
-import LandingNavbar from '../LandingNavbar/LandingNavbar';
+import serviceLogoImg from '@/assets/service-logo.svg';
+import smileImg from '@/assets/smile.svg';
+import lineImg from '@/assets/line.svg';
+import blobImg from '@/assets/blob.svg';
+import githubLogoImg from '@/assets/github-logo.svg';
+import glitterImg from '@/assets/glitter.svg';
+import FlexContainer from '@/components//FlexContainer/FlexContainer';
+import LandingNavbar from '@/pages/LandingPage/components/LandingNavbar/LandingNavbar';
 
 type Props = HTMLAttributes<HTMLDivElement>;
 

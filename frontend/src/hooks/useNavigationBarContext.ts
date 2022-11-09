@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { NavigationBarContext } from '../context/NavigationBarProvider';
+import { NavigationBarContext } from '@/context/NavigationBarProvider';
 
 function useNavigationBarContext() {
   const context = useContext(NavigationBarContext);

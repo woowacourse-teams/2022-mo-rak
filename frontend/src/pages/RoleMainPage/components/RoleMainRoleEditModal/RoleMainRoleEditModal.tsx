@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import closeButtonImg from '../../../../assets/close-button.svg';
-import editWithSmileImg from '../../../../assets/edit-with-smile.svg';
+import closeButtonImg from '@/assets/close-button.svg';
+import editWithSmileImg from '@/assets/edit-with-smile.svg';
 import {
   StyledForm,
   StyledLogo,
@@ -10,16 +10,16 @@ import {
   StyledTriangle,
   StyledBottomContainer,
   StyledDescription
-} from './RoleMainRoleEditModal.styles';
-import Modal from '../../../../components/Modal/Modal';
-import { editRoles } from '../../../../api/role';
+} from '@/pages/RoleMainPage/components/RoleMainRoleEditModal/RoleMainRoleEditModal.styles';
+import Modal from '@/components/Modal/Modal';
+import { editRoles } from '@/api/role';
 import { useParams } from 'react-router-dom';
-import { Group } from '../../../../types/group';
+import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
-import { EditRolesRequest } from '../../../../types/role';
-import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
-import RoleMainRoleEditModalInputs from '../RoleMainRoleEditModalInputs/RoleMainRoleEditModalInputs';
-import RoleMainRoleEditModalButtons from '../RoleMainRoleEditModalButtons/RoleMainRoleEditModalButtons';
+import { EditRolesRequest } from '@/types/role';
+import useGroupMembersContext from '@/hooks/useGroupMembersContext';
+import RoleMainRoleEditModalInputs from '@/pages/RoleMainPage/components/RoleMainRoleEditModalInputs/RoleMainRoleEditModalInputs';
+import RoleMainRoleEditModalButtons from '@/pages/RoleMainPage/components/RoleMainRoleEditModalButtons/RoleMainRoleEditModalButtons';
 
 type Props = {
   close: () => void;

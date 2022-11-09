@@ -4,7 +4,7 @@ import {
   StyledContainer,
   StyledName,
   StyledImage
-} from './MainFeatureMenu.styles';
+} from '@/pages/MainPage/components/MainFeatureMenu/MainFeatureMenu.styles';
 
 type Props = {
   onClick: MouseEventHandler<HTMLDivElement>;

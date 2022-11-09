@@ -1,8 +1,13 @@
 import { InputHTMLAttributes, PropsWithChildren } from 'react';
-import FlexContainer from '../FlexContainer/FlexContainer';
-import checkImg from '../../assets/check.svg';
-import notCheckImg from '../../assets/not-check.svg';
-import { StyledContainerLabel, StyledInput, StyledCheckbox, StyledLabel } from './Checkbox.styles';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import checkImg from '@/assets/check.svg';
+import notCheckImg from '@/assets/not-check.svg';
+import {
+  StyledContainerLabel,
+  StyledInput,
+  StyledCheckbox,
+  StyledLabel
+} from '@/components/Checkbox/Checkbox.styles';
 
 type Props = PropsWithChildren<InputHTMLAttributes<HTMLInputElement>>;
 

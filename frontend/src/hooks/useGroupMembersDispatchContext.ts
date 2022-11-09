@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { GroupMembersDispatchContext } from '../context/GroupMembersProvider';
+import { GroupMembersDispatchContext } from '@/context/GroupMembersProvider';
 
 function useGroupMembersDispatchContext() {
   const context = useContext(GroupMembersDispatchContext);

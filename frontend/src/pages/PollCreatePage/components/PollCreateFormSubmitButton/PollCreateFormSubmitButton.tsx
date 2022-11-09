@@ -1,8 +1,8 @@
 import { useTheme } from '@emotion/react';
 import { memo } from 'react';
 
-import Button from '../../../../components/Button/Button';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
+import Button from '@/components/Button/Button';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 
 function PollCreateFormSubmitButton() {
   const theme = useTheme();

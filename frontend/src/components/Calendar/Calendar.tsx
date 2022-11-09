@@ -14,7 +14,7 @@ import {
   StyledCurrentMonthDayPrevToday,
   StyledCurrentMonthDayToday,
   StyledCurrentMonthDayNotInStartAndEndDate
-} from './Calendar.styles';
+} from '@/components/Calendar/Calendar.styles';
 
 type Props = {
   version?: 'default' | 'select';

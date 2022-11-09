@@ -1,7 +1,7 @@
-import { StyledContainer } from './MainPage.styles';
+import { StyledContainer } from '@/pages/MainPage/MainPage.styles';
 
-import MainFeatureMenuContainer from './components/MainFeatureMenuContainer/MainFeatureMenuContainer';
-import MainFeatureMenuHeader from './components/MainFeatureMenuHeader/MainFeatureMenuHeader';
+import MainFeatureMenuContainer from '@/pages/MainPage/components/MainFeatureMenuContainer/MainFeatureMenuContainer';
+import MainFeatureMenuHeader from '@/pages/MainPage/components/MainFeatureMenuHeader/MainFeatureMenuHeader';
 
 function MainPage() {
   return (

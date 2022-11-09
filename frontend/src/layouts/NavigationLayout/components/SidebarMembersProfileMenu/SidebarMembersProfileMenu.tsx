@@ -1,4 +1,4 @@
-import Avatar from '../../../../components/Avatar/Avatar';
+import Avatar from '@/components/Avatar/Avatar';
 import {
   StyledContainer,
   StyledMenuHeader,
@@ -7,12 +7,12 @@ import {
   StyledEditIcon,
   StyledUsernameContainer,
   StyledGroupMemberContainer
-} from './SidebarMembersProfileMenu.styles';
-import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
-import editImg from '../../../../assets/edit.svg';
-import useModal from '../../../../hooks/useModal';
-import SidebarEditUsernameModal from '../SidebarEditUsernameModal/SidebarEditUsernameModal';
-import useAuthContext from '../../../../hooks/useAuthContext';
+} from '@/layouts/NavigationLayout/components/SidebarMembersProfileMenu/SidebarMembersProfileMenu.styles';
+import useGroupMembersContext from '@/hooks/useGroupMembersContext';
+import editImg from '@/assets/edit.svg';
+import useModal from '@/hooks/useModal';
+import SidebarEditUsernameModal from '@/layouts/NavigationLayout/components/SidebarEditUsernameModal/SidebarEditUsernameModal';
+import useAuthContext from '@/hooks/useAuthContext';
 
 function SidebarMembersProfileMenu() {
   const { groupMembers } = useGroupMembersContext();

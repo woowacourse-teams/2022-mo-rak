@@ -3,21 +3,21 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 // TODO: 자동정렬 설정
 import { useLocation, useNavigate, useParams, Location } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import Box from '../../../../components/Box/Box';
-import Divider from '../../../../components/Divider/Divider';
-import MarginContainer from '../../../../components/MarginContainer/MarginContainer';
+import Box from '@/components/Box/Box';
+import Divider from '@/components/Divider/Divider';
+import MarginContainer from '@/components/MarginContainer/MarginContainer';
 
-import PollCreateFormInputs from '../PollCreateFormInputs/PollCreateFormInputs';
-import PollCreateDetail from '../PollCreateDetail/PollCreateDetail';
-import PollCreateFormSubmitButton from '../PollCreateFormSubmitButton/PollCreateFormSubmitButton';
-import PollCreateFormTitleInput from '../PollCreateFormTitleInput/PollCreateFormTitleInput';
-import PollCreateCloseTimeInput from '../PollCreateCloseTimeInput/PollCreateCloseTimeInput';
+import PollCreateFormInputs from '@/pages/PollCreatePage/components/PollCreateFormInputs/PollCreateFormInputs';
+import PollCreateDetail from '@/pages/PollCreatePage/components/PollCreateDetail/PollCreateDetail';
+import PollCreateFormSubmitButton from '@/pages/PollCreatePage/components/PollCreateFormSubmitButton/PollCreateFormSubmitButton';
+import PollCreateFormTitleInput from '@/pages/PollCreatePage/components/PollCreateFormTitleInput/PollCreateFormTitleInput';
+import PollCreateCloseTimeInput from '@/pages/PollCreatePage/components/PollCreateCloseTimeInput/PollCreateCloseTimeInput';
 
-import { createPoll } from '../../../../api/poll';
-import { createPollRequest, Poll } from '../../../../types/poll';
-import { Group } from '../../../../types/group';
-import useInput from '../../../../hooks/useInput';
-import { Appointment } from '../../../../types/appointment';
+import { createPoll } from '@/api/poll';
+import { createPollRequest, Poll } from '@/types/poll';
+import { Group } from '@/types/group';
+import useInput from '@/hooks/useInput';
+import { Appointment } from '@/types/appointment';
 
 type LocationWithState = {
   state: {

@@ -1,8 +1,12 @@
 import { useTheme } from '@emotion/react';
-import TextField from '../../../../components/TextField/TextField';
-import { StyledName, StyledContainer, StyledRoleContainer } from './RoleMainRoles.styles';
-import { EditRolesRequest } from '../../../../types/role';
-import Spinner from '../../../../components/Spinner/Spinner';
+import TextField from '@/components/TextField/TextField';
+import {
+  StyledName,
+  StyledContainer,
+  StyledRoleContainer
+} from '@/pages/RoleMainPage/components/RoleMainRoles/RoleMainRoles.styles';
+import { EditRolesRequest } from '@/types/role';
+import Spinner from '@/components/Spinner/Spinner';
 
 type Props = {
   roles: EditRolesRequest['roles'];

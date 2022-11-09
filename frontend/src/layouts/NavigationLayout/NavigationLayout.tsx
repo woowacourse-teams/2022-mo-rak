@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
-import { GroupMembersProvider } from '../../context/GroupMembersProvider';
-import { NavigationBarProvider } from '../../context/NavigationBarProvider';
-import useDeviceState from '../../hooks/useDeviceState';
-import GlobalFootbar from './components/GlobalFootbar/GlobalFootbar';
-import { StyledContainer } from './NavigationLayout.styles';
-import Sidebar from './components/Sidebar/Sidebar';
+import { GroupMembersProvider } from '@/context/GroupMembersProvider';
+import { NavigationBarProvider } from '@/context/NavigationBarProvider';
+import useDeviceState from '@/hooks/useDeviceState';
+import GlobalFootbar from '@/layouts/NavigationLayout/components/GlobalFootbar/GlobalFootbar';
+import Sidebar from '@/layouts/NavigationLayout/components/Sidebar/Sidebar';
+import { StyledContainer } from '@/layouts/NavigationLayout/NavigationLayout.styles';
 
 function NavigationLayout() {
   const isMobile = useDeviceState();

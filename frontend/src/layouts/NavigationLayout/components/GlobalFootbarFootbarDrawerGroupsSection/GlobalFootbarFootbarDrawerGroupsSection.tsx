@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import plusImg from '../../../../assets/plus.svg';
-import leaveImg from '../../../../assets/leave.svg';
-import { leaveGroup } from '../../../../api/group';
-import { Group } from '../../../../types/group';
+import plusImg from '@/assets/plus.svg';
+import leaveImg from '@/assets/leave.svg';
+import { leaveGroup } from '@/api/group';
+import { Group } from '@/types/group';
 import {
   StyledMenuHeader,
   StyledGroups,
@@ -17,7 +17,7 @@ import {
   StyledLeaveGroupButton,
   StyledPlusImage,
   StyledLeaveImage
-} from './GlobalFootbarFootbarDrawerGroupsSection.styles';
+} from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerGroupsSection/GlobalFootbarFootbarDrawerGroupsSection.styles';
 
 type Props = {
   groupCode: Group['code'];

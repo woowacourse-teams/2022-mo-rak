@@ -1,16 +1,19 @@
 import { useState } from 'react';
 
-import { StyledContainer, StyledCloseButton } from './GlobalFootbarFootbarDrawer.styles';
-import closeButtonImg from '../../../../assets/close-button.svg';
-import Divider from '../../../../components/Divider/Divider';
-import GlobalFootbarFootbarDrawerFeaturesSection from '../GlobalFootbarFootbarDrawerFeaturesSection/GlobalFootbarFootbarDrawerFeaturesSection';
-import GlobalFootbarFootbarDrawerMembersProfileSection from '../GlobarFootbarFootbarDrawerMembersProfileSection/GlobarFootbarFootbarDrawerMembersProfileSection';
-import GlobalFootbarFootbarDrawerGroupsSection from '../GlobalFootbarFootbarDrawerGroupsSection/GlobalFootbarFootbarDrawerGroupsSection';
-import GlobalFootbarFootbarDrawerBottomSection from '../GlobalFootbarFootbarDrawerBottomSection/GlobalFootbarFootbarDrawerBottomSection';
-import NavbarDrawerModals from '../GlobalFootbarFootbarDrawerModals/GlobalFootbarFootbarDrawerModals';
-import useNavigationBarContext from '../../../../hooks/useNavigationBarContext';
-import useNavigationBarDispatchContext from '../../../../hooks/useNavigationBarDispatchContext';
-import { Group } from '../../../../types/group';
+import {
+  StyledContainer,
+  StyledCloseButton
+} from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawer/GlobalFootbarFootbarDrawer.styles';
+import closeButtonImg from '@/assets/close-button.svg';
+import Divider from '@/components/Divider/Divider';
+import GlobalFootbarFootbarDrawerFeaturesSection from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerFeaturesSection/GlobalFootbarFootbarDrawerFeaturesSection';
+import GlobalFootbarFootbarDrawerMembersProfileSection from '@/layouts/NavigationLayout/components/GlobarFootbarFootbarDrawerMembersProfileSection/GlobarFootbarFootbarDrawerMembersProfileSection';
+import GlobalFootbarFootbarDrawerGroupsSection from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerGroupsSection/GlobalFootbarFootbarDrawerGroupsSection';
+import GlobalFootbarFootbarDrawerBottomSection from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerBottomSection/GlobalFootbarFootbarDrawerBottomSection';
+import NavbarDrawerModals from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerModals/GlobalFootbarFootbarDrawerModals';
+import useNavigationBarContext from '@/hooks/useNavigationBarContext';
+import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
+import { Group } from '@/types/group';
 
 // TODO: props drilling 발생 (groups)
 type Props = {

@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import leaveImg from '../../../../assets/leave.svg';
-import { removeLocalStorageItem } from '../../../../utils/storage';
+import leaveImg from '@/assets/leave.svg';
+import { removeLocalStorageItem } from '@/utils/storage';
 import {
   StyledContainer,
   StyledLeaveImage,
   StyledText
-} from './GlobalFootbarFootbarDrawerBottomSectionLogoutMenu.styles';
+} from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerBottomSectionLogoutMenu/GlobalFootbarFootbarDrawerBottomSectionLogoutMenu.styles';
 
 function GlobalFootbarFootbarDrawerBottomSectionLogoutMenu() {
   const navigate = useNavigate();

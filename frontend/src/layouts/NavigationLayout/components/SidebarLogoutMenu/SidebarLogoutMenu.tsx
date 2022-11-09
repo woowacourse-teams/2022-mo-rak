@@ -1,7 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import leaveImg from '../../../../assets/leave.svg';
-import { removeLocalStorageItem } from '../../../../utils/storage';
-import { StyledContainer, StyledLeaveImage, StyledText } from './SidebarLogoutMenu.styles';
+import leaveImg from '@/assets/leave.svg';
+import { removeLocalStorageItem } from '@/utils/storage';
+import {
+  StyledContainer,
+  StyledLeaveImage,
+  StyledText
+} from '@/layouts/NavigationLayout/components/SidebarLogoutMenu/SidebarLogoutMenu.styles';
 
 function SidebarLogoutMenu() {
   const navigate = useNavigate();

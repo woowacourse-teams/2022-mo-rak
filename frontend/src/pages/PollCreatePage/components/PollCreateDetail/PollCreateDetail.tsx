@@ -1,8 +1,8 @@
 import { useTheme } from '@emotion/react';
 
-import Button from '../../../../components/Button/Button';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { Poll } from '../../../../types/poll';
+import Button from '@/components/Button/Button';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import { Poll } from '@/types/poll';
 import { memo } from 'react';
 
 type Props = {

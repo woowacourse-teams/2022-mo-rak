@@ -1,8 +1,8 @@
 import { useTheme } from '@emotion/react';
 import { ChangeEventHandler, InputHTMLAttributes, memo } from 'react';
-import Input from '../../../../components/Input/Input';
-import TextField from '../../../../components/TextField/TextField';
-import { Poll } from '../../../../types/poll';
+import Input from '@/components/Input/Input';
+import TextField from '@/components/TextField/TextField';
+import { Poll } from '@/types/poll';
 
 type Props = {
   title: Poll['title'];

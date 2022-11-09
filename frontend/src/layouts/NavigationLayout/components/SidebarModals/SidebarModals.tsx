@@ -2,22 +2,22 @@ import { FormEvent } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import TextField from '../../../../components/TextField/TextField';
-import Input from '../../../../components/Input/Input';
-import Modal from '../../../../components/Modal/Modal';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import theme from '../../../../styles/theme';
-import slackImg from '../../../../assets/slack.svg';
-import plusImg from '../../../../assets/plus.svg';
-import linkImg from '../../../../assets/link.svg';
-import closeButtonImg from '../../../../assets/close-button.svg';
-import serviceLogoImg from '../../../../assets/service-logo.svg';
-import { Group } from '../../../../types/group';
-import { createGroup, participateGroup } from '../../../../api/group';
-import useNavigationBarDispatchContext from '../../../../hooks/useNavigationBarDispatchContext';
-import { linkSlack } from '../../../../api/slack';
-import { LinkSlackRequest } from '../../../../types/slack';
-import useInput from '../../../../hooks/useInput';
+import TextField from '@/components/TextField/TextField';
+import Input from '@/components/Input/Input';
+import Modal from '@/components/Modal/Modal';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import theme from '@/styles/theme';
+import slackImg from '@/assets/slack.svg';
+import plusImg from '@/assets/plus.svg';
+import linkImg from '@/assets/link.svg';
+import closeButtonImg from '@/assets/close-button.svg';
+import serviceLogoImg from '@/assets/service-logo.svg';
+import { Group } from '@/types/group';
+import { createGroup, participateGroup } from '@/api/group';
+import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
+import { linkSlack } from '@/api/slack';
+import { LinkSlackRequest } from '@/types/slack';
+import useInput from '@/hooks/useInput';
 import {
   StyledModalFormContainer,
   StyledSlackLogo,
@@ -30,7 +30,7 @@ import {
   StyledLinkIcon,
   StyledButton,
   StyledSmallLogo
-} from './SidebarModals.styles';
+} from '@/layouts/NavigationLayout/components/SidebarModals/SidebarModals.styles';
 
 type Props = {
   activeModal: string | null;

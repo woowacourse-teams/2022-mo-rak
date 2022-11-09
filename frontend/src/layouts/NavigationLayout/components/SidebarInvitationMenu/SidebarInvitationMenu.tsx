@@ -1,12 +1,12 @@
-import { Group } from '../../../../types/group';
-import plusImg from '../../../../assets/plus.svg';
-import { createInvitationCode } from '../../../../api/group';
-import { writeClipboard } from '../../../../utils/clipboard';
+import { Group } from '@/types/group';
+import plusImg from '@/assets/plus.svg';
+import { createInvitationCode } from '@/api/group';
+import { writeClipboard } from '@/utils/clipboard';
 import {
   StyledContainer,
   StyledInvitationText,
   StyledPlusIcon
-} from './SidebarInvitationMenu.styles';
+} from '@/layouts/NavigationLayout/components/SidebarInvitationMenu/SidebarInvitationMenu.styles';
 
 type Props = {
   groupCode: Group['code'];

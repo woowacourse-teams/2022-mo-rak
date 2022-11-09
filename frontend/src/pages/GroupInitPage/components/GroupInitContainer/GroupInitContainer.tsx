@@ -1,7 +1,7 @@
-import serviceLogoImg from '../../../../assets/service-logo.svg';
+import serviceLogoImg from '@/assets/service-logo.svg';
 
-import GroupCreateForm from '../GroupCreateForm/GroupCreateForm';
-import GroupParticipateForm from '../GroupParticipateForm/GroupParticipateForm';
+import GroupCreateForm from '@/pages/GroupInitPage/components/GroupCreateForm/GroupCreateForm';
+import GroupParticipateForm from '@/pages/GroupInitPage/components/GroupParticipateForm/GroupParticipateForm';
 
 import {
   StyledContainer,
@@ -10,7 +10,7 @@ import {
   StyledLogo,
   StyledTitle,
   StyledDescription
-} from './GroupInitContainer.styles';
+} from '@/pages/GroupInitPage/components/GroupInitContainer/GroupInitContainer.styles';
 
 function GroupInitContainer() {
   return (
@@ -19,7 +19,8 @@ function GroupInitContainer() {
         <StyledLogo src={serviceLogoImg} alt="모락 로고" aria-hidden="true" />
         <StyledTitle>새로운 그룹에 참여해볼까요?</StyledTitle>
         <StyledDescription>
-          아직 그룹이 없네요. 새로운 그룹을 생성하거나, 초대받은 그룹에 참가해서 모락을 시작해보세요!
+          아직 그룹이 없네요. 새로운 그룹을 생성하거나, 초대받은 그룹에 참가해서 모락을
+          시작해보세요!
         </StyledDescription>
       </StyledTopContainer>
       <StyledBottomContainer>

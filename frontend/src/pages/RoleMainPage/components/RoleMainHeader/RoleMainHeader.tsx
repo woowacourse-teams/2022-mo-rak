@@ -1,5 +1,5 @@
-import Divider from '../../../../components/Divider/Divider';
-import { StyledTitle } from './RoleMainHeader.styles';
+import Divider from '@/components/Divider/Divider';
+import { StyledTitle } from '@/pages/RoleMainPage/components/RoleMainHeader/RoleMainHeader.styles';
 
 function RoleMainHeader() {
   return (

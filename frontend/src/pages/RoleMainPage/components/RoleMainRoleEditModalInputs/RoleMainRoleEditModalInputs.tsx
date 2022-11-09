@@ -1,11 +1,11 @@
 import { ChangeEvent } from 'react';
 import { useTheme } from '@emotion/react';
-import Button from '../../../../components/Button/Button';
-import Input from '../../../../components/Input/Input';
-import TextField from '../../../../components/TextField/TextField';
-import { StyledBinIcon } from './RoleMainRoleEditModalInputs.styles';
-import binImg from '../../../../assets/bin.svg';
-import { EditRolesRequest } from '../../../../types/role';
+import Button from '@/components/Button/Button';
+import Input from '@/components/Input/Input';
+import TextField from '@/components/TextField/TextField';
+import { StyledBinIcon } from '@/pages/RoleMainPage/components/RoleMainRoleEditModalInputs/RoleMainRoleEditModalInputs.styles';
+import binImg from '@/assets/bin.svg';
+import { EditRolesRequest } from '@/types/role';
 
 type Props = {
   roles: EditRolesRequest['roles'];

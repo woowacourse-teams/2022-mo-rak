@@ -1,10 +1,10 @@
 import { useTheme } from '@emotion/react';
 
-import { StyledDetail } from './PollProgressDetail.styles';
-import TextField from '../../../../components/TextField/TextField';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
+import { StyledDetail } from '@/pages/PollProgressPage/components/PollProgressDetail/PollProgressDetail.styles';
+import TextField from '@/components/TextField/TextField';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 
-import { Poll } from '../../../../types/poll';
+import { Poll } from '@/types/poll';
 
 type Props = Pick<Poll, 'isAnonymous' | 'allowedPollCount'>;
 

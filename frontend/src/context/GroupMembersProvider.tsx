@@ -1,5 +1,5 @@
 import { createContext, useReducer, PropsWithChildren, Dispatch } from 'react';
-import { Member } from '../types/group';
+import { Member } from '@/types/group';
 
 type GroupMembersState = {
   groupMembers: Array<Member>;

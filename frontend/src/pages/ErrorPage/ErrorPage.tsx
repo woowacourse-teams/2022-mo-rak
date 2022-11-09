@@ -1,6 +1,6 @@
-import { StyledContainer } from './ErrorPage.styles';
-import ErrorPageButtons from './components/ErrorPageButtons/ErrorPageButtons';
-import ErrorPageContainer from './components/ErrorPageContainer/ErrorPageContainer';
+import { StyledContainer } from '@/pages/ErrorPage/ErrorPage.styles';
+import ErrorPageButtons from '@/pages/ErrorPage/components/ErrorPageButtons/ErrorPageButtons';
+import ErrorPageContainer from '@/pages/ErrorPage/components/ErrorPageContainer/ErrorPageContainer';
 
 function ErrorPage() {
   return (

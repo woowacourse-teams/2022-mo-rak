@@ -1,12 +1,12 @@
 import { PropsWithChildren, useState } from 'react';
-import closeButtonImg from '../../assets/close-button.svg';
+import closeButtonImg from '@/assets/close-button.svg';
 import {
   StyledContainer,
   StyledContentTrigger,
   StyledContentContainer,
   StyledCloseButton,
   StyledContent
-} from './Tooltip.styles';
+} from '@/components/Tooltip/Tooltip.styles';
 
 type placementStyleProps = Pick<Props, 'placement'>;
 

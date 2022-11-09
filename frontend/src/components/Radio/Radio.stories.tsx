@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import Radio from './Radio';
+import Radio from '@/components/Radio/Radio';
 
 export default {
   title: 'Reusable Components/Radio',

@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useReducer, Dispatch } from 'react';
-import { Member } from '../types/group';
+import { Member } from '@/types/group';
 
 type AuthState = {
   id: Member['id'] | null;

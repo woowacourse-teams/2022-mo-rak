@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import RoleMainRoleEditModal from '../RoleMainRoleEditModal/RoleMainRoleEditModal';
-import RoleMainRoles from '../RoleMainRoles/RoleMainRoles';
-import { getRoles } from '../../../../api/role';
+import RoleMainRoleEditModal from '@/pages/RoleMainPage/components/RoleMainRoleEditModal/RoleMainRoleEditModal';
+import RoleMainRoles from '@/pages/RoleMainPage/components/RoleMainRoles/RoleMainRoles';
+import { getRoles } from '@/api/role';
 import { useParams } from 'react-router-dom';
-import { Group } from '../../../../types/group';
-import { EditRolesRequest } from '../../../../types/role';
+import { Group } from '@/types/group';
+import { EditRolesRequest } from '@/types/role';
 import { AxiosError } from 'axios';
-import RoleMainButtons from '../RoleMainButtons/RoleMainButtons';
-import useModal from '../../../../hooks/useModal';
+import RoleMainButtons from '@/pages/RoleMainPage/components/RoleMainButtons/RoleMainButtons';
+import useModal from '@/hooks/useModal';
 
 type Props = {
   onClickAllocateRolesButton: () => void;

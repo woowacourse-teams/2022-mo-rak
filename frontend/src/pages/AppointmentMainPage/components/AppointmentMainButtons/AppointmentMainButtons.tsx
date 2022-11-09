@@ -1,8 +1,8 @@
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import Button from '../../../../components/Button/Button';
-import { Appointment } from '../../../../types/appointment';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Button from '@/components/Button/Button';
+import { Appointment } from '@/types/appointment';
 
 type Props = {
   appointmentCode: Appointment['code'];

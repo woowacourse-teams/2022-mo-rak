@@ -1,7 +1,7 @@
-import Progress from '../../../../components/Progress/Progress';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { StyledParticipantsStatus } from './AppointmentMainProgress.styles';
-import useGroupMembersContext from '../../../../hooks/useGroupMembersContext';
+import Progress from '@/components/Progress/Progress';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import { StyledParticipantsStatus } from '@/pages/AppointmentMainPage/components/AppointmentMainProgress/AppointmentMainProgress.styles';
+import useGroupMembersContext from '@/hooks/useGroupMembersContext';
 
 type Props = {
   count: number;

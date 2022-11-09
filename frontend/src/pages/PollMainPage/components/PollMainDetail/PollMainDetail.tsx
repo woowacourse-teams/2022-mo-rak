@@ -1,10 +1,13 @@
 import { useTheme } from '@emotion/react';
 
-import { StyledCloseTime, StyledDetail } from './PollMainDetail.styles';
+import {
+  StyledCloseTime,
+  StyledDetail
+} from '@/pages/PollMainPage/components/PollMainDetail/PollMainDetail.styles';
 
-import { Poll } from '../../../../types/poll';
-import TextField from '../../../../components/TextField/TextField';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
+import { Poll } from '@/types/poll';
+import TextField from '@/components/TextField/TextField';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);

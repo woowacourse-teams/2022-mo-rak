@@ -2,14 +2,14 @@ import { Dispatch, SetStateAction, MouseEvent, ChangeEvent, memo } from 'react';
 
 import { useTheme } from '@emotion/react';
 
-import { StyledDeleteIcon } from './PollCreateFormInputs.styles';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import Input from '../../../../components/Input/Input';
-import TextField from '../../../../components/TextField/TextField';
-import Button from '../../../../components/Button/Button';
+import { StyledDeleteIcon } from '@/pages/PollCreatePage/components/PollCreateFormInputs/PollCreateFormInputs.styles';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Input from '@/components/Input/Input';
+import TextField from '@/components/TextField/TextField';
+import Button from '@/components/Button/Button';
 
-import binImg from '../../../../assets/bin.svg';
-import { PollItem } from '../../../../types/poll';
+import binImg from '@/assets/bin.svg';
+import { PollItem } from '@/types/poll';
 
 type Props = {
   // TODO: pollItems 괜찮을까? subjects가 아닐까?

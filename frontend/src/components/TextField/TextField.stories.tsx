@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
-import TextField from './TextField';
-import theme from '../../styles/theme';
-import Input from '../Input/Input';
+import TextField from '@/components/TextField/TextField';
+import theme from '@/styles/theme';
+import Input from '@/components/Input/Input';
 
 export default {
   title: 'Reusable Components/TextField',

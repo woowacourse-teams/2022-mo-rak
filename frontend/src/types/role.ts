@@ -1,4 +1,4 @@
-import { Member } from './group';
+import { Member } from '@/types/group';
 
 type Role = {
   date: `${string}-${string}-${string}`;

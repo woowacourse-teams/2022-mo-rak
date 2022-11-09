@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import settingImg from '../../../../assets/setting.svg';
-import menuImg from '../../../../assets/menu.svg';
-import plusImg from '../../../../assets/plus.svg';
-import leaveImg from '../../../../assets/leave.svg';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import { leaveGroup } from '../../../../api/group';
-import { Group } from '../../../../types/group';
-import useNavigationBarDispatchContext from '../../../../hooks/useNavigationBarDispatchContext';
-import useNavigationBarContext from '../../../../hooks/useNavigationBarContext';
+import settingImg from '@/assets/setting.svg';
+import menuImg from '@/assets/menu.svg';
+import plusImg from '@/assets/plus.svg';
+import leaveImg from '@/assets/leave.svg';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import { leaveGroup } from '@/api/group';
+import { Group } from '@/types/group';
+import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
+import useNavigationBarContext from '@/hooks/useNavigationBarContext';
 import {
   StyledMenuHeader,
   StyledGroupsModalContainer,
@@ -26,7 +26,7 @@ import {
   StyledLeaveGroupButton,
   StyledPlusImage,
   StyledLeaveImage
-} from './SidebarGroupsMenu.styles';
+} from '@/layouts/NavigationLayout/components/SidebarGroupsMenu/SidebarGroupsMenu.styles';
 
 type Props = {
   groupCode: Group['code'];

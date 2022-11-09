@@ -1,5 +1,5 @@
 import { PropsWithChildren, CSSProperties, SelectHTMLAttributes } from 'react';
-import { StyledContainer } from './Select.styles';
+import { StyledContainer } from '@/components/Select/Select.styles';
 
 type Props = PropsWithChildren<SelectHTMLAttributes<HTMLSelectElement>> & CSSProperties;
 

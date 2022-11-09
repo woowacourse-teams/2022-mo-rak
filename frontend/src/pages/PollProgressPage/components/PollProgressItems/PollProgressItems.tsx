@@ -1,15 +1,15 @@
 import { ChangeEventHandler } from 'react';
 
 import { useTheme } from '@emotion/react';
-import { StyledDescription } from './PollProgressItems.styles';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
+import { StyledDescription } from '@/pages/PollProgressPage/components/PollProgressItems/PollProgressItems.styles';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 
-import { Poll, SelectedPollItem, getPollItemsResponse } from '../../../../types/poll';
+import { Poll, SelectedPollItem, getPollItemsResponse } from '@/types/poll';
 
-import TextField from '../../../../components/TextField/TextField';
-import Radio from '../../../../components/Radio/Radio';
-import Checkbox from '../../../../components/Checkbox/Checkbox';
-import Input from '../../../../components/Input/Input';
+import TextField from '@/components/TextField/TextField';
+import Radio from '@/components/Radio/Radio';
+import Checkbox from '@/components/Checkbox/Checkbox';
+import Input from '@/components/Input/Input';
 
 type Props = {
   pollItems: getPollItemsResponse;

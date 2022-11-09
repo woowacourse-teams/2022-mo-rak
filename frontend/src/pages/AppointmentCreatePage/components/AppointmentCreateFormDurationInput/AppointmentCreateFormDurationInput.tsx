@@ -1,15 +1,15 @@
 import { useTheme } from '@emotion/react';
 import { memo, SelectHTMLAttributes } from 'react';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import TextField from '../../../../components/TextField/TextField';
-import Select from '../../../../components/Select/Select';
-import { createRange } from '../../../../utils/createRange';
-import { Time } from '../../../../types/appointment';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import TextField from '@/components/TextField/TextField';
+import Select from '@/components/Select/Select';
+import { createRange } from '@/utils/createRange';
+import { Time } from '@/types/appointment';
 import {
   StyledTitle,
   StyledContent,
   StyledLabel
-} from './AppointmentCreateFormDurationInput.styles';
+} from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormDurationInput/AppointmentCreateFormDurationInput.styles';
 
 type Props = {
   duration: Omit<Time, 'period'>;

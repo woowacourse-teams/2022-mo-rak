@@ -1,20 +1,20 @@
 import { useNavigate } from 'react-router-dom';
-import pollImg from '../../../../assets/poll.svg';
-import calendarClockImg from '../../../../assets/calendar-clock.svg';
-import roleImg from '../../../../assets/role.svg';
-import FlexContainer from '../../../../components/FlexContainer/FlexContainer';
-import useNavigationBarDispatchContext from '../../../../hooks/useNavigationBarDispatchContext';
-import useNavigationBarContext from '../../../../hooks/useNavigationBarContext';
-import { Menu } from '../../../../types/menu';
+import pollImg from '@/assets/poll.svg';
+import calendarClockImg from '@/assets/calendar-clock.svg';
+import roleImg from '@/assets/role.svg';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
+import useNavigationBarContext from '@/hooks/useNavigationBarContext';
+import { Menu } from '@/types/menu';
 
-import { Group } from '../../../../types/group';
+import { Group } from '@/types/group';
 import {
   StyledContainer,
   StyledMenuHeader,
   StyledMenuIcon,
   StyledMenuTitle,
   StyledMenu
-} from './SidebarFeaturesMenu.styles';
+} from '@/layouts/NavigationLayout/components/SidebarFeaturesMenu/SidebarFeaturesMenu.styles';
 
 type Props = {
   groupCode: Group['code'];
