@@ -33,7 +33,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
 @Sql(scripts = {"classpath:schema.sql", "classpath:data.sql"})
-public class NotificationEventTest {
+class NotificationEventTest {
 
     private static final String APPOINTMENT_CODE = "FEsd23C1";
     private static final String POLL_CODE = "testcode";

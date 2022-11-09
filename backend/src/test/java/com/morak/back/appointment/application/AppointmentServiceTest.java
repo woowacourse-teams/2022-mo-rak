@@ -388,7 +388,7 @@ class AppointmentServiceTest {
         // when
         appointmentService.closeAllBeforeNow();
         // then
-        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(systemTime.now());
+        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(systemTime.now().minusDays(1), systemTime.now());
         assertThat(appointmentsToBeClosed).isEmpty();
     }
 }
