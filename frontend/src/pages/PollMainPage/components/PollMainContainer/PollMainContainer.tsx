@@ -15,7 +15,7 @@ import PollMainProgress from '@/pages/PollMainPage/components/PollMainProgress/P
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import MarginContainer from '@/components/MarginContainer/MarginContainer';
 
-import { getPolls } from '@/api/poll';
+import { getPolls } from '@/apis/poll';
 import { getPollsResponse } from '@/types/poll';
 import { Group } from '@/types/group';
 

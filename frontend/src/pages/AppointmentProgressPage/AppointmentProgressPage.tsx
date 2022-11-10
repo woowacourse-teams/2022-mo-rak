@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getAppointment, progressAppointment } from '@/api/appointment';
+import { getAppointment, progressAppointment } from '@/apis/appointment';
 import { Group } from '@/types/group';
 import { AvailableTimes, Appointment, GetAppointmentResponse } from '@/types/appointment';
 import Calendar from '@/components/Calendar/Calendar';

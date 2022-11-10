@@ -13,7 +13,7 @@ import PollCreateFormSubmitButton from '@/pages/PollCreatePage/components/PollCr
 import PollCreateFormTitleInput from '@/pages/PollCreatePage/components/PollCreateFormTitleInput/PollCreateFormTitleInput';
 import PollCreateCloseTimeInput from '@/pages/PollCreatePage/components/PollCreateCloseTimeInput/PollCreateCloseTimeInput';
 
-import { createPoll } from '@/api/poll';
+import { createPoll } from '@/apis/poll';
 import { createPollRequest, Poll } from '@/types/poll';
 import { Group } from '@/types/group';
 import useInput from '@/hooks/useInput';

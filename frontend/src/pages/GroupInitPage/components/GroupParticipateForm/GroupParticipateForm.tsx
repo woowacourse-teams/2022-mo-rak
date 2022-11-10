@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { participateGroup } from '@/api/group';
+import { participateGroup } from '@/apis/group';
 import useInput from '@/hooks/useInput';
 
 import GroupParticipateInvitationCodeInput from '@/pages/GroupInitPage/components/GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';

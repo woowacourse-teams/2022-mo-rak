@@ -9,7 +9,7 @@ import Box from '@/components/Box/Box';
 import serviceLogoImg from '@/assets/service-logo.svg';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import InvitationButtons from '@/pages/InvitationPage/components/InvitationButtons/InvitationButtons';
-import { getIsJoinedGroup } from '@/api/group';
+import { getIsJoinedGroup } from '@/apis/group';
 import { Group } from '@/types/group';
 
 function InvitationContainer() {

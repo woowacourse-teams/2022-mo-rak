@@ -1,6 +1,6 @@
 import { Group } from '@/types/group';
 import { EditRolesRequest } from '@/types/role';
-import { privateGroupsAxiosInstance } from '@/api/axios';
+import { privateGroupsAxiosInstance } from '@/apis/axios';
 
 const getRoles = (groupCode: Group['code']) =>
   privateGroupsAxiosInstance.get(`/${groupCode}/roles/names`);

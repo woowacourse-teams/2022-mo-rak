@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import serviceLogoImg from '@/assets/service-logo.svg';
 
-import { getGroups } from '@/api/group';
+import { getGroups } from '@/apis/group';
 import { Group } from '@/types/group';
 
 import SidebarGroupsMenu from '@/layouts/NavigationLayout/components/SidebarGroupsMenu/SidebarGroupsMenu';

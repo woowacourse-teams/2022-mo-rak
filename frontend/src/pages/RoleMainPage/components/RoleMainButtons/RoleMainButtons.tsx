@@ -6,7 +6,7 @@ import { StyledAnimationContainer } from '@/pages/RoleMainPage/components/RoleMa
 import { Group } from '@/types/group';
 import { useState } from 'react';
 import { useLottie } from 'lottie-react';
-import { allocateRoles } from '@/api/role';
+import { allocateRoles } from '@/apis/role';
 import { AxiosError } from 'axios';
 import fireworkLottie from '@/assets/firework-animation.json';
 

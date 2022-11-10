@@ -13,9 +13,9 @@ import linkImg from '@/assets/link.svg';
 import closeButtonImg from '@/assets/close-button.svg';
 import serviceLogoImg from '@/assets/service-logo.svg';
 import { Group } from '@/types/group';
-import { createGroup, participateGroup } from '@/api/group';
+import { createGroup, participateGroup } from '@/apis/group';
 import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
-import { linkSlack } from '@/api/slack';
+import { linkSlack } from '@/apis/slack';
 import { LinkSlackRequest } from '@/types/slack';
 import useInput from '@/hooks/useInput';
 import {

@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import { getGroupMembers } from '@/api/group';
+import { getGroupMembers } from '@/apis/group';
 import useAuthContext from '@/hooks/useAuthContext';
 import useGroupMembersDispatchContext from '@/hooks/useGroupMembersDispatchContext';
 import useNavigationBarContext from '@/hooks/useNavigationBarContext';
