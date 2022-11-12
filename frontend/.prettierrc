@@ -1,6 +1,17 @@
 {
   "singleQuote": true,
   "trailingComma": "none",
-  "endofLine": "auto",
-  "printWidth": 100
+  "endOfLine": "auto",
+  "printWidth": 100,
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^@/routes/(.*)$",
+    "^@/pages/(.*)$",
+    "^@/layouts/(.*)$",
+    "^@/components/(.*)$",
+    "^@/contexts/(.*)$",
+    "^@/hooks/(.*)$",
+    "^(@|(assets|constants|utils|apis|types|styles))(.*|$)"
+  ],
+  "importOrderSeparation": true
 }
