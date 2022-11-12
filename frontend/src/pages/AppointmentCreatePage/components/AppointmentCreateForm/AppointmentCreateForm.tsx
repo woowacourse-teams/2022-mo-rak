@@ -1,20 +1,24 @@
+import { AxiosError } from 'axios';
 import { FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AxiosError } from 'axios';
-import Box from '@/components/Box/Box';
+
+import { StyledContainer } from '@/pages/AppointmentCreatePage/components/AppointmentCreateForm/AppointmentCreateForm.styles';
 import AppointmentCreateFormButtons from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormButtons/AppointmentCreateFormButtons';
-import AppointmentCreateFormTitleInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
+import AppointmentCreateFormCloseTimeInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormCloseTimeInput/AppointmentCreateFormCloseTimeInput';
 import AppointmentCreateFormDescriptionInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormDescriptionInput/AppointmentCreateFormDescriptionInput';
 import AppointmentCreateFormDurationInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormDurationInput/AppointmentCreateFormDurationInput';
 import AppointmentCreateFormTimeLimitInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormTimeLimitInput/AppointmentCreateFormTimeLimitInput';
-import AppointmentCreateFormCloseTimeInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormCloseTimeInput/AppointmentCreateFormCloseTimeInput';
+import AppointmentCreateFormTitleInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormTitleInput/AppointmentCreateFormTitleInput';
+
+import Box from '@/components/Box/Box';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
+
 import useInput from '@/hooks/useInput';
 import useInputs from '@/hooks/useInputs';
-import { Time, CreateAppointmentRequest, Appointment } from '@/types/appointment';
+
 import { createAppointment } from '@/api/appointment';
+import { Appointment, CreateAppointmentRequest, Time } from '@/types/appointment';
 import { Group } from '@/types/group';
-import { StyledContainer } from '@/pages/AppointmentCreatePage/components/AppointmentCreateForm/AppointmentCreateForm.styles';
 
 const getFormattedTime = (time: Time) => {
   const { period, hour, minute } = time;
@@ -116,7 +120,6 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
     }
   };
 
-  // TODO: handleNavigate vs 아래처럼
   const handleNavigateAppointmentMain = () => {
     navigate(`/groups/${groupCode}/appointment`);
   };
@@ -141,7 +144,6 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
             closeTime={closeTime}
             closeDate={closeDate}
             maxCloseDate={
-              // TODO: 너무 복잡하다, getFormattedTime이 계속 중복되어서 사용된다.ㅠㅠ
               endDate && getFormattedTime(endTime) === '12:00AM' ? getPlusOneDate(endDate) : endDate
             }
             onChangeTime={handleCloseTime}

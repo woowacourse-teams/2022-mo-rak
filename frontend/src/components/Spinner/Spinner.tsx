@@ -1,7 +1,9 @@
 import { useLottie } from 'lottie-react';
 import { CSSProperties } from 'react';
-import spinnerLottie from '@/assets/spinner-animation.json';
+
 import { StyledContainer } from '@/components/Spinner/Spinner.styles';
+
+import spinnerLottie from '@/assets/spinner-animation.json';
 
 type Props = {
   width: CSSProperties['width'];
@@ -23,7 +25,6 @@ const getPlacementStyle = (placement: Props['placement']) => {
 };
 
 function Spinner({ width, placement }: Props) {
-  // TODO: lottie 네이밍 통일 (다른 곳)
   const spinnerAnimation = useLottie({ animationData: spinnerLottie }, { width });
   const placementStyle = getPlacementStyle(placement);
 

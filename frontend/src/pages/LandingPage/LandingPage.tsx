@@ -1,19 +1,20 @@
-import { StyledContainer } from '@/pages/LandingPage/LandingPage.styles';
-
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import {
-  getLocalStorageItem,
-  saveLocalStorageItem,
-  getSessionStorageItem,
-  removeSessionStorageItem
-} from '@/utils/storage';
-import { signin } from '@/api/auth';
-import { getDefaultGroup } from '@/api/group';
+
+import { StyledContainer } from '@/pages/LandingPage/LandingPage.styles';
+import LandingFeatureIntroductionSection from '@/pages/LandingPage/components/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';
 import LandingMainSection from '@/pages/LandingPage/components/LandingMainSection/LandingMainSection';
 import LandingServiceIntroductionSection from '@/pages/LandingPage/components/LandingServiceIntroductionSection/LandingServiceIntroductionSection';
-import LandingFeatureIntroductionSection from '@/pages/LandingPage/components/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';
-import { AxiosError } from 'axios';
+
+import { signin } from '@/api/auth';
+import { getDefaultGroup } from '@/api/group';
+import {
+  getLocalStorageItem,
+  getSessionStorageItem,
+  removeSessionStorageItem,
+  saveLocalStorageItem
+} from '@/utils/storage';
 
 function LandingPage() {
   const navigate = useNavigate();

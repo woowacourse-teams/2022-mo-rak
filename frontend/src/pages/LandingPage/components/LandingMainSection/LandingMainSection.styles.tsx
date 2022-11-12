@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
 import halfCircleImg from '@/assets/half-circle.svg';
+import styled from '@emotion/styled';
 
 const StyledLink = styled.a`
   text-decoration: none;

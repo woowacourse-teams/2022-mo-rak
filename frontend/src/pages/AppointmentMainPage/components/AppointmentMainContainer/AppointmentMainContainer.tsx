@@ -1,24 +1,27 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { useLottie } from 'lottie-react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import AppointmentMainButtons from '@/pages/AppointmentMainPage/components/AppointmentMainButtons/AppointmentMainButtons';
+import {
+  LottieContainer,
+  StyledAppointmentContainer,
+  StyledContainer,
+  StyledGuide,
+  StyledTitle
+} from '@/pages/AppointmentMainPage/components/AppointmentMainContainer/AppointmentMainContainer.styles';
+import AppointmentMainDetail from '@/pages/AppointmentMainPage/components/AppointmentMainDetail/AppointmentMainDetail';
+import AppointmentMainProgress from '@/pages/AppointmentMainPage/components/AppointmentMainProgress/AppointmentMainProgress';
+import AppointmentMainStatus from '@/pages/AppointmentMainPage/components/AppointmentMainStatus/AppointmentMainStatus';
+
 import Box from '@/components/Box/Box';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import MarginContainer from '@/components/MarginContainer/MarginContainer';
-import { Group } from '@/types/group';
-import { GetAppointmentsResponse } from '@/types/appointment';
+
 import { getAppointments } from '@/api/appointment';
-import AppointmentMainStatus from '@/pages/AppointmentMainPage/components/AppointmentMainStatus/AppointmentMainStatus';
-import AppointmentMainProgress from '@/pages/AppointmentMainPage/components/AppointmentMainProgress/AppointmentMainProgress';
-import AppointmentMainDetail from '@/pages/AppointmentMainPage/components/AppointmentMainDetail/AppointmentMainDetail';
-import AppointmentMainButtons from '@/pages/AppointmentMainPage/components/AppointmentMainButtons/AppointmentMainButtons';
 import emptyLottie from '@/assets/empty-animation.json';
-import {
-  StyledContainer,
-  StyledTitle,
-  LottieContainer,
-  StyledGuide,
-  StyledAppointmentContainer
-} from '@/pages/AppointmentMainPage/components/AppointmentMainContainer/AppointmentMainContainer.styles';
+import { GetAppointmentsResponse } from '@/types/appointment';
+import { Group } from '@/types/group';
 
 function AppointmentMainContainer() {
   const emptyAnimation = useLottie({ animationData: emptyLottie }, { width: '60rem' });
@@ -46,7 +49,6 @@ function AppointmentMainContainer() {
     <StyledContainer>
       {appointments.map(
         ({ code, title, durationHours, durationMinutes, count, isClosed, closedAt }) => (
-          // TODO: StyledPollContainer 를 삭제해주거나 Box와 합쳐주기
           <StyledAppointmentContainer key={code}>
             <Box width="100%" padding="2.8rem" filter={isClosed ? 'grayscale(1)' : 'none'}>
               <FlexContainer justifyContent="end">

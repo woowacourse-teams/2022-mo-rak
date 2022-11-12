@@ -5,7 +5,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 dotenv.config();
 
-// TODO: 절대경로 설정
 module.exports = {
   entry: './src/index.tsx',
   output: {

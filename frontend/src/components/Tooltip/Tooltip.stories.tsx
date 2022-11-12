@@ -1,7 +1,8 @@
-import { Meta, Story } from '@storybook/react';
-import Tooltip from './Tooltip';
+import Tooltip from '@/components/Tooltip/Tooltip';
+
+import theme from '@/styles/theme';
 import styled from '@emotion/styled';
-import theme from '../../styles/theme';
+import { Meta, Story } from '@storybook/react';
 
 export default {
   title: 'Reusable Components/Tooltip',

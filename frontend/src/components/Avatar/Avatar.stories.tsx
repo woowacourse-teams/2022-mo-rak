@@ -1,6 +1,6 @@
-import { Meta, Story } from '@storybook/react';
+import Avatar from '@/components/Avatar/Avatar';
 
-import Avatar from './Avatar';
+import { Meta, Story } from '@storybook/react';
 
 export default {
   title: 'Reusable Components/Avatar',

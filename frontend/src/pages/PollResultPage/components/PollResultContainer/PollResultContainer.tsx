@@ -1,32 +1,32 @@
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import {
-  StyledTitle,
-  StyledLoadingContainer,
-  StyledHelpIconContainer,
-  StyledHelpIcon,
-  StyledDescription
-} from '@/pages/PollResultPage/components/PollResultContainer/PollResultContainer.styles';
-
 import { useNavigate, useParams } from 'react-router-dom';
+
+import PollResultButtons from '@/pages/PollResultPage/components/PollResultButtons/PollResultButtons';
+import {
+  StyledDescription,
+  StyledHelpIcon,
+  StyledHelpIconContainer,
+  StyledLoadingContainer,
+  StyledTitle
+} from '@/pages/PollResultPage/components/PollResultContainer/PollResultContainer.styles';
+import PollResultDetail from '@/pages/PollResultPage/components/PollResultDetail/PollResultDetail';
+import PollResultItems from '@/pages/PollResultPage/components/PollResultItems/PollResultItems';
+import PollResultProgress from '@/pages/PollResultPage/components/PollResultProgress/PollResultProgress';
+import PollResultShareLink from '@/pages/PollResultPage/components/PollResultShareLink/PollResultShareLink';
+import PollResultStatus from '@/pages/PollResultPage/components/PollResultStatus/PollResultStatus';
+
 import Box from '@/components/Box/Box';
 import Divider from '@/components/Divider/Divider';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import MarginContainer from '@/components/MarginContainer/MarginContainer';
-
-import PollResultItems from '@/pages/PollResultPage/components/PollResultItems/PollResultItems';
-import PollResultDetail from '@/pages/PollResultPage/components/PollResultDetail/PollResultDetail';
-import PollResultButtons from '@/pages/PollResultPage/components/PollResultButtons/PollResultButtons';
-import { getPoll, getPollResult, getPollItems } from '@/api/poll';
-import { Poll, getPollResponse, getPollResultResponse, getPollItemsResponse } from '@/types/poll';
-import { Group } from '@/types/group';
-
-import PollResultProgress from '@/pages/PollResultPage/components/PollResultProgress/PollResultProgress';
-import PollResultStatus from '@/pages/PollResultPage/components/PollResultStatus/PollResultStatus';
-import PollResultShareLink from '@/pages/PollResultPage/components/PollResultShareLink/PollResultShareLink';
-import { AxiosError } from 'axios';
 import Spinner from '@/components/Spinner/Spinner';
 import Tooltip from '@/components/Tooltip/Tooltip';
+
+import { getPoll, getPollItems, getPollResult } from '@/api/poll';
 import questionImg from '@/assets/question.svg';
+import { Group } from '@/types/group';
+import { Poll, getPollItemsResponse, getPollResponse, getPollResultResponse } from '@/types/poll';
 import { useTheme } from '@emotion/react';
 
 function PollResultContainer() {

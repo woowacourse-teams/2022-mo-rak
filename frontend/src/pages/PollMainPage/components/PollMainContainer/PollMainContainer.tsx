@@ -1,26 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useLottie } from 'lottie-react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import PollMainButtons from '@/pages/PollMainPage/components/PollMainButtons/PollMainButtons';
 import {
   StyledContainer,
   StyledGuide,
-  StyledTitle,
   StyledLottieContainer,
-  StyledPollContainer
+  StyledPollContainer,
+  StyledTitle
 } from '@/pages/PollMainPage/components/PollMainContainer/PollMainContainer.styles';
-import { useParams } from 'react-router-dom';
-import { useLottie } from 'lottie-react';
-import Box from '@/components/Box/Box';
-import PollMainStatus from '@/pages/PollMainPage/components/PollMainStatus/PollMainStatus';
 import PollMainDetail from '@/pages/PollMainPage/components/PollMainDetail/PollMainDetail';
 import PollMainProgress from '@/pages/PollMainPage/components/PollMainProgress/PollMainProgress';
+import PollMainStatus from '@/pages/PollMainPage/components/PollMainStatus/PollMainStatus';
+
+import Box from '@/components/Box/Box';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import MarginContainer from '@/components/MarginContainer/MarginContainer';
 
 import { getPolls } from '@/api/poll';
-import { getPollsResponse } from '@/types/poll';
-import { Group } from '@/types/group';
-
-import PollMainButtons from '@/pages/PollMainPage/components/PollMainButtons/PollMainButtons';
 import emptyLottie from '@/assets/empty-animation.json';
+import { Group } from '@/types/group';
+import { getPollsResponse } from '@/types/poll';
 
 function PollMainContainer() {
   const [polls, setPolls] = useState<getPollsResponse>([]);
@@ -37,7 +38,6 @@ function PollMainContainer() {
   if (polls.length <= 0) {
     return (
       <>
-        {/* TODO: 재사용 가능하지 않을까한다! */}
         <StyledLottieContainer>{emptyAnimation.View}</StyledLottieContainer>
         <StyledGuide aria-label="poll-guide">첫 투표를 만들어보세요!</StyledGuide>
       </>

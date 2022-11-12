@@ -1,6 +1,8 @@
-import { useTheme } from '@emotion/react';
 import { StyledContainer } from '@/layouts/NavigationLayout/components/SidebarEditUsernameModalButtons/SidebarEditUsernameModalButtons.styles';
+
 import Button from '@/components/Button/Button';
+
+import { useTheme } from '@emotion/react';
 
 type Props = {
   onClickCancelButton: () => void;

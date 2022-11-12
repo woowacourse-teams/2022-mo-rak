@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { getUser } from '@/api/auth';
+
 import useAuthDispatchContext from '@/hooks/useAuthDispatchContext';
+
+import { getUser } from '@/api/auth';
 import { getLocalStorageItem } from '@/utils/storage';
 
 function PrivateRoute() {

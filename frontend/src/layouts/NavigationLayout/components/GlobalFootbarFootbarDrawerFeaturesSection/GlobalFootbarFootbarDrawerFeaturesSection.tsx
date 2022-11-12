@@ -1,20 +1,23 @@
 import { useNavigate } from 'react-router-dom';
-import pollImg from '@/assets/poll.svg';
-import calendarClockImg from '@/assets/calendar-clock.svg';
-import roleImg from '@/assets/role.svg';
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
-import useNavigationBarContext from '@/hooks/useNavigationBarContext';
-import { Menu } from '@/types/menu';
 
-import { Group } from '@/types/group';
 import {
-  StyledMenuHeader,
   StyledContainer,
+  StyledMenu,
+  StyledMenuHeader,
   StyledMenuIcon,
-  StyledMenuTitle,
-  StyledMenu
+  StyledMenuTitle
 } from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerFeaturesSection/GlobalFootbarFootbarDrawerFeaturesSection.styles';
+
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+
+import useNavigationBarContext from '@/hooks/useNavigationBarContext';
+import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
+
+import calendarClockImg from '@/assets/calendar-clock.svg';
+import pollImg from '@/assets/poll.svg';
+import roleImg from '@/assets/role.svg';
+import { Group } from '@/types/group';
+import { Menu } from '@/types/menu';
 
 type Props = {
   groupCode: Group['code'];
@@ -26,7 +29,6 @@ function GlobalFootbarFootbarDrawerFeaturesSection({ closeDrawer, groupCode }: P
   const navigationBarDispatch = useNavigationBarDispatchContext();
   const navigate = useNavigate();
 
-  // TODO: 함수 역할에 맞게 분리 (navigate 역할 분리)
   const handleActiveMenu = (menu: Menu) => () => {
     navigationBarDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
     navigate(`/groups/${groupCode}/${menu}`);

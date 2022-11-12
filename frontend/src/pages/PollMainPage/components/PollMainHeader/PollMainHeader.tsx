@@ -1,9 +1,12 @@
-import { StyledTitle } from '@/pages/PollMainPage/components/PollMainHeader/PollMainHeader.styles';
-import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
+
+import { StyledTitle } from '@/pages/PollMainPage/components/PollMainHeader/PollMainHeader.styles';
+
 import Button from '@/components/Button/Button';
 import Divider from '@/components/Divider/Divider';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+
+import { useTheme } from '@emotion/react';
 
 function PollMainHeader() {
   const theme = useTheme();

@@ -1,6 +1,7 @@
-import styled from '@emotion/styled';
 import { CSSProperties } from 'react';
+
 import { Poll } from '@/types/poll';
+import styled from '@emotion/styled';
 
 const StyledParticipantCount = styled.div`
   position: absolute;

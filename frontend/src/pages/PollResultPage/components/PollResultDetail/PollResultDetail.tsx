@@ -1,12 +1,13 @@
-import { useTheme } from '@emotion/react';
-
 import {
   StyledCloseTime,
   StyledDetail
 } from '@/pages/PollResultPage/components/PollResultDetail/PollResultDetail.styles';
-import TextField from '@/components/TextField/TextField';
-import { Poll } from '@/types/poll';
+
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import TextField from '@/components/TextField/TextField';
+
+import { Poll } from '@/types/poll';
+import { useTheme } from '@emotion/react';
 
 type Props = Pick<Poll, 'isAnonymous' | 'allowedPollCount' | 'closedAt'>;
 

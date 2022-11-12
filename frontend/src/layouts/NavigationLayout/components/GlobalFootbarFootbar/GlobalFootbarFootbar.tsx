@@ -1,18 +1,21 @@
+import { useNavigate } from 'react-router-dom';
+
 import {
   StyledContainer,
   StyledMenuIcon
 } from '@/layouts/NavigationLayout/components/GlobalFootbarFootbar/GlobalFootbarFootbar.styles';
+import GlobalFootbarFootbarDrawer from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawer/GlobalFootbarFootbarDrawer';
+
+import useNavigationBarContext from '@/hooks/useNavigationBarContext';
+import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
+
+import calendarClockImg from '@/assets/calendar-clock.svg';
 import homeImg from '@/assets/home.svg';
 import menuImg from '@/assets/menu.svg';
 import pollImg from '@/assets/poll.svg';
-import calendarClockImg from '@/assets/calendar-clock.svg';
 import roleImg from '@/assets/role.svg';
-import { useNavigate } from 'react-router-dom';
-import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
-import useNavigationBarContext from '@/hooks/useNavigationBarContext';
 import { Group } from '@/types/group';
 import { Menu } from '@/types/menu';
-import GlobalFootbarFootbarDrawer from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawer/GlobalFootbarFootbarDrawer';
 
 type Props = {
   groupCode: Group['code'];
@@ -28,7 +31,6 @@ function GlobalFootbarFootbar({ groupCode, groups }: Props) {
     navigationBarDispatch({ type: 'SET_IS_DRAWER_VISIBLE', payload: true });
   };
 
-  // TODO: 함수 역할에 맞게 분리 (navigate 역할 분리)
   const handleSetActiveMenu = (menu: Menu) => () => {
     navigationBarDispatch({ type: 'SET_ACTIVE_MENU', payload: menu });
 

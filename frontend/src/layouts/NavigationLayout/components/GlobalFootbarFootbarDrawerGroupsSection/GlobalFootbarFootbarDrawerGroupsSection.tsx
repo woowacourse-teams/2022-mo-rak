@@ -1,23 +1,25 @@
 import { useNavigate } from 'react-router-dom';
-import plusImg from '@/assets/plus.svg';
-import leaveImg from '@/assets/leave.svg';
-import { leaveGroup } from '@/api/group';
-import { Group } from '@/types/group';
+
 import {
-  StyledMenuHeader,
-  StyledGroups,
-  StyledGroupProfile,
+  StyledButtonText,
+  StyledContainer,
+  StyledCreateNewGroupButton,
+  StyledGroup,
   StyledGroupFirstCharacter,
   StyledGroupName,
-  StyledContainer,
-  StyledGroup,
-  StyledParticipateNewGroupButton,
-  StyledCreateNewGroupButton,
-  StyledButtonText,
+  StyledGroupProfile,
+  StyledGroups,
   StyledLeaveGroupButton,
-  StyledPlusImage,
-  StyledLeaveImage
+  StyledLeaveImage,
+  StyledMenuHeader,
+  StyledParticipateNewGroupButton,
+  StyledPlusImage
 } from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerGroupsSection/GlobalFootbarFootbarDrawerGroupsSection.styles';
+
+import { leaveGroup } from '@/api/group';
+import leaveImg from '@/assets/leave.svg';
+import plusImg from '@/assets/plus.svg';
+import { Group } from '@/types/group';
 
 type Props = {
   groupCode: Group['code'];

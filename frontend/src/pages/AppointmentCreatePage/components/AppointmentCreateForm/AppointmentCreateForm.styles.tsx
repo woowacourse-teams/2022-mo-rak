@@ -1,5 +1,5 @@
+import responsive from '@/utils/responsive';
 import styled from '@emotion/styled';
-import responsive from '../../../../utils/responsive';
 
 const StyledContainer = styled.form`
   width: 64rem;

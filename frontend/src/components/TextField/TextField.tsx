@@ -1,6 +1,7 @@
-import { InputHTMLAttributes, CSSProperties, PropsWithChildren } from 'react';
+import { CSSProperties, InputHTMLAttributes, PropsWithChildren } from 'react';
 
 import { StyledContainer } from '@/components/TextField/TextField.styles';
+
 import { useTheme } from '@emotion/react';
 
 type VariantStyleProps = Pick<Props, 'colorScheme' | 'variant'>;

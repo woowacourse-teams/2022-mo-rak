@@ -1,5 +1,6 @@
+import Modal from '@/components/Modal/Modal';
+
 import { Meta, Story } from '@storybook/react';
-import Modal from './Modal';
 
 export default {
   title: 'Reusable Components/Modal',

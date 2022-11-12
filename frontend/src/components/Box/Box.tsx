@@ -1,4 +1,4 @@
-import { CSSProperties, PropsWithChildren, HTMLAttributes } from 'react';
+import { CSSProperties, HTMLAttributes, PropsWithChildren } from 'react';
 
 import { StyledContainer } from '@/components/Box/Box.styles';
 

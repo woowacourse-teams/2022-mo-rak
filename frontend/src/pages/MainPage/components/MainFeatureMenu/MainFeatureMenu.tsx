@@ -1,9 +1,10 @@
 import { MouseEventHandler } from 'react';
+
 import {
-  StyledMenuContainer,
   StyledContainer,
-  StyledName,
-  StyledImage
+  StyledImage,
+  StyledMenuContainer,
+  StyledName
 } from '@/pages/MainPage/components/MainFeatureMenu/MainFeatureMenu.styles';
 
 type Props = {

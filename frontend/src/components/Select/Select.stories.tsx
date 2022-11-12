@@ -1,7 +1,8 @@
-import { Meta, Story } from '@storybook/react';
 import Select from '@/components/Select/Select';
 import TextField from '@/components/TextField/TextField';
+
 import theme from '@/styles/theme';
+import { Meta, Story } from '@storybook/react';
 
 export default {
   title: 'Reusable Components/Select',

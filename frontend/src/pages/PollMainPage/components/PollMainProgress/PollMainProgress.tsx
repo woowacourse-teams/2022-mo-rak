@@ -1,8 +1,11 @@
 import { StyledParticipantsStatus } from '@/pages/PollMainPage/components/PollMainProgress/PollMainProgress.styles';
-import Progress from '@/components/Progress/Progress';
-import { getPollResponse } from '@/types/poll';
+
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Progress from '@/components/Progress/Progress';
+
 import useGroupMembersContext from '@/hooks/useGroupMembersContext';
+
+import { getPollResponse } from '@/types/poll';
 
 type Props = {
   currentParticipants: getPollResponse['count'];

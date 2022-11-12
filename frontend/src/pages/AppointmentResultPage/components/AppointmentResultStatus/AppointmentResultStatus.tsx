@@ -1,7 +1,9 @@
-import { useTheme } from '@emotion/react';
-import TextField from '@/components/TextField/TextField';
-import { Appointment } from '@/types/appointment';
 import { StyledStatus } from '@/pages/AppointmentResultPage/components/AppointmentResultStatus/AppointmentResultStatus.styles';
+
+import TextField from '@/components/TextField/TextField';
+
+import { Appointment } from '@/types/appointment';
+import { useTheme } from '@emotion/react';
 
 type Props = {
   isClosed: Appointment['isClosed'];

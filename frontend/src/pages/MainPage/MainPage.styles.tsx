@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
 import responsive from '@/utils/responsive';
+import styled from '@emotion/styled';
 
 const StyledContainer = styled.div`
   display: flex;

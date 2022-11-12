@@ -1,36 +1,39 @@
-import { FormEvent } from 'react';
-
-import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import TextField from '@/components/TextField/TextField';
-import Input from '@/components/Input/Input';
-import Modal from '@/components/Modal/Modal';
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import theme from '@/styles/theme';
-import slackImg from '@/assets/slack.svg';
-import plusImg from '@/assets/plus.svg';
-import linkImg from '@/assets/link.svg';
-import closeButtonImg from '@/assets/close-button.svg';
-import serviceLogoImg from '@/assets/service-logo.svg';
-import { Group } from '@/types/group';
-import { createGroup, participateGroup } from '@/api/group';
-import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
-import { linkSlack } from '@/api/slack';
-import { LinkSlackRequest } from '@/types/slack';
-import useInput from '@/hooks/useInput';
+import { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
+  StyledBottomContainer,
+  StyledButton,
+  StyledCloseButton,
+  StyledGuideText,
+  StyledHeaderText,
+  StyledLinkIcon,
   StyledModalFormContainer,
   StyledSlackLogo,
-  StyledHeaderText,
-  StyledGuideText,
+  StyledSmallLogo,
   StyledTopContainer,
-  StyledCloseButton,
-  StyledTriangle,
-  StyledBottomContainer,
-  StyledLinkIcon,
-  StyledButton,
-  StyledSmallLogo
+  StyledTriangle
 } from '@/layouts/NavigationLayout/components/SidebarModals/SidebarModals.styles';
+
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Input from '@/components/Input/Input';
+import Modal from '@/components/Modal/Modal';
+import TextField from '@/components/TextField/TextField';
+
+import useInput from '@/hooks/useInput';
+import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
+
+import { createGroup, participateGroup } from '@/api/group';
+import { linkSlack } from '@/api/slack';
+import closeButtonImg from '@/assets/close-button.svg';
+import linkImg from '@/assets/link.svg';
+import plusImg from '@/assets/plus.svg';
+import serviceLogoImg from '@/assets/service-logo.svg';
+import slackImg from '@/assets/slack.svg';
+import theme from '@/styles/theme';
+import { Group } from '@/types/group';
+import { LinkSlackRequest } from '@/types/slack';
 
 type Props = {
   activeModal: string | null;
@@ -128,9 +131,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
   return (
     <>
       {/* TODO: 모달 컴포넌트 3개로 나눠줘야할듯 */}
-      {/* 슬랙 연동 */}
       <Modal isVisible={activeModal === 'slack'} close={closeModal}>
-        {/* 슬랙 메뉴 */}
         <StyledModalFormContainer onSubmit={handleLinkSlack}>
           <StyledTopContainer>
             <StyledSlackLogo src={slackImg} alt="slack-logo" />
@@ -166,7 +167,6 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
         </StyledModalFormContainer>
       </Modal>
 
-      {/* 그룹 생성 */}
       <Modal isVisible={activeModal === 'create'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleCreateGroup}>
           <StyledTopContainer>
@@ -203,7 +203,6 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
         </StyledModalFormContainer>
       </Modal>
 
-      {/* 그룹 참가 */}
       <Modal isVisible={activeModal === 'participate'} close={closeModal}>
         <StyledModalFormContainer onSubmit={handleParticipateGroup}>
           <StyledTopContainer>

@@ -1,5 +1,4 @@
 import { StyledContainer } from '@/pages/PollProgressPage/PollProgressPage.styles';
-
 import PollProgressForm from '@/pages/PollProgressPage/components/PollProgressForm/PollProgressForm';
 
 function PollProgressPage() {

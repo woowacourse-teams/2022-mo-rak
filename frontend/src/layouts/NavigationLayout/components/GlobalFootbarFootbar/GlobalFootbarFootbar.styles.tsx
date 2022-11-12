@@ -24,7 +24,6 @@ const StyledMenuIcon = styled.img<{
     filter: invert(32%) sepia(66%) saturate(3979%) hue-rotate(241deg) brightness(93%) contrast(91%);
   }
   
-  //TODO: filter도 theme으로 변경해줄까?
   filter: ${
     isActive
       ? `invert(45%) sepia(82%) saturate(6262%) hue-rotate(243deg) brightness(94%) contrast(88%)`

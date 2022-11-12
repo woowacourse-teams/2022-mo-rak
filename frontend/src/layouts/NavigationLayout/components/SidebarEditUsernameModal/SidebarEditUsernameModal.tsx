@@ -1,22 +1,26 @@
-import Modal from '@/components/Modal/Modal';
-import {
-  StyledTopContainer,
-  StyledIcon,
-  StyledBottomContainer,
-  StyledTriangle,
-  StyledCloseIcon,
-  StyledTitle,
-  StyledForm
-} from '@/layouts/NavigationLayout/components/SidebarEditUsernameModal/SidebarEditUsernameModal.styles';
-import closeButtonImg from '@/assets/close-button.svg';
-import editWithSmileImg from '@/assets/edit-with-smile.svg';
-import { FormEvent } from 'react';
-import useInput from '@/hooks/useInput';
-import { editUsername } from '@/api/auth';
 import { AxiosError } from 'axios';
-import useAuthDispatchContext from '@/hooks/useAuthDispatchContext';
+import { FormEvent } from 'react';
+
+import {
+  StyledBottomContainer,
+  StyledCloseIcon,
+  StyledForm,
+  StyledIcon,
+  StyledTitle,
+  StyledTopContainer,
+  StyledTriangle
+} from '@/layouts/NavigationLayout/components/SidebarEditUsernameModal/SidebarEditUsernameModal.styles';
 import SidebarEditUsernameModalButtons from '@/layouts/NavigationLayout/components/SidebarEditUsernameModalButtons/SidebarEditUsernameModalButtons';
 import SidebarEditUsernameModalUsernameInput from '@/layouts/NavigationLayout/components/SidebarEditUsernameModalUsernameInput/SidebarEditUsernameModalUsernameInput';
+
+import Modal from '@/components/Modal/Modal';
+
+import useAuthDispatchContext from '@/hooks/useAuthDispatchContext';
+import useInput from '@/hooks/useInput';
+
+import { editUsername } from '@/api/auth';
+import closeButtonImg from '@/assets/close-button.svg';
+import editWithSmileImg from '@/assets/edit-with-smile.svg';
 
 type Props = {
   isVisible: boolean;

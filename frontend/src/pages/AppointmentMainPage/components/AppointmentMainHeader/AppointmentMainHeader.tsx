@@ -1,10 +1,12 @@
-import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 
-import Button from '@/components/Button/Button';
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import Divider from '@/components/Divider/Divider';
 import { StyledTitle } from '@/pages/AppointmentMainPage/components/AppointmentMainHeader/AppointmentMainHeader.styles';
+
+import Button from '@/components/Button/Button';
+import Divider from '@/components/Divider/Divider';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+
+import { useTheme } from '@emotion/react';
 
 function AppointmentMainHeader() {
   const theme = useTheme();

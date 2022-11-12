@@ -1,5 +1,6 @@
-import Divider from '@/components/Divider/Divider';
 import { StyledTitle } from '@/pages/MainPage/components/MainFeatureMenuHeader/MainFeatureMenuHeader.styles';
+
+import Divider from '@/components/Divider/Divider';
 
 function MainFeatureMenuHeader() {
   return (

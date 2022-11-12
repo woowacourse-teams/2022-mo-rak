@@ -1,12 +1,16 @@
+import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
-import { PrivateRoute } from '@/routes/PrivateRoute';
-import { MenuRoute } from '@/routes/MenuRoute';
-import NavigationLayout from '@/layouts/NavigationLayout/NavigationLayout';
+
 import GroupRoute from '@/routes/GroupRoute';
+import { MenuRoute } from '@/routes/MenuRoute';
+import { PrivateRoute } from '@/routes/PrivateRoute';
+
 import ErrorPage from '@/pages/ErrorPage/ErrorPage';
-import { AuthProvider } from '@/context/AuthProvider';
 import FallbackPage from '@/pages/FallbackPage/FallbackPage';
+
+import NavigationLayout from '@/layouts/NavigationLayout/NavigationLayout';
+
+import { AuthProvider } from '@/context/AuthProvider';
 
 const PollMainPage = lazy(() => import('@/pages/PollMainPage/PollMainPage'));
 const PollCreatePage = lazy(() => import('@/pages/PollCreatePage/PollCreatePage'));

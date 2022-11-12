@@ -1,11 +1,14 @@
 import { ChangeEventHandler, memo } from 'react';
-import { useTheme } from '@emotion/react';
-import TextField from '@/components/TextField/TextField';
+
+import { StyledContent } from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput.styles';
+
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import Select from '@/components/Select/Select';
-import { createRange } from '@/utils/createRange';
+import TextField from '@/components/TextField/TextField';
+
 import { Time } from '@/types/appointment';
-import { StyledContent } from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput.styles';
+import { createRange } from '@/utils/createRange';
+import { useTheme } from '@emotion/react';
 
 type Props = {
   time: Time;
@@ -25,7 +28,6 @@ function AppointmentCreateFormTimeInput({ time, ariaLabelHelper, onChange }: Pro
       width="18rem"
     >
       <FlexContainer alignItems="center">
-        {/* TODO: label을 어떻게 넣을것인가? 빈값으로? */}
         <Select
           name="period"
           value={time.period}

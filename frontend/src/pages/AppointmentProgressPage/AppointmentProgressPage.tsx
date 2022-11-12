@@ -1,20 +1,23 @@
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getAppointment, progressAppointment } from '@/api/appointment';
-import { Group } from '@/types/group';
-import { AvailableTimes, Appointment, GetAppointmentResponse } from '@/types/appointment';
-import Calendar from '@/components/Calendar/Calendar';
-import AppointmentProgressHeader from '@/pages/AppointmentProgressPage/components/AppointmentProgressHeader/AppointmentProgressHeader';
-import AppointmentProgressTimePicker from '@/pages/AppointmentProgressPage/components/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
-import AppointmentProgressButtons from '@/pages/AppointmentProgressPage/components/AppointmentProgressButtons/AppointmentProgressButtons';
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
+
 import {
   StyledContainer,
   StyledLeftContainer,
   StyledRightContainer
 } from '@/pages/AppointmentProgressPage/AppointmentProgressPage.styles';
-import { AxiosError } from 'axios';
+import AppointmentProgressButtons from '@/pages/AppointmentProgressPage/components/AppointmentProgressButtons/AppointmentProgressButtons';
+import AppointmentProgressHeader from '@/pages/AppointmentProgressPage/components/AppointmentProgressHeader/AppointmentProgressHeader';
+import AppointmentProgressTimePicker from '@/pages/AppointmentProgressPage/components/AppointmentProgressTimePicker/AppointmentProgressTimePicker';
+
+import Calendar from '@/components/Calendar/Calendar';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import Spinner from '@/components/Spinner/Spinner';
+
+import { getAppointment, progressAppointment } from '@/api/appointment';
+import { Appointment, AvailableTimes, GetAppointmentResponse } from '@/types/appointment';
+import { Group } from '@/types/group';
 
 // TODO: 중복됨 제거
 const getPlusOneDate = (date: string) => {

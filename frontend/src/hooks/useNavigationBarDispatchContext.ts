@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+
 import { NavigationBarDispatchContext } from '@/context/NavigationBarProvider';
 
 function useNavigationBarDispatchContext() {

@@ -1,4 +1,5 @@
 import { MouseEvent, PropsWithChildren, useRef } from 'react';
+
 import { StyledContainer } from '@/components/Modal/Modal.styles';
 
 type Props = {

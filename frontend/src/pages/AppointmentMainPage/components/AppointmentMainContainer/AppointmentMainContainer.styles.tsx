@@ -33,7 +33,6 @@ const StyledAppointmentContainer = styled.div`
   padding: 1rem;
   width: calc(100% / 3);
 
-  // TODO: 목록 리팩토링
   @media (max-width: 1250px) {
     width: calc(100% / 2);
   }

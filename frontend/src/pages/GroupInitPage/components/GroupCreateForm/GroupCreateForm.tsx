@@ -1,14 +1,16 @@
+import { AxiosError } from 'axios';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createGroup } from '@/api/group';
-import { Group } from '@/types/group';
-import GroupCreateFormNameInput from '@/pages/GroupInitPage/components/GroupCreateFormNameInput/GroupCreateFormNameInput';
-import GroupCreateFormSubmitButton from '@/pages/GroupInitPage/components/GroupCreateFormSubmitButton/GroupCreateFormSubmitButton';
+
 import {
   StyledContainer,
   StyledInputContainer
 } from '@/pages/GroupInitPage/components/GroupCreateForm/GroupCreateForm.styles';
-import { AxiosError } from 'axios';
+import GroupCreateFormNameInput from '@/pages/GroupInitPage/components/GroupCreateFormNameInput/GroupCreateFormNameInput';
+import GroupCreateFormSubmitButton from '@/pages/GroupInitPage/components/GroupCreateFormSubmitButton/GroupCreateFormSubmitButton';
+
+import { createGroup } from '@/api/group';
+import { Group } from '@/types/group';
 
 function GroupCreateForm() {
   const navigate = useNavigate();

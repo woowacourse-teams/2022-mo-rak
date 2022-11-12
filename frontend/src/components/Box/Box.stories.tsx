@@ -1,6 +1,6 @@
-import { Meta, Story } from '@storybook/react';
-
 import Box from '@/components/Box/Box';
+
+import { Meta, Story } from '@storybook/react';
 
 export default {
   title: 'Reusable Components/Box',

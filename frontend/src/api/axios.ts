@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import {
   getLocalStorageItem,
   removeLocalStorageItem,
@@ -47,8 +48,7 @@ const axiosInstanceGenerator = (path: Path) => (isAuthRequired: boolean) => {
 
           alert('로그인 해주세요😀');
           removeLocalStorageItem('token');
-          // TODO: react에서는 anti-pattern인 리다이렉트 방법, 수정 필요
-          // TODO: 강제로 html을 다시 받아오는 거라, 추후 SPA 방식의 navigation을 하게 되면, 여러 개의 alert가 뜰 듯, 수정 필요...
+
           window.location.href = '/';
         }
 
@@ -56,7 +56,7 @@ const axiosInstanceGenerator = (path: Path) => (isAuthRequired: boolean) => {
           is403ErrorProcessing = true;
 
           alert('접근 권한이 없습니다');
-          // TODO: react에서는 anti-pattern인 리다이렉트 방법, 수정 필요
+
           window.location.href = '/error';
         }
 

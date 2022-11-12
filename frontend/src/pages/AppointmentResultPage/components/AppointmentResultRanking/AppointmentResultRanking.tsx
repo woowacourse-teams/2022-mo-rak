@@ -1,16 +1,19 @@
 import { MouseEventHandler } from 'react';
 
-import crownImg from '@/assets/crown.svg';
-import { AppointmentRecommendation } from '@/types/appointment';
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import { getFormattedDateTime } from '@/utils/date';
 import {
   StyledContainer,
-  StyledResultText,
   StyledCrownIcon,
-  StyledRank
+  StyledRank,
+  StyledResultText
 } from '@/pages/AppointmentResultPage/components/AppointmentResultRanking/AppointmentResultRanking.styles';
+
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+
 import useGroupMembersContext from '@/hooks/useGroupMembersContext';
+
+import crownImg from '@/assets/crown.svg';
+import { AppointmentRecommendation } from '@/types/appointment';
+import { getFormattedDateTime } from '@/utils/date';
 
 type Props = {
   appointmentRecommendation: Array<AppointmentRecommendation>;

@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import serviceLogoImg from '@/assets/service-logo.svg';
 
-import { getGroups } from '@/api/group';
-import { Group } from '@/types/group';
-
-import SidebarGroupsMenu from '@/layouts/NavigationLayout/components/SidebarGroupsMenu/SidebarGroupsMenu';
-import SidebarModals from '@/layouts/NavigationLayout/components/SidebarModals/SidebarModals';
-
-import SidebarMembersProfileMenu from '@/layouts/NavigationLayout/components/SidebarMembersProfileMenu/SidebarMembersProfileMenu';
-import SidebarFeaturesMenu from '@/layouts/NavigationLayout/components/SidebarFeaturesMenu/SidebarFeaturesMenu';
-import SidebarInvitationMenu from '@/layouts/NavigationLayout/components/SidebarInvitationMenu/SidebarInvitationMenu';
-import SidebarSlackMenu from '@/layouts/NavigationLayout/components/SidebarSlackMenu/SidebarSlackMenu';
-import SidebarLogoutMenu from '@/layouts/NavigationLayout/components/SidebarLogoutMenu/SidebarLogoutMenu';
 import {
+  StyledBottomMenu,
   StyledContainer,
   StyledLogo,
-  StyledBottomMenu,
   StyledLogoContainer
 } from '@/layouts/NavigationLayout/components/Sidebar/Sidebar.styles';
+import SidebarFeaturesMenu from '@/layouts/NavigationLayout/components/SidebarFeaturesMenu/SidebarFeaturesMenu';
+import SidebarGroupsMenu from '@/layouts/NavigationLayout/components/SidebarGroupsMenu/SidebarGroupsMenu';
+import SidebarInvitationMenu from '@/layouts/NavigationLayout/components/SidebarInvitationMenu/SidebarInvitationMenu';
+import SidebarLogoutMenu from '@/layouts/NavigationLayout/components/SidebarLogoutMenu/SidebarLogoutMenu';
+import SidebarMembersProfileMenu from '@/layouts/NavigationLayout/components/SidebarMembersProfileMenu/SidebarMembersProfileMenu';
+import SidebarModals from '@/layouts/NavigationLayout/components/SidebarModals/SidebarModals';
+import SidebarSlackMenu from '@/layouts/NavigationLayout/components/SidebarSlackMenu/SidebarSlackMenu';
+
 import Divider from '@/components/Divider/Divider';
 import Spinner from '@/components/Spinner/Spinner';
+
+import { getGroups } from '@/api/group';
+import serviceLogoImg from '@/assets/service-logo.svg';
+import { Group } from '@/types/group';
 
 function Sidebar() {
   const navigate = useNavigate();

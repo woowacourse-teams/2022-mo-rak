@@ -1,22 +1,26 @@
 import { useState } from 'react';
-import { useTheme } from '@emotion/react';
+
 import {
-  StyledParticipantCount,
-  StyledUserIcon,
-  StyledCrownIcon,
   StyledCheckIcon,
+  StyledCrownIcon,
+  StyledParticipantCount,
+  StyledSubject,
   StyledUserCount,
-  StyledSubject
+  StyledUserIcon
 } from '@/pages/PollResultPage/components/PollResultItems/PollResultItems.styles';
-import { Poll, PollItem, Members, getPollResultResponse, getPollItemsResponse } from '@/types/poll';
-import crownImg from '@/assets/crown.svg';
-import checkImg from '@/assets/check.svg';
-import userPurpleImg from '@/assets/user-purple.svg';
-import userWhiteImg from '@/assets/user-white.svg';
+import PollResultParticipantModal from '@/pages/PollResultPage/components/PollResultParticipantModal/PollResultParticipantModal';
+
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import TextField from '@/components/TextField/TextField';
-import PollResultParticipantModal from '@/pages/PollResultPage/components/PollResultParticipantModal/PollResultParticipantModal';
+
 import useModal from '@/hooks/useModal';
+
+import checkImg from '@/assets/check.svg';
+import crownImg from '@/assets/crown.svg';
+import userPurpleImg from '@/assets/user-purple.svg';
+import userWhiteImg from '@/assets/user-white.svg';
+import { Members, Poll, PollItem, getPollItemsResponse, getPollResultResponse } from '@/types/poll';
+import { useTheme } from '@emotion/react';
 
 type Props = {
   status: Poll['status'];

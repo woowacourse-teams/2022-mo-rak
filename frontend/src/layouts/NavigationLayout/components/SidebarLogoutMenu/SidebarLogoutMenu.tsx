@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import leaveImg from '@/assets/leave.svg';
-import { removeLocalStorageItem } from '@/utils/storage';
+
 import {
   StyledContainer,
   StyledLeaveImage,
   StyledText
 } from '@/layouts/NavigationLayout/components/SidebarLogoutMenu/SidebarLogoutMenu.styles';
+
+import leaveImg from '@/assets/leave.svg';
+import { removeLocalStorageItem } from '@/utils/storage';
 
 function SidebarLogoutMenu() {
   const navigate = useNavigate();

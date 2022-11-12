@@ -1,6 +1,8 @@
-import Progress from '@/components/Progress/Progress';
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import { StyledParticipantsStatus } from '@/pages/AppointmentMainPage/components/AppointmentMainProgress/AppointmentMainProgress.styles';
+
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Progress from '@/components/Progress/Progress';
+
 import useGroupMembersContext from '@/hooks/useGroupMembersContext';
 
 type Props = {

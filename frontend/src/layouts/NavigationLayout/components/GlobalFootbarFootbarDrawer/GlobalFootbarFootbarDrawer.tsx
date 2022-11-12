@@ -1,18 +1,21 @@
 import { useState } from 'react';
 
 import {
-  StyledContainer,
-  StyledCloseButton
+  StyledCloseButton,
+  StyledContainer
 } from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawer/GlobalFootbarFootbarDrawer.styles';
-import closeButtonImg from '@/assets/close-button.svg';
-import Divider from '@/components/Divider/Divider';
-import GlobalFootbarFootbarDrawerFeaturesSection from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerFeaturesSection/GlobalFootbarFootbarDrawerFeaturesSection';
-import GlobalFootbarFootbarDrawerMembersProfileSection from '@/layouts/NavigationLayout/components/GlobarFootbarFootbarDrawerMembersProfileSection/GlobarFootbarFootbarDrawerMembersProfileSection';
-import GlobalFootbarFootbarDrawerGroupsSection from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerGroupsSection/GlobalFootbarFootbarDrawerGroupsSection';
 import GlobalFootbarFootbarDrawerBottomSection from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerBottomSection/GlobalFootbarFootbarDrawerBottomSection';
+import GlobalFootbarFootbarDrawerFeaturesSection from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerFeaturesSection/GlobalFootbarFootbarDrawerFeaturesSection';
+import GlobalFootbarFootbarDrawerGroupsSection from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerGroupsSection/GlobalFootbarFootbarDrawerGroupsSection';
 import NavbarDrawerModals from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerModals/GlobalFootbarFootbarDrawerModals';
+import GlobalFootbarFootbarDrawerMembersProfileSection from '@/layouts/NavigationLayout/components/GlobarFootbarFootbarDrawerMembersProfileSection/GlobarFootbarFootbarDrawerMembersProfileSection';
+
+import Divider from '@/components/Divider/Divider';
+
 import useNavigationBarContext from '@/hooks/useNavigationBarContext';
 import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
+
+import closeButtonImg from '@/assets/close-button.svg';
 import { Group } from '@/types/group';
 
 // TODO: props drilling 발생 (groups)
@@ -67,7 +70,6 @@ function GlobalFootbarFootbarDrawer({ groupCode, groups }: Props) {
 
       {/* TODO: 모달이 모여있음  */}
       {/* TODO: portal 사용 */}
-      {/* TODO: 모달이 기존과 같음 */}
       <NavbarDrawerModals
         activeModalMenu={activeModalMenu}
         closeModal={handleSetActiveModalMenu(null)}

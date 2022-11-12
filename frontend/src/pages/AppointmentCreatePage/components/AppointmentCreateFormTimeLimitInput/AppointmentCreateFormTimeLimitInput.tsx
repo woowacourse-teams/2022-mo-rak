@@ -1,16 +1,19 @@
 import { ChangeEventHandler, memo } from 'react';
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import { Time } from '@/types/appointment';
+
 import AppointmentCreateFormTimeInput from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormTimeInput/AppointmentCreateFormTimeInput';
-import questionImg from '@/assets/question.svg';
-import Tooltip from '@/components/Tooltip/Tooltip';
 import {
-  StyledTitle,
-  StyledHelpIconContainer,
-  StyledHelpIcon,
   StyledContent,
-  StyledHeader
+  StyledHeader,
+  StyledHelpIcon,
+  StyledHelpIconContainer,
+  StyledTitle
 } from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormTimeLimitInput/AppointmentCreateFormTimeLimitInput.styles';
+
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Tooltip from '@/components/Tooltip/Tooltip';
+
+import questionImg from '@/assets/question.svg';
+import { Time } from '@/types/appointment';
 import { useTheme } from '@emotion/react';
 
 type Props = {

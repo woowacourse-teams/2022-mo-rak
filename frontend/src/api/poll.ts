@@ -1,6 +1,6 @@
 import { privateGroupsAxiosInstance } from '@/api/axios';
-import { Poll, createPollRequest, SelectedPollItem } from '@/types/poll';
 import { Group } from '@/types/group';
+import { Poll, SelectedPollItem, createPollRequest } from '@/types/poll';
 
 const getPolls = (groupCode: Group['code']) =>
   privateGroupsAxiosInstance.get(`/${groupCode}/polls`);

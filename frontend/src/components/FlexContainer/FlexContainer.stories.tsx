@@ -1,7 +1,8 @@
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+
+import theme from '@/styles/theme';
 import styled from '@emotion/styled';
 import { Meta, Story } from '@storybook/react';
-import theme from '../../styles/theme';
-import FlexContainer from './FlexContainer';
 
 export default {
   title: 'Reusable Components/FlexContainer',

@@ -8,7 +8,6 @@ const StyledContainer = styled.button<
   }
 >(
   // TODO: 긴급! padding 기본값 없애기
-  // TODO: button의 width는 언제나 100% 아닐까? 찾아보자
   ({ width, padding, borderRadius, fontSize, variantStyle, disabled }) => `
   position: relative;
   text-align: center;

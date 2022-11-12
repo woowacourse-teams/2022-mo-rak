@@ -1,5 +1,6 @@
-import { Meta, Story } from '@storybook/react';
 import Calendar from '@/components/Calendar/Calendar';
+
+import { Meta, Story } from '@storybook/react';
 
 export default {
   title: 'Reusable Components/Calendar',

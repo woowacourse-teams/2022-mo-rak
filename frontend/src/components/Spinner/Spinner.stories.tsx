@@ -1,5 +1,6 @@
+import Spinner from '@/components/Spinner/Spinner';
+
 import { Meta, Story } from '@storybook/react';
-import Spinner from './Spinner';
 
 export default {
   title: 'Reusable Components/Spinner',

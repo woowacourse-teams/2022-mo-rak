@@ -1,5 +1,4 @@
 import { privateGroupsAxiosInstance } from '@/api/axios';
-
 import { Group } from '@/types/group';
 import { LinkSlackRequest } from '@/types/slack';
 

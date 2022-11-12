@@ -1,6 +1,6 @@
-import { Group } from '@/types/group';
 import { privateGroupsAxiosInstance } from '@/api/axios';
-import { Appointment, CreateAppointmentRequest, AvailableTimes } from '@/types/appointment';
+import { Appointment, AvailableTimes, CreateAppointmentRequest } from '@/types/appointment';
+import { Group } from '@/types/group';
 
 const createAppointment = (groupCode: Group['code'], appointment: CreateAppointmentRequest) =>
   privateGroupsAxiosInstance.post(`/${groupCode}/appointments`, appointment);

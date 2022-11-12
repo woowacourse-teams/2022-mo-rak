@@ -6,7 +6,6 @@ const getGroups = () => privateGroupsAxiosInstance.get('');
 const getGroupMembers = (groupCode: Group['code']) =>
   privateGroupsAxiosInstance.get(`/${groupCode}/members`);
 
-// TODO: '' 해결해야할듯
 const createGroup = (name: Group['name']) => privateGroupsAxiosInstance.post('', { name });
 
 const createInvitationCode = (groupCode: Group['code']) =>

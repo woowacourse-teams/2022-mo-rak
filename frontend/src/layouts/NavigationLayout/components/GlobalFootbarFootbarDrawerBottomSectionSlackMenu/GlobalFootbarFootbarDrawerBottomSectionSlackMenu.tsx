@@ -1,10 +1,12 @@
 import { MouseEventHandler } from 'react';
-import slackImg from '@/assets/slack.svg';
+
 import {
   StyledContainer,
   StyledSlackLogo,
   StyledText
 } from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerBottomSectionSlackMenu/GlobalFootbarFootbarDrawerBottomSectionSlackMenu.styles';
+
+import slackImg from '@/assets/slack.svg';
 
 type Props = {
   onClick: MouseEventHandler<HTMLButtonElement>;

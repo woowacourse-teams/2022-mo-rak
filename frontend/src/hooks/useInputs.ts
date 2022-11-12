@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, ChangeEventHandler } from 'react';
+import { ChangeEvent, ChangeEventHandler, useState } from 'react';
 
 type Elements = HTMLInputElement | HTMLSelectElement;
 

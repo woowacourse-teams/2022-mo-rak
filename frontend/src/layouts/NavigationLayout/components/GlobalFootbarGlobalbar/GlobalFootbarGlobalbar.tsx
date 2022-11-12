@@ -1,13 +1,15 @@
+import { useNavigate } from 'react-router-dom';
+
 import {
   StyledContainer,
-  StyledLogo,
+  StyledCurrentGroupContainer,
   StyledGroupFirstCharacter,
-  StyledProfileContainer,
+  StyledLogo,
   StyledName,
-  StyledCurrentGroupContainer
+  StyledProfileContainer
 } from '@/layouts/NavigationLayout/components/GlobalFootbarGlobalbar/GlobalFootbarGlobalbar.styles';
+
 import serviceLogoImg from '@/assets/service-logo.svg';
-import { useNavigate } from 'react-router-dom';
 import { Group } from '@/types/group';
 
 type Props = {

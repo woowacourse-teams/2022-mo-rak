@@ -1,15 +1,18 @@
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import InvitationButtons from '@/pages/InvitationPage/components/InvitationButtons/InvitationButtons';
 import {
   StyledLogo,
   StyledTitle
 } from '@/pages/InvitationPage/components/InvitationContainer/InvitationContainer.styles';
-import { AxiosError } from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+
 import Box from '@/components/Box/Box';
-import serviceLogoImg from '@/assets/service-logo.svg';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import InvitationButtons from '@/pages/InvitationPage/components/InvitationButtons/InvitationButtons';
+
 import { getIsJoinedGroup } from '@/api/group';
+import serviceLogoImg from '@/assets/service-logo.svg';
 import { Group } from '@/types/group';
 
 function InvitationContainer() {

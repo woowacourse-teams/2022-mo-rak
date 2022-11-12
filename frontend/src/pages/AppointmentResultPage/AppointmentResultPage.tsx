@@ -1,9 +1,19 @@
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
 import {
   StyledContainer,
   StyledContentContainer
 } from '@/pages/AppointmentResultPage/AppointmentResultPage.styles';
+import AppointmentResultAvailableMembers from '@/pages/AppointmentResultPage/components/AppointmentResultAvailableMembers/AppointmentResultAvailableMembers';
+import AppointmentResultButtons from '@/pages/AppointmentResultPage/components/AppointmentResultButtons/AppointmentResultButtons';
+import AppointmentResultHeader from '@/pages/AppointmentResultPage/components/AppointmentResultHeader/AppointmentResultHeader';
+import AppointmentResultRanking from '@/pages/AppointmentResultPage/components/AppointmentResultRanking/AppointmentResultRanking';
+
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import Spinner from '@/components/Spinner/Spinner';
+
 import { getAppointment, getAppointmentRecommendation } from '@/api/appointment';
 import {
   Appointment,
@@ -11,13 +21,6 @@ import {
   GetAppointmentResponse
 } from '@/types/appointment';
 import { Group } from '@/types/group';
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import AppointmentResultRanking from '@/pages/AppointmentResultPage/components/AppointmentResultRanking/AppointmentResultRanking';
-import AppointmentResultAvailableMembers from '@/pages/AppointmentResultPage/components/AppointmentResultAvailableMembers/AppointmentResultAvailableMembers';
-import AppointmentResultButtons from '@/pages/AppointmentResultPage/components/AppointmentResultButtons/AppointmentResultButtons';
-import AppointmentResultHeader from '@/pages/AppointmentResultPage/components/AppointmentResultHeader/AppointmentResultHeader';
-import { AxiosError } from 'axios';
-import Spinner from '@/components/Spinner/Spinner';
 
 function AppointmentResultPage() {
   const navigate = useNavigate();

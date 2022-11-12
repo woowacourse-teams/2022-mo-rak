@@ -1,25 +1,26 @@
 import { HTMLAttributes } from 'react';
+
 import {
   StyledAppointmentImage,
-  StyledFeatureCircle,
-  StyledFeaturesContainer,
   StyledContainer,
+  StyledFeatureCircle,
   StyledFeatureName,
+  StyledFeaturesContainer,
   StyledGlitterImage,
-  StyledRoleImage,
-  StyledPollImage,
   StyledHighlightImage,
+  StyledIntroductionTitleContainer,
+  StyledPollImage,
+  StyledRoleImage,
   StyledSubTitle,
-  StyledTitle,
-  StyledIntroductionTitleContainer
+  StyledTitle
 } from '@/pages/LandingPage/components/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection.styles';
+import LandingNavbar from '@/pages/LandingPage/components/LandingNavbar/LandingNavbar';
 
 import glitterImg from '@/assets/glitter.svg';
 import highlightImg from '@/assets/highlight.svg';
 import pollSmallImg from '@/assets/poll-small.svg';
-import timeImg from '@/assets/time.svg';
 import roleImg from '@/assets/role.svg';
-import LandingNavbar from '@/pages/LandingPage/components/LandingNavbar/LandingNavbar';
+import timeImg from '@/assets/time.svg';
 
 type Props = HTMLAttributes<HTMLDivElement>;
 

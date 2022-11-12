@@ -1,23 +1,24 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
-
-// TODO: 자동정렬 설정
-import { useLocation, useNavigate, useParams, Location } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import { ChangeEvent, FormEvent, useState } from 'react';
+// TODO: 자동정렬 설정
+import { Location, useLocation, useNavigate, useParams } from 'react-router-dom';
+
+import PollCreateCloseTimeInput from '@/pages/PollCreatePage/components/PollCreateCloseTimeInput/PollCreateCloseTimeInput';
+import PollCreateDetail from '@/pages/PollCreatePage/components/PollCreateDetail/PollCreateDetail';
+import PollCreateFormInputs from '@/pages/PollCreatePage/components/PollCreateFormInputs/PollCreateFormInputs';
+import PollCreateFormSubmitButton from '@/pages/PollCreatePage/components/PollCreateFormSubmitButton/PollCreateFormSubmitButton';
+import PollCreateFormTitleInput from '@/pages/PollCreatePage/components/PollCreateFormTitleInput/PollCreateFormTitleInput';
+
 import Box from '@/components/Box/Box';
 import Divider from '@/components/Divider/Divider';
 import MarginContainer from '@/components/MarginContainer/MarginContainer';
 
-import PollCreateFormInputs from '@/pages/PollCreatePage/components/PollCreateFormInputs/PollCreateFormInputs';
-import PollCreateDetail from '@/pages/PollCreatePage/components/PollCreateDetail/PollCreateDetail';
-import PollCreateFormSubmitButton from '@/pages/PollCreatePage/components/PollCreateFormSubmitButton/PollCreateFormSubmitButton';
-import PollCreateFormTitleInput from '@/pages/PollCreatePage/components/PollCreateFormTitleInput/PollCreateFormTitleInput';
-import PollCreateCloseTimeInput from '@/pages/PollCreatePage/components/PollCreateCloseTimeInput/PollCreateCloseTimeInput';
+import useInput from '@/hooks/useInput';
 
 import { createPoll } from '@/api/poll';
-import { createPollRequest, Poll } from '@/types/poll';
-import { Group } from '@/types/group';
-import useInput from '@/hooks/useInput';
 import { Appointment } from '@/types/appointment';
+import { Group } from '@/types/group';
+import { Poll, createPollRequest } from '@/types/poll';
 
 type LocationWithState = {
   state: {

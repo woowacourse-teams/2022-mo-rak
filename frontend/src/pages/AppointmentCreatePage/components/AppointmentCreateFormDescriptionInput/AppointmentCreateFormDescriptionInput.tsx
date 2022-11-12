@@ -1,7 +1,10 @@
 import { InputHTMLAttributes, memo } from 'react';
-import Input from '@/components/Input/Input';
-import { Appointment } from '@/types/appointment';
+
 import { StyledLabel } from '@/pages/AppointmentCreatePage/components/AppointmentCreateFormDescriptionInput/AppointmentCreateFormDescriptionInput.styles';
+
+import Input from '@/components/Input/Input';
+
+import { Appointment } from '@/types/appointment';
 
 type Props = {
   description: Appointment['description'];

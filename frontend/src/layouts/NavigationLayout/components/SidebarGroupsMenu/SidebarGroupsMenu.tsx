@@ -1,32 +1,36 @@
 import { useNavigate } from 'react-router-dom';
-import settingImg from '@/assets/setting.svg';
+
+import {
+  StyledButtonText,
+  StyledContainer,
+  StyledCreateNewGroupButton,
+  StyledGroup,
+  StyledGroupFirstCharacter,
+  StyledGroupIconGroup,
+  StyledGroupName,
+  StyledGroupProfile,
+  StyledGroups,
+  StyledGroupsModalContainer,
+  StyledGroupsModalIcon,
+  StyledLeaveGroupButton,
+  StyledLeaveImage,
+  StyledMenuHeader,
+  StyledParticipateNewGroupButton,
+  StyledPlusImage,
+  StyledSettingIcon
+} from '@/layouts/NavigationLayout/components/SidebarGroupsMenu/SidebarGroupsMenu.styles';
+
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+
+import useNavigationBarContext from '@/hooks/useNavigationBarContext';
+import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
+
+import { leaveGroup } from '@/api/group';
+import leaveImg from '@/assets/leave.svg';
 import menuImg from '@/assets/menu.svg';
 import plusImg from '@/assets/plus.svg';
-import leaveImg from '@/assets/leave.svg';
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import { leaveGroup } from '@/api/group';
+import settingImg from '@/assets/setting.svg';
 import { Group } from '@/types/group';
-import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
-import useNavigationBarContext from '@/hooks/useNavigationBarContext';
-import {
-  StyledMenuHeader,
-  StyledGroupsModalContainer,
-  StyledGroups,
-  StyledSettingIcon,
-  StyledGroupsModalIcon,
-  StyledGroupProfile,
-  StyledGroupFirstCharacter,
-  StyledGroupName,
-  StyledContainer,
-  StyledGroup,
-  StyledGroupIconGroup,
-  StyledParticipateNewGroupButton,
-  StyledCreateNewGroupButton,
-  StyledButtonText,
-  StyledLeaveGroupButton,
-  StyledPlusImage,
-  StyledLeaveImage
-} from '@/layouts/NavigationLayout/components/SidebarGroupsMenu/SidebarGroupsMenu.styles';
 
 type Props = {
   groupCode: Group['code'];

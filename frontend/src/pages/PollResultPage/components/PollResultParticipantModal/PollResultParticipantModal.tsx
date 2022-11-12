@@ -1,17 +1,19 @@
-import Modal from '@/components/Modal/Modal';
 import {
-  StyledParticipantsContainer,
-  StyledIcon,
-  StyledTitle,
-  StyledTopContainer,
-  StyledCloseIcon,
   StyledBottomContainer,
+  StyledCloseIcon,
+  StyledIcon,
   StyledParticipantContainer,
-  StyledParticipantDescription
+  StyledParticipantDescription,
+  StyledParticipantsContainer,
+  StyledTitle,
+  StyledTopContainer
 } from '@/pages/PollResultPage/components/PollResultParticipantModal/PollResultParticipantModal.styles';
+
+import Avatar from '@/components/Avatar/Avatar';
+import Modal from '@/components/Modal/Modal';
+
 import closeButtonImg from '@/assets/close-button.svg';
 import pollImg from '@/assets/poll.svg';
-import Avatar from '@/components/Avatar/Avatar';
 import { Members, PollItem } from '@/types/poll';
 
 type Props = {

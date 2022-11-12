@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
-import { getGroupMembers } from '@/api/group';
-import { Group, Member } from '@/types/group';
+
+import {
+  StyledContainer,
+  StyledMembersProfileContainer,
+  StyledMenuHeader,
+  StyledName
+} from '@/layouts/NavigationLayout/components/GlobarFootbarFootbarDrawerMembersProfileSection/GlobarFootbarFootbarDrawerMembersProfileSection.styles';
+
 import Avatar from '@/components/Avatar/Avatar';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import {
-  StyledMenuHeader,
-  StyledName,
-  StyledContainer,
-  StyledMembersProfileContainer
-} from '@/layouts/NavigationLayout/components/GlobarFootbarFootbarDrawerMembersProfileSection/GlobarFootbarFootbarDrawerMembersProfileSection.styles';
+
+import { getGroupMembers } from '@/api/group';
+import { Group, Member } from '@/types/group';
 
 type Props = {
   groupCode: Group['code'];

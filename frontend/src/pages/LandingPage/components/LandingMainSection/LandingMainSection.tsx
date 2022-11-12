@@ -1,7 +1,10 @@
 import { HTMLAttributes } from 'react';
+
 import {
+  StyledAnchor,
   StyledBlobContainer,
   StyledBlobImage,
+  StyledContainer,
   StyledGithubLogo,
   StyledGlitterImage,
   StyledLineImage,
@@ -9,22 +12,21 @@ import {
   StyledLoginContainer,
   StyledLoginText,
   StyledLogo,
-  StyledContainer,
   StyledNextSectionGuideContainer,
   StyledSmileImage,
   StyledSubTitle,
-  StyledTitle,
-  StyledAnchor
+  StyledTitle
 } from '@/pages/LandingPage/components/LandingMainSection/LandingMainSection.styles';
+import LandingNavbar from '@/pages/LandingPage/components/LandingNavbar/LandingNavbar';
 
-import serviceLogoImg from '@/assets/service-logo.svg';
-import smileImg from '@/assets/smile.svg';
-import lineImg from '@/assets/line.svg';
+import FlexContainer from '@/components//FlexContainer/FlexContainer';
+
 import blobImg from '@/assets/blob.svg';
 import githubLogoImg from '@/assets/github-logo.svg';
 import glitterImg from '@/assets/glitter.svg';
-import FlexContainer from '@/components//FlexContainer/FlexContainer';
-import LandingNavbar from '@/pages/LandingPage/components/LandingNavbar/LandingNavbar';
+import lineImg from '@/assets/line.svg';
+import serviceLogoImg from '@/assets/service-logo.svg';
+import smileImg from '@/assets/smile.svg';
 
 type Props = HTMLAttributes<HTMLDivElement>;
 

@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, CSSProperties } from 'react';
+import { CSSProperties, InputHTMLAttributes } from 'react';
 
 import { StyledInput } from '@/components/Input/Input.styles';
 

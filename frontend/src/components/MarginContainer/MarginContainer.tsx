@@ -1,4 +1,4 @@
-import { PropsWithChildren, CSSProperties, HTMLAttributes } from 'react';
+import { CSSProperties, HTMLAttributes, PropsWithChildren } from 'react';
 
 import { StyledContainer } from '@/components/MarginContainer/MarginContainer.styles';
 

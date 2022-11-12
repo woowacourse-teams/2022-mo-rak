@@ -1,16 +1,17 @@
+import { AxiosError } from 'axios';
 import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { participateGroup } from '@/api/group';
-import useInput from '@/hooks/useInput';
-
-import GroupParticipateInvitationCodeInput from '@/pages/GroupInitPage/components/GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';
-import GroupParticipateFormSubmitButton from '@/pages/GroupInitPage/components/GroupParticipateFormSubmitButton/GroupParticipateFormSubmitButton';
 import {
   StyledContainer,
   StyledInputContainer
 } from '@/pages/GroupInitPage/components/GroupParticipateForm/GroupParticipateForm.styles';
-import { AxiosError } from 'axios';
+import GroupParticipateFormSubmitButton from '@/pages/GroupInitPage/components/GroupParticipateFormSubmitButton/GroupParticipateFormSubmitButton';
+import GroupParticipateInvitationCodeInput from '@/pages/GroupInitPage/components/GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';
+
+import useInput from '@/hooks/useInput';
+
+import { participateGroup } from '@/api/group';
 
 function GroupParticipateForm() {
   const [invitationCode, handleInvitationCode, resetInvitationCode] = useInput('');

@@ -1,4 +1,5 @@
 import { CSSProperties, ProgressHTMLAttributes } from 'react';
+
 import { StyledProgress } from '@/components/Progress/Progress.styles';
 
 type Props = {

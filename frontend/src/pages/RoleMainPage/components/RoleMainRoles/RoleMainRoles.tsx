@@ -1,12 +1,14 @@
-import { useTheme } from '@emotion/react';
-import TextField from '@/components/TextField/TextField';
 import {
-  StyledName,
   StyledContainer,
+  StyledName,
   StyledRoleContainer
 } from '@/pages/RoleMainPage/components/RoleMainRoles/RoleMainRoles.styles';
-import { EditRolesRequest } from '@/types/role';
+
 import Spinner from '@/components/Spinner/Spinner';
+import TextField from '@/components/TextField/TextField';
+
+import { EditRolesRequest } from '@/types/role';
+import { useTheme } from '@emotion/react';
 
 type Props = {
   roles: EditRolesRequest['roles'];

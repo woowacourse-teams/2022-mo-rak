@@ -1,19 +1,20 @@
-import { SetStateAction, useState, Dispatch } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+
 import {
   StyledContainer,
-  StyledMonth,
-  StyledWeekends,
-  StyledWeekDay,
-  StyledPrevButton,
-  StyledNextButton,
-  StyledMonthTitle,
-  StyledDays,
-  StyledPrevMonthDay,
-  StyledNextMonthDay,
   StyledCurrentMonthDay,
+  StyledCurrentMonthDayNotInStartAndEndDate,
   StyledCurrentMonthDayPrevToday,
   StyledCurrentMonthDayToday,
-  StyledCurrentMonthDayNotInStartAndEndDate
+  StyledDays,
+  StyledMonth,
+  StyledMonthTitle,
+  StyledNextButton,
+  StyledNextMonthDay,
+  StyledPrevButton,
+  StyledPrevMonthDay,
+  StyledWeekDay,
+  StyledWeekends
 } from '@/components/Calendar/Calendar.styles';
 
 type Props = {
@@ -28,13 +29,7 @@ type Props = {
 
 const weeks = ['일', '월', '화', '수', '목', '금', '토'];
 
-// version "default"는 약속 잡기 생성에서 사용된다. 기본 version이 default로 설정되어있기 때문에,
-// 별도로 props로 version을 넘겨주지 않아도 된다.
-// version "select"는 약속 잡기 선택하기에서 사용된다. 이때, props로 startDate, endDate가 넘어와야한다.
-// NOTE: version에 기반하여 컴포넌트가 둘로 나뉘어지기 때문에, 이는 두 가지 역할을 하나의 컴포넌트가 하는 게 아닐까 싶다.
-// 만약 version이 하나 더 생긴다면 로직이 복잡해질 것 같다. version을 없애는 게 첫 번째 리팩토링 포인트일듯
 // NOTE: 1차 리팩토링 끝
-// TODO: calendar 리팩토링
 function Calendar({
   version = 'default',
   startDate,
@@ -92,7 +87,6 @@ function Calendar({
   };
 
   const handleStartOrEndDate = (day: number) => () => {
-    // TODO: 약속잡기 진행페이지에서는 사용되지 않기 때문에, 분기처리를 해줌
     if (!startDate) {
       setStartDate?.(formatDate(day));
 
@@ -150,7 +144,6 @@ function Calendar({
           disabled={isCurrentMonth}
           aria-label="prev-month"
         >
-          {/* TODO: 이런 방식이 괜찮은 방법인지 고민하기 */}
           &#8249;
         </StyledPrevButton>
         <StyledMonthTitle>
@@ -176,7 +169,6 @@ function Calendar({
           ? getCurrentMonthDays().map((day) => {
               if (isNotInStartAndEndDate(day)) {
                 return (
-                  // TODO: 변수명 생각해보기
                   <StyledCurrentMonthDayNotInStartAndEndDate
                     key={day}
                     aria-label={`${String(currentMonth + 1).padStart(2, '0')}-${String(
@@ -203,12 +195,10 @@ function Calendar({
               );
             })
           : getCurrentMonthDays().map((day) => {
-              // TODO: isBeforeTody로 변경할까?
               if (isPrevToday(day)) {
                 return (
                   <StyledCurrentMonthDayPrevToday
                     key={day}
-                    // TODO: 값 리팩토링 필요
                     aria-label={`${String(currentMonth + 1).padStart(2, '0')}-${String(
                       day
                     ).padStart(2, '0')}`}
@@ -221,7 +211,6 @@ function Calendar({
               if (isToday(day)) {
                 return (
                   <StyledCurrentMonthDayToday
-                    // TODO: 약속잡기 진행페이지에서는 사용되지 않기 때문에, 분기처리를 해줌
                     key={day}
                     onClick={setStartDate && setEndDate && handleStartOrEndDate(day)}
                     isBetweenStartEndDate={isBetweenStartEndDate(day)}

@@ -1,9 +1,10 @@
-import { useTheme } from '@emotion/react';
+import { memo } from 'react';
 
 import Button from '@/components/Button/Button';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
+
 import { Poll } from '@/types/poll';
-import { memo } from 'react';
+import { useTheme } from '@emotion/react';
 
 type Props = {
   isAnonymous: Poll['isAnonymous'];

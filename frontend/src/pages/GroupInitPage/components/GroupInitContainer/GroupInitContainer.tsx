@@ -1,16 +1,15 @@
-import serviceLogoImg from '@/assets/service-logo.svg';
-
 import GroupCreateForm from '@/pages/GroupInitPage/components/GroupCreateForm/GroupCreateForm';
-import GroupParticipateForm from '@/pages/GroupInitPage/components/GroupParticipateForm/GroupParticipateForm';
-
 import {
-  StyledContainer,
-  StyledTopContainer,
   StyledBottomContainer,
+  StyledContainer,
+  StyledDescription,
   StyledLogo,
   StyledTitle,
-  StyledDescription
+  StyledTopContainer
 } from '@/pages/GroupInitPage/components/GroupInitContainer/GroupInitContainer.styles';
+import GroupParticipateForm from '@/pages/GroupInitPage/components/GroupParticipateForm/GroupParticipateForm';
+
+import serviceLogoImg from '@/assets/service-logo.svg';
 
 function GroupInitContainer() {
   return (

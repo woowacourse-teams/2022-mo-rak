@@ -1,24 +1,25 @@
-import { useTheme } from '@emotion/react';
-
+import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-import { AxiosError } from 'axios';
+import {
+  StyledHelpIcon,
+  StyledHelpIconContainer
+} from '@/pages/AppointmentResultPage/components/AppointmentResultButtons/AppointmentResultButtons.styles';
+
+import Button from '@/components/Button/Button';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import Tooltip from '@/components/Tooltip/Tooltip';
-import { Group } from '@/types/group';
-import {
-  Appointment,
-  GetAppointmentResponse,
-  AppointmentRecommendation
-} from '@/types/appointment';
+
 import { closeAppointment, deleteAppointment } from '@/api/appointment';
-import Button from '@/components/Button/Button';
-import { getFormattedDateTime } from '@/utils/date';
 import questionImg from '@/assets/question.svg';
 import {
-  StyledHelpIconContainer,
-  StyledHelpIcon
-} from '@/pages/AppointmentResultPage/components/AppointmentResultButtons/AppointmentResultButtons.styles';
+  Appointment,
+  AppointmentRecommendation,
+  GetAppointmentResponse
+} from '@/types/appointment';
+import { Group } from '@/types/group';
+import { getFormattedDateTime } from '@/utils/date';
+import { useTheme } from '@emotion/react';
 
 type Props = {
   groupCode: Group['code'];

@@ -1,7 +1,8 @@
+import MarginContainer from '@/components/MarginContainer/MarginContainer';
+
+import theme from '@/styles/theme';
 import styled from '@emotion/styled';
 import { Meta, Story } from '@storybook/react';
-import theme from '../../styles/theme';
-import MarginContainer from './MarginContainer';
 
 export default {
   title: 'Reusable Components/MarginContainer',

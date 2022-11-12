@@ -1,13 +1,14 @@
-import { useTheme } from '@emotion/react';
-
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import TextField from '@/components/TextField/TextField';
-import { Appointment } from '@/types/appointment';
-import { getFormattedHourMinuteDuration } from '@/utils/date';
 import {
   StyledCloseTime,
   StyledDetail
 } from '@/pages/AppointmentMainPage/components/AppointmentMainDetail/AppointmentMainDetail.styles';
+
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import TextField from '@/components/TextField/TextField';
+
+import { Appointment } from '@/types/appointment';
+import { getFormattedHourMinuteDuration } from '@/utils/date';
+import { useTheme } from '@emotion/react';
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);
@@ -37,7 +38,6 @@ function AppointmentMainDetail({ durationHours, durationMinutes, closedAt }: Pro
         {getFormattedClosedTime(closedAt)}
         까지
       </StyledCloseTime>
-      {/* TODO: flex 쓰지 않고 padding을 줄 수 있도록 만들어보기 */}
       <FlexContainer>
         <TextField
           padding="0.8rem 1.6rem"

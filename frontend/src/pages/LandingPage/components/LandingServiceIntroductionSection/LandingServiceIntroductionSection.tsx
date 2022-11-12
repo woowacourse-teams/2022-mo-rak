@@ -1,16 +1,17 @@
 import { HTMLAttributes } from 'react';
+
+import LandingNavbar from '@/pages/LandingPage/components/LandingNavbar/LandingNavbar';
 import {
-  StyledHighlightImage,
   StyledContainer,
+  StyledHighlightImage,
   StyledServicesImage,
   StyledSubTitle,
   StyledTitle,
   StyledTitleContainer
 } from '@/pages/LandingPage/components/LandingServiceIntroductionSection/LandingServiceIntroductionSection.styles';
 
-import servicesImg from '@/assets/services.svg';
 import circleHighlightImg from '@/assets/circle-highlight.svg';
-import LandingNavbar from '@/pages/LandingPage/components/LandingNavbar/LandingNavbar';
+import servicesImg from '@/assets/services.svg';
 
 type Props = HTMLAttributes<HTMLDivElement>;
 

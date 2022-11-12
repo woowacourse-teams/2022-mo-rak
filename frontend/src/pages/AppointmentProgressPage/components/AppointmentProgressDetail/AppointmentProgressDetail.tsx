@@ -1,6 +1,7 @@
+import { StyledContainer } from '@/pages/AppointmentProgressPage/components/AppointmentProgressDetail/AppointmentProgressDetail.styles';
+
 import { Appointment } from '@/types/appointment';
 import { getFormattedHourMinuteDuration } from '@/utils/date';
-import { StyledContainer } from '@/pages/AppointmentProgressPage/components/AppointmentProgressDetail/AppointmentProgressDetail.styles';
 
 type Props = {
   durationHours: Appointment['durationHours'];

@@ -1,21 +1,24 @@
-import Box from '@/components/Box/Box';
-import Avatar from '@/components/Avatar/Avatar';
-import FlexContainer from '@/components/FlexContainer/FlexContainer';
+import { useState } from 'react';
 
 import {
-  StyledTitle,
+  StyledDate,
+  StyledDatesContainer,
+  StyledEmptyText,
   StyledRole,
   StyledRoleContainer,
-  StyledDatesContainer,
   StyledRoleResultContainer,
-  StyledDate,
-  StyledEmptyText
+  StyledTitle
 } from '@/pages/RoleMainPage/components/RoleMainResult/RoleMainResult.styles';
+
+import Avatar from '@/components/Avatar/Avatar';
+import Box from '@/components/Box/Box';
 import Divider from '@/components/Divider/Divider';
-import { useState } from 'react';
-import { GetRolesHistoriesResponse } from '@/types/role';
+import FlexContainer from '@/components/FlexContainer/FlexContainer';
+
 import useGroupMembersContext from '@/hooks/useGroupMembersContext';
+
 import deletedUserImg from '@/assets/deleted-user.svg';
+import { GetRolesHistoriesResponse } from '@/types/role';
 
 type Props = { rolesHistories: GetRolesHistoriesResponse };
 

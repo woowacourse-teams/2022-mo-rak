@@ -1,12 +1,13 @@
-import { Group } from '@/types/group';
-import plusImg from '@/assets/plus.svg';
-import { createInvitationCode } from '@/api/group';
-import { writeClipboard } from '@/utils/clipboard';
 import {
   StyledContainer,
   StyledInvitationText,
   StyledPlusIcon
 } from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerBottomSectionInvitationMenu/GlobalFootbarFootbarDrawerBottomSectionInvitationMenu.styles';
+
+import { createInvitationCode } from '@/api/group';
+import plusImg from '@/assets/plus.svg';
+import { Group } from '@/types/group';
+import { writeClipboard } from '@/utils/clipboard';
 
 type Props = {
   groupCode: Group['code'];

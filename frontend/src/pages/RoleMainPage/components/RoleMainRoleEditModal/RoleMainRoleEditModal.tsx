@@ -1,25 +1,29 @@
+import { AxiosError } from 'axios';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import closeButtonImg from '@/assets/close-button.svg';
-import editWithSmileImg from '@/assets/edit-with-smile.svg';
+import { useParams } from 'react-router-dom';
+
 import {
+  StyledBottomContainer,
+  StyledCloseButton,
+  StyledDescription,
   StyledForm,
   StyledLogo,
   StyledTitle,
   StyledTopContainer,
-  StyledCloseButton,
-  StyledTriangle,
-  StyledBottomContainer,
-  StyledDescription
+  StyledTriangle
 } from '@/pages/RoleMainPage/components/RoleMainRoleEditModal/RoleMainRoleEditModal.styles';
-import Modal from '@/components/Modal/Modal';
-import { editRoles } from '@/api/role';
-import { useParams } from 'react-router-dom';
-import { Group } from '@/types/group';
-import { AxiosError } from 'axios';
-import { EditRolesRequest } from '@/types/role';
-import useGroupMembersContext from '@/hooks/useGroupMembersContext';
-import RoleMainRoleEditModalInputs from '@/pages/RoleMainPage/components/RoleMainRoleEditModalInputs/RoleMainRoleEditModalInputs';
 import RoleMainRoleEditModalButtons from '@/pages/RoleMainPage/components/RoleMainRoleEditModalButtons/RoleMainRoleEditModalButtons';
+import RoleMainRoleEditModalInputs from '@/pages/RoleMainPage/components/RoleMainRoleEditModalInputs/RoleMainRoleEditModalInputs';
+
+import Modal from '@/components/Modal/Modal';
+
+import useGroupMembersContext from '@/hooks/useGroupMembersContext';
+
+import { editRoles } from '@/api/role';
+import closeButtonImg from '@/assets/close-button.svg';
+import editWithSmileImg from '@/assets/edit-with-smile.svg';
+import { Group } from '@/types/group';
+import { EditRolesRequest } from '@/types/role';
 
 type Props = {
   close: () => void;
