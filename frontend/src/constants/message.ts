@@ -1,3 +1,5 @@
+import { Group } from '@/types/group';
+
 const SUCCESS_MESSAGE = {
   CHANGE_NICKNAME: '닉네임이 변경되었습니다 👋',
   LINK_SLACK: '슬랙 채널과 연동이 완료되었습니다 🎉',
@@ -16,7 +18,8 @@ const CONFIRM_MESSAGE = {
   CLOSE_POLL: '투표를 마감하시겠습니까?',
   CLOSE_APPOINTMENT: '약속잡기를 마감하시겠습니까?',
   DELETE_APPOINTMENT: '약속잡기를 삭제하시겠습니까?',
-  DELETE_ROLE: '역할을 삭제하시겠습니까?'
+  DELETE_ROLE: '역할을 삭제하시겠습니까?',
+  MOVE_GROUP: (groupName: Group['name']) => `${groupName} 그룹으로 이동하시겠습니까?`
 } as const;
 
 export { SUCCESS_MESSAGE, CONFIRM_MESSAGE };

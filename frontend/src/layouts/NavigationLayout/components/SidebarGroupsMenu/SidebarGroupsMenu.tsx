@@ -61,7 +61,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
   };
 
   const handleNavigateGroup = (groupCode: Group['code'], groupName: Group['name']) => () => {
-    if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
+    if (confirm(CONFIRM_MESSAGE.MOVE_GROUP(groupName))) {
       navigate(`groups/${groupCode}`);
       closeGroupsModal();
     }
