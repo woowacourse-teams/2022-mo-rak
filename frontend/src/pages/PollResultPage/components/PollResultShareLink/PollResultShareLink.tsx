@@ -14,7 +14,6 @@ function PollResultShareLink({ groupCode, pollCode, status }: Props) {
   const handleCopyShareLink = () => {
     const baseLink = `${process.env.CLIENT_URL}/groups/${groupCode}/poll/${pollCode}`;
 
-    // TODO: 상수화
     if (status === 'OPEN') {
       navigator.clipboard.writeText(`${baseLink}/progress`).then(() => {
         alert(SUCCESS_MESSAGE.COPY_PROCESS_SHARE_LINK);
@@ -23,7 +22,6 @@ function PollResultShareLink({ groupCode, pollCode, status }: Props) {
       return;
     }
 
-    // TODO: 상수화
     navigator.clipboard.writeText(`${baseLink}/result`).then(() => {
       alert(SUCCESS_MESSAGE.COPY_RESULT_SHARE_LINK);
     });

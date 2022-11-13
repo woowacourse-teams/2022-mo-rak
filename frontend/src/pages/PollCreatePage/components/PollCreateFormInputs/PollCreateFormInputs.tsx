@@ -36,7 +36,6 @@ function PollCreateFormInputs({ pollItems, setPollItems }: Props) {
   };
 
   const handleDeletePollItem = (targetIdx: number) => () => {
-    // TODO: 상수화
     if (window.confirm(CONFIRM_MESSAGE.DELETE_POLL_ITEM)) {
       // TODO: 상수화
       if (pollItems.length === 2) {

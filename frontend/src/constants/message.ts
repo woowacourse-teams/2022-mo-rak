@@ -17,6 +17,6 @@ const CONFIRM_MESSAGE = {
   CLOSE_APPOINTMENT: '약속잡기를 마감하시겠습니까?',
   DELETE_APPOINTMENT: '약속잡기를 삭제하시겠습니까?',
   DELETE_ROLE: '역할을 삭제하시겠습니까?'
-};
+} as const;
 
 export { SUCCESS_MESSAGE, CONFIRM_MESSAGE };

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Z_INDEX } from '@/constants/elementOrder';
+import { Z_INDEX } from '@/constants/style';
 
 const StyledContainer = styled.div<{ isVisible: boolean }>(
   ({ theme, isVisible }) => `

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import responsive from '@/utils/responsive';
-import { Z_INDEX } from '@/constants/elementOrder';
+import { Z_INDEX } from '@/constants/style';
 
 const StyledContainer = styled.div(
   ({ theme }) => `

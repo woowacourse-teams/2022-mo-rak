@@ -47,7 +47,6 @@ function AppointmentResultRanking({
             aria-label={`appointment-result-${rank}`}
           >
             <FlexContainer justifyContent="space-between" alignItems="center">
-              {/* TODO: 상수화 */}
               {rank === 1 ? (
                 <StyledCrownIcon src={crownImg} alt="crown" />
               ) : (
