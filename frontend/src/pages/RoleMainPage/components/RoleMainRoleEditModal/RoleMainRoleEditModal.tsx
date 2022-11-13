@@ -20,6 +20,7 @@ import { EditRolesRequest } from '@/types/role';
 import useGroupMembersContext from '@/hooks/useGroupMembersContext';
 import RoleMainRoleEditModalInputs from '@/pages/RoleMainPage/components/RoleMainRoleEditModalInputs/RoleMainRoleEditModalInputs';
 import RoleMainRoleEditModalButtons from '@/pages/RoleMainPage/components/RoleMainRoleEditModalButtons/RoleMainRoleEditModalButtons';
+import { ROLE_ERROR } from '@/constants/errorMessage';
 
 type Props = {
   close: () => void;
@@ -48,7 +49,7 @@ function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
 
   const handleDeleteRoleInput = (targetIdx: number) => () => {
     if (roles.length <= 1) {
-      alert('역할은 최소 1개 이상 필요합니다!');
+      alert(ROLE_ERROR.UNDER_MIN_COUNT);
 
       return;
     }
@@ -64,7 +65,7 @@ function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
     e.preventDefault();
 
     if (roles.length > groupMembers.length) {
-      alert('역할의 개수가 멤버수보다 많을 수 없습니다!');
+      alert(ROLE_ERROR.EXCEED_MEMBER_COUNT);
 
       return;
     }
@@ -78,7 +79,7 @@ function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
         const errCode = err.response?.data.codeNumber;
 
         if (errCode === '5100') {
-          alert('역할의 이름은 20자를 넘을 수 없습니다');
+          alert(ROLE_ERROR.EXCEED_MAX_NAME_LENGTH);
         }
       }
     }

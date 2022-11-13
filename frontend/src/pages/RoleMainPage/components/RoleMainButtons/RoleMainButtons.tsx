@@ -9,6 +9,7 @@ import { useLottie } from 'lottie-react';
 import { allocateRoles } from '@/api/role';
 import { AxiosError } from 'axios';
 import fireworkLottie from '@/assets/firework-animation.json';
+import { ROLE_ERROR } from '@/constants/errorMessage';
 
 type Props = {
   onClickAllocateRolesButton: () => void;
@@ -50,13 +51,13 @@ function RoleMainButtons({ onClickAllocateRolesButton, onClickEditRolesButton }:
 
         switch (errCode) {
           case '5101': {
-            alert('역할의 개수는 1개 이상, 100개 이하여야합니다');
+            alert(ROLE_ERROR.INVALID_COUNT);
 
             break;
           }
 
           case '5102': {
-            alert('역할은 팀 멤버 수 이하여야합니다');
+            alert(ROLE_ERROR.EXCEED_MEMBER_COUNT);
 
             break;
           }

@@ -21,4 +21,12 @@ const APPOINTMENT_ERROR = {
     '현재 사이트 이용이 원활하지 않아 삭제가 진행되지 않았습니다. 잠시후 이용해주세요'
 } as const;
 
-export { POLL_ERROR, APPOINTMENT_ERROR };
+const ROLE_ERROR = {
+  INVALID_COUNT: '역할의 개수는 1개 이상, 100개 이하여야합니다',
+  EXCEED_MEMBER_COUNT: '역할은 팀 멤버 수 이하여야합니다',
+  NOT_EXIST: '역할이 존재하지 않습니다',
+  UNDER_MIN_COUNT: '역할은 최소 1개 이상 필요합니다!',
+  EXCEED_MAX_NAME_LENGTH: '역할의 이름은 20자를 넘을 수 없습니다'
+};
+
+export { POLL_ERROR, APPOINTMENT_ERROR, ROLE_ERROR };

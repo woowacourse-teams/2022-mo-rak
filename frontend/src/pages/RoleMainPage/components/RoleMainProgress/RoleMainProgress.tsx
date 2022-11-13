@@ -8,6 +8,7 @@ import { EditRolesRequest } from '@/types/role';
 import { AxiosError } from 'axios';
 import RoleMainButtons from '@/pages/RoleMainPage/components/RoleMainButtons/RoleMainButtons';
 import useModal from '@/hooks/useModal';
+import { ROLE_ERROR } from '@/constants/errorMessage';
 
 type Props = {
   onClickAllocateRolesButton: () => void;
@@ -26,7 +27,7 @@ function RoleMainProgress({ onClickAllocateRolesButton }: Props) {
       if (err instanceof AxiosError) {
         const errCode = err.response?.data.codeNumber;
         if (errCode === '5300') {
-          alert('역할이 존재하지 않습니다');
+          alert(ROLE_ERROR.NOT_EXIST);
         }
       }
     }
