@@ -6,7 +6,7 @@ const SUCCESS_MESSAGE = {
   COPY_SHARE_LINK: '약속잡기 결과를 공유할 수 있는 링크가 복사되었습니다 👋',
   COPY_PROCESS_SHARE_LINK: '투표를 진행할 수 있는 링크가 복사되었습니다 👋',
   COPY_RESULT_SHARE_LINK: '투표 결과를 공유할 수 있는 링크가 복사되었습니다 👋',
-  COPY_INVITATION_LINK: '초대 링크가 복사되었습니다 💌'
+  COPY_INVITATION_LINK: '그룹 초대 메시지가 복사되었습니다 💌'
 } as const;
 
 const CONFIRM_MESSAGE = {
@@ -22,4 +22,9 @@ const CONFIRM_MESSAGE = {
   MOVE_GROUP: (groupName: Group['name']) => `${groupName} 그룹으로 이동하시겠습니까?`
 } as const;
 
-export { SUCCESS_MESSAGE, CONFIRM_MESSAGE };
+const SHARE_MESSAGE = {
+  INVITATION: (invitationCode: string) =>
+    `링크를 클릭하거나, 참가 코드를 입력해주세요 😀\nurl: ${process.env.CLIENT_URL}/invite/${invitationCode}\n코드: ${invitationCode}`
+} as const;
+
+export { SUCCESS_MESSAGE, CONFIRM_MESSAGE, SHARE_MESSAGE };
