@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Z_INDEX } from '@/constants/elementOrder';
 
 const StyledContainer = styled.div(
   ({ theme }) => `
@@ -7,7 +8,7 @@ const StyledContainer = styled.div(
   justify-content: space-evenly;
   position: fixed;
   bottom: 0;
-  z-index: 20; // TODO: 상수화
+  z-index: ${Z_INDEX.GLOBALBAR_FOOTBAR}; 
   width: 100%;
   height: 10%;
   background-color:${theme.colors.WHITE_100}; 

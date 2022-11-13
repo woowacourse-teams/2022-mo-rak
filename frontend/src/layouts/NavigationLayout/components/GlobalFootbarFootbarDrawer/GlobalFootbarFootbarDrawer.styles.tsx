@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Z_INDEX } from '@/constants/elementOrder';
 
 const StyledContainer = styled.div<{ isVisible: boolean }>(
   ({ isVisible, theme }) => `
@@ -8,7 +9,7 @@ const StyledContainer = styled.div<{ isVisible: boolean }>(
   top: 0;
   width: 100%;
   min-height: 100%;
-  z-index: 30; 
+  z-index: ${Z_INDEX.DRAWER}; 
   background: ${theme.colors.WHITE_100};
   padding: 4rem;
   gap: 2rem;

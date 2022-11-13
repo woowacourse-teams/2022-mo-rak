@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
+import { Z_INDEX } from '@/constants/elementOrder';
 
 const StyledContainer = styled.div<{ isVisible: boolean }>(
   ({ theme, isVisible }) => `
-  z-index: 999;
+  z-index: ${Z_INDEX.MAX};
   display: ${isVisible ? 'flex' : 'none'};
   background-color: ${theme.colors.TRANSPARENT_BLACK_100_25};
   align-items: center;

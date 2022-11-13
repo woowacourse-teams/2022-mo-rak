@@ -1,5 +1,6 @@
 import { CSSProperties } from 'react';
 import styled from '@emotion/styled';
+import { Z_INDEX } from '@/constants/elementOrder';
 
 const StyledContainer = styled.div`
   position: relative;
@@ -17,7 +18,7 @@ const StyledContentContainer = styled.div<
 >(
   ({ isVisible, backgroundColor, width, theme, placementStyle }) => `
     ${placementStyle};
-    z-index: 10;
+    z-index: ${Z_INDEX.TOOLTIP};
     position: absolute;
     display: ${isVisible ? 'block' : 'none'};  
     background-color: ${backgroundColor ? backgroundColor : theme.colors.PURPLE_50}; 

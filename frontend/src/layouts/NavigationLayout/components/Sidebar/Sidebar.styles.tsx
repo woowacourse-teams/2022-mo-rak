@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import responsive from '@/utils/responsive';
+import { Z_INDEX } from '@/constants/elementOrder';
 
 const StyledContainer = styled.div(
   ({ theme }) => `
@@ -7,7 +8,7 @@ const StyledContainer = styled.div(
   top: 0;
   width: 36.4rem;
   height: 100vh;
-  z-index: 20; 
+  z-index: ${Z_INDEX.SIDEBAR}; 
   background: ${theme.colors.WHITE_100};
   padding-left: 4rem;
   gap: 2rem;
