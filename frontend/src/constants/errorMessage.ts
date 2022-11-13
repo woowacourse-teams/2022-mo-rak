@@ -27,7 +27,7 @@ const ROLE_ERROR = {
   NOT_EXIST: '역할이 존재하지 않습니다.',
   UNDER_MIN_COUNT: '역할은 최소 1개 이상 필요합니다.',
   EXCEED_MAX_NAME_LENGTH: '역할의 이름은 20자를 넘을 수 없습니다.'
-};
+} as const;
 
 const AUTH_ERROR = {
   EMPTY_ACCESS_TOKEN: '로그인 해주세요 😀',

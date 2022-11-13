@@ -5,6 +5,6 @@ const POLL_COUNT = {
 
 const ROLE_COUNT = {
   MIN_COUNT: 1
-};
+} as const;
 
 export { POLL_COUNT, ROLE_COUNT };
