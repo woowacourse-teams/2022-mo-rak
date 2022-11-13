@@ -22,6 +22,7 @@ import PollProgressDetail from '@/pages/PollProgressPage/components/PollProgress
 import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
 import Spinner from '@/components/Spinner/Spinner';
+import { POLL_ERROR } from '@/constants/errorMessage';
 
 const getInitialSelectedPollItems = (pollItems: getPollItemsResponse) =>
   pollItems
@@ -45,7 +46,7 @@ function PollProgressForm() {
     e.preventDefault();
 
     if (selectedPollItems.length <= 0) {
-      alert('최소 1개의 선택항목을 선택해주세요!');
+      alert(POLL_ERROR.SELECT_AT_LEAST_ONE_ITEM);
 
       return;
     }
@@ -59,14 +60,14 @@ function PollProgressForm() {
 
         switch (errCode) {
           case '2300': {
-            alert('존재하지 않는 투표입니다!');
+            alert(POLL_ERROR.NOT_EXIST);
             navigate(`/groups/${groupCode}/poll`);
 
             break;
           }
 
           case '2100': {
-            alert('마감된 투표입니다.');
+            alert(POLL_ERROR.ALREADY_CLOSED);
             navigate(`/groups/${groupCode}/poll`);
 
             break;
@@ -135,7 +136,7 @@ function PollProgressForm() {
           const errCode = err.response?.data.codeNumber;
 
           if (errCode === '2300') {
-            alert('존재하지 않는 투표입니다!');
+            alert(POLL_ERROR.NOT_EXIST);
             navigate(`/groups/${groupCode}/poll`);
           }
         }

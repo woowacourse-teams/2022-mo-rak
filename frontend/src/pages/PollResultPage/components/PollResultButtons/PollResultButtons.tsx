@@ -7,6 +7,7 @@ import { closePoll, deletePoll } from '@/api/poll';
 import { Poll, getPollResponse, getPollItemsResponse } from '@/types/poll';
 import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
+import { POLL_ERROR } from '@/constants/errorMessage';
 
 type Props = {
   pollCode: Poll['code'];
@@ -33,7 +34,7 @@ function PollResultButtons({ pollCode, status, setStatus, isHost, groupCode, pol
           const errCode = err.response?.data.codeNumber;
 
           if (errCode === '2300') {
-            alert('존재하지 않는 투표입니다');
+            alert(POLL_ERROR.NOT_EXIST);
             navigate(`/groups/${groupCode}/poll`);
           }
         }
@@ -51,7 +52,7 @@ function PollResultButtons({ pollCode, status, setStatus, isHost, groupCode, pol
           const errCode = err.response?.data.codeNumber;
 
           if (errCode === '2100') {
-            alert('이미 마감된 투표입니다');
+            alert(POLL_ERROR.ALREADY_CLOSED);
             setStatus('CLOSED');
           }
         }

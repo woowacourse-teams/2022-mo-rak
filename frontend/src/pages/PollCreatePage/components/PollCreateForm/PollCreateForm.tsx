@@ -18,6 +18,7 @@ import { createPollRequest, Poll } from '@/types/poll';
 import { Group } from '@/types/group';
 import useInput from '@/hooks/useInput';
 import { Appointment } from '@/types/appointment';
+import { POLL_ERROR } from '@/constants/errorMessage';
 
 type LocationWithState = {
   state: {
@@ -70,7 +71,7 @@ function PollCreateForm() {
         const errCode = err.response?.data.codeNumber;
 
         if (errCode === '4000') {
-          alert('투표 마감시간은 현재보다 미래여야합니다');
+          alert(POLL_ERROR.INVALID_CLOSE_TIME);
         }
       }
     }

@@ -28,6 +28,7 @@ import Spinner from '@/components/Spinner/Spinner';
 import Tooltip from '@/components/Tooltip/Tooltip';
 import questionImg from '@/assets/question.svg';
 import { useTheme } from '@emotion/react';
+import { POLL_ERROR } from '@/constants/errorMessage';
 
 function PollResultContainer() {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ function PollResultContainer() {
           const errCode = err.response?.data.codeNumber;
 
           if (errCode === '2300') {
-            alert('존재하지 않는 투표입니다');
+            alert(POLL_ERROR.NOT_EXIST);
             navigate(`/groups/${groupCode}/poll`);
           }
         }

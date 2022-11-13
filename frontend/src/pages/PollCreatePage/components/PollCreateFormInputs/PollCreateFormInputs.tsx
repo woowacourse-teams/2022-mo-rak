@@ -10,6 +10,7 @@ import Button from '@/components/Button/Button';
 
 import binImg from '@/assets/bin.svg';
 import { PollItem } from '@/types/poll';
+import { POLL_ERROR } from '@/constants/errorMessage';
 
 type Props = {
   // TODO: pollItems 괜찮을까? subjects가 아닐까?
@@ -23,8 +24,9 @@ function PollCreateFormInputs({ pollItems, setPollItems }: Props) {
   const handleAddPollItem = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
+    // TODO: 상수화
     if (pollItems.length >= 10) {
-      alert('최대 10개의 선택항목만 가능합니다');
+      alert(POLL_ERROR.EXCEED_MAX_ITEM_COUNT);
 
       return;
     }
@@ -35,8 +37,9 @@ function PollCreateFormInputs({ pollItems, setPollItems }: Props) {
   const handleDeletePollItem = (targetIdx: number) => () => {
     // TODO: 상수화
     if (window.confirm('해당 항목을 삭제하시겠습니까?')) {
+      // TODO: 상수화
       if (pollItems.length === 2) {
-        alert('선택항목은 최소 2개이상이여야합니다.');
+        alert(POLL_ERROR.UNDER_MIN_ITEM_COUNT);
         return;
       }
 

@@ -6,6 +6,7 @@ import Button from '@/components/Button/Button';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
+import { POLL_ERROR } from '@/constants/errorMessage';
 
 type Props = {
   pollCode: Poll['code'];
@@ -27,7 +28,7 @@ function PollProgressButtons({ pollCode, isHost, groupCode }: Props) {
           const errCode = err.response?.data.codeNumber;
 
           if (errCode === '2300') {
-            alert('존재하지 않는 투표입니다!');
+            alert(POLL_ERROR.NOT_EXIST);
 
             navigate(`/groups/${groupCode}/poll`);
           }
