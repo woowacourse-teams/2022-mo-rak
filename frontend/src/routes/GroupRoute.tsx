@@ -6,6 +6,7 @@ import useAuthContext from '@/hooks/useAuthContext';
 import useGroupMembersDispatchContext from '@/hooks/useGroupMembersDispatchContext';
 import useNavigationBarContext from '@/hooks/useNavigationBarContext';
 import { Group } from '@/types/group';
+import { GROUP_ERROR } from '@/constants/errorMessage';
 
 function GroupRoute() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function GroupRoute() {
 
           if (errCode === '1300') {
             // TODO: 두 번 alert가 나오는 문제 존재
-            alert('잘못된 접근입니다.');
+            alert(GROUP_ERROR.NOT_PARTICIPATED);
             navigate('/');
           }
         }

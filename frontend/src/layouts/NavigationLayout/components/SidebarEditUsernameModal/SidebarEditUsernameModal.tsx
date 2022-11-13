@@ -17,6 +17,7 @@ import { AxiosError } from 'axios';
 import useAuthDispatchContext from '@/hooks/useAuthDispatchContext';
 import SidebarEditUsernameModalButtons from '@/layouts/NavigationLayout/components/SidebarEditUsernameModalButtons/SidebarEditUsernameModalButtons';
 import SidebarEditUsernameModalUsernameInput from '@/layouts/NavigationLayout/components/SidebarEditUsernameModalUsernameInput/SidebarEditUsernameModalUsernameInput';
+import { MODAL_ERROR } from '@/constants/errorMessage';
 
 type Props = {
   isVisible: boolean;
@@ -41,7 +42,7 @@ function SidebarEditUsernameModal({ isVisible, close }: Props) {
         const errCode = err.response?.data.codeNumber;
 
         if (errCode === '4000') {
-          alert('닉네임은 공백일 수 없습니다');
+          alert(MODAL_ERROR.EMPTY_NICKNAME);
           resetUsername();
         }
       }

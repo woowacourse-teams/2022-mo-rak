@@ -11,6 +11,7 @@ import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import InvitationButtons from '@/pages/InvitationPage/components/InvitationButtons/InvitationButtons';
 import { getIsJoinedGroup } from '@/api/group';
 import { Group } from '@/types/group';
+import { GROUP_ERROR } from '@/constants/errorMessage';
 
 function InvitationContainer() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function InvitationContainer() {
 
         if (isJoined) {
           navigate(`/groups/${groupCode}`);
-          alert('이미 속해있는 그룹의 초대장입니다~');
+          alert(GROUP_ERROR.ALREADY_PARTICIPATED);
         }
 
         setGroupCode(groupCode);
@@ -38,7 +39,7 @@ function InvitationContainer() {
           const errCode = err.response?.data.codeNumber;
 
           if (errCode === '1301') {
-            alert('유효하지 않은 초대장입니다');
+            alert(GROUP_ERROR.INVALID_INVITATION_URL);
             navigate('/');
           }
         }

@@ -14,6 +14,7 @@ import LandingMainSection from '@/pages/LandingPage/components/LandingMainSectio
 import LandingServiceIntroductionSection from '@/pages/LandingPage/components/LandingServiceIntroductionSection/LandingServiceIntroductionSection';
 import LandingFeatureIntroductionSection from '@/pages/LandingPage/components/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';
 import { AxiosError } from 'axios';
+import { AUTH_ERROR } from '@/constants/errorMessage';
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ function LandingPage() {
 
           navigate('/init');
         } catch (err) {
-          alert('로그인에 실패하였습니다. 다시 시도해주세요');
+          alert(AUTH_ERROR.FAILED_LOGIN);
           navigate('/');
         }
       })(code);

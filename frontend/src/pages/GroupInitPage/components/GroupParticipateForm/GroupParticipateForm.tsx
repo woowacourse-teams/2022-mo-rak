@@ -11,6 +11,7 @@ import {
   StyledInputContainer
 } from '@/pages/GroupInitPage/components/GroupParticipateForm/GroupParticipateForm.styles';
 import { AxiosError } from 'axios';
+import { GROUP_ERROR } from '@/constants/errorMessage';
 
 function GroupParticipateForm() {
   const [invitationCode, handleInvitationCode, resetInvitationCode] = useInput('');
@@ -21,7 +22,7 @@ function GroupParticipateForm() {
     e.preventDefault();
 
     if (!invitationCode) {
-      alert('그룹 코드를 입력해주세요!');
+      alert(GROUP_ERROR.EMPTY_INVITATION_CODE);
 
       return;
     }
@@ -35,7 +36,7 @@ function GroupParticipateForm() {
         const errCode = err.response?.data.codeNumber;
 
         if (errCode === '1301') {
-          alert('그룹 코드를 다시 한 번 확인해주세요!');
+          alert(GROUP_ERROR.INVALID_INVITATION_CODE);
           resetInvitationCode();
         }
       }

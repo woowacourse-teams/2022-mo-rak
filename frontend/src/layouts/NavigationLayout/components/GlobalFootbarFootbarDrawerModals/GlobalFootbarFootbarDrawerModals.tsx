@@ -31,6 +31,7 @@ import {
   StyledButton,
   StyledSmallLogo
 } from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerModals/GlobalFootbarFootbarDrawerModals.styles';
+import { MODAL_ERROR } from '@/constants/errorMessage';
 
 type Props = {
   activeModalMenu: string | null;
@@ -61,7 +62,7 @@ function GlobalFootbarFootbarDrawerModals({ activeModalMenu, closeModal, groupCo
         const errCode = err.response?.data.codeNumber;
 
         if (errCode === '4000') {
-          alert('팀 이름은 공백일 수 없습니다');
+          alert(MODAL_ERROR.EMPTY_GROUP_NAME);
           resetGroupName();
         }
       }
@@ -85,14 +86,14 @@ function GlobalFootbarFootbarDrawerModals({ activeModalMenu, closeModal, groupCo
 
         switch (errCode) {
           case '1101': {
-            alert('이미 참여하고 있는 그룹입니다!');
+            alert(MODAL_ERROR.ALREADY_PARTICIPATED_GROUP);
             resetInvitationCode();
 
             break;
           }
 
           case '1301':
-            alert('찾으시는 그룹이 없습니다. 코드를 다시 확인해주세요!');
+            alert(MODAL_ERROR.CAN_NOT_FOUND_GROUP);
             resetInvitationCode();
 
             break;
@@ -118,7 +119,7 @@ function GlobalFootbarFootbarDrawerModals({ activeModalMenu, closeModal, groupCo
         const errCode = err.response?.data.codeNumber;
 
         if (errCode === '4000') {
-          alert('http로 시작하는 올바른 url을 입력해주세요!');
+          alert(MODAL_ERROR.INVALID_SLACK_URL);
           resetSlackUrl();
         }
       }

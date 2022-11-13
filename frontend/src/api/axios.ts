@@ -4,6 +4,7 @@ import {
   removeLocalStorageItem,
   saveSessionStorageItem
 } from '@/utils/storage';
+import { AUTH_ERROR } from '@/constants/errorMessage';
 
 type Path = 'auth' | 'groups';
 
@@ -45,7 +46,7 @@ const axiosInstanceGenerator = (path: Path) => (isAuthRequired: boolean) => {
             saveSessionStorageItem('redirectUrl', window.location.pathname);
           }
 
-          alert('로그인 해주세요😀');
+          alert(AUTH_ERROR.EMPTY_ACCESS_TOKEN);
           removeLocalStorageItem('token');
           // TODO: react에서는 anti-pattern인 리다이렉트 방법, 수정 필요
           // TODO: 강제로 html을 다시 받아오는 거라, 추후 SPA 방식의 navigation을 하게 되면, 여러 개의 alert가 뜰 듯, 수정 필요...
@@ -55,7 +56,7 @@ const axiosInstanceGenerator = (path: Path) => (isAuthRequired: boolean) => {
         if (!is403ErrorProcessing && statusCode === 403) {
           is403ErrorProcessing = true;
 
-          alert('접근 권한이 없습니다');
+          alert(AUTH_ERROR.NO_ACCESS_AUTHORITY);
           // TODO: react에서는 anti-pattern인 리다이렉트 방법, 수정 필요
           window.location.href = '/error';
         }

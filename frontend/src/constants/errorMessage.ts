@@ -29,4 +29,27 @@ const ROLE_ERROR = {
   EXCEED_MAX_NAME_LENGTH: '역할의 이름은 20자를 넘을 수 없습니다'
 };
 
-export { POLL_ERROR, APPOINTMENT_ERROR, ROLE_ERROR };
+const AUTH_ERROR = {
+  EMPTY_ACCESS_TOKEN: '로그인 해주세요😀',
+  NO_ACCESS_AUTHORITY: '접근 권한이 없습니다',
+  FAILED_LOGIN: '로그인에 실패하였습니다. 다시 시도해주세요'
+} as const;
+
+const MODAL_ERROR = {
+  EMPTY_GROUP_NAME: '팀 이름은 공백일 수 없습니다',
+  CAN_NOT_FOUND_GROUP: '찾으시는 그룹이 없습니다. 코드를 다시 확인해주세요!',
+  ALREADY_PARTICIPATED_GROUP: '이미 참여하고 있는 그룹입니다!',
+  INVALID_SLACK_URL: 'http로 시작하는 올바른 url을 입력해주세요!',
+  EMPTY_NICKNAME: '닉네임은 공백일 수 없습니다'
+} as const;
+
+const GROUP_ERROR = {
+  EMPTY_NAME: '그룹이름을 입력해주세요!',
+  EMPTY_INVITATION_CODE: '그룹 코드를 입력해주세요!',
+  INVALID_INVITATION_CODE: '그룹 코드를 다시 한 번 확인해주세요!',
+  ALREADY_PARTICIPATED: '이미 가입된 모임입니다~',
+  INVALID_INVITATION_URL: '유효하지 않은 초대장입니다',
+  NOT_PARTICIPATED: '잘못된 접근입니다.'
+};
+
+export { POLL_ERROR, APPOINTMENT_ERROR, ROLE_ERROR, AUTH_ERROR, MODAL_ERROR, GROUP_ERROR };

@@ -9,6 +9,7 @@ import {
   StyledInputContainer
 } from '@/pages/GroupInitPage/components/GroupCreateForm/GroupCreateForm.styles';
 import { AxiosError } from 'axios';
+import { GROUP_ERROR } from '@/constants/errorMessage';
 
 function GroupCreateForm() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function GroupCreateForm() {
         const errCode = err.response?.data.codeNumber;
 
         if (errCode === '4000') {
-          alert('그룹이름을 입력해주세요!');
+          alert(GROUP_ERROR.EMPTY_NAME);
         }
       }
     }

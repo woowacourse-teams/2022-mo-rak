@@ -6,6 +6,7 @@ import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import { participateGroup } from '@/api/group';
 import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
+import { GROUP_ERROR } from '@/constants/errorMessage';
 
 type Props = {
   navigate: NavigateFunction;
@@ -25,7 +26,7 @@ function InvitationButtons({ navigate, invitationCode, groupCode }: Props) {
         const errCode = err.response?.data.codeNumber;
 
         if (errCode === '1101') {
-          alert('이미 가입된 모임입니다~');
+          alert(GROUP_ERROR.ALREADY_PARTICIPATED);
           navigate(`/groups/${groupCode}`);
         }
       }
