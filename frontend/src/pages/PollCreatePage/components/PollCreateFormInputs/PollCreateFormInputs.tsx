@@ -12,6 +12,7 @@ import binImg from '@/assets/bin.svg';
 import { PollItem } from '@/types/poll';
 import { POLL_ERROR } from '@/constants/errorMessage';
 import { CONFIRM_MESSAGE } from '@/constants/message';
+import { POLL_COUNT } from '@/constants/count';
 
 type Props = {
   // TODO: pollItems 괜찮을까? subjects가 아닐까?
@@ -25,8 +26,7 @@ function PollCreateFormInputs({ pollItems, setPollItems }: Props) {
   const handleAddPollItem = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    // TODO: 상수화
-    if (pollItems.length >= 10) {
+    if (pollItems.length >= POLL_COUNT.MAX_ITEM) {
       alert(POLL_ERROR.EXCEED_MAX_ITEM_COUNT);
 
       return;
@@ -37,8 +37,7 @@ function PollCreateFormInputs({ pollItems, setPollItems }: Props) {
 
   const handleDeletePollItem = (targetIdx: number) => () => {
     if (window.confirm(CONFIRM_MESSAGE.DELETE_POLL_ITEM)) {
-      // TODO: 상수화
-      if (pollItems.length === 2) {
+      if (pollItems.length === POLL_COUNT.MIN_ITEM) {
         alert(POLL_ERROR.UNDER_MIN_ITEM_COUNT);
         return;
       }

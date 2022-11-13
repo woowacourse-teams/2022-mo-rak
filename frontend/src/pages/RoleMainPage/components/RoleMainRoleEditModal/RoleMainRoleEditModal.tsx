@@ -22,6 +22,7 @@ import RoleMainRoleEditModalInputs from '@/pages/RoleMainPage/components/RoleMai
 import RoleMainRoleEditModalButtons from '@/pages/RoleMainPage/components/RoleMainRoleEditModalButtons/RoleMainRoleEditModalButtons';
 import { ROLE_ERROR } from '@/constants/errorMessage';
 import { CONFIRM_MESSAGE } from '@/constants/message';
+import { ROLE_COUNT } from '@/constants/count';
 
 type Props = {
   close: () => void;
@@ -49,7 +50,7 @@ function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
   };
 
   const handleDeleteRoleInput = (targetIdx: number) => () => {
-    if (roles.length <= 1) {
+    if (roles.length <= ROLE_COUNT.MIN_COUNT) {
       alert(ROLE_ERROR.UNDER_MIN_COUNT);
 
       return;
