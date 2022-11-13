@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getGroupMembers } from '@/api/group';
+import { getGroupMembers } from '@/apis/group';
 import { Group, Member } from '@/types/group';
 import Avatar from '@/components/Avatar/Avatar';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';

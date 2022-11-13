@@ -8,8 +8,8 @@ import {
   getSessionStorageItem,
   removeSessionStorageItem
 } from '@/utils/storage';
-import { signin } from '@/api/auth';
-import { getDefaultGroup } from '@/api/group';
+import { signin } from '@/apis/auth';
+import { getDefaultGroup } from '@/apis/group';
 import LandingMainSection from '@/pages/LandingPage/components/LandingMainSection/LandingMainSection';
 import LandingServiceIntroductionSection from '@/pages/LandingPage/components/LandingServiceIntroductionSection/LandingServiceIntroductionSection';
 import LandingFeatureIntroductionSection from '@/pages/LandingPage/components/LandingFeatureIntroductionSection/LandingFeatureIntroductionSection';

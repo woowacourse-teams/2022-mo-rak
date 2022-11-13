@@ -1,5 +1,5 @@
 import { EditUsernameRequest } from '@/types/auth';
-import { publicAuthAxiosInstance, privateAuthAxiosInstance } from '@/api/axios';
+import { publicAuthAxiosInstance, privateAuthAxiosInstance } from '@/apis/axios';
 
 const signin = (code: string) => publicAuthAxiosInstance.post('/signin', code);
 const getUser = () => privateAuthAxiosInstance.get('/me');

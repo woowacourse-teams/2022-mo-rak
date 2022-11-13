@@ -3,7 +3,7 @@ import { useTheme } from '@emotion/react';
 import Button from '@/components/Button/Button';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 
-import { participateGroup } from '@/api/group';
+import { participateGroup } from '@/apis/group';
 import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
 

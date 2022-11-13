@@ -4,7 +4,7 @@ import {
   StyledContainer,
   StyledContentContainer
 } from '@/pages/AppointmentResultPage/AppointmentResultPage.styles';
-import { getAppointment, getAppointmentRecommendation } from '@/api/appointment';
+import { getAppointment, getAppointmentRecommendation } from '@/apis/appointment';
 import {
   Appointment,
   AppointmentRecommendation,

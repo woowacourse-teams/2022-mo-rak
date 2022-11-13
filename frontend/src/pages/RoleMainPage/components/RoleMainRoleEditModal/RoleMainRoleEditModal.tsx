@@ -12,7 +12,7 @@ import {
   StyledDescription
 } from '@/pages/RoleMainPage/components/RoleMainRoleEditModal/RoleMainRoleEditModal.styles';
 import Modal from '@/components/Modal/Modal';
-import { editRoles } from '@/api/role';
+import { editRoles } from '@/apis/role';
 import { useParams } from 'react-router-dom';
 import { Group } from '@/types/group';
 import { AxiosError } from 'axios';

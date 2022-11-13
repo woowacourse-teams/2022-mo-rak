@@ -9,7 +9,7 @@ import Box from '@/components/Box/Box';
 import Divider from '@/components/Divider/Divider';
 import MarginContainer from '@/components/MarginContainer/MarginContainer';
 import PollProgressButtons from '@/pages/PollProgressPage/components/PollProgressButtons/PollProgressButtons';
-import { getPoll, progressPoll, getPollItems } from '@/api/poll';
+import { getPoll, progressPoll, getPollItems } from '@/apis/poll';
 import PollProgressItems from '@/pages/PollProgressPage/components/PollProgressItems/PollProgressItems';
 import {
   Poll,

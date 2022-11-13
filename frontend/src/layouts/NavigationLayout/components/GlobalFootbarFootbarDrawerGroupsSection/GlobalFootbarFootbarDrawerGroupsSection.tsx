@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import plusImg from '@/assets/plus.svg';
 import leaveImg from '@/assets/leave.svg';
-import { leaveGroup } from '@/api/group';
+import { leaveGroup } from '@/apis/group';
 import { Group } from '@/types/group';
 import {
   StyledMenuHeader,

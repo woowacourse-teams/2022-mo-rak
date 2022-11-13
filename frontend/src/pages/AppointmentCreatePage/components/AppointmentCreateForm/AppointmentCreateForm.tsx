@@ -12,7 +12,7 @@ import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import useInput from '@/hooks/useInput';
 import useInputs from '@/hooks/useInputs';
 import { Time, CreateAppointmentRequest, Appointment } from '@/types/appointment';
-import { createAppointment } from '@/api/appointment';
+import { createAppointment } from '@/apis/appointment';
 import { Group } from '@/types/group';
 import { StyledContainer } from '@/pages/AppointmentCreatePage/components/AppointmentCreateForm/AppointmentCreateForm.styles';
 

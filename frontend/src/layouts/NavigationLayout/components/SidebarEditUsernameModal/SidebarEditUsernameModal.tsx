@@ -12,7 +12,7 @@ import closeButtonImg from '@/assets/close-button.svg';
 import editWithSmileImg from '@/assets/edit-with-smile.svg';
 import { FormEvent } from 'react';
 import useInput from '@/hooks/useInput';
-import { editUsername } from '@/api/auth';
+import { editUsername } from '@/apis/auth';
 import { AxiosError } from 'axios';
 import useAuthDispatchContext from '@/hooks/useAuthDispatchContext';
 import SidebarEditUsernameModalButtons from '@/layouts/NavigationLayout/components/SidebarEditUsernameModalButtons/SidebarEditUsernameModalButtons';

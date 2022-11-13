@@ -5,7 +5,7 @@ import { MenuRoute } from '@/routes/MenuRoute';
 import NavigationLayout from '@/layouts/NavigationLayout/NavigationLayout';
 import GroupRoute from '@/routes/GroupRoute';
 import ErrorPage from '@/pages/ErrorPage/ErrorPage';
-import { AuthProvider } from '@/context/AuthProvider';
+import { AuthProvider } from '@/contexts/AuthProvider';
 import FallbackPage from '@/pages/FallbackPage/FallbackPage';
 
 const PollMainPage = lazy(() => import('@/pages/PollMainPage/PollMainPage'));

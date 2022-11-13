@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import { GroupMembersProvider } from '@/context/GroupMembersProvider';
-import { NavigationBarProvider } from '@/context/NavigationBarProvider';
+import { GroupMembersProvider } from '@/contexts/GroupMembersProvider';
+import { NavigationBarProvider } from '@/contexts/NavigationBarProvider';
 import useDeviceState from '@/hooks/useDeviceState';
 import GlobalFootbar from '@/layouts/NavigationLayout/components/GlobalFootbar/GlobalFootbar';
 import Sidebar from '@/layouts/NavigationLayout/components/Sidebar/Sidebar';

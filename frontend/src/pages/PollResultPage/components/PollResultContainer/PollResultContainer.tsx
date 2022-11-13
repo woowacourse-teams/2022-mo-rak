@@ -16,7 +16,7 @@ import MarginContainer from '@/components/MarginContainer/MarginContainer';
 import PollResultItems from '@/pages/PollResultPage/components/PollResultItems/PollResultItems';
 import PollResultDetail from '@/pages/PollResultPage/components/PollResultDetail/PollResultDetail';
 import PollResultButtons from '@/pages/PollResultPage/components/PollResultButtons/PollResultButtons';
-import { getPoll, getPollResult, getPollItems } from '@/api/poll';
+import { getPoll, getPollResult, getPollItems } from '@/apis/poll';
 import { Poll, getPollResponse, getPollResultResponse, getPollItemsResponse } from '@/types/poll';
 import { Group } from '@/types/group';
 

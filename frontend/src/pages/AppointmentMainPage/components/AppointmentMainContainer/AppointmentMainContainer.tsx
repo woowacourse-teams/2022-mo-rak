@@ -6,7 +6,7 @@ import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import MarginContainer from '@/components/MarginContainer/MarginContainer';
 import { Group } from '@/types/group';
 import { GetAppointmentsResponse } from '@/types/appointment';
-import { getAppointments } from '@/api/appointment';
+import { getAppointments } from '@/apis/appointment';
 import AppointmentMainStatus from '@/pages/AppointmentMainPage/components/AppointmentMainStatus/AppointmentMainStatus';
 import AppointmentMainProgress from '@/pages/AppointmentMainPage/components/AppointmentMainProgress/AppointmentMainProgress';
 import AppointmentMainDetail from '@/pages/AppointmentMainPage/components/AppointmentMainDetail/AppointmentMainDetail';

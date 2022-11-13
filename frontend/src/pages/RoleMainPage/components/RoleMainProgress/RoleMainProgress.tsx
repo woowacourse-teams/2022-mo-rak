@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import RoleMainRoleEditModal from '@/pages/RoleMainPage/components/RoleMainRoleEditModal/RoleMainRoleEditModal';
 import RoleMainRoles from '@/pages/RoleMainPage/components/RoleMainRoles/RoleMainRoles';
-import { getRoles } from '@/api/role';
+import { getRoles } from '@/apis/role';
 import { useParams } from 'react-router-dom';
 import { Group } from '@/types/group';
 import { EditRolesRequest } from '@/types/role';

@@ -4,7 +4,7 @@ import menuImg from '@/assets/menu.svg';
 import plusImg from '@/assets/plus.svg';
 import leaveImg from '@/assets/leave.svg';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
-import { leaveGroup } from '@/api/group';
+import { leaveGroup } from '@/apis/group';
 import { Group } from '@/types/group';
 import useNavigationBarDispatchContext from '@/hooks/useNavigationBarDispatchContext';
 import useNavigationBarContext from '@/hooks/useNavigationBarContext';
