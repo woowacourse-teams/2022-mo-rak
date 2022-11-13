@@ -37,7 +37,7 @@ const AUTH_ERROR = {
 
 const MODAL_ERROR = {
   EMPTY_GROUP_NAME: '팀 이름은 공백일 수 없습니다',
-  CAN_NOT_FOUND_GROUP: '찾으시는 그룹이 없습니다. 코드를 다시 확인해주세요!',
+  CAN_NOT_FIND_GROUP: '찾으시는 그룹이 없습니다. 코드를 다시 확인해주세요!',
   ALREADY_PARTICIPATED_GROUP: '이미 참여하고 있는 그룹입니다!',
   INVALID_SLACK_URL: 'http로 시작하는 올바른 url을 입력해주세요!',
   EMPTY_NICKNAME: '닉네임은 공백일 수 없습니다'
@@ -50,6 +50,23 @@ const GROUP_ERROR = {
   ALREADY_PARTICIPATED: '이미 가입된 모임입니다~',
   INVALID_INVITATION_URL: '유효하지 않은 초대장입니다',
   NOT_PARTICIPATED: '잘못된 접근입니다.'
-};
+} as const;
 
-export { POLL_ERROR, APPOINTMENT_ERROR, ROLE_ERROR, AUTH_ERROR, MODAL_ERROR, GROUP_ERROR };
+const CONTEXT_ERROR = {
+  NO_AUTH_CONTEXT: 'AuthContext를 찾을 수 없습니다.',
+  NO_AUTH_DISPATCH_CONTEXT: 'AuthDispatchContext를 찾을 수 없습니다.',
+  NO_GROUP_MEMBERS_CONTEXT: 'GroupMembersContext를 찾을 수 없습니다.',
+  NO_GROUP_MEMBERS_DISPATCH_CONTEXT: 'GroupMembersDispatchContext를 찾을 수 없습니다.',
+  NO_NAVIGATION_BAR_CONTEXT: 'NavigationBarContext를 찾을 수 없습니다.',
+  NO_NAVIGATION_BAR_DISPATCH_CONTEXT: 'NavigationBarDispatchContext를 찾을 수 없습니다.'
+} as const;
+
+export {
+  POLL_ERROR,
+  APPOINTMENT_ERROR,
+  ROLE_ERROR,
+  AUTH_ERROR,
+  MODAL_ERROR,
+  GROUP_ERROR,
+  CONTEXT_ERROR
+};

@@ -1,11 +1,12 @@
 import { useContext } from 'react';
 import { NavigationBarContext } from '@/context/NavigationBarProvider';
+import { CONTEXT_ERROR } from '@/constants/errorMessage';
 
 function useNavigationBarContext() {
   const context = useContext(NavigationBarContext);
 
   if (!context) {
-    throw new Error('NavigationBarProvider를 찾을 수 없습니다.');
+    throw new Error(CONTEXT_ERROR.NO_NAVIGATION_BAR_CONTEXT);
   }
 
   return context;
