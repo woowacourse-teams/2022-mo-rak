@@ -24,7 +24,7 @@ const CONFIRM_MESSAGE = {
 
 const SHARE_MESSAGE = {
   INVITATION: (invitationCode: string) =>
-    `링크를 클릭하거나, 참가 코드를 입력해주세요 😀\nurl: ${process.env.CLIENT_URL}/invite/${invitationCode}\n코드: ${invitationCode}`
+    `링크를 클릭하거나, 참가 코드를 입력해주세요 😀\n🔗url: ${process.env.CLIENT_URL}/invite/${invitationCode}\n🔑참가코드: ${invitationCode}`
 } as const;
 
 export { SUCCESS_MESSAGE, CONFIRM_MESSAGE, SHARE_MESSAGE };
