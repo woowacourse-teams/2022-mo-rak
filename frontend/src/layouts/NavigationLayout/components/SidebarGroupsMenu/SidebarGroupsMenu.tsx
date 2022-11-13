@@ -27,6 +27,7 @@ import {
   StyledPlusImage,
   StyledLeaveImage
 } from '@/layouts/NavigationLayout/components/SidebarGroupsMenu/SidebarGroupsMenu.styles';
+import { CONFIRM_MESSAGE } from '@/constants/message';
 
 type Props = {
   groupCode: Group['code'];
@@ -45,7 +46,7 @@ function SidebarGroupsMenu({ onClickMenu, groupCode, groups }: Props) {
   const currentGroup = groups.find((group) => group.code === groupCode);
 
   const handleLeaveGroup = async () => {
-    if (window.confirm('그룹을 나가시겠습니까?')) {
+    if (window.confirm(CONFIRM_MESSAGE.EXIT_GROUP)) {
       await leaveGroup(groupCode);
       navigate('/init');
     }

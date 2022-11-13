@@ -11,6 +11,7 @@ import Button from '@/components/Button/Button';
 import binImg from '@/assets/bin.svg';
 import { PollItem } from '@/types/poll';
 import { POLL_ERROR } from '@/constants/errorMessage';
+import { CONFIRM_MESSAGE } from '@/constants/message';
 
 type Props = {
   // TODO: pollItems 괜찮을까? subjects가 아닐까?
@@ -36,7 +37,7 @@ function PollCreateFormInputs({ pollItems, setPollItems }: Props) {
 
   const handleDeletePollItem = (targetIdx: number) => () => {
     // TODO: 상수화
-    if (window.confirm('해당 항목을 삭제하시겠습니까?')) {
+    if (window.confirm(CONFIRM_MESSAGE.DELETE_POLL_ITEM)) {
       // TODO: 상수화
       if (pollItems.length === 2) {
         alert(POLL_ERROR.UNDER_MIN_ITEM_COUNT);

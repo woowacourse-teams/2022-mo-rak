@@ -32,6 +32,7 @@ import {
   StyledSmallLogo
 } from '@/layouts/NavigationLayout/components/SidebarModals/SidebarModals.styles';
 import { MODAL_ERROR } from '@/constants/errorMessage';
+import { SUCCESS_MESSAGE } from '@/constants/message';
 
 type Props = {
   activeModal: string | null;
@@ -93,7 +94,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
           }
 
           case '1301':
-            alert(MODAL_ERROR.CAN_NOT_FOUND_GROUP);
+            alert(MODAL_ERROR.CAN_NOT_FIND_GROUP);
             resetInvitationCode();
 
             break;
@@ -111,7 +112,7 @@ function SidebarModals({ activeModal, closeModal, groupCode }: Props) {
 
     try {
       await linkSlack(slack, groupCode);
-      alert('슬랙 채널과 연동이 완료되었습니다 🎉');
+      alert(SUCCESS_MESSAGE.LINK_SLACK);
       resetSlackUrl();
       closeModal();
     } catch (err) {

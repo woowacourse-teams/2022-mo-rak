@@ -18,6 +18,7 @@ import {
   StyledPlusImage,
   StyledLeaveImage
 } from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerGroupsSection/GlobalFootbarFootbarDrawerGroupsSection.styles';
+import { CONFIRM_MESSAGE } from '@/constants/message';
 
 type Props = {
   groupCode: Group['code'];
@@ -39,7 +40,7 @@ function GlobalFootbarFootbarDrawerGroupsSection({
   const profileColor = getRandomPastelColor();
 
   const handleLeaveGroup = async () => {
-    if (window.confirm('그룹을 나가시겠습니까?')) {
+    if (window.confirm(CONFIRM_MESSAGE.EXIT_GROUP)) {
       await leaveGroup(groupCode);
       navigate('/init');
       closeDrawer();
@@ -47,6 +48,7 @@ function GlobalFootbarFootbarDrawerGroupsSection({
   };
 
   const handleNavigateGroup = (groupCode: Group['code'], groupName: Group['name']) => () => {
+    // TODO: 상수화
     if (confirm(`${groupName} 그룹으로 이동하시겠습니까?`)) {
       navigate(`groups/${groupCode}`);
       closeDrawer();

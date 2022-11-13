@@ -21,6 +21,7 @@ import useGroupMembersContext from '@/hooks/useGroupMembersContext';
 import RoleMainRoleEditModalInputs from '@/pages/RoleMainPage/components/RoleMainRoleEditModalInputs/RoleMainRoleEditModalInputs';
 import RoleMainRoleEditModalButtons from '@/pages/RoleMainPage/components/RoleMainRoleEditModalButtons/RoleMainRoleEditModalButtons';
 import { ROLE_ERROR } from '@/constants/errorMessage';
+import { CONFIRM_MESSAGE } from '@/constants/message';
 
 type Props = {
   close: () => void;
@@ -54,7 +55,7 @@ function RoleMainRoleEditModal({ initialRoles, close, onSubmit }: Props) {
       return;
     }
 
-    if (window.confirm('역할을 삭제하시겠습니까?')) {
+    if (window.confirm(CONFIRM_MESSAGE.DELETE_ROLE)) {
       const filteredRoles = roles.filter((_, idx) => idx !== targetIdx);
 
       setRoles(filteredRoles);

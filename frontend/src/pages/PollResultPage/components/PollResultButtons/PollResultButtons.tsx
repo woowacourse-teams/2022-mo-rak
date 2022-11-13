@@ -8,6 +8,7 @@ import { Poll, getPollResponse, getPollItemsResponse } from '@/types/poll';
 import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
 import { POLL_ERROR } from '@/constants/errorMessage';
+import { CONFIRM_MESSAGE } from '@/constants/message';
 
 type Props = {
   pollCode: Poll['code'];
@@ -25,7 +26,7 @@ function PollResultButtons({ pollCode, status, setStatus, isHost, groupCode, pol
   const progressButtonMessage = isProgressedPoll ? '재투표하기' : '투표하기';
 
   const handleDeletePoll = async () => {
-    if (window.confirm('투표를 삭제하시겠습니까?')) {
+    if (window.confirm(CONFIRM_MESSAGE.DELETE_POLL)) {
       try {
         await deletePoll(pollCode, groupCode);
         navigate(`/groups/${groupCode}/poll`);
@@ -43,7 +44,7 @@ function PollResultButtons({ pollCode, status, setStatus, isHost, groupCode, pol
   };
 
   const handleClosePoll = async () => {
-    if (window.confirm('투표를 마감하시겠습니까?')) {
+    if (window.confirm(CONFIRM_MESSAGE.CLOSE_POLL)) {
       try {
         await closePoll(pollCode, groupCode);
         setStatus('CLOSED');

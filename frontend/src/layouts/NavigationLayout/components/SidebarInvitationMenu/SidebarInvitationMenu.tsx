@@ -7,6 +7,7 @@ import {
   StyledInvitationText,
   StyledPlusIcon
 } from '@/layouts/NavigationLayout/components/SidebarInvitationMenu/SidebarInvitationMenu.styles';
+import { SUCCESS_MESSAGE } from '@/constants/message';
 
 type Props = {
   groupCode: Group['code'];
@@ -16,6 +17,7 @@ function SidebarInvitationMenu({ groupCode }: Props) {
   const handleCopyInvitationCode = async () => {
     const res = await createInvitationCode(groupCode);
     const invitationCode = res.headers.location.split('groups/in/')[1];
+    // TODO: 상수화
     const invitationLink = `
         링크를 클릭하거나, 참가 코드를 입력해주세요😀
         url: ${process.env.CLIENT_URL}/invite/${invitationCode}
@@ -23,7 +25,7 @@ function SidebarInvitationMenu({ groupCode }: Props) {
     `;
 
     writeClipboard(invitationLink).then(() => {
-      alert('초대링크가 클립보드에 복사되었습니다💌');
+      alert(SUCCESS_MESSAGE.COPY_INVITATION_LINK);
     });
   };
 

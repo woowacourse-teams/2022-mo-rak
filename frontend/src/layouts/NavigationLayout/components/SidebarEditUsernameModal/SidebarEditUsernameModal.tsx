@@ -18,6 +18,7 @@ import useAuthDispatchContext from '@/hooks/useAuthDispatchContext';
 import SidebarEditUsernameModalButtons from '@/layouts/NavigationLayout/components/SidebarEditUsernameModalButtons/SidebarEditUsernameModalButtons';
 import SidebarEditUsernameModalUsernameInput from '@/layouts/NavigationLayout/components/SidebarEditUsernameModalUsernameInput/SidebarEditUsernameModalUsernameInput';
 import { MODAL_ERROR } from '@/constants/errorMessage';
+import { SUCCESS_MESSAGE } from '@/constants/message';
 
 type Props = {
   isVisible: boolean;
@@ -34,7 +35,7 @@ function SidebarEditUsernameModal({ isVisible, close }: Props) {
     try {
       await editUsername({ name: username });
       authDispatch({ type: 'SET_NAME', payload: username });
-      alert('닉네임이 변경되었습니다.');
+      alert(SUCCESS_MESSAGE.CHANGE_NICKNAME);
       resetUsername();
       close();
     } catch (err) {

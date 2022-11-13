@@ -20,6 +20,7 @@ import {
   StyledHelpIcon
 } from '@/pages/AppointmentResultPage/components/AppointmentResultButtons/AppointmentResultButtons.styles';
 import { APPOINTMENT_ERROR } from '@/constants/errorMessage';
+import { CONFIRM_MESSAGE } from '@/constants/message';
 
 type Props = {
   groupCode: Group['code'];
@@ -49,7 +50,7 @@ function AppointmentResultButtons({
 
   const handleCloseAppointment = async () => {
     try {
-      if (window.confirm('약속잡기를 마감하시겠습니까?')) {
+      if (window.confirm(CONFIRM_MESSAGE.CLOSE_APPOINTMENT)) {
         await closeAppointment(groupCode, appointmentCode);
         setIsClosed(true);
       }
@@ -95,7 +96,7 @@ function AppointmentResultButtons({
 
   const handleDeleteAppointment = async () => {
     try {
-      if (window.confirm('약속잡기를 삭제하시겠습니까?')) {
+      if (window.confirm(CONFIRM_MESSAGE.DELETE_APPOINTMENT)) {
         await deleteAppointment(groupCode, appointmentCode);
         navigate(`/groups/${groupCode}/appointment`);
       }

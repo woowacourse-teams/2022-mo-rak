@@ -7,6 +7,7 @@ import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
 import { POLL_ERROR } from '@/constants/errorMessage';
+import { CONFIRM_MESSAGE } from '@/constants/message';
 
 type Props = {
   pollCode: Poll['code'];
@@ -19,7 +20,7 @@ function PollProgressButtons({ pollCode, isHost, groupCode }: Props) {
   const navigate = useNavigate();
 
   const handleDeletePoll = async () => {
-    if (window.confirm('투표를 삭제하시겠습니까?')) {
+    if (window.confirm(CONFIRM_MESSAGE.DELETE_POLL)) {
       try {
         await deletePoll(pollCode, groupCode);
         navigate(`/groups/${groupCode}/poll`);

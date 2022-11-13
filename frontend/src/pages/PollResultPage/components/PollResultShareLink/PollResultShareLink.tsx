@@ -2,6 +2,7 @@ import { StyledLink } from '@/pages/PollResultPage/components/PollResultShareLin
 import linkImg from '@/assets/link.svg';
 import { Poll } from '@/types/poll';
 import { Group } from '@/types/group';
+import { SUCCESS_MESSAGE } from '@/constants/message';
 
 type Props = {
   pollCode: Poll['code'];
@@ -16,7 +17,7 @@ function PollResultShareLink({ groupCode, pollCode, status }: Props) {
     // TODO: 상수화
     if (status === 'OPEN') {
       navigator.clipboard.writeText(`${baseLink}/progress`).then(() => {
-        alert('투표를 진행할 수 있는 링크가 복사되었습니다 👋');
+        alert(SUCCESS_MESSAGE.COPY_PROCESS_SHARE_LINK);
       });
 
       return;
@@ -24,7 +25,7 @@ function PollResultShareLink({ groupCode, pollCode, status }: Props) {
 
     // TODO: 상수화
     navigator.clipboard.writeText(`${baseLink}/result`).then(() => {
-      alert('투표 결과를 공유할 수 있는 링크가 복사되었습니다 👋');
+      alert(SUCCESS_MESSAGE.COPY_RESULT_SHARE_LINK);
     });
   };
 

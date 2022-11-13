@@ -16,6 +16,7 @@ import {
 import Tooltip from '@/components/Tooltip/Tooltip';
 import questionImg from '@/assets/question.svg';
 import { useTheme } from '@emotion/react';
+import { SUCCESS_MESSAGE } from '@/constants/message';
 
 const getFormattedClosedTime = (value: string) => {
   const date = new Date(value);
@@ -45,14 +46,14 @@ function AppointmentResultHeader({ groupCode, appointmentCode, title, isClosed, 
 
     if (isClosed) {
       writeClipboard(`${baseLink}/result`).then(() => {
-        alert('약속잡기 결과를 공유할 수 있는 링크가 클립보드에 복사되었습니다📆');
+        alert(SUCCESS_MESSAGE.COPY_SHARE_LINK);
       });
 
       return;
     }
 
     writeClipboard(`${baseLink}/progress`).then(() => {
-      alert('약속잡기를 진행할 수 있는 링크가 클립보드에 복사되었습니다📆');
+      alert(SUCCESS_MESSAGE.COPY_SHARE_LINK);
     });
   };
 

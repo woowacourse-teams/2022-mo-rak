@@ -7,6 +7,7 @@ import {
   StyledInvitationText,
   StyledPlusIcon
 } from '@/layouts/NavigationLayout/components/GlobalFootbarFootbarDrawerBottomSectionInvitationMenu/GlobalFootbarFootbarDrawerBottomSectionInvitationMenu.styles';
+import { SUCCESS_MESSAGE } from '@/constants/message';
 
 type Props = {
   groupCode: Group['code'];
@@ -23,7 +24,7 @@ function GlobalFootbarFootbarDrawerBottomSectionInvitationMenu({ groupCode }: Pr
     `;
 
     writeClipboard(invitationLink).then(() => {
-      alert('초대링크가 클립보드에 복사되었습니다💌');
+      alert(SUCCESS_MESSAGE.COPY_INVITATION_LINK);
     });
   };
 

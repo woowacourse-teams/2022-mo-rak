@@ -6,12 +6,13 @@ import {
   StyledLeaveImage,
   StyledText
 } from '@/layouts/NavigationLayout/components/SidebarLogoutMenu/SidebarLogoutMenu.styles';
+import { CONFIRM_MESSAGE } from '@/constants/message';
 
 function SidebarLogoutMenu() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    if (confirm('로그아웃을 하시겠습니까?')) {
+    if (confirm(CONFIRM_MESSAGE.LOGOUT)) {
       removeLocalStorageItem('token');
       navigate('/');
     }

@@ -7,6 +7,7 @@ import { participateGroup } from '@/api/group';
 import { Group } from '@/types/group';
 import { AxiosError } from 'axios';
 import { GROUP_ERROR } from '@/constants/errorMessage';
+import { CONFIRM_MESSAGE } from '@/constants/message';
 
 type Props = {
   navigate: NavigateFunction;
@@ -34,7 +35,7 @@ function InvitationButtons({ navigate, invitationCode, groupCode }: Props) {
   };
 
   const handleCancelInvitation = () => {
-    if (window.confirm('거절하시겠습니까?')) {
+    if (window.confirm(CONFIRM_MESSAGE.REFUSE_INVITATION)) {
       navigate('/');
     }
   };
