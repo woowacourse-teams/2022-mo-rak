@@ -15,6 +15,7 @@ import { Time, CreateAppointmentRequest, Appointment } from '@/types/appointment
 import { createAppointment } from '@/api/appointment';
 import { Group } from '@/types/group';
 import { StyledContainer } from '@/pages/AppointmentCreatePage/components/AppointmentCreateForm/AppointmentCreateForm.styles';
+import { APPOINTMENT_ERROR } from '@/constants/errorMessage';
 
 const getFormattedTime = (time: Time) => {
   const { period, hour, minute } = time;
@@ -49,7 +50,7 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
     e.preventDefault();
 
     if (!startDate) {
-      alert('달력을 활용하여 약속잡기 날짜를 지정해주세요');
+      alert(APPOINTMENT_ERROR.EMPTY_DATE);
 
       return;
     }
@@ -83,31 +84,31 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
 
         switch (errCode) {
           case '3103': {
-            alert('진행 시간은 약속잡기 시간(가능시간제한)보다 짧아야 합니다.');
+            alert(APPOINTMENT_ERROR.INVALID_DURATION_INPUT);
 
             break;
           }
 
           case '3117': {
-            alert('마감 시간은 현재 시간과 마지막 날짜의 최대 가능 시간사이여야합니다');
+            alert(APPOINTMENT_ERROR.INVALID_CLOSE_TIME_INPUT);
 
             break;
           }
 
           case '3102': {
-            alert('약속잡기의 마지막 날짜와 시간은 현재보다 과거일 수 없습니다..');
+            alert(APPOINTMENT_ERROR.INVALID_LAST_DATE_AND_TIME);
 
             break;
           }
 
           case '3107': {
-            alert('약속잡기 진행시간은 30분에서 24시간 사이여야 합니다.');
+            alert(APPOINTMENT_ERROR.UNFORMATTED_DURATION_INPUT);
 
             break;
           }
 
           case '4000': {
-            alert('제목과 설명은 공백일 수 없습니다.');
+            alert(APPOINTMENT_ERROR.EMPTY_TITLE_AND_DESCRIPTION);
 
             break;
           }

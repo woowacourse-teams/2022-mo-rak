@@ -18,6 +18,7 @@ import AppointmentResultButtons from '@/pages/AppointmentResultPage/components/A
 import AppointmentResultHeader from '@/pages/AppointmentResultPage/components/AppointmentResultHeader/AppointmentResultHeader';
 import { AxiosError } from 'axios';
 import Spinner from '@/components/Spinner/Spinner';
+import { APPOINTMENT_ERROR } from '@/constants/errorMessage';
 
 function AppointmentResultPage() {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ function AppointmentResultPage() {
           const errCode = err.response?.data.codeNumber;
 
           if (errCode === '3300') {
-            alert('존재하지 않는 약속잡기입니다.');
+            alert(APPOINTMENT_ERROR.NOT_EXIST);
             navigate(`/groups/${groupCode}/appointment`);
           }
         }

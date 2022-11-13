@@ -15,6 +15,7 @@ import {
 } from '@/pages/AppointmentProgressPage/AppointmentProgressPage.styles';
 import { AxiosError } from 'axios';
 import Spinner from '@/components/Spinner/Spinner';
+import { APPOINTMENT_ERROR } from '@/constants/errorMessage';
 
 // TODO: 중복됨 제거
 const getPlusOneDate = (date: string) => {
@@ -84,20 +85,20 @@ function AppointmentProgressPage() {
 
         switch (errCode) {
           case '4000': {
-            alert('현재보다 과거의 시간을 선택할 수 없습니다');
+            alert(APPOINTMENT_ERROR.PAST_TIME);
 
             break;
           }
 
           case '3100': {
-            alert('마감된 약속잡기이므로 약속잡기를 진행할 수 없습니다');
+            alert(APPOINTMENT_ERROR.ALREADY_CLOSED);
             navigate(`/groups/${groupCode}/appointment`);
 
             break;
           }
 
           case '3300': {
-            alert('존재하지 않는 약속잡기이므로 약속잡기를 진행할 수 없습니다');
+            alert(APPOINTMENT_ERROR.NOT_EXIST);
             navigate(`/groups/${groupCode}/appointment`);
 
             break;
@@ -112,7 +113,7 @@ function AppointmentProgressPage() {
       try {
         const res = await getAppointment(groupCode, appointmentCode);
         if (res.data.isClosed) {
-          alert('마감된 약속잡기입니다');
+          alert(APPOINTMENT_ERROR.ALREADY_CLOSED);
           navigate(`/groups/${groupCode}/appointment`);
 
           return;
@@ -124,7 +125,7 @@ function AppointmentProgressPage() {
           const errCode = err.response?.data.codeNumber;
 
           if (errCode === '3300') {
-            alert('존재하지 않는 약속잡기입니다.');
+            alert(APPOINTMENT_ERROR.NOT_EXIST);
             navigate(`/groups/${groupCode}/appointment`);
           }
         }

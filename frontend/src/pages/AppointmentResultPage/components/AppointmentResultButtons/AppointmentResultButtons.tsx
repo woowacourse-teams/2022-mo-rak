@@ -19,6 +19,7 @@ import {
   StyledHelpIconContainer,
   StyledHelpIcon
 } from '@/pages/AppointmentResultPage/components/AppointmentResultButtons/AppointmentResultButtons.styles';
+import { APPOINTMENT_ERROR } from '@/constants/errorMessage';
 
 type Props = {
   groupCode: Group['code'];
@@ -58,14 +59,14 @@ function AppointmentResultButtons({
 
         switch (errCode) {
           case '3300': {
-            alert('존재하지 않는 약속잡기입니다.');
+            alert(APPOINTMENT_ERROR.NOT_EXIST);
             navigate(`/groups/${groupCode}/appointment`);
 
             break;
           }
 
           case '3100': {
-            alert('마감된 약속잡기입니다.');
+            alert(APPOINTMENT_ERROR.ALREADY_CLOSED);
             setIsClosed(true);
 
             break;
@@ -104,16 +105,14 @@ function AppointmentResultButtons({
 
         switch (errCode) {
           case '9902': {
-            alert(
-              '현재 사이트 이용이 원활하지 않아 삭제가 진행되지 않았습니다. 잠시후 이용해주세요'
-            );
+            alert(APPOINTMENT_ERROR.DISABLED_DELETE);
             navigate(`/groups/${groupCode}/appointment`);
 
             break;
           }
 
           case '3300': {
-            alert('존재하지 않는 약속잡기입니다.');
+            alert(APPOINTMENT_ERROR.NOT_EXIST);
             navigate(`/groups/${groupCode}/appointment`);
 
             break;
