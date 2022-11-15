@@ -1,11 +1,6 @@
 import styled from '@emotion/styled';
 
 const StyledContainer = styled.div`
-  height: 100vh;
-  width: 100vw;
-`;
-
-const StyledTopContainer = styled.div`
   height: 50%;
   display: flex;
   justify-content: center;
@@ -13,18 +8,6 @@ const StyledTopContainer = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
-const StyledBottomContainer = styled.div(
-  ({ theme }) => `
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50%;
-  background-color: ${theme.colors.YELLOW_50};
-  flex-direction: column;
-  gap: 6.8rem;
-`
-);
 
 const StyledLogo = styled.img`
   width: 22rem;
@@ -43,11 +26,4 @@ const StyledDescription = styled.p`
   line-height: 3.2rem;
 `;
 
-export {
-  StyledContainer,
-  StyledTopContainer,
-  StyledBottomContainer,
-  StyledLogo,
-  StyledTitle,
-  StyledDescription
-};
+export { StyledContainer, StyledLogo, StyledTitle, StyledDescription };
