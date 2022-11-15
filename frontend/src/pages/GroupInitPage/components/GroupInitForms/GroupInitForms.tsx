@@ -1,12 +1,12 @@
 import { StyledBottomContainer } from '@/pages/GroupInitPage/components/GroupInitForms/GroupInitForms.styles';
-import GroupCreateForm from '@/pages/GroupInitPage/components/GroupCreateForm/GroupCreateForm';
-import GroupParticipateForm from '@/pages/GroupInitPage/components/GroupParticipateForm/GroupParticipateForm';
+import GroupInitFormsCreateForm from '@/pages/GroupInitPage/components/GroupInitFormsCreateForm/GroupInitFormsCreateForm';
+import GroupInitFormsParticipateForm from '@/pages/GroupInitPage/components/GroupInitFormsParticipateForm/GroupInitFormsParticipateForm';
 
 function GroupInitForms() {
   return (
     <StyledBottomContainer>
-      <GroupCreateForm />
-      <GroupParticipateForm />
+      <GroupInitFormsCreateForm />
+      <GroupInitFormsParticipateForm />
     </StyledBottomContainer>
   );
 }

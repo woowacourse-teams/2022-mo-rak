@@ -4,15 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { participateGroup } from '@/apis/group';
 import useInput from '@/hooks/useInput';
 
-import GroupParticipateInvitationCodeInput from '@/pages/GroupInitPage/components/GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput';
-import GroupParticipateFormSubmitButton from '@/pages/GroupInitPage/components/GroupParticipateFormSubmitButton/GroupParticipateFormSubmitButton';
+import GroupInitFormsParticipateFormInvitationCodeInput from '@/pages/GroupInitPage/components/GroupInitFormsParticipateFormInvitationCodeInput/GroupInitFormsParticipateFormInvitationCodeInput';
+import GroupInitFormsParticipateFormSubmitButton from '@/pages/GroupInitPage/components/GroupInitFormsParticipateFormSubmitButton/GroupInitFormsParticipateFormSubmitButton';
 import {
   StyledContainer,
   StyledInputContainer
-} from '@/pages/GroupInitPage/components/GroupParticipateForm/GroupParticipateForm.styles';
+} from '@/pages/GroupInitPage/components/GroupInitFormsParticipateForm/GroupInitFormsParticipateForm.styles';
 import { AxiosError } from 'axios';
 
-function GroupParticipateForm() {
+function GroupInitFormsParticipateForm() {
   const [invitationCode, handleInvitationCode, resetInvitationCode] = useInput('');
 
   const navigate = useNavigate();
@@ -45,14 +45,14 @@ function GroupParticipateForm() {
   return (
     <StyledContainer onSubmit={handleSubmit}>
       <StyledInputContainer>
-        <GroupParticipateInvitationCodeInput
+        <GroupInitFormsParticipateFormInvitationCodeInput
           invitationCode={invitationCode}
           handleInvitationCode={handleInvitationCode}
         />
-        <GroupParticipateFormSubmitButton />
+        <GroupInitFormsParticipateFormSubmitButton />
       </StyledInputContainer>
     </StyledContainer>
   );
 }
 
-export default GroupParticipateForm;
+export default GroupInitFormsParticipateForm;

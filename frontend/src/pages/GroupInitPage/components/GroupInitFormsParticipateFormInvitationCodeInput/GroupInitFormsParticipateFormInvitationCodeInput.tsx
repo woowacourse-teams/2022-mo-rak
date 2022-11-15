@@ -3,14 +3,17 @@ import { ChangeEventHandler } from 'react';
 import TextField from '@/components/TextField/TextField';
 import Input from '@/components/Input/Input';
 import participateImg from '@/assets/participate.svg';
-import { StyledParticipateIcon } from '@/pages/GroupInitPage/components/GroupParticipateInvitationCodeInput/GroupParticipateInvitationCodeInput.styles';
+import { StyledParticipateIcon } from '@/pages/GroupInitPage/components/GroupInitFormsParticipateFormInvitationCodeInput/GroupInitFormsParticipateFormInvitationCodeInput.styles';
 
 type Props = {
   invitationCode: string;
   handleInvitationCode: ChangeEventHandler<HTMLInputElement>;
 };
 
-function GroupParticipateInvitationCodeInput({ invitationCode, handleInvitationCode }: Props) {
+function GroupInitFormsParticipateFormInvitationCodeInput({
+  invitationCode,
+  handleInvitationCode
+}: Props) {
   const theme = useTheme();
 
   return (
@@ -34,4 +37,4 @@ function GroupParticipateInvitationCodeInput({ invitationCode, handleInvitationC
   );
 }
 
-export default GroupParticipateInvitationCodeInput;
+export default GroupInitFormsParticipateFormInvitationCodeInput;

@@ -2,15 +2,15 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createGroup } from '@/apis/group';
 import { Group } from '@/types/group';
-import GroupCreateFormNameInput from '@/pages/GroupInitPage/components/GroupCreateFormNameInput/GroupCreateFormNameInput';
-import GroupCreateFormSubmitButton from '@/pages/GroupInitPage/components/GroupCreateFormSubmitButton/GroupCreateFormSubmitButton';
+import GroupInitFormsCreateFormNameInput from '@/pages/GroupInitPage/components/GroupInitFormsCreateFormNameInput/GroupInitFormsCreateFormNameInput';
+import GroupInitFormsCreateFormSubmitButton from '@/pages/GroupInitPage/components/GroupInitFormsCreateFormSubmitButton/GroupInitFormsCreateFormSubmitButton';
 import {
   StyledContainer,
   StyledInputContainer
-} from '@/pages/GroupInitPage/components/GroupCreateForm/GroupCreateForm.styles';
+} from '@/pages/GroupInitPage/components/GroupInitFormsCreateForm/GroupInitFormsCreateForm.styles';
 import { AxiosError } from 'axios';
 
-function GroupCreateForm() {
+function GroupInitFormsCreateForm() {
   const navigate = useNavigate();
   const [groupName, setGroupName] = useState<Group['name']>('');
 
@@ -40,11 +40,11 @@ function GroupCreateForm() {
   return (
     <StyledContainer onSubmit={handleCreateGroup}>
       <StyledInputContainer>
-        <GroupCreateFormNameInput groupName={groupName} onChange={handleGroupName} />
-        <GroupCreateFormSubmitButton />
+        <GroupInitFormsCreateFormNameInput groupName={groupName} onChange={handleGroupName} />
+        <GroupInitFormsCreateFormSubmitButton />
       </StyledInputContainer>
     </StyledContainer>
   );
 }
 
-export default GroupCreateForm;
+export default GroupInitFormsCreateForm;

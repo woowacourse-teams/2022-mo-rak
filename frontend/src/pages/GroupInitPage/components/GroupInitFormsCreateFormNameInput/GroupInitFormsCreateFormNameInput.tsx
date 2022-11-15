@@ -5,14 +5,14 @@ import Input from '@/components/Input/Input';
 import TextField from '@/components/TextField/TextField';
 import { Group } from '@/types/group';
 import createPlusImg from '@/assets/create-plus.svg';
-import { StyledCreateIcon } from '@/pages/GroupInitPage/components/GroupCreateFormNameInput/GroupCreateFormNameInput.styles';
+import { StyledCreateIcon } from '@/pages/GroupInitPage/components/GroupInitFormsCreateFormNameInput/GroupInitFormsCreateFormNameInput.styles';
 
 type Props = {
   groupName: Group['name'];
   onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
-function GroupCreateFormNameInput({ groupName, onChange }: Props) {
+function GroupInitFormsCreateFormNameInput({ groupName, onChange }: Props) {
   const theme = useTheme();
 
   return (
@@ -36,4 +36,4 @@ function GroupCreateFormNameInput({ groupName, onChange }: Props) {
   );
 }
 
-export default GroupCreateFormNameInput;
+export default GroupInitFormsCreateFormNameInput;
