@@ -35,7 +35,6 @@ function GroupInitPage() {
     }
   }, []);
 
-  // TODO: 페이지 구성 요소가 잘 보이지 않는다.
   return (
     <StyledContainer>
       <GroupInitTitle />
