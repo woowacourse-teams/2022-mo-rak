@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AppointmentCreateForm from '@/pages/AppointmentCreatePage/components/AppointmentCreateForm/AppointmentCreateForm';
+import AppointmentCreateInputsForm from '@/pages/AppointmentCreatePage/components/AppointmentCreateInputsForm/AppointmentCreateInputsForm';
 import Calendar from '@/components/Calendar/Calendar';
 import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import {
@@ -22,7 +22,7 @@ function AppointmentCreateInputs() {
         />
       </StyledLeftContainer>
       <StyledRightContainer>
-        <AppointmentCreateForm startDate={startDate} endDate={endDate} />
+        <AppointmentCreateInputsForm startDate={startDate} endDate={endDate} />
       </StyledRightContainer>
     </FlexContainer>
   );
