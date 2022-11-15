@@ -1,5 +1,5 @@
 import { Appointment } from '@/types/appointment';
-import AppointmentProgressDetail from '@/pages/AppointmentProgressPage/components/AppointmentProgressDetail/AppointmentProgressDetail';
+import AppointmentProgressHeaderDetail from '@/pages/AppointmentProgressPage/components/AppointmentProgressHeaderDetail/AppointmentProgressHeaderDetail';
 import {
   StyledContainer,
   StyledHeader,
@@ -15,7 +15,7 @@ function AppointmentProgressHeader({ appointment }: Props) {
     <StyledContainer>
       <StyledHeader>{appointment.title}</StyledHeader>
       <StyledDescription>{appointment.description}</StyledDescription>
-      <AppointmentProgressDetail
+      <AppointmentProgressHeaderDetail
         durationHours={appointment.durationHours}
         durationMinutes={appointment.durationMinutes}
         startTime={appointment.startTime}
