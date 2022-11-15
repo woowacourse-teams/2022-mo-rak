@@ -15,23 +15,6 @@ const StyledContainer = styled.div`
   `)}
 `;
 
-const StyledLeftContainer = styled.div`
-  display: flex;
-  width: 45.2rem;
-  flex-direction: column;
-  gap: 1.8rem;
-
-  ${responsive.mobile(`
-    align-items: center; 
-  `)}
-`;
-
-const StyledRightContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-`;
-
 const StyledContentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,4 +25,4 @@ const StyledContentContainer = styled.div`
   `)}
 `;
 
-export { StyledContainer, StyledLeftContainer, StyledRightContainer, StyledContentContainer };
+export { StyledContainer, StyledContentContainer };

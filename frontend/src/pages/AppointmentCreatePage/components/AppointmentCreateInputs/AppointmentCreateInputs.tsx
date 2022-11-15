@@ -5,7 +5,7 @@ import FlexContainer from '@/components/FlexContainer/FlexContainer';
 import {
   StyledLeftContainer,
   StyledRightContainer
-} from '@/pages/AppointmentCreatePage/AppointmentCreatePage.styles';
+} from '@/pages/AppointmentCreatePage/components/AppointmentCreateInputs/AppointmentCreateInputs.styles';
 
 function AppointmentCreateInputs() {
   const [startDate, setStartDate] = useState(''); // 2022-08-20 과 같은 형식이 들어옴 -> new Date()로 감싸서 사용 가능
