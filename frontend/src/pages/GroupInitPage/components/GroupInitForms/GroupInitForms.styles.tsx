@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledBottomContainer = styled.div(
+const StyledContainer = styled.div(
   ({ theme }) => `
   display: flex;
   justify-content: center;
@@ -12,4 +12,4 @@ const StyledBottomContainer = styled.div(
 `
 );
 
-export { StyledBottomContainer };
+export { StyledContainer };
