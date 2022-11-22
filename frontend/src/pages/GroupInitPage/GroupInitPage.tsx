@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import GroupInitContainer from '@/pages/GroupInitPage/components/GroupInitContainer/GroupInitContainer';
 import { getDefaultGroup } from '@/apis/group';
 import { getLocalStorageItem } from '@/utils/storage';
 import { AxiosError } from 'axios';
+import { StyledContainer } from '@/pages/GroupInitPage/GroupInitPage.styles';
+import GroupInitHeader from '@/pages/GroupInitPage/components/GroupInitHeader/GroupInitHeader';
+import GroupInitForms from '@/pages/GroupInitPage/components/GroupInitForms/GroupInitForms';
 
 function GroupInitPage() {
   const navigate = useNavigate();
@@ -33,8 +35,12 @@ function GroupInitPage() {
     }
   }, []);
 
-  // TODO: 페이지 구성 요소가 잘 보이지 않는다.
-  return <GroupInitContainer />;
+  return (
+    <StyledContainer>
+      <GroupInitHeader />
+      <GroupInitForms />
+    </StyledContainer>
+  );
 }
 
 export default GroupInitPage;
