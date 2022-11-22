@@ -1,6 +1,6 @@
 import { Appointment } from '@/types/appointment';
 import { getFormattedHourMinuteDuration } from '@/utils/date';
-import { StyledContainer } from '@/pages/AppointmentProgressPage/components/AppointmentProgressDetail/AppointmentProgressDetail.styles';
+import { StyledContainer } from '@/pages/AppointmentProgressPage/components/AppointmentProgressHeaderDetail/AppointmentProgressHeaderDetail.styles';
 
 type Props = {
   durationHours: Appointment['durationHours'];
@@ -9,7 +9,12 @@ type Props = {
   endTime: Appointment['endTime'];
 };
 
-function AppointmentProgressDetail({ durationHours, durationMinutes, startTime, endTime }: Props) {
+function AppointmentProgressHeaderDetail({
+  durationHours,
+  durationMinutes,
+  startTime,
+  endTime
+}: Props) {
   return (
     <StyledContainer>
       진행 시간: {getFormattedHourMinuteDuration(durationHours, durationMinutes)} ({startTime}~
@@ -18,4 +23,4 @@ function AppointmentProgressDetail({ durationHours, durationMinutes, startTime, 
   );
 }
 
-export default AppointmentProgressDetail;
+export default AppointmentProgressHeaderDetail;

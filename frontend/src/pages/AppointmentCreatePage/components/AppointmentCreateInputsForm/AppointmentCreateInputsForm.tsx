@@ -14,7 +14,7 @@ import useInputs from '@/hooks/useInputs';
 import { Time, CreateAppointmentRequest, Appointment } from '@/types/appointment';
 import { createAppointment } from '@/apis/appointment';
 import { Group } from '@/types/group';
-import { StyledContainer } from '@/pages/AppointmentCreatePage/components/AppointmentCreateForm/AppointmentCreateForm.styles';
+import { StyledContainer } from '@/pages/AppointmentCreatePage/components/AppointmentCreateInputsForm/AppointmentCreateInputsForm.styles';
 
 const getFormattedTime = (time: Time) => {
   const { period, hour, minute } = time;
@@ -34,7 +34,7 @@ type Props = {
   endDate: Appointment['endDate'];
 };
 
-function AppointmentCreateForm({ startDate, endDate }: Props) {
+function AppointmentCreateInputsForm({ startDate, endDate }: Props) {
   const navigate = useNavigate();
   const [title, handleTitle] = useInput('');
   const { groupCode } = useParams() as { groupCode: Group['code'] };
@@ -155,4 +155,4 @@ function AppointmentCreateForm({ startDate, endDate }: Props) {
   );
 }
 
-export default AppointmentCreateForm;
+export default AppointmentCreateInputsForm;

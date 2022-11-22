@@ -6,30 +6,12 @@ const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6rem;
 
   ${responsive.mobile(`
     align-items: flex-start;
     width: 100%;
     padding: 20rem 8rem;
   `)}
-`;
-
-const StyledLeftContainer = styled.div`
-  display: flex;
-  width: 45.2rem;
-  flex-direction: column;
-  gap: 1.8rem;
-
-  ${responsive.mobile(`
-    align-items: center; 
-  `)}
-`;
-
-const StyledRightContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
 `;
 
 const StyledContentContainer = styled.div`
@@ -42,4 +24,4 @@ const StyledContentContainer = styled.div`
   `)}
 `;
 
-export { StyledContainer, StyledLeftContainer, StyledRightContainer, StyledContentContainer };
+export { StyledContainer, StyledContentContainer };
