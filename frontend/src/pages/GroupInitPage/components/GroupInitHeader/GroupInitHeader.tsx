@@ -3,10 +3,10 @@ import {
   StyledLogo,
   StyledTitle,
   StyledDescription
-} from '@/pages/GroupInitPage/components/GroupInitTitle/GroupInitTitle.styles';
+} from '@/pages/GroupInitPage/components/GroupInitHeader/GroupInitHeader.styles';
 import serviceLogoImg from '@/assets/service-logo.svg';
 
-function GroupInitTitle() {
+function GroupInitHeader() {
   return (
     <StyledContainer>
       <StyledLogo src={serviceLogoImg} alt="모락 로고" aria-hidden="true" />
@@ -18,4 +18,4 @@ function GroupInitTitle() {
   );
 }
 
-export default GroupInitTitle;
+export default GroupInitHeader;

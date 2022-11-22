@@ -5,7 +5,7 @@ import { getDefaultGroup } from '@/apis/group';
 import { getLocalStorageItem } from '@/utils/storage';
 import { AxiosError } from 'axios';
 import { StyledContainer } from '@/pages/GroupInitPage/GroupInitPage.styles';
-import GroupInitTitle from '@/pages/GroupInitPage/components/GroupInitTitle/GroupInitTitle';
+import GroupInitHeader from '@/pages/GroupInitPage/components/GroupInitHeader/GroupInitHeader';
 import GroupInitForms from '@/pages/GroupInitPage/components/GroupInitForms/GroupInitForms';
 
 function GroupInitPage() {
@@ -37,7 +37,7 @@ function GroupInitPage() {
 
   return (
     <StyledContainer>
-      <GroupInitTitle />
+      <GroupInitHeader />
       <GroupInitForms />
     </StyledContainer>
   );
