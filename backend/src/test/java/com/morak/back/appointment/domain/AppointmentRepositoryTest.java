@@ -110,10 +110,12 @@ class AppointmentRepositoryTest {
     @Test
     void 종료할_약속잡기를_가져온다() {
         // given
+        Appointment appointment = DEFAULT_BUILDER.build();
+        appointmentRepository.save(appointment);
         LocalDateTime now = LocalDateTime.now();
 
         // when
-        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(now);
+        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(now, now.plusDays(2));
 
         // then
         assertThat(appointmentsToBeClosed).hasSize(1);

@@ -95,7 +95,7 @@ create table select_member
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
-CREATE INDEX `poll_index_closed_at` ON `poll` (`closed_at`);
+CREATE INDEX `poll_index_for_close` ON `poll` (`status`, `closed_at`);
 CREATE INDEX `poll_index_code` ON `poll` (`code`);
 
 CREATE TABLE appointment
@@ -121,7 +121,7 @@ CREATE TABLE appointment
     FOREIGN KEY (host_id) REFERENCES member (id)
 );
 
-CREATE INDEX `index_appointment` ON `appointment` (`closed_at`);
+CREATE INDEX `appointment_index_for_close` ON `appointment` (`status`, `closed_at`);
 
 CREATE TABLE appointment_available_time
 (

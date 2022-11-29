@@ -33,12 +33,12 @@ VALUES ('MoraK123', 2, 'test-poll-title1', 2, true, 'OPEN', now(), now(), '2022-
 
 INSERT INTO poll (team_code, host_id, title, allowed_count, anonymous, status, created_at, updated_at, closed_at,
                   code)
-VALUES ('MoraK123', 2, 'test-poll-title2', 2, true, 'OPEN', now(), now(), now(), 'testcode');
+VALUES ('MoraK123', 2, 'test-poll-title2', 2, true, 'OPEN', now(), now(), '2022-10-19T14:07:00', 'testcode');
 
 INSERT INTO appointment (team_code, host_id, title, sub_title, start_date, end_date, start_time, end_time,
                          duration_minutes, status, code, closed_at, selected_count, created_at, updated_at)
 VALUES ('MoraK123', 2, '발표 준비 날짜 정하기', '데모 데이 발표 준비를 위한..', '2122-08-01', '2122-08-04', '13:00:00', '22:00:00',
-        60, 'OPEN', 'FEsd23C1', '2022-07-31T23:59:00', 0, now(), now());
+        60, 'OPEN', 'FEsd23C1', '2022-10-19T14:07:00', 0, now(), now());
 
 INSERT INTO slack_webhook (team_id, url, created_at, updated_at)
 VALUES (1, 'https://slack.webhook.com/', now(), now());

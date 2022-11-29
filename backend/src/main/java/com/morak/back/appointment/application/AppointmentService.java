@@ -23,6 +23,8 @@ import com.morak.back.core.support.Generated;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,6 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class AppointmentService {
 
     private static final CodeGenerator CODE_GENERATOR = new RandomCodeGenerator();
+    private static final long CHECKING_RANGE_AMOUNT = 1L;
+    private static final TemporalUnit CHECKING_RANGE_TEMPORAL_UNIT = ChronoUnit.DAYS;
 
     private final AppointmentRepository appointmentRepository;
     private final TeamMemberRepository teamMemberRepository;
@@ -174,7 +178,9 @@ public class AppointmentService {
 
     @Generated
     public void closeAllBeforeNow() {
-        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(systemTime.now());
+        LocalDateTime now = systemTime.now();
+        LocalDateTime closeCheckingRange = now.minus(CHECKING_RANGE_AMOUNT, CHECKING_RANGE_TEMPORAL_UNIT);
+        List<Appointment> appointmentsToBeClosed = appointmentRepository.findAllToBeClosed(closeCheckingRange, now);
         for (Appointment appointment : appointmentsToBeClosed) {
             appointment.close(appointment.getHostId());
             appointmentRepository.save(appointment);

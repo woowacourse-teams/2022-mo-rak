@@ -19,6 +19,7 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
 
     void delete(Appointment appointment);
 
-    @Query("select a from Appointment a where a.menu.status = 'OPEN' and a.menu.closedAt.closedAt <= :thresholdDateTime")
-    List<Appointment> findAllToBeClosed(@Param("thresholdDateTime") LocalDateTime thresholdDateTime);
+    @Query("select a from Appointment a where a.menu.status = 'OPEN' and a.menu.closedAt.closedAt between :startThresholdDateTime and :endThresholdDateTime")
+    List<Appointment> findAllToBeClosed(@Param("startThresholdDateTime") LocalDateTime startThresholdDateTime,
+                                        @Param("endThresholdDateTime") LocalDateTime endThresholdDateTime);
 }
