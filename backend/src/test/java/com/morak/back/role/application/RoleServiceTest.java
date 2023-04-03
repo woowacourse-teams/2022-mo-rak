@@ -40,8 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-//@ServiceTest
-@SpringBootTest
+@ServiceTest
 class RoleServiceTest {
 
     private final MemberRepository memberRepository;
@@ -69,21 +68,21 @@ class RoleServiceTest {
     private Member member;
     private Team team;
 
-//    @BeforeEach
-//    void setup() {
-//        member = memberRepository.save(Member.builder()
-//                .oauthId("oauthmem")
-//                .name("박성우")
-//                .profileUrl("http://park-profile.com")
-//                .build());
-//
-//        team = teamRepository.save(Team.builder()
-//                .name("team")
-//                .code(Code.generate(length -> "abcd1234"))
-//                .build());
-//
-//        teamMemberRepository.save(new TeamMember(null, team, member));
-//    }
+    @BeforeEach
+    void setup() {
+        member = memberRepository.save(Member.builder()
+                .oauthId("oauthmem")
+                .name("박성우")
+                .profileUrl("http://park-profile.com")
+                .build());
+
+        team = teamRepository.save(Team.builder()
+                .name("team")
+                .code(Code.generate(length -> "abcd1234"))
+                .build());
+
+        teamMemberRepository.save(new TeamMember(null, team, member));
+    }
 
     @Test
     void 역할_이름_목록을_조회한다() {

@@ -168,6 +168,8 @@ CREATE TABLE role_history
     PRIMARY KEY (`id`)
 );
 
+create index role_history_index_role_id_date_desc on role_history (role_id, date desc);
+
 CREATE TABLE role_match_result
 (
     `role_history_id` BIGINT       NOT NULL,
