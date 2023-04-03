@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.morak.back.support.RepositoryTest;
 import java.util.Optional;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,9 @@ class RoleEntityRepositoryTest {
     private RoleEntityRepository roleEntityRepository;
 
     @Autowired
-    public RoleEntityRepositoryTest(RoleRepository roleRepository, NamedParameterJdbcTemplate jdbcTemplate) {
+    public RoleEntityRepositoryTest(RoleRepository roleRepository, EntityManager entityManager) {
         this.roleRepository = roleRepository;
-        this.roleEntityRepository = new RoleEntityRepositoryImpl(jdbcTemplate);
+        this.roleEntityRepository = new RoleEntityRepositoryImpl(entityManager);
     }
 
     @Test

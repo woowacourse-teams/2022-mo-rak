@@ -37,9 +37,13 @@ public class RoleHistory implements Comparable<RoleHistory> {
     )
     private List<RoleMatchResult> matchResults = new ArrayList<>();
 
-    public RoleHistory(LocalDateTime dateTime, List<RoleMatchResult> matchResults) {
+    @Column(name = "role_id", insertable = false, updatable = false)
+    private Long roleId;
+
+    public RoleHistory(LocalDateTime dateTime, List<RoleMatchResult> matchResults, Long roleId) {
         this.dateTime = dateTime;
         this.matchResults = matchResults;
+        this.roleId = roleId;
     }
 
     @Override
