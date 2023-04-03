@@ -5,7 +5,6 @@ import static com.morak.back.role.domain.QRoleHistory.roleHistory;
 
 import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,27 +23,37 @@ public class RoleEntityRepositoryImpl implements RoleEntityRepository {
 
     @Override
     public Optional<Role> findWithOnlyHistoriesPerDate(String teamCode) {
-        RoleHistories roleHistories = findRoleHistories(teamCode);
-        Role roleWithHistories = new Role(teamCode, null, roleHistories);
-        return Optional.of(roleWithHistories);
+        Long roleId = queryRoleId(teamCode);
+        return Optional.of(findRoleWithGroupByAndOrderBy(teamCode, roleId));
     }
 
-    private RoleHistories findRoleHistories(String teamCode) {
-        List<RoleHistory> roleHistories = jpaQueryFactory.selectFrom(roleHistory)
-                .join(roleHistory.matchResults).fetchJoin()
-                .where(roleHistory.id.in(
-                        JPAExpressions.select(roleHistory.id.max())
-                                .from(roleHistory)
-                                .groupBy(toLocalDate())
-                                .orderBy(toLocalDate().desc())
-                                .where(roleHistory.roleId.eq(
-                                        JPAExpressions.select(role.id)
-                                                .from(role)
-                                                .where(role.teamCode.code.eq(teamCode))
-                                ))
-                ))
+    private Long queryRoleId(String teamCode) {
+        return jpaQueryFactory.select(role.id)
+                .from(role)
+                .where(role.teamCode.code.eq(teamCode))
+                .fetchOne();
+    }
+
+    private Role findRoleWithGroupByAndOrderBy(String teamCode, Long roleId) {
+        List<Long> ids = findRoleHistoryIdsGroupByAndOrderBy(roleId);
+        List<RoleHistory> roleHistories = findAllRoleHistory(ids);
+        return new Role(teamCode, null, new RoleHistories(roleHistories));
+    }
+
+    private List<Long> findRoleHistoryIdsGroupByAndOrderBy(Long roleId) {
+        return jpaQueryFactory.select(roleHistory.id.max())
+                .from(roleHistory)
+                .groupBy(toLocalDate())
+                .orderBy(toLocalDate().desc())
+                .where(roleHistory.roleId.eq(roleId))
                 .fetch();
-        return new RoleHistories(roleHistories);
+    }
+
+    private List<RoleHistory> findAllRoleHistory(List<Long> ids) {
+        return jpaQueryFactory.selectFrom(roleHistory)
+                .from(roleHistory)
+                .where(roleHistory.id.in(ids))
+                .fetch();
     }
 
     private DateTemplate<LocalDate> toLocalDate() {
