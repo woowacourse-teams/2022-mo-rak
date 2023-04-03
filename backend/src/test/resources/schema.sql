@@ -177,6 +177,7 @@ CREATE TABLE role_history
 (
     `id`        BIGINT   NOT NULL AUTO_INCREMENT,
     `date_time` DATETIME NOT NULL,
+    `date`      DATE     NOT NULL,
     `role_id`   BIGINT   NOT NULL,
     PRIMARY KEY (`id`)
 );

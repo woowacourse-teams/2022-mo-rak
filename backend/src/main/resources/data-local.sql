@@ -61,10 +61,10 @@ VALUES (1, 1, '2122-08-03T13:00:00', now());
 
 INSERT INTO role (id, team_code, created_at, updated_at) values (1, 'roletest', '2022-07-31T23:59:00', '2022-07-31T23:59:00');
 
-INSERT INTO role_history (date_time, role_id) values ('2022-07-31T23:59:00', 1);
-INSERT INTO role_history (date_time, role_id) values ('2022-07-31T23:59:05', 1);
-INSERT INTO role_history (date_time, role_id) values ('2022-08-01T10:12:00', 1);
-INSERT INTO role_history (date_time, role_id) values ('2022-08-02T10:23:00', 1);
+INSERT INTO role_history (date_time, date, role_id) values ('2022-07-31T23:59:00', '2022-07-31', 1);
+INSERT INTO role_history (date_time, date, role_id) values ('2022-07-31T23:59:05', '2022-07-31', 1);
+INSERT INTO role_history (date_time, date, role_id) values ('2022-08-01T10:12:00', '2022-08-01', 1);
+INSERT INTO role_history (date_time, date, role_id) values ('2022-08-02T10:23:00', '2022-08-02', 1);
 
 INSERT INTO role_match_result (role_history_id, member_id, role_name) values (1, 1, '데일리 마스터');
 INSERT INTO role_match_result (role_history_id, member_id, role_name) values (1, 2, '서기');

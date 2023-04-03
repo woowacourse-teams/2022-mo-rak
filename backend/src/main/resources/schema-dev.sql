@@ -159,6 +159,15 @@ CREATE TABLE role
     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE role_history
+(
+    `id`        BIGINT   NOT NULL AUTO_INCREMENT,
+    `date_time` DATETIME NOT NULL,
+    `date`      DATE     NOT NULL,
+    `role_id`   BIGINT   NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
 CREATE TABLE role_match_result
 (
     `role_history_id` BIGINT       NOT NULL,
@@ -171,12 +180,4 @@ CREATE TABLE role_name
 (
     `role_id` BIGINT       NOT NULL,
     `name`    VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE role_history
-(
-    `id`        BIGINT   NOT NULL AUTO_INCREMENT,
-    `date_time` DATETIME NOT NULL,
-    `role_id`   BIGINT   NOT NULL,
-    PRIMARY KEY (`id`)
 );

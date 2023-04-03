@@ -24,6 +24,9 @@ public class RoleEntityRepositoryImpl implements RoleEntityRepository {
     @Override
     public Optional<Role> findWithOnlyHistoriesPerDate(String teamCode) {
         Long roleId = queryRoleId(teamCode);
+        if (roleId == null) {
+            return Optional.empty();
+        }
         return Optional.of(findRoleWithGroupByAndOrderBy(teamCode, roleId));
     }
 
@@ -35,16 +38,16 @@ public class RoleEntityRepositoryImpl implements RoleEntityRepository {
     }
 
     private Role findRoleWithGroupByAndOrderBy(String teamCode, Long roleId) {
-        List<Long> ids = findRoleHistoryIdsGroupByAndOrderBy(roleId);
-        List<RoleHistory> roleHistories = findAllRoleHistory(ids);
+        List<Long> roleHistoryIds = findRoleHistoryIdsGroupByAndOrderBy(roleId);
+        List<RoleHistory> roleHistories = findAllRoleHistory(roleHistoryIds);
         return new Role(teamCode, null, new RoleHistories(roleHistories));
     }
 
     private List<Long> findRoleHistoryIdsGroupByAndOrderBy(Long roleId) {
         return jpaQueryFactory.select(roleHistory.id.max())
                 .from(roleHistory)
-                .groupBy(toLocalDate())
-                .orderBy(toLocalDate().desc())
+                .groupBy(roleHistory.date)
+                .orderBy(roleHistory.date.desc())
                 .where(roleHistory.roleId.eq(roleId))
                 .fetch();
     }
@@ -54,12 +57,5 @@ public class RoleEntityRepositoryImpl implements RoleEntityRepository {
                 .from(roleHistory)
                 .where(roleHistory.id.in(ids))
                 .fetch();
-    }
-
-    private DateTemplate<LocalDate> toLocalDate() {
-        return Expressions.dateTemplate(
-                LocalDate.class,
-                "date({0})",
-                roleHistory.dateTime);
     }
 }
