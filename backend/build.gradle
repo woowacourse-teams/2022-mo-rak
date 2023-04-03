@@ -41,6 +41,12 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
+    // query dsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0'
+    annotationProcessor 'javax.persistence:javax.persistence-api'
+    annotationProcessor 'javax.annotation:javax.annotation-api'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jpa'
+
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'

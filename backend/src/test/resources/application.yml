@@ -15,9 +15,6 @@ spring:
         batch_fetch_style: padded
         default_batch_fetch_size: 100
         format_sql: true
-  sql:
-    init:
-      mode: always
   mvc:
     throw-exception-if-no-handler-found: true
   web:
@@ -63,6 +60,9 @@ spring:
   h2:
     console:
       enabled: true
+  sql:
+    init:
+      mode: always
 
 ---
 
@@ -73,8 +73,16 @@ spring:
     activate:
       on-profile: performance
   datasource: # H2 인 경우 주석을 해제한다.
-    url: jdbc:mysql://localhost:33306/morak?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:h2:~/perform;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  sql:
+    init:
+      mode: always
+
 #  datasource: # Docker 인 경우 주석을 해제한다.
 #    url: jdbc:mysql://localhost:33306/morak?characterEncoding=UTF-8&serverTimezone=UTC
 #    username: root
