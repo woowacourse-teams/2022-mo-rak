@@ -118,4 +118,21 @@ class AppointmentRepositoryTest {
         // then
         assertThat(appointmentsToBeClosed).hasSize(1);
     }
+
+    @Test
+    void 선택_인원을_추가한다() {
+        // given
+        Appointment appointment = DEFAULT_BUILDER.build();
+        appointmentRepository.save(appointment);
+
+        // when
+        appointmentRepository.updateSelectedCount(appointment.getCode());
+
+        // then
+        Optional<Appointment> updatedAppointment = appointmentRepository.findByCode(appointment.getCode());
+        Assertions.assertAll(
+                () -> assertThat(updatedAppointment).isPresent(),
+                () -> assertThat(updatedAppointment.get().getSelectedCount()).isOne()
+        );
+    }
 }
