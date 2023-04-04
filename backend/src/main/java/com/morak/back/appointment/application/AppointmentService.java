@@ -1,23 +1,23 @@
 package com.morak.back.appointment.application;
 
-import com.morak.back.appointment.domain.Appointment;
-import com.morak.back.appointment.domain.AppointmentRepository;
-import com.morak.back.core.domain.SystemTime;
-import com.morak.back.appointment.domain.recommend.RankRecommendation;
-import com.morak.back.appointment.domain.recommend.RecommendationCells;
-import com.morak.back.appointment.exception.AppointmentAuthorizationException;
-import com.morak.back.appointment.exception.AppointmentNotFoundException;
 import com.morak.back.appointment.application.dto.AppointmentAllResponse;
 import com.morak.back.appointment.application.dto.AppointmentCreateRequest;
 import com.morak.back.appointment.application.dto.AppointmentResponse;
 import com.morak.back.appointment.application.dto.AppointmentStatusResponse;
 import com.morak.back.appointment.application.dto.AvailableTimeRequest;
 import com.morak.back.appointment.application.dto.RecommendationResponse;
+import com.morak.back.appointment.domain.Appointment;
+import com.morak.back.appointment.domain.AppointmentRepository;
+import com.morak.back.appointment.domain.recommend.RankRecommendation;
+import com.morak.back.appointment.domain.recommend.RecommendationCells;
+import com.morak.back.appointment.exception.AppointmentAuthorizationException;
+import com.morak.back.appointment.exception.AppointmentNotFoundException;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.core.application.AuthorizationService;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
+import com.morak.back.core.domain.SystemTime;
 import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.core.support.Generated;
 import com.morak.back.team.domain.TeamMember;
@@ -96,6 +96,7 @@ public class AppointmentService {
                             toStartDateTime(requests),
                             memberId,
                             systemTime.now());
+                    appointmentRepository.updateSelectedCount(appointmentCode);
                     return null;
                 }, teamCode, memberId
         );

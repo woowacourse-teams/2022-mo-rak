@@ -27,25 +27,13 @@ public class AvailableTimes {
     private long selectedCount = 0;
 
     public void select(Set<LocalDateTime> localDateTimes, Long memberId) {
-        final List<AvailableTime> availableTimes = localDateTimes.stream()
+        final List<AvailableTime> selectedAvailableTimes = localDateTimes.stream()
                 .map(dateTime -> AvailableTime.builder().memberId(memberId).startDateTime(dateTime).build())
                 .collect(Collectors.toList());
-        countUpIfNotExists(memberId);
 
         this.availableTimes.removeIf(
                 availableTime -> availableTime.matchMember(memberId) && !availableTime.isBelongTo(localDateTimes)
         );
-        this.availableTimes.addAll(availableTimes);
-    }
-
-    private void countUpIfNotExists(Long memberId) {
-        if (nonExistMember(memberId)) {
-            this.selectedCount++;
-        }
-    }
-
-    private boolean nonExistMember(Long memberId) {
-        return this.availableTimes.stream()
-                .noneMatch(availableTime -> availableTime.matchMember(memberId));
+        this.availableTimes.addAll(selectedAvailableTimes);
     }
 }
