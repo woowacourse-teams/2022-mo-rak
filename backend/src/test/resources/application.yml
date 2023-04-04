@@ -2,7 +2,7 @@
 
 spring:
   profiles:
-    active: test
+    active: concurrency
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
@@ -79,3 +79,14 @@ spring:
 #    url: jdbc:mysql://localhost:33306/morak?characterEncoding=UTF-8&serverTimezone=UTC
 #    username: root
 #    password: root
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: concurrency
+  datasource:
+    url: jdbc:mysql://localhost:33306/morak?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
