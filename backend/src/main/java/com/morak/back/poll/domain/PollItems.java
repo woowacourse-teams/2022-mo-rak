@@ -4,7 +4,6 @@ import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollItemNotFoundException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,6 @@ public class PollItems {
         validateCountAllowed(values, allowedCount);
         this.values = new ArrayList<>(values);
         this.allowedCount = allowedCount;
-        updateSelectedCount();
     }
 
     private void validateCountAllowed(List<PollItem> values, AllowedCount allowedCount) {
@@ -59,7 +57,6 @@ public class PollItems {
         for (PollItem pollItem : values) {
             addOrRemove(pollItem, memberId, data);
         }
-        updateSelectedCount();
     }
 
     private void validateExistItem(Set<Long> selectItems) {
@@ -90,13 +87,5 @@ public class PollItems {
             return;
         }
         pollItem.remove(memberId);
-    }
-
-    private void updateSelectedCount() {
-        this.selectedCount = (int) this.values.stream()
-                .map(PollItem::getOnlyMembers)
-                .flatMap(Collection::stream)
-                .distinct()
-                .count();
     }
 }
