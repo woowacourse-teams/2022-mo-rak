@@ -211,4 +211,8 @@ public class Appointment extends BaseRootEntity<Appointment> {
     public Set<AvailableTime> getAvailableTimes() {
         return this.availableTimes.getAvailableTimes();
     }
+
+    public boolean isFirstSelecting() {
+        return this.availableTimes.isFirst();
+    }
 }

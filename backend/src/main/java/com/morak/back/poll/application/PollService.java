@@ -65,7 +65,9 @@ public class PollService {
                 () -> {
                     Poll poll = getPollInTeam(teamCode, pollCode);
                     poll.doPoll(memberId, toDataOfSelected(requests));
-                    pollRepository.updateSelectedCount(poll.getCode());
+                    if (poll.isFirstPoll()) {
+                        pollRepository.updateSelectedCount(poll.getCode());
+                    }
                     return null;
                 }, teamCode, memberId
         );

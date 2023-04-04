@@ -96,7 +96,10 @@ public class AppointmentService {
                             toStartDateTime(requests),
                             memberId,
                             systemTime.now());
+                    if (appointment.isFirstSelecting()) {
                     appointmentRepository.updateSelectedCount(appointmentCode);
+                    }
+
                     return null;
                 }, teamCode, memberId
         );

@@ -4,6 +4,7 @@ import com.morak.back.core.exception.CustomErrorCode;
 import com.morak.back.poll.exception.PollDomainLogicException;
 import com.morak.back.poll.exception.PollItemNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +35,9 @@ public class PollItems {
 
     @Column(nullable = false)
     private int selectedCount;
+
+    @Transient
+    private boolean first = false;
 
     @Builder
     public PollItems(List<PollItem> values, AllowedCount allowedCount) {
@@ -53,9 +58,16 @@ public class PollItems {
     public void doPoll(Long memberId, Map<Long, String> data) {
         validateExistItem(data.keySet());
         validatePollCountAllowed(data.size());
+        checkFirst(memberId);
 
         for (PollItem pollItem : values) {
             addOrRemove(pollItem, memberId, data);
+        }
+    }
+
+    private void checkFirst(Long memberId) {
+        if (isFirstPoll(memberId)) {
+            this.first = true;
         }
     }
 
@@ -87,5 +99,12 @@ public class PollItems {
             return;
         }
         pollItem.remove(memberId);
+    }
+
+    private boolean isFirstPoll(Long memberId) {
+        return this.values.stream()
+                .map(PollItem::getOnlyMembers)
+                .flatMap(Collection::stream)
+                .noneMatch(memberId::equals);
     }
 }

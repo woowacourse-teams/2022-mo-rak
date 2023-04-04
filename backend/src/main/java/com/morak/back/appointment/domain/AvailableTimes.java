@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -26,14 +27,28 @@ public class AvailableTimes {
 
     private long selectedCount = 0;
 
+    @Transient
+    private boolean first = false;
+
     public void select(Set<LocalDateTime> localDateTimes, Long memberId) {
         final List<AvailableTime> selectedAvailableTimes = localDateTimes.stream()
                 .map(dateTime -> AvailableTime.builder().memberId(memberId).startDateTime(dateTime).build())
                 .collect(Collectors.toList());
-
+        checkFirst(memberId);
         this.availableTimes.removeIf(
                 availableTime -> availableTime.matchMember(memberId) && !availableTime.isBelongTo(localDateTimes)
         );
         this.availableTimes.addAll(selectedAvailableTimes);
+    }
+
+    private void checkFirst(Long memberId) {
+        if (nonExistMember(memberId)) {
+            this.first = true;
+        }
+    }
+
+    private boolean nonExistMember(Long memberId) {
+        return this.availableTimes.stream()
+                .noneMatch(availableTime -> availableTime.matchMember(memberId));
     }
 }
