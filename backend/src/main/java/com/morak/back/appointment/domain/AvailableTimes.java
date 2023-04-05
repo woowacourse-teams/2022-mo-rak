@@ -51,4 +51,8 @@ public class AvailableTimes {
         return this.availableTimes.stream()
                 .noneMatch(availableTime -> availableTime.matchMember(memberId));
     }
+
+    public void deleteAll() {
+        this.availableTimes.clear();
+    }
 }

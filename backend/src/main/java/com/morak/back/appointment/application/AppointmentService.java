@@ -163,6 +163,7 @@ public class AppointmentService {
                 () -> {
                     Appointment appointment = findAppointmentInTeam(teamCode, appointmentCode);
                     validateHost(memberId, appointment);
+                    appointment.deleteAvailableTimes();
                     appointmentRepository.delete(appointment);
                     return null;
                 }, teamCode, memberId

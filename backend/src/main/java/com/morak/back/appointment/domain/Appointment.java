@@ -79,7 +79,7 @@ public class Appointment extends BaseRootEntity<Appointment> {
 
     public void selectAvailableTime(Set<LocalDateTime> selectingDateTimes, Long memberId, LocalDateTime now) {
         validateOpen();
-        validateSelectable(now, selectingDateTimes);
+//        validateSelectable(now, selectingDateTimes);
 
         this.availableTimes.select(selectingDateTimes, memberId);
     }
@@ -214,5 +214,9 @@ public class Appointment extends BaseRootEntity<Appointment> {
 
     public boolean isFirstSelecting() {
         return this.availableTimes.isFirst();
+    }
+
+    public void deleteAvailableTimes() {
+        this.availableTimes.deleteAll();
     }
 }
