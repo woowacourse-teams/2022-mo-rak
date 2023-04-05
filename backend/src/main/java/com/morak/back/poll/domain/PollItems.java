@@ -16,6 +16,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,12 +36,14 @@ public class PollItems {
     @Column(nullable = false)
     private int selectedCount;
 
+    @Transient
+    private boolean first = false;
+
     @Builder
     public PollItems(List<PollItem> values, AllowedCount allowedCount) {
         validateCountAllowed(values, allowedCount);
         this.values = new ArrayList<>(values);
         this.allowedCount = allowedCount;
-        updateSelectedCount();
     }
 
     private void validateCountAllowed(List<PollItem> values, AllowedCount allowedCount) {
@@ -55,11 +58,17 @@ public class PollItems {
     public void doPoll(Long memberId, Map<Long, String> data) {
         validateExistItem(data.keySet());
         validatePollCountAllowed(data.size());
+        checkFirst(memberId);
 
         for (PollItem pollItem : values) {
             addOrRemove(pollItem, memberId, data);
         }
-        updateSelectedCount();
+    }
+
+    private void checkFirst(Long memberId) {
+        if (isFirstPoll(memberId)) {
+            this.first = true;
+        }
     }
 
     private void validateExistItem(Set<Long> selectItems) {
@@ -92,11 +101,10 @@ public class PollItems {
         pollItem.remove(memberId);
     }
 
-    private void updateSelectedCount() {
-        this.selectedCount = (int) this.values.stream()
+    private boolean isFirstPoll(Long memberId) {
+        return this.values.stream()
                 .map(PollItem::getOnlyMembers)
                 .flatMap(Collection::stream)
-                .distinct()
-                .count();
+                .noneMatch(memberId::equals);
     }
 }

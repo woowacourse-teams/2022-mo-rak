@@ -3,6 +3,7 @@ package com.morak.back.poll.domain;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +22,10 @@ public interface PollRepository extends Repository<Poll, Long> {
     List<Poll> findAllByTeamCode(@Param("teamCode") String teamCode);
 
     void delete(Poll poll);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("update Poll p "
+            + "set p.pollItems.selectedCount = p.pollItems.selectedCount + 1 "
+            + "where p.menu.code.code = :pollCode")
+    void updateSelectedCount(@Param("pollCode") String pollCode);
 }

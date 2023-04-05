@@ -4,6 +4,7 @@ import static com.morak.back.poll.DateTimeFixture.TIME_OF_2022_05_12_12_00;
 import static com.morak.back.poll.DateTimeFixture.TIME_OF_2022_05_12_12_30;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.auth.domain.Member;
 import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.core.domain.Code;
@@ -13,6 +14,8 @@ import com.morak.back.support.RepositoryTest;
 import com.morak.back.team.domain.Team;
 import com.morak.back.team.domain.TeamRepository;
 import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +88,19 @@ class PollRepositoryTest {
                         .allowedCount(2)
                         .anonymous(false)
                         .build()
+        );
+    }
+
+    @Test
+    void 선택_인원을_추가한다() {
+        // when
+        pollRepository.updateSelectedCount(poll.getCode());
+
+        // then
+        Optional<Poll> updatedPoll = pollRepository.findByCode(poll.getCode());
+        Assertions.assertAll(
+                () -> assertThat(updatedPoll).isPresent(),
+                () -> assertThat(updatedPoll.get().getSelectedCount()).isOne()
         );
     }
 }
