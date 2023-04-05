@@ -23,7 +23,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = {"classpath:schema.sql"})
 @EnabledIf(expression = "#{environment['spring.profiles.active'] == 'concurrency'}", loadContext = true)
 class PollConcurrencyTest {
 
@@ -38,7 +37,7 @@ class PollConcurrencyTest {
     private String pollCode = "pollCode";
 
     @Test
-    void 선착순_10명의_투표에_100명이_동시에_선택한다() throws InterruptedException {
+    void 투표에_100명이_동시에_선택한다() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
         PollResultRequest pollResultRequest = new PollResultRequest(1L, "좋아요");
@@ -56,7 +55,6 @@ class PollConcurrencyTest {
             });
         }
         countDownLatch.await();
-        Thread.sleep(300);
         Poll poll = pollRepository.findByCode(pollCode).orElseThrow();
         assertThat(poll.getSelectedCount()).isEqualTo(threadCount);
     }

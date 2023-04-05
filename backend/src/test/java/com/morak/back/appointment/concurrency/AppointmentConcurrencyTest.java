@@ -19,7 +19,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = {"classpath:schema.sql"})
 @EnabledIf(expression = "#{environment['spring.profiles.active'] == 'concurrency'}", loadContext = true)
 class AppointmentConcurrencyTest {
 
@@ -34,7 +33,7 @@ class AppointmentConcurrencyTest {
     private String appointmentCode = "appoCode";
 
     @Test
-    void 선착순_10명의_약속잡기에_100명이_동시에_선택한다() throws InterruptedException {
+    void 약속잡기에_100명이_동시에_선택한다() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
         AvailableTimeRequest availableTimeRequest = new AvailableTimeRequest(
@@ -54,7 +53,6 @@ class AppointmentConcurrencyTest {
             });
         }
         countDownLatch.await();
-        Thread.sleep(300);
         Appointment appointment = appointmentRepository.findByCode(appointmentCode).orElseThrow();
         assertThat(appointment.getSelectedCount()).isEqualTo(threadCount);
     }
