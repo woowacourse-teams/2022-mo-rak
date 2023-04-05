@@ -17,10 +17,11 @@ class RoleHistoriesTest {
         RoleName 서기 = new RoleName("서기");
         RoleHistories roleHistories = new RoleHistories();
 
-        RoleHistory history1 = new RoleHistory(now, List.of(new RoleMatchResult(데일리_마스터, 1L)));
-        RoleHistory history2 = new RoleHistory(now.plusSeconds(10), List.of(new RoleMatchResult(서기, 2L)));
-        RoleHistory history3 = new RoleHistory(now.minusDays(1), List.of(new RoleMatchResult(데일리_마스터, 2L)));
-        RoleHistory history4 = new RoleHistory(now.minusDays(1).plusSeconds(10), List.of(new RoleMatchResult(서기, 1L)));
+        RoleHistory history1 = new RoleHistory(now, List.of(new RoleMatchResult(데일리_마스터, 1L)), null);
+        RoleHistory history2 = new RoleHistory(now.plusSeconds(10), List.of(new RoleMatchResult(서기, 2L)), null);
+        RoleHistory history3 = new RoleHistory(now.minusDays(1), List.of(new RoleMatchResult(데일리_마스터, 2L)), null);
+        RoleHistory history4 = new RoleHistory(now.minusDays(1).plusSeconds(10), List.of(new RoleMatchResult(서기, 1L)),
+                null);
 
         roleHistories.add(history1);
         roleHistories.add(history2);

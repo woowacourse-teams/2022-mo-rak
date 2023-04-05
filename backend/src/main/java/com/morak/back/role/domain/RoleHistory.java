@@ -1,6 +1,7 @@
 package com.morak.back.role.domain;
 
 import com.morak.back.core.support.Generated;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,9 @@ public class RoleHistory implements Comparable<RoleHistory> {
     @Column(nullable = false)
     private LocalDateTime dateTime;
 
+    @Column(nullable = false)
+    private LocalDate date;
+
     @ElementCollection
     @CollectionTable(
             name = "role_match_result",
@@ -37,9 +41,14 @@ public class RoleHistory implements Comparable<RoleHistory> {
     )
     private List<RoleMatchResult> matchResults = new ArrayList<>();
 
-    public RoleHistory(LocalDateTime dateTime, List<RoleMatchResult> matchResults) {
+    @Column(name = "role_id", insertable = false, updatable = false)
+    private Long roleId;
+
+    public RoleHistory(LocalDateTime dateTime, List<RoleMatchResult> matchResults, Long roleId) {
         this.dateTime = dateTime;
         this.matchResults = matchResults;
+        this.date = LocalDate.from(dateTime);
+        this.roleId = roleId;
     }
 
     @Override

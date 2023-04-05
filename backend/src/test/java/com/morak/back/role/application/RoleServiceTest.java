@@ -9,6 +9,7 @@ import com.morak.back.auth.domain.MemberRepository;
 import com.morak.back.auth.exception.MemberNotFoundException;
 import com.morak.back.core.domain.Code;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.role.application.dto.HistoryResponse;
 import com.morak.back.role.application.dto.RoleNameResponses;
 import com.morak.back.role.application.dto.RoleResponse;
 import com.morak.back.role.application.dto.RolesResponse;
@@ -36,6 +37,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @ServiceTest
 class RoleServiceTest {
@@ -276,11 +279,13 @@ class RoleServiceTest {
         RoleHistories roleHistories = new RoleHistories();
 
         Long memberId = member.getId();
-        RoleHistory history1 = new RoleHistory(now, List.of(new RoleMatchResult(Role_데일리_마스터, memberId)));
-        RoleHistory history2 = new RoleHistory(now.plusSeconds(10), List.of(new RoleMatchResult(Role_서기, memberId)));
-        RoleHistory history3 = new RoleHistory(now.minusDays(1), List.of(new RoleMatchResult(Role_데일리_마스터, memberId)));
+        RoleHistory history1 = new RoleHistory(now, List.of(new RoleMatchResult(Role_데일리_마스터, memberId)), null);
+        RoleHistory history2 = new RoleHistory(now.plusSeconds(10), List.of(new RoleMatchResult(Role_서기, memberId)),
+                null);
+        RoleHistory history3 = new RoleHistory(now.minusDays(1), List.of(new RoleMatchResult(Role_데일리_마스터, memberId)),
+                null);
         RoleHistory history4 = new RoleHistory(now.minusDays(1).plusSeconds(10),
-                List.of(new RoleMatchResult(Role_서기, memberId)));
+                List.of(new RoleMatchResult(Role_서기, memberId)), null);
 
         roleHistories.add(history1);
         roleHistories.add(history2);

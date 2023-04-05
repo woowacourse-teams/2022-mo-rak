@@ -48,7 +48,7 @@ public class Role extends BaseRootEntity<Role> {
 
     public RoleHistory matchMembers(List<Long> memberIds, ShuffleStrategy strategy) {
         strategy.shuffle(memberIds);
-        RoleHistory roleHistory = new RoleHistory(LocalDateTime.now(), roleNames.match(memberIds));
+        RoleHistory roleHistory = new RoleHistory(LocalDateTime.now(), roleNames.match(memberIds), this.id);
         roleHistories.add(roleHistory);
         registerEvent(RoleHistoryEvent.from(roleHistory, teamCode.getCode()));
         return roleHistory;
