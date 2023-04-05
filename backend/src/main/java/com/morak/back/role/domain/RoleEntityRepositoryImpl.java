@@ -3,10 +3,7 @@ package com.morak.back.role.domain;
 import static com.morak.back.role.domain.QRole.role;
 import static com.morak.back.role.domain.QRoleHistory.roleHistory;
 
-import com.querydsl.core.types.dsl.DateTemplate;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
@@ -38,12 +35,12 @@ public class RoleEntityRepositoryImpl implements RoleEntityRepository {
     }
 
     private Role findRoleWithGroupByAndOrderBy(String teamCode, Long roleId) {
-        List<Long> roleHistoryIds = findRoleHistoryIdsGroupByAndOrderBy(roleId);
+        List<Long> roleHistoryIds = findRoleHistoryIdsPerDate(roleId);
         List<RoleHistory> roleHistories = findAllRoleHistory(roleHistoryIds);
         return new Role(teamCode, null, new RoleHistories(roleHistories));
     }
 
-    private List<Long> findRoleHistoryIdsGroupByAndOrderBy(Long roleId) {
+    private List<Long> findRoleHistoryIdsPerDate(Long roleId) {
         return jpaQueryFactory.select(roleHistory.id.max())
                 .from(roleHistory)
                 .groupBy(roleHistory.date)
