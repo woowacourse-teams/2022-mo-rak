@@ -2,7 +2,6 @@ package com.morak.back.appointment.concurrency;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.morak.back.appointment.application.AppointmentFacade;
 import com.morak.back.appointment.application.AppointmentService;
 import com.morak.back.appointment.application.dto.AvailableTimeRequest;
 import com.morak.back.appointment.domain.Appointment;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,9 +27,6 @@ class AppointmentConcurrencyTest {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
-
-    @Autowired
-    private AppointmentFacade appointmentFacade;
 
     private int threadCount = 100;
     private String teamCode = "edeneee1";
@@ -54,7 +49,7 @@ class AppointmentConcurrencyTest {
     void 약속잡기에_100명이_동시에_선택한다() throws InterruptedException {
         // when
         List<AvailableTimeRequest> requests = List.of(availableTimeRequest);
-        for (long i = 1; i < threadCount+1; i++) {
+        for (long i = 1; i < threadCount + 1; i++) {
             long memberId = i;
             executorService.submit(() -> {
                 try {
@@ -73,7 +68,7 @@ class AppointmentConcurrencyTest {
     void 약속잡기에_1명이_동시에_100번_선택한다() throws InterruptedException {
         // when
         List<AvailableTimeRequest> requests = List.of(availableTimeRequest);
-        for (long i = 1; i < threadCount+1; i++) {
+        for (long i = 1; i < threadCount + 1; i++) {
             executorService.submit(() -> {
                 try {
                     appointmentService.selectAvailableTimes(teamCode, 1L, appointmentCode, requests);
