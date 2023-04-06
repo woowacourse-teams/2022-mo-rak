@@ -40,3 +40,4 @@ out/
 ###
 **/src/main/resources/static/*.html
 docker/db
+redis/db
