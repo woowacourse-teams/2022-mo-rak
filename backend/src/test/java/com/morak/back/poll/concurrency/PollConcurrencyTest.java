@@ -6,6 +6,7 @@ import com.morak.back.appointment.application.AppointmentService;
 import com.morak.back.appointment.application.dto.AvailableTimeRequest;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentRepository;
+import com.morak.back.poll.application.PollFacade;
 import com.morak.back.poll.application.PollService;
 import com.morak.back.poll.application.dto.PollResultRequest;
 import com.morak.back.poll.domain.Poll;
@@ -32,6 +33,9 @@ class PollConcurrencyTest {
 
     @Autowired
     private PollRepository pollRepository;
+
+    @Autowired
+    private PollFacade pollFacade;
 
     private int threadCount = 100;
     private String teamCode = "edeneee1";
@@ -74,7 +78,7 @@ class PollConcurrencyTest {
         for (long i = 1; i < threadCount+1; i++) {
             executorService.submit(() -> {
                 try {
-                    pollService.doPoll(teamCode, 1L, pollCode, requests);
+                    pollFacade.doPoll(teamCode, 1L, pollCode, requests);
                 } finally {
                     countDownLatch.countDown();
                 }
