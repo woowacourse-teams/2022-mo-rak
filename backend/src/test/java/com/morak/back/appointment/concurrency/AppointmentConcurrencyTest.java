@@ -76,7 +76,7 @@ class AppointmentConcurrencyTest {
         for (long i = 1; i < threadCount+1; i++) {
             executorService.submit(() -> {
                 try {
-                    appointmentFacade.selectAvailableTimes(teamCode, 1L, appointmentCode, requests);
+                    appointmentService.selectAvailableTimes(teamCode, 1L, appointmentCode, requests);
                 } finally {
                     countDownLatch.countDown();
                 }

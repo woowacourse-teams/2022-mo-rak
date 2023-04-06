@@ -19,6 +19,7 @@ import com.morak.back.core.domain.CodeGenerator;
 import com.morak.back.core.domain.RandomCodeGenerator;
 import com.morak.back.core.domain.SystemTime;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.support.DistributedLock;
 import com.morak.back.core.support.Generated;
 import com.morak.back.team.domain.TeamMember;
 import com.morak.back.team.domain.TeamMemberRepository;
@@ -87,6 +88,7 @@ public class AppointmentService {
         return appointment;
     }
 
+    @DistributedLock
     public void selectAvailableTimes(String teamCode, Long memberId, String appointmentCode,
                                      List<AvailableTimeRequest> requests) {
         authorizationService.withTeamMemberValidation(
@@ -97,9 +99,8 @@ public class AppointmentService {
                             memberId,
                             systemTime.now());
                     if (appointment.isFirstSelecting()) {
-                    appointmentRepository.updateSelectedCount(appointmentCode);
+                        appointmentRepository.updateSelectedCount(appointmentCode);
                     }
-
                     return null;
                 }, teamCode, memberId
         );

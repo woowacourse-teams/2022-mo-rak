@@ -78,7 +78,7 @@ class PollConcurrencyTest {
         for (long i = 1; i < threadCount+1; i++) {
             executorService.submit(() -> {
                 try {
-                    pollFacade.doPoll(teamCode, 1L, pollCode, requests);
+                    pollService.doPoll(teamCode, 1L, pollCode, requests);
                 } finally {
                     countDownLatch.countDown();
                 }
