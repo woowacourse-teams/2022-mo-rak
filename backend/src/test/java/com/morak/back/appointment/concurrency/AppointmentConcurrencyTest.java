@@ -2,6 +2,7 @@ package com.morak.back.appointment.concurrency;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.morak.back.appointment.application.AppointmentFacade;
 import com.morak.back.appointment.application.AppointmentService;
 import com.morak.back.appointment.application.dto.AvailableTimeRequest;
 import com.morak.back.appointment.domain.Appointment;
@@ -28,6 +29,9 @@ class AppointmentConcurrencyTest {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private AppointmentFacade appointmentFacade;
 
     private int threadCount = 100;
     private String teamCode = "edeneee1";
@@ -72,7 +76,7 @@ class AppointmentConcurrencyTest {
         for (long i = 1; i < threadCount+1; i++) {
             executorService.submit(() -> {
                 try {
-                    appointmentService.selectAvailableTimes(teamCode, 1L, appointmentCode, requests);
+                    appointmentFacade.selectAvailableTimes(teamCode, 1L, appointmentCode, requests);
                 } finally {
                     countDownLatch.countDown();
                 }
