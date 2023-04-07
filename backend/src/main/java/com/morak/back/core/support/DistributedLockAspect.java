@@ -33,8 +33,7 @@ public class DistributedLockAspect {
 
         DistributedLock lock = getDistributedLock(joinPoint);
         try {
-            boolean available = rLock.tryLock(lock.waitTime(), lock.leaseTime(), lock.timeUnit());
-            if (!available) {
+            if (!rLock.tryLock(lock.waitTime(), lock.leaseTime(), lock.timeUnit())) {
                 return false;
             }
             return joinPoint.proceed();
