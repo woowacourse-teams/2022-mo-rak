@@ -37,9 +37,6 @@ public class DistributedLockAspect {
                 return false;
             }
             return joinPoint.proceed();
-        } catch (final Exception e) {
-            Thread.currentThread().interrupt();
-            throw new InterruptedException();
         } finally {
             rLock.unlock();
         }
