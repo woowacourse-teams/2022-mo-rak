@@ -36,14 +36,12 @@ public class PollItems {
     @Column(nullable = false)
     private int selectedCount;
 
-    @Transient
-    private boolean first = false;
-
     @Builder
     public PollItems(List<PollItem> values, AllowedCount allowedCount) {
         validateCountAllowed(values, allowedCount);
         this.values = new ArrayList<>(values);
         this.allowedCount = allowedCount;
+        updateSelectedCount();
     }
 
     private void validateCountAllowed(List<PollItem> values, AllowedCount allowedCount) {
@@ -58,17 +56,11 @@ public class PollItems {
     public void doPoll(Long memberId, Map<Long, String> data) {
         validateExistItem(data.keySet());
         validatePollCountAllowed(data.size());
-        checkFirst(memberId);
 
         for (PollItem pollItem : values) {
             addOrRemove(pollItem, memberId, data);
         }
-    }
-
-    private void checkFirst(Long memberId) {
-        if (isFirstPoll(memberId)) {
-            this.first = true;
-        }
+        updateSelectedCount();
     }
 
     private void validateExistItem(Set<Long> selectItems) {
@@ -101,10 +93,11 @@ public class PollItems {
         pollItem.remove(memberId);
     }
 
-    private boolean isFirstPoll(Long memberId) {
-        return this.values.stream()
+    private void updateSelectedCount() {
+        this.selectedCount = (int) this.values.stream()
                 .map(PollItem::getOnlyMembers)
                 .flatMap(Collection::stream)
-                .noneMatch(memberId::equals);
+                .distinct()
+                .count();
     }
 }

@@ -23,9 +23,4 @@ public interface AppointmentRepository extends Repository<Appointment, Long> {
     @Query("select a from Appointment a where a.menu.status = 'OPEN' and a.menu.closedAt.closedAt <= :thresholdDateTime")
     List<Appointment> findAllToBeClosed(@Param("thresholdDateTime") LocalDateTime thresholdDateTime);
 
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("update Appointment a "
-            + "set a.availableTimes.selectedCount = a.availableTimes.selectedCount + 1 "
-            + "where a.menu.code.code = :appointmentCode")
-    void updateSelectedCount(@Param("appointmentCode") String appointmentCode);
 }

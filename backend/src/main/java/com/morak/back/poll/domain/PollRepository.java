@@ -23,9 +23,4 @@ public interface PollRepository extends Repository<Poll, Long> {
 
     void delete(Poll poll);
 
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("update Poll p "
-            + "set p.pollItems.selectedCount = p.pollItems.selectedCount + 1 "
-            + "where p.menu.code.code = :pollCode")
-    void updateSelectedCount(@Param("pollCode") String pollCode);
 }
