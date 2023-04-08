@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-db
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./db/data:/data
+      - ./db/conf/redis.conf:/usr/local/conf/redis.conf
+    command: redis-server /usr/local/conf/redis.conf

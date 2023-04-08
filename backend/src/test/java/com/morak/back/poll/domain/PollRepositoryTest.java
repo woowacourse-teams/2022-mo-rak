@@ -90,17 +90,4 @@ class PollRepositoryTest {
                         .build()
         );
     }
-
-    @Test
-    void 선택_인원을_추가한다() {
-        // when
-        pollRepository.updateSelectedCount(poll.getCode());
-
-        // then
-        Optional<Poll> updatedPoll = pollRepository.findByCode(poll.getCode());
-        Assertions.assertAll(
-                () -> assertThat(updatedPoll).isPresent(),
-                () -> assertThat(updatedPoll.get().getSelectedCount()).isOne()
-        );
-    }
 }

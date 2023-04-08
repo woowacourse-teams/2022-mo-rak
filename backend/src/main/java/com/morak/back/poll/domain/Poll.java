@@ -128,7 +128,4 @@ public class Poll extends BaseRootEntity<Poll> {
         return this.pollItems.getSelectedCount();
     }
 
-    public boolean isFirstPoll() {
-        return this.pollItems.isFirst();
-    }
 }

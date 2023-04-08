@@ -4,6 +4,7 @@ import com.morak.back.auth.domain.Member;
 import com.morak.back.core.application.AuthorizationService;
 import com.morak.back.core.domain.SystemTime;
 import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.support.DistributedLock;
 import com.morak.back.core.support.Generated;
 import com.morak.back.poll.application.dto.PollCreateRequest;
 import com.morak.back.poll.application.dto.PollItemResponse;
@@ -60,14 +61,12 @@ public class PollService {
         );
     }
 
+    @DistributedLock
     public void doPoll(String teamCode, Long memberId, String pollCode, List<PollResultRequest> requests) {
         authorizationService.withTeamMemberValidation(
                 () -> {
                     Poll poll = getPollInTeam(teamCode, pollCode);
                     poll.doPoll(memberId, toDataOfSelected(requests));
-                    if (poll.isFirstPoll()) {
-                        pollRepository.updateSelectedCount(poll.getCode());
-                    }
                     return null;
                 }, teamCode, memberId
         );

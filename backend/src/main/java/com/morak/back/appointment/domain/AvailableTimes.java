@@ -27,23 +27,20 @@ public class AvailableTimes {
 
     private long selectedCount = 0;
 
-    @Transient
-    private boolean first = false;
-
     public void select(Set<LocalDateTime> localDateTimes, Long memberId) {
         final List<AvailableTime> selectedAvailableTimes = localDateTimes.stream()
                 .map(dateTime -> AvailableTime.builder().memberId(memberId).startDateTime(dateTime).build())
                 .collect(Collectors.toList());
-        checkFirst(memberId);
+        countUpIfNotExists(memberId);
         this.availableTimes.removeIf(
                 availableTime -> availableTime.matchMember(memberId) && !availableTime.isBelongTo(localDateTimes)
         );
         this.availableTimes.addAll(selectedAvailableTimes);
     }
 
-    private void checkFirst(Long memberId) {
+    private void countUpIfNotExists(Long memberId) {
         if (nonExistMember(memberId)) {
-            this.first = true;
+            this.selectedCount++;
         }
     }
 
