@@ -3,9 +3,9 @@ const dotenv = require('dotenv');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-dotenv.config();
+const envPath = process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev';
+dotenv.config({ path: envPath });
 
-// TODO: 절대경로 설정
 module.exports = {
   entry: './src/index.tsx',
   output: {

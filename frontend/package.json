@@ -4,8 +4,8 @@
   "description": "모락 서비스",
   "main": "src/index.tsx",
   "scripts": {
-    "start": "webpack serve --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "start": "NODE_ENV=development webpack serve --open --config webpack.dev.js",
+    "build": "NODE_ENV=production webpack --config webpack.prod.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "lint": "eslint .",

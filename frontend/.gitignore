@@ -2,6 +2,6 @@
 /dist
 /cypress/videos
 /cypress/screenshots
-.env
+.env*
 .DS_STORE
 cypress.env.json
