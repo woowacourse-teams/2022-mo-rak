@@ -63,6 +63,8 @@ spring:
   sql:
     init:
       mode: always
+  redis:
+    port: 16379
 
 ---
 
