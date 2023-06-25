@@ -33,7 +33,6 @@ function LandingMainSection({ id }: Props) {
     <StyledContainer id={id}>
       <LandingNavbar />
       <StyledLogo src={serviceLogoImg} alt="logo" />
-
       <FlexContainer flexDirection="column" gap="2rem">
         <StyledSubTitle>모락이 해줄게요</StyledSubTitle>
         <StyledTitle>

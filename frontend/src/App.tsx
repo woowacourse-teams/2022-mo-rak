@@ -7,6 +7,7 @@ import GroupRoute from '@/routes/GroupRoute';
 import ErrorPage from '@/pages/ErrorPage/ErrorPage';
 import { AuthProvider } from '@/contexts/AuthProvider';
 import FallbackPage from '@/pages/FallbackPage/FallbackPage';
+import * as Sentry from '@sentry/react';
 
 const PollMainPage = lazy(() => import('@/pages/PollMainPage/PollMainPage'));
 const PollCreatePage = lazy(() => import('@/pages/PollCreatePage/PollCreatePage'));
@@ -27,6 +28,21 @@ const AppointmentResultPage = lazy(
   () => import('@/pages/AppointmentResultPage/AppointmentResultPage')
 );
 const RoleMainPage = lazy(() => import('@/pages/RoleMainPage/RoleMainPage'));
+
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: 'https://bfced0d9032b4e66b79eef9f6b237beb@o4505419895996416.ingest.sentry.io/4505419897044992',
+    integrations: [
+      new Sentry.BrowserTracing({
+        tracePropagationTargets: [/^https:\/\/mo-rak\.com\/api/]
+      }),
+      new Sentry.Replay()
+    ],
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+    tracesSampleRate: 1.0
+  });
+}
 
 function App() {
   return (
