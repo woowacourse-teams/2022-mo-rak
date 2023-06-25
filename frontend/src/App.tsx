@@ -31,7 +31,7 @@ const RoleMainPage = lazy(() => import('@/pages/RoleMainPage/RoleMainPage'));
 
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
-    dsn: 'https://bfced0d9032b4e66b79eef9f6b237beb@o4505419895996416.ingest.sentry.io/4505419897044992',
+    dsn: process.env.SENTRY_DSN,
     integrations: [
       new Sentry.BrowserTracing({
         tracePropagationTargets: [/^https:\/\/mo-rak\.com\/api/]
