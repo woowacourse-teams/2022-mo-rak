@@ -1,50 +1,63 @@
 package com.morak.back.core.support;
 
-import java.lang.reflect.Method;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.core.annotation.Order;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
-@Component
-@RequiredArgsConstructor
+import java.lang.reflect.Method;
+
+@Slf4j
 @Aspect
+@Component
 @Order(value = 1)
+@RequiredArgsConstructor
 public class DistributedLockAspect {
 
+    private static final String REDISSON_LOCK_PREFIX = "lock:";
+
     private final RedissonClient redissonClient;
+    private final AopForTransaction aopForTransaction;
 
-    @Pointcut("@annotation(com.morak.back.core.support.DistributedLock)")
-    private void distributedLockPointCut() {
-
-    }
-
-    @Around("distributedLockPointCut()")
+    @Around("@annotation(com.morak.back.core.support.DistributedLock)")
     public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable {
-        String code = (String) joinPoint.getArgs()[2];
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+        DistributedLock distributedLock = method.getAnnotation(DistributedLock.class);
 
-        RLock rLock = redissonClient.getLock(String.format("lock:%s", code));
+        String key = REDISSON_LOCK_PREFIX + getDynamicValue(signature.getParameterNames(), joinPoint.getArgs(), distributedLock.key());
+        RLock rLock = redissonClient.getLock(key);
 
-        DistributedLock lock = getDistributedLock(joinPoint);
         try {
-            if (!rLock.tryLock(lock.waitTime(), lock.leaseTime(), lock.timeUnit())) {
+            if (!rLock.tryLock(distributedLock.waitTime(), distributedLock.leaseTime(), distributedLock.timeUnit())) {
                 return false;
             }
-            return joinPoint.proceed();
+
+            return aopForTransaction.proceed(joinPoint);
+        } catch (InterruptedException e) {
+            throw new InterruptedException();
         } finally {
             rLock.unlock();
         }
     }
 
-    private DistributedLock getDistributedLock(ProceedingJoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = signature.getMethod();
-        return method.getAnnotation(DistributedLock.class);
+    public Object getDynamicValue(String[] parameterNames, Object[] args, String key) {
+        ExpressionParser parser = new SpelExpressionParser();
+        StandardEvaluationContext context = new StandardEvaluationContext();
+
+        for (int i = 0; i < parameterNames.length; i++) {
+            context.setVariable(parameterNames[i], args[i]);
+        }
+
+        return parser.parseExpression(key).getValue(context, Object.class);
     }
 }

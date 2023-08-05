@@ -2,6 +2,7 @@ package com.morak.back.notification.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.morak.back.EmbeddedRedisCallback;
 import com.morak.back.appointment.application.AppointmentService;
 import com.morak.back.appointment.domain.Appointment;
 import com.morak.back.appointment.domain.AppointmentEvent;
@@ -27,11 +28,13 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
+@ExtendWith(EmbeddedRedisCallback.class)
 @Sql(scripts = {"classpath:schema.sql", "classpath:data.sql"})
 public class NotificationEventTest {
 

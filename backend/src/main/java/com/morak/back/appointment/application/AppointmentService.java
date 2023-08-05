@@ -88,7 +88,7 @@ public class AppointmentService {
         return appointment;
     }
 
-    @DistributedLock
+    @DistributedLock(key = "#appointmentCode")
     public void selectAvailableTimes(String teamCode, Long memberId, String appointmentCode,
                                      List<AvailableTimeRequest> requests) {
         authorizationService.withTeamMemberValidation(
