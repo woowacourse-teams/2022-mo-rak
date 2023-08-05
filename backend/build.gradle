@@ -74,7 +74,9 @@ dependencies {
 
     // redis
     implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
-    testImplementation 'it.ozimov:embedded-redis:0.7.3'
+    testImplementation('it.ozimov:embedded-redis:0.7.3') {
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
 }
 
 tasks.named('test') {
