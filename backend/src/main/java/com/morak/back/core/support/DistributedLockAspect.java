@@ -28,7 +28,6 @@ public class DistributedLockAspect {
     private static final String REDISSON_LOCK_PREFIX = "lock:";
 
     private final RedissonClient redissonClient;
-    private final AopForTransaction aopForTransaction;
 
     @Around("@annotation(com.morak.back.core.support.DistributedLock)")
     public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable {
@@ -44,7 +43,7 @@ public class DistributedLockAspect {
                 return false;
             }
 
-            return aopForTransaction.proceed(joinPoint);
+            return joinPoint.proceed();
         } catch (InterruptedException e) {
             throw new ExternalException(CustomErrorCode.FAIL_TO_ACQUIRED_REDIS_LOCK_ERROR, key + " lock을 얻지 못했습니다.");
         } finally {
