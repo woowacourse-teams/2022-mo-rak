@@ -1,5 +1,7 @@
 package com.morak.back.core.support;
 
+import com.morak.back.core.exception.CustomErrorCode;
+import com.morak.back.core.exception.ExternalException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -44,7 +46,7 @@ public class DistributedLockAspect {
 
             return aopForTransaction.proceed(joinPoint);
         } catch (InterruptedException e) {
-            throw new InterruptedException();
+            throw new ExternalException(CustomErrorCode.FAIL_TO_ACQUIRED_REDIS_LOCK_ERROR, key + " lock을 얻지 못했습니다.");
         } finally {
             rLock.unlock();
         }
