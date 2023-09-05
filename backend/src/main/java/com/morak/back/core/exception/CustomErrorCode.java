@@ -82,7 +82,8 @@ public enum CustomErrorCode {
     ROLE_NOT_FOUND_ERROR("5300", "요청한 역할정하기를 찾을 수 없습니다."),
 
     MORAK_ERROR("9901", "처리하지 못한 예외입니다."),
-    RUNTIME_ERROR("9902", "예상치 못한 예외입니다.");
+    RUNTIME_ERROR("9902", "예상치 못한 예외입니다."),
+    FAIL_TO_ACQUIRED_REDIS_LOCK_ERROR("9903", "레디스 락을 얻지 못하였습니다.");
 
     private final String number;
     private final String information;

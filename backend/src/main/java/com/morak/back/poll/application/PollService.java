@@ -61,7 +61,7 @@ public class PollService {
         );
     }
 
-    @DistributedLock
+    @DistributedLock(key = "#pollCode")
     public void doPoll(String teamCode, Long memberId, String pollCode, List<PollResultRequest> requests) {
         authorizationService.withTeamMemberValidation(
                 () -> {
